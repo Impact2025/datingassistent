@@ -265,7 +265,7 @@ function verifyWebhookSignature(request: NextRequest, signature: string | null, 
 }
 
 // Send email reply (for agents)
-export async function sendEmailReply(
+async function sendEmailReply(
   to: string,
   subject: string,
   message: string,
@@ -315,7 +315,7 @@ export async function sendEmailReply(
   */
 }
 
-export async function autoAssignConversation(conversationId: string) {
+async function autoAssignConversation(conversationId: string) {
   try {
     // Find available agent
     const availableAgent = await sql`
