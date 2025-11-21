@@ -5,7 +5,7 @@ import { verifyAuth } from '@/lib/auth';
 // POST /api/assignments/[id]/submit - Submit assignment
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await verifyAuth(request);
@@ -16,7 +16,8 @@ export async function POST(
       );
     }
 
-    const assignmentId = parseInt(params.id);
+    const { id } = await params;
+    const assignmentId = parseInt(id);
     if (isNaN(assignmentId)) {
       return NextResponse.json(
         { error: 'Invalid assignment ID' },
@@ -52,7 +53,7 @@ export async function POST(
 // GET /api/assignments/[id]/submit - Get user's submission for assignment
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await verifyAuth(request);
@@ -63,7 +64,8 @@ export async function GET(
       );
     }
 
-    const assignmentId = parseInt(params.id);
+    const { id } = await params;
+    const assignmentId = parseInt(id);
     if (isNaN(assignmentId)) {
       return NextResponse.json(
         { error: 'Invalid assignment ID' },

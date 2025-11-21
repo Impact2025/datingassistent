@@ -7,11 +7,12 @@ import { requireAdmin } from '@/lib/auth';
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
-    const targetUserId = params.id;
+    const { id } = await params;
+    const targetUserId = id;
     const statusData = await request.json();
     const { status } = statusData;
 

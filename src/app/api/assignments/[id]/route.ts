@@ -5,10 +5,11 @@ import { verifyAuth, requireAdmin } from '@/lib/auth';
 // GET /api/assignments/[id] - Get assignment details
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const assignmentId = parseInt(params.id);
+    const { id } = await params;
+    const assignmentId = parseInt(id);
     if (isNaN(assignmentId)) {
       return NextResponse.json(
         { error: 'Invalid assignment ID' },
@@ -37,12 +38,13 @@ export async function GET(
 // PUT /api/assignments/[id] - Update assignment (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
 
-    const assignmentId = parseInt(params.id);
+    const { id } = await params;
+    const assignmentId = parseInt(id);
     if (isNaN(assignmentId)) {
       return NextResponse.json(
         { error: 'Invalid assignment ID' },
@@ -73,12 +75,13 @@ export async function PUT(
 // DELETE /api/assignments/[id] - Delete assignment (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
 
-    const assignmentId = parseInt(params.id);
+    const { id } = await params;
+    const assignmentId = parseInt(id);
     if (isNaN(assignmentId)) {
       return NextResponse.json(
         { error: 'Invalid assignment ID' },

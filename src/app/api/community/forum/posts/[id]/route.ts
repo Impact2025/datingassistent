@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const postId = params.id;
+    const { id } = await params;
+    const postId = id;
 
     if (!postId) {
       return NextResponse.json(
@@ -60,9 +61,10 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const postId = params.id;
+    const { id } = await params;
+    const postId = id;
     const { userId, title, content } = await request.json();
 
     if (!postId || !userId || !title || !content) {

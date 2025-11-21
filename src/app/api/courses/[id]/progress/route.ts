@@ -5,7 +5,7 @@ import { verifyAuth } from '@/lib/auth';
 // GET /api/courses/[id]/progress - Get user's progress for course
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await verifyAuth(request);
@@ -16,7 +16,8 @@ export async function GET(
       );
     }
 
-    const courseId = parseInt(params.id);
+    const { id } = await params;
+    const courseId = parseInt(id);
     if (isNaN(courseId)) {
       return NextResponse.json(
         { error: 'Invalid course ID' },
@@ -39,7 +40,7 @@ export async function GET(
 // POST /api/courses/[id]/progress - Enroll in course
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await verifyAuth(request);
@@ -50,7 +51,8 @@ export async function POST(
       );
     }
 
-    const courseId = parseInt(params.id);
+    const { id } = await params;
+    const courseId = parseInt(id);
     if (isNaN(courseId)) {
       return NextResponse.json(
         { error: 'Invalid course ID' },

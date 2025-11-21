@@ -8,11 +8,12 @@ import { requireAdmin } from '@/lib/auth';
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
-    const targetUserId = params.id;
+    const { id } = await params;
+    const targetUserId = id;
     const passwordData = await request.json();
     const { newPassword, confirmPassword, sendNotification } = passwordData;
 

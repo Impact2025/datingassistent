@@ -4,7 +4,7 @@ import { verifyAuth } from '@/lib/auth';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await verifyAuth(request);
@@ -15,7 +15,8 @@ export async function GET(
       );
     }
 
-    const courseId = parseInt(params.id);
+    const { id } = await params;
+    const courseId = parseInt(id);
     if (isNaN(courseId)) {
       return NextResponse.json(
         { error: 'Invalid course ID' },

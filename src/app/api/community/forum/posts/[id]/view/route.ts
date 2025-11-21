@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const postId = params.id;
+    const { id } = await params;
+    const postId = id;
 
     if (!postId) {
       return NextResponse.json(

@@ -3,10 +3,10 @@ import { sql } from '@vercel/postgres';
 import { getPasswordResetToken, markPasswordResetTokenAsUsed, updateUserPassword } from '@/lib/db-operations';
 import bcrypt from 'bcryptjs';
 
-export async function POST(request: NextRequest, { params }: { params: { token: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   try {
     const { password } = await request.json();
-    const { token } = params;
+    const { token } = await params;
 
     // Validate input
     if (!token) {

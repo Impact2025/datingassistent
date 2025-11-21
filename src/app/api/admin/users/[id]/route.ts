@@ -7,11 +7,12 @@ import { requireAdmin } from '@/lib/auth';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
-    const getUserId = params.id;
+    const { id } = await params;
+    const getUserId = id;
 
     const result = await sql`
       SELECT
@@ -63,11 +64,12 @@ export async function GET(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
-    const putUserId = params.id;
+    const { id } = await params;
+    const putUserId = id;
     const updateData = await request.json();
     const { email: putEmail, name: putName, role: putRole } = updateData;
 
@@ -114,11 +116,12 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
-    const delUserId = params.id;
+    const { id } = await params;
+    const delUserId = id;
 
     const userCheck = await sql`SELECT id, role FROM users WHERE id = ${delUserId}`;
     if (userCheck.rows.length === 0) {

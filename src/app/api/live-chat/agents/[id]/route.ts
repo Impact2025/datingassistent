@@ -5,11 +5,12 @@ import bcrypt from 'bcryptjs';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
-    const agentId = params.id;
+    const { id } = await params;
+    const agentId = id;
 
     const agent = await sql`
       SELECT
@@ -40,11 +41,12 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
-    const agentId = params.id;
+    const { id } = await params;
+    const agentId = id;
     const updateData = await request.json();
 
     const {
@@ -181,11 +183,12 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin(request);
-    const agentId = params.id;
+    const { id } = await params;
+    const agentId = id;
 
     // Check if agent exists
     const agent = await sql`

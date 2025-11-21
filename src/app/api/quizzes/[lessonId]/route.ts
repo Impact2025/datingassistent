@@ -5,7 +5,7 @@ import { verifyAuth } from '@/lib/auth';
 // GET /api/quizzes/[lessonId] - Get quiz questions for lesson
 export async function GET(
   request: NextRequest,
-  { params }: { params: { lessonId: string } }
+  { params }: { params: Promise<{ lessonId: string }> }
 ) {
   try {
     const user = await verifyAuth(request);
@@ -16,7 +16,8 @@ export async function GET(
       );
     }
 
-    const lessonId = parseInt(params.lessonId);
+    const { lessonId: lessonIdStr } = await params;
+    const lessonId = parseInt(lessonIdStr);
     if (isNaN(lessonId)) {
       return NextResponse.json(
         { error: 'Invalid lesson ID' },
