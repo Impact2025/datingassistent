@@ -151,10 +151,10 @@ export async function POST(request: Request) {
 }
 
 /**
- * API endpoint voor artikel naar blog conversie
- * Gebruik: POST http://localhost:9002/api/test-openrouter/article-to-blog
+ * Helper function voor artikel naar blog conversie
+ * Niet direct callable als route handler
  */
-export async function POST_articleToBlog(request: Request) {
+async function articleToBlog(request: Request) {
   try {
     const input = await request.json();
     

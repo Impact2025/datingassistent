@@ -60,7 +60,10 @@
       "Bash(git rm:*)",
       "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch:*)",
       "Bash(git remote:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(git push:*)",
+      "Bash(find:*)",
+      "Bash(.gitignore)"
     ],
     "deny": [],
     "ask": []

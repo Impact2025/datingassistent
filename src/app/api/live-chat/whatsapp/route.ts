@@ -243,7 +243,7 @@ async function autoAssignConversation(conversationId: string) {
 }
 
 // Send WhatsApp message (for agents to reply)
-export async function sendWhatsAppMessage(to: string, message: string) {
+async function sendWhatsAppMessage(to: string, message: string) {
   if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
     throw new Error('WhatsApp credentials not configured');
   }
