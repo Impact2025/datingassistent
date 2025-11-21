@@ -73,13 +73,12 @@ const nextConfig: NextConfig = {
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Fix "self is not defined" error in server-side bundles
     if (isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-      };
-      // Polyfill 'self' for server-side
+      // Inject polyfill at the very start of every server bundle
       config.plugins.push(
-        new webpack.DefinePlugin({
-          'self': 'globalThis',
+        new webpack.BannerPlugin({
+          banner: 'if (typeof self === "undefined") { globalThis.self = globalThis; } if (typeof window === "undefined") { globalThis.window = globalThis; }',
+          raw: true,
+          entryOnly: false,
         })
       );
     }
