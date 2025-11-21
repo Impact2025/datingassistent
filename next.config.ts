@@ -222,17 +222,17 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
 };
 
-// Make sure Sentry is properly configured
-if (process.env.NODE_ENV === 'production') {
-  // Wrap the config with Sentry
-  const { withSentryConfig } = require('@sentry/nextjs');
-  module.exports = withSentryConfig(nextConfig, {
-    silent: true,
-    org: process.env.SENTRY_ORG,
-    project: process.env.SENTRY_PROJECT,
-  });
-} else {
-  module.exports = nextConfig;
-}
+// Temporarily disable Sentry wrapping to fix "self is not defined" error
+// TODO: Re-enable after successful deployment and proper Sentry setup
+// if (process.env.NODE_ENV === 'production') {
+//   const { withSentryConfig } = require('@sentry/nextjs');
+//   module.exports = withSentryConfig(nextConfig, {
+//     silent: true,
+//     org: process.env.SENTRY_ORG,
+//     project: process.env.SENTRY_PROJECT,
+//   });
+// } else {
+//   module.exports = nextConfig;
+// }
 
 export default nextConfig;
