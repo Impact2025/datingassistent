@@ -71,6 +71,19 @@ const nextConfig: NextConfig = {
 
   // Webpack configuration for bundle optimization
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Fix "self is not defined" error in server-side bundles
+    if (isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+      };
+      // Polyfill 'self' for server-side
+      config.plugins.push(
+        new webpack.DefinePlugin({
+          'self': 'globalThis',
+        })
+      );
+    }
+
     // Bundle analyzer (only in development)
     if (!dev && !isServer) {
       try {
