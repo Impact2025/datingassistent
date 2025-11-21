@@ -1,0 +1,113 @@
+/* FAQ Specific Styles */
+
+.faq-search-container {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.faq-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.faq-search-input {
+  padding-left: 3rem;
+  padding-right: 1rem;
+  width: 100%;
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--background));
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.faq-search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px hsla(var(--primary) / 0.2);
+  border-color: hsl(var(--primary));
+}
+
+.faq-category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.faq-category-button {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border: 1px solid transparent;
+}
+
+.faq-category-button:hover {
+  background-color: hsl(var(--muted));
+}
+
+.faq-category-button.active {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.faq-item {
+  background-color: hsl(var(--card));
+  border-radius: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.faq-question-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  text-align: left;
+}
+
+.faq-question-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  padding-right: 1rem;
+}
+
+.faq-answer-container {
+  padding: 0 1.5rem 1.5rem;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.faq-answer-content {
+  color: hsl(var(--foreground) / 0.8);
+  line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .faq-question-button {
+    padding: 1rem;
+  }
+  
+  .faq-question-text {
+    font-size: 1rem;
+  }
+  
+  .faq-answer-container {
+    padding: 0 1rem 1rem;
+  }
+}

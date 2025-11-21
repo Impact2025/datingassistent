@@ -1,0 +1,260 @@
+"use client";
+
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Sparkles, Target, MessageSquare, UserCircle2, Camera, Heart, ArrowRight, X } from 'lucide-react';
+import { useAIContext } from '@/hooks/use-ai-context';
+import { useUser } from '@/providers/user-provider';
+import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
+
+interface PersonalizedRecommendation {
+  tool: string;
+  title: string;
+  description: string;
+  reason: string;
+  urgency: 'high' | 'medium' | 'low';
+  icon: React.ReactNode;
+  actionLabel: string;
+}
+
+interface PersonalizedWelcomeProps {
+  onTabChange?: (tab: string) => void;
+}
+
+export function PersonalizedWelcome({ onTabChange }: PersonalizedWelcomeProps) {
+  const { user } = useUser();
+  const { context, getContextSummary } = useAIContext();
+  const [recommendation, setRecommendation] = useState<PersonalizedRecommendation | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [dismissed, setDismissed] = useState(false);
+
+  // Check if user has seen this today
+  useEffect(() => {
+    const today = new Date().toDateString();
+    const lastSeen = localStorage.getItem('personalized_welcome_last_seen');
+    if (lastSeen === today) {
+      setDismissed(true);
+    }
+  }, []);
+
+  // Generate personalized recommendation
+  useEffect(() => {
+    if (!user?.id || !context || dismissed) return;
+
+    const generateRecommendation = async () => {
+      try {
+        setLoading(true);
+
+        // Simple logic-based recommendations first
+        let simpleRecommendation: PersonalizedRecommendation | null = null;
+
+        // New users - recommend profile building
+        if (!context.toolUsage || Object.values(context.toolUsage).reduce((sum, count) => sum + count, 0) < 3) {
+          simpleRecommendation = {
+            tool: 'profiel-persoonlijkheid',
+            title: 'Start met je profiel',
+            description: 'Een goed profiel is de basis van succes in dating',
+            reason: 'Nieuwe gebruikers zien vaak de beste resultaten met een compleet profiel',
+            urgency: 'high',
+            icon: <UserCircle2 className="w-5 h-5" />,
+            actionLabel: 'Profiel Optimaliseren'
+          };
+        }
+        // Users who haven't used communication tools recently
+        else if (!context.toolUsage?.chatCoach || context.toolUsage.chatCoach < 2) {
+          simpleRecommendation = {
+            tool: 'communicatie-matching',
+            title: 'Verbeter je communicatie',
+            description: 'Leer effectiever communiceren met matches',
+            reason: 'Goede communicatie is cruciaal voor succesvolle dates',
+            urgency: 'high',
+            icon: <MessageSquare className="w-5 h-5" />,
+            actionLabel: 'Communicatie Tools'
+          };
+        }
+        // Users who haven't analyzed photos
+        else if (!context.toolUsage?.photoAnalysis || context.toolUsage.photoAnalysis === 0) {
+          simpleRecommendation = {
+            tool: 'profiel-persoonlijkheid',
+            title: 'Check je foto\'s',
+            description: 'Laat AI je profielfoto\'s analyseren',
+            reason: 'De juiste foto\'s maken een groot verschil',
+            urgency: 'medium',
+            icon: <Camera className="w-5 h-5" />,
+            actionLabel: 'Foto Analyse'
+          };
+        }
+
+        // If we have a simple recommendation, use it
+        if (simpleRecommendation) {
+          setRecommendation(simpleRecommendation);
+          setLoading(false);
+          return;
+        }
+
+        // Skip AI call for now to prevent dashboard from breaking
+        setRecommendation({
+          tool: 'communicatie-matching',
+          title: 'Probeer onze tools',
+          description: 'Ontdek wat DatingAssistent voor je kan doen',
+          reason: 'Onze AI tools helpen je succesvoller te daten',
+          urgency: 'medium',
+          icon: <Sparkles className="w-5 h-5" />,
+          actionLabel: 'Tools Verkennen'
+        });
+        setLoading(false);
+
+        // TODO: Re-enable AI recommendations when API is stable
+        /*
+        // Otherwise, use AI for more sophisticated recommendations
+        const contextSummary = getContextSummary();
+        const prompt = `Je bent een dating coach expert. Gebaseerd op deze gebruikerscontext, geef één specifieke tool aanbeveling.
+
+Context: ${contextSummary}
+
+Geef een JSON response met:
+{
+  "tool": "profiel-persoonlijkheid" | "communicatie-matching" | "daten-relaties" | "groei-doelen",
+  "title": "Korte titel (max 4 woorden)",
+  "description": "Korte beschrijving (max 8 woorden)",
+  "reason": "Waarom deze tool nu relevant is (max 12 woorden)",
+  "urgency": "high" | "medium" | "low"
+}
+
+Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
+
+        const openRouter = getOpenRouterClient();
+        const response = await openRouter.createChatCompletion(
+          OPENROUTER_MODELS.CLAUDE_35_HAIKU,
+          [{ role: 'user', content: prompt }],
+          { temperature: 0.3, max_tokens: 200 }
+        );
+
+        const jsonMatch = response.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const aiRecommendation = JSON.parse(jsonMatch[0]);
+
+          // Map to our format with icons
+          const toolConfig = {
+            'profiel-persoonlijkheid': {
+              icon: <UserCircle2 className="w-5 h-5" />,
+              actionLabel: 'Profiel Tools'
+            },
+            'communicatie-matching': {
+              icon: <MessageSquare className="w-5 h-5" />,
+              actionLabel: 'Communicatie Hub'
+            },
+            'daten-relaties': {
+              icon: <Heart className="w-5 h-5" />,
+              actionLabel: 'Date Planning'
+            },
+            'groei-doelen': {
+              icon: <Target className="w-5 h-5" />,
+              actionLabel: 'Doelen Stelling'
+            }
+          };
+
+          const config = toolConfig[aiRecommendation.tool as keyof typeof toolConfig] || toolConfig['profiel-persoonlijkheid'];
+
+          setRecommendation({
+            ...aiRecommendation,
+            icon: config.icon,
+            actionLabel: config.actionLabel
+          });
+        }
+        */
+      } catch (error) {
+        console.error('Error generating recommendation:', error);
+        // Fallback recommendation
+        setRecommendation({
+          tool: 'communicatie-matching',
+          title: 'Probeer onze tools',
+          description: 'Ontdek wat DatingAssistent voor je kan doen',
+          reason: 'Onze AI tools helpen je succesvoller te daten',
+          urgency: 'medium',
+          icon: <Sparkles className="w-5 h-5" />,
+          actionLabel: 'Tools Verkennen'
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    generateRecommendation();
+  }, [user?.id, context, dismissed]);
+
+  const handleAction = (tool: string) => {
+    // Track that user engaged with recommendation
+    // This would update the AI context to learn from user behavior
+
+    // Navigate to the recommended tool using the provided callback
+    if (onTabChange) {
+      onTabChange(tool);
+    } else {
+      // Fallback to hash navigation if no callback provided
+      window.location.hash = tool;
+    }
+  };
+
+  const handleDismiss = () => {
+    setDismissed(true);
+    const today = new Date().toDateString();
+    localStorage.setItem('personalized_welcome_last_seen', today);
+  };
+
+  if (dismissed || loading || !recommendation) return null;
+
+  return (
+    <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between">
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                {recommendation.icon}
+              </div>
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="font-semibold text-lg">{recommendation.title}</h3>
+                <Badge
+                  variant={recommendation.urgency === 'high' ? 'default' : 'secondary'}
+                  className={recommendation.urgency === 'high' ? 'bg-red-500' : ''}
+                >
+                  {recommendation.urgency === 'high' ? '🔥 Urgent' :
+                   recommendation.urgency === 'medium' ? '📈 Aanbevolen' : '💡 Tip'}
+                </Badge>
+              </div>
+
+              <p className="text-muted-foreground mb-2">{recommendation.description}</p>
+              <p className="text-sm text-primary/80 italic">"{recommendation.reason}"</p>
+
+              <div className="flex items-center gap-3 mt-4">
+                <Button
+                  onClick={() => handleAction(recommendation.tool)}
+                  className="gap-2"
+                >
+                  {recommendation.actionLabel}
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleDismiss}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <X className="w-4 h-4 mr-1" />
+                  Vandaag overslaan
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

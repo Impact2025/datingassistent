@@ -1,0 +1,12 @@
+# Robots.txt voor DatingAssistent.nl
+User-agent: *
+Allow: /
+Allow: /blog
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api
+Disallow: /_next
+Disallow: /payment
+
+# Sitemap
+Sitemap: https://datingassistent.nl/sitemap.xml

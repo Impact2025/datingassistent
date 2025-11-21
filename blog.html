@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - DatingAssistent</title>
+    <meta name="description" content="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #F9F9F6;
+            --foreground: #1E3A5F;
+            --primary: #FF4D6D;
+            --primary-foreground: #FFFFFF;
+            --muted: #E6E6EB;
+        }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.7;
+        }
+        .blog-content {
+            max-width: 100%;
+        }
+        .blog-content h1,
+        .blog-content h2,
+        .blog-content h3,
+        .blog-content h4,
+        .blog-content h5,
+        .blog-content h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--foreground);
+        }
+        .blog-content h1 {
+            font-size: 2.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .blog-content h2 {
+            font-size: 2rem;
+            margin-top: 1.8rem;
+            margin-bottom: 1.2rem;
+        }
+        .blog-content h3 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .blog-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+            line-height: 1.8;
+        }
+        .blog-content a {
+            color: var(--primary);
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+        .blog-content a:hover {
+            color: #e04460;
+        }
+        .blog-content ul,
+        .blog-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .blog-content li {
+            margin-bottom: 0.5rem;
+        }
+        .blog-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #335577;
+        }
+        .blog-content img {
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            height: auto;
+        }
+        .blog-content code {
+            background-color: var(--muted);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        .blog-content pre {
+            background-color: var(--muted);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        .blog-content pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="border-b py-6">
+        <div class="container mx-auto px-4">
+            <a href="/" class="text-lg font-bold" style="color: var(--primary);">DatingAssistent</a>
+        </div>
+    </header>
+
+    <!-- Loading State -->
+    <div id="loading" class="min-h-screen flex items-center justify-center">
+        <div class="text-center">
+            <div class="inline-block w-12 h-12 border-4 border-gray-200 border-t-[var(--primary)] rounded-full animate-spin"></div>
+            <p class="mt-4 text-gray-600">Blog laden...</p>
+        </div>
+    </div>
+
+    <!-- Blog Content -->
+    <div id="blog-content" class="hidden">
+        <!-- Blog Header -->
+        <div class="border-b">
+            <div class="container mx-auto px-4 py-8">
+                <a href="/" class="inline-block mb-4 hover:underline" style="color: var(--primary);">
+                    ← Terug naar home
+                </a>
+                <h1 id="blog-title" class="text-4xl font-bold mb-4"></h1>
+                <p id="blog-excerpt" class="text-xl text-gray-600 mb-4"></p>
+                <div id="blog-keywords" class="flex gap-2 flex-wrap"></div>
+            </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div id="blog-image-container" class="hidden">
+            <img id="blog-image" src="" alt="" class="w-full h-[400px] object-cover">
+        </div>
+
+        <!-- Article Content -->
+        <article class="container mx-auto px-4 py-12 max-w-4xl">
+            <div id="blog-body" class="blog-content"></div>
+        </article>
+
+        <!-- CTA Section -->
+        <section class="py-12 mt-12" style="background-color: hsla(336, 82%, 57%, 0.05);">
+            <div class="container mx-auto px-4 text-center max-w-2xl">
+                <h2 class="text-3xl font-bold mb-4">
+                    Klaar om je dating game naar een hoger niveau te tillen?
+                </h2>
+                <p class="text-lg text-gray-600 mb-6">
+                    Probeer DatingAssistent gratis en ontdek hoe onze AI-coach je persoonlijk helpt met je profiel, openers en gesprekken.
+                </p>
+                <a
+                    href="http://localhost:9002/register"
+                    class="inline-block px-8 py-4 rounded-lg font-semibold transition-colors"
+                    style="background-color: var(--primary); color: var(--primary-foreground);"
+                >
+                    Start Gratis
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="hidden min-h-screen flex flex-col items-center justify-center">
+        <h1 class="text-2xl font-bold mb-4">Blog niet gevonden</h1>
+        <a href="/" class="hover:underline" style="color: var(--primary);">
+            Terug naar home
+        </a>
+    </div>
+
+    <!-- Fetch Blog via API -->
+    <script>
+        // Get slug from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+
+        if (!slug) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error-state').classList.remove('hidden');
+        } else {
+            // Fetch blog from API
+            async function loadBlog() {
+                try {
+                    console.log('Loading blog with slug:', slug);
+                    const response = await fetch(`http://localhost:9002/api/blogs/${slug}`);
+
+                    if (!response.ok) {
+                        console.error('API response not ok:', response.status);
+                        document.getElementById('loading').classList.add('hidden');
+                        document.getElementById('error-state').classList.remove('hidden');
+                        return;
+                    }
+
+                    const blog = await response.json();
+                    console.log('Blog loaded:', blog);
+
+                    // Update page title
+                    document.title = blog.metaTitle || blog.title || 'Blog - DatingAssistent';
+
+                    // Update meta description
+                    let metaDesc = document.querySelector('meta[name="description"]');
+                    if (metaDesc) {
+                        metaDesc.content = blog.metaDescription || blog.excerpt || '';
+                    }
+
+                    // Populate content
+                    document.getElementById('blog-title').textContent = blog.title;
+                    document.getElementById('blog-excerpt').textContent = blog.excerpt || '';
+                    document.getElementById('blog-body').innerHTML = blog.content;
+
+                    // Keywords
+                    if (blog.keywords && blog.keywords.length > 0) {
+                        const keywordsContainer = document.getElementById('blog-keywords');
+                        blog.keywords.forEach(keyword => {
+                            const tag = document.createElement('span');
+                            tag.className = 'px-3 py-1 rounded-full text-sm';
+                            tag.style.backgroundColor = 'hsla(336, 82%, 57%, 0.1)';
+                            tag.style.color = 'var(--primary)';
+                            tag.textContent = keyword;
+                            keywordsContainer.appendChild(tag);
+                        });
+                    }
+
+                    // Image
+                    if (blog.image) {
+                        document.getElementById('blog-image').src = blog.image;
+                        document.getElementById('blog-image').alt = blog.title;
+                        document.getElementById('blog-image-container').classList.remove('hidden');
+                    }
+
+                    // Show content
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('blog-content').classList.remove('hidden');
+
+                } catch (error) {
+                    console.error('Error loading blog:', error);
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('error-state').classList.remove('hidden');
+                }
+            }
+
+            loadBlog();
+        }
+    </script>
+</body>
+</html>

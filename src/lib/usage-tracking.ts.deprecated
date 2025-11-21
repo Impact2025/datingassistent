@@ -1,0 +1,171 @@
+import { db } from './firebase';
+import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
+
+export interface UsageStats {
+  aiMessagesThisWeek: number;
+  profileRewritesThisMonth: number;
+  photoChecksThisMonth: number;
+  platformAdviceThisMonth: number;
+  lastWeekReset: string;
+  lastMonthReset: string;
+}
+
+/**
+ * Get current usage statistics for a user
+ */
+export async function getUsageStats(userId: string): Promise<UsageStats> {
+  try {
+    const usageDoc = await getDoc(doc(db, 'usage', userId));
+
+    if (!usageDoc.exists()) {
+      // Create initial usage document
+      const initialUsage: UsageStats = {
+        aiMessagesThisWeek: 0,
+        profileRewritesThisMonth: 0,
+        photoChecksThisMonth: 0,
+        platformAdviceThisMonth: 0,
+        lastWeekReset: new Date().toISOString(),
+        lastMonthReset: new Date().toISOString(),
+      };
+
+      await setDoc(doc(db, 'usage', userId), initialUsage);
+      return initialUsage;
+    }
+
+    const data = usageDoc.data() as UsageStats;
+
+    // Check if we need to reset weekly or monthly counters
+    const now = new Date();
+    const lastWeekReset = new Date(data.lastWeekReset);
+    const lastMonthReset = new Date(data.lastMonthReset);
+
+    const daysSinceWeekReset = Math.floor((now.getTime() - lastWeekReset.getTime()) / (1000 * 60 * 60 * 24));
+    const daysSinceMonthReset = Math.floor((now.getTime() - lastMonthReset.getTime()) / (1000 * 60 * 60 * 24));
+
+    let needsUpdate = false;
+    const updates: Partial<UsageStats> = {};
+
+    // Reset weekly counter (every 7 days)
+    if (daysSinceWeekReset >= 7) {
+      updates.aiMessagesThisWeek = 0;
+      updates.lastWeekReset = now.toISOString();
+      needsUpdate = true;
+    }
+
+    // Reset monthly counters (every 30 days)
+    if (daysSinceMonthReset >= 30) {
+      updates.profileRewritesThisMonth = 0;
+      updates.photoChecksThisMonth = 0;
+      updates.platformAdviceThisMonth = 0;
+      updates.lastMonthReset = now.toISOString();
+      needsUpdate = true;
+    }
+
+    if (needsUpdate) {
+      await updateDoc(doc(db, 'usage', userId), updates);
+      return { ...data, ...updates };
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching usage stats:', error);
+    // Return default values if error
+    return {
+      aiMessagesThisWeek: 0,
+      profileRewritesThisMonth: 0,
+      photoChecksThisMonth: 0,
+      platformAdviceThisMonth: 0,
+      lastWeekReset: new Date().toISOString(),
+      lastMonthReset: new Date().toISOString(),
+    };
+  }
+}
+
+/**
+ * Increment AI message usage
+ */
+export async function incrementAiMessageUsage(userId: string): Promise<void> {
+  try {
+    // Ensure usage document exists
+    await getUsageStats(userId);
+
+    await updateDoc(doc(db, 'usage', userId), {
+      aiMessagesThisWeek: increment(1),
+    });
+  } catch (error) {
+    console.error('Error incrementing AI message usage:', error);
+    throw error;
+  }
+}
+
+/**
+ * Increment profile rewrite usage
+ */
+export async function incrementProfileRewriteUsage(userId: string): Promise<void> {
+  try {
+    await getUsageStats(userId);
+
+    await updateDoc(doc(db, 'usage', userId), {
+      profileRewritesThisMonth: increment(1),
+    });
+  } catch (error) {
+    console.error('Error incrementing profile rewrite usage:', error);
+    throw error;
+  }
+}
+
+/**
+ * Increment photo check usage
+ */
+export async function incrementPhotoCheckUsage(userId: string): Promise<void> {
+  try {
+    await getUsageStats(userId);
+
+    await updateDoc(doc(db, 'usage', userId), {
+      photoChecksThisMonth: increment(1),
+    });
+  } catch (error) {
+    console.error('Error incrementing photo check usage:', error);
+    throw error;
+  }
+}
+
+/**
+ * Increment platform advice usage
+ */
+export async function incrementPlatformAdviceUsage(userId: string): Promise<void> {
+  try {
+    await getUsageStats(userId);
+
+    await updateDoc(doc(db, 'usage', userId), {
+      platformAdviceThisMonth: increment(1),
+    });
+  } catch (error) {
+    console.error('Error incrementing platform advice usage:', error);
+    throw error;
+  }
+}
+
+/**
+ * Check if user has remaining usage for a feature
+ */
+export async function hasRemainingUsage(
+  userId: string,
+  feature: 'aiMessages' | 'profileRewrites' | 'photoChecks' | 'platformAdvice',
+  limit: number
+): Promise<boolean> {
+  const usage = await getUsageStats(userId);
+
+  switch (feature) {
+    case 'aiMessages':
+      return usage.aiMessagesThisWeek < limit;
+    case 'profileRewrites':
+      return usage.profileRewritesThisMonth < limit;
+    case 'photoChecks':
+      return usage.photoChecksThisMonth < limit;
+    case 'platformAdvice':
+      return usage.platformAdviceThisMonth < limit;
+    default:
+      return false;
+  }
+}

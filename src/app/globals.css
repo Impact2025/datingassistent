@@ -1,0 +1,488 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base colors - Clean and minimal */
+    --background: 0 0% 100%; /* #FFFFFF - Clean white background */
+    --foreground: 220 10% 15%; /* Dark gray text */
+
+    /* Muted colors - Subtle backgrounds */
+    --muted: 220 15% 95%; /* Very light gray */
+    --muted-foreground: 220 10% 40%; /* Medium gray */
+
+    /* Popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 10% 15%;
+
+    /* Border & Input */
+    --border: 220 15% 90%; /* Light gray border */
+    --input: 220 15% 98%; /* Very light gray */
+
+    /* Card - White with subtle shadow */
+    --card: 0 0% 100%;
+    --card-foreground: 220 10% 15%;
+
+    /* Primary - Pink */
+    --primary: 350 80% 50%; /* #EF4444 - Red/Pink */
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Light backgrounds */
+    --secondary: 220 15% 95%; /* Very light gray */
+    --secondary-foreground: 220 10% 15%;
+
+    /* Accent - Soft colors */
+    --accent: 220 15% 90%; /* Light gray */
+    --accent-foreground: 220 10% 15%;
+
+    /* Destructive - Red */
+    --destructive: 0 84% 60%; /* #EF4444 */
+    --destructive-foreground: 0 0% 100%;
+
+    /* Success - Green */
+    --success: 142 76% 45%; /* #10B981 */
+    --success-foreground: 0 0% 100%;
+
+    /* Warning - Orange */
+    --warning: 25 95% 53%; /* #F97316 */
+    --warning-foreground: 0 0% 100%;
+
+    /* Info - Blue */
+    --info: 217 91% 60%; /* #3B82F6 */
+    --info-foreground: 0 0% 100%;
+
+    /* Ring - Pink */
+    --ring: 350 80% 50%;
+
+    /* Border radius - Consistent and clean */
+    --radius: 0.75rem; /* 12px - Standard rounded */
+    --radius-lg: 1rem; /* 16px - Large rounded */
+    --radius-xl: 1.5rem; /* 24px - Extra large rounded */
+    --radius-full: 9999px; /* Pill shape */
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --primary: 347 77% 50%; /* #E14874 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* DatingAssistent Playful Design Utilities */
+@layer utilities {
+  /* Pill-shaped buttons - Very rounded */
+  .btn-pill {
+    @apply rounded-full px-6 py-3 font-semibold text-sm transition-all duration-200 shadow-sm;
+  }
+
+  .btn-pill:hover {
+    @apply transform -translate-y-0.5 shadow-md;
+  }
+
+  .btn-pill:active {
+    @apply transform translate-y-0;
+  }
+
+  /* Card with generous rounded corners */
+  .card-playful {
+    @apply bg-white rounded-3xl p-6 shadow-sm border border-gray-100 transition-all duration-300;
+  }
+
+  .card-playful:hover {
+    @apply shadow-md border-gray-200 transform -translate-y-1;
+  }
+
+  /* Gradient backgrounds - Removed for cleaner look */
+  .bg-gradient-pink {
+    background: #EC4899;
+  }
+
+  .bg-gradient-pink-purple {
+    background: #EC4899;
+  }
+
+  .bg-gradient-pastel-pink {
+    background: #FCE7F3;
+  }
+
+  .bg-gradient-pastel-blue {
+    background: #DBEAFE;
+  }
+
+  .bg-gradient-pastel-green {
+    background: #DCFCE7;
+  }
+
+  .bg-gradient-pastel-purple {
+    background: #F3E8FF;
+  }
+
+  /* Icon containers with pastel backgrounds - Larger and more rounded */
+  .icon-container {
+    @apply w-16 h-16 rounded-[20px] flex items-center justify-center text-2xl;
+  }
+
+  .icon-container-pink {
+    @apply icon-container bg-gradient-pastel-pink;
+  }
+
+  .icon-container-blue {
+    @apply icon-container bg-gradient-pastel-blue;
+  }
+
+  .icon-container-green {
+    @apply icon-container bg-gradient-pastel-green;
+  }
+
+  .icon-container-purple {
+    @apply icon-container bg-gradient-pastel-purple;
+  }
+
+  /* Smooth hover effects */
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+
+  .hover-lift:hover {
+    @apply transform -translate-y-2 shadow-xl;
+  }
+
+  /* Input styling - More rounded */
+  .input-playful {
+    @apply px-6 py-5 border-2 border-border rounded-[20px] bg-input transition-all duration-300 text-base;
+  }
+
+  .input-playful:focus {
+    @apply outline-none border-primary bg-white shadow-lg;
+  }
+
+  /* Shadows - Softer and more playful */
+  .shadow-playful {
+    box-shadow: 0 4px 16px rgba(236, 72, 153, 0.08);
+  }
+
+  .shadow-playful-lg {
+    box-shadow: 0 12px 32px rgba(236, 72, 153, 0.15);
+  }
+
+  /* Typography utilities */
+  .text-headline {
+    @apply font-black text-4xl md:text-6xl leading-tight tracking-tight;
+  }
+
+  .text-subheadline {
+    @apply font-bold text-xl md:text-2xl leading-relaxed;
+  }
+
+  /* Bottom navigation */
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50;
+  }
+
+  .nav-item {
+    @apply flex flex-col items-center justify-center py-2 px-3 rounded-xl transition-all duration-200;
+  }
+
+  .nav-item.active {
+    @apply text-pink-500;
+  }
+
+  .nav-icon {
+    @apply w-5 h-5 mb-1;
+  }
+}
+
+/* Performance optimizations for Core Web Vitals */
+
+.prose img,
+.blog-content img,
+article img {
+  height: auto;
+  width: 100%;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+/* Optimize font loading */
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizaRExUiTo99u79D0KExdGM.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ptsans/v12/jizfRExUiTo99u79B_mh0OOtLR8.woff2) format('woff2');
+}
+
+/* Accessibility improvements */
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus indicators */
+.focus-visible:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  * {
+    border-color: currentColor !important;
+  }
+
+  .card-playful {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hover-lift:hover {
+    transform: none !important;
+  }
+
+  .btn-pill:hover {
+    transform: none !important;
+  }
+}
+
+/* Color scheme preferences */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+  }
+}
+
+/* Skip links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: hsl(var(--primary));
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Focus management for modals and dialogs */
+[role="dialog"],
+[role="alertdialog"] {
+  outline: none;
+}
+
+[role="dialog"]:focus,
+[role="alertdialog"]:focus {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Blog content styling */
+.blog-content {
+  line-height: 1.6;
+}
+
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.blog-content p {
+  margin-bottom: 1rem;
+}
+
+.blog-content ul,
+.blog-content ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.blog-content li {
+  margin-bottom: 0.5rem;
+}
+
+.blog-content img {
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.blog-content blockquote {
+  border-left: 4px solid hsl(var(--primary));
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Critical CSS for above-the-fold content */
+.critical {
+  /* Add any critical styles here */
+}
+
+/* TipTap Editor Styles */
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+  height: 0;
+}
+
+.ProseMirror h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+}
+
+.ProseMirror h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1.25rem 0 0.75rem;
+}
+
+.ProseMirror h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+}
+
+.ProseMirror p {
+  margin: 0.5rem 0;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.ProseMirror li {
+  margin: 0.25rem 0;
+}
+
+.ProseMirror blockquote {
+  border-left: 4px solid hsl(var(--primary));
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: hsl(var(--muted-foreground));
+}
+
+.ProseMirror code {
+  background-color: hsl(var(--muted));
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.ProseMirror pre {
+  background-color: hsl(var(--muted));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.ProseMirror a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+}
+
+.ProseMirror a:hover {
+  opacity: 0.8;
+}

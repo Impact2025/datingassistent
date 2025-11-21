@@ -1,0 +1,304 @@
+"use client";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import {
+  User,
+  MessageCircle,
+  Calendar,
+  Camera,
+  Heart,
+  CheckCircle,
+  TrendingUp,
+  Lightbulb,
+  BookOpen,
+  Brain,
+  BarChart3
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { useUser } from "@/providers/user-provider";
+import { PersonalizedWelcome } from "@/components/dashboard/personalized-welcome";
+
+const DATING_TIPS = [
+  "Wees geduldig. De juiste connectie vinden kost tijd. Elke interactie is een leermoment.",
+  "Stel open vragen in je gesprek voor betere interactie. Dit nodigt uit tot een uitgebreider antwoord.",
+  "Een goede profielfoto is recent en laat duidelijk je gezicht zien. Een spontane lach doet wonderen!",
+  "Houd het positief in je profiel en focus op wat je zoekt, niet op wat je niet wilt.",
+  "Durf specifiek te zijn. 'Ik probeer elke zondag een nieuw recept' vertelt veel meer dan 'Ik hou van koken'."
+];
+
+interface UserGoal {
+  id: number;
+  title: string;
+  current_value: number;
+  target_value: number;
+  progress_percentage: number;
+}
+
+export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => void }) {
+  const { user, userProfile } = useUser();
+  const [dailyTip, setDailyTip] = useState("");
+  const [goals, setGoals] = useState<UserGoal[]>([]);
+  const [savedProfilesCount, setSavedProfilesCount] = useState(0);
+
+  useEffect(() => {
+    setDailyTip(DATING_TIPS[Math.floor(Math.random() * DATING_TIPS.length)]);
+  }, []);
+
+  useEffect(() => {
+    if (user?.id) {
+      loadGoals();
+      // Load saved profiles count
+      const saved = localStorage.getItem(`datespark_saved_profiles_${user.id}`);
+      setSavedProfilesCount(saved ? JSON.parse(saved).length : 0);
+    }
+  }, [user]);
+
+  const loadGoals = async () => {
+    try {
+      const token = localStorage.getItem('datespark_auth_token');
+      const response = await fetch('/api/goals', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setGoals(data.slice(0, 3)); // Top 3 goals
+      }
+    } catch (error) {
+      console.error('Error loading goals:', error);
+    }
+  };
+
+  const quickActions = [
+    {
+      icon: User,
+      title: "Jouw profiel",
+      description: "Bekijk en optimaliseer",
+      action: "profiel-analyse",
+      color: "from-pink-500 to-rose-500"
+    },
+    {
+      icon: MessageCircle,
+      title: "Gesprek Coach",
+      description: "Real-time feedback",
+      action: "gesprek-coach",
+      color: "from-blue-500 to-cyan-500"
+    },
+    {
+      icon: MessageCircle,
+      title: "Chat coach",
+      description: "24/7 hulp bij gesprekken",
+      action: "chat-coach",
+      color: "from-indigo-500 to-blue-500"
+    },
+    {
+      icon: Calendar,
+      title: "Dateplanner",
+      description: "Creatieve date ideeën",
+      action: "dateplanner",
+      color: "from-green-500 to-emerald-500"
+    },
+    {
+      icon: Camera,
+      title: "Foto check",
+      description: "Professionele feedback",
+      action: "foto-advies",
+      color: "from-purple-500 to-violet-500"
+    },
+    {
+      icon: Heart,
+      title: "Vaardigheden",
+      description: "Persoonlijke assessment",
+      action: "skills-assessment",
+      color: "from-orange-500 to-amber-500"
+    },
+    {
+      icon: BarChart3,
+      title: "Succes Metrics",
+      description: "Je voortgang",
+      action: "succes-metrics",
+      color: "from-green-500 to-teal-500"
+    },
+    {
+      icon: Brain,
+      title: "Profiel Optimalisatie",
+      description: "AI analyse",
+      action: "profiel-optimalisatie",
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: BookOpen,
+      title: "Cursus",
+      description: "Leer en groei",
+      action: "online-cursus",
+      color: "from-indigo-500 to-blue-500"
+    }
+  ];
+
+  const stats = [
+    { label: "Opgeslagen profielen", value: savedProfilesCount.toString(), icon: User },
+    { label: "Foto analyse check", value: "?", icon: Camera },
+    { label: "Platform matchmaker", value: "✓", icon: CheckCircle },
+    { label: "Vaardigheden", value: "?", icon: Heart }
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-gray-900 mb-3">Jouw Dating Succes Dashboard</h1>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+              Welkom bij je persoonlijke dating-cockpit. Begin met de 'Online Cursus' voor een vliegende start,
+              of ga direct aan de slag met de andere tools!
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Personalized AI Welcome */}
+      <PersonalizedWelcome onTabChange={onTabChange} />
+
+      {/* Learning Path Card */}
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-6">
+          <div className="flex items-start gap-4">
+            <div className="bg-gray-100 rounded-lg p-3">
+              <TrendingUp className="h-6 w-6 text-gray-600" />
+            </div>
+            <div className="flex-1 space-y-3">
+              <h3 className="font-semibold text-lg text-gray-900">
+                Jouw persoonlijke leertraject
+              </h3>
+              <p className="text-sm text-gray-600">
+                Gebaseerd op je vaardighedenbeoordeling hebben we een leertraject voor je samengesteld.
+              </p>
+              <Button
+                onClick={() => onTabChange?.('doelen')}
+                size="sm"
+                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white shadow-sm"
+              >
+                Bekijk leertraject
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Quick Actions Grid */}
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-8">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Snelle acties</h2>
+            <p className="text-gray-600">Direct toegang tot je meest gebruikte tools</p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {quickActions.slice(0, 8).map((action) => {
+              const Icon = action.icon;
+              return (
+                <Card
+                  key={action.action}
+                  className="cursor-pointer transition-all duration-200 border-0 shadow-sm hover:shadow-md bg-white"
+                  onClick={() => onTabChange?.(action.action)}
+                >
+                  <CardContent className="p-6">
+                    <div className="text-center space-y-4">
+                      <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
+                        <Icon className="h-6 w-6 text-gray-600" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <h3 className="font-semibold text-sm text-gray-900">
+                          {action.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 leading-tight">
+                          {action.description}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Stats Row */}
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {stats.map((stat) => {
+              const Icon = stat.icon;
+              return (
+                <div key={stat.label} className="bg-gray-50 rounded-lg p-6 text-center">
+                  <div className="flex items-center justify-center mb-3">
+                    <Icon className="h-8 w-8 text-gray-400" />
+                  </div>
+                  <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
+                  <div className="text-sm text-gray-600">{stat.label}</div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Tip of the Day */}
+      {dailyTip && (
+        <Card className="bg-white border-0 shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex items-start gap-4">
+              <div className="bg-gray-100 rounded-lg p-3">
+                <Lightbulb className="h-5 w-5 text-gray-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                  Tip van de coach
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {dailyTip}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Active Goals */}
+      {goals.length > 0 && (
+        <Card className="bg-white border-0 shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-semibold text-lg text-gray-900">Je actieve doelen</h3>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onTabChange?.('doelen')}
+                className="bg-white border-gray-200 hover:bg-gray-50"
+              >
+                Alles bekijken
+              </Button>
+            </div>
+            <div className="space-y-4">
+              {goals.map((goal) => (
+                <div key={goal.id} className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-medium text-gray-900">{goal.title}</span>
+                    <span className="text-sm text-gray-600">
+                      {goal.current_value}/{goal.target_value}
+                    </span>
+                  </div>
+                  <Progress value={goal.progress_percentage} className="h-2 bg-gray-200" />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}

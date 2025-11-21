@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Subscription Activation</title>
+</head>
+<body>
+    <h1>Test Subscription Activation</h1>
+    <button onclick="activateSubscription()">Activate Pro Subscription for User 59</button>
+
+    <script>
+        async function activateSubscription() {
+            try {
+                const response = await fetch('/api/test/activate-subscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: 59,
+                        packageType: 'pro'
+                    })
+                });
+
+                const result = await response.json();
+                alert('Result: ' + JSON.stringify(result, null, 2));
+                console.log('Activation result:', result);
+            } catch (error) {
+                alert('Error: ' + error.message);
+                console.error('Activation error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

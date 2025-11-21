@@ -1,0 +1,4 @@
+Contact: mailto:security@datingassistent.nl
+Expires: 2026-11-20T00:00:00.000Z
+Preferred-Languages: nl, en
+Canonical: https://datingassistent.nl/.well-known/security.txt

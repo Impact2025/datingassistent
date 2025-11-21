@@ -1,0 +1,142 @@
+import { db } from './firebase';
+import { doc, getDoc } from 'firebase/firestore';
+
+export type PackageType = 'sociaal' | 'core' | 'pro' | 'premium';
+
+export interface SubscriptionFeatures {
+  aiMessagesPerWeek: number;
+  profileRewritesPerMonth: number;
+  photoChecksPerMonth: number;
+  platformAdvicePerMonth: number;
+  hasOpenerLab: boolean;
+  hasReactionAssistant: boolean;
+  hasDatePlanner: boolean;
+  hasPrioritySupport: boolean;
+  hasLiveCoach: boolean;
+  hasVipSupport: boolean;
+}
+
+export const PACKAGE_FEATURES: Record<PackageType, SubscriptionFeatures> = {
+  sociaal: {
+    aiMessagesPerWeek: 15,
+    profileRewritesPerMonth: 0.33, // 1 per kwartaal
+    photoChecksPerMonth: 2,
+    platformAdvicePerMonth: 0.33, // 1 per kwartaal
+    hasOpenerLab: false,
+    hasReactionAssistant: false,
+    hasDatePlanner: false,
+    hasPrioritySupport: false,
+    hasLiveCoach: false,
+    hasVipSupport: false,
+  },
+  core: {
+    aiMessagesPerWeek: 50,
+    profileRewritesPerMonth: 1,
+    photoChecksPerMonth: 5,
+    platformAdvicePerMonth: 1,
+    hasOpenerLab: true,
+    hasReactionAssistant: true,
+    hasDatePlanner: true,
+    hasPrioritySupport: false,
+    hasLiveCoach: false,
+    hasVipSupport: false,
+  },
+  pro: {
+    aiMessagesPerWeek: 150,
+    profileRewritesPerMonth: 2,
+    photoChecksPerMonth: 12,
+    platformAdvicePerMonth: 2,
+    hasOpenerLab: true,
+    hasReactionAssistant: true,
+    hasDatePlanner: true,
+    hasPrioritySupport: true,
+    hasLiveCoach: false,
+    hasVipSupport: false,
+  },
+  premium: {
+    aiMessagesPerWeek: 300,
+    profileRewritesPerMonth: 4,
+    photoChecksPerMonth: 25,
+    platformAdvicePerMonth: 4,
+    hasOpenerLab: true,
+    hasReactionAssistant: true,
+    hasDatePlanner: true,
+    hasPrioritySupport: true,
+    hasLiveCoach: true,
+    hasVipSupport: true,
+  },
+};
+
+export interface UserSubscription {
+  packageType: PackageType;
+  billingPeriod: 'monthly' | 'yearly';
+  status: 'active' | 'paused' | 'cancelled' | 'expired';
+  orderId: string;
+  startDate: string;
+  amount: number;
+}
+
+/**
+ * Get user subscription from Firestore
+ */
+export async function getUserSubscription(userId: string): Promise<UserSubscription | null> {
+  try {
+    const userDoc = await getDoc(doc(db, 'users', userId));
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      return userData.subscription || null;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Error fetching user subscription:', error);
+    return null;
+  }
+}
+
+/**
+ * Check if user has access to a specific feature
+ */
+export async function hasFeatureAccess(
+  userId: string,
+  feature: keyof SubscriptionFeatures
+): Promise<boolean> {
+  const subscription = await getUserSubscription(userId);
+
+  if (!subscription || subscription.status !== 'active') {
+    return false;
+  }
+
+  const features = PACKAGE_FEATURES[subscription.packageType];
+  const featureValue = features[feature];
+
+  // Boolean features
+  if (typeof featureValue === 'boolean') {
+    return featureValue;
+  }
+
+  // Numeric features - check if > 0
+  return featureValue > 0;
+}
+
+/**
+ * Get user's feature limits
+ */
+export async function getFeatureLimits(userId: string): Promise<SubscriptionFeatures | null> {
+  const subscription = await getUserSubscription(userId);
+
+  if (!subscription || subscription.status !== 'active') {
+    return null;
+  }
+
+  return PACKAGE_FEATURES[subscription.packageType];
+}
+
+/**
+ * Check if subscription is active
+ */
+export async function hasActiveSubscription(userId: string): Promise<boolean> {
+  const subscription = await getUserSubscription(userId);
+  return subscription !== null && subscription.status === 'active';
+}

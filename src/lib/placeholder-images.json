@@ -1,0 +1,28 @@
+{
+  "placeholderImages": [
+    {
+      "id": "onboarding-profile",
+      "description": "A person thoughtfully creating their dating profile on a laptop.",
+      "imageUrl": "https://images.unsplash.com/photo-1516575150278-77133a7c76a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxNXx8d3JpdGluZyUyMHByb2ZpbGV8ZW58MHx8fHwxNzU5NTI3NDIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "writing profile"
+    },
+    {
+      "id": "onboarding-matchmaker",
+      "description": "A phone screen showing different dating app icons.",
+      "imageUrl": "https://images.unsplash.com/photo-1644445789743-dd19b20edc0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkYXRpbmclMjBhcHBzfGVufDB8fHx8MTc1ODY5MzU0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "dating apps"
+    },
+    {
+      "id": "onboarding-chat",
+      "description": "Two phones showing a chat conversation between two people.",
+      "imageUrl": "https://images.unsplash.com/photo-1530203234928-1798f3468ce5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjaGF0JTIwY29udmVyc2F0aW9ufGVufDB8fHx8MTc1ODY5MzU0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "chat conversation"
+    },
+    {
+      "id": "onboarding-date",
+      "description": "A happy couple on a casual date in a coffee shop.",
+      "imageUrl": "https://images.unsplash.com/photo-1644446770253-5c6b45c38ba8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb3VwbGUlMjBkYXRlfGVufDB8fHx8MTc1ODY0NTE5N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "couple date"
+    }
+  ]
+}

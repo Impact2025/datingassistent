@@ -1,0 +1,801 @@
+"use client";
+
+import { useState, useTransition, useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useUser } from "@/providers/user-provider";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner } from "../shared/loading-spinner";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle, CheckCircle, Mail } from "lucide-react";
+import { PACKAGES, getPackagePrice } from "@/lib/multisafepay";
+import { PackageType } from "@/lib/subscription";
+import { useRecaptchaV3 } from "../shared/recaptcha";
+import { VerificationCodeInput } from "./verification-code-input";
+
+const signupSchema = z.object({
+  name: z.string().min(2, "Naam moet minimaal 2 karakters lang zijn."),
+  email: z.string().email("Ongeldig e-mailadres."),
+  password: z.string().min(6, "Wachtwoord moet minimaal 6 karakters bevatten."),
+});
+
+type SignupFormValues = z.infer<typeof signupSchema>;
+
+export function RegistrationClientComponent() {
+  const { user, signup, logout } = useUser();
+  const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const [isSigningUp, setIsSigningUp] = useState(false);
+  const [tempName, setTempName] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false); // Track logout state
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showVerificationPending, setShowVerificationPending] = useState(false);
+  const [pendingVerificationEmail, setPendingVerificationEmail] = useState<string>('');
+  const [paymentValidated, setPaymentValidated] = useState<boolean>(false);
+  const [validatingPayment, setValidatingPayment] = useState<boolean>(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [resendingEmail, setResendingEmail] = useState(false);
+  const hasLoggedOut = useRef(false); // Track if we already logged out to prevent infinite loop
+
+  // Code-based verification states
+  const [showCodeVerification, setShowCodeVerification] = useState(false);
+  const [registeredUserId, setRegisteredUserId] = useState<number | null>(null);
+  const [registeredUserEmail, setRegisteredUserEmail] = useState<string | null>(null);
+  const [verificationError, setVerificationError] = useState<string | null>(null);
+
+  // reCAPTCHA v3 hook
+  const { execute: executeRecaptcha, isLoaded: isRecaptchaLoaded } = useRecaptchaV3(
+    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
+  );
+
+  const plan = searchParams.get('plan');
+  const planKey = plan && Object.prototype.hasOwnProperty.call(PACKAGES, plan)
+    ? (plan as PackageType)
+    : null;
+  const billing = searchParams.get('billing');
+  const billingParam: 'monthly' | 'yearly' = billing === 'monthly' ? 'monthly' : 'yearly';
+  const redirectAfterPayment = searchParams.get('redirect_after_payment');
+  const loginUrl = plan && billing ? `/?plan=${plan}&billing=${billing}` : '/';
+  const planLabel = planKey ? PACKAGES[planKey].name : plan ?? null;
+  const planPriceCents = planKey ? getPackagePrice(planKey, billingParam) : null;
+
+  // Debug logging
+  useEffect(() => {
+    console.log('🔍 RegistrationClient - Current state:', {
+      hasUser: !!user,
+      plan,
+      billing,
+      redirectAfterPayment,
+      isLoggingOut,
+      hasLoggedOutRef: hasLoggedOut.current
+    });
+  }, [user, plan, billing, redirectAfterPayment, isLoggingOut]);
+
+  const form = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  // Get order_id from URL or localStorage (coming from payment)
+  useEffect(() => {
+    const orderIdParam = searchParams.get('order_id');
+    const pendingOrderId = localStorage.getItem('pending_order_id');
+
+    if (orderIdParam) {
+      console.log('📦 Got order_id from URL:', orderIdParam);
+      setOrderId(orderIdParam);
+      // Save to localStorage as backup
+      localStorage.setItem('pending_order_id', orderIdParam);
+      // Validate payment status
+      validatePaymentStatus(orderIdParam);
+    } else if (pendingOrderId) {
+      console.log('📦 Got order_id from localStorage:', pendingOrderId);
+      setOrderId(pendingOrderId);
+      // Validate payment status
+      validatePaymentStatus(pendingOrderId);
+    }
+  }, [searchParams]);
+
+  // Validate payment status
+  const validatePaymentStatus = async (orderIdToCheck: string) => {
+    try {
+      setValidatingPayment(true);
+      console.log('🔍 Validating payment status for order:', orderIdToCheck);
+      const response = await fetch(`/api/orders/validate-payment?orderId=${orderIdToCheck}`);
+      const data = await response.json();
+
+      if (response.ok && data.paid) {
+        console.log('✅ Payment validated for order:', orderIdToCheck);
+        setPaymentValidated(true);
+      } else {
+        console.log('❌ Payment not validated for order:', orderIdToCheck, data);
+        setPaymentValidated(false);
+        // Clear invalid order ID
+        setOrderId(null);
+        localStorage.removeItem('pending_order_id');
+        // Show error message
+        toast({
+          title: "Betaling niet gevonden",
+          description: "We konden je betaling niet verifiëren. Probeer het opnieuw of neem contact op met support.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('❌ Error validating payment:', error);
+      setPaymentValidated(false);
+      setOrderId(null);
+      localStorage.removeItem('pending_order_id');
+    } finally {
+      setValidatingPayment(false);
+    }
+  };
+
+  // If user is coming from index.html with a plan selected, log them out first
+  // This ensures they can create a NEW account for the selected plan
+  useEffect(() => {
+    const handlePreRegistrationLogout = async () => {
+      if (user && redirectAfterPayment === 'true' && plan && billing && !hasLoggedOut.current) {
+        console.log('🚪 RegistrationClient - User already logged in, but redirect_after_payment=true');
+        console.log('🚪 Logging out to allow new account creation');
+        hasLoggedOut.current = true; // Mark that we're logging out
+        setIsLoggingOut(true);
+        try {
+          await logout();
+          console.log('✅ Logout completed successfully');
+        } catch (error) {
+          console.error('❌ Failed to logout:', error);
+          hasLoggedOut.current = false; // Reset on error
+          setIsLoggingOut(false);
+        }
+      } else if (!user && hasLoggedOut.current) {
+        // Logout completed, user is now null
+        console.log('✅ User logged out, ready for new registration');
+        setIsLoggingOut(false);
+      }
+    };
+
+    handlePreRegistrationLogout();
+  }, [user, redirectAfterPayment, plan, billing, logout]);
+
+  async function onSubmit(data: SignupFormValues) {
+    if (isSigningUp) return;
+    setIsSigningUp(true);
+    console.log('🔵 Starting registration...', { orderId });
+
+    // Skip reCAPTCHA in development mode
+    if (process.env.NODE_ENV !== 'development') {
+      // Verify reCAPTCHA
+      if (!isRecaptchaLoaded) {
+        toast({
+          title: "Fout",
+          description: "reCAPTCHA wordt nog geladen. Probeer het opnieuw.",
+          variant: "destructive",
+        });
+        setIsSigningUp(false);
+        return;
+      }
+
+      try {
+        // Execute reCAPTCHA v3
+        const recaptchaToken = await executeRecaptcha('register');
+        if (!recaptchaToken) {
+          toast({
+            title: "Fout",
+            description: "reCAPTCHA verificatie mislukt. Probeer het opnieuw.",
+            variant: "destructive",
+          });
+          setIsSigningUp(false);
+          return;
+        }
+
+        // Verify token on server
+        const verifyResponse = await fetch('/api/recaptcha/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: recaptchaToken, action: 'register' }),
+        });
+
+        if (!verifyResponse.ok) {
+          const errorData = await verifyResponse.json();
+          toast({
+            title: "Fout",
+            description: errorData.error || "reCAPTCHA verificatie mislukt.",
+            variant: "destructive",
+          });
+          setIsSigningUp(false);
+          return;
+        }
+
+        console.log('✅ reCAPTCHA verification successful');
+      } catch (error) {
+        console.error('reCAPTCHA error:', error);
+        toast({
+          title: "Fout",
+          description: "reCAPTCHA verificatie mislukt.",
+          variant: "destructive",
+        });
+        setIsSigningUp(false);
+        return;
+      }
+    } else {
+      console.log('🧪 Development mode: Skipping reCAPTCHA verification');
+    }
+
+    try {
+      const result = await signup(data.email, data.password, data.name);
+      const newUser = result.user;
+      console.log('🔵 User created:', newUser.id);
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('profile_setup_name', data.name);
+      }
+
+      // Create basic profile
+      const basicProfile = {
+        name: data.name,
+        email: data.email,
+        age: null,
+        gender: null,
+        lookingFor: null,
+        bio: null,
+        interests: [],
+        location: null,
+        photos: [],
+      };
+
+      // Save profile and link order if needed (only if orderId exists)
+      try {
+        if (orderId) {
+          const response = await fetch('/api/subscription/link-order', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: newUser.id,
+              orderId: orderId,
+            }),
+          });
+
+          const linkData = await response.json();
+
+          if (linkData.warning === 'missing_connection_string') {
+            console.warn('⚠️ Subscription linking skipped: database connection string ontbreekt.');
+          } else if (response.ok) {
+            console.log('✅ Subscription linked for user:', newUser.id);
+          }
+        } else {
+          console.log('ℹ️ No orderId provided, skipping subscription linking');
+        }
+
+        // Save basic profile (skip auth check during registration)
+        const profileResponse = await fetch('/api/user/update-profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: newUser.id,
+            profile: basicProfile,
+            skipAuth: true, // Skip authentication check during registration
+          }),
+        });
+
+        if (profileResponse.ok) {
+          console.log('✅ Profile saved to database');
+          // Cache in localStorage
+          localStorage.setItem(`datespark_user_profile_${newUser.id}`, JSON.stringify(basicProfile));
+          console.log('💾 Profile cached in localStorage');
+        }
+      } catch (error) {
+        console.error('Failed to save user data:', error);
+        // Fallback: save to localStorage only
+        localStorage.setItem(`datespark_user_profile_${newUser.id}`, JSON.stringify(basicProfile));
+        console.log('⚠️ Fallback: Profile saved to localStorage only');
+      }
+
+      setTempName(data.name);
+
+      // Email verification is now always required with codes
+      console.log('📧 Email verification required, showing code verification screen');
+      setRegisteredUserId(newUser.id);
+      setRegisteredUserEmail(data.email);
+      setShowCodeVerification(true);
+      setIsSigningUp(false);
+
+      // Note: Verification code is already sent by the registration API
+      console.log('✅ Verification code already sent by registration API');
+      return;
+
+      // If there's an order_id, clear localStorage and redirect to profile setup
+      if (orderId) {
+        console.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');
+        localStorage.removeItem('pending_order_id');
+        localStorage.removeItem('pending_transaction_id');
+        setIsRedirecting(true);
+        setTimeout(() => {
+          window.location.href = '/register/profile';
+        }, 500);
+        return;
+      }
+
+      // If coming from index.html with redirect_after_payment, go to checkout page
+      if (redirectAfterPayment === 'true') {
+        if (!planKey) {
+          console.warn('⚠️ Geen geldig plan gevonden in URL, terug naar select-package');
+          setIsRedirecting(true);
+          toast({
+            title: "Doorsturen...",
+            description: "Je wordt doorgestuurd naar pakket selectie...",
+          });
+          setTimeout(() => {
+            window.location.href = '/select-package';
+          }, 1500);
+          return;
+        }
+
+        console.log('🔵 Redirecting to checkout page with plan and billing');
+        setIsRedirecting(true);
+        toast({
+          title: "Account aangemaakt! ✅",
+          description: "Je wordt doorgestuurd naar de betaalpagina...",
+        });
+        setTimeout(() => {
+          window.location.href = `/checkout?plan=${planKey}&billing=${billingParam}&userId=${newUser.id}`;
+        }, 1500);
+        return;
+      }
+
+      // No order - redirect to profile setup
+      console.log('🔵 No order_id, redirecting to /register/profile');
+      setShowSuccessMessage(true);
+
+      // Redirect to profile setup after a short delay
+      setTimeout(() => {
+        window.location.href = '/register/profile';
+      }, 3000);
+    } catch (error: any) {
+      console.error("Registratie error:", error);
+      let description = error.message || "Er is een onbekende fout opgetreden. Probeer het opnieuw.";
+
+      if (error.message.includes('Dit emailadres is al bij ons bekend')) {
+        description = "Dit emailadres is al bij ons bekend. Vraag hier een wachtwoord aan.";
+      } else if (error.message.includes('Password must be at least 6 characters')) {
+        description = "Wachtwoord moet minimaal 6 karakters bevatten.";
+      }
+
+      toast({
+        title: "Registratie Mislukt",
+        description,
+        variant: "destructive",
+      });
+      setIsSigningUp(false); // Reset on error
+    }
+  }
+
+  // REMOVED: No automatic redirect - let users access registration page naturally
+  // If they're logged in and try to register without any parameters, that's their choice
+  // The actual registration logic will handle it properly
+
+  // Show loading state while logging out for payment flow or redirecting
+  if ((user && redirectAfterPayment === 'true') || isLoggingOut || isRedirecting) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
+        <LoadingSpinner />
+        <p className="text-muted-foreground">
+          {isLoggingOut
+            ? 'Account voorbereiden voor registratie...'
+            : isRedirecting
+            ? 'Doorsturen naar betaling...'
+            : 'Laden...'}
+        </p>
+      </div>
+    );
+  }
+
+  // Show code verification screen
+  if (showCodeVerification && registeredUserId && registeredUserEmail) {
+    const handleVerificationSuccess = (user: any) => {
+      console.log('✅ Email verified successfully:', user);
+
+      // Clear verification states
+      setShowCodeVerification(false);
+      setRegisteredUserId(null);
+      setRegisteredUserEmail(null);
+      setVerificationError(null);
+
+      // Continue with post-registration flow
+      setTempName(user.name);
+
+      // If there's an order_id, clear localStorage and redirect to profile setup
+      if (orderId) {
+        console.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');
+        localStorage.removeItem('pending_order_id');
+        localStorage.removeItem('pending_transaction_id');
+        setIsRedirecting(true);
+        setTimeout(() => {
+          window.location.href = '/register/profile';
+        }, 500);
+        return;
+      }
+
+      // If coming from index.html with redirect_after_payment, go to checkout page
+      if (redirectAfterPayment === 'true') {
+        if (!planKey) {
+          console.warn('⚠️ Geen geldig plan gevonden in URL, terug naar select-package');
+          setIsRedirecting(true);
+          toast({
+            title: "Doorsturen...",
+            description: "Je wordt doorgestuurd naar pakket selectie...",
+          });
+          setTimeout(() => {
+            window.location.href = '/select-package';
+          }, 1500);
+          return;
+        }
+
+        console.log('🔵 Redirecting to checkout page with plan and billing');
+        setIsRedirecting(true);
+        toast({
+          title: "Account geverifieerd! ✅",
+          description: "Je wordt doorgestuurd naar de betaalpagina...",
+        });
+        setTimeout(() => {
+          window.location.href = `/checkout?plan=${planKey}&billing=${billingParam}&userId=${user.id}`;
+        }, 1500);
+        return;
+      }
+
+      // No order - redirect to profile setup
+      console.log('🔵 No order_id, redirecting to /register/profile');
+      setShowSuccessMessage(true);
+
+      // Redirect to profile setup after a short delay
+      setTimeout(() => {
+        window.location.href = '/register/profile';
+      }, 3000);
+    };
+
+    const handleVerificationError = (error: string) => {
+      setVerificationError(error);
+    };
+
+    const handleResendCode = () => {
+      console.log('🔄 Resending verification code...');
+      // The VerificationCodeInput component handles this internally
+    };
+
+    return (
+      <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
+        <Card className="rounded-2xl bg-card shadow-2xl">
+          <CardHeader className="text-center pb-6">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <Mail className="w-4 h-4 text-primary" />
+              </div>
+              <span className="text-muted-foreground font-medium">Verificatie</span>
+            </div>
+            <CardTitle className="text-2xl font-bold">
+              Verificeer je emailadres
+            </CardTitle>
+            <CardDescription className="text-base">
+              We hebben een verificatie code gestuurd naar <strong>{registeredUserEmail}</strong>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <VerificationCodeInput
+              userId={registeredUserId}
+              onSuccess={handleVerificationSuccess}
+              onError={handleVerificationError}
+              onResendCode={handleResendCode}
+            />
+          </CardContent>
+          <CardFooter className="flex-col gap-4">
+            <Button
+              onClick={() => {
+                setShowCodeVerification(false);
+                setRegisteredUserId(null);
+                setRegisteredUserEmail(null);
+                setVerificationError(null);
+              }}
+              variant="ghost"
+              className="w-full"
+            >
+              Terug naar registratie
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show email verification pending screen (legacy - keep for backward compatibility)
+  if (showVerificationPending) {
+    const handleResendEmail = async () => {
+      if (resendingEmail) return;
+
+      setResendingEmail(true);
+      try {
+        const response = await fetch('/api/auth/resend-verification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: pendingVerificationEmail,
+          }),
+        });
+
+        if (response.ok) {
+          toast({
+            title: "Verificatie email verzonden",
+            description: `Er is een nieuwe verificatie email verzonden naar ${pendingVerificationEmail}`,
+          });
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to resend verification email');
+        }
+      } catch (error: any) {
+        console.error('Resend verification email error:', error);
+        toast({
+          title: "Fout bij verzenden",
+          description: error.message || "Er is een fout opgetreden bij het verzenden van de verificatie email.",
+          variant: "destructive",
+        });
+      } finally {
+        setResendingEmail(false);
+      }
+    };
+
+    return (
+      <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
+        <Card className="rounded-2xl bg-card shadow-2xl">
+          <CardContent className="flex flex-col items-center justify-center py-16 space-y-6 text-center">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+              <svg className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div className="space-y-3">
+              <h2 className="text-2xl font-bold">Controleer je email!</h2>
+              <p className="text-muted-foreground text-base max-w-md">
+                We hebben een verificatie email gestuurd naar <strong>{pendingVerificationEmail}</strong>.
+                Klik op de link in de email om je account te activeren.
+              </p>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
+                <p className="text-sm text-yellow-800">
+                  <strong>Belangrijk:</strong> Controleer ook je spam/junk folder als je de email niet ziet.
+                  De verificatie link verloopt over 24 uur.
+                </p>
+              </div>
+            </div>
+            <div className="space-y-4 w-full max-w-sm">
+              <Button
+                onClick={handleResendEmail}
+                disabled={resendingEmail}
+                variant="outline"
+                className="w-full"
+              >
+                {resendingEmail ? (
+                  <>
+                    <LoadingSpinner className="mr-2 h-4 w-4" />
+                    Email wordt verzonden...
+                  </>
+                ) : (
+                  "Verificatie email opnieuw versturen"
+                )}
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowVerificationPending(false);
+                  setPendingVerificationEmail('');
+                }}
+                variant="ghost"
+                className="w-full"
+              >
+                Terug naar registratie
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show success message after registration
+  if (showSuccessMessage) {
+    return (
+      <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
+        <Card className="rounded-2xl bg-card shadow-2xl">
+          <CardContent className="flex flex-col items-center justify-center py-16 space-y-6 text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-8 w-8 text-green-600" />
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                  <span className="text-primary font-semibold text-sm">1</span>
+                </div>
+                <span className="text-muted-foreground font-medium">afgerond</span>
+              </div>
+              <h2 className="text-2xl font-bold">Account aangemaakt!</h2>
+              <p className="text-muted-foreground text-base max-w-md">
+                We zetten nu Stap 2 klaar: vul je profiel aan zodat je coach direct aan de slag kan.
+                Je ontvangt ook een welkomstmail met een samenvatting.
+              </p>
+            </div>
+            <LoadingSpinner />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
+      <div className="space-y-6">
+        {/* Payment Success Banner - Only show when payment is validated */}
+        {orderId && paymentValidated && (
+          <Alert className="border-green-200 bg-green-50">
+            <CheckCircle className="h-4 w-4 text-green-600" />
+            <AlertDescription className="text-green-800">
+              <strong>Betaling geslaagd!</strong> Stap 1: maak je inlog aan zodat we je abonnement kunnen koppelen. Stap 2 (profiel invullen) volgt direct daarna.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Payment Validation Loading */}
+        {orderId && validatingPayment && (
+          <Alert>
+            <LoadingSpinner className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Betaling controleren...</strong> Even geduld terwijl we je betaling verifiëren.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Plan Selection Info */}
+        {plan && billing && !orderId && (
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>Stap 1 van 2</strong> – Je hebt het <span className="font-semibold">{planLabel ?? plan}</span>
+              {planPriceCents !== null && (
+                <span> ({billingParam === 'monthly' ? 'maandelijks' : 'jaarlijks'}: €{(planPriceCents / 100).toFixed(2)})</span>
+              )} geselecteerd. Vul hieronder je gegevens in om door te gaan naar het profielformulier.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Main Registration Card - Dashboard Style */}
+        <Card className="rounded-2xl bg-card shadow-2xl">
+          <CardHeader className="text-center pb-6">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <span className="text-primary font-semibold text-sm">1</span>
+              </div>
+              <span className="text-muted-foreground font-medium">van 2</span>
+            </div>
+            <CardTitle className="text-2xl font-bold">
+              Maak je account aan
+            </CardTitle>
+            <CardDescription className="text-base">
+              {orderId
+                ? "Gebruik hetzelfde e-mailadres als bij je betaling. Hierna openen we automatisch het profielformulier."
+                : "Met deze inlog kun je straks je profiel afronden en naar het dashboard."
+              }
+            </CardDescription>
+          </CardHeader>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} suppressHydrationWarning>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem suppressHydrationWarning>
+                        <FormLabel suppressHydrationWarning>Naam / Roepnaam</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Hoe wil je genoemd worden?" {...field} suppressHydrationWarning />
+                        </FormControl>
+                        <FormMessage suppressHydrationWarning />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem suppressHydrationWarning>
+                        <FormLabel suppressHydrationWarning>E-mailadres</FormLabel>
+                        <FormControl>
+                          <Input type="email" placeholder="jouw@email.com" {...field} suppressHydrationWarning />
+                        </FormControl>
+                        <FormMessage suppressHydrationWarning />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem suppressHydrationWarning>
+                        <FormLabel suppressHydrationWarning>Wachtwoord</FormLabel>
+                        <FormControl>
+                          <Input type="password" placeholder="Minimaal 6 karakters" {...field} suppressHydrationWarning />
+                        </FormControl>
+                        <FormMessage suppressHydrationWarning />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Security Note */}
+                <Alert className="border-pink-200 bg-pink-50">
+                  <AlertCircle className="h-4 w-4 text-pink-600" />
+                  <AlertDescription className="text-pink-800">
+                    <strong>Veilig & Vertrouwelijk:</strong> Je gegevens zijn veilig versleuteld en worden alleen gebruikt voor je DatingAssistent account. We verkopen of delen je persoonlijke informatie nooit met derden.
+                  </AlertDescription>
+                </Alert>
+              </CardContent>
+
+              <CardFooter className="flex-col gap-4">
+                <Button type="submit" className="w-full" disabled={isSigningUp}>
+                  {isSigningUp ? (
+                    <>
+                      <LoadingSpinner />
+                      Account aanmaken...
+                    </>
+                  ) : (
+                    "Verder naar Stap 2"
+                  )}
+                </Button>
+
+                <div className="text-center space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    Heb je al een account?{" "}
+                    <Link href={loginUrl} className="font-semibold text-primary hover:underline">
+                      Log hier in
+                    </Link>
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Door verder te gaan accepteer je onze{" "}
+                    <Link href="/privacyverklaring" className="text-primary hover:underline">
+                      Privacy Policy
+                    </Link>{" "}
+                    en{" "}
+                    <Link href="/algemene-voorwaarden" className="text-primary hover:underline">
+                      Algemene Voorwaarden
+                    </Link>
+                  </p>
+                </div>
+              </CardFooter>
+            </form>
+          </Form>
+        </Card>
+      </div>
+    </div>
+  );
+}

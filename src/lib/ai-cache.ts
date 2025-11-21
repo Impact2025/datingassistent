@@ -1,0 +1,219 @@
+/**
+ * AI Response Caching Layer
+ *
+ * Caches AI responses to reduce costs and improve performance.
+ * Uses Vercel KV for production caching with in-memory fallback for development.
+ */
+
+import { kv } from '@vercel/kv';
+
+interface CacheEntry {
+  response: string;
+  timestamp: number;
+  ttl: number;
+}
+
+class AICache {
+  private isRedisAvailable: boolean = false;
+  private memoryCache: Map<string, CacheEntry> = new Map();
+
+  constructor() {
+    this.isRedisAvailable = !!(process.env.KV_URL && process.env.NODE_ENV === 'production');
+  }
+
+  /**
+   * Generate cache key from request parameters
+   */
+  private generateKey(
+    messages: Array<{ role: string; content: string }>,
+    model: string,
+    temperature?: number,
+    maxTokens?: number
+  ): string {
+    // Create a deterministic hash of the request
+    const content = JSON.stringify({
+      messages: messages.map(m => ({ role: m.role, content: m.content })),
+      model,
+      temperature: temperature || 0.7,
+      maxTokens: maxTokens || 2048
+    });
+
+    // Simple hash function for cache key
+    let hash = 0;
+    for (let i = 0; i < content.length; i++) {
+      const char = content.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+
+    return `ai_cache:${Math.abs(hash)}`;
+  }
+
+  /**
+   * Get cached response if available and not expired
+   */
+  async get(
+    messages: Array<{ role: string; content: string }>,
+    model: string,
+    temperature?: number,
+    maxTokens?: number
+  ): Promise<string | null> {
+    const key = this.generateKey(messages, model, temperature, maxTokens);
+    const now = Date.now();
+
+    try {
+      if (this.isRedisAvailable) {
+        const cached = await kv.get(key) as CacheEntry | null;
+        if (cached && (now - cached.timestamp) < cached.ttl) {
+          console.log(`✅ AI Cache hit: ${key}`);
+          return cached.response;
+        }
+        if (cached) {
+          // Remove expired entry
+          await kv.del(key);
+        }
+      } else {
+        // In-memory cache for development
+        const cached = this.memoryCache.get(key);
+        if (cached && (now - cached.timestamp) < cached.ttl) {
+          console.log(`✅ AI Cache hit (memory): ${key}`);
+          return cached.response;
+        }
+        if (cached) {
+          this.memoryCache.delete(key);
+        }
+      }
+    } catch (error) {
+      console.error('Cache read error:', error);
+    }
+
+    console.log(`❌ AI Cache miss: ${key}`);
+    return null;
+  }
+
+  /**
+   * Store response in cache
+   */
+  async set(
+    messages: Array<{ role: string; content: string }>,
+    model: string,
+    response: string,
+    temperature?: number,
+    maxTokens?: number,
+    ttlMs: number = 24 * 60 * 60 * 1000 // 24 hours default
+  ): Promise<void> {
+    const key = this.generateKey(messages, model, temperature, maxTokens);
+    const entry: CacheEntry = {
+      response,
+      timestamp: Date.now(),
+      ttl: ttlMs
+    };
+
+    try {
+      if (this.isRedisAvailable) {
+        await kv.set(key, entry, { ex: Math.floor(ttlMs / 1000) });
+        console.log(`💾 AI Cache stored: ${key}`);
+      } else {
+        // In-memory cache with cleanup
+        this.memoryCache.set(key, entry);
+
+        // Clean up old entries periodically
+        if (this.memoryCache.size > 1000) {
+          const now = Date.now();
+          for (const [k, v] of this.memoryCache.entries()) {
+            if ((now - v.timestamp) >= v.ttl) {
+              this.memoryCache.delete(k);
+            }
+          }
+        }
+        console.log(`💾 AI Cache stored (memory): ${key}`);
+      }
+    } catch (error) {
+      console.error('Cache write error:', error);
+    }
+  }
+
+  /**
+   * Clear all cached responses (useful for development)
+   */
+  async clear(): Promise<void> {
+    try {
+      if (this.isRedisAvailable) {
+        // Note: This would require scanning all keys with ai_cache: prefix
+        // For now, we'll skip this in production
+        console.log('⚠️ Cache clearing not implemented for Redis in production');
+      } else {
+        this.memoryCache.clear();
+        console.log('🧹 AI Cache cleared (memory)');
+      }
+    } catch (error) {
+      console.error('Cache clear error:', error);
+    }
+  }
+
+  /**
+   * Get cache statistics
+   */
+  async getStats(): Promise<{ hits: number; misses: number; size: number }> {
+    // This is a simplified version - in production you'd want proper metrics
+    return {
+      hits: 0, // Would need to track this separately
+      misses: 0,
+      size: this.isRedisAvailable ? -1 : this.memoryCache.size // -1 means unknown for Redis
+    };
+  }
+}
+
+// Global cache instance
+export const aiCache = new AICache();
+
+/**
+ * Cached version of chatCompletion that automatically caches responses
+ */
+export async function cachedChatCompletion(
+  messages: Array<{ role: 'user' | 'assistant' | 'system'; content: string }>,
+  options?: {
+    provider?: 'openrouter';
+    model?: string;
+    maxTokens?: number;
+    temperature?: number;
+    skipCache?: boolean;
+  }
+): Promise<string> {
+  const { chatCompletion } = await import('./ai-service');
+
+  // Skip caching for certain cases
+  if (options?.skipCache ||
+      options?.temperature && options.temperature > 0.8 || // High creativity requests
+      messages.length > 10 || // Very long conversations
+      messages.some(m => m.content.length > 2000) // Very long messages
+  ) {
+    return chatCompletion(messages, options);
+  }
+
+  // Try to get from cache first
+  const cached = await aiCache.get(
+    messages,
+    options?.model || 'claude-3.5-haiku',
+    options?.temperature,
+    options?.maxTokens
+  );
+
+  if (cached) {
+    return cached;
+  }
+
+  // Get fresh response
+  const response = await chatCompletion(messages, options);
+
+  // Cache the response (don't await to avoid blocking)
+  aiCache.set(
+    messages,
+    options?.model || 'claude-3.5-haiku',
+    response,
+    options?.temperature,
+    options?.maxTokens
+  ).catch(error => console.error('Cache write failed:', error));
+
+  return response;
+}

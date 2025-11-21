@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Template Tester - DatingAssistent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #F8F9FA;
+            min-height: 100vh;
+            padding: 20px;
+            color: #1A1A1A;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-top: 20px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            color: #6B7280;
+            font-weight: 400;
+        }
+
+        .input-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .input-label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 12px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #F9FAFB;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: #EC4899;
+            background: white;
+        }
+
+        .category-section {
+            margin-bottom: 20px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .category-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .category-icon.onboarding {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+        }
+
+        .category-icon.engagement {
+            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+        }
+
+        .category-icon.retention {
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+        }
+
+        .templates-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .template-card {
+            background: white;
+            border: 2px solid #F3F4F6;
+            border-radius: 20px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-card:hover {
+            transform: translateY(-2px);
+            border-color: #EC4899;
+            box-shadow: 0 8px 24px rgba(236, 72, 153, 0.12);
+        }
+
+        .template-card.loading {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .template-card.loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { left: 100%; }
+        }
+
+        .template-card.success {
+            border-color: #10B981;
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+        }
+
+        .template-card.error {
+            border-color: #EF4444;
+            background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+        }
+
+        .template-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: #F3F4F6;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #6B7280;
+            margin-right: 12px;
+        }
+
+        .template-card.success .template-number {
+            background: #10B981;
+            color: white;
+        }
+
+        .template-card.error .template-number {
+            background: #EF4444;
+            color: white;
+        }
+
+        .template-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1A1A1A;
+        }
+
+        .test-all-container {
+            position: sticky;
+            bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            margin-top: 24px;
+        }
+
+        .test-all-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.3);
+        }
+
+        .test-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(236, 72, 153, 0.4);
+        }
+
+        .test-all-btn:active {
+            transform: translateY(0);
+        }
+
+        .test-all-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-container {
+            margin-top: 16px;
+            display: none;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #F3F4F6;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #EC4899 0%, #DB2777 100%);
+            transition: width 0.3s;
+            width: 0%;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #6B7280;
+        }
+
+        .status-message {
+            margin-top: 16px;
+            padding: 16px 20px;
+            border-radius: 16px;
+            font-size: 15px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .status-message.info {
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            color: #1E40AF;
+            display: block;
+        }
+
+        .status-message.success {
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            color: #065F46;
+            display: block;
+        }
+
+        .status-message.error {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+            color: #991B1B;
+            display: block;
+        }
+
+        .status-icon {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        /* Loading dots animation */
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots::after {
+            content: '.';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            body {
+                padding: 16px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .input-card {
+                padding: 20px;
+            }
+
+            .template-card {
+                padding: 16px;
+            }
+
+            .test-all-container {
+                bottom: 16px;
+                margin-left: -16px;
+                margin-right: -16px;
+                border-radius: 24px 24px 0 0;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Success checkmark animation */
+        @keyframes checkmark {
+            0% { transform: scale(0) rotate(45deg); }
+            50% { transform: scale(1.2) rotate(45deg); }
+            100% { transform: scale(1) rotate(45deg); }
+        }
+
+        .template-card.success::before {
+            content: '✓';
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            width: 24px;
+            height: 24px;
+            background: #10B981;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            animation: checkmark 0.3s ease;
+        }
+
+        .template-card.error::before {
+            content: '✕';
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            width: 24px;
+            height: 24px;
+            background: #EF4444;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Email Template Tester</h1>
+            <p class="subtitle">Test alle 15 email templates in één klik</p>
+        </div>
+
+        <div class="input-card">
+            <label for="testEmail" class="input-label">Jouw Email Adres</label>
+            <input
+                type="email"
+                id="testEmail"
+                class="email-input"
+                placeholder="vincent@stichtingphilia.nl"
+                required
+            >
+        </div>
+
+        <div class="category-section">
+            <div class="category-header">
+                <div class="category-icon onboarding">🎉</div>
+                <span>Onboarding Emails</span>
+            </div>
+            <div class="templates-grid">
+                <div class="template-card" data-type="welcome">
+                    <span class="template-number">1</span>
+                    <span class="template-name">Welcome Email</span>
+                </div>
+                <div class="template-card" data-type="profile_optimization_reminder">
+                    <span class="template-number">2</span>
+                    <span class="template-name">Profile Optimization</span>
+                </div>
+                <div class="template-card" data-type="first_win">
+                    <span class="template-number">3</span>
+                    <span class="template-name">First Win</span>
+                </div>
+                <div class="template-card" data-type="course_introduction">
+                    <span class="template-number">4</span>
+                    <span class="template-name">Course Introduction</span>
+                </div>
+                <div class="template-card" data-type="weekly_checkin">
+                    <span class="template-number">5</span>
+                    <span class="template-name">Weekly Check-in</span>
+                </div>
+                <div class="template-card" data-type="feature_deepdive_chat">
+                    <span class="template-number">6</span>
+                    <span class="template-name">Feature Deep Dive</span>
+                </div>
+                <div class="template-card" data-type="mid_trial_check">
+                    <span class="template-number">7</span>
+                    <span class="template-name">Mid-Trial Check</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-header">
+                <div class="category-icon engagement">💬</div>
+                <span>Engagement Emails</span>
+            </div>
+            <div class="templates-grid">
+                <div class="template-card" data-type="course_completion">
+                    <span class="template-number">8</span>
+                    <span class="template-name">Course Completion</span>
+                </div>
+                <div class="template-card" data-type="weekly_digest">
+                    <span class="template-number">9</span>
+                    <span class="template-name">Weekly Digest</span>
+                </div>
+                <div class="template-card" data-type="milestone_achievement">
+                    <span class="template-number">10</span>
+                    <span class="template-name">Milestone Achievement</span>
+                </div>
+                <div class="template-card" data-type="monthly_progress">
+                    <span class="template-number">11</span>
+                    <span class="template-name">Monthly Progress</span>
+                </div>
+                <div class="template-card" data-type="inactivity_3days">
+                    <span class="template-number">12</span>
+                    <span class="template-name">Inactivity Alert</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section">
+            <div class="category-header">
+                <div class="category-icon retention">💰</div>
+                <span>Retention & Upsell</span>
+            </div>
+            <div class="templates-grid">
+                <div class="template-card" data-type="subscription_renewal">
+                    <span class="template-number">13</span>
+                    <span class="template-name">Subscription Renewal</span>
+                </div>
+                <div class="template-card" data-type="payment_failed">
+                    <span class="template-number">14</span>
+                    <span class="template-name">Payment Failed</span>
+                </div>
+                <div class="template-card" data-type="feature_limit_reached">
+                    <span class="template-number">15</span>
+                    <span class="template-name">Feature Limit Reached</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-all-container">
+            <button class="test-all-btn" onclick="testAllEmails()">
+                🚀 Test Alle 15 Templates
+            </button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0 / 15 verzonden</div>
+            </div>
+
+            <div class="status-message" id="statusMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        const statusDiv = document.getElementById('statusMessage');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+
+        function showStatus(message, type = 'info', icon = '📧') {
+            statusDiv.innerHTML = `<span class="status-icon">${icon}</span>${message}`;
+            statusDiv.className = `status-message ${type}`;
+        }
+
+        function updateProgress(current, total) {
+            const percentage = (current / total) * 100;
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = `${current} / ${total} verzonden`;
+            progressContainer.style.display = 'block';
+        }
+
+        async function testEmail(emailType, cardElement) {
+            const testEmail = document.getElementById('testEmail').value;
+
+            if (!testEmail) {
+                showStatus('Vul eerst je email adres in!', 'error', '⚠️');
+                document.getElementById('testEmail').focus();
+                return false;
+            }
+
+            cardElement.classList.add('loading');
+
+            try {
+                const response = await fetch('/api/test-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        emailType: emailType,
+                        testEmail: testEmail
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    cardElement.classList.remove('loading');
+                    cardElement.classList.add('success');
+                    return true;
+                } else {
+                    throw new Error(data.error || 'Failed to send');
+                }
+            } catch (error) {
+                cardElement.classList.remove('loading');
+                cardElement.classList.add('error');
+                console.error('Error:', error);
+                return false;
+            }
+        }
+
+        async function testAllEmails() {
+            const testEmail = document.getElementById('testEmail').value;
+
+            if (!testEmail) {
+                showStatus('Vul eerst je email adres in!', 'error', '⚠️');
+                document.getElementById('testEmail').focus();
+                return;
+            }
+
+            const cards = document.querySelectorAll('.template-card');
+            const testAllBtn = document.querySelector('.test-all-btn');
+
+            // Reset all cards
+            cards.forEach(card => {
+                card.classList.remove('loading', 'success', 'error');
+            });
+
+            testAllBtn.disabled = true;
+            testAllBtn.innerHTML = '⏳ Bezig met verzenden<span class="loading-dots"></span>';
+
+            showStatus('Emails worden verzonden...', 'info', '🚀');
+
+            let successCount = 0;
+            let failCount = 0;
+
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i];
+                const emailType = card.dataset.type;
+
+                const success = await testEmail(emailType, card);
+
+                if (success) {
+                    successCount++;
+                } else {
+                    failCount++;
+                }
+
+                updateProgress(i + 1, cards.length);
+
+                // Delay between emails to avoid rate limiting
+                if (i < cards.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+            }
+
+            testAllBtn.disabled = false;
+            testAllBtn.innerHTML = '🚀 Test Alle 15 Templates';
+
+            if (failCount === 0) {
+                showStatus(
+                    `Alle ${successCount} emails succesvol verzonden naar ${testEmail}! Check je inbox (en spam folder).`,
+                    'success',
+                    '✅'
+                );
+            } else {
+                showStatus(
+                    `${successCount} emails verzonden, ${failCount} mislukt. Controleer de console voor details.`,
+                    'error',
+                    '⚠️'
+                );
+            }
+        }
+
+        // Add individual card click handlers
+        document.querySelectorAll('.template-card').forEach(card => {
+            card.addEventListener('click', function() {
+                if (!this.classList.contains('loading')) {
+                    testEmail(this.dataset.type, this);
+                }
+            });
+        });
+
+        // Reset card states on email input change
+        document.getElementById('testEmail').addEventListener('input', function() {
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('loading', 'success', 'error');
+            });
+            statusDiv.className = 'status-message';
+            progressContainer.style.display = 'none';
+        });
+
+        // Auto-focus email input
+        window.addEventListener('load', function() {
+            document.getElementById('testEmail').focus();
+        });
+    </script>
+</body>
+</html>

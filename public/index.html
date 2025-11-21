@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#E14874">
+
+    <!-- Primary Meta Tags -->
+    <title>DatingAssistent.nl - Slimmer Daten met AI | Jouw Virtuele DatingCoach</title>
+    <meta name="title" content="DatingAssistent.nl - Slimmer Daten met AI | Jouw Virtuele DatingCoach">
+    <meta name="description" content="DatingAssistent is jouw persoonlijke datingcoach: altijd beschikbaar, veilig en eerlijk advies, zodat jij sneller een echte match vindt.">
+    <meta name="keywords" content="dating coach, AI dating, online daten, dating tips, dating profiel verbeteren, dating app hulp, relatiecoach, dating advies">
+    <meta name="author" content="DatingAssistent">
+    <link rel="canonical" href="https://datingassistent.nl">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://datingassistent.nl">
+    <meta property="og:title" content="DatingAssistent.nl - Slimmer Daten met AI">
+    <meta property="og:description" content="DatingAssistent is jouw persoonlijke datingcoach: altijd beschikbaar, veilig en eerlijk advies, zodat jij sneller een echte match vindt.">
+    <meta property="og:image" content="https://datingassistent.nl/og-image.png">
+    <meta property="og:locale" content="nl_NL">
+    <meta property="og:site_name" content="DatingAssistent">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://datingassistent.nl">
+    <meta name="twitter:title" content="DatingAssistent.nl - Slimmer Daten met AI">
+    <meta name="twitter:description" content="DatingAssistent is jouw persoonlijke datingcoach: altijd beschikbaar, veilig en eerlijk advies, zodat jij sneller een echte match vindt.">
+    <meta name="twitter:image" content="https://datingassistent.nl/og-image.png">
+    <meta name="twitter:creator" content="@datingassistent">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "DatingAssistent",
+      "url": "https://datingassistent.nl",
+      "logo": "https://datingassistent.nl/logo.png",
+      "description": "DatingAssistent is jouw persoonlijke datingcoach: altijd beschikbaar, veilig en eerlijk advies, zodat jij sneller een echte match vindt.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "email": "info@datingassistent.nl"
+      },
+      "sameAs": [
+        "https://www.facebook.com/datingassistent",
+        "https://www.instagram.com/datingassistent",
+        "https://twitter.com/datingassistent"
+      ]
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://placehold.co/32x32/E14874/FFFFFF?text=DA" type="image/png">
+
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
+      import { getFirestore, collection, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
+
+      const firebaseConfig = {
+        projectId: 'studio-1884662658-29957',
+        appId: '1:695820370437:web:e366561d1e887f83e7926c',
+        apiKey: 'AIzaSyDFXpu74SsXvkiYaD5iPCoro3rCLKJ9vCo',
+        authDomain: 'studio-1884662658-29957.firebaseapp.com',
+        measurementId: '',
+        messagingSenderId: '695820370437',
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Maak functies globaal beschikbaar
+      window.firebaseDB = db;
+      window.firebaseModules = { collection, getDocs, query, orderBy, limit };
+    </script>
+
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #F9F9F6; /* Off-white */
+            color: #1E3A5F; /* Donkerblauw */
+        }
+        h1, h2, h3, button, .btn {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .accent-color { color: #FF4D6D; } /* Warm koraal */
+        .bg-accent { background-color: #FF4D6D; }
+        .hover\:bg-accent-dark:hover { background-color: #e63d5d; }
+
+        /* Card Stijl */
+        .card {
+            background-color: #ffffff; /* Wit voor cards */
+            border: 1px solid #E6E6EB; /* Lichtgrijs */
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+        .card:hover {
+            border-color: #A8D9A5; /* Mintgroen hover */
+        }
+        .card-highlight {
+            border-color: #FF4D6D; /* Warm koraal */
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.2);
+        }
+        .card-bg { background-color: #ffffff; }
+
+        .feature-icon-wrapper {
+            background-color: rgba(255, 77, 109, 0.1);
+            color: #FF4D6D; /* Warm koraal */
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(30, 58, 95, 0.1);
+        }
+        .hero-gradient-text {
+            background: linear-gradient(to right, #1E3A5F, #2d5080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .button-gradient {
+            background-color: #FF4D6D; /* Warm koraal */
+        }
+        .button-gradient:hover {
+            background-color: #e63d5d;
+        }
+        .button-ghost {
+            background-color: transparent;
+            border: 1px solid #E6E6EB; /* Lichtgrijs */
+            color: #1E3A5F; /* Donkerblauw */
+        }
+         .button-ghost:hover {
+            background-color: #A8D9A5; /* Mintgroen */
+            border-color: #A8D9A5;
+        }
+        .chat-bubble-assistant {
+            background-color: #f0f0ed; /* Licht off-white */
+            color: #1E3A5F; /* Donkerblauw */
+        }
+        .chat-bubble-user {
+            background-color: #FF4D6D; /* Warm koraal */
+            color: #ffffff;
+        }
+        .pricing-toggle button.active {
+            background-color: #FF4D6D; /* Warm koraal */
+            color: #ffffff;
+        }
+        .pricing-toggle button {
+            color: #1E3A5F; /* Donkerblauw */
+        }
+        .popular-badge {
+            background-color: #FF4D6D; /* Warm koraal */
+            color: #ffffff;
+        }
+        /* Slider Styles */
+        .about-slide {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .slider-dots .dot {
+            cursor: pointer;
+            height: 12px;
+            width: 12px;
+            margin: 0 4px;
+            background-color: #E6E6EB; /* Lichtgrijs */
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+        .slider-dots .dot.active {
+            background-color: #FF4D6D; /* Warm koraal */
+        }
+        /* Quiz styles */
+        .quiz-option {
+            transition: background-color 0.2s, border-color 0.2s;
+            background-color: #ffffff;
+            border: 1px solid #E6E6EB; /* Lichtgrijs */
+            color: #1E3A5F; /* Donkerblauw */
+        }
+        .quiz-option:hover {
+            border-color: #FF4D6D; /* Warm koraal */
+            background-color: #fff5f7;
+        }
+        /* Review Slider */
+        .review-slider-track {
+            transition: transform 0.5s ease-in-out;
+        }
+        .hero-header {
+            position: relative;
+            background-image: linear-gradient(135deg, rgba(30, 58, 95, 0.82), rgba(225, 72, 116, 0.68)), url('images/dating-assistent-header.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #ffffff;
+        }
+        .hero-header .hero-gradient-text {
+            background: linear-gradient(to right, #ffffff, #ffe4ec);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-content p {
+            color: #FDF7FA !important;
+        }
+        .hero-stats p {
+            color: #FDF7FA !important;
+        }
+        .hero-stats .stat-value {
+            color: #FFE4EC;
+        }
+        .hero-header .button-ghost {
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        .hero-header .button-ghost:hover {
+            background-color: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.9);
+        }
+        .hero-card {
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <script>
+        // Use local app in development, hosted in production
+        // Als het bestand lokaal wordt geopend (file://), gebruik localhost
+        const isLocalFile = window.location.protocol === 'file:';
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+        const appLoginUrl = isLocalFile || isLocalhost
+            ? "http://localhost:9002"
+            : "https://studio--studio-1884662658-29957.us-central1.hosted.app/";
+
+        // MultiSafepay Configuration
+        const MULTISAFEPAY_CONFIG = {
+            apiKey: 'YOUR_MULTISAFEPAY_API_KEY', // Vervang met jouw API key
+            testMode: true, // Zet op false voor productie
+            locale: 'nl_NL',
+            currency: 'EUR'
+        };
+
+        // Plan prijzen (in centen voor MultiSafepay)
+        const PLAN_PRICES = {
+            sociaal: {
+                monthly: 995,  // €9.95
+                yearly: 9950   // €99.50
+            },
+            core: {
+                monthly: 2450,  // €24.50
+                yearly: 24500   // €245.00
+            },
+            pro: {
+                monthly: 3950,  // €39.50
+                yearly: 39500   // €395.00
+            },
+            premium: {
+                monthly: 6950,  // €69.50
+                yearly: 69500   // €695.00
+            }
+        };
+
+        // MultiSafepay checkout functie
+        async function initiateCheckout(plan, billingCycle = 'monthly') {
+            try {
+                // Check if user is logged in - redirect to payment page
+                // This will create payment order and redirect to MultiSafePay
+                const priceInCents = PLAN_PRICES[plan][billingCycle];
+                const priceInEuros = (priceInCents / 100).toFixed(2);
+
+                console.log('🛒 Starting checkout:', { plan, billingCycle, price: priceInEuros });
+
+                // Redirect to payment page which handles the entire flow
+                window.location.href = `${appLoginUrl}/payment?plan=${plan}&billing=${billingCycle}&amount=${priceInEuros}`;
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Er ging iets mis. Probeer het later opnieuw.');
+            }
+        }
+    </script>
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b backdrop-blur-md" style="background-color: rgba(249, 249, 246, 0.95); border-color: #E6E6EB;">
+        <div class="container mx-auto px-6 py-4">
+            <nav class="flex items-center justify-between">
+                <a href="/" class="text-2xl font-bold" style="color: #1E3A5F;"><span class="accent-color">Dating</span>Assistent</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/#features" class="transition-colors" style="color: #1E3A5F;">Features</a>
+                    <a href="/#prijzen" class="transition-colors" style="color: #1E3A5F;">Prijzen</a>
+                    <a href="/reviews" class="transition-colors" style="color: #1E3A5F;">Reviews</a>
+                    <a href="/#quiz" class="transition-colors" style="color: #1E3A5F;">Quiz</a>
+                    <a href="/#over-ons" class="transition-colors" style="color: #1E3A5F;">Over Ons</a>
+                    <a href="/blog" class="transition-colors" style="color: #1E3A5F;">Blog & Tips</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/admin/login" class="text-sm transition-colors" style="color: #1E3A5F;">Admin</a>
+                    <a href="/register" class="button-gradient text-white px-5 py-2.5 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+                        Start Nu
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. Hero Sectie -->
+        <section class="py-20 md:py-24 hero-header">
+            <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="text-center md:text-left hero-content">
+                    <h1 class="text-5xl md:text-6xl font-extrabold hero-gradient-text leading-tight">Slimmer daten <br>met <span class="accent-color">AI</span></h1>
+                    <p class="text-lg mt-6 max-w-lg mx-auto md:mx-0">DatingAssistent is jouw persoonlijke datingcoach: altijd beschikbaar, veilig en eerlijk advies, zodat jij sneller een echte match vindt.</p>
+                    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+                        <a href="/register" class="button-gradient text-white px-8 py-3 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity w-full sm:w-auto">Start gratis</a>
+                        <a href="#features" class="button-ghost px-8 py-3 rounded-lg font-semibold text-lg w-full sm:w-auto">Meer info</a>
+                    </div>
+                    <div class="mt-12 flex items-center justify-center md:justify-start gap-8 text-center hero-stats">
+                        <div><p class="text-3xl font-bold stat-value">25K+</p><p class="text-sm">Tevreden gebruikers</p></div>
+                        <div><p class="text-3xl font-bold stat-value">89%</p><p class="text-sm">Meer matches</p></div>
+                        <div><p class="text-3xl font-bold stat-value">24/7</p><p class="text-sm">Beschikbaar</p></div>
+                    </div>
+                </div>
+                <div class="w-full max-w-md mx-auto">
+                    <div class="card-bg hero-card rounded-2xl p-6 border shadow-2xl" style="border-color: #E6E6EB;">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b" style="border-color: #E6E6EB;">
+                            <div class="w-10 h-10 rounded-full button-gradient flex items-center justify-center font-bold text-white">DA</div>
+                            <div><h3 class="font-semibold" style="color: #1E3A5F;">DatingAssistent</h3><p class="text-sm" style="color: #1E3A5F;">Jouw persoonlijke coach</p></div>
+                        </div>
+                        <div class="space-y-5">
+                            <div class="flex items-end gap-3 max-w-[85%]"><div class="w-8 h-8 rounded-full button-gradient flex-shrink-0"></div><div class="chat-bubble-assistant p-3 rounded-lg rounded-bl-none"><p class="text-sm">Laten we samen jouw perfecte profiel maken! Wat voor type partner zoek je?</p></div></div>
+                            <div class="flex items-end gap-3 justify-end"><div class="chat-bubble-user p-3 rounded-lg rounded-br-none"><p class="text-sm text-white">"Ik zou graag tips willen voor betere openingszinnen..."</p></div></div>
+                            <div class="flex items-end gap-3 max-w-[85%]"><div class="w-8 h-8 rounded-full button-gradient flex-shrink-0"></div><div class="chat-bubble-assistant p-3 rounded-lg rounded-bl-none"><p class="text-sm">"Perfect! Hier zijn 3 persoonlijke openingszinnen gebaseerd op haar profiel..."</p></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Features Sectie -->
+        <section id="features" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold" style="color: #1E3A5F;">Jouw Toolkit voor Succesvol Daten</h2>
+                    <p class="text-lg mt-2 max-w-2xl mx-auto" style="color: #1E3A5F;">Alle tools die je nodig hebt om met zelfvertrouwen en succes te daten.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="card p-8 rounded-2xl text-left">
+                        <div class="feature-icon-wrapper w-12 h-12 rounded-full flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Profiel Assistent</h3>
+                        <p class="mt-2" style="color: #1E3A5F;">AI helpt je een aantrekkelijk profiel te maken en je beste foto's te kiezen voor maximale impact.</p>
+                    </div>
+                     <!-- Feature 2 -->
+                     <div class="card card-highlight p-8 rounded-2xl text-left">
+                         <div class="feature-icon-wrapper w-12 h-12 rounded-full flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Reactie Coach</h3>
+                        <p class="mt-2" style="color: #1E3A5F;">Krijg direct advies over hoe je kunt reageren op berichten, zonder stress, twijfel of ongemakkelijke stiltes.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="card p-8 rounded-2xl text-left">
+                        <div class="feature-icon-wrapper w-12 h-12 rounded-full flex items-center justify-center mb-6">
+                           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Opener Lab</h3>
+                        <p class="mt-2" style="color: #1E3A5F;">Nooit meer 'hoi'? Ontvang originele openingszinnen en gespreksstarters die écht een reactie uitlokken.</p>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="card p-8 rounded-2xl text-left">
+                        <div class="feature-icon-wrapper w-12 h-12 rounded-full flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Date Planner</h3>
+                        <p class="mt-2" style="color: #1E3A5F;">Van eerste ontmoeting tot activiteit: wij helpen je om leuke, originele en veilige dates te plannen.</p>
+                    </div>
+                    <!-- Feature 5 -->
+                    <div class="card p-8 rounded-2xl text-left">
+                        <div class="feature-icon-wrapper w-12 h-12 rounded-full flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Platform Advies</h3>
+                        <p class="mt-2" style="color: #1E3A5F;">Kies het datingplatform dat écht bij jou past, op basis van jouw unieke wensen, doelen en persoonlijkheid.</p>
+                    </div>
+                    <!-- Feature 6 -->
+                    <div class="card p-8 rounded-2xl text-left">
+                        <div class="feature-icon-wrapper w-12 h-12 rounded-full flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Jouw data, jouw veiligheid</h3>
+                        <p class="mt-2" style="color: #1E3A5F;">Privacy staat voorop. Jouw gegevens zijn veilig versleuteld en worden nooit gedeeld met derden.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Prijzen Sectie -->
+        <section id="prijzen" class="py-20" style="background-color: #ffffff;">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold" style="color: #1E3A5F;">Kies jouw plan</h2>
+                    <p class="text-lg mt-2 max-w-2xl mx-auto" style="color: #1E3A5F;">Begin gratis of kies voor onbeperkte toegang tot alle features.</p>
+                </div>
+                <div class="flex justify-center mb-10">
+                    <div class="pricing-toggle rounded-full p-1 flex items-center" style="background-color: #f0f0ed;">
+                        <button id="monthly-btn" class="px-6 py-2 rounded-full text-sm font-semibold transition-colors active">Maandelijks</button>
+                        <button id="yearly-btn" class="px-6 py-2 rounded-full text-sm font-semibold transition-colors">Jaarlijks</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                    <!-- Plan 1: Sociaal (LVB) -->
+                    <div class="card p-6 rounded-2xl flex flex-col">
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Sociaal</h3>
+                        <p class="mt-2 mb-4 text-sm" style="color: #1E3A5F;">Voor mensen met beperking</p>
+                        <div class="my-4">
+                            <span class="text-4xl font-extrabold price" data-monthly="9.95" data-yearly="99.50" style="color: #1E3A5F;">€9,95</span>
+                            <span class="price-period" style="color: #1E3A5F;">/ maand</span>
+                        </div>
+                        <p class="text-xs mb-4" style="color: #1E3A5F;">Min. 3 maanden</p>
+                        <ul class="space-y-2 my-4 flex-grow text-sm" style="color: #1E3A5F;">
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>15 AI-berichten/week</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>1 profiel-rewrite/kwartaal</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>2 foto-checks/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>1 platform-advies/kwartaal</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Begeleide onboarding</li>
+                        </ul>
+                        <button onclick="initiateCheckout('sociaal', document.getElementById('yearly-btn').classList.contains('active') ? 'yearly' : 'monthly')" class="w-full mt-auto text-center button-ghost py-2 rounded-lg font-semibold transition-colors text-sm">Kies Sociaal</button>
+                    </div>
+
+                    <!-- Plan 2: Core (MEEST GEKOZEN) -->
+                    <div class="card p-6 rounded-2xl border-2 border-pink-500 flex flex-col relative overflow-hidden card-highlight">
+                         <div class="popular-badge text-white text-xs font-bold py-1 px-4 rounded-full absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2">MEEST GEKOZEN</div>
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Core</h3>
+                        <p class="accent-color mt-2 mb-4 text-sm">De complete coach</p>
+                        <div class="my-4">
+                            <span class="text-4xl font-extrabold price" data-monthly="24.50" data-yearly="245" style="color: #1E3A5F;">€24,50</span>
+                            <span class="price-period" style="color: #1E3A5F;">/ maand</span>
+                        </div>
+                        <p class="text-xs mb-4" style="color: #1E3A5F;">Min. 3 maanden</p>
+                        <ul class="space-y-2 my-4 flex-grow text-sm" style="color: #1E3A5F;">
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>50 AI-berichten/week</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>1 profiel-rewrite/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>5 foto-checks/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>1 platform-advies/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Opener Lab + Reactie-assistent</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Date Planner</li>
+                        </ul>
+                        <button onclick="initiateCheckout('core', document.getElementById('yearly-btn').classList.contains('active') ? 'yearly' : 'monthly')" class="w-full mt-auto text-center button-gradient text-white py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity text-sm">Kies Core</button>
+                    </div>
+
+                    <!-- Plan 3: Pro -->
+                    <div class="card p-6 rounded-2xl flex flex-col">
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Pro</h3>
+                        <p class="mt-2 mb-4 text-sm" style="color: #1E3A5F;">Voor serieuze daters</p>
+                        <div class="my-4">
+                            <span class="text-4xl font-extrabold price" data-monthly="39.50" data-yearly="395" style="color: #1E3A5F;">€39,50</span>
+                            <span class="price-period" style="color: #1E3A5F;">/ maand</span>
+                        </div>
+                        <p class="text-xs mb-4" style="color: #1E3A5F;">Min. 3 maanden</p>
+                        <ul class="space-y-2 my-4 flex-grow text-sm" style="color: #1E3A5F;">
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>150 AI-berichten/week</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>2 profiel-rewrites/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>12 foto-checks/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>2 platform-adviezen/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Alles van Core</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Prioriteit coach-inbox</li>
+                        </ul>
+                        <button onclick="initiateCheckout('pro', document.getElementById('yearly-btn').classList.contains('active') ? 'yearly' : 'monthly')" class="w-full mt-auto text-center button-ghost py-2 rounded-lg font-semibold transition-colors text-sm">Kies Pro</button>
+                    </div>
+
+                    <!-- Plan 4: Premium -->
+                    <div class="card p-6 rounded-2xl flex flex-col border border-amber-500/50">
+                        <h3 class="text-xl font-bold" style="color: #1E3A5F;">Premium</h3>
+                        <p class="mt-2 mb-4 text-sm" style="color: #1E3A5F;">VIP behandeling</p>
+                        <div class="my-4">
+                            <span class="text-4xl font-extrabold price" data-monthly="69.50" data-yearly="695" style="color: #1E3A5F;">€69,50</span>
+                            <span class="price-period" style="color: #1E3A5F;">/ maand</span>
+                        </div>
+                        <p class="text-xs mb-4" style="color: #1E3A5F;">Min. 3 maanden</p>
+                        <ul class="space-y-2 my-4 flex-grow text-sm" style="color: #1E3A5F;">
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>300 AI-berichten/week</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>4 profiel-rewrites/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>25 foto-checks/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>4 platform-adviezen/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Alles van Pro</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>1× 30min live coach/maand</li>
+                           <li class="flex items-center"><svg class="w-4 h-4 accent-color mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>VIP support</li>
+                        </ul>
+                        <button onclick="initiateCheckout('premium', document.getElementById('yearly-btn').classList.contains('active') ? 'yearly' : 'monthly')" class="w-full mt-auto text-center button-gradient text-white py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity text-sm">Kies Premium</button>
+                    </div>
+                </div>
+
+                <!-- Pricing Note -->
+                <div class="mt-12 text-center max-w-3xl mx-auto">
+                    <p class="text-gray-300 mb-4">💡 <strong>Kies je tempo, niet je portemonnee</strong></p>
+                    <p class="text-sm text-gray-400">Je krijgt elke week nieuwe coach-credits. Zwaardere features gaan stapsgewijs open zodat je echt resultaat bouwt. Geen gehaast, geen binge—wel vooruitgang.</p>
+                    <p class="text-sm text-gray-400 mt-2">Standaard 3 maanden. Pauze nodig? Zet je abonnement 2 weken on hold voor €2,95, zonder verlies van tegoed.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Reviews Sectie (Slider) -->
+        <section id="reviews" class="py-20">
+            <div class="container mx-auto px-6 relative">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold" style="color: #1E3A5F;">Wat onze gebruikers zeggen</h2>
+                    <p class="text-lg mt-2 max-w-2xl mx-auto" style="color: #1E3A5F;">Echte verhalen van mensen die met meer succes daten.</p>
+                </div>
+                <div class="overflow-hidden w-full relative">
+                    <div id="review-slider-track" class="review-slider-track flex">
+                        <!-- Reviews worden hier dynamisch geladen -->
+                    </div>
+                </div>
+                 <button id="prev-review" class="absolute top-1/2 left-0 md:-left-4 transform -translate-y-1/2 p-3 rounded-full transition-colors" style="background-color: #FF4D6D;"><svg class="w-6 h-6" style="color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                 <button id="next-review" class="absolute top-1/2 right-0 md:-right-4 transform -translate-y-1/2 p-3 rounded-full transition-colors" style="background-color: #FF4D6D;"><svg class="w-6 h-6" style="color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+            </div>
+        </section>
+
+        <!-- 5. Quiz Sectie -->
+        <section id="quiz" class="py-20" style="background-color: #F9F9F6;">
+            <div class="container mx-auto px-6 max-w-3xl">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold" style="color: #1E3A5F;">Past DatingAssistent bij jou?</h2>
+                    <p class="text-lg mt-2" style="color: #1E3A5F;">Benieuwd of DatingAssistent jou kan helpen? Doe onze snelle quiz en ontdek het!</p>
+                </div>
+                <div id="quiz-container" class="card card-bg p-8 rounded-2xl">
+                    <!-- Vragen worden hier door JS ingeladen -->
+                </div>
+                <div id="quiz-result" class="hidden text-center card card-bg p-8 rounded-2xl">
+                    <h3 id="result-title" class="text-2xl font-bold" style="color: #1E3A5F;"></h3>
+                    <p id="result-text" class="mt-4 text-lg" style="color: #1E3A5F;"></p>
+                    <a href="/register" class="mt-8 inline-block button-gradient text-white px-8 py-3 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity">Start nu je profiel!</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Over Ons Sectie (Slider) -->
+        <section id="over-ons" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold" style="color: #1E3A5F;">Over Ons</h2>
+                    <p class="text-lg mt-2" style="color: #1E3A5F;">Het verhaal achter DatingAssistent</p>
+                </div>
+                <div id="about-slider" class="max-w-3xl mx-auto mt-12 relative">
+                    <div class="overflow-hidden relative card-bg rounded-2xl border flex items-center justify-center" style="min-height: 450px; border-color: #E6E6EB;">
+                        <!-- Slide 1 -->
+                        <div class="about-slide absolute w-full h-full p-8 md:p-12 text-center flex flex-col justify-center opacity-0">
+                            <h3 class="text-2xl font-bold mb-4" style="color: #1E3A5F;">Hoe het begon</h3>
+                            <p class="text-lg" style="color: #1E3A5F;">DatingAssistent.nl is geboren uit de overtuiging dat iedereen recht heeft op liefde en verbinding. In 2013 startte ik, Vincent van Munster, een datingbureau speciaal voor mensen met een beperking. Al snel merkte ik hoe groot de drempel kon zijn.</p>
+                            <p class="text-lg mt-4" style="color: #1E3A5F;">Wat begon als persoonlijke begeleiding groeide uit tot talloze mooie verhalen: nieuwe vriendschappen, relaties en zelfs huwelijken.</p>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="about-slide absolute w-full h-full p-8 md:p-12 text-center flex flex-col justify-center opacity-0">
+                            <h3 class="text-2xl font-bold mb-4" style="color: #1E3A5F;">Van datingbureau naar digitale coach</h3>
+                            <p class="text-lg" style="color: #1E3A5F;">Na meer dan tien jaar ervaring wilde ik nog een stap verder gaan. Persoonlijke begeleiding is niet voor iedereen betaalbaar of toegankelijk. Daarom besloot ik mijn kennis te combineren met AI-technologie.</p>
+                            <p class="text-lg mt-4" style="color: #1E3A5F;">Zo ontstond DatingAssistent.nl: een virtuele datingcoach, altijd beschikbaar, slimmer, sneller en betaalbaarder.</p>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="about-slide absolute w-full h-full p-8 md:p-12 opacity-0">
+                             <div class="grid md:grid-cols-3 gap-8 items-center h-full">
+                                <div class="md:col-span-1">
+                                    <img src="https://placehold.co/400x400/F9F9F6/1E3A5F?text=Vincent" alt="Vincent van Munster" class="rounded-full mx-auto shadow-lg w-40 h-40 md:w-full md:h-auto">
+                                </div>
+                                <div class="md:col-span-2 text-center md:text-left">
+                                    <h3 class="text-2xl font-bold mb-4" style="color: #1E3A5F;">Wie is Vincent van Munster?</h3>
+                                    <p class="text-lg" style="color: #1E3A5F;">Ik ben een sociaal ondernemer die altijd bezig is met verbinding. Met DatingAssistent combineer ik mijn ervaring als coach met de kracht van technologie om daten voor iedereen toegankelijker te maken.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slide 4 -->
+                        <div class="about-slide absolute w-full h-full p-8 md:p-12 text-center flex flex-col justify-center items-center opacity-0">
+                            <h3 class="text-2xl font-bold mb-4" style="color: #1E3A5F;">Onze missie</h3>
+                            <div class="border rounded-xl p-6" style="border-color: #FF4D6D;">
+                               <p class="text-xl italic" style="color: #1E3A5F;">"Wij willen daten makkelijker, eerlijker en leuker maken. Met DatingAssistent sta je er nooit alleen voor."</p>
+                               <p class="mt-6 text-lg" style="color: #1E3A5F;">👉 Wij zijn er om je te helpen.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="prev-slide" class="absolute top-1/2 left-0 md:-left-16 transform -translate-y-1/2 p-3 rounded-full transition-colors" style="background-color: #FF4D6D;"><svg class="w-6 h-6" style="color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+                    <button id="next-slide" class="absolute top-1/2 right-0 md:-right-16 transform -translate-y-1/2 p-3 rounded-full transition-colors" style="background-color: #FF4D6D;"><svg class="w-6 h-6" style="color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+                    <div id="slider-dots" class="text-center mt-6 flex justify-center space-x-2 slider-dots"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 7. Blog Sectie -->
+        <section id="blog" class="py-20" style="background-color: #F9F9F6;">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold" style="color: #1E3A5F;">Blog & Tips</h2>
+                    <p class="text-lg mt-2 max-w-2xl mx-auto" style="color: #1E3A5F;">Ontdek inspirerende verhalen, tips van onze datingcoaches en ervaringen.</p>
+                </div>
+                <div id="blog-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Blogs worden hier dynamisch geladen -->
+                    <div class="col-span-3 text-center py-8">
+                        <p class="text-gray-400">Blogs laden...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t" style="background-color: #F9F9F6; border-color: #E6E6EB; color: #1E3A5F;">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
+                <svg class="w-6 h-6 accent-color" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span class="accent-color">Dating</span>Assistent
+            </p>
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="/#prijzen" style="color: #1E3A5F;" class="hover:text-primary">Prijzen</a>
+                <a href="/reviews" style="color: #1E3A5F;" class="hover:text-primary">Reviews</a>
+                <a href="/#over-ons" style="color: #1E3A5F;" class="hover:text-primary">Over ons</a>
+                <a href="/privacyverklaring" style="color: #1E3A5F;" class="hover:text-primary">Privacy</a>
+                <a href="/blog" style="color: #1E3A5F;" class="hover:text-primary">Blog</a>
+                <a href="/#contact" style="color: #1E3A5F;" class="hover:text-primary">Contact</a>
+            </div>
+            <p style="color: #1E3A5F;">&copy; 2024 DatingAssistent.nl. Alle rechten voorbehouden.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Load Blogs from Neon API
+        async function loadBlogs() {
+            try {
+                const blogContainer = document.getElementById('blog-container');
+
+                // Fetch blogs from Neon API instead of Firebase
+                const response = await fetch(`${appLoginUrl}/api/blogs?type=latest&limit=3`);
+                const blogs = await response.json();
+
+                console.log('📚 Loaded blogs from API:', blogs);
+
+                if (!blogs || blogs.length === 0) {
+                    blogContainer.innerHTML = '<div class="col-span-3 text-center py-8"><p class="text-gray-400">Binnenkort verschijnen hier onze eerste blog posts!</p></div>';
+                    return;
+                }
+
+                blogContainer.innerHTML = '';
+                blogs.forEach((blog) => {
+                    console.log('Blog data:', {
+                        title: blog.title,
+                        placeholder_text: blog.placeholder_text,
+                        featured_image: blog.featured_image,
+                        slug: blog.slug
+                    });
+
+                    const blogUrl = `${appLoginUrl}/blog/${blog.slug}`;
+                    // Use placeholder_text if available, otherwise use first word of title
+                    const placeholderText = (blog.placeholder_text && blog.placeholder_text.trim() !== '')
+                        ? blog.placeholder_text
+                        : (blog.title ? blog.title.split(' ')[0].toUpperCase() : 'DA');
+
+                    console.log('Using placeholder text:', placeholderText);
+
+                    const blogCard = `
+                        <a href="${blogUrl}" class="block card-bg rounded-2xl overflow-hidden blog-card transition-all duration-300 border" style="border-color: #E6E6EB;">
+                            ${blog.featured_image ? `<img src="${blog.featured_image}" alt="${blog.title}" class="w-full h-48 object-cover">` : `<div class="w-full h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #FF4D6D 0%, #FF8FA3 100%);"><span class="text-white text-6xl font-black" style="text-shadow: 0 3px 15px rgba(0,0,0,0.3); letter-spacing: 2px;">${placeholderText}</span></div>`}
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2" style="color: #1E3A5F;">${blog.title}</h3>
+                                <p class="mb-4" style="color: #666;">${blog.excerpt || blog.seo_description || 'Lees meer...'}</p>
+                                <span class="font-semibold accent-color">Lees meer &rarr;</span>
+                            </div>
+                        </a>
+                    `;
+                    blogContainer.innerHTML += blogCard;
+                });
+            } catch (error) {
+                console.error('Error loading blogs:', error);
+                document.getElementById('blog-container').innerHTML = '<div class="col-span-3 text-center py-8"><p class="text-gray-400">Kon blogs niet laden. Probeer later opnieuw.</p></div>';
+            }
+        }
+
+        // Load Reviews from Neon API
+        async function loadReviews() {
+            try {
+                const response = await fetch('/api/reviews');
+                const data = await response.json();
+                
+                const reviewTrack = document.getElementById('review-slider-track');
+                
+                if (!data.success || !data.reviews || data.reviews.length === 0) {
+                    reviewTrack.innerHTML = '<div class="w-full text-center py-12"><p class="text-gray-400">Binnenkort verschijnen hier reviews van tevreden gebruikers!</p></div>';
+                    return;
+                }
+                
+                const reviews = data.reviews;
+                
+                // Groepeer reviews in slides van 3
+                const slides = [];
+                for (let i = 0; i < reviews.length; i += 3) {
+                    slides.push(reviews.slice(i, i + 3));
+                }
+                
+                reviewTrack.innerHTML = '';
+                slides.forEach((slideReviews) => {
+                    let slideHTML = '<div class="w-full flex-shrink-0 grid grid-cols-1 md:grid-cols-3 gap-8 px-4">';
+                    slideReviews.forEach((review) => {
+                        const stars = '★'.repeat(review.rating || 5) + '☆'.repeat(5 - (review.rating || 5));
+                        const avatarInitial = review.name ? review.name.charAt(0).toUpperCase() : 'U';
+                        const avatarImg = review.avatar || `https://placehold.co/100x100/1c1c2e/e0e0e0?text=${avatarInitial}`;
+                        
+                        slideHTML += `
+                            <div class="card card-bg p-8 rounded-2xl">
+                                <p class="text-gray-300 italic">"${review.content}"</p>
+                                <div class="flex items-center mt-6">
+                                    <img class="w-12 h-12 rounded-full mr-4" src="${avatarImg}" alt="Foto van ${review.name}">
+                                    <div>
+                                        <p class="font-semibold text-white">${review.name}</p>
+                                        <p class="text-sm text-gray-400">${review.role || 'Gebruiker'}</p>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-yellow-500 text-sm">${stars}</div>
+                            </div>
+                        `;
+                    });
+                    slideHTML += '</div>';
+                    reviewTrack.innerHTML += slideHTML;
+                });
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load data from Firebase
+            setTimeout(() => {
+                loadBlogs();
+                loadReviews();
+            }, 500);
+            // Pricing Toggle Logic
+            const monthlyBtn = document.getElementById('monthly-btn');
+            const yearlyBtn = document.getElementById('yearly-btn');
+            if (monthlyBtn) {
+                const prices = document.querySelectorAll('.price');
+                const pricePeriods = document.querySelectorAll('.price-period');
+
+                function updatePrices(isYearly) {
+                    if (isYearly) {
+                        monthlyBtn.classList.remove('active');
+                        yearlyBtn.classList.add('active');
+                        prices.forEach(p => { p.textContent = '€' + p.dataset.yearly; });
+                        pricePeriods.forEach(p => { p.textContent = '/ jaar'; });
+                    } else {
+                        yearlyBtn.classList.remove('active');
+                        monthlyBtn.classList.add('active');
+                        prices.forEach(p => { p.textContent = '€' + p.dataset.monthly; });
+                        pricePeriods.forEach(p => { p.textContent = '/ maand'; });
+                    }
+                }
+                monthlyBtn.addEventListener('click', () => updatePrices(false));
+                yearlyBtn.addEventListener('click', () => updatePrices(true));
+            }
+
+            // About Us Slider Logic
+            const aboutSlides = document.querySelectorAll('.about-slide');
+            const aboutDotsContainer = document.querySelector('#about-slider .slider-dots');
+            const aboutPrevBtn = document.getElementById('prev-slide');
+            const aboutNextBtn = document.getElementById('next-slide');
+            let currentAboutSlide = 0;
+
+            if (aboutSlides.length > 0) {
+                 aboutSlides.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.classList.add('dot');
+                    dot.addEventListener('click', () => showAboutSlide(i));
+                    aboutDotsContainer.appendChild(dot);
+                });
+                const aboutDots = aboutDotsContainer.querySelectorAll('.dot');
+
+                function showAboutSlide(index) {
+                    if(index >= aboutSlides.length) index = 0;
+                    if(index < 0) index = aboutSlides.length - 1;
+
+                    aboutSlides.forEach((slide) => {
+                        slide.classList.add('opacity-0', 'absolute');
+                    });
+                    
+                    aboutSlides[index].classList.remove('opacity-0', 'absolute');
+
+                    aboutDots.forEach(dot => dot.classList.remove('active'));
+                    aboutDots[index].classList.add('active');
+                    currentAboutSlide = index;
+                }
+
+                aboutNextBtn.addEventListener('click', () => showAboutSlide(currentAboutSlide + 1));
+                aboutPrevBtn.addEventListener('click', () => showAboutSlide(currentAboutSlide - 1));
+                showAboutSlide(0);
+            }
+
+            // Review Slider Logic
+            const reviewTrack = document.getElementById('review-slider-track');
+            if(reviewTrack) {
+                const prevReviewBtn = document.getElementById('prev-review');
+                const nextReviewBtn = document.getElementById('next-review');
+                const totalSlides = reviewTrack.children.length;
+                let currentReviewSlide = 0;
+
+                function updateReviewSlider() {
+                    reviewTrack.style.transform = `translateX(-${currentReviewSlide * 100}%)`;
+                }
+
+                nextReviewBtn.addEventListener('click', () => {
+                    currentReviewSlide = (currentReviewSlide + 1) % totalSlides;
+                    updateReviewSlider();
+                });
+
+                prevReviewBtn.addEventListener('click', () => {
+                    currentReviewSlide = (currentReviewSlide - 1 + totalSlides) % totalSlides;
+                    updateReviewSlider();
+                });
+            }
+            
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResultContainer = document.getElementById('quiz-result');
+            if(quizContainer) {
+                const questions = [
+                    { question: "Hoe vind jij daten?", answers: { A: "Spannend, maar soms ook lastig", B: "Leuk, ik heb alles onder controle", C: "Stressvol, ik weet niet waar te beginnen" } },
+                    { question: "Wat is voor jou het moeilijkst aan online daten?", answers: { A: "Een profiel maken dat echt bij me past", B: "Een goed gesprek beginnen", C: "Consistent leuke matches vinden" } },
+                    { question: "Hoe vaak heb je hulp nodig bij daten?", answers: { A: "Regelmatig, ik kan wat tips gebruiken", B: "Af en toe, vooral als het echt nodig is", C: "Niet echt, ik doe het graag zelf" } },
+                    { question: "Welke van deze klinkt als jij?", answers: { A: "Ik wil graag dat iemand me een duwtje geeft in de juiste richting", B: "Ik probeer van alles, maar kan wel wat inspiratie gebruiken", C: "Ik hou van zelfstandig daten en ontdek graag zelf" } }
+                ];
+
+                const results = {
+                    A: { title: "DatingAssistent is perfect voor jou!", text: "Je wilt graag begeleiding en slimme tips om sneller succes te hebben." },
+                    B: { title: "DatingAssistent kan handig zijn voor je.", text: "Je hebt al een idee wat je doet, maar af en toe een coach helpt je verder." },
+                    C: { title: "Je doet het liever zelf.", text: "Misschien gebruik je DatingAssistent af en toe voor inspiratie, maar je houdt van zelfstandigheid." }
+                };
+
+                let currentQuestionIndex = 0;
+                let userAnswers = { A: 0, B: 0, C: 0 };
+
+                function showQuestion() {
+                    if (currentQuestionIndex >= questions.length) {
+                        showResult();
+                        return;
+                    }
+                    const q = questions[currentQuestionIndex];
+                    let answersHtml = '';
+                    for (const key in q.answers) {
+                        answersHtml += `<button data-answer="${key}" class="quiz-option block w-full text-left p-4 my-2 rounded-lg">${q.answers[key]}</button>`;
+                    }
+                    quizContainer.innerHTML = `
+                        <h3 class="text-xl font-bold text-white mb-4">${q.question}</h3>
+                        <div>${answersHtml}</div>
+                        <div class="mt-4 text-sm text-gray-400">Vraag ${currentQuestionIndex + 1} van ${questions.length}</div>
+                    `;
+                    document.querySelectorAll('.quiz-option').forEach(button => {
+                        button.addEventListener('click', handleAnswer);
+                    });
+                }
+
+                function handleAnswer(e) {
+                    const selectedAnswer = e.target.dataset.answer;
+                    userAnswers[selectedAnswer]++;
+                    currentQuestionIndex++;
+                    showQuestion();
+                }
+
+                function showResult() {
+                    let maxCount = 0;
+                    let resultKey = 'A';
+                    for(const key in userAnswers) {
+                        if(userAnswers[key] > maxCount) {
+                            maxCount = userAnswers[key];
+                            resultKey = key;
+                        }
+                    }
+
+                    document.getElementById('result-title').textContent = results[resultKey].title;
+                    document.getElementById('result-text').textContent = results[resultKey].text;
+                    quizContainer.classList.add('hidden');
+                    quizResultContainer.classList.remove('hidden');
+                }
+                
+                showQuestion();
+            }
+        });
+    </script>
+</body>
+</html>
+
