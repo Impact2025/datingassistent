@@ -50,7 +50,17 @@ const nextConfig: NextConfig = {
   },
 
   // External packages for server components
-  serverExternalPackages: [],
+  // Exclude browser-only libraries from server bundle
+  serverExternalPackages: [
+    'dompurify',
+    'isomorphic-dompurify',
+    'socket.io-client',
+    '@tiptap/react',
+    '@tiptap/starter-kit',
+    '@tiptap/extension-image',
+    '@tiptap/extension-link',
+    '@tiptap/extension-placeholder',
+  ],
 
   // Bundle optimization and performance
   experimental: {
@@ -71,18 +81,6 @@ const nextConfig: NextConfig = {
 
   // Webpack configuration for bundle optimization
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Fix "self is not defined" error in server-side bundles
-    if (isServer) {
-      // Inject polyfill at the very start of every server bundle
-      config.plugins.push(
-        new webpack.BannerPlugin({
-          banner: 'if (typeof self === "undefined") { globalThis.self = globalThis; } if (typeof window === "undefined") { globalThis.window = globalThis; }',
-          raw: true,
-          entryOnly: false,
-        })
-      );
-    }
-
     // Bundle analyzer (only in development)
     if (!dev && !isServer) {
       try {
