@@ -6,11 +6,11 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-// TEMPORARILY DISABLED: Imports commented out to avoid Edge Runtime compatibility issues
-// TODO: Re-enable after deployment with proper Edge Runtime compatible implementations
-// import { securityHeadersMiddleware, applyAPISecurityHeaders, applyAdminSecurityHeaders } from '@/lib/security-headers';
-// import { csrfProtectionMiddleware } from '@/lib/csrf';
-// import { adminSecurityMiddleware } from '@/lib/admin-security';
+// EDGE-COMPATIBLE SECURITY - Re-enabled with proper Edge Runtime support
+import { securityHeadersMiddleware, applyAPISecurityHeaders, applyAdminSecurityHeaders } from '@/lib/security-headers';
+import { csrfProtectionMiddleware } from '@/lib/csrf-edge';
+import { rateLimitMiddleware, getRateLimitConfigForPath } from '@/lib/rate-limit-edge';
+import { adminSecurityMiddleware } from '@/lib/admin-security';
 
 // ============================================================================
 // CONFIGURATION
@@ -96,14 +96,6 @@ function getSecurityContext(request: NextRequest) {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
-  // TEMPORARILY DISABLED: Security headers blocking reCAPTCHA and external resources
-  // TODO: Re-enable with proper CSP configuration after deployment testing
-
-  // Just pass through all requests without security headers for now
-  return NextResponse.next();
-
-  /* ORIGINAL CODE - RE-ENABLE LATER
   const securityContext = getSecurityContext(request);
 
   // Log security events in production
@@ -114,6 +106,13 @@ export async function middleware(request: NextRequest) {
   // Bypass security for certain paths
   if (shouldBypassSecurity(pathname)) {
     return NextResponse.next();
+  }
+
+  // Apply rate limiting based on path
+  const rateLimitConfig = getRateLimitConfigForPath(pathname);
+  const rateLimitResponse = await rateLimitMiddleware(request, rateLimitConfig);
+  if (rateLimitResponse) {
+    return rateLimitResponse;
   }
 
   // Skip static assets (but still apply basic security headers)
@@ -147,7 +146,6 @@ export async function middleware(request: NextRequest) {
 
   // Default: apply basic security headers
   return securityHeadersMiddleware(request);
-  */
 }
 
 // ============================================================================
@@ -176,7 +174,7 @@ async function handleAdminRoute(request: NextRequest): Promise<NextResponse | nu
   }
 
   // Apply CSRF protection for state-changing operations
-  const csrfResponse = csrfProtectionMiddleware(request);
+  const csrfResponse = await csrfProtectionMiddleware(request);
   if (csrfResponse) {
     return csrfResponse;
   }
@@ -193,7 +191,7 @@ async function handleAPIRoute(request: NextRequest): Promise<NextResponse | null
   const { pathname } = request.nextUrl;
 
   // Apply CSRF protection for state-changing API calls
-  const csrfResponse = csrfProtectionMiddleware(request);
+  const csrfResponse = await csrfProtectionMiddleware(request);
   if (csrfResponse) {
     return csrfResponse;
   }
