@@ -390,15 +390,21 @@ export async function initializeAuditTables(): Promise<void> {
         user_agent TEXT,
         details JSONB,
         session_id VARCHAR(100),
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-
-        -- Indexes for performance
-        INDEX idx_admin_audit_user_id (user_id),
-        INDEX idx_admin_audit_action (action),
-        INDEX idx_admin_audit_resource (resource),
-        INDEX idx_admin_audit_created_at (created_at),
-        INDEX idx_admin_audit_success (success)
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       )
+    `;
+
+    // Create indexes separately (PostgreSQL doesn't support inline INDEX in CREATE TABLE)
+    await sql`CREATE INDEX IF NOT EXISTS idx_admin_audit_user_id ON admin_audit_logs (user_id)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_admin_audit_action ON admin_audit_logs (action)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_admin_audit_resource ON admin_audit_logs (resource)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_admin_audit_created_at ON admin_audit_logs (created_at)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_admin_audit_success ON admin_audit_logs (success)`;
+
+    // Create composite index for common queries
+    await sql`
+      CREATE INDEX IF NOT EXISTS idx_admin_audit_user_created
+      ON admin_audit_logs (user_id, created_at DESC)
     `;
 
     // Create retention policy (keep logs for 2 years)
@@ -416,9 +422,16 @@ export async function initializeAuditTables(): Promise<void> {
 
   } catch (error) {
     console.error('Failed to initialize audit tables:', error);
-    throw error;
+    // Don't throw - allow app to continue even if audit tables fail
+    // Audit logging is important but not critical for app functionality
   }
 }
 
-// Initialize tables on module load
-initializeAuditTables().catch(console.error);
+// MIGRATION NOTE: Table initialization moved to src/lib/db/migrations.ts
+// Use the migrations system instead of auto-initialization on module load
+// This prevents race conditions and provides better control over schema changes
+
+// Uncomment below ONLY if you need immediate initialization in development
+// if (process.env.NODE_ENV === 'development') {
+//   initializeAuditTables().catch(console.error);
+// }
