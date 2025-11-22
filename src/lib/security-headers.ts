@@ -46,14 +46,31 @@ const DEFAULT_SECURITY_CONFIG: SecurityHeadersConfig = {
   csp: {
     enabled: true,
     defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Allow Next.js
+    scriptSrc: [
+      "'self'",
+      "'unsafe-inline'",
+      "'unsafe-eval'",
+      "https://www.google.com",
+      "https://www.gstatic.com"
+    ], // Allow Next.js + reCAPTCHA
     styleSrc: ["'self'", "'unsafe-inline'"], // Allow styled-components
     imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
     fontSrc: ["'self'", 'data:', 'https:'],
-    connectSrc: ["'self'", 'https:', 'wss:'],
+    connectSrc: [
+      "'self'",
+      'https:',
+      'wss:',
+      'https://*.neon.tech', // Neon Database
+      'https://www.google.com',
+      'https://api.openrouter.ai'
+    ],
     mediaSrc: ["'self'", 'https:', 'blob:'],
     objectSrc: ["'none'"],
-    frameSrc: ["'self'"],
+    frameSrc: [
+      "'self'",
+      "https://www.google.com",
+      "https://www.gstatic.com"
+    ], // Allow reCAPTCHA frames
     frameAncestors: ["'none'"],
     reportUri: '/api/security/csp-report'
   },

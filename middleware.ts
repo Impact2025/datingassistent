@@ -1,9 +1,15 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
+import { applySecurityHeaders, getSecurityConfig } from './src/lib/security-headers';
+
+// Validate JWT_SECRET exists
+if (!process.env.JWT_SECRET) {
+  console.error('❌ CRITICAL: JWT_SECRET is not set in environment variables!');
+}
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+  process.env.JWT_SECRET || 'INSECURE-FALLBACK-DO-NOT-USE-IN-PRODUCTION'
 );
 
 // Routes that require journey completion
@@ -45,12 +51,16 @@ const ONBOARDING_ROUTE = '/onboarding';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow API routes - explicit check first
+  // Get security config based on environment
+  const securityConfig = getSecurityConfig();
+
+  // Allow API routes - explicit check first (but apply security headers)
   if (pathname.startsWith('/api/')) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    return applySecurityHeaders(response, securityConfig);
   }
 
-  // Allow static files and public assets
+  // Allow static files and public assets (no security headers needed)
   if (
     pathname.startsWith('/_next/') ||
     pathname.startsWith('/images/') ||
@@ -60,19 +70,22 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Allow public routes
+  // Allow public routes (with security headers)
   if (PUBLIC_ROUTES.some(route => pathname === route || pathname.startsWith(route + '/'))) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    return applySecurityHeaders(response, securityConfig);
   }
 
-  // Allow onboarding route
+  // Allow onboarding route (with security headers)
   if (pathname === ONBOARDING_ROUTE || pathname.startsWith(ONBOARDING_ROUTE + '/')) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    return applySecurityHeaders(response, securityConfig);
   }
 
   // Allow admin routes for now (admin check happens in admin layout)
   if (ADMIN_ROUTES.some(route => pathname.startsWith(route))) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    return applySecurityHeaders(response, securityConfig);
   }
 
   // Check if route is protected
@@ -81,8 +94,9 @@ export async function middleware(request: NextRequest) {
   );
 
   if (!isProtectedRoute) {
-    // Not a protected route, allow access
-    return NextResponse.next();
+    // Not a protected route, allow access (with security headers)
+    const response = NextResponse.next();
+    return applySecurityHeaders(response, securityConfig);
   }
 
   // Protected route - SIMPLIFIED: Let client-side handle full auth
@@ -95,7 +109,8 @@ export async function middleware(request: NextRequest) {
     // This prevents loops when token is in localStorage but not in cookies
     if (!authToken) {
       console.log('⚠️  Middleware: No cookie token, allowing through (client-side will handle auth)');
-      return NextResponse.next();
+      const response = NextResponse.next();
+      return applySecurityHeaders(response, securityConfig);
     }
 
     // Verify token and get user ID
@@ -105,18 +120,20 @@ export async function middleware(request: NextRequest) {
       console.log('🔒 Middleware: Invalid token in cookie, clearing and redirecting');
       const response = NextResponse.redirect(new URL('/login', request.url));
       response.cookies.delete('datespark_auth_token');
-      return response;
+      return applySecurityHeaders(response, securityConfig);
     }
 
     // Token is valid, allow through
     // Journey status check is handled client-side in UserProvider
     console.log(`✅ Middleware: Valid token for user ${userId}, allowing access to ${pathname}`);
-    return NextResponse.next();
+    const response = NextResponse.next();
+    return applySecurityHeaders(response, securityConfig);
 
   } catch (error) {
     console.error('❌ Middleware error:', error);
     // On error, allow through - client will handle
-    return NextResponse.next();
+    const response = NextResponse.next();
+    return applySecurityHeaders(response, securityConfig);
   }
 }
 

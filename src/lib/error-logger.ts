@@ -1,0 +1,182 @@
+/**
+ * ERROR LOGGING UTILITY
+ * Centralized error handling and logging
+ * Created: 2025-11-22
+ */
+
+export type ErrorSeverity = 'low' | 'medium' | 'high' | 'critical';
+
+export interface ErrorLogContext {
+  userId?: number;
+  userEmail?: string;
+  route?: string;
+  action?: string;
+  metadata?: Record<string, any>;
+}
+
+export interface ErrorLog {
+  message: string;
+  severity: ErrorSeverity;
+  timestamp: string;
+  error?: Error;
+  context?: ErrorLogContext;
+  digest?: string;
+  userAgent?: string;
+  url?: string;
+}
+
+/**
+ * Log an error with context
+ */
+export function logError(
+  error: Error | string,
+  severity: ErrorSeverity = 'medium',
+  context?: ErrorLogContext
+): void {
+  const errorMessage = typeof error === 'string' ? error : error.message;
+  const errorStack = typeof error === 'string' ? undefined : error.stack;
+
+  const log: ErrorLog = {
+    message: errorMessage,
+    severity,
+    timestamp: new Date().toISOString(),
+    error: typeof error === 'string' ? undefined : error,
+    context,
+    userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
+    url: typeof window !== 'undefined' ? window.location.href : undefined,
+  };
+
+  // Console logging with severity-based formatting
+  const emoji = {
+    low: '📝',
+    medium: '⚠️ ',
+    high: '🔴',
+    critical: '🚨',
+  }[severity];
+
+  console.error(emoji + ' ERROR:', {
+    message: errorMessage,
+    severity,
+    context,
+    stack: errorStack,
+  });
+
+  // In production, send to error tracking service
+  if (process.env.NODE_ENV === 'production') {
+    // TODO: Integrate with Sentry, LogRocket, etc.
+    sendToErrorTracking(log);
+  }
+
+  // Store in localStorage for debugging (development only)
+  if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+    try {
+      const recentErrors = JSON.parse(localStorage.getItem('dev_errors') || '[]');
+      recentErrors.unshift(log);
+      // Keep only last 50 errors
+      localStorage.setItem('dev_errors', JSON.stringify(recentErrors.slice(0, 50)));
+    } catch (e) {
+      // Silent fail
+    }
+  }
+}
+
+/**
+ * Send error to tracking service (placeholder)
+ */
+function sendToErrorTracking(log: ErrorLog): void {
+  // TODO: Implement actual error tracking
+  // Example integrations:
+  // - Sentry.captureException(log.error, { contexts: log.context });
+  // - LogRocket.captureException(log.error);
+  // - Custom API endpoint
+
+  if (typeof window !== 'undefined') {
+    // For now, just send to a custom endpoint if available
+    fetch('/api/errors/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(log),
+    }).catch(() => {
+      // Silent fail - don't want error logging to cause more errors
+    });
+  }
+}
+
+/**
+ * Log API errors specifically
+ */
+export function logAPIError(
+  endpoint: string,
+  error: Error | string,
+  statusCode?: number,
+  context?: ErrorLogContext
+): void {
+  logError(error, statusCode && statusCode >= 500 ? 'high' : 'medium', {
+    ...context,
+    action: 'api_call',
+    metadata: {
+      ...context?.metadata,
+      endpoint,
+      statusCode,
+    },
+  });
+}
+
+/**
+ * Log authentication errors
+ */
+export function logAuthError(
+  error: Error | string,
+  context?: ErrorLogContext
+): void {
+  logError(error, 'high', {
+    ...context,
+    action: 'authentication',
+  });
+}
+
+/**
+ * Log payment errors (critical!)
+ */
+export function logPaymentError(
+  error: Error | string,
+  context?: ErrorLogContext
+): void {
+  logError(error, 'critical', {
+    ...context,
+    action: 'payment',
+  });
+}
+
+/**
+ * Get recent errors (development only)
+ */
+export function getRecentErrors(): ErrorLog[] {
+  if (typeof window === 'undefined') return [];
+
+  try {
+    return JSON.parse(localStorage.getItem('dev_errors') || '[]');
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Clear error log (development only)
+ */
+export function clearErrorLog(): void {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('dev_errors');
+  }
+}
+
+/**
+ * React hook for error handling
+ */
+export function useErrorHandler() {
+  const handleError = (error: Error | string, context?: ErrorLogContext) => {
+    logError(error, 'medium', context);
+  };
+
+  return { handleError, logError, logAPIError, logAuthError, logPaymentError };
+}
