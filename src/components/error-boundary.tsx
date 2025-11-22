@@ -4,9 +4,15 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 
-// TODO: Re-enable Sentry after successful deployment and proper configuration
-// For now, using console.error for error logging to avoid "self is not defined" build errors
-// import * as Sentry from '@sentry/nextjs';
+// Sentry is now properly configured with Edge Runtime support
+// Only import on client-side to avoid build issues
+const isBrowser = typeof window !== 'undefined';
+let Sentry: typeof import('@sentry/nextjs') | null = null;
+
+if (isBrowser) {
+  // Dynamic import only in browser environment
+  Sentry = require('@sentry/nextjs');
+}
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -31,11 +37,23 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log error to console (TODO: integrate Sentry after deployment)
-    console.error('Error caught by ErrorBoundary:', error, errorInfo);
-
-    // In production, you could send this to an error tracking service
-    // Sentry.captureException(error, { ... })
+    // Log error to Sentry if available (browser only)
+    if (Sentry && isBrowser) {
+      Sentry.captureException(error, {
+        contexts: {
+          react: {
+            componentStack: errorInfo.componentStack,
+          },
+        },
+        level: 'error',
+        tags: {
+          errorBoundary: true,
+        },
+      });
+    } else {
+      // Fallback to console in development or SSR
+      console.error('Error caught by ErrorBoundary:', error, errorInfo);
+    }
 
     // Call custom error handler if provided
     this.props.onError?.(error, errorInfo);
@@ -116,11 +134,23 @@ function DefaultErrorFallback({ error, resetError }: DefaultErrorFallbackProps) 
 // Hook for functional components
 export function useErrorHandler() {
   return (error: Error, errorInfo?: { componentStack?: string }) => {
-    // Log error to console (TODO: integrate Sentry after deployment)
-    console.error('Error:', error, errorInfo);
-
-    // In production, you could send this to an error tracking service
-    // Sentry.captureException(error, { ... })
+    // Log error to Sentry if available (browser only)
+    if (Sentry && isBrowser) {
+      Sentry.captureException(error, {
+        contexts: {
+          react: {
+            componentStack: errorInfo?.componentStack,
+          },
+        },
+        level: 'error',
+        tags: {
+          hook: 'useErrorHandler',
+        },
+      });
+    } else {
+      // Fallback to console in development or SSR
+      console.error('Error:', error, errorInfo);
+    }
   };
 }
 
