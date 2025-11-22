@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { AICoachService } from './ai-coach-service';
+import { AIDatingCoach, AICoachService } from './ai-coach-service';
 
 export class AIAnalysisService {
   /**

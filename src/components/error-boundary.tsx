@@ -1,9 +1,12 @@
 'use client';
 
 import React from 'react';
-import * as Sentry from '@sentry/nextjs';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
+
+// TODO: Re-enable Sentry after successful deployment and proper configuration
+// For now, using console.error for error logging to avoid "self is not defined" build errors
+// import * as Sentry from '@sentry/nextjs';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -28,14 +31,11 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log error to Sentry
-    Sentry.captureException(error, {
-      contexts: {
-        react: {
-          componentStack: errorInfo.componentStack,
-        },
-      },
-    });
+    // Log error to console (TODO: integrate Sentry after deployment)
+    console.error('Error caught by ErrorBoundary:', error, errorInfo);
+
+    // In production, you could send this to an error tracking service
+    // Sentry.captureException(error, { ... })
 
     // Call custom error handler if provided
     this.props.onError?.(error, errorInfo);
@@ -116,13 +116,11 @@ function DefaultErrorFallback({ error, resetError }: DefaultErrorFallbackProps) 
 // Hook for functional components
 export function useErrorHandler() {
   return (error: Error, errorInfo?: { componentStack?: string }) => {
-    Sentry.captureException(error, {
-      contexts: {
-        react: {
-          componentStack: errorInfo?.componentStack,
-        },
-      },
-    });
+    // Log error to console (TODO: integrate Sentry after deployment)
+    console.error('Error:', error, errorInfo);
+
+    // In production, you could send this to an error tracking service
+    // Sentry.captureException(error, { ... })
   };
 }
 

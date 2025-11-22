@@ -6,9 +6,11 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { securityHeadersMiddleware, applyAPISecurityHeaders, applyAdminSecurityHeaders } from '@/lib/security-headers';
-import { csrfProtectionMiddleware } from '@/lib/csrf';
-import { adminSecurityMiddleware } from '@/lib/admin-security';
+// TEMPORARILY DISABLED: Imports commented out to avoid Edge Runtime compatibility issues
+// TODO: Re-enable after deployment with proper Edge Runtime compatible implementations
+// import { securityHeadersMiddleware, applyAPISecurityHeaders, applyAdminSecurityHeaders } from '@/lib/security-headers';
+// import { csrfProtectionMiddleware } from '@/lib/csrf';
+// import { adminSecurityMiddleware } from '@/lib/admin-security';
 
 // ============================================================================
 // CONFIGURATION

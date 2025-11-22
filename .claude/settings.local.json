@@ -65,7 +65,11 @@
       "Bash(find:*)",
       "Bash(.gitignore)",
       "Bash(git mv:*)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "Bash(cmd /c \"if exist .env.example type .env.example\")",
+      "Bash(cmd /c \"if exist .env.example (echo EXISTS) else (echo NOT_EXISTS)\")",
+      "Bash(cmd /c \"dir src\\lib\\ai*.* /b 2>nul\")",
+      "Bash(cmd /c \"dir /b /a:d src 2>nul | findstr /i pages\")"
     ],
     "deny": [],
     "ask": []
