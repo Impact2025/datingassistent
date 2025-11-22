@@ -96,16 +96,10 @@ export function useRecaptchaV3(siteKey: string) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Skip reCAPTCHA entirely in development mode
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🧪 Development mode: Skipping reCAPTCHA initialization');
+    // Skip reCAPTCHA entirely in development mode OR if no siteKey
+    if (process.env.NODE_ENV === 'development' || !siteKey || siteKey.trim() === '') {
+      console.log('🧪 Skipping reCAPTCHA initialization (development or no siteKey)');
       setIsLoaded(true); // Mark as loaded to prevent errors
-      return;
-    }
-
-    // Don't load reCAPTCHA if siteKey is not provided
-    if (!siteKey || siteKey.trim() === '') {
-      console.warn('reCAPTCHA siteKey not provided, skipping initialization');
       return;
     }
 
@@ -129,15 +123,10 @@ export function useRecaptchaV3(siteKey: string) {
   }, [siteKey]);
 
   const execute = async (action: string = 'submit'): Promise<string | null> => {
-    // Skip reCAPTCHA entirely in development mode
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🧪 Development mode: Bypassing reCAPTCHA verification');
-      return 'bypass_development'; // Return a bypass token for development
-    }
-
-    if (!siteKey || siteKey.trim() === '') {
-      console.warn('reCAPTCHA siteKey not configured, skipping verification');
-      return 'bypass'; // Return a bypass token for development
+    // Skip reCAPTCHA if in development OR no siteKey
+    if (process.env.NODE_ENV === 'development' || !siteKey || siteKey.trim() === '') {
+      console.log('🧪 Bypassing reCAPTCHA verification (development or no siteKey)');
+      return 'bypass'; // Return a bypass token
     }
 
     if (!isLoaded || !window.grecaptcha) {
