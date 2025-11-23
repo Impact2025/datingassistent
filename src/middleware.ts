@@ -8,7 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 // EDGE-COMPATIBLE SECURITY - Re-enabled with proper Edge Runtime support
 import { securityHeadersMiddleware, applyAPISecurityHeaders, applyAdminSecurityHeaders } from '@/lib/security-headers';
-import { csrfProtectionMiddleware } from '@/lib/csrf-edge';
+import { csrfProtectionMiddleware, getCSRFConfig } from '@/lib/csrf-edge';
 import { rateLimitMiddleware, getRateLimitConfigForPath } from '@/lib/rate-limit-edge';
 import { adminSecurityMiddleware } from '@/lib/admin-security';
 
@@ -174,7 +174,8 @@ async function handleAdminRoute(request: NextRequest): Promise<NextResponse | nu
   }
 
   // Apply CSRF protection for state-changing operations
-  const csrfResponse = await csrfProtectionMiddleware(request);
+  const csrfConfig = getCSRFConfig();
+  const csrfResponse = await csrfProtectionMiddleware(request, csrfConfig);
   if (csrfResponse) {
     return csrfResponse;
   }
@@ -191,7 +192,8 @@ async function handleAPIRoute(request: NextRequest): Promise<NextResponse | null
   const { pathname } = request.nextUrl;
 
   // Apply CSRF protection for state-changing API calls
-  const csrfResponse = await csrfProtectionMiddleware(request);
+  const csrfConfig = getCSRFConfig();
+  const csrfResponse = await csrfProtectionMiddleware(request, csrfConfig);
   if (csrfResponse) {
     return csrfResponse;
   }

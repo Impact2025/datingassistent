@@ -76,7 +76,8 @@
       "Bash(srcappapijourneystatusroute.ts)",
       "Bash(srcappapijourneyprogressroute.ts)",
       "Bash(srcappapiai-contextroute.ts)",
-      "Bash(srcappapiactivitytrackroute.ts)"
+      "Bash(srcappapiactivitytrackroute.ts)",
+      "Bash(cmd /c \"type nul > src\\app\\api\\journey\\status\\route.ts && type nul > src\\app\\api\\journey\\progress\\route.ts && type nul > src\\app\\api\\ai-context\\route.ts && type nul > src\\app\\api\\activity\\track\\route.ts\")"
     ],
     "deny": [],
     "ask": []

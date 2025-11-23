@@ -229,9 +229,15 @@ export function getCSRFConfig(): CSRFConfig {
     // Enable in production, disable in development for easier testing
     enabled: isProduction,
     secure: isProduction,
-    excludePaths: isProduction
-      ? DEFAULT_CSRF_CONFIG.excludePaths
-      : [...(DEFAULT_CSRF_CONFIG.excludePaths || []), '/api/test*', '/api/db/*'] // Add test endpoints in dev
+    excludePaths: [
+      // Always exclude auth endpoints from CSRF protection
+      '/api/auth/login',
+      '/api/auth/register',
+      '/api/auth/logout',
+      '/api/health',
+      // Add development-only exclusions
+      ...(isProduction ? [] : ['/api/test*', '/api/db/*'])
+    ]
   };
 }
 
