@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 import { SkipLinks } from "@/components/accessibility/skip-links";
 import { StructuredData } from "@/components/structured-data";
 import ErrorBoundary from "@/components/error-boundary";
+import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://datingassistent.nl'),
@@ -107,12 +108,30 @@ export default function RootLayout({
   return (
     <html lang="nl">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" content="#E14874" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta name="theme-color" content="#FF6B9D" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="DatingAssistent Pro" />
+        <meta name="description" content="Je persoonlijke AI dating coach voor betere matches en dates" />
+        <meta name="keywords" content="dating, AI coach, matches, dates, relaties, profiel" />
+        <meta name="author" content="DatingAssistent" />
+
+        {/* PWA Icons */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icon-192.png" />
+        <link rel="manifest" href="/manifest.json" />
+
         <link rel="canonical" href="https://datingassistent.nl" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+
+        {/* DNS prefetch for performance */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+
         <GoogleAnalytics />
       </head>
       <body className="font-body bg-background text-foreground antialiased">
@@ -121,6 +140,7 @@ export default function RootLayout({
         <ErrorBoundary>
           <ThemeProvider>
             <WebVitals />
+            <ServiceWorkerRegistration />
             <UserProvider>
               <div id="main-content">
                 {children}
