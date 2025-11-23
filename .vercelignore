@@ -1,0 +1,12 @@
+# Exclude uploaded videos from deployment
+public/uploads/
+
+# Backup files
+*.backup
+*.bak
+*.old
+backup/
+
+# Development files
+*.md
+!README.md

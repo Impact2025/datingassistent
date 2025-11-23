@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { put } from '@vercel/blob';
 import { sql } from '@vercel/postgres';
 
 export async function POST(request: NextRequest) {
@@ -29,32 +28,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File must be a video' }, { status: 400 });
     }
 
-    // Validate file size (max 100MB for Vercel)
-    if (file.size > 100 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File too large (max 100MB)' }, { status: 400 });
+    // Validate file size (max 500MB for Vercel Blob)
+    if (file.size > 500 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File too large (max 500MB)' }, { status: 400 });
     }
 
     // Create unique filename
     const timestamp = Date.now();
     const extension = file.name.split('.').pop();
-    const filename = `${courseId}_${moduleId}_${timestamp}.${extension}`;
-    const filepath = join(process.cwd(), 'public', 'uploads', 'videos', filename);
+    const filename = `videos/${courseId}_${moduleId}_${timestamp}.${extension}`;
 
-    // Ensure directory exists
-    const dir = join(process.cwd(), 'public', 'uploads', 'videos');
-    try {
-      await mkdir(dir, { recursive: true });
-    } catch (error) {
-      // Directory might already exist
-    }
+    // Upload to Vercel Blob
+    const blob = await put(filename, file, {
+      access: 'public',
+      addRandomSuffix: false,
+    });
 
-    // Convert file to buffer and save
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    await writeFile(filepath, buffer);
-
-    // Save video metadata to database
-    const videoUrl = `/uploads/videos/${filename}`;
+    // Save video metadata to database with blob URL
+    const videoUrl = blob.url;
 
     await sql`
       UPDATE course_modules
@@ -69,7 +60,8 @@ export async function POST(request: NextRequest) {
       videoUrl,
       filename,
       size: file.size,
-      type: file.type
+      type: file.type,
+      blobUrl: blob.url
     });
 
   } catch (error) {

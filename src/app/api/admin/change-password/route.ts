@@ -8,9 +8,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { verifyPassword, hashPassword } from '@/lib/auth';
 import { sql } from '@vercel/postgres';
+import { verifyCSRF } from '@/lib/csrf-edge';
+
+export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
   try {
+    // CSRF Protection
+    const csrfValid = await verifyCSRF(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
     // Require admin access
     const adminUser = await requireAdmin(request);
 

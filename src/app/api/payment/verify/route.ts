@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
+import { verifyCSRF } from '@/lib/csrf-edge';
+
+export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
   try {
+    // CSRF Protection
+    const csrfValid = await verifyCSRF(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
     const { orderId, mock } = await request.json();
 
     if (!orderId) {

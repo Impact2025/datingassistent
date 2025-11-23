@@ -2,11 +2,18 @@ import { NextResponse } from 'next/server';
 import { createMultiSafePayOrder } from '@/lib/multisafepay';
 import { sql } from '@vercel/postgres';
 import { incrementCouponUsage } from '@/lib/coupon-service';
+import { verifyCSRF } from '@/lib/csrf-edge';
 
-export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export async function POST(request: Request) {
   try {
+    // CSRF Protection
+    const csrfValid = await verifyCSRF(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
     const body = await request.json();
     const { 
       packageType, 

@@ -8,9 +8,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { generateTOTPSecret, generateQRCodeDataURL } from '@/lib/2fa';
 import { sql } from '@vercel/postgres';
+import { verifyCSRF } from '@/lib/csrf-edge';
+
+// Note: 2FA routes cannot use edge runtime because otplib requires Node.js crypto module
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
+    // CSRF Protection
+    const csrfValid = await verifyCSRF(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
     // Require admin access
     const adminUser = await requireAdmin(request);
 
