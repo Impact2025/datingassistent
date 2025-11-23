@@ -36,6 +36,45 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Video streaming configuration
+  async headers() {
+    return [
+      {
+        // Video files - enable streaming and caching
+        source: '/videos/:path*',
+        headers: [
+          {
+            key: 'Accept-Ranges',
+            value: 'bytes',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // MP4 videos
+        source: '/videos/:path*.mp4',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'video/mp4',
+          },
+        ],
+      },
+      {
+        // WebM videos
+        source: '/videos/:path*.webm',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'video/webm',
+          },
+        ],
+      },
+    ];
+  },
   // Temporarily remove all complex webpack config, experimental features, and security headers
   // TODO: Re-enable after successful deployment
 };

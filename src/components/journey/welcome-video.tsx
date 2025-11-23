@@ -1,52 +1,30 @@
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Volume2, VolumeX, Pause } from 'lucide-react';
+import { Play } from 'lucide-react';
+import { VideoPlayer } from '@/components/shared/video-player';
 
 interface WelcomeVideoProps {
   onComplete: () => void;
 }
 
 export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoError, setVideoError] = useState<string | null>(null);
 
-  const handlePlay = () => {
-    if (videoRef.current) {
-      videoRef.current.play();
-      setIsPlaying(true);
-      setHasStarted(true);
-    }
-  };
-
-  const handlePause = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
+  const handleVideoStart = () => {
+    setHasStarted(true);
   };
 
   const handleVideoEnd = () => {
-    setIsPlaying(false);
     onComplete();
   };
 
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
-    }
+  const handleVideoError = (error: Error) => {
+    setVideoError(error.message);
   };
-
-  // Auto-play when component mounts (optional)
-  useEffect(() => {
-    // We don't auto-play to respect user preferences
-    // Users need to click play manually
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
@@ -65,69 +43,21 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
 
         <CardContent className="space-y-6">
           {/* Video Player */}
-          <div className="relative aspect-video bg-black rounded-xl overflow-hidden shadow-inner">
-            <video
-              ref={videoRef}
-              className="w-full h-full object-cover"
-              onEnded={handleVideoEnd}
-              onPlay={() => setIsPlaying(true)}
-              onPause={() => setIsPlaying(false)}
-              muted={isMuted}
-              playsInline
-            >
-              <source src="/videos/Welkom-Iris.mp4" type="video/mp4" />
-              <source src="/videos/Welkom-Iris.mp4" type="video/webm" />
-              Uw browser ondersteunt deze video niet.
-            </video>
-
-            {/* Video Controls Overlay */}
-            {!hasStarted && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                <div className="text-center space-y-4">
-                  <div className="w-16 h-16 mx-auto bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                    <Play className="w-8 h-8 text-pink-500 ml-1" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white mb-1">Welkomstvideo van Iris</h3>
-                    <p className="text-sm text-gray-300">Klik om te starten</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Playing Controls */}
-            {hasStarted && (
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={isPlaying ? handlePause : handlePlay}
-                    className="bg-black/50 hover:bg-black/70 text-white border-0"
-                  >
-                    {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={toggleMute}
-                    className="bg-black/50 hover:bg-black/70 text-white border-0"
-                  >
-                    {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                  </Button>
-                </div>
-                <div className="text-white text-sm bg-black/50 px-2 py-1 rounded">
-                  Welkomstvideo van Iris
-                </div>
-              </div>
-            )}
-          </div>
+          <VideoPlayer
+            src="/videos/Welkom-Iris.mp4"
+            title="Welkomstvideo van Iris"
+            className="aspect-video"
+            controls={true}
+            onEnded={handleVideoEnd}
+            onError={handleVideoError}
+            fallbackText="De welkomstvideo kon niet worden geladen. Probeer de pagina te vernieuwen."
+          />
 
           {/* Play Button - Only show if video hasn't started yet */}
-          {!hasStarted && (
+          {!hasStarted && !videoError && (
             <div className="text-center">
               <Button
-                onClick={handlePlay}
+                onClick={handleVideoStart}
                 size="lg"
                 className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all"
               >
@@ -140,32 +70,19 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
             </div>
           )}
 
-          {/* Video Controls - Show when playing */}
-          {hasStarted && (
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center space-x-4">
-                <Button
-                  onClick={isPlaying ? handlePause : handlePlay}
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center space-x-2"
-                >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                  <span>{isPlaying ? 'Pauzeren' : 'Hervatten'}</span>
-                </Button>
-                <Button
-                  onClick={toggleMute}
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center space-x-2"
-                >
-                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                  <span>{isMuted ? 'Dempen uit' : 'Dempen'}</span>
-                </Button>
-              </div>
-              <p className="text-sm text-gray-600">
-                De video wordt automatisch afgesloten wanneer deze is afgelopen
+          {/* Error message */}
+          {videoError && (
+            <div className="text-center">
+              <p className="text-sm text-red-600 mb-4">
+                Er is een probleem met de video. Probeer de pagina te vernieuwen of neem contact op met support.
               </p>
+              <Button
+                onClick={() => window.location.reload()}
+                variant="outline"
+                className="border-pink-300 text-pink-700 hover:bg-pink-50"
+              >
+                Pagina vernieuwen
+              </Button>
             </div>
           )}
 

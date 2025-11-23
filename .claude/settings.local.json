@@ -69,7 +69,14 @@
       "Bash(cmd /c \"if exist .env.example type .env.example\")",
       "Bash(cmd /c \"if exist .env.example (echo EXISTS) else (echo NOT_EXISTS)\")",
       "Bash(cmd /c \"dir src\\lib\\ai*.* /b 2>nul\")",
-      "Bash(cmd /c \"dir /b /a:d src 2>nul | findstr /i pages\")"
+      "Bash(cmd /c \"dir /b /a:d src 2>nul | findstr /i pages\")",
+      "Bash(cmd /c \"tasklist /FI \"\"PID eq 11112\"\"\")",
+      "Bash(cmd /c \"taskkill /F /PID 11112\")",
+      "Bash(echo:*)",
+      "Bash(srcappapijourneystatusroute.ts)",
+      "Bash(srcappapijourneyprogressroute.ts)",
+      "Bash(srcappapiai-contextroute.ts)",
+      "Bash(srcappapiactivitytrackroute.ts)"
     ],
     "deny": [],
     "ask": []

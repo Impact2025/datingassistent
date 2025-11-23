@@ -13,6 +13,7 @@ import { AIResultCard } from '@/components/shared/ai-result-card';
 import { QuizRenderer, type QuizData } from '@/components/quiz/quiz-renderer';
 import { redFlagsIntroSlides } from '@/data/example-slides';
 import { DatabaseSlidesViewer, type DatabaseSlidesData } from '@/components/slides/database-slides-viewer';
+import { VideoPlayer } from '@/components/shared/video-player';
 
 // Simple markdown to HTML converter for quiz content
 function convertMarkdownToHTML(markdown: string): string {
@@ -421,16 +422,13 @@ function CourseSectionCard({
                 </div>
               )}
               {dbModule.video_url && (
-                <div className="rounded-lg overflow-hidden border border-border aspect-video bg-black">
-                  <video
-                    key={dbModule.video_url}
-                    src={dbModule.video_url}
-                    controls
-                    controlsList="nodownload"
-                    preload="metadata"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
+                <VideoPlayer
+                  src={dbModule.video_url}
+                  title={dbModule.title}
+                  className="aspect-video"
+                  controls={true}
+                  fallbackText="Deze module video kon niet worden geladen. Probeer de pagina te vernieuwen."
+                />
               )}
             </div>
           )}
@@ -619,14 +617,13 @@ function CourseSectionCard({
 
                       {/* Video player for video lessons */}
                       {lesson.lesson_type === 'video' && lesson.video_url && (
-                        <div className="mt-3 rounded-lg overflow-hidden border border-border aspect-video bg-black">
-                          <video
-                            key={lesson.video_url}
+                        <div className="mt-3">
+                          <VideoPlayer
                             src={lesson.video_url}
-                            controls
-                            controlsList="nodownload"
-                            preload="metadata"
-                            className="w-full h-full object-contain"
+                            title={lesson.title}
+                            className="aspect-video"
+                            controls={true}
+                            fallbackText="Deze video kon niet worden geladen. Probeer de pagina te vernieuwen."
                           />
                         </div>
                       )}

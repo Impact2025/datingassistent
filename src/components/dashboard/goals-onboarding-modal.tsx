@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Play, X } from 'lucide-react';
+import { VideoPlayer } from '@/components/shared/video-player';
 
 interface GoalsOnboardingModalProps {
   isOpen: boolean;
@@ -12,7 +13,7 @@ interface GoalsOnboardingModalProps {
 
 export function GoalsOnboardingModal({ isOpen, onClose }: GoalsOnboardingModalProps) {
   const [hasWatched, setHasWatched] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [videoError, setVideoError] = useState<string | null>(null);
 
   const handleClose = () => {
     // Mark as watched in localStorage
@@ -23,6 +24,10 @@ export function GoalsOnboardingModal({ isOpen, onClose }: GoalsOnboardingModalPr
 
   const handleVideoEnd = () => {
     setHasWatched(true);
+  };
+
+  const handleVideoError = (error: Error) => {
+    setVideoError(error.message);
   };
 
   return (
@@ -57,40 +62,16 @@ export function GoalsOnboardingModal({ isOpen, onClose }: GoalsOnboardingModalPr
           {/* Video Section */}
           <div className="p-6">
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="aspect-video bg-gray-900 relative">
-                {!isPlaying ? (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-600">
-                    <div className="text-center text-white">
-                      <Play className="w-16 h-16 mx-auto mb-4 opacity-80" />
-                      <h3 className="text-xl font-semibold mb-2">
-                        Hoe werkt het Doelen Systeem?
-                      </h3>
-                      <p className="text-blue-100 mb-6 max-w-md">
-                        Bekijk deze korte video om te leren hoe je effectieve doelen stelt
-                        en je voortgang bijhoudt voor betere dating resultaten.
-                      </p>
-                      <Button
-                        onClick={() => setIsPlaying(true)}
-                        className="bg-white text-blue-600 hover:bg-blue-50"
-                      >
-                        <Play className="w-4 h-4 mr-2" />
-                        Video Bekijken
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <video
-                    className="w-full h-full object-cover"
-                    controls
-                    autoPlay
-                    onEnded={handleVideoEnd}
-                    poster="/images/goals-onboarding-poster.svg"
-                  >
-                    <source src="/videos/Doelen.mp4" type="video/mp4" />
-                    Uw browser ondersteunt deze video niet.
-                  </video>
-                )}
-              </div>
+              <VideoPlayer
+                src="/videos/Doelen.mp4"
+                poster="/images/goals-onboarding-poster.svg"
+                title="Hoe werkt het Doelen Systeem?"
+                className="aspect-video"
+                controls={true}
+                onEnded={handleVideoEnd}
+                onError={handleVideoError}
+                fallbackText="De uitleg video kon niet worden geladen. Probeer de pagina te vernieuwen."
+              />
 
               {/* Video Description */}
               <div className="p-6 bg-gray-50">
