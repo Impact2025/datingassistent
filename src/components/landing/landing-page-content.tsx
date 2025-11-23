@@ -790,3 +790,5 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
   );
 }
 
+export { LandingPageContent };
+
