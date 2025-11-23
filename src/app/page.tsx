@@ -1,7 +1,5 @@
-import { LandingPageContent } from '@/components/landing/landing-page-content';
-import { HeroSection } from '@/components/landing/hero-section';
+import { MobileDashboard } from '@/components/mobile/mobile-dashboard';
 
-export default function Home() {
-  return <LandingPageContent hero={<HeroSection />} />;
+export default function HomePage() {
+  return <MobileDashboard />;
 }
-
