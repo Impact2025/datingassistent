@@ -41,7 +41,6 @@ const TABS = [
   // NIEUWE 5-MODULE STRUCTUUR
   { id: "profiel-persoonlijkheid", label: "Profiel & Persoonlijkheid", icon: UserCircle2, category: "core" },
   { id: "communicatie-matching", label: "Communicatie & Matching", icon: MessageCircle, category: "core" },
-  { id: "gespreks-assistent", label: "GespreksAssistent", icon: MessageSquare, category: "core" },
   { id: "daten-relaties", label: "Daten & Relaties", icon: CalendarHeart, category: "core" },
   { id: "groei-doelen", label: "Groei & Doelen", icon: Target, category: "core" },
   { id: "leren-ontwikkelen", label: "Leren & Ontwikkelen", icon: GraduationCap, category: "core" },

@@ -192,7 +192,7 @@ export async function sendWelcomeEmail(
 
   return sendEmail({
     to: userEmail,
-    from: 'welcome@datingassistent.nl',
+    from: process.env.SENDGRID_FROM_EMAIL || 'noreply@datingassistent.nl',
     subject: EMAIL_TEMPLATES.WELCOME.subject,
     html: htmlContent,
     text: textContent

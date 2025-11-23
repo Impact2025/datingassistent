@@ -253,9 +253,31 @@ function InteractiveProfileCoachInner() {
   });
 
   // Get A/B test variants for this user
-  const quizVariant = user?.id ? getQuizVariant(user.id.toString()) : null;
-  const aiVariant = user?.id ? getAIVariant(user.id.toString()) : null;
-  const profileVariant = user?.id ? getProfileVariant(user.id.toString()) : null;
+  const [quizVariant, setQuizVariant] = useState<ABTestVariant | null>(null);
+  const [aiVariant, setAiVariant] = useState<ABTestVariant | null>(null);
+  const [profileVariant, setProfileVariant] = useState<ABTestVariant | null>(null);
+
+  // Load A/B test variants
+  useEffect(() => {
+    const loadVariants = async () => {
+      if (user?.id) {
+        try {
+          const [quiz, ai, profile] = await Promise.all([
+            getQuizVariant(user.id.toString()),
+            getAIVariant(user.id.toString()),
+            getProfileVariant(user.id.toString())
+          ]);
+          setQuizVariant(quiz);
+          setAiVariant(ai);
+          setProfileVariant(profile);
+        } catch (error) {
+          console.error('Failed to load A/B test variants:', error);
+        }
+      }
+    };
+
+    loadVariants();
+  }, [user?.id, getQuizVariant, getAIVariant, getProfileVariant]);
 
   // Track quiz start
   useEffect(() => {
@@ -509,22 +531,24 @@ function InteractiveProfileCoachInner() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <UserCircle2 className="w-6 h-6 text-pink-600" />
-          <h2 className="text-2xl font-bold text-pink-600">AI Profiel Bouwer</h2>
+      {/* Header - Hide during welcome/onboarding */}
+      {state.currentStep !== 0 && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <UserCircle2 className="w-6 h-6 text-pink-600" />
+            <h2 className="text-2xl font-bold text-pink-600">AI Profiel Bouwer</h2>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={startTutorial}
+            className="gap-2 text-pink-600 border-pink-200 hover:bg-pink-50"
+          >
+            <HelpCircle className="w-4 h-4 text-pink-600" />
+            <span className="hidden sm:inline">Tutorial</span>
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={startTutorial}
-          className="gap-2 text-pink-600 border-pink-200 hover:bg-pink-50"
-        >
-          <HelpCircle className="w-4 h-4 text-pink-600" />
-          <span className="hidden sm:inline">Tutorial</span>
-        </Button>
-      </div>
+      )}
 
       {/* Progress */}
       <Card>

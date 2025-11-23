@@ -146,13 +146,24 @@ class ABTestingService {
   }
 
   /**
-   * Get variant for user based on consistent hashing
+   * Get variant for user based on API call
    */
-  getVariantForUser(testId: string, userId: string): ABTestVariant | null {
+  async getVariantForUser(testId: string, userId: string): Promise<ABTestVariant | null> {
     const test = this.tests.get(testId);
     if (!test || !test.isActive) return null;
 
-    // Simple hash-based assignment for consistency
+    try {
+      // Use API call to get variant
+      const response = await fetch(`/api/ab-testing?testId=${testId}&userId=${userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        return test.variants.find(v => v.id === data.variant) || null;
+      }
+    } catch (error) {
+      console.error('Failed to get A/B test variant:', error);
+    }
+
+    // Fallback to simple hash-based assignment
     const hash = this.simpleHash(userId + testId);
     const random = (hash % 100) / 100;
 
@@ -173,12 +184,18 @@ class ABTestingService {
    */
   async trackConversion(testId: string, variantId: string, userId: string, event: string) {
     try {
-      await sql`
-        INSERT INTO ab_test_conversions (test_id, variant_id, user_id, event_type, created_at)
-        VALUES (${testId}, ${variantId}, ${userId}, ${event}, NOW())
-        ON CONFLICT (test_id, variant_id, user_id, event_type)
-        DO NOTHING
-      `;
+      // Use API call instead of direct database access
+      const token = typeof window !== 'undefined' ? localStorage.getItem('datespark_auth_token') : null;
+      if (!token) return;
+
+      await fetch('/api/ab-testing', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ testId, variantId, event })
+      });
     } catch (error) {
       console.error('Failed to track A/B test conversion:', error);
     }

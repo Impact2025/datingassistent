@@ -206,8 +206,8 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
                 >
                   <CardContent className="p-6">
                     <div className="text-center space-y-4">
-                      <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
-                        <Icon className="h-6 w-6 text-gray-600" />
+                      <div className={`w-12 h-12 mx-auto rounded-full bg-gradient-to-br ${action.color} flex items-center justify-center shadow-lg`}>
+                        <Icon className="h-6 w-6 text-white" />
                       </div>
 
                       <div className="space-y-2">

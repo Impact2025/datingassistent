@@ -50,8 +50,20 @@ function PaymentSuccessContent() {
           localStorage.removeItem('pending_order_id');
           localStorage.removeItem('pending_transaction_id');
 
-          // Trigger welcome email automation
+          // Reset journey status for new paying users to allow fresh onboarding
           if (data.user?.id) {
+            try {
+              await fetch('/api/journey/reset', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: data.user.id }),
+              });
+              console.log('✅ Journey status reset for new paying user');
+            } catch (error) {
+              console.error('Failed to reset journey status:', error);
+            }
+
+            // Trigger welcome email automation
             await fetch('/api/automation/welcome', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },

@@ -41,7 +41,6 @@ import { DatingWeekNotificationModal } from '@/components/dashboard/dating-week-
 // NIEUWE CONSOLIDATED MODULES
 import { ProfileSuite } from '@/components/dashboard/profile-suite';
 import { CommunicationHub } from '@/components/dashboard/communication-hub';
-import { GespreksAssistent } from '@/components/dashboard/gespreks-assistent';
 import { DatenRelatiesModule } from '@/components/dashboard/daten-relaties-module';
 import { GroeiDoelenModule } from '@/components/dashboard/groei-doelen-module';
 import { LerenOntwikkelenModule } from '@/components/dashboard/leren-ontwikkelen-module';
@@ -70,8 +69,7 @@ interface JourneyState {
 export default function DashboardPage() {
   const { user, userProfile, loading } = useUser();
 
-  // Temporarily bypass loading check to fix white screen issue
-  const isLoading = false; // loading;
+  const isLoading = loading;
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [journeyCheckComplete, setJourneyCheckComplete] = useState(false);
@@ -214,8 +212,35 @@ export default function DashboardPage() {
 
             setShowOnboarding(true);
           } else {
-            // Journey is marked as completed - don't show onboarding for upgrades
-            console.log('✅ Journey completed - no onboarding needed for upgrades');
+            // Journey is marked as completed - but allow restart for users who just paid
+            // Check if user has an active subscription (indicating they recently paid)
+            try {
+              const subscriptionResponse = await fetch(`/api/user/subscription?userId=${user.id}`);
+              if (subscriptionResponse.ok) {
+                const subscriptionData = await subscriptionResponse.json();
+                if (subscriptionData.subscription?.status === 'active') {
+                  // User has active subscription, allow onboarding restart
+                  console.log('🎯 User has active subscription - allowing onboarding restart');
+                  setIsInitializingOnboarding(true);
+
+                  // Check if user has profile
+                  const hasProfile = userProfile && userProfile.name && userProfile.age;
+
+                  setJourneyState({
+                    currentStep: hasProfile ? 'welcome' : 'profile',
+                    completedSteps: [],
+                    scanData: null,
+                    coachAdvice: null,
+                  });
+
+                  setShowOnboarding(true);
+                } else {
+                  console.log('✅ Journey completed and no active subscription - no onboarding needed');
+                }
+              }
+            } catch (error) {
+              console.log('✅ Journey completed - no onboarding needed (subscription check failed)');
+            }
           }
         } else {
           console.log('ℹ️ Journey data not available, checking if onboarding needed...');
@@ -243,18 +268,7 @@ export default function DashboardPage() {
     loadJourneyData();
   }, [user, userProfile, loading, router]);
 
-  // While loading user data, show a loading state
-  // The UserProvider handles redirection if there's no user.
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <LoadingSpinner />
-        <p className="text-muted-foreground">Dashboard laden...</p>
-      </div>
-    );
-  }
-
-  // Handle navigation redirects
+  // Handle navigation redirects - always call this hook before any early returns
   useEffect(() => {
     if (activeTab === 'community-forum') {
       router.push('/community/forum');
@@ -266,6 +280,17 @@ export default function DashboardPage() {
       setActiveTab('dashboard');
     }
   }, [activeTab, router]);
+
+  // While loading user data, show a loading state
+  // The UserProvider handles redirection if there's no user.
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
+        <LoadingSpinner />
+        <p className="text-muted-foreground">Dashboard laden...</p>
+      </div>
+    );
+  }
 
   // Onboarding handlers
   const handleProfileComplete = async () => {
@@ -526,9 +551,7 @@ export default function DashboardPage() {
 
   // Show onboarding integrated into dashboard if user hasn't completed it
   const renderOnboardingContent = () => {
-    // Temporarily disable onboarding to fix white screen issue
-    return null;
-    // if (!showOnboarding) return null;
+    if (!showOnboarding) return null;
 
     const steps: JourneyStep[] = ['profile', 'welcome', 'scan', 'coach-advice', 'welcome-video', 'welcome-questions', 'complete'];
     const currentStepIndex = steps.indexOf(journeyState.currentStep);
@@ -717,9 +740,6 @@ export default function DashboardPage() {
       case 'communicatie-matching':
         return <CommunicationHub onTabChange={setActiveTab} />;
 
-      case 'gespreks-assistent':
-        return <GespreksAssistent onTabChange={setActiveTab} />;
-
       case 'daten-relaties':
         return <DatenRelatiesModule onTabChange={setActiveTab} />;
         // Navigation handled by useEffect above
@@ -810,20 +830,24 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
-      <div className="space-y-6">
-        <Header
-          onSettingsClick={() => setActiveTab('settings')}
-          onSubscriptionClick={() => setActiveTab('subscription')}
-        />
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+      <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
+        <div className="space-y-6">
+          <Header
+            onSettingsClick={() => setActiveTab('settings')}
+            onSubscriptionClick={() => setActiveTab('subscription')}
+          />
 
-        {/* Trial Progress Banner - Only show for trial users */}
-        {user?.id && <TrialProgress userId={user.id} />}
+          {/* Trial Progress Banner - Only show for trial users */}
+          {user?.id && <TrialProgress userId={user.id} />}
 
-        <main className="rounded-2xl bg-card p-4 shadow-2xl sm:p-6">
-          {/* Show navigation and regular dashboard content */}
-          <MainNav activeTab={activeTab} onTabChange={setActiveTab} />
+          <main className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20">
+          {/* Hide navigation during onboarding */}
+          {!showOnboarding && <MainNav activeTab={activeTab} onTabChange={setActiveTab} />}
           <div className="mt-6">
+            {/* Show onboarding content if needed */}
+            {renderOnboardingContent()}
+
             {/* Show regular dashboard content */}
             {renderTabContent()}
           </div>
@@ -841,26 +865,27 @@ export default function DashboardPage() {
             console.log('Dating week log completed:', data);
             // Could add success notification here
           }}
-        />
+          />
 
-        <footer className="text-center text-sm text-muted-foreground space-y-4">
-          <div className="flex justify-center items-center gap-2">
-            <span>Volg ons:</span>
-            <SocialMediaLinks size="sm" />
-          </div>
-          <div>
-            <p>&copy; 2025 DatingAssistent. Alle rechten voorbehouden.</p>
-            <p>
-              Jouw data is veilig en AVG-proof.{' '}
-              <button
-                onClick={() => setActiveTab('data-management')}
-                className="underline hover:text-primary bg-transparent border-none p-0 cursor-pointer"
-              >
-                Beheer je data
-              </button>.
-            </p>
-          </div>
-        </footer>
+          <footer className="text-center text-sm text-muted-foreground space-y-4">
+            <div className="flex justify-center items-center gap-2">
+              <span>Volg ons:</span>
+              <SocialMediaLinks size="sm" />
+            </div>
+            <div>
+              <p>&copy; 2025 DatingAssistent. Alle rechten voorbehouden.</p>
+              <p>
+                Jouw data is veilig en AVG-proof.{' '}
+                <button
+                  onClick={() => setActiveTab('data-management')}
+                  className="underline hover:text-primary bg-transparent border-none p-0 cursor-pointer"
+                >
+                  Beheer je data
+                </button>.
+              </p>
+            </div>
+          </footer>
+        </div>
       </div>
     </div>
   );

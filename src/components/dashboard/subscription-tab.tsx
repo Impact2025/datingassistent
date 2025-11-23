@@ -35,6 +35,56 @@ export function SubscriptionTab() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingMessage, setProcessingMessage] = useState('');
   const [orderError, setOrderError] = useState('');
+  const [currentSubscription, setCurrentSubscription] = useState<any>(null);
+  const [loadingSubscription, setLoadingSubscription] = useState(true);
+  const [usageStats, setUsageStats] = useState<any>(null);
+  const [loadingUsage, setLoadingUsage] = useState(false);
+
+  // Load current subscription and usage stats
+  useEffect(() => {
+    const loadCurrentSubscription = async () => {
+      if (!user?.id) {
+        setLoadingSubscription(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/user/subscription?userId=${user.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setCurrentSubscription(data.subscription);
+
+          // Load usage stats if subscription is active
+          if (data.subscription?.status === 'active') {
+            loadUsageStats();
+          }
+        }
+      } catch (error) {
+        console.error('Error loading subscription:', error);
+      } finally {
+        setLoadingSubscription(false);
+      }
+    };
+
+    const loadUsageStats = async () => {
+      if (!user?.id) return;
+
+      setLoadingUsage(true);
+      try {
+        const response = await fetch(`/api/user/usage-stats?userId=${user.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setUsageStats(data);
+        }
+      } catch (error) {
+        console.error('Error loading usage stats:', error);
+      } finally {
+        setLoadingUsage(false);
+      }
+    };
+
+    loadCurrentSubscription();
+  }, [user?.id]);
 
   // Apply coupon when code changes
   const handleApplyCoupon = async () => {
@@ -193,6 +243,212 @@ export function SubscriptionTab() {
     }
   };
 
+  const renderCurrentSubscription = () => {
+    if (!currentSubscription || currentSubscription.status !== 'active') {
+      return null;
+    }
+
+    const pkgInfo = PACKAGES[currentSubscription.packageType as PackageType];
+    const features = getPackageFeatures(currentSubscription.packageType as PackageType);
+
+    return (
+      <div className="space-y-6">
+        {/* Current Subscription Status */}
+        <Card className="border-pink-200 bg-pink-50/50">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
+                  <CheckIcon className="w-5 h-5 text-pink-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-pink-900">Actief Abonnement</CardTitle>
+                  <CardDescription className="text-pink-700">
+                    Je hebt toegang tot alle {pkgInfo.name} features
+                  </CardDescription>
+                </div>
+              </div>
+              <Badge className="bg-pink-100 text-pink-800 border-pink-200">
+                {currentSubscription.billingPeriod === 'yearly' ? 'Jaarlijks' : 'Maandelijks'}
+              </Badge>
+            </div>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-white rounded-lg border">
+              <div className="flex items-center gap-3">
+                {getPackageIcon(currentSubscription.packageType as PackageType)}
+                <div>
+                  <h3 className="font-semibold">{pkgInfo.name} Abonnement</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Geactiveerd op {new Date(currentSubscription.startDate).toLocaleDateString('nl-NL')}
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold">
+                  €{(currentSubscription.amount / 100).toFixed(2)}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  per {currentSubscription.billingPeriod === 'yearly' ? 'jaar' : 'maand'}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-3">Jouw Features:</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex items-center gap-2 text-sm">
+                    <CheckIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Usage Stats */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Gebruik deze maand</CardTitle>
+            <CardDescription>
+              Houd bij hoe je je abonnement gebruikt
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {loadingUsage ? (
+              <div className="flex items-center justify-center py-8">
+                <LoadingSpinner />
+                <span className="ml-2">Gebruiksdata laden...</span>
+              </div>
+            ) : usageStats ? (
+              <div className="space-y-4">
+                {/* AI Messages Weekly */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>AI berichten deze week</span>
+                    <span>{usageStats.usage.aiMessagesWeekly.used} / {usageStats.usage.aiMessagesWeekly.limit}</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${usageStats.usage.aiMessagesWeekly.percentage}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Profile Rewrites Monthly */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Profiel rewrites deze maand</span>
+                    <span>{usageStats.usage.profileRewritesMonthly.used} / {usageStats.usage.profileRewritesMonthly.limit}</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${usageStats.usage.profileRewritesMonthly.percentage}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Photo Checks Monthly */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Foto checks deze maand</span>
+                    <span>{usageStats.usage.photoChecksMonthly.used} / {usageStats.usage.photoChecksMonthly.limit}</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-purple-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${usageStats.usage.photoChecksMonthly.percentage}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Icebreakers Daily */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Icebreakers vandaag</span>
+                    <span>{usageStats.usage.icebreakersDaily.used} / {usageStats.usage.icebreakersDaily.limit}</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-pink-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${usageStats.usage.icebreakersDaily.percentage}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Courses Unlocked */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Cursussen ontgrendeld</span>
+                    <span>{usageStats.usage.coursesUnlocked.used} / {usageStats.usage.coursesUnlocked.limit}</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-orange-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${usageStats.usage.coursesUnlocked.percentage}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Weekly Goals Progress */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Wekelijkse voortgang</span>
+                    <span>{usageStats.usage.weeklyGoals.used} / {usageStats.usage.weeklyGoals.limit}</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-indigo-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${usageStats.usage.weeklyGoals.percentage}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Badges Earned */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Badges verdiend</span>
+                    <span>{usageStats.usage.badgesEarned.used} / {usageStats.usage.badgesEarned.limit}</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-yellow-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${usageStats.usage.badgesEarned.percentage}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Token Usage */}
+                <div className="pt-4 border-t">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Tokens deze week:</span>
+                      <span className="ml-2 font-medium">{usageStats.usage.tokensUsed.weekly.toLocaleString()}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Kosten deze maand:</span>
+                      <span className="ml-2 font-medium">€{usageStats.usage.costUsed.monthly.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <Info className="w-8 h-8 mx-auto mb-2" />
+                <p>Kon gebruiksstatistieken niet laden</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
   const renderPackageCard = (pkg: PackageType, options?: { featured?: boolean }) => {
     const pkgInfo = PACKAGES[pkg];
     const originalPrice = getPackagePrice(pkg, billingPeriod);
@@ -279,6 +535,15 @@ export function SubscriptionTab() {
     );
   }
 
+  if (loadingSubscription) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <LoadingSpinner />
+        <p className="mt-4 text-muted-foreground">Abonnement laden...</p>
+      </div>
+    );
+  }
+
   if (isProcessing) {
     return (
       <div className="flex items-center justify-center py-16">
@@ -289,6 +554,34 @@ export function SubscriptionTab() {
             <p className="mt-2 text-sm text-muted-foreground">
               Je wordt automatisch doorgestuurd...
             </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show current subscription if user has an active one
+  if (currentSubscription && currentSubscription.status === 'active') {
+    return (
+      <div className="space-y-6">
+        {renderCurrentSubscription()}
+
+        {/* Upgrade Options */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Upgrade je abonnement</CardTitle>
+            <CardDescription>
+              Meer features en hogere limieten voor nog betere resultaten
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button
+              onClick={() => setCurrentSubscription(null)}
+              variant="outline"
+              className="w-full"
+            >
+              Bekijk Upgrade Opties
+            </Button>
           </CardContent>
         </Card>
       </div>

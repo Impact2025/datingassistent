@@ -13,7 +13,7 @@ import { ChatCoachTab } from "./chat-coach-tab";
 import { OpeningszinnenTool } from "./openingszinnen-tool";
 import { IJsbrekerGeneratorTool } from "./ijsbreker-generator-tool";
 import { VeiligheidscheckTool } from "./veiligheidscheck-tool";
-import { ChatAnalysisTab } from "./gespreks-assistent/chat-analysis-tab";
+import { GespreksAssistent } from "./gespreks-assistent";
 
 interface CommunicationHubProps {
   onTabChange?: (tab: string) => void;
@@ -24,21 +24,21 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
 
   const communicationTools = [
     {
-      id: "chat-analysis",
-      label: "Chat Analyse",
-      icon: MessageSquare,
-      description: "AI analyse van je dating gesprekken",
-      component: <ChatAnalysisTab onTabChange={onTabChange} />,
-      badge: "AI",
-      color: "bg-blue-500"
-    },
-    {
       id: "chat",
       label: "Chat Coach",
       icon: MessageSquare,
       description: "Stel vragen aan je AI dating coach",
       component: <ChatCoachTab />,
       badge: "Altijd beschikbaar",
+      color: "bg-blue-500"
+    },
+    {
+      id: "gespreks-assistent",
+      label: "GespreksAssistent",
+      icon: MessageSquare,
+      description: "AI analyse van je dating gesprekken",
+      component: <GespreksAssistent onTabChange={onTabChange} />,
+      badge: "AI",
       color: "bg-blue-500"
     },
     {
