@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/providers/user-provider';
 import { AIHeroSection } from './ai-hero-section';
 import { QuickActionsGrid } from './quick-actions-grid';
 import { AISmartFlow } from './ai-smart-flow';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
+import { LoadingSpinner } from '@/components/shared/loading-spinner';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { LogIn, UserPlus, Shield } from 'lucide-react';
 
 interface MobileDashboardProps {
   className?: string;
@@ -13,6 +18,70 @@ interface MobileDashboardProps {
 
 export function MobileDashboard({ className }: MobileDashboardProps) {
   const router = useRouter();
+  const { user, loading } = useUser();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [loading, user, router]);
+
+  // Show loading while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-purple-50">
+        <div className="text-center space-y-4">
+          <LoadingSpinner />
+          <p className="text-gray-600">Dashboard laden...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show access denied for non-authenticated users (fallback)
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full shadow-lg border-0 bg-white/95 backdrop-blur-sm">
+          <CardHeader className="text-center pb-4">
+            <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Shield className="w-10 h-10 text-white" />
+            </div>
+            <CardTitle className="text-2xl font-bold text-gray-900">
+              Toegang geweigerd
+            </CardTitle>
+            <p className="text-gray-600 mt-2">
+              Je moet ingelogd zijn om dit dashboard te bekijken
+            </p>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              <Button
+                onClick={() => router.push('/login')}
+                className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-3"
+                size="lg"
+              >
+                <LogIn className="w-5 h-5 mr-2" />
+                Inloggen
+              </Button>
+
+              <Button
+                onClick={() => router.push('/register')}
+                variant="outline"
+                className="w-full border-pink-200 text-pink-700 hover:bg-pink-50"
+                size="lg"
+              >
+                <UserPlus className="w-5 h-5 mr-2" />
+                Account aanmaken
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const handleStartGuidedFlow = () => {
     // This would start a personalized guided flow
