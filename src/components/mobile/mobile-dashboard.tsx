@@ -91,6 +91,15 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
+      {/* Mobile-only notice for development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="bg-blue-50 border-b border-blue-200 px-4 py-2 text-center">
+          <p className="text-xs text-blue-800">
+            📱 <strong>Mobile Dashboard</strong> - Alleen zichtbaar op mobiele apparaten
+          </p>
+        </div>
+      )}
+
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 py-6 space-y-6">
         {/* AI Hero Section */}
