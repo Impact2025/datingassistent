@@ -1,109 +1,131 @@
+/**
+ * JOURNEY STATUS API
+ * Get user's onboarding journey status and progress
+ * GET /api/journey/status?userId={id}
+ *
+ * Professional implementation with:
+ * - Query performance monitoring
+ * - Proper error handling
+ * - Database validation
+ * - Security checks
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
+import { select } from '@/lib/db/query-wrapper';
+import { logDatabaseError } from '@/lib/error-logging';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+interface JourneyStatus {
+  status: 'not_started' | 'in_progress' | 'completed';
+  currentStep: string;
+  completedSteps: string[];
+  scanData?: any;
+  coachAdvice?: any;
+  lastActivity?: string;
+}
+
+/**
+ * GET /api/journey/status
+ * Retrieve user's current journey progress from onboarding_journeys table
+ */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
 
-    if (!userId) {
+    // Validate userId
+    if (!userId || isNaN(Number(userId))) {
       return NextResponse.json(
-        { error: 'userId is required' },
+        { error: 'Valid userId parameter is required' },
         { status: 400 }
       );
     }
 
-    // Check if user_journey_progress table exists and get status
-    const result = await sql`
-      SELECT
-        current_step,
-        completed_steps,
-        journey_started_at,
-        CASE
-          WHEN current_step = 'complete' THEN 'completed'
-          WHEN journey_started_at IS NOT NULL THEN 'in_progress'
-          ELSE 'not_started'
-        END as status
-      FROM user_journey_progress
-      WHERE user_id = ${userId}
-    `;
+    const userIdNum = Number(userId);
 
+    // Query journey status from onboarding_journeys table
+    const result = await select(
+      async () => {
+        return await sql`
+          SELECT
+            id,
+            user_id,
+            journey_version,
+            current_phase,
+            current_step,
+            started_at,
+            completed_at,
+            last_activity,
+            status,
+            metadata
+          FROM onboarding_journeys
+          WHERE user_id = ${userIdNum}
+          LIMIT 1
+        `;
+      },
+      'get-journey-status'
+    );
+
+    // No journey found - user hasn't started
     if (result.rows.length === 0) {
-      // No journey started yet
-      return NextResponse.json({
+      const response: JourneyStatus = {
         status: 'not_started',
-        currentStep: null,
+        currentStep: 'welcome',
         completedSteps: [],
-      });
+      };
+
+      console.log(`📊 Journey status for user ${userIdNum}: not started`);
+      return NextResponse.json(response, { status: 200 });
     }
 
     const journey = result.rows[0];
+    const metadata = typeof journey.metadata === 'string'
+      ? JSON.parse(journey.metadata)
+      : journey.metadata || {};
 
-    // Get additional data if available
-    let scanData = null;
-    let dnaResults = null;
-    let goalsData = null;
+    // Check if journey is completed
+    if (journey.status === 'completed' || journey.completed_at) {
+      const response: JourneyStatus = {
+        status: 'completed',
+        currentStep: 'complete',
+        completedSteps: metadata.completedSteps || ['profile', 'welcome', 'scan', 'coach-advice', 'welcome-video', 'welcome-questions'],
+        scanData: metadata.scanData,
+        coachAdvice: metadata.coachAdvice,
+        lastActivity: journey.last_activity,
+      };
 
-    // Try to get personality scan data
-    try {
-      const scanResult = await sql`
-        SELECT * FROM personality_scans
-        WHERE user_id = ${userId}
-        ORDER BY completed_at DESC
-        LIMIT 1
-      `;
-
-      if (scanResult.rows.length > 0) {
-        scanData = {
-          currentSituation: scanResult.rows[0].current_situation,
-          comfortLevel: scanResult.rows[0].comfort_level,
-          mainChallenge: scanResult.rows[0].main_challenge,
-          desiredOutcome: scanResult.rows[0].desired_outcome,
-          strengthSelf: scanResult.rows[0].strength_self,
-          weaknessSelf: scanResult.rows[0].weakness_self,
-          weeklyCommitment: scanResult.rows[0].weekly_commitment,
-        };
-        dnaResults = scanResult.rows[0].ai_generated_profile;
-      }
-    } catch (error) {
-      console.log('No personality scan data available');
+      console.log(`✅ Journey status for user ${userIdNum}: completed`);
+      return NextResponse.json(response, { status: 200 });
     }
 
-    // Try to get goals data
-    try {
-      const goalsResult = await sql`
-        SELECT
-          goal_type,
-          title,
-          description,
-          category
-        FROM goal_hierarchies
-        WHERE user_id = ${userId}
-        ORDER BY created_at DESC
-        LIMIT 10
-      `;
+    // Journey in progress
+    const response: JourneyStatus = {
+      status: 'in_progress',
+      currentStep: journey.current_phase || 'welcome',
+      completedSteps: metadata.completedSteps || [],
+      scanData: metadata.scanData,
+      coachAdvice: metadata.coachAdvice,
+      lastActivity: journey.last_activity,
+    };
 
-      if (goalsResult.rows.length > 0) {
-        goalsData = goalsResult.rows;
-      }
-    } catch (error) {
-      console.log('No goals data available');
-    }
-
-    return NextResponse.json({
-      status: journey.status,
-      currentStep: journey.current_step,
-      completedSteps: journey.completed_steps || [],
-      journeyStartedAt: journey.journey_started_at,
-      scanData,
-      dnaResults,
-      goalsData,
-    });
+    console.log(`🔄 Journey status for user ${userIdNum}: ${journey.current_phase}`);
+    return NextResponse.json(response, { status: 200 });
 
   } catch (error) {
-    console.error('Journey status error:', error);
+    console.error('❌ Journey status error:', error);
+    logDatabaseError(
+      error instanceof Error ? error : new Error('Unknown journey status error'),
+      'get-journey-status'
+    );
+
     return NextResponse.json(
-      { error: 'Failed to get journey status' },
+      {
+        error: 'Failed to retrieve journey status',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
