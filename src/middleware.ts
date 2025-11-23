@@ -20,8 +20,11 @@ const SECURITY_CONFIG = {
   // Paths that bypass security checks (for health checks, etc.)
   bypassPaths: ['/_next', '/api/health', '/favicon.ico'],
 
-  // Admin paths that get enhanced security
-  adminPaths: ['/api/admin', '/admin'],
+  // Admin paths that get enhanced security (excluding login page)
+  adminPaths: ['/api/admin', '/admin/dashboard', '/admin/users', '/admin/analytics'],
+
+  // Admin login page (accessible without authentication)
+  adminLoginPaths: ['/admin/login', '/admin'],
 
   // API paths
   apiPaths: ['/api'],
@@ -49,6 +52,15 @@ function shouldBypassSecurity(pathname: string): boolean {
 function isAdminPath(pathname: string): boolean {
   return SECURITY_CONFIG.adminPaths.some(adminPath =>
     pathname.startsWith(adminPath)
+  );
+}
+
+/**
+ * Check if path is an admin login page (accessible without auth)
+ */
+function isAdminLoginPath(pathname: string): boolean {
+  return SECURITY_CONFIG.adminLoginPaths.some(loginPath =>
+    pathname === loginPath || pathname.startsWith(loginPath + '/')
   );
 }
 
@@ -123,8 +135,11 @@ export async function middleware(request: NextRequest) {
   let response: NextResponse | null = null;
 
   // Apply security based on path type
-  if (isAdminPath(pathname)) {
-    // Enhanced security for admin routes
+  if (isAdminLoginPath(pathname)) {
+    // Basic security for admin login page (no auth required)
+    response = await handlePageRoute(request);
+  } else if (isAdminPath(pathname)) {
+    // Enhanced security for authenticated admin routes
     response = await handleAdminRoute(request);
   } else if (isAPIPath(pathname)) {
     // API security
