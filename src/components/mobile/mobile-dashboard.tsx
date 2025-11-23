@@ -12,13 +12,30 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LogIn, UserPlus, Shield } from 'lucide-react';
 
+// Import centralized onboarding system
+import { useJourneyState } from '@/hooks/use-journey-state';
+import { OnboardingFlow } from '@/components/dashboard/onboarding-flow';
+
 interface MobileDashboardProps {
   className?: string;
 }
 
 export function MobileDashboard({ className }: MobileDashboardProps) {
   const router = useRouter();
-  const { user, loading } = useUser();
+  const { user, userProfile, loading } = useUser();
+
+  // Use centralized journey state hook
+  const {
+    showOnboarding,
+    journeyState,
+    isInitializingOnboarding,
+    journeyCheckComplete,
+    handlers
+  } = useJourneyState({
+    userId: user?.id,
+    userProfile,
+    enabled: !loading && !!user
+  });
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -102,19 +119,28 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
 
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 py-6 space-y-6">
-        {/* AI Hero Section */}
-        <AIHeroSection onStartGuidedFlow={handleStartGuidedFlow} />
+        {/* Show onboarding flow if needed */}
+        {showOnboarding ? (
+          <OnboardingFlow
+            journeyState={journeyState}
+            userName={user?.name}
+            handlers={handlers}
+          />
+        ) : (
+          <>
+            {/* AI Hero Section */}
+            <AIHeroSection onStartGuidedFlow={handleStartGuidedFlow} />
 
-        {/* Quick Actions Grid */}
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Snelle Acties
-          </h2>
-          <QuickActionsGrid />
-        </div>
+            {/* Quick Actions Grid */}
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Snelle Acties
+              </h2>
+              <QuickActionsGrid />
+            </div>
 
-        {/* AI Smart Flow */}
-        <AISmartFlow />
+            {/* AI Smart Flow */}
+            <AISmartFlow />
 
         {/* Week Overview Card */}
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
@@ -139,25 +165,27 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
           </div>
         </div>
 
-        {/* Daily Learning Card */}
-        <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-100">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm">📚</span>
-            </div>
-            <div>
-              <h3 className="font-medium text-gray-900">Dagelijkse Les</h3>
-              <p className="text-sm text-gray-600">Leer effectieve openingszinnen</p>
-            </div>
-          </div>
+            {/* Daily Learning Card */}
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-100">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm">📚</span>
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">Dagelijkse Les</h3>
+                  <p className="text-sm text-gray-600">Leer effectieve openingszinnen</p>
+                </div>
+              </div>
 
-          <button
-            onClick={() => router.push('/leren')}
-            className="w-full bg-purple-500 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-purple-600 transition-colors"
-          >
-            Start Les
-          </button>
-        </div>
+              <button
+                onClick={() => router.push('/leren')}
+                className="w-full bg-purple-500 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-purple-600 transition-colors"
+              >
+                Start Les
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Bottom Navigation */}
