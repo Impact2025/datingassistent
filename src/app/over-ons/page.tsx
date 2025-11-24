@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
-import { Shield, TrendingUp, Users, Heart, Award, Target, Play, Calendar, Bot, User } from 'lucide-react';
+import { Shield, TrendingUp, Users, Heart, Award, Target, Play, Calendar, Bot } from 'lucide-react';
 
 export default function OverOnsPage() {
 
@@ -93,7 +93,7 @@ export default function OverOnsPage() {
             </div>
 
             <div className="relative">
-              <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 max-w-md mx-auto">
+              <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 max-w-sm mx-auto">
                 <video
                   className="w-full h-auto"
                   controls
@@ -113,17 +113,21 @@ export default function OverOnsPage() {
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <User className="w-8 h-8 text-pink-500" />
-                <h3 className="text-3xl font-bold text-gray-900">De oprichter: Vincent van Munster</h3>
-              </div>
+              <h3 className="text-3xl font-bold text-gray-900">De oprichter: Vincent van Munster</h3>
               <p className="text-lg text-gray-600 leading-relaxed">
                 Met meer dan 10 jaar ervaring als dating coach en sociaal ondernemer, heb ik duizenden mensen geholpen hun liefde te vinden. DatingAssistent is mijn missie om daten toegankelijker te maken voor iedereen.
               </p>
             </div>
             <div className="flex justify-center">
-              <div className="w-32 h-32 bg-pink-100 rounded-full flex items-center justify-center">
-                <span className="text-4xl font-bold text-pink-500">V</span>
+              <div className="w-48 h-48 rounded-2xl overflow-hidden border border-gray-200">
+                <Image
+                  src="/images/Vincent van Munster.png"
+                  alt="Vincent van Munster - Oprichter DatingAssistent"
+                  width={192}
+                  height={192}
+                  className="w-full h-full object-cover"
+                  priority
+                />
               </div>
             </div>
           </div>
