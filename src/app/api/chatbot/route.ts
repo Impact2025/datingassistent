@@ -2,9 +2,28 @@ import { randomUUID } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { processIncomingMessage } from '@/lib/chatbot/engine';
 import { findKnowledgeBaseEntry } from '@/lib/chatbot/knowledge-base';
+import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
+import { trackFeatureUsage } from '@/lib/usage-tracking';
 
 export async function POST(request: NextRequest) {
   try {
+    // 🔒 SECURITY: Rate limiting to prevent API cost abuse
+    const identifier = getClientIdentifier(request);
+    const rateLimit = await rateLimitExpensiveAI(identifier);
+
+    if (!rateLimit.success) {
+      const headers = createRateLimitHeaders(rateLimit);
+      const resetDate = new Date(rateLimit.resetAt);
+      return NextResponse.json(
+        {
+          error: 'rate_limit_exceeded',
+          message: `Te veel berichten. Probeer opnieuw na ${resetDate.toLocaleTimeString('nl-NL')}.`,
+          resetAt: resetDate.toISOString(),
+        },
+        { status: 429, headers }
+      );
+    }
+
     let body;
     try {
       body = await request.json();
@@ -21,6 +40,39 @@ export async function POST(request: NextRequest) {
     const locale: string | undefined = body.locale;
     const metadata: Record<string, string | undefined> | undefined = body.metadata;
     const userIdentifier: string | undefined = body.userIdentifier;
+
+    // 🔒 SECURITY: Content filtering for inappropriate content
+    if (message) {
+      const lowerMessage = message.toLowerCase();
+
+      // Block potentially harmful or inappropriate content
+      const blockedKeywords = [
+        'hack', 'exploit', 'ddos', 'spam', 'scam', 'phishing',
+        'porn', 'sex', 'nude', 'naked', 'nsfw',
+        'drugs', 'cocaine', 'heroin', 'meth',
+        'violence', 'kill', 'murder', 'rape', 'abuse',
+        'suicide', 'self-harm', 'cutting'
+      ];
+
+      const containsBlockedContent = blockedKeywords.some(keyword =>
+        lowerMessage.includes(keyword)
+      );
+
+      if (containsBlockedContent) {
+        return NextResponse.json({
+          error: 'inappropriate_content',
+          message: 'Dit type content is niet toegestaan. Stel een vraag over dating advies.'
+        }, { status: 400 });
+      }
+
+      // Limit message length to prevent abuse
+      if (message.length > 1000) {
+        return NextResponse.json({
+          error: 'message_too_long',
+          message: 'Bericht is te lang. Houd het onder 1000 karakters.'
+        }, { status: 400 });
+      }
+    }
 
     // Validation with detailed error messages
     if (!sessionId || typeof sessionId !== 'string' || sessionId.trim() === '') {
@@ -85,6 +137,20 @@ export async function POST(request: NextRequest) {
         metadata,
       },
     });
+
+    // Track usage for monitoring and analytics
+    try {
+      await trackFeatureUsage(-1, 'chatbot_interaction', {
+        sessionId,
+        messageLength: message?.length || 0,
+        hasQuickReply: !!quickReplyId,
+        intent: response.intent,
+        confidence: response.confidence
+      });
+    } catch (trackingError) {
+      // Don't fail the request if tracking fails
+      console.warn('Chatbot usage tracking failed:', trackingError);
+    }
 
     return NextResponse.json(response);
   } catch (error) {
