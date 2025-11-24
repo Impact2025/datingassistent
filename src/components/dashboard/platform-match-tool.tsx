@@ -52,7 +52,7 @@ interface UserPreferences {
 
 export function PlatformMatchTool() {
   const { showOverlay, setShowOverlay } = useOnboardingOverlay('platform-match');
-  const { userProfile, user } = useUser();
+  const { userProfile, user, loading } = useUser();
   const [authManager] = useState(() => new AuthManager());
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -99,14 +99,22 @@ export function PlatformMatchTool() {
       return;
     }
 
+    // Check if user is still loading
+    if (loading) {
+      setError("Gebruiker wordt nog geladen. Probeer het over een moment opnieuw.");
+      return;
+    }
+
+    // Check if user is authenticated
+    if (!user) {
+      setError('Niet ingelogd. Log opnieuw in.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      // Check if user is authenticated
-      if (!user) {
-        throw new Error('Niet ingelogd. Log opnieuw in.');
-      }
 
       // Use AuthManager for authenticated request with automatic token refresh
       const data = await authManager.authenticatedRequest('/api/platform-match', {
@@ -668,7 +676,7 @@ export function PlatformMatchTool() {
               ) : (
                 <Button
                   onClick={generateRecommendations}
-                  disabled={loading}
+                  disabled={loading || !user || loading}
                   size="lg"
                   className="gap-2 px-8"
                 >
