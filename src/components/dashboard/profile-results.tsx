@@ -28,10 +28,10 @@ interface ProfileOption {
 
 interface QuizAnswer {
   questionId: string;
-  answerId: string;
+  answerId: string | string[];
   label: string;
   content?: string;
-  fields?: Record<string, string>;
+  fields?: Record<string, string | number>;
 }
 
 interface ProfileResultsProps {
@@ -125,7 +125,9 @@ export function ProfileResults({ profiles, answers, onReset, markAsCompleted }: 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {answers.map((answer, index) => (
               <div key={index} className="text-center p-3 border rounded-lg">
-                <div className="text-sm font-medium">{answer.label}</div>
+                <div className="text-sm font-medium">
+                  {Array.isArray(answer.answerId) ? answer.label : answer.label}
+                </div>
               </div>
             ))}
           </div>

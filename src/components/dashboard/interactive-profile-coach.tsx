@@ -524,9 +524,10 @@ function InteractiveProfileCoachInner() {
 
     // For multi_select questions, check if required number of selections are made
     if (currentQuestion.type === 'multi_select') {
-      if (!currentAnswer.answerId || !Array.isArray(currentAnswer.answerId)) return false;
+      const selectedAnswers = currentAnswer?.answerId;
+      if (!selectedAnswers || !Array.isArray(selectedAnswers)) return false;
       const requiredSelections = currentQuestion.maxSelections || 3;
-      return currentAnswer.answerId.length >= requiredSelections;
+      return selectedAnswers.length >= requiredSelections;
     }
 
     // For values_prioritization questions, check if 5 values are selected
