@@ -521,6 +521,21 @@ function InteractiveProfileCoachInner() {
   const canProceed = () => {
     if (!currentAnswer) return false;
 
+    // For multi_select questions, check if required number of selections are made
+    if (currentQuestion.type === 'multi_select') {
+      if (!currentAnswer.answerId || !Array.isArray(currentAnswer.answerId)) return false;
+      const requiredSelections = currentQuestion.maxSelections || 3;
+      return currentAnswer.answerId.length >= requiredSelections;
+    }
+
+    // For communication_matrix questions, check if all dimensions have values
+    if (currentQuestion.type === 'communication_matrix') {
+      if (!currentAnswer.fields) return false;
+      const requiredDimensions = currentQuestion.dimensions?.length || 0;
+      const filledDimensions = Object.keys(currentAnswer.fields).length;
+      return filledDimensions === requiredDimensions;
+    }
+
     // For multi_slider questions, check if all sliders have values
     if (currentQuestion.type === 'multi_slider') {
       if (!currentAnswer.fields) return false;
@@ -885,6 +900,106 @@ function InteractiveProfileCoachInner() {
             </div>
           )}
 
+          {/* Multi Select Questions */}
+          {currentQuestion.type === 'multi_select' && (
+            <div className="space-y-4 mb-6">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">🎯</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-blue-800">
+                      <strong>Selecteer {currentQuestion.maxSelections} kenmerken:</strong> Kies de woorden die jou het beste beschrijven. Dit vormt de basis van je authentieke profiel.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {currentQuestion.options?.map((option) => {
+                  const selectedAnswers = currentAnswer?.answerId as string[] || [];
+                  const isSelected = selectedAnswers.includes(option.id);
+                  const isDisabled = !isSelected && selectedAnswers.length >= (currentQuestion.maxSelections || 3);
+
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => {
+                        const currentSelected = selectedAnswers;
+                        let newSelected: string[];
+
+                        if (isSelected) {
+                          // Remove from selection
+                          newSelected = currentSelected.filter(id => id !== option.id);
+                        } else {
+                          // Add to selection (if not at max)
+                          if (currentSelected.length < (currentQuestion.maxSelections || 3)) {
+                            newSelected = [...currentSelected, option.id];
+                          } else {
+                            return; // Don't allow more selections
+                          }
+                        }
+
+                        const selectedLabels = newSelected.map(id =>
+                          currentQuestion.options?.find(opt => opt.id === id)?.label
+                        ).filter(Boolean);
+
+                        handleAnswer(newSelected, selectedLabels.join(', '));
+                      }}
+                      disabled={isDisabled && !isSelected}
+                      className={`p-4 border-2 rounded-lg text-left transition-all w-full ${
+                        isSelected
+                          ? 'border-blue-500 bg-blue-50 shadow-sm'
+                          : isDisabled
+                          ? 'border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed'
+                          : 'border-gray-200 hover:border-blue-300'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                          isSelected ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
+                        }`}>
+                          {isSelected && (
+                            <CheckCircle className="w-3 h-3 text-white" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 mb-1">
+                            {option.label}
+                          </h4>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {option.description}
+                          </p>
+                          {isSelected && (
+                            <Badge className="bg-blue-100 text-blue-700 text-xs">
+                              Geselecteerd
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💡</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-blue-800">
+                      <strong>Geselecteerd: {((currentAnswer?.answerId as string[]) || []).length} / {currentQuestion.maxSelections || 3}</strong>
+                      <br />
+                      {currentQuestion.interactive?.tip}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Scenario Radio Selection */}
           {currentQuestion.type === 'scenario_radio' && (
             <div className="space-y-4 mb-6">
@@ -949,6 +1064,80 @@ function InteractiveProfileCoachInner() {
                   <div>
                     <p className="text-sm text-indigo-800">
                       <strong>Je keuze beïnvloedt je profieltoon:</strong> Dit antwoord helpt ons de juiste mate van emotionele expressie in je profiel te bepalen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Communication Matrix */}
+          {currentQuestion.type === 'communication_matrix' && (
+            <div className="space-y-6 mb-6">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💬</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-green-800">
+                      <strong>Beoordeel je communicatiestijl:</strong> Schuif de sliders naar waar jij je het meest thuis voelt. Dit bepaalt de schrijfstijl van je profiel.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                {currentQuestion.dimensions?.map((dimension, index) => {
+                  const dimensionId = dimension.id;
+                  const currentValue = currentAnswer?.fields?.[dimensionId] || 3; // Default to middle (3)
+
+                  return (
+                    <div key={dimensionId} className="bg-white border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-medium text-gray-900">
+                          {dimension.label}
+                        </h4>
+                        <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                          {currentValue}/5
+                        </span>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="px-2">
+                          <Slider
+                            value={[currentValue]}
+                            onValueChange={(value) => {
+                              const newFields = {
+                                ...currentAnswer?.fields,
+                                [dimensionId]: value[0]
+                              };
+                              handleAnswer('communication_matrix', 'Communication style assessment', undefined, newFields);
+                            }}
+                            max={5}
+                            min={1}
+                            step={1}
+                            className="w-full"
+                          />
+                        </div>
+                        <div className="flex justify-between text-xs text-gray-500">
+                          <span>{dimension.low}</span>
+                          <span>{dimension.high}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">📝</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-green-800">
+                      <strong>Je communicatiestijl beïnvloedt 60% van je profiel aantrekkingskracht:</strong> {currentQuestion.interactive?.tip}
                     </p>
                   </div>
                 </div>
