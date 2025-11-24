@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { processIncomingMessage } from '@/lib/chatbot/engine';
 import { findKnowledgeBaseEntry } from '@/lib/chatbot/knowledge-base';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
-import { trackFeatureUsage } from '@/lib/usage-tracking';
 
 export async function POST(request: NextRequest) {
   try {
@@ -72,6 +71,25 @@ export async function POST(request: NextRequest) {
           message: 'Bericht is te lang. Houd het onder 1000 karakters.'
         }, { status: 400 });
       }
+
+      // Simple human verification: require users to include a dating-related keyword
+      // This prevents simple bots from spamming the API
+      const datingKeywords = [
+        'date', 'daten', 'profiel', 'chat', 'gesprek', 'relatie',
+        'liefde', 'vriend', 'vriendin', 'ontmoeten', 'app', 'tinder'
+      ];
+
+      const containsDatingKeyword = datingKeywords.some(keyword =>
+        lowerMessage.includes(keyword)
+      );
+
+      if (!containsDatingKeyword && message.length > 50) {
+        return NextResponse.json({
+          error: 'off_topic',
+          message: 'Stel een vraag gerelateerd aan dating of relaties. Ik help je graag met dating advies!',
+          requiresHumanVerification: true
+        }, { status: 400 });
+      }
     }
 
     // Validation with detailed error messages
@@ -137,20 +155,6 @@ export async function POST(request: NextRequest) {
         metadata,
       },
     });
-
-    // Track usage for monitoring and analytics
-    try {
-      await trackFeatureUsage(-1, 'chatbot_interaction', {
-        sessionId,
-        messageLength: message?.length || 0,
-        hasQuickReply: !!quickReplyId,
-        intent: response.intent,
-        confidence: response.confidence
-      });
-    } catch (trackingError) {
-      // Don't fail the request if tracking fails
-      console.warn('Chatbot usage tracking failed:', trackingError);
-    }
 
     return NextResponse.json(response);
   } catch (error) {
