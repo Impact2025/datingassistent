@@ -529,6 +529,14 @@ function InteractiveProfileCoachInner() {
       return filledSliders === requiredSliders;
     }
 
+    // For attachment_quiz questions, check if all statements have ratings
+    if (currentQuestion.type === 'attachment_quiz') {
+      if (!currentAnswer.fields) return false;
+      const requiredStatements = currentQuestion.statements?.length || 0;
+      const ratedStatements = Object.keys(currentAnswer.fields).filter(key => key.startsWith('statement_')).length;
+      return ratedStatements === requiredStatements;
+    }
+
     // For other question types, check for answerId
     return !!currentAnswer.answerId;
   };
@@ -705,6 +713,86 @@ function InteractiveProfileCoachInner() {
                   <div>
                     <p className="text-sm text-blue-800">
                       <strong>Deze scores helpen ons je ideale match scenario te begrijpen.</strong> Hoe hoger je score in een situatie, hoe meer energie je daar uit haalt.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Attachment Style Quiz */}
+          {currentQuestion.type === 'attachment_quiz' && (
+            <div className="space-y-4 mb-6">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">🛡️</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-amber-800">
+                      <strong>Beantwoord eerlijk:</strong> Deze vragen helpen ons je relatiepatronen te begrijpen. Er zijn geen "goede" antwoorden - het gaat om zelfkennis.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {currentQuestion.statements?.map((statement, index) => {
+                  const statementId = `statement_${index}`;
+                  const currentValue = currentAnswer?.fields?.[statementId] || 3; // Default to neutral
+
+                  return (
+                    <div key={index} className="bg-white border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-900 mb-3">
+                            "{statement.text}"
+                          </p>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-xs text-gray-500">
+                              <span>Oneens</span>
+                              <span className="font-medium text-pink-600">{currentValue}/5</span>
+                              <span>Eens</span>
+                            </div>
+                            <div className="px-2">
+                              <Slider
+                                value={[currentValue]}
+                                onValueChange={(value) => {
+                                  const newFields = {
+                                    ...currentAnswer?.fields,
+                                    [statementId]: value[0]
+                                  };
+                                  handleAnswer('attachment_quiz', 'Attachment quiz response', undefined, newFields);
+                                }}
+                                max={5}
+                                min={1}
+                                step={1}
+                                className="w-full"
+                              />
+                            </div>
+                            <div className="flex justify-between text-xs text-gray-400">
+                              <span>1</span>
+                              <span>2</span>
+                              <span>3</span>
+                              <span>4</span>
+                              <span>5</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💜</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-purple-800">
+                      <strong>Je antwoorden bepalen je hechtingsstijl:</strong> Veilig, Angstig, Vermijdend, of een mix. Dit helpt ons profielen te schrijven die de juiste mate van beschikbaarheid uitstralen.
                     </p>
                   </div>
                 </div>
