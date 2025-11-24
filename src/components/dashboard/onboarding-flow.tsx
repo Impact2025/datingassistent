@@ -41,24 +41,24 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
   return (
     <div className="space-y-6 mb-8">
       {/* Journey Progress Card */}
-      <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
+      <Card className="border border-gray-200 bg-white">
         <CardContent className="pt-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold">Je DatingAssistent Journey</h2>
-                <p className="text-sm text-muted-foreground">
+                <h2 className="text-xl font-bold text-gray-900">Je DatingAssistent Journey</h2>
+                <p className="text-sm text-gray-600">
                   Stap {currentStepIndex + 1} van {steps.length} - Voltooi je onboarding voor toegang tot alle tools
                 </p>
               </div>
-              <Badge variant="outline" className="text-primary border-primary">
+              <Badge variant="outline" className="text-pink-600 border-pink-200 bg-pink-50">
                 {Math.round(progress)}% compleet
               </Badge>
             </div>
 
-            <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-primary transition-all duration-300 ease-in-out"
+                className="h-full bg-pink-500 transition-all duration-300 ease-in-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -71,13 +71,12 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
         {/* Profile Setup */}
         {journeyState.currentStep === 'profile' && (
           <div className="space-y-4">
-            <Card>
+            <Card className="border border-gray-200 bg-white">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <span className="text-2xl">👤</span>
+                <CardTitle className="text-gray-900">
                   Maak je profiel compleet
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-gray-600">
                   Vul je basisgegevens in voor persoonlijke coaching
                 </CardDescription>
               </CardHeader>
@@ -91,22 +90,22 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
 
             {/* Benefits */}
             <div className="grid gap-3 text-left sm:grid-cols-3 text-xs">
-              <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-100">
+              <Card className="bg-white border border-gray-200">
                 <CardContent className="p-3">
-                  <p className="font-semibold text-pink-700 mb-1">📝 Wat we vragen</p>
-                  <p className="text-muted-foreground">Naam, leeftijd, woonplaats en wat je zoekt.</p>
+                  <p className="font-semibold text-gray-900 mb-1">Wat we vragen</p>
+                  <p className="text-gray-600">Naam, leeftijd, woonplaats en wat je zoekt.</p>
                 </CardContent>
               </Card>
-              <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-100">
+              <Card className="bg-white border border-gray-200">
                 <CardContent className="p-3">
-                  <p className="font-semibold text-pink-700 mb-1">🎯 Waarom dit helpt</p>
-                  <p className="text-muted-foreground">Betere openingszinnen en persoonlijk advies.</p>
+                  <p className="font-semibold text-gray-900 mb-1">Waarom dit helpt</p>
+                  <p className="text-gray-600">Betere openingszinnen en persoonlijk advies.</p>
                 </CardContent>
               </Card>
-              <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-100">
+              <Card className="bg-white border border-gray-200">
                 <CardContent className="p-3">
-                  <p className="font-semibold text-pink-700 mb-1">🚀 Wat je krijgt</p>
-                  <p className="text-muted-foreground">Direct toegang tot al je tools.</p>
+                  <p className="font-semibold text-gray-900 mb-1">Wat je krijgt</p>
+                  <p className="text-gray-600">Direct toegang tot al je tools.</p>
                 </CardContent>
               </Card>
             </div>
@@ -115,36 +114,42 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
 
         {/* Welcome Screen */}
         {journeyState.currentStep === 'welcome' && (
-          <Card>
+          <Card className="border border-gray-200 bg-white">
             <CardContent className="pt-6">
               <div className="text-center space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">Welkom bij DatingAssistent</h2>
-                  <p className="text-muted-foreground max-w-2xl mx-auto">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Welkom bij DatingAssistent</h2>
+                  <p className="text-gray-600 max-w-2xl mx-auto">
                     Je persoonlijke dating coach staat klaar. We beginnen met 7 vragen om jouw situatie te begrijpen.
                   </p>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-4">
-                  <Card>
+                  <Card className="border border-gray-200 bg-white">
                     <CardContent className="p-4 text-center">
-                      <span className="text-2xl">7️⃣</span>
-                      <h3 className="font-semibold mb-1">Coach Vragen</h3>
-                      <p className="text-sm text-muted-foreground">Vertel over je situatie</p>
+                      <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-sm font-bold text-pink-600">7</span>
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">Coach Vragen</h3>
+                      <p className="text-sm text-gray-600">Vertel over je situatie</p>
                     </CardContent>
                   </Card>
-                  <Card>
+                  <Card className="border border-gray-200 bg-white">
                     <CardContent className="p-4 text-center">
-                      <span className="text-2xl">🤖</span>
-                      <h3 className="font-semibold mb-1">AI Analyse</h3>
-                      <p className="text-sm text-muted-foreground">Krijg persoonlijk advies</p>
+                      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-sm font-bold text-blue-600">AI</span>
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">AI Analyse</h3>
+                      <p className="text-sm text-gray-600">Krijg persoonlijk advies</p>
                     </CardContent>
                   </Card>
-                  <Card>
+                  <Card className="border border-gray-200 bg-white">
                     <CardContent className="p-4 text-center">
-                      <span className="text-2xl">🚀</span>
-                      <h3 className="font-semibold mb-1">Direct Actie</h3>
-                      <p className="text-sm text-muted-foreground">Start vandaag nog</p>
+                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-sm font-bold text-green-600">→</span>
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-1">Direct Actie</h3>
+                      <p className="text-sm text-gray-600">Start vandaag nog</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -152,7 +157,7 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
                 <Button
                   onClick={handlers.handleWelcomeComplete}
                   size="lg"
-                  className="px-8"
+                  className="px-8 bg-pink-500 hover:bg-pink-600 text-white"
                 >
                   Start Coach Scan
                 </Button>
@@ -163,7 +168,7 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
 
         {/* Personality Scan */}
         {journeyState.currentStep === 'scan' && (
-          <Card>
+          <Card className="border border-gray-200 bg-white">
             <CardContent className="pt-6">
               <PersonalityScan onComplete={handlers.handleScanComplete} />
             </CardContent>
@@ -172,7 +177,7 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
 
         {/* Coach Advice */}
         {journeyState.currentStep === 'coach-advice' && journeyState.coachAdvice && (
-          <Card>
+          <Card className="border border-gray-200 bg-white">
             <CardContent className="pt-6">
               <CoachAdvice
                 advice={journeyState.coachAdvice}
@@ -184,25 +189,29 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
 
         {/* Welcome Video */}
         {journeyState.currentStep === 'welcome-video' && (
-          <WelcomeVideo onComplete={handlers.handleWelcomeVideoComplete} />
+          <div className="bg-white border border-gray-200 rounded-lg">
+            <WelcomeVideo onComplete={handlers.handleWelcomeVideoComplete} />
+          </div>
         )}
 
         {/* Welcome Questions */}
         {journeyState.currentStep === 'welcome-questions' && (
-          <WelcomeQuestions onComplete={handlers.handleWelcomeQuestionsComplete} />
+          <Card className="border border-gray-200 bg-white">
+            <WelcomeQuestions onComplete={handlers.handleWelcomeQuestionsComplete} />
+          </Card>
         )}
 
         {/* Loading state */}
         {journeyState.currentStep === 'loading' && (
-          <Card>
+          <Card className="border border-gray-200 bg-white">
             <CardContent className="pt-6">
               <div className="flex flex-col items-center justify-center py-16 space-y-6">
                 <LoadingSpinner />
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     Je coach analyseert je antwoorden...
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-600">
                     Dit duurt slechts een paar seconden
                   </p>
                 </div>
