@@ -123,9 +123,9 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
             <CardContent className="pt-6">
               <div className="text-center space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Welkom bij DatingAssistent</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Welkom bij DatingAssistent!</h2>
                   <p className="text-gray-600 max-w-2xl mx-auto">
-                    Je persoonlijke dating coach staat klaar. We beginnen met 7 vragen om jouw situatie te begrijpen.
+                    Voordat we beginnen, wil ik je graag persoonlijk welkom heten.
                   </p>
                 </div>
 
