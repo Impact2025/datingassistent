@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Search, BookOpen, TrendingUp, User } from 'lucide-react';
+import { Home, MessageCircle, Wrench, User, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function BottomNavigation() {
@@ -13,46 +13,55 @@ export function BottomNavigation() {
       href: '/',
       icon: Home,
       label: 'Home',
-      active: pathname === '/' || pathname?.startsWith('/dashboard'),
+      active: pathname === '/' || pathname?.startsWith('/dashboard') || pathname?.startsWith('/mobile-dashboard'),
       color: 'text-gray-600',
       activeColor: 'text-pink-500',
     },
     {
-      href: '/tools',
-      icon: Search,
-      label: 'Tools',
-      active: pathname?.startsWith('/tools') ||
-              pathname?.startsWith('/profiel') ||
-              pathname?.startsWith('/chat') ||
-              pathname?.startsWith('/foto') ||
-              pathname?.startsWith('/date'),
+      href: '/chat',
+      icon: MessageCircle,
+      label: 'Chat',
+      active: pathname?.startsWith('/chat'),
       color: 'text-gray-600',
       activeColor: 'text-blue-500',
     },
     {
-      href: '/leren',
-      icon: BookOpen,
-      label: 'Leren',
-      active: pathname?.startsWith('/leren') || pathname?.startsWith('/courses'),
+      href: '/tools',
+      icon: Wrench,
+      label: 'Tools',
+      active: pathname?.startsWith('/tools') ||
+              pathname?.startsWith('/profiel') ||
+              pathname?.startsWith('/foto') ||
+              pathname?.startsWith('/date') ||
+              pathname?.startsWith('/opener') ||
+              pathname?.startsWith('/voice') ||
+              pathname?.startsWith('/match') ||
+              pathname?.startsWith('/veiligheid'),
       color: 'text-gray-600',
       activeColor: 'text-purple-500',
     },
     {
-      href: '/groei',
-      icon: TrendingUp,
-      label: 'Groei',
-      active: pathname?.startsWith('/groei') || pathname?.startsWith('/progress'),
+      href: '/profiel',
+      icon: User,
+      label: 'Profiel',
+      active: pathname?.startsWith('/profiel') || pathname?.startsWith('/profile'),
       color: 'text-gray-600',
       activeColor: 'text-green-500',
     },
     {
       href: '/meer',
-      icon: User,
-      label: 'Meer',
+      icon: Settings,
+      label: 'Account',
       active: pathname?.startsWith('/meer') ||
               pathname?.startsWith('/community') ||
               pathname?.startsWith('/settings') ||
-              pathname?.startsWith('/profile'),
+              pathname?.startsWith('/leren') ||
+              pathname?.startsWith('/groei') ||
+              pathname?.startsWith('/courses') ||
+              pathname?.startsWith('/progress') ||
+              pathname?.startsWith('/help') ||
+              pathname?.startsWith('/privacy') ||
+              pathname?.startsWith('/subscription'),
       color: 'text-gray-600',
       activeColor: 'text-orange-500',
     },
