@@ -71,7 +71,7 @@ export default function OverOnsPage() {
               </div>
               <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600">
                 <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-                <span className="text-xs sm:text-sm">25.000+ tevreden gebruikers</span>
+                <span className="text-xs sm:text-sm">Innovatieve dating technologie</span>
               </div>
               <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600">
                 <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
@@ -97,6 +97,52 @@ export default function OverOnsPage() {
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Onze missie is om daten toegankelijker, persoonlijker en succesvoller te maken voor iedereen, ongeacht achtergrond of ervaring.
           </p>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md-text-4xl font-bold text-gray-900 mb-4">
+              Waar we voor staan
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              De kernwaarden die ons drijven om de beste dating ervaring te bieden
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center space-y-4 p-6 rounded-2xl bg-gray-50 border border-gray-200">
+              <div className="w-16 h-16 mx-auto rounded-full bg-pink-100 flex items-center justify-center">
+                <Heart className="w-8 h-8 text-pink-500" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">Authenticiteit</h3>
+              <p className="text-gray-600 leading-relaxed">
+                We geloven in echte connecties gebaseerd op wie je werkelijk bent, niet wie je denkt dat je moet zijn.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 p-6 rounded-2xl bg-gray-50 border border-gray-200">
+              <div className="w-16 h-16 mx-auto rounded-full bg-blue-100 flex items-center justify-center">
+                <Shield className="w-8 h-8 text-blue-500" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">Veiligheid</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Jouw welzijn en privacy staan altijd voorop. We creëren een veilige omgeving voor iedereen.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 p-6 rounded-2xl bg-gray-50 border border-gray-200">
+              <div className="w-16 h-16 mx-auto rounded-full bg-green-100 flex items-center justify-center">
+                <TrendingUp className="w-8 h-8 text-green-500" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">Groei</h3>
+              <p className="text-gray-600 leading-relaxed">
+                We helpen je niet alleen matches te vinden, maar ook jezelf te ontwikkelen en te groeien.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -126,8 +172,8 @@ export default function OverOnsPage() {
               <div className="text-gray-600">Jaar ervaring in datingbegeleiding</div>
             </div>
             <div className="bg-white rounded-2xl p-8 text-center border border-gray-200">
-              <div className="text-4xl font-bold text-pink-500 mb-3">25K+</div>
-              <div className="text-gray-600">Tevreden gebruikers</div>
+              <div className="text-4xl font-bold text-pink-500 mb-3">24/7</div>
+              <div className="text-gray-600">AI ondersteuning beschikbaar</div>
             </div>
           </div>
         </div>
