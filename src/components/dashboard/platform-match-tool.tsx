@@ -56,7 +56,7 @@ export function PlatformMatchTool() {
   const [authManager] = useState(() => new AuthManager());
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recommendations, setRecommendations] = useState<PlatformRecommendation[]>([]);
 
@@ -111,13 +111,13 @@ export function PlatformMatchTool() {
       return;
     }
 
-    setLoading(true);
+    setIsGenerating(true);
     setError(null);
 
     try {
 
       // Use AuthManager for authenticated request with automatic token refresh
-      const data = await authManager.authenticatedRequest('/api/platform-match', {
+      const response = await authManager.authenticatedRequest('/api/platform-match', {
         method: 'POST',
         body: JSON.stringify({
           userProfile: {
@@ -130,6 +130,7 @@ export function PlatformMatchTool() {
         })
       });
 
+      const data = response as { recommendations?: PlatformRecommendation[] };
       if (data.recommendations && Array.isArray(data.recommendations) && data.recommendations.length > 0) {
         setRecommendations(data.recommendations);
         console.log(`✅ Received ${data.recommendations.length} platform recommendations`);
@@ -142,7 +143,7 @@ export function PlatformMatchTool() {
       const errorMessage = error instanceof Error ? error.message : 'Er ging iets mis. Probeer het opnieuw.';
       setError(errorMessage);
     } finally {
-      setLoading(false);
+      setIsGenerating(false);
     }
   };
 
@@ -239,7 +240,7 @@ export function PlatformMatchTool() {
 
         {/* Step Content */}
         <Card className="min-h-[500px] relative overflow-hidden">
-          {loading && (
+          {isGenerating && (
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
               <div className="text-center space-y-4">
                 <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
@@ -676,11 +677,11 @@ export function PlatformMatchTool() {
               ) : (
                 <Button
                   onClick={generateRecommendations}
-                  disabled={loading || !user || loading}
+                  disabled={isGenerating || !user || loading}
                   size="lg"
                   className="gap-2 px-8"
                 >
-                  {loading ? (
+                  {isGenerating ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
                       Analyseert...
