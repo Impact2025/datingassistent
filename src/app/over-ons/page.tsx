@@ -6,10 +6,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
 import { Shield, TrendingUp, Users, Heart, Award, Target, Play, Calendar, Bot, User } from 'lucide-react';
-import { useState } from 'react';
 
 export default function OverOnsPage() {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -100,19 +98,10 @@ export default function OverOnsPage() {
                   className="w-full h-auto"
                   controls
                   poster="/images/LogoDatingAssistent.png"
-                  onPlay={() => setIsVideoPlaying(true)}
-                  onPause={() => setIsVideoPlaying(false)}
                 >
                   <source src="/videos/Welkom-Iris.mp4" type="video/mp4" />
                   Uw browser ondersteunt deze video niet.
                 </video>
-                {!isVideoPlaying && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20">
-                    <div className="bg-pink-500 rounded-full p-4 cursor-pointer hover:bg-pink-600 transition-colors">
-                      <Play className="w-8 h-8 text-white ml-1" />
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -224,46 +213,18 @@ export default function OverOnsPage() {
             Klaar om je eigen verhaal te schrijven?
           </h2>
           <p className="text-lg text-gray-600 mb-8">
-            Sluit je aan bij duizenden mensen die succesvoller daten met DatingAssistent en Iris
+            Sluit je aan bij 25.000+ mensen die succesvoller daten met DatingAssistent
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex items-center justify-center">
             <Link href="/register">
               <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full">
                 Start je dating succes
-              </Button>
-            </Link>
-            <Link href="/features">
-              <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-3 rounded-full">
-                Ontmoet Iris
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-pink-50 to-purple-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Klaar om je eigen verhaal te schrijven?
-          </h2>
-          <p className="text-lg text-gray-600 mb-8">
-            Sluit je aan bij 25.000+ mensen die succesvoller daten met DatingAssistent
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/register">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-6 text-lg rounded-full shadow-lg">
-                Start je dating succes
-              </Button>
-            </Link>
-            <Link href="/features">
-              <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-6 text-lg rounded-full">
-                Bekijk onze tools
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
 
       <PublicFooter />
     </div>
