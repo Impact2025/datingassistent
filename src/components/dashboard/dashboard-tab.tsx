@@ -325,131 +325,139 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
       )}
 
       {/* Interactive Tools Section */}
-      <Card className="bg-white border-0 shadow-sm">
-        <CardContent className="p-8">
-          <div className="text-center mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Interactieve Tools</h2>
-            <p className="text-gray-600">Ontdek je potentieel met onze slimme interactieve hulpmiddelen</p>
-          </div>
+      <div className="space-y-4">
+        <div className="text-center mb-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Interactieve Tools</h2>
+          <p className="text-gray-600">Ontdek je potentieel met onze professionele hulpmiddelen</p>
+        </div>
 
-          <div className="space-y-8">
-            {/* AI Confidence Coach */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-blue-900">AI Confidence Coach</h3>
-                  <p className="text-sm text-blue-700">Krijg gepersonaliseerd advies voor je dating zelfvertrouwen</p>
-                </div>
+        {/* AI Confidence Coach */}
+        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-gray-600" />
               </div>
-              <AIConfidenceCoach
-                userId={user?.id}
-                currentModule={1}
-                userProfile={userProfile}
-                compact={true}
-                context="Dashboard - Zelfvertrouwen boost"
-              />
+              <div>
+                <h3 className="font-semibold text-gray-900">AI Confidence Coach</h3>
+                <p className="text-sm text-gray-600">Gepersonaliseerd advies voor je dating zelfvertrouwen</p>
+              </div>
             </div>
+            <AIConfidenceCoach
+              userId={user?.id}
+              currentModule={1}
+              userProfile={userProfile}
+              compact={true}
+              context="Dashboard - Zelfvertrouwen boost"
+            />
+          </CardContent>
+        </Card>
 
-            {/* Interactive Profile Builder */}
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-purple-900">Profiel Builder</h3>
-                  <p className="text-sm text-purple-700">Bouw je ideale dating profiel stap voor stap</p>
-                </div>
+        {/* Interactive Profile Builder */}
+        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                <User className="w-6 h-6 text-gray-600" />
               </div>
-              <InteractiveProfileBuilder
-                onComplete={(profile, score) => {
-                  console.log('Profile completed:', profile, 'Score:', score);
-                }}
-                initialProfile=""
-              />
+              <div>
+                <h3 className="font-semibold text-gray-900">Profiel Builder</h3>
+                <p className="text-sm text-gray-600">Bouw je ideale dating profiel stap voor stap</p>
+              </div>
             </div>
+            <InteractiveProfileBuilder
+              onComplete={(profile, score) => {
+                console.log('Profile completed:', profile, 'Score:', score);
+              }}
+              initialProfile=""
+            />
+          </CardContent>
+        </Card>
 
-            {/* Gamification System */}
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <Target className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-green-900">Voortgang & Punten</h3>
-                  <p className="text-sm text-green-700">Verdien punten en volg je dating voortgang</p>
-                </div>
+        {/* Gamification System */}
+        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                <Target className="w-6 h-6 text-gray-600" />
               </div>
-              <GamificationSystem
-                userId={user?.id?.toString() || ''}
-                courseId="dashboard-gamification"
-                onPointsEarned={(points, reason) => {
-                  console.log(`Earned ${points} points for: ${reason}`);
-                }}
-              />
+              <div>
+                <h3 className="font-semibold text-gray-900">Voortgang & Punten</h3>
+                <p className="text-sm text-gray-600">Verdien punten en volg je dating voortgang</p>
+              </div>
             </div>
+            <GamificationSystem
+              userId={user?.id?.toString() || ''}
+              courseId="dashboard-gamification"
+              onPointsEarned={(points, reason) => {
+                console.log(`Earned ${points} points for: ${reason}`);
+              }}
+            />
+          </CardContent>
+        </Card>
 
-            {/* Real-time AI Feedback */}
-            <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-6 border border-orange-200">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5 text-orange-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-orange-900">AI Feedback</h3>
-                  <p className="text-sm text-orange-700">Krijg direct feedback op je teksten</p>
-                </div>
+        {/* Real-time AI Feedback */}
+        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                <MessageCircle className="w-6 h-6 text-gray-600" />
               </div>
-              <RealTimeAIFeedback
-                text=""
-                onTextChange={() => {}}
-                onFeedbackUpdate={(feedback) => {
-                  console.log('Feedback updated:', feedback);
-                }}
-              />
+              <div>
+                <h3 className="font-semibold text-gray-900">AI Feedback</h3>
+                <p className="text-sm text-gray-600">Krijg direct feedback op je teksten</p>
+              </div>
             </div>
+            <RealTimeAIFeedback
+              text=""
+              onTextChange={() => {}}
+              onFeedbackUpdate={(feedback) => {
+                console.log('Feedback updated:', feedback);
+              }}
+            />
+          </CardContent>
+        </Card>
 
-            {/* Social Learning */}
-            <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-6 border border-teal-200">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                  <Users className="w-5 h-5 text-teal-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-teal-900">Community Learning</h3>
-                  <p className="text-sm text-teal-700">Leer van anderen in de community</p>
-                </div>
+        {/* Social Learning */}
+        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                <Users className="w-6 h-6 text-gray-600" />
               </div>
-              <SocialLearning
-                currentUserId={user?.id?.toString() || ''}
-                onReviewSubmitted={(review) => {
-                  console.log('Review submitted:', review);
-                }}
-                onProfileShared={(profile) => {
-                  console.log('Profile shared:', profile);
-                }}
-              />
+              <div>
+                <h3 className="font-semibold text-gray-900">Community Learning</h3>
+                <p className="text-sm text-gray-600">Leer van anderen in de community</p>
+              </div>
             </div>
+            <SocialLearning
+              currentUserId={user?.id?.toString() || ''}
+              onReviewSubmitted={(review) => {
+                console.log('Review submitted:', review);
+              }}
+              onProfileShared={(profile) => {
+                console.log('Profile shared:', profile);
+              }}
+            />
+          </CardContent>
+        </Card>
 
-            {/* Introductory Slides */}
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-200">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                  <BookOpen className="w-5 h-5 text-indigo-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-indigo-900">Executive Assessment Intro</h3>
-                  <p className="text-sm text-indigo-700">Ontdek je sterke punten met deze interactieve presentatie</p>
-                </div>
+        {/* Introductory Slides */}
+        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                <BookOpen className="w-6 h-6 text-gray-600" />
               </div>
-              <SlideViewer deck={executiveAssessmentSlides} />
+              <div>
+                <h3 className="font-semibold text-gray-900">Executive Assessment Intro</h3>
+                <p className="text-sm text-gray-600">Ontdek je sterke punten met deze interactieve presentatie</p>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+            <SlideViewer deck={executiveAssessmentSlides} />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
