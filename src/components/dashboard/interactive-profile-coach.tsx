@@ -537,6 +537,13 @@ function InteractiveProfileCoachInner() {
       return ratedStatements === requiredStatements;
     }
 
+    // For love_language questions, check if at least one language is selected
+    if (currentQuestion.type === 'love_language') {
+      if (!currentAnswer.fields) return false;
+      const selectedLanguages = Object.values(currentAnswer.fields).filter(value => value === true).length;
+      return selectedLanguages > 0;
+    }
+
     // For other question types, check for answerId
     return !!currentAnswer.answerId;
   };
@@ -793,6 +800,84 @@ function InteractiveProfileCoachInner() {
                   <div>
                     <p className="text-sm text-purple-800">
                       <strong>Je antwoorden bepalen je hechtingsstijl:</strong> Veilig, Angstig, Vermijdend, of een mix. Dit helpt ons profielen te schrijven die de juiste mate van beschikbaarheid uitstralen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Love Languages Selection */}
+          {currentQuestion.type === 'love_language' && (
+            <div className="space-y-4 mb-6">
+              <div className="bg-rose-50 border border-rose-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-rose-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💕</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-rose-800">
+                      <strong>Selecteer je belangrijkste liefdestalen:</strong> Hoe geef en ontvang jij liefde? Dit bepaalt hoe we je relatievoorkeuren in je profiel verwerken.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {currentQuestion.languages?.map((language, index) => {
+                  const isSelected = currentAnswer?.fields?.[language.id] === true;
+
+                  return (
+                    <div
+                      key={language.id}
+                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                        isSelected
+                          ? 'border-pink-500 bg-pink-50 shadow-sm'
+                          : 'border-gray-200 hover:border-pink-300'
+                      }`}
+                      onClick={() => {
+                        const newFields = {
+                          ...currentAnswer?.fields,
+                          [language.id]: !isSelected
+                        };
+                        handleAnswer('love_language', 'Love language selection', undefined, newFields);
+                      }}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                          isSelected ? 'border-pink-500 bg-pink-500' : 'border-gray-300'
+                        }`}>
+                          {isSelected && (
+                            <CheckCircle className="w-3 h-3 text-white" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 mb-1">
+                            {language.name}
+                          </h4>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {language.description}
+                          </p>
+                          {isSelected && (
+                            <Badge className="bg-pink-100 text-pink-700 text-xs">
+                              Geselecteerd
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="bg-pink-50 border border-pink-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💑</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-pink-800">
+                      <strong>Partners met aligned liefdestalen:</strong> Hebben gemiddeld 25% sterkere relaties. We gebruiken dit om mensen aan te trekken die op dezelfde manier van jou houden.
                     </p>
                   </div>
                 </div>
