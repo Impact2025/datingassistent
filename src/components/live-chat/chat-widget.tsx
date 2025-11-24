@@ -169,10 +169,10 @@ export function ChatWidget({
       <div className={`fixed ${position === 'bottom-right' ? 'bottom-10 right-4' : 'bottom-10 left-4'} z-50`}>
         <Button
           onClick={() => setIsOpen(true)}
-          className="rounded-full w-12 h-12 sm:w-14 sm:h-14 shadow-lg hover:shadow-xl transition-shadow"
+          className="rounded-full w-14 h-14 sm:w-16 sm:h-16 shadow-lg hover:shadow-xl transition-shadow"
           style={{ backgroundColor: primaryColor }}
         >
-          <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+          <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
         </Button>
       </div>
     );
@@ -180,7 +180,7 @@ export function ChatWidget({
 
   return (
     <div className={`fixed ${position === 'bottom-right' ? 'bottom-10 right-4' : 'bottom-10 left-4'} z-50`}>
-      <Card className={`w-80 sm:w-80 ${isMinimized ? 'h-14' : 'max-h-96'} shadow-2xl border-2 transition-all duration-300 max-w-[calc(100vw-2rem)] flex flex-col`}>
+      <Card className={`w-96 sm:w-96 ${isMinimized ? 'h-14' : 'max-h-[28rem]'} shadow-2xl border-2 transition-all duration-300 max-w-[calc(100vw-2rem)] flex flex-col`}>
         {/* Header */}
         <CardHeader className="pb-2 cursor-pointer flex-shrink-0" onClick={() => setIsMinimized(!isMinimized)}>
           <div className="flex items-center justify-between">
