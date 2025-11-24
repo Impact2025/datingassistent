@@ -1508,6 +1508,103 @@ function InteractiveProfileCoachInner() {
             </div>
           )}
 
+          {/* Lifestyle Canvas */}
+          {currentQuestion.type === 'lifestyle_canvas' && (
+            <div className="space-y-6 mb-6">
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-teal-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">🏠</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-teal-800">
+                      <strong>Levensstijl alignment is de #1 voorspeller van relatie succes:</strong> Selecteer je voorkeuren voor elke levensstijl categorie. Dit helpt ons compatibele partners voor je te vinden.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                {Object.entries(currentQuestion.categories || {}).map(([categoryKey, options]) => {
+                  const categoryLabels: Record<string, string> = {
+                    routine: 'Routine & Slaapritme',
+                    social: 'Sociaal & Energie',
+                    work: 'Werk & Carrière',
+                    activity: 'Activiteiten & Hobby\'s'
+                  };
+
+                  const categoryIcons: Record<string, string> = {
+                    routine: '⏰',
+                    social: '👥',
+                    work: '💼',
+                    activity: '🎯'
+                  };
+
+                  return (
+                    <div key={categoryKey} className="bg-white border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="text-2xl">{categoryIcons[categoryKey]}</span>
+                        <div>
+                          <h4 className="font-medium text-gray-900">
+                            {categoryLabels[categoryKey]}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            Kies je ideale {categoryLabels[categoryKey].toLowerCase()}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-3">
+                        {(options as string[]).map((option, index) => {
+                          const optionId = `${categoryKey}_${index}`;
+                          const isSelected = currentAnswer?.answerId === optionId;
+
+                          return (
+                            <button
+                              key={optionId}
+                              onClick={() => handleAnswer(optionId, option)}
+                              className={`p-3 border-2 rounded-lg text-left transition-all ${
+                                isSelected
+                                  ? 'border-teal-500 bg-teal-50 shadow-sm'
+                                  : 'border-gray-200 hover:border-teal-300'
+                              }`}
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                                  isSelected ? 'border-teal-500 bg-teal-500' : 'border-gray-300'
+                                }`}>
+                                  {isSelected && (
+                                    <CheckCircle className="w-3 h-3 text-white" />
+                                  )}
+                                </div>
+                                <span className="text-sm font-medium text-gray-900">
+                                  {option}
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-teal-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💫</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-teal-800">
+                      <strong>Levensstijl alignment is de #1 voorspeller van relatie succes:</strong> {currentQuestion.interactive?.tip}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* USP Generator */}
           {currentQuestion.type === 'usp_generator' && (
             <div className="space-y-4 mb-6">
