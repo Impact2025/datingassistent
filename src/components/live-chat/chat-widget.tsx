@@ -46,6 +46,7 @@ export function ChatWidget({
   const [newMessage, setNewMessage] = useState('');
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -107,6 +108,9 @@ export function ChatWidget({
 
     setMessages(prev => [...prev, userMessage]);
 
+    // Show typing indicator
+    setIsTyping(true);
+
     try {
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -122,6 +126,9 @@ export function ChatWidget({
           }
         })
       });
+
+      // Hide typing indicator
+      setIsTyping(false);
 
       if (response.ok) {
         const data = await response.json();
@@ -145,6 +152,8 @@ export function ChatWidget({
       }
     } catch (error) {
       console.error('Failed to send message:', error);
+      // Hide typing indicator on error
+      setIsTyping(false);
       setMessages(prev => [...prev, {
         id: `error_send_${Date.now()}`,
         content: 'Bericht kon niet worden verzonden. Probeer het opnieuw.',
@@ -255,6 +264,31 @@ export function ChatWidget({
                     </div>
                   </div>
                 ))}
+
+                {/* Typing Indicator */}
+                {isTyping && (
+                  <div className="flex justify-start">
+                    <div className="flex gap-2 max-w-[80%]">
+                      <Avatar className="w-6 h-6">
+                        <AvatarFallback className="text-xs">
+                          <Bot className="w-3 h-3" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="px-3 py-2 rounded-lg text-sm bg-gray-100 text-gray-900">
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs opacity-75">AI Assistent</span>
+                        </div>
+                        <div className="flex items-center gap-1 mt-1">
+                          <div className="flex gap-1">
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
               </div>
               <div ref={messagesEndRef} />
