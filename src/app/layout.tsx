@@ -118,9 +118,10 @@ export default function RootLayout({
         <meta name="author" content="DatingAssistent" />
 
         {/* PWA Icons */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/icon-192.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/icon-192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/Logo Icon DatingAssistent.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/Logo Icon DatingAssistent.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/Logo Icon DatingAssistent.png" />
+        <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
 
         <link rel="canonical" href="https://datingassistent.nl" />
