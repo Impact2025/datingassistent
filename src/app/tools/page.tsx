@@ -45,7 +45,18 @@ function ToolsPageContent() {
         'profiel': 'profile',
         'chat': 'communication',
         'date': 'analysis',
-        'date-planner': 'analysis'
+        'date-planner': 'analysis',
+        'bio-generator': 'profile',
+        'ai-bio-generator': 'profile',
+        'foto-checker': 'profile',
+        'ai-foto-checker': 'profile',
+        'conversatie-starter': 'communication',
+        'ai-conversatie-starter': 'communication',
+        'gespreks-ehbo': 'safety',
+        'ai-gespreks-ehbo': 'safety',
+        'confidence-coach': 'analysis',
+        'ai-confidence-coach': 'analysis',
+        'ai-profiel-coach': 'analysis'
       };
 
       const mappedCategory = toolCategoryMap[tool.toLowerCase()];
@@ -68,6 +79,23 @@ function ToolsPageContent() {
       category: 'profile',
       popular: true,
     },
+    {
+      id: 'ai-bio-generator',
+      icon: <Heart className="w-6 h-6" />,
+      title: 'AI Bio Generator',
+      description: 'Professionele bio varianten genereren',
+      route: '/profiel',
+      category: 'profile',
+      popular: true,
+    },
+    {
+      id: 'ai-foto-checker',
+      icon: <Image className="w-6 h-6" />,
+      title: 'AI Foto Checker',
+      description: 'Professionele foto beoordeling',
+      route: '/profiel',
+      category: 'profile',
+    },
 
     // Communication Tools
     {
@@ -78,6 +106,22 @@ function ToolsPageContent() {
       route: '/chat',
       category: 'communication',
       popular: true,
+    },
+    {
+      id: 'ai-conversatie-starter',
+      icon: <MessageCircle className="w-6 h-6" />,
+      title: 'AI Conversatie Starter',
+      description: 'Slimme openingszinnen genereren',
+      route: '/chat',
+      category: 'communication',
+    },
+    {
+      id: 'ai-gespreks-ehbo',
+      icon: <Shield className="w-6 h-6" />,
+      title: 'AI Gespreks EHBO',
+      description: 'Problematische gesprekken analyseren',
+      route: '/chat',
+      category: 'communication',
     },
 
     // Analysis Tools
@@ -90,6 +134,22 @@ function ToolsPageContent() {
       category: 'analysis',
       popular: true,
     },
+    {
+      id: 'ai-confidence-coach',
+      icon: <Target className="w-6 h-6" />,
+      title: 'AI Confidence Coach',
+      description: 'Zelfvertrouwen en mindset coaching',
+      route: '/groei',
+      category: 'analysis',
+    },
+    {
+      id: 'ai-profiel-coach',
+      icon: <User className="w-6 h-6" />,
+      title: 'AI Profiel Coach',
+      description: 'Profiel analyse en optimalisatie',
+      route: '/profiel',
+      category: 'analysis',
+    },
   ];
 
   const categories = [
@@ -97,6 +157,7 @@ function ToolsPageContent() {
     { id: 'profile', label: 'Profiel', count: tools.filter(t => t.category === 'profile').length },
     { id: 'communication', label: 'Communicatie', count: tools.filter(t => t.category === 'communication').length },
     { id: 'analysis', label: 'Analyse', count: tools.filter(t => t.category === 'analysis').length },
+    { id: 'safety', label: 'Veiligheid', count: tools.filter(t => t.category === 'safety').length },
   ];
 
   const filteredTools = selectedCategory === 'all'
