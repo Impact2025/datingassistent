@@ -94,9 +94,9 @@ export default function LerenPage() {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'beginner': return 'bg-green-100 text-green-700';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-700';
-      case 'advanced': return 'bg-red-100 text-red-700';
+      case 'beginner': return 'bg-gray-100 text-gray-700';
+      case 'intermediate': return 'bg-pink-100 text-pink-700';
+      case 'advanced': return 'bg-gray-100 text-gray-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
@@ -120,7 +120,7 @@ export default function LerenPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-white pb-20">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-4">
         <div className="flex items-center gap-3 mb-4">
@@ -141,10 +141,10 @@ export default function LerenPage() {
 
       <div className="p-4 space-y-6">
         {/* Today's Lesson Card */}
-        <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+        <Card className="border border-gray-200 bg-white">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 mb-2">
-              <Star className="w-5 h-5 text-pink-500" />
+              <Star className="w-5 h-5 text-pink-600" />
               <Badge className="bg-pink-100 text-pink-700">Aanbevolen voor vandaag</Badge>
             </div>
             <CardTitle className="text-lg">{todayLesson.title}</CardTitle>
@@ -245,15 +245,15 @@ export default function LerenPage() {
             <h3 className="font-semibold text-gray-900 mb-4">Jouw Leer Stats</h3>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <div className="text-2xl font-bold text-green-600">24</div>
+                <div className="text-2xl font-bold text-gray-900">24</div>
                 <div className="text-xs text-gray-600">Lessen voltooid</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-blue-600">8</div>
+                <div className="text-2xl font-bold text-pink-600">8</div>
                 <div className="text-xs text-gray-600">Cursussen</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-purple-600">15h</div>
+                <div className="text-2xl font-bold text-gray-900">15h</div>
                 <div className="text-xs text-gray-600">Leertijd</div>
               </div>
             </div>

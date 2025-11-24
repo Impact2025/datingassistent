@@ -72,11 +72,11 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
   };
 
   return (
-    <div className={cn("grid grid-cols-2 gap-4", className)}>
+    <div className={cn("grid grid-cols-2 gap-3", className)}>
       {quickActions.map((action) => (
         <div
           key={action.id}
-          className="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:bg-gray-50"
+          className="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:border-pink-200 hover:bg-pink-50/30 active:scale-95"
           onClick={() => handleActionClick(action)}
         >
           <div className="flex flex-col items-center text-center space-y-3">
@@ -89,17 +89,17 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
 
             {/* Content */}
             <div className="space-y-1">
-              <h3 className="font-semibold text-gray-900 text-sm">
+              <h3 className="font-medium text-gray-900 text-sm leading-tight">
                 {action.title}
               </h3>
-              <p className="text-xs text-gray-600">
+              <p className="text-xs text-gray-600 leading-tight">
                 {action.subtitle}
               </p>
             </div>
 
             {/* Priority indicator */}
             {action.priority === 'high' && (
-              <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+              <div className="w-1.5 h-1.5 bg-pink-500 rounded-full"></div>
             )}
           </div>
         </div>

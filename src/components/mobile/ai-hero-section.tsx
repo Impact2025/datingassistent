@@ -6,7 +6,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Play, Heart, Zap } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 interface AIHeroSectionProps {
@@ -15,27 +14,21 @@ interface AIHeroSectionProps {
 }
 
 export function AIHeroSection({ onStartGuidedFlow, className }: AIHeroSectionProps) {
-  const { user } = useUser();
-  const [currentGreeting, setCurrentGreeting] = useState(0);
-  const [showObjectives, setShowObjectives] = useState(false);
+   const { user } = useUser();
 
-  const greetings = [
-    "Goedemorgen",
-    "Goedemiddag",
-    "Goedenavond"
-  ];
+   const greetings = [
+     "Goedemorgen",
+     "Goedemiddag",
+     "Goedenavond"
+   ];
 
-  // Dynamic greeting based on time
-  useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setCurrentGreeting(0);
-    else if (hour < 18) setCurrentGreeting(1);
-    else setCurrentGreeting(2);
-
-    // Show objectives after greeting animation
-    const timer = setTimeout(() => setShowObjectives(true), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+   // Dynamic greeting based on time
+   const getCurrentGreeting = () => {
+     const hour = new Date().getHours();
+     if (hour < 12) return greetings[0];
+     else if (hour < 18) return greetings[1];
+     else return greetings[2];
+   };
 
   const getPersonalizedObjectives = () => {
     // This would be calculated based on user's current progress and AI analysis
@@ -92,7 +85,7 @@ export function AIHeroSection({ onStartGuidedFlow, className }: AIHeroSectionPro
       {/* Personalized Greeting */}
       <div className="text-center mb-6">
         <h1 className="text-xl font-bold text-gray-900 mb-2">
-          {greetings[currentGreeting]}, {user?.name?.split(' ')[0] || 'Dating Expert'}!
+          {getCurrentGreeting()}, {user?.name?.split(' ')[0] || 'Dating Expert'}!
         </h1>
         <p className="text-gray-600 text-sm">
           Ik help je vandaag met je dating succes

@@ -114,26 +114,26 @@ export default function GroeiPage() {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'profile': return 'bg-blue-100 text-blue-700';
-      case 'communication': return 'bg-green-100 text-green-700';
+      case 'profile': return 'bg-gray-100 text-gray-700';
+      case 'communication': return 'bg-gray-100 text-gray-700';
       case 'dates': return 'bg-pink-100 text-pink-700';
-      case 'personal': return 'bg-purple-100 text-purple-700';
+      case 'personal': return 'bg-gray-100 text-gray-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return 'border-gray-300';
-      case 'rare': return 'border-blue-300';
-      case 'epic': return 'border-purple-300';
-      case 'legendary': return 'border-yellow-300';
-      default: return 'border-gray-300';
+      case 'common': return 'border-gray-200';
+      case 'rare': return 'border-pink-200';
+      case 'epic': return 'border-pink-300';
+      case 'legendary': return 'border-pink-400';
+      default: return 'border-gray-200';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-white pb-20">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-4">
         <div className="flex items-center gap-3 mb-4">
@@ -210,21 +210,21 @@ export default function GroeiPage() {
 
           {/* Progress Tab */}
           <TabsContent value="progress" className="space-y-4">
-            <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+            <Card className="border border-gray-200 bg-white">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-pink-500" />
+                  <TrendingUp className="w-5 h-5 text-pink-600" />
                   Deze Week
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">{weeklyStats.messagesSent}</div>
+                    <div className="text-2xl font-bold text-gray-900">{weeklyStats.messagesSent}</div>
                     <div className="text-xs text-gray-600">Berichten verstuurd</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">{weeklyStats.matches}</div>
+                    <div className="text-2xl font-bold text-gray-900">{weeklyStats.matches}</div>
                     <div className="text-xs text-gray-600">Nieuwe matches</div>
                   </div>
                   <div className="text-center">
@@ -232,7 +232,7 @@ export default function GroeiPage() {
                     <div className="text-xs text-gray-600">Dates gepland</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-purple-600">{weeklyStats.responseRate}%</div>
+                    <div className="text-2xl font-bold text-gray-900">{weeklyStats.responseRate}%</div>
                     <div className="text-xs text-gray-600">Response rate</div>
                   </div>
                 </div>
@@ -295,9 +295,9 @@ export default function GroeiPage() {
                       {achievement.description}
                     </p>
                     <Badge className={`text-xs ${
-                      achievement.rarity === 'legendary' ? 'bg-yellow-100 text-yellow-700' :
-                      achievement.rarity === 'epic' ? 'bg-purple-100 text-purple-700' :
-                      achievement.rarity === 'rare' ? 'bg-blue-100 text-blue-700' :
+                      achievement.rarity === 'legendary' ? 'bg-pink-100 text-pink-700' :
+                      achievement.rarity === 'epic' ? 'bg-pink-100 text-pink-700' :
+                      achievement.rarity === 'rare' ? 'bg-pink-100 text-pink-700' :
                       'bg-gray-100 text-gray-700'
                     }`}>
                       {achievement.rarity}
@@ -311,9 +311,9 @@ export default function GroeiPage() {
             </div>
 
             {/* Achievement Progress */}
-            <Card className="border-0 bg-gradient-to-r from-yellow-50 to-orange-50">
+            <Card className="border border-gray-200 bg-white">
               <CardContent className="p-4 text-center">
-                <Flame className="w-8 h-8 text-orange-500 mx-auto mb-2" />
+                <Flame className="w-8 h-8 text-pink-600 mx-auto mb-2" />
                 <h3 className="font-semibold text-gray-900 mb-1">Streak: 7 dagen</h3>
                 <p className="text-sm text-gray-600 mb-3">
                   Nog 3 dagen voor de "Week Warrior" badge!

@@ -16,7 +16,7 @@ import {
   CheckCircle,
   RefreshCw
 } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 interface SmartCard {
@@ -38,10 +38,9 @@ interface AISmartFlowProps {
 }
 
 export function AISmartFlow({ className }: AISmartFlowProps) {
-  const [smartCards, setSmartCards] = useState<SmartCard[]>([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [visibleCards, setVisibleCards] = useState(3);
-  const scrollRef = useRef<HTMLDivElement>(null);
+   const [smartCards, setSmartCards] = useState<SmartCard[]>([]);
+   const [refreshing, setRefreshing] = useState(false);
+   const [visibleCards, setVisibleCards] = useState(3);
 
   // Generate personalized smart cards based on user data
   const generateSmartCards = () => {
@@ -131,30 +130,12 @@ export function AISmartFlow({ className }: AISmartFlowProps) {
   };
 
   // Load more cards
-  const loadMoreCards = () => {
-    setVisibleCards(prev => Math.min(prev + 2, smartCards.length));
-  };
-
-  // Intersection observer for infinite scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && visibleCards < smartCards.length) {
-          loadMoreCards();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (scrollRef.current) {
-      observer.observe(scrollRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [visibleCards, smartCards.length]);
+   const loadMoreCards = () => {
+     setVisibleCards(prev => Math.min(prev + 2, smartCards.length));
+   };
 
   const getCardStyle = (type: SmartCard['type'], priority: SmartCard['priority']) => {
-    const baseClasses = "bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:bg-gray-50";
+    const baseClasses = "bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:border-pink-200 hover:bg-pink-50/30 active:scale-98";
 
     return baseClasses;
   };
@@ -182,141 +163,88 @@ export function AISmartFlow({ className }: AISmartFlowProps) {
         </Badge>
       </div>
 
-      {/* Pull-to-refresh container */}
+      {/* Smart Cards Container */}
       <div className="relative">
         {refreshing && (
-          <motion.div
-            className="absolute top-0 left-0 right-0 z-10 bg-white/80 backdrop-blur-sm rounded-lg p-3 flex items-center justify-center gap-2"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            >
-              <RefreshCw className="w-4 h-4 text-pink-500" />
-            </motion.div>
+          <div className="absolute top-0 left-0 right-0 z-10 bg-white/90 border border-gray-200 rounded-lg p-3 flex items-center justify-center gap-2">
+            <RefreshCw className="w-4 h-4 text-pink-500 animate-spin" />
             <span className="text-sm text-gray-600">AI denkt na...</span>
-          </motion.div>
+          </div>
         )}
 
-        <motion.div
-          className="space-y-3 max-h-96 overflow-y-auto"
-          animate={refreshing ? { y: 60 } : { y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <AnimatePresence mode="popLayout">
-            {smartCards.slice(0, visibleCards).map((card, index) => (
-              <motion.div
-                key={card.id}
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                custom={index}
-                layout
-              >
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  <div
-                    className="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50"
-                    onClick={card.onAction}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 mt-0.5">
-                        {card.icon}
-                      </div>
+        <div className="space-y-3 max-h-96 overflow-y-auto">
+          {smartCards.slice(0, visibleCards).map((card, index) => (
+            <div
+              key={card.id}
+              className={getCardStyle(card.type, card.priority)}
+              onClick={card.onAction}
+            >
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-0.5">
+                  {card.icon}
+                </div>
 
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between mb-2">
-                          <h3 className="font-medium text-gray-900 text-sm">
-                            {card.title}
-                          </h3>
-                          {card.badge && (
-                            <Badge variant="outline" className="text-xs ml-2">
-                              {card.badge}
-                            </Badge>
-                          )}
-                        </div>
-
-                        <p className="text-sm text-gray-600 mb-3">
-                          {card.description}
-                        </p>
-
-                        {/* Progress bar for progress type */}
-                        {card.type === 'progress' && card.progress !== undefined && (
-                          <div className="mb-3">
-                            <div className="flex justify-between text-xs text-gray-600 mb-1">
-                              <span>Voortgang</span>
-                              <span>{card.progress}%</span>
-                            </div>
-                            <Progress value={card.progress} className="h-2" />
-                          </div>
-                        )}
-
-                        {/* Action button */}
-                        {card.actionText && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="text-xs h-8 border-pink-200 text-pink-700 hover:bg-pink-50"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              card.onAction?.();
-                            }}
-                          >
-                            {card.actionText}
-                            <ArrowRight className="w-3 h-3 ml-1" />
-                          </Button>
-                        )}
-                      </div>
-                    </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="font-medium text-gray-900 text-sm">
+                      {card.title}
+                    </h3>
+                    {card.badge && (
+                      <Badge variant="outline" className="text-xs ml-2">
+                        {card.badge}
+                      </Badge>
+                    )}
                   </div>
-                </motion.div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
 
-        {/* Load more trigger */}
-        <div ref={scrollRef} className="h-4" />
+                  <p className="text-sm text-gray-600 mb-3">
+                    {card.description}
+                  </p>
+
+                  {/* Progress bar for progress type */}
+                  {card.type === 'progress' && card.progress !== undefined && (
+                    <div className="mb-3">
+                      <div className="flex justify-between text-xs text-gray-600 mb-1">
+                        <span>Voortgang</span>
+                        <span>{card.progress}%</span>
+                      </div>
+                      <Progress value={card.progress} className="h-2" />
+                    </div>
+                  )}
+
+                  {/* Action button */}
+                  {card.actionText && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-xs h-8 border-pink-200 text-pink-700 hover:bg-pink-50"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        card.onAction?.();
+                      }}
+                    >
+                      {card.actionText}
+                      <ArrowRight className="w-3 h-3 ml-1" />
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* Load more indicator */}
         {visibleCards < smartCards.length && (
-          <motion.div
-            className="text-center pt-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+          <div className="text-center pt-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs text-gray-500"
+              onClick={() => setVisibleCards(prev => Math.min(prev + 2, smartCards.length))}
             >
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-xs text-gray-500"
-                onClick={() => setVisibleCards(prev => Math.min(prev + 2, smartCards.length))}
-              >
-                Meer aanbevelingen laden
-              </Button>
-            </motion.div>
-          </motion.div>
+              Meer aanbevelingen laden
+            </Button>
+          </div>
         )}
-
-        {/* Pull-to-refresh hint */}
-        <motion.div
-          className="text-center pt-2 opacity-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          transition={{ delay: 2 }}
-        >
-          <p className="text-xs text-gray-400">↓ Pull to refresh voor nieuwe inzichten</p>
-        </motion.div>
       </div>
     </motion.div>
   );

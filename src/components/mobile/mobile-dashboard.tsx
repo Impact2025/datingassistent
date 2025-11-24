@@ -16,6 +16,57 @@ import { LogIn, UserPlus, Shield } from 'lucide-react';
 import { useJourneyState } from '@/hooks/use-journey-state';
 import { OnboardingFlow } from '@/components/dashboard/onboarding-flow';
 
+// Custom hook for dashboard data
+function useDashboardData(userId?: number) {
+  const [stats, setStats] = useState({
+    goalsCompleted: 0,
+    toolsUsed: 0,
+    progress: 0,
+    loading: true,
+    error: null as string | null
+  });
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchStats = async () => {
+      try {
+        // Try to fetch real data, fallback to defaults
+        const response = await fetch(`/api/user/dashboard-stats?userId=${userId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setStats({
+            goalsCompleted: data.goalsCompleted || 0,
+            toolsUsed: data.toolsUsed || 0,
+            progress: data.progress || 0,
+            loading: false,
+            error: null
+          });
+        } else {
+          // Fallback to default values
+          setStats({
+            goalsCompleted: 0,
+            toolsUsed: 0,
+            progress: 0,
+            loading: false,
+            error: null
+          });
+        }
+      } catch (error) {
+        setStats(prev => ({
+          ...prev,
+          loading: false,
+          error: 'Kon statistieken niet laden'
+        }));
+      }
+    };
+
+    fetchStats();
+  }, [userId]);
+
+  return stats;
+}
+
 interface MobileDashboardProps {
   className?: string;
 }
@@ -23,6 +74,9 @@ interface MobileDashboardProps {
 export function MobileDashboard({ className }: MobileDashboardProps) {
   const router = useRouter();
   const { user, userProfile, loading } = useUser();
+
+  // Use dashboard data hook
+  const dashboardStats = useDashboardData(user?.id);
 
   // Use centralized journey state hook
   const {
@@ -108,15 +162,6 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
 
   return (
     <div className="min-h-screen bg-white pb-20">
-      {/* Mobile-only notice for development */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="bg-gray-50 border-b border-gray-200 px-4 py-2 text-center">
-          <p className="text-xs text-gray-600">
-            Mobile Dashboard - Alleen zichtbaar op mobiele apparaten
-          </p>
-        </div>
-      )}
-
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 py-6 space-y-6">
         {/* Show onboarding flow if needed */}
@@ -146,23 +191,43 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-medium text-gray-900">Deze Week</h3>
-                <span className="text-sm text-gray-500">Week 45</span>
+                <span className="text-sm text-gray-500">
+                  Week {Math.ceil((new Date().getTime() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (1000 * 60 * 60 * 24 * 7))}
+                </span>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-pink-600">12</div>
-                  <div className="text-xs text-gray-600">Doelen behaald</div>
+              {dashboardStats.error ? (
+                <div className="text-center py-4">
+                  <p className="text-sm text-gray-500 mb-2">Kon statistieken niet laden</p>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="text-xs text-pink-600 hover:text-pink-700 underline"
+                  >
+                    Opnieuw proberen
+                  </button>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-pink-600">8</div>
-                  <div className="text-xs text-gray-600">Tools gebruikt</div>
+              ) : (
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <div className="text-2xl font-bold text-pink-600">
+                      {dashboardStats.loading ? '...' : dashboardStats.goalsCompleted}
+                    </div>
+                    <div className="text-xs text-gray-600">Doelen behaald</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-pink-600">
+                      {dashboardStats.loading ? '...' : dashboardStats.toolsUsed}
+                    </div>
+                    <div className="text-xs text-gray-600">Tools gebruikt</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-pink-600">
+                      {dashboardStats.loading ? '...' : `${dashboardStats.progress}%`}
+                    </div>
+                    <div className="text-xs text-gray-600">Voortgang</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-pink-600">85%</div>
-                  <div className="text-xs text-gray-600">Voortgang</div>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Daily Learning Card */}

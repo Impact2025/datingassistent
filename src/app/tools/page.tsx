@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -30,7 +30,38 @@ interface Tool {
 
 export default function ToolsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+  // Handle URL parameters for direct tool access
+  useEffect(() => {
+    const tool = searchParams.get('tool');
+    const category = searchParams.get('category');
+
+    if (tool) {
+      // Map tool names to categories
+      const toolCategoryMap: Record<string, string> = {
+        'profile': 'profile',
+        'profiel': 'profile',
+        'chat': 'communication',
+        'foto': 'profile',
+        'photo': 'profile',
+        'date': 'analysis',
+        'match': 'analysis',
+        'veiligheid': 'safety',
+        'safety': 'safety',
+        'opener': 'communication',
+        'voice': 'communication'
+      };
+
+      const mappedCategory = toolCategoryMap[tool.toLowerCase()];
+      if (mappedCategory) {
+        setSelectedCategory(mappedCategory);
+      }
+    } else if (category) {
+      setSelectedCategory(category);
+    }
+  }, [searchParams]);
 
   const tools: Tool[] = [
     // Profile Tools
