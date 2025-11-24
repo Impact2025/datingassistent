@@ -154,32 +154,15 @@ export function AISmartFlow({ className }: AISmartFlowProps) {
   }, [visibleCards, smartCards.length]);
 
   const getCardStyle = (type: SmartCard['type'], priority: SmartCard['priority']) => {
-    const baseClasses = "p-4 cursor-pointer transition-all duration-200 hover:shadow-md border-0";
+    const baseClasses = "bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:bg-gray-50";
 
-    const typeStyles = {
-      achievement: "bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-l-yellow-400",
-      opportunity: "bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-l-blue-400",
-      progress: "bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-l-green-400",
-      insight: "bg-gradient-to-r from-orange-50 to-red-50 border-l-4 border-l-orange-400",
-      motivation: "bg-gradient-to-r from-pink-50 to-rose-50 border-l-4 border-l-pink-400",
-    };
-
-    return cn(baseClasses, typeStyles[type]);
+    return baseClasses;
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.95 },
-    visible: (index: number) => ({
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        delay: index * 0.1,
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }),
-    exit: { opacity: 0, y: -20, scale: 0.95 }
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 }
   };
 
   return (
@@ -189,25 +172,14 @@ export function AISmartFlow({ className }: AISmartFlowProps) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Header with refresh indicator */}
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <motion.h2
-          className="text-lg font-semibold text-gray-900"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+        <h2 className="text-lg font-semibold text-gray-900">
           AI Aanbevelingen
-        </motion.h2>
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <Badge variant="secondary" className="text-xs bg-pink-100 text-pink-700">
-            Persoonlijk
-          </Badge>
-        </motion.div>
+        </h2>
+        <Badge variant="secondary" className="text-xs bg-pink-100 text-pink-700">
+          Persoonlijk
+        </Badge>
       </div>
 
       {/* Pull-to-refresh container */}
@@ -249,93 +221,60 @@ export function AISmartFlow({ className }: AISmartFlowProps) {
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
-                  <Card
-                    className={cn(
-                      getCardStyle(card.type, card.priority),
-                      "cursor-pointer transition-all duration-200 hover:shadow-lg"
-                    )}
+                  <div
+                    className="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50"
                     onClick={card.onAction}
                   >
                     <div className="flex items-start gap-3">
-                      {/* Animated Icon */}
-                      <motion.div
-                        className="flex-shrink-0 mt-0.5"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ type: "spring", stiffness: 400 }}
-                      >
+                      <div className="flex-shrink-0 mt-0.5">
                         {card.icon}
-                      </motion.div>
+                      </div>
 
-                      {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-2">
-                          <motion.h3
-                            className="font-medium text-gray-900 text-sm"
-                            layoutId={`title-${card.id}`}
-                          >
+                          <h3 className="font-medium text-gray-900 text-sm">
                             {card.title}
-                          </motion.h3>
+                          </h3>
                           {card.badge && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
-                            >
-                              <Badge variant="outline" className="text-xs ml-2">
-                                {card.badge}
-                              </Badge>
-                            </motion.div>
+                            <Badge variant="outline" className="text-xs ml-2">
+                              {card.badge}
+                            </Badge>
                           )}
                         </div>
 
-                        <motion.p
-                          className="text-sm text-gray-600 mb-3"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 0.3 + index * 0.1 }}
-                        >
+                        <p className="text-sm text-gray-600 mb-3">
                           {card.description}
-                        </motion.p>
+                        </p>
 
                         {/* Progress bar for progress type */}
                         {card.type === 'progress' && card.progress !== undefined && (
-                          <motion.div
-                            className="mb-3"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.4 + index * 0.1 }}
-                          >
+                          <div className="mb-3">
                             <div className="flex justify-between text-xs text-gray-600 mb-1">
                               <span>Voortgang</span>
                               <span>{card.progress}%</span>
                             </div>
                             <Progress value={card.progress} className="h-2" />
-                          </motion.div>
+                          </div>
                         )}
 
                         {/* Action button */}
                         {card.actionText && (
-                          <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-xs h-8 border-pink-200 text-pink-700 hover:bg-pink-50"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              card.onAction?.();
+                            }}
                           >
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="text-xs h-8 border-pink-200 text-pink-700 hover:bg-pink-50"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                card.onAction?.();
-                              }}
-                            >
-                              {card.actionText}
-                              <ArrowRight className="w-3 h-3 ml-1" />
-                            </Button>
-                          </motion.div>
+                            {card.actionText}
+                            <ArrowRight className="w-3 h-3 ml-1" />
+                          </Button>
                         )}
                       </div>
                     </div>
-                  </Card>
+                  </div>
                 </motion.div>
               </motion.div>
             ))}
