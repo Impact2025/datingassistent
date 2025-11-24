@@ -520,6 +520,16 @@ function InteractiveProfileCoachInner() {
 
   const canProceed = () => {
     if (!currentAnswer) return false;
+
+    // For multi_slider questions, check if all sliders have values
+    if (currentQuestion.type === 'multi_slider') {
+      if (!currentAnswer.fields) return false;
+      const requiredSliders = currentQuestion.sliders?.length || 0;
+      const filledSliders = Object.keys(currentAnswer.fields).length;
+      return filledSliders === requiredSliders;
+    }
+
+    // For other question types, check for answerId
     return !!currentAnswer.answerId;
   };
 
@@ -626,7 +636,7 @@ function InteractiveProfileCoachInner() {
             </div>
           </div>
 
-          {/* Slider for social energy */}
+          {/* Single Slider */}
           {currentQuestion.type === 'slider' && (
             <div className="space-y-3 mb-6">
               <div className="px-2">
@@ -645,6 +655,59 @@ function InteractiveProfileCoachInner() {
                 <span>{currentQuestion.labels?.[0] || 'Laag'}</span>
                 <span className="font-medium">{currentAnswer?.fields?.value || currentQuestion.min}</span>
                 <span>{currentQuestion.labels?.[2] || 'Hoog'}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Multi Slider for Social Energy */}
+          {currentQuestion.type === 'multi_slider' && (
+            <div className="space-y-6 mb-6">
+              {currentQuestion.sliders?.map((slider, index) => {
+                const sliderValue = currentAnswer?.fields?.[slider.id] || slider.default;
+                return (
+                  <div key={slider.id} className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="text-sm font-medium text-gray-700">
+                        {slider.label}
+                      </label>
+                      <span className="text-sm font-bold text-pink-600 bg-pink-50 px-2 py-1 rounded-full">
+                        {sliderValue}
+                      </span>
+                    </div>
+                    <div className="px-2">
+                      <Slider
+                        value={[sliderValue]}
+                        onValueChange={(value) => {
+                          const newFields = {
+                            ...currentAnswer?.fields,
+                            [slider.id]: value[0]
+                          };
+                          handleAnswer('multi_slider', 'Multi slider input', undefined, newFields);
+                        }}
+                        max={slider.max}
+                        min={slider.min}
+                        step={1}
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>1 (Laag)</span>
+                      <span>10 (Hoog)</span>
+                    </div>
+                  </div>
+                );
+              })}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💡</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-blue-800">
+                      <strong>Deze scores helpen ons je ideale match scenario te begrijpen.</strong> Hoe hoger je score in een situatie, hoe meer energie je daar uit haalt.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           )}
