@@ -19,7 +19,8 @@ import {
   Zap,
   MessageCircle,
   Camera,
-  Award
+  Award,
+  Eye
 } from 'lucide-react';
 
 interface ProfileAnalysisProps {
@@ -48,7 +49,9 @@ interface CategoryScore {
 export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
   const { user, userProfile } = useUser();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
   const [results, setResults] = useState<AnalysisResults | null>(null);
+  const [savedAnalysis, setSavedAnalysis] = useState<any>(null);
   const [profileData, setProfileData] = useState({
     name: '',
     age: '',
@@ -71,6 +74,37 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
       });
     }
   }, [userProfile]);
+
+  // Load saved analysis history on component mount
+  useEffect(() => {
+    const loadSavedAnalysis = async () => {
+      if (!user?.id) return;
+
+      try {
+        const token = localStorage.getItem('auth_token');
+        if (!token) return;
+
+        const response = await fetch('/api/profile-history', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.hasAnalysis) {
+            setSavedAnalysis(data);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load saved analysis:', error);
+      } finally {
+        setIsLoadingHistory(false);
+      }
+    };
+
+    loadSavedAnalysis();
+  }, [user?.id]);
 
   const handleInputChange = (field: string, value: string) => {
     setProfileData(prev => ({ ...prev, [field]: value }));
@@ -289,8 +323,91 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
+      {/* Saved Analysis Section */}
+      {savedAnalysis && !results && !isLoadingHistory && (
+        <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Je hebt al een analyse!</h3>
+                  <p className="text-sm text-gray-600">
+                    Laatste analyse: {new Date(savedAnalysis.currentAnalysis.analysisDate).toLocaleDateString('nl-NL')}
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-green-600">{savedAnalysis.currentAnalysis.overallScore}</div>
+                <div className="text-xs text-gray-500">score</div>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                onClick={() => {
+                  // Load saved results into current results
+                  const saved = savedAnalysis.currentAnalysis;
+                  setResults({
+                    overallScore: saved.overallScore,
+                    categories: saved.sections,
+                    recommendations: saved.optimizationSuggestions.map((s: any) => s.title + ': ' + s.description),
+                    strengths: ['Gebaseerd op je opgeslagen analyse'],
+                    improvements: ['Nieuwe analyse voor updates']
+                  });
+                }}
+                className="flex-1 bg-green-500 hover:bg-green-600"
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                Bekijk Resultaten
+              </Button>
+              <Button
+                onClick={() => setSavedAnalysis(null)}
+                variant="outline"
+                className="flex-1 border-gray-300"
+              >
+                <Target className="w-4 h-4 mr-2" />
+                Nieuwe Analyse
+              </Button>
+            </div>
+
+            {savedAnalysis.history && savedAnalysis.history.length > 1 && (
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <p className="text-sm text-gray-600 mb-2">Progress tracking:</p>
+                <div className="flex gap-2">
+                  {savedAnalysis.history.slice(0, 5).map((item: any, index: number) => (
+                    <div key={index} className="text-center">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
+                        index === 0 ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'
+                      }`}>
+                        {item.score}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {new Date(item.date).toLocaleDateString('nl-NL', { month: 'short', day: 'numeric' })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Loading State */}
+      {isLoadingHistory && !savedAnalysis && (
+        <Card>
+          <CardContent className="p-8 text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto mb-4"></div>
+            <p className="text-gray-600">Analyse geschiedenis laden...</p>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Input Section */}
-      {!results && (
+      {!results && !savedAnalysis && !isLoadingHistory && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

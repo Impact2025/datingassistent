@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { chatCompletion } from '@/lib/ai-service';
 import { verifyToken } from '@/lib/auth';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
+import { sql } from '@/lib/db';
 
 interface ProfileData {
   bio: string;
@@ -110,6 +111,36 @@ export async function POST(request: NextRequest) {
 
     // Analyze profile using AI
     const analysis = await analyzeProfile(profileData);
+
+    // Save analysis results to database for persistence
+    try {
+      await sql`
+        INSERT INTO profile_analyses (
+          user_id,
+          profile_data,
+          overall_score,
+          category_scores,
+          optimization_suggestions,
+          competitor_analysis,
+          predicted_performance
+        ) VALUES (
+          ${user.id},
+          ${JSON.stringify(profileData)},
+          ${analysis.overallScore},
+          ${JSON.stringify(analysis.sections)},
+          ${JSON.stringify(analysis.optimizationSuggestions)},
+          ${JSON.stringify(analysis.competitorAnalysis)},
+          ${JSON.stringify(analysis.predictedPerformance)}
+        )
+      `;
+
+      // Check for milestone achievements
+      await checkAndCreateMilestones(user.id, analysis.overallScore);
+
+    } catch (dbError) {
+      console.error('Failed to save profile analysis:', dbError);
+      // Don't fail the request if database save fails - analysis still works
+    }
 
     return NextResponse.json({
       success: true,
@@ -321,4 +352,41 @@ function validateSection(section: any): SectionAnalysis {
     weaknesses: section?.weaknesses || ['Ruimte voor verbetering'],
     recommendations: section?.recommendations || ['Optimaliseer verder']
   };
+}
+
+async function checkAndCreateMilestones(userId: number, overallScore: number) {
+  try {
+    // Check if this is the user's first analysis
+    const existingAnalyses = await sql`
+      SELECT COUNT(*) as count FROM profile_analyses WHERE user_id = ${userId}
+    `;
+
+    const isFirstAnalysis = existingAnalyses[0].count === 1; // 1 because we just inserted one
+
+    if (isFirstAnalysis) {
+      await sql`
+        INSERT INTO profile_milestones (user_id, milestone_type, milestone_name, milestone_description, achieved, achieved_date)
+        VALUES (${userId}, 'first_analysis', 'Eerste Analyse', 'Je eerste profiel analyse voltooid!', true, NOW())
+      `;
+    }
+
+    // Check for score milestones
+    if (overallScore >= 80) {
+      const existingMilestone = await sql`
+        SELECT id FROM profile_milestones
+        WHERE user_id = ${userId} AND milestone_type = 'score_80' AND achieved = true
+      `;
+
+      if (existingMilestone.length === 0) {
+        await sql`
+          INSERT INTO profile_milestones (user_id, milestone_type, milestone_name, milestone_description, achieved, achieved_date, analysis_score)
+          VALUES (${userId}, 'score_80', 'Top Profiel', 'Je profiel scoort 80+ punten!', true, NOW(), ${overallScore})
+        `;
+      }
+    }
+
+  } catch (error) {
+    console.error('Failed to create milestones:', error);
+    // Don't fail the main request if milestone creation fails
+  }
 }
