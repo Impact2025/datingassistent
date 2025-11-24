@@ -16,6 +16,7 @@ import { ToolOnboardingOverlay, useOnboardingOverlay } from "@/components/shared
 import { getOnboardingSteps, getToolDisplayName } from "@/lib/tool-onboarding-content";
 import { useUser } from "@/providers/user-provider";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AuthManager } from "@/lib/auth-manager";
 
 interface PlatformRecommendation {
   platform: string;
@@ -51,7 +52,8 @@ interface UserPreferences {
 
 export function PlatformMatchTool() {
   const { showOverlay, setShowOverlay } = useOnboardingOverlay('platform-match');
-  const { userProfile } = useUser();
+  const { userProfile, user } = useUser();
+  const [authManager] = useState(() => new AuthManager());
 
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -101,19 +103,14 @@ export function PlatformMatchTool() {
     setError(null);
 
     try {
-      // Get auth token
-      const token = localStorage.getItem('token');
-      if (!token) {
+      // Check if user is authenticated
+      if (!user) {
         throw new Error('Niet ingelogd. Log opnieuw in.');
       }
 
-      // Call API endpoint
-      const response = await fetch('/api/platform-match', {
+      // Use AuthManager for authenticated request with automatic token refresh
+      const data = await authManager.authenticatedRequest('/api/platform-match', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
         body: JSON.stringify({
           userProfile: {
             age: userProfile?.age,
@@ -124,19 +121,6 @@ export function PlatformMatchTool() {
           preferences
         })
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Handle different error types
-        if (response.status === 429) {
-          throw new Error(`Te veel verzoeken. ${data.message || 'Probeer het later opnieuw.'}`);
-        } else if (response.status === 401) {
-          throw new Error('Authenticatie mislukt. Log opnieuw in.');
-        } else {
-          throw new Error(data.message || 'Er ging iets mis bij het genereren van aanbevelingen');
-        }
-      }
 
       if (data.recommendations && Array.isArray(data.recommendations) && data.recommendations.length > 0) {
         setRecommendations(data.recommendations);
