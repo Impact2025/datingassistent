@@ -79,11 +79,11 @@ export function DatingWeekNotificationModal({
 
   const getMotivationalMessage = () => {
     const messages = [
-      "🌟 Tijd om je dating voortgang bij te houden!",
-      "💫 Hoe was je dating week? Iris wil het graag weten!",
-      "🎯 Jouw dating verhaal ontwikkelt zich — deel het met Iris!",
-      "✨ Een korte reflectie kan je dating leven transformeren!",
-      "💪 Kleine stapjes leiden tot grote veranderingen!"
+      "Tijd om je dating voortgang bij te houden",
+      "Hoe was je dating week? Iris wil het graag weten",
+      "Jouw dating verhaal ontwikkelt zich — deel het met Iris",
+      "Een korte reflectie kan je dating leven transformeren",
+      "Kleine stapjes leiden tot grote veranderingen"
     ];
     return messages[Math.floor(Math.random() * messages.length)];
   };
@@ -115,69 +115,61 @@ export function DatingWeekNotificationModal({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-purple-600" />
-              </div>
-              <div>
-                <DialogTitle className="text-lg">Mijn Dating Week</DialogTitle>
-                <DialogDescription className="text-sm">
-                  {getMotivationalMessage()}
-                </DialogDescription>
-              </div>
+            <div>
+              <DialogTitle className="text-lg text-gray-900">Mijn Dating Week</DialogTitle>
+              <DialogDescription className="text-sm text-gray-600 mt-1">
+                Kleine stapjes leiden tot grote veranderingen
+              </DialogDescription>
             </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 hover:bg-gray-100"
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Status Card */}
-          <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <Calendar className="w-5 h-5 text-purple-600" />
-                <div className="flex-1">
-                  <div className="text-sm font-medium text-purple-900">
-                    Maandag Check-in
-                  </div>
-                  <div className="text-xs text-purple-700">
-                    {lastLogDate
-                      ? `${getDaysSinceLastLog()} dagen geleden`
-                      : 'Nog geen log deze week'
-                    }
-                  </div>
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center gap-3">
+              <Calendar className="w-5 h-5 text-pink-500" />
+              <div className="flex-1">
+                <div className="text-sm font-medium text-gray-900">
+                  Maandag Check-in
                 </div>
-                <Badge variant="secondary" className="bg-purple-100 text-purple-700">
-                  PRO
-                </Badge>
+                <div className="text-xs text-gray-600">
+                  {lastLogDate
+                    ? `${getDaysSinceLastLog()} dagen geleden`
+                    : 'Nog geen log deze week'
+                  }
+                </div>
               </div>
-            </CardContent>
-          </Card>
+              <Badge variant="secondary" className="bg-pink-50 text-pink-700 border-pink-200">
+                PRO
+              </Badge>
+            </div>
+          </div>
 
           {/* Benefits */}
           <div className="space-y-3">
-            <h4 className="font-medium text-sm flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
+            <h4 className="font-medium text-sm text-gray-900">
               Waarom dit helpt:
             </h4>
-            <div className="space-y-2 text-sm text-muted-foreground">
-              <div className="flex items-start gap-2">
-                <Heart className="w-3 h-3 text-pink-500 mt-1 flex-shrink-0" />
+            <div className="space-y-3 text-sm text-gray-600">
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-pink-500 mt-2 flex-shrink-0"></div>
                 <span>Persoonlijke AI inzichten van Iris</span>
               </div>
-              <div className="flex items-start gap-2">
-                <Sparkles className="w-3 h-3 text-purple-500 mt-1 flex-shrink-0" />
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-pink-500 mt-2 flex-shrink-0"></div>
                 <span>Patronen ontdekken in je dating gedrag</span>
               </div>
-              <div className="flex items-start gap-2">
-                <Clock className="w-3 h-3 text-blue-500 mt-1 flex-shrink-0" />
+              <div className="flex items-start gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-pink-500 mt-2 flex-shrink-0"></div>
                 <span>30 seconden voor betere resultaten</span>
               </div>
             </div>
@@ -187,23 +179,22 @@ export function DatingWeekNotificationModal({
           <div className="flex gap-3 pt-2">
             <Button
               onClick={handleStartLogger}
-              className="flex-1 bg-pink-500 hover:bg-pink-600"
+              className="flex-1 bg-pink-500 hover:bg-pink-600 text-white"
               disabled={isLoading}
             >
-              <Sparkles className="w-4 h-4 mr-2" />
               Start Mijn Week
             </Button>
             <Button
               variant="outline"
               onClick={onClose}
-              className="flex-1"
+              className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50"
             >
               Later
             </Button>
           </div>
 
           {/* Footer Note */}
-          <div className="text-xs text-muted-foreground text-center pt-2 border-t">
+          <div className="text-xs text-gray-500 text-center pt-4 border-t border-gray-200">
             Deze herinnering verschijnt elke maandag om 9:00
             <br />
             Je kunt dit uitschakelen in je instellingen
