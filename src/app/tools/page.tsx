@@ -44,14 +44,8 @@ function ToolsPageContent() {
         'profile': 'profile',
         'profiel': 'profile',
         'chat': 'communication',
-        'foto': 'profile',
-        'photo': 'profile',
         'date': 'analysis',
-        'match': 'analysis',
-        'veiligheid': 'safety',
-        'safety': 'safety',
-        'opener': 'communication',
-        'voice': 'communication'
+        'date-planner': 'analysis'
       };
 
       const mappedCategory = toolCategoryMap[tool.toLowerCase()];
@@ -74,15 +68,6 @@ function ToolsPageContent() {
       category: 'profile',
       popular: true,
     },
-    {
-      id: 'photo-analysis',
-      icon: <Image className="w-6 h-6" />,
-      title: 'Foto Analyse',
-      description: 'Professionele foto beoordeling',
-      route: '/foto',
-      category: 'profile',
-      popular: true,
-    },
 
     // Communication Tools
     {
@@ -94,49 +79,16 @@ function ToolsPageContent() {
       category: 'communication',
       popular: true,
     },
-    {
-      id: 'opener-lab',
-      icon: <Heart className="w-6 h-6" />,
-      title: 'Opener Lab',
-      description: 'Effectieve openingszinnen',
-      route: '/opener',
-      category: 'communication',
-    },
-    {
-      id: 'voice-notes',
-      icon: <Mic className="w-6 h-6" />,
-      title: 'Stem Berichten',
-      description: 'Audio analyse en tips',
-      route: '/voice',
-      category: 'communication',
-    },
 
     // Analysis Tools
-    {
-      id: 'match-analysis',
-      icon: <Users className="w-6 h-6" />,
-      title: 'Match Analyse',
-      description: 'Profielen en gedrag analyseren',
-      route: '/match',
-      category: 'analysis',
-    },
     {
       id: 'date-planner',
       icon: <Target className="w-6 h-6" />,
       title: 'Date Planner',
       description: 'Perfecte date ideeën',
-      route: '/date',
+      route: '/date-planner',
       category: 'analysis',
-    },
-
-    // Safety Tools
-    {
-      id: 'safety-check',
-      icon: <Shield className="w-6 h-6" />,
-      title: 'Veiligheidscheck',
-      description: 'Rode vlaggen detecteren',
-      route: '/veiligheid',
-      category: 'safety',
+      popular: true,
     },
   ];
 
@@ -145,7 +97,6 @@ function ToolsPageContent() {
     { id: 'profile', label: 'Profiel', count: tools.filter(t => t.category === 'profile').length },
     { id: 'communication', label: 'Communicatie', count: tools.filter(t => t.category === 'communication').length },
     { id: 'analysis', label: 'Analyse', count: tools.filter(t => t.category === 'analysis').length },
-    { id: 'safety', label: 'Veiligheid', count: tools.filter(t => t.category === 'safety').length },
   ];
 
   const filteredTools = selectedCategory === 'all'
@@ -201,7 +152,7 @@ function ToolsPageContent() {
 
       {/* Tools Grid */}
       <div className="p-4">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 max-w-md mx-auto">
           {filteredTools.map((tool) => (
             <Card
               key={tool.id}
