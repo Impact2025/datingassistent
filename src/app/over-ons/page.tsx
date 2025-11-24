@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
-import { Shield, TrendingUp, Users, Heart, Award, Target, Play, Calendar, Bot } from 'lucide-react';
+import { Shield, TrendingUp, Users, Heart, Award, Target, Play, Calendar, Bot, CheckCircle } from 'lucide-react';
 
 export default function OverOnsPage() {
 
@@ -14,19 +15,76 @@ export default function OverOnsPage() {
       <PublicHeader />
 
       {/* Hero Section */}
-      <section className="py-24 px-4 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Het verhaal achter DatingAssistent
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Sinds 2013 helpen we mensen succesvol te daten. Van traditioneel datingbureau naar een AI-powered platform – we hebben alles gezien en weten precies wat werkt.
-          </p>
+      <section className="relative py-12 sm:py-16 md:py-20 px-4 overflow-hidden min-h-[500px] sm:min-h-[550px] flex items-center">
+        {/* Full-width Background Image */}
+        <Image
+          src="/images/DatingAssistent.png"
+          alt="DatingAssistent - Dé dating coach die altijd beschikbaar is"
+          fill
+          priority
+          className="object-cover object-center"
+          quality={85}
+          sizes="100vw"
+        />
+
+        {/* Dark overlay for better contrast */}
+        <div className="absolute inset-0 bg-black/60 sm:bg-black/50" />
+
+        <div className="relative z-10 w-full max-w-6xl mx-auto text-center">
+          {/* Semi-transparent white background behind text */}
+          <div className="inline-block bg-white/90 sm:bg-white/85 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl max-w-4xl mx-auto w-full">
+
+            {/* Tagline */}
+            <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-pink-100 text-pink-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              👨‍💻 De oprichter achter DatingAssistent
+            </div>
+
+            {/* Main Title */}
+            <div className="space-y-2 sm:space-y-4 mb-4 sm:mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight px-2">
+                Het verhaal achter DatingAssistent
+                <span className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-gray-600 mt-2">
+                  10+ jaar expertise in één platform
+                </span>
+              </h1>
+            </div>
+
+            {/* Subtitle */}
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto px-2">
+              Van traditioneel datingbureau naar AI-powered platform – we hebben alles gezien en weten precies wat werkt.
+            </p>
+
+            {/* CTA Button */}
+            <div className="flex justify-center mb-6 sm:mb-8 px-2">
+              <Link href="#missie" className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
+                  Ontdek ons verhaal →
+                </Button>
+              </Link>
+            </div>
+
+            {/* Trust Bullets */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 px-2">
+              <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+                <span className="text-xs sm:text-sm">Sinds 2013 actief in dating</span>
+              </div>
+              <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+                <span className="text-xs sm:text-sm">25.000+ tevreden gebruikers</span>
+              </div>
+              <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+                <span className="text-xs sm:text-sm">100% Nederlandse expertise</span>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 px-4 bg-gray-50">
+      <section id="missie" className="py-20 px-4 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md-text-4xl font-bold text-gray-900 mb-8">
             Onze missie: Daten toegankelijker maken
@@ -115,7 +173,7 @@ export default function OverOnsPage() {
             <div className="space-y-6">
               <h3 className="text-3xl font-bold text-gray-900">De oprichter: Vincent van Munster</h3>
               <p className="text-lg text-gray-600 leading-relaxed">
-                Met meer dan 10 jaar ervaring als dating coach en sociaal ondernemer, heb ik duizenden mensen geholpen hun liefde te vinden. DatingAssistent is mijn missie om daten toegankelijker te maken voor iedereen.
+                Als sociaal ondernemer is mijn drijfveer altijd geweest om zoveel mogelijk geluksmomenten te creëren. Hoewel ik een aantal jaren als dating coach in 2012 aan de basis stond van ons bedrijf, ligt mijn expertise vooral in het vinden van innovatieve oplossingen voor maatschappelijke uitdagingen. De missie van DatingAssistent is dan ook een directe vertaling van dit doel: daten toegankelijker maken voor iedereen, waardoor we de kans op die waardevolle momenten van liefde en geluk exponentieel vergroten.
               </p>
             </div>
             <div className="flex justify-center">
@@ -217,7 +275,7 @@ export default function OverOnsPage() {
             Klaar om je eigen verhaal te schrijven?
           </h2>
           <p className="text-lg text-gray-600 mb-8">
-            Sluit je aan bij 25.000+ mensen die succesvoller daten met DatingAssistent
+            Ontdek hoe DatingAssistent jouw dating leven kan transformeren!
           </p>
           <div className="flex items-center justify-center">
             <Link href="/register">
