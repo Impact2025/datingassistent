@@ -11,11 +11,11 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Users, Sparkles, Loader2, CheckCircle2, HelpCircle, ArrowRight, ArrowLeft, Target, Shield, Clock, DollarSign, MessageSquare, Video, Mic } from "lucide-react";
-import { getOpenRouterClient, OPENROUTER_MODELS } from "@/lib/openrouter";
+import { Users, Sparkles, Loader2, CheckCircle2, HelpCircle, ArrowRight, ArrowLeft, Target, Shield, Clock, DollarSign, MessageSquare, Video, Mic, AlertCircle, XCircle } from "lucide-react";
 import { ToolOnboardingOverlay, useOnboardingOverlay } from "@/components/shared/tool-onboarding-overlay";
 import { getOnboardingSteps, getToolDisplayName } from "@/lib/tool-onboarding-content";
 import { useUser } from "@/providers/user-provider";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface PlatformRecommendation {
   platform: string;
@@ -55,6 +55,7 @@ export function PlatformMatchTool() {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [recommendations, setRecommendations] = useState<PlatformRecommendation[]>([]);
 
   // User preferences from questionnaire
@@ -92,136 +93,62 @@ export function PlatformMatchTool() {
   const generateRecommendations = async () => {
     // Validate required fields
     if (!preferences.relationshipGoal || !preferences.agePreference || !preferences.genderPreference) {
-      alert("Vul minimaal relatie doel, leeftijd voorkeur en geslacht voorkeur in");
+      setError("Vul minimaal relatie doel, leeftijd voorkeur en geslacht voorkeur in");
       return;
     }
 
     setLoading(true);
+    setError(null);
+
     try {
-      const prompt = `Je bent een professionele dating platform consultant. Geef gedetailleerde, evidence-based platform aanbevelingen gebaseerd op deze uitgebreide gebruikersanalyse.
-
-**GEBRUIKERS PROFIEL (van registratie):**
-- Leeftijd: ${userProfile?.age || 'Niet bekend'}
-- Geslacht: ${userProfile?.gender || 'Niet bekend'}
-- Locatie: ${userProfile?.location || 'Niet bekend'}
-- Naam: ${userProfile?.name || 'Niet bekend'}
-
-**GEBRUIKERS VOORKEUREN (van vragenlijst):**
-- Relatie doel: ${preferences.relationshipGoal}
-- Leeftijd voorkeur: ${preferences.agePreference}
-- Geslacht voorkeur: ${preferences.genderPreference}
-- Locatie voorkeur: ${preferences.locationPreference}
-- Belang opleiding: ${preferences.educationImportance}
-- Belang achtergrond: ${preferences.backgroundImportance}
-- Belang interesses: ${preferences.interestsImportance}
-- App verwachtingen: ${preferences.appExpectations.join(', ')}
-- Ontmoeting snelheid: ${preferences.meetingSpeed}
-- Budget: ${preferences.budget}
-- Privacy belang: ${preferences.privacyImportance}
-- Vorige ervaring: ${preferences.pastExperience}
-- Tijd investering: ${preferences.timeInvestment}
-- AI hulp wensen: ${preferences.aiHelp.join(', ')}
-- Communicatie stijl: ${preferences.communicationStyle.join(', ')}
-
-**BELANGRIJKSTE CRITERIA WAAROP PLATFORMS VERSCHILLEN:**
-1. **Algoritme**: Swipen (looks-based) vs diepgaand matching (profiel/personality-based)
-2. **Doelgroep**: Algemeen vs niche (leeftijd, opleiding, religie, LGBTQ+, etc.)
-3. **Features**: Basis matching vs advanced filters, video, AI hulp
-4. **Safety**: Basis verificatie vs uitgebreid safety systeem
-5. **Pricing**: Gratis vs premium features vs volledig betaald
-
-**BELANGRIJK: GEEF ALLEEN CLEAN JSON TERUG - GEEN MARKDOWN, GEEN CODE BLOCKS, GEEN EXTRA TEKST**
-
-Retourneer alleen een geldig JSON array in dit exacte format:
-[{
-  "platform": "Platform naam (bijv. Tinder, Bumble, Happn, etc.)",
-  "matchScore": 8,
-  "reasoning": "Waarom dit platform perfect past bij deze gebruiker (2-3 zinnen)",
-  "targetAudience": "Specifieke doelgroep beschrijving",
-  "algorithm": "Swipen/diepgaand matching/personality-based/etc.",
-  "niche": "Algemeen/25+/hoger opgeleid/religieus/LGBTQ+/etc.",
-  "pros": ["3 specifieke voordelen voor deze gebruiker"],
-  "cons": ["2-3 realistische nadelen/overwegingen"],
-  "strategy": "Concrete gebruiksstrategie voor beste resultaten (3-4 stappen)",
-  "pricing": "Gratis/Premium vanaf €x/maand/Volledig betaald",
-  "safety": "Basis verificatie/Advanced safety/Top-tier security"
-}]
-
-**VEREIST:**
-- Focus op Nederlandse/Belgische platforms waar relevant
-- Include internationale platforms alleen als ze significant beter passen
-- Wees evidence-based en professioneel
-- Geef 4-6 aanbevelingen gesorteerd op match score
-- Elk platform moet uniek zijn en verschillende niches bedienen`;
-
-      const openRouter = getOpenRouterClient();
-      const response = await openRouter.createChatCompletion(
-        OPENROUTER_MODELS.CLAUDE_35_HAIKU,
-        [{ role: 'user', content: prompt }],
-        { temperature: 0.3, max_tokens: 3000 }
-      );
-
-      console.log('AI Response:', response); // Debug logging
-
-      // More robust JSON extraction
-      let jsonData = null;
-
-      // Try 1: Extract from markdown code blocks
-      const codeBlockMatch = response.match(/```(?:json)?\s*(\[[\s\S]*?\])\s*```/);
-      if (codeBlockMatch) {
-        try {
-          jsonData = JSON.parse(codeBlockMatch[1]);
-        } catch (e) {
-          console.log('Failed to parse JSON from code block:', e);
-        }
+      // Get auth token
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Niet ingelogd. Log opnieuw in.');
       }
 
-      // Try 2: Extract array directly
-      if (!jsonData) {
-        const arrayMatch = response.match(/\[[\s\S]*\]/);
-        if (arrayMatch) {
-          try {
-            jsonData = JSON.parse(arrayMatch[0]);
-          } catch (e) {
-            console.log('Failed to parse JSON array:', e);
-          }
-        }
-      }
+      // Call API endpoint
+      const response = await fetch('/api/platform-match', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          userProfile: {
+            age: userProfile?.age,
+            gender: userProfile?.gender,
+            location: userProfile?.location,
+            name: userProfile?.name
+          },
+          preferences
+        })
+      });
 
-      // Try 3: Look for JSON object containing array
-      if (!jsonData) {
-        const objectMatch = response.match(/\{[\s\S]*"recommendations"\s*:\s*(\[[\s\S]*\])[\s\S]*\}/);
-        if (objectMatch) {
-          try {
-            const fullObjectMatch = response.match(/\{[\s\S]*\}/);
-            if (fullObjectMatch) {
-              const fullObject = JSON.parse(fullObjectMatch[0]);
-              jsonData = fullObject.recommendations || fullObject;
-            }
-          } catch (e) {
-            console.log('Failed to parse JSON object:', e);
-          }
-        }
-      }
+      const data = await response.json();
 
-      if (jsonData && Array.isArray(jsonData)) {
-        // Validate that we have the expected structure
-        const validRecommendations = jsonData.filter(rec =>
-          rec.platform && typeof rec.matchScore === 'number' && rec.reasoning
-        );
-
-        if (validRecommendations.length > 0) {
-          setRecommendations(validRecommendations.sort((a: PlatformRecommendation, b: PlatformRecommendation) => b.matchScore - a.matchScore));
+      if (!response.ok) {
+        // Handle different error types
+        if (response.status === 429) {
+          throw new Error(`Te veel verzoeken. ${data.message || 'Probeer het later opnieuw.'}`);
+        } else if (response.status === 401) {
+          throw new Error('Authenticatie mislukt. Log opnieuw in.');
         } else {
-          throw new Error('Geen geldige platform aanbevelingen gevonden in de response');
+          throw new Error(data.message || 'Er ging iets mis bij het genereren van aanbevelingen');
         }
-      } else {
-        console.error('Raw AI response:', response);
-        throw new Error('Kon geen geldige JSON response krijgen. Probeer het opnieuw.');
       }
+
+      if (data.recommendations && Array.isArray(data.recommendations) && data.recommendations.length > 0) {
+        setRecommendations(data.recommendations);
+        console.log(`✅ Received ${data.recommendations.length} platform recommendations`);
+      } else {
+        throw new Error('Geen aanbevelingen ontvangen van de server');
+      }
+
     } catch (error) {
-      console.error('Error generating platform recommendations:', error);
-      alert('Er ging iets mis bij het genereren van aanbevelingen. Probeer het opnieuw.');
+      console.error('❌ Error generating platform recommendations:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Er ging iets mis. Probeer het opnieuw.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -264,6 +191,25 @@ Retourneer alleen een geldig JSON array in dit exacte format:
       />
 
       <div className="space-y-6">
+        {/* Error Alert */}
+        {error && (
+          <Alert variant="destructive" className="animate-in fade-in-50">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Er ging iets mis</AlertTitle>
+            <AlertDescription className="flex items-center justify-between">
+              <span>{error}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setError(null)}
+                className="h-auto p-1"
+              >
+                <XCircle className="h-4 w-4" />
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
+
         {/* Header with Progress */}
         <Card>
           <CardHeader>
@@ -300,7 +246,24 @@ Retourneer alleen een geldig JSON array in dit exacte format:
         </Card>
 
         {/* Step Content */}
-        <Card className="min-h-[500px]">
+        <Card className="min-h-[500px] relative overflow-hidden">
+          {loading && (
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
+              <div className="text-center space-y-4">
+                <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-lg">Analyseren...</h3>
+                  <p className="text-sm text-muted-foreground max-w-sm">
+                    We analyseren je profiel en voorkeuren om de beste dating platforms voor jou te vinden
+                  </p>
+                  <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground pt-2">
+                    <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                    <span>AI is aan het werk</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <CardContent className="p-6">
             {currentStep === 1 && (
               <div className="space-y-6">
@@ -745,21 +708,32 @@ Retourneer alleen een geldig JSON array in dit exacte format:
 
       {/* Results */}
       {recommendations.length > 0 && (
-        <div className="space-y-6">
-          <Card>
+        <div className="space-y-6 animate-in fade-in-50 slide-in-from-bottom-4 duration-500">
+          <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="w-6 h-6 text-primary" />
-                Jouw Professionele Platform Aanbevelingen
-              </CardTitle>
-              <p className="text-sm text-muted-foreground">
-                Wetenschappelijk onderbouwde aanbevelingen gebaseerd op algoritmes, doelgroepen en gebruikersgedrag
-              </p>
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="w-6 h-6 text-primary" />
+                    Jouw Professionele Platform Aanbevelingen
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Wetenschappelijk onderbouwde aanbevelingen gebaseerd op algoritmes, doelgroepen en gebruikersgedrag
+                  </p>
+                </div>
+                <Badge variant="secondary" className="text-xs">
+                  {recommendations.length} platforms
+                </Badge>
+              </div>
             </CardHeader>
           </Card>
 
           {recommendations.map((rec, index) => (
-            <Card key={index} className="border-2 border-primary/20">
+            <Card
+              key={index}
+              className="border-2 border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg animate-in fade-in-50 slide-in-from-bottom-4"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center gap-4">

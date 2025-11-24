@@ -3,10 +3,45 @@ import { chatCompletion } from '@/lib/ai-service';
 import { verifyToken } from '@/lib/auth';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
 import { trackFeatureUsage } from '@/lib/usage-tracking';
+import { sql } from '@vercel/postgres';
 
-interface PlatformSuggestion {
-  name: string;
-  rationale: string;
+interface PlatformRecommendation {
+  platform: string;
+  matchScore: number;
+  reasoning: string;
+  targetAudience: string;
+  algorithm: string;
+  niche: string;
+  pros: string[];
+  cons: string[];
+  strategy: string;
+  pricing: string;
+  safety: string;
+}
+
+interface UserPreferences {
+  relationshipGoal: string;
+  agePreference: string;
+  genderPreference: string;
+  locationPreference: string;
+  educationImportance: string;
+  backgroundImportance: string;
+  interestsImportance: string;
+  appExpectations: string[];
+  meetingSpeed: string;
+  budget: string;
+  privacyImportance: string;
+  pastExperience: string;
+  timeInvestment: string;
+  aiHelp: string[];
+  communicationStyle: string[];
+}
+
+interface UserProfile {
+  age?: number;
+  gender?: string;
+  location?: string;
+  name?: string;
 }
 
 /**
@@ -53,82 +88,85 @@ export async function POST(request: Request) {
     }
 
     const {
-      age,
-      gender,
-      seekingGender,
-      seekingType,
-      identityGroup,
-      interests,
-      location,
-      platformPref,
-      costPref,
-      timePref,
-      techComfort,
-      availablePlatforms
+      userProfile,
+      preferences
+    }: {
+      userProfile: UserProfile;
+      preferences: UserPreferences;
     } = await request.json();
 
-    if (!age || !availablePlatforms) {
+    // Validate required fields
+    if (!preferences.relationshipGoal || !preferences.agePreference || !preferences.genderPreference) {
       return NextResponse.json(
-        { error: 'Age and available platforms are required' },
+        { error: 'Relatie doel, leeftijd voorkeur en geslacht voorkeur zijn verplicht' },
         { status: 400 }
       );
     }
 
-    const systemPrompt = `Je bent een ervaren dating coach en expert op het gebied van Nederlandse dating apps en websites. Je kent alle platforms goed en weet precies welke doelgroepen ze bedienen.
+    const systemPrompt = `Je bent een professionele dating platform consultant met expertise in Nederlandse en internationale dating apps.
 
-**Gebruikersprofiel:**
-- Leeftijd: ${age} jaar
-- Geslacht: ${gender || 'niet opgegeven'}
-- Zoekt: ${seekingGender ? (Array.isArray(seekingGender) ? seekingGender.join(', ') : seekingGender) : 'niet opgegeven'}
-- Relatietype: ${seekingType || 'niet opgegeven'}
-- Identiteitsgroep: ${identityGroup || 'algemeen'}
-${location ? `- Locatie: ${location}` : ''}
-${interests && Array.isArray(interests) && interests.length > 0 ? `- Interesses: ${interests.join(', ')}` : ''}
+**GEBRUIKERSPROFIEL (van registratie):**
+- Leeftijd: ${userProfile?.age || 'Niet bekend'}
+- Geslacht: ${userProfile?.gender || 'Niet bekend'}
+- Locatie: ${userProfile?.location || 'Niet bekend'}
+- Naam: ${userProfile?.name || 'Niet bekend'}
 
-**Voorkeuren:**
-- Platform type: ${platformPref || 'geen voorkeur'}
-- Budget: ${costPref || 'geen voorkeur'}
-- Tijdsinvestering: ${timePref || 'geen voorkeur'}
-- Comfort met technologie/AI: ${techComfort || 'gemiddeld'}
+**GEBRUIKERSVOORKEUREN (van vragenlijst):**
+- Relatie doel: ${preferences.relationshipGoal}
+- Leeftijd voorkeur: ${preferences.agePreference}
+- Geslacht voorkeur: ${preferences.genderPreference}
+- Locatie voorkeur: ${preferences.locationPreference || 'Geen voorkeur'}
+- Belang opleiding: ${preferences.educationImportance || 'Geen voorkeur'}
+- Belang achtergrond: ${preferences.backgroundImportance || 'Geen voorkeur'}
+- Belang interesses: ${preferences.interestsImportance || 'Geen voorkeur'}
+- App verwachtingen: ${preferences.appExpectations.length > 0 ? preferences.appExpectations.join(', ') : 'Geen specifieke verwachtingen'}
+- Ontmoeting snelheid: ${preferences.meetingSpeed || 'Flexibel'}
+- Budget: ${preferences.budget || 'Geen voorkeur'}
+- Privacy belang: ${preferences.privacyImportance || 'Gemiddeld'}
+- Vorige ervaring: ${preferences.pastExperience || 'Geen eerdere ervaring vermeld'}
+- Tijd investering: ${preferences.timeInvestment || 'Gemiddeld'}
+- AI hulp wensen: ${preferences.aiHelp.length > 0 ? preferences.aiHelp.join(', ') : 'Geen specifieke wensen'}
+- Communicatie stijl: ${preferences.communicationStyle.length > 0 ? preferences.communicationStyle.join(', ') : 'Flexibel'}
 
-**Beschikbare platforms:**
-${JSON.stringify(availablePlatforms, null, 2)}
+**BELANGRIJKSTE CRITERIA WAAROP PLATFORMS VERSCHILLEN:**
+1. **Algoritme**: Swipen (looks-based) vs diepgaand matching (profiel/personality-based)
+2. **Doelgroep**: Algemeen vs niche (leeftijd, opleiding, religie, LGBTQ+, etc.)
+3. **Features**: Basis matching vs advanced filters, video, AI hulp
+4. **Safety**: Basis verificatie vs uitgebreid safety systeem
+5. **Pricing**: Gratis vs premium features vs volledig betaald
 
-**Jouw taak:**
-Analyseer dit profiel grondig en adviseer de beste 2-3 platforms. Voor elk platform geef je een **uitgebreide, persoonlijke uitleg** waarin je:
+**TAAK:**
+Analyseer dit profiel en geef 4-6 platform aanbevelingen. Voor elk platform:
 
-1. **Specifiek ingaat op waarom dit platform bij DIT profiel past**
-   - Benoem concrete kenmerken van de gebruiker (leeftijd, voorkeuren, etc.)
-   - Leg uit hoe het platform hierop aansluit
+1. Specifiek ingaan op waarom dit platform bij DIT profiel past
+2. Concrete features en sfeer beschrijven
+3. Eerlijke voor- en nadelen
+4. Strategie voor succes (3-4 concrete stappen)
 
-2. **Geef praktische informatie:**
-   - Wat maakt dit platform uniek?
-   - Wat is de sfeer/cultuur van het platform?
-   - Wat voor type mensen vind je er?
-   - Wat zijn de belangrijkste features?
-   - Kosten details (gratis vs betaald, wat krijg je ervoor?)
+**VEREISTEN:**
+- Focus op Nederlandse/Belgische platforms waar relevant
+- Include internationale platforms als ze significant beter passen
+- Wees evidence-based en professioneel
+- Sorteer op match score (hoogste eerst)
+- Elk platform moet uniek zijn en verschillende niches bedienen
 
-3. **Geef eerlijke voor- en nadelen:**
-   - Waarom zou dit goed werken voor deze gebruiker?
-   - Zijn er ook minpunten om rekening mee te houden?
+**KRITIEK BELANGRIJK - OUTPUT FORMAT:**
+Retourneer ALLEEN een geldig JSON array, GEEN markdown, GEEN code blocks, GEEN extra tekst.
+Gebruik dit EXACTE format:
 
-4. **Geef een concreet advies:**
-   - Hoe te starten op dit platform?
-   - Tips voor succes specifiek voor dit profiel
-
-Maak de uitleg **persoonlijk, informatief en behulpzaam**. Denk aan 6-8 zinnen per platform, niet 2-3!
-
-**Format:**
-Geef je antwoord als een JSON array met objecten die elk hebben:
-- "name": de naam van het platform
-- "rationale": uitgebreide, persoonlijke uitleg (6-8 zinnen, in het Nederlands)
-
-BELANGRIJK:
-- Geef ALLEEN de JSON array terug, geen extra tekst ervoor of erna
-- Gebruik alleen platforms uit de beschikbare lijst
-- Zorg dat de JSON geldig is en geparsed kan worden
-- Gebruik markdown formatting in de rationale: **vet** voor kopjes, bullet points waar relevant
-- Maak het echt persoonlijk en specifiek voor dit profiel`;
+[{
+  "platform": "Platform naam",
+  "matchScore": 8,
+  "reasoning": "2-3 zinnen waarom dit perfect past",
+  "targetAudience": "Specifieke doelgroep",
+  "algorithm": "Swipen/Matching type",
+  "niche": "Algemeen/25+/Opgeleid/etc",
+  "pros": ["Voordeel 1", "Voordeel 2", "Voordeel 3"],
+  "cons": ["Nadeel 1", "Nadeel 2"],
+  "strategy": "Concrete strategie in 3-4 stappen",
+  "pricing": "Gratis/Premium €X/maand",
+  "safety": "Basis/Advanced/Top-tier"
+}]`;
 
     // Get response from AI service
     const response = await chatCompletion(
@@ -139,59 +177,121 @@ BELANGRIJK:
         },
         {
           role: 'user',
-          content: 'Geef me de beste platform matches voor dit profiel.'
+          content: 'Analyseer dit profiel en geef de beste platform aanbevelingen in JSON format.'
         }
       ],
       {
         provider: 'openrouter',
-        maxTokens: 1200,
-        temperature: 0.7
+        maxTokens: 3000,
+        temperature: 0.2
       }
     );
 
-    // Parse JSON response
-    let suggestions: PlatformSuggestion[];
+    console.log('🤖 AI Response:', response.substring(0, 200) + '...');
+
+    // Parse JSON response with robust error handling
+    let recommendations: PlatformRecommendation[];
     try {
       // Remove markdown code blocks if present
       let cleanResponse = response.trim();
-      if (cleanResponse.startsWith('```json')) {
-        cleanResponse = cleanResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '');
-      } else if (cleanResponse.startsWith('```')) {
-        cleanResponse = cleanResponse.replace(/```\n?/g, '');
+
+      // Try 1: Remove markdown code blocks
+      if (cleanResponse.includes('```')) {
+        const codeBlockMatch = cleanResponse.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+        if (codeBlockMatch) {
+          cleanResponse = codeBlockMatch[1];
+        } else {
+          cleanResponse = cleanResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+        }
       }
 
-      suggestions = JSON.parse(cleanResponse);
+      // Try 2: Extract JSON array
+      const arrayMatch = cleanResponse.match(/\[[\s\S]*\]/);
+      if (arrayMatch) {
+        cleanResponse = arrayMatch[0];
+      }
+
+      recommendations = JSON.parse(cleanResponse);
 
       // Validate the response structure
-      if (!Array.isArray(suggestions)) {
+      if (!Array.isArray(recommendations)) {
         throw new Error('Response is not an array');
       }
 
-      // Ensure each suggestion has required fields
-      suggestions = suggestions.map(s => ({
-        name: s.name || 'Onbekend platform',
-        rationale: s.rationale || 'Geen uitleg beschikbaar'
-      }));
+      // Validate and normalize each recommendation
+      recommendations = recommendations
+        .filter(rec => rec.platform && typeof rec.matchScore === 'number')
+        .map(rec => ({
+          platform: rec.platform,
+          matchScore: Math.min(10, Math.max(1, rec.matchScore)),
+          reasoning: rec.reasoning || 'Geen uitleg beschikbaar',
+          targetAudience: rec.targetAudience || 'Algemeen publiek',
+          algorithm: rec.algorithm || 'Standaard matching',
+          niche: rec.niche || 'Algemeen',
+          pros: Array.isArray(rec.pros) ? rec.pros : [],
+          cons: Array.isArray(rec.cons) ? rec.cons : [],
+          strategy: rec.strategy || 'Begin met het maken van een compleet profiel',
+          pricing: rec.pricing || 'Gratis met premium opties',
+          safety: rec.safety || 'Standaard veiligheid'
+        }))
+        .sort((a, b) => b.matchScore - a.matchScore);
+
+      if (recommendations.length === 0) {
+        throw new Error('No valid recommendations found');
+      }
+
+      console.log(`✅ Successfully parsed ${recommendations.length} recommendations`);
 
     } catch (parseError) {
-      console.error('Failed to parse AI response:', response);
-      // Fallback: create a simple suggestion
-      suggestions = [{
-        name: 'Diverse platforms',
-        rationale: 'Op basis van je voorkeuren raden we aan verschillende platforms te proberen. Bekijk de beschikbare opties en kies wat bij je past.'
-      }];
+      console.error('❌ Failed to parse AI response:', parseError);
+      console.error('Raw response:', response);
+
+      return NextResponse.json(
+        {
+          error: 'parse_error',
+          message: 'Kon de AI response niet verwerken. Probeer het opnieuw.',
+          details: parseError instanceof Error ? parseError.message : 'Unknown parse error'
+        },
+        { status: 500 }
+      );
+    }
+
+    // Save recommendations to database
+    try {
+      await sql`
+        INSERT INTO platform_match_results (
+          user_id,
+          preferences,
+          recommendations,
+          created_at
+        ) VALUES (
+          ${user.id},
+          ${JSON.stringify(preferences)},
+          ${JSON.stringify(recommendations)},
+          NOW()
+        )
+      `;
+      console.log('✅ Saved recommendations to database');
+    } catch (dbError) {
+      // Don't fail the request if DB save fails
+      console.error('⚠️  Failed to save to database:', dbError);
     }
 
     // Track usage
-    await trackFeatureUsage(user.id, 'platform_advice');
+    await trackFeatureUsage(user.id, 'platform_match');
 
-    return NextResponse.json({ suggestions }, { status: 200 });
+    return NextResponse.json({
+      recommendations,
+      timestamp: new Date().toISOString()
+    }, { status: 200 });
+
   } catch (error) {
     console.error('❌ Platform match error:', error);
     return NextResponse.json(
       {
-        error: 'Platform match failed',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        error: 'platform_match_failed',
+        message: error instanceof Error ? error.message : 'Er ging iets mis bij het genereren van aanbevelingen',
+        timestamp: new Date().toISOString()
       },
       { status: 500 }
     );
