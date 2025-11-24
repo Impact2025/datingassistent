@@ -161,9 +161,9 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20">
       {/* Main Content */}
-      <div className="max-w-md mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-md mx-auto px-4 py-6 space-y-4">
         {/* Show onboarding flow if needed */}
         {showOnboarding ? (
           <OnboardingFlow
@@ -173,82 +173,135 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
           />
         ) : (
           <>
-            {/* AI Hero Section */}
-            <AIHeroSection onStartGuidedFlow={handleStartGuidedFlow} />
-
-            {/* Quick Actions Grid */}
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Snelle Acties
-              </h2>
-              <QuickActionsGrid />
+            {/* Welcome Header */}
+            <div className="text-center mb-6">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                Welkom terug, {user?.name?.split(' ')[0] || 'Dater'}! 👋
+              </h1>
+              <p className="text-gray-600">Laten we je dating succes optimaliseren</p>
             </div>
 
-            {/* AI Smart Flow */}
-            <AISmartFlow />
-
-            {/* Week Overview Card */}
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-gray-900">Deze Week</h3>
-                <span className="text-sm text-gray-500">
-                  Week {Math.ceil((new Date().getTime() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (1000 * 60 * 60 * 24 * 7))}
-                </span>
-              </div>
-
-              {dashboardStats.error ? (
-                <div className="text-center py-4">
-                  <p className="text-sm text-gray-500 mb-2">Kon statistieken niet laden</p>
-                  <button
-                    onClick={() => window.location.reload()}
-                    className="text-xs text-pink-600 hover:text-pink-700 underline"
+            {/* Profile Optimization Card - High Priority */}
+            <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-lg">🔥</span>
+                      <span className="text-sm font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full">
+                        Urgent
+                      </span>
+                    </div>
+                    <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                      Start met je profiel
+                    </h2>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Een goed profiel is de basis van succes in dating
+                    </p>
+                    <p className="text-xs text-gray-500 italic">
+                      "Nieuwe gebruikers zien vaak de beste resultaten met een compleet profiel"
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <Button
+                    onClick={() => router.push('/profiel')}
+                    className="flex-1 bg-pink-500 hover:bg-pink-600 text-white"
                   >
-                    Opnieuw proberen
-                  </button>
+                    Profiel Optimaliseren
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => router.push('/tools')}
+                    className="px-4 border-gray-300 text-gray-700 hover:bg-gray-50"
+                  >
+                    Overslaan
+                  </Button>
                 </div>
-              ) : (
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-pink-600">
-                      {dashboardStats.loading ? '...' : dashboardStats.goalsCompleted}
-                    </div>
-                    <div className="text-xs text-gray-600">Doelen behaald</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-pink-600">
-                      {dashboardStats.loading ? '...' : dashboardStats.toolsUsed}
-                    </div>
-                    <div className="text-xs text-gray-600">Tools gebruikt</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-pink-600">
-                      {dashboardStats.loading ? '...' : `${dashboardStats.progress}%`}
-                    </div>
-                    <div className="text-xs text-gray-600">Voortgang</div>
-                  </div>
-                </div>
-              )}
-            </div>
+              </CardContent>
+            </Card>
 
-            {/* Daily Learning Card */}
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-bold text-pink-600">📚</span>
+            {/* Learning Journey Card */}
+            <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl">🎓</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      Jouw persoonlijke leertraject
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Gebaseerd op je vaardighedenbeoordeling hebben we een leertraject voor je samengesteld.
+                    </p>
+                    <Button
+                      onClick={() => router.push('/leren')}
+                      variant="outline"
+                      className="w-full border-pink-200 text-pink-700 hover:bg-pink-50"
+                    >
+                      Bekijk leertraject
+                    </Button>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-medium text-gray-900">Dagelijkse Les</h3>
-                  <p className="text-sm text-gray-600">Leer effectieve openingszinnen</p>
-                </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              <button
-                onClick={() => router.push('/leren')}
-                className="w-full bg-pink-500 text-white py-3 px-4 rounded-lg text-sm font-medium hover:bg-pink-600 transition-colors"
-              >
-                Start Les
-              </button>
-            </div>
+            {/* Quick Actions Card */}
+            <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-gray-900 mb-4">Snelle Acties</h3>
+                <QuickActionsGrid />
+              </CardContent>
+            </Card>
+
+            {/* Weekly Progress Card */}
+            <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-gray-900">Deze Week</h3>
+                  <span className="text-sm text-gray-500">
+                    Week {Math.ceil((new Date().getTime() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (1000 * 60 * 60 * 24 * 7))}
+                  </span>
+                </div>
+
+                {dashboardStats.error ? (
+                  <div className="text-center py-4">
+                    <p className="text-sm text-gray-500 mb-2">Kon statistieken niet laden</p>
+                    <button
+                      onClick={() => window.location.reload()}
+                      className="text-xs text-pink-600 hover:text-pink-700 underline"
+                    >
+                      Opnieuw proberen
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <div className="text-2xl font-bold text-pink-600 mb-1">
+                        {dashboardStats.loading ? '...' : dashboardStats.goalsCompleted}
+                      </div>
+                      <div className="text-xs text-gray-600">Doelen behaald</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <div className="text-2xl font-bold text-pink-600 mb-1">
+                        {dashboardStats.loading ? '...' : dashboardStats.toolsUsed}
+                      </div>
+                      <div className="text-xs text-gray-600">Tools gebruikt</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <div className="text-2xl font-bold text-pink-600 mb-1">
+                        {dashboardStats.loading ? '...' : `${dashboardStats.progress}%`}
+                      </div>
+                      <div className="text-xs text-gray-600">Voortgang</div>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* AI Smart Flow - Keep this as is for now */}
+            <AISmartFlow />
           </>
         )}
       </div>

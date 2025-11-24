@@ -146,13 +146,13 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
       {quickActions.map((action) => (
         <div
           key={action.id}
-          className="bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:border-pink-200 hover:bg-pink-50/30 active:scale-95"
+          className="bg-gray-50 border border-gray-200 rounded-xl p-4 cursor-pointer transition-all duration-200 hover:border-pink-300 hover:bg-pink-50/50 hover:shadow-sm active:scale-95"
           onClick={() => handleActionClick(action)}
         >
           <div className="flex flex-col items-center text-center space-y-3">
             {/* Icon with background */}
-            <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
-              <div className="text-pink-600">
+            <div className="w-12 h-12 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-sm">
+              <div className="text-gray-700">
                 {action.icon}
               </div>
             </div>
@@ -169,7 +169,7 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
 
             {/* Priority indicator */}
             {action.priority === 'high' && (
-              <div className="w-1.5 h-1.5 bg-pink-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
             )}
           </div>
         </div>
