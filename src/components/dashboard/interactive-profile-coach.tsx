@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
+import { Textarea } from '@/components/ui/textarea';
 import {
   ChevronLeft,
   ChevronRight,
@@ -528,6 +529,50 @@ function InteractiveProfileCoachInner() {
       return currentAnswer.answerId.length >= requiredSelections;
     }
 
+    // For values_prioritization questions, check if 5 values are selected
+    if (currentQuestion.type === 'values_prioritization') {
+      if (!currentAnswer.answerId || !Array.isArray(currentAnswer.answerId)) return false;
+      return currentAnswer.answerId.length >= 5;
+    }
+
+    // For goals_pyramid questions, check if all levels have content
+    if (currentQuestion.type === 'goals_pyramid') {
+      if (!currentAnswer.fields) return false;
+      const requiredLevels = currentQuestion.levels?.length || 0;
+      const filledLevels = Object.values(currentAnswer.fields).filter((value: any) =>
+        typeof value === 'string' && value.trim().length > 0
+      ).length;
+      return filledLevels === requiredLevels;
+    }
+
+    // For story_builder questions, check if all elements have content
+    if (currentQuestion.type === 'story_builder') {
+      if (!currentAnswer.fields) return false;
+      const requiredElements = Object.keys(currentQuestion.elements || {}).length;
+      const filledElements = Object.values(currentAnswer.fields).filter((value: any) =>
+        typeof value === 'string' && value.trim().length > 0
+      ).length;
+      return filledElements === requiredElements;
+    }
+
+    // For vulnerability_scale questions, check if all aspects have values
+    if (currentQuestion.type === 'vulnerability_scale') {
+      if (!currentAnswer.fields) return false;
+      const requiredAspects = currentQuestion.aspects?.length || 0;
+      const filledAspects = Object.keys(currentAnswer.fields).length;
+      return filledAspects === requiredAspects;
+    }
+
+    // For usp_generator questions, check if all prompts have content
+    if (currentQuestion.type === 'usp_generator') {
+      if (!currentAnswer.fields) return false;
+      const requiredPrompts = currentQuestion.prompts?.length || 0;
+      const filledPrompts = Object.values(currentAnswer.fields).filter((value: any) =>
+        typeof value === 'string' && value.trim().length > 0
+      ).length;
+      return filledPrompts === requiredPrompts;
+    }
+
     // For communication_matrix questions, check if all dimensions have values
     if (currentQuestion.type === 'communication_matrix') {
       if (!currentAnswer.fields) return false;
@@ -555,7 +600,7 @@ function InteractiveProfileCoachInner() {
     // For love_language questions, check if at least one language is selected
     if (currentQuestion.type === 'love_language') {
       if (!currentAnswer.fields) return false;
-      const selectedLanguages = Object.values(currentAnswer.fields).filter(value => value === true).length;
+      const selectedLanguages = Object.values(currentAnswer.fields).filter((value: any) => value === true).length;
       return selectedLanguages > 0;
     }
 
@@ -1138,6 +1183,527 @@ function InteractiveProfileCoachInner() {
                   <div>
                     <p className="text-sm text-green-800">
                       <strong>Je communicatiestijl beïnvloedt 60% van je profiel aantrekkingskracht:</strong> {currentQuestion.interactive?.tip}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Values Prioritization */}
+          {currentQuestion.type === 'values_prioritization' && (
+            <div className="space-y-4 mb-6">
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">🎯</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-purple-800">
+                      <strong>Selecteer je 5 belangrijkste levenswaarden:</strong> Sleep of klik om je top 5 waarden te kiezen. Deze bepalen wie bij je past.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {currentQuestion.values?.map((value, index) => {
+                  const selectedValues = currentAnswer?.answerId as string[] || [];
+                  const isSelected = selectedValues.includes(value.id);
+                  const priority = selectedValues.indexOf(value.id) + 1;
+
+                  return (
+                    <button
+                      key={value.id}
+                      onClick={() => {
+                        const currentSelected = selectedValues;
+                        let newSelected: string[];
+
+                        if (isSelected) {
+                          // Remove from selection
+                          newSelected = currentSelected.filter(id => id !== value.id);
+                        } else {
+                          // Add to selection (if not at max 5)
+                          if (currentSelected.length < 5) {
+                            newSelected = [...currentSelected, value.id];
+                          } else {
+                            return; // Don't allow more selections
+                          }
+                        }
+
+                        const selectedLabels = newSelected.map(id =>
+                          currentQuestion.values?.find(v => v.id === id)?.name
+                        ).filter(Boolean);
+
+                        handleAnswer(newSelected, selectedLabels.join(', '));
+                      }}
+                      className={`p-4 border-2 rounded-lg text-left transition-all w-full ${
+                        isSelected
+                          ? 'border-purple-500 bg-purple-50 shadow-sm'
+                          : 'border-gray-200 hover:border-purple-300'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                          isSelected ? 'border-purple-500 bg-purple-500 text-white' : 'border-gray-300 text-gray-500'
+                        }`}>
+                          {isSelected ? priority : (index + 1)}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 mb-1">
+                            {value.name}
+                          </h4>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {value.description}
+                          </p>
+                          {isSelected && (
+                            <Badge className="bg-purple-100 text-purple-700 text-xs">
+                              #{priority} Prioriteit
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💜</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-purple-800">
+                      <strong>Geselecteerd: {((currentAnswer?.answerId as string[]) || []).length} / 5</strong>
+                      <br />
+                      {currentQuestion.interactive?.tip}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Goals Pyramid */}
+          {currentQuestion.type === 'goals_pyramid' && (
+            <div className="space-y-6 mb-6">
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">🎯</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-emerald-800">
+                      <strong>Definieer je relatie doelen:</strong> Beschrijf wat je wilt bereiken op korte, middel en lange termijn. Dit helpt ons mensen aan te trekken die dezelfde richting op willen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                {currentQuestion.levels?.map((level, index) => {
+                  const levelId = level.level;
+                  const currentContent = currentAnswer?.fields?.[levelId] || '';
+
+                  return (
+                    <div key={levelId} className="bg-white border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-medium text-gray-900">
+                          {level.label}
+                        </h4>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          levelId === 'immediate' ? 'bg-blue-100 text-blue-700' :
+                          levelId === 'medium' ? 'bg-purple-100 text-purple-700' :
+                          'bg-green-100 text-green-700'
+                        }`}>
+                          {levelId === 'immediate' ? 'Nu' : levelId === 'medium' ? '1-2 jaar' : '3+ jaar'}
+                        </span>
+                      </div>
+
+                      <p className="text-sm text-gray-600 mb-3">
+                        {level.question}
+                      </p>
+
+                      <Textarea
+                        placeholder={`Beschrijf je ${level.label.toLowerCase()} doelen...`}
+                        value={currentContent}
+                        onChange={(e) => {
+                          const newFields = {
+                            ...currentAnswer?.fields,
+                            [levelId]: e.target.value
+                          };
+                          handleAnswer('goals_pyramid', 'Goals pyramid input', undefined, newFields);
+                        }}
+                        className="min-h-[80px] resize-none"
+                        maxLength={300}
+                      />
+
+                      <div className="text-xs text-gray-500 mt-2">
+                        {currentContent.length}/300 karakters
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">📅</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-emerald-800">
+                      <strong>Duidelijke doelen trekken doelgerichte mensen aan:</strong> {currentQuestion.interactive?.tip}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Story Builder */}
+          {currentQuestion.type === 'story_builder' && (
+            <div className="space-y-6 mb-6">
+              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">📖</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-indigo-800">
+                      <strong>Bouw je signature verhaal:</strong> Een verhaal dat jou uniek maakt en je persoonlijkheid toont. Vul de elementen in om je verhaal te construeren.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                {Object.entries(currentQuestion.elements || {}).map(([key, label]) => {
+                  const currentContent = currentAnswer?.fields?.[key] || '';
+
+                  return (
+                    <div key={key} className="bg-white border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-medium text-gray-900">
+                          {label}
+                        </h4>
+                        <span className="text-xs text-gray-500">
+                          {currentContent.length}/200 karakters
+                        </span>
+                      </div>
+
+                      <Textarea
+                        placeholder={`Beschrijf je ${label.toLowerCase()}...`}
+                        value={currentContent}
+                        onChange={(e) => {
+                          const newFields = {
+                            ...currentAnswer?.fields,
+                            [key]: e.target.value
+                          };
+                          handleAnswer('story_builder', 'Story builder input', undefined, newFields);
+                        }}
+                        className="min-h-[100px] resize-none"
+                        maxLength={200}
+                      />
+
+                      <div className="text-xs text-gray-500 mt-2">
+                        Tip: Weef dit element natuurlijk in je dating verhalen
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">✨</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-indigo-800">
+                      <strong>Goede verhalen verhogen engagement met 300%:</strong> {currentQuestion.interactive?.tip}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Vulnerability Scale */}
+          {currentQuestion.type === 'vulnerability_scale' && (
+            <div className="space-y-4 mb-6">
+              <div className="bg-pink-50 border border-pink-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💝</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-pink-800">
+                      <strong>Beoordeel je comfort met kwetsbaarheid:</strong> Dit bepaalt hoe open je bent in je profiel en relaties. Schuif per aspect naar waar jij je het meest thuis voelt.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {currentQuestion.aspects?.map((aspect, index) => {
+                  const aspectId = aspect.id;
+                  const currentValue = currentAnswer?.fields?.[aspectId] || 3;
+
+                  return (
+                    <div key={aspectId} className="bg-white border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 mb-2">
+                            {aspect.label}
+                          </h4>
+                          <p className="text-sm text-gray-600 mb-3">
+                            {aspect.description}
+                          </p>
+
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-xs text-gray-500">
+                              <span>Zeer oncomfortabel</span>
+                              <span className="font-medium text-pink-600">{currentValue}/5</span>
+                              <span>Zeer comfortabel</span>
+                            </div>
+                            <div className="px-2">
+                              <Slider
+                                value={[currentValue]}
+                                onValueChange={(value) => {
+                                  const newFields = {
+                                    ...currentAnswer?.fields,
+                                    [aspectId]: value[0]
+                                  };
+                                  handleAnswer('vulnerability_scale', 'Vulnerability assessment', undefined, newFields);
+                                }}
+                                max={5}
+                                min={1}
+                                step={1}
+                                className="w-full"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="bg-pink-50 border border-pink-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💖</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-pink-800">
+                      <strong>Kwetsbare mensen trekken 40% meer quality matches aan:</strong> {currentQuestion.interactive?.tip}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* USP Generator */}
+          {currentQuestion.type === 'usp_generator' && (
+            <div className="space-y-4 mb-6">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">⭐</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-yellow-800">
+                      <strong>Wat maakt jou uniek in de dating wereld?</strong> Beantwoord deze prompts om je onderscheidende kwaliteiten te ontdekken.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {currentQuestion.prompts?.map((prompt, index) => {
+                  const promptId = `prompt_${index}`;
+                  const currentContent = currentAnswer?.fields?.[promptId] || '';
+
+                  return (
+                    <div key={promptId} className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h4 className="font-medium text-gray-900 mb-3">
+                        {prompt}
+                      </h4>
+
+                      <Textarea
+                        placeholder="Beschrijf hier je antwoord..."
+                        value={currentContent}
+                        onChange={(e) => {
+                          const newFields = {
+                            ...currentAnswer?.fields,
+                            [promptId]: e.target.value
+                          };
+                          handleAnswer('usp_generator', 'USP generation', undefined, newFields);
+                        }}
+                        className="min-h-[80px] resize-none"
+                        maxLength={150}
+                      />
+
+                      <div className="text-xs text-gray-500 mt-2">
+                        {currentContent.length}/150 karakters
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💫</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-yellow-800">
+                      <strong>USP's maken je 5x zichtbaarder in de swipe massa:</strong> {currentQuestion.interactive?.tip}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Platform Fit */}
+          {currentQuestion.type === 'platform_fit' && (
+            <div className="space-y-4 mb-6">
+              <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">📱</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-cyan-800">
+                      <strong>Welke dating apps passen bij jou?</strong> Selecteer de platforms die het beste bij je persoonlijkheid en doelen passen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {currentQuestion.platforms?.map((platform) => {
+                  const isSelected = currentAnswer?.answerId === platform.id;
+                  return (
+                    <button
+                      key={platform.id}
+                      onClick={() => handleAnswer(platform.id, platform.name)}
+                      className={`p-4 border-2 rounded-lg text-left transition-all w-full ${
+                        isSelected
+                          ? 'border-cyan-500 bg-cyan-50 shadow-sm'
+                          : 'border-gray-200 hover:border-cyan-300'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                          isSelected ? 'border-cyan-500 bg-cyan-500' : 'border-gray-300'
+                        }`}>
+                          {isSelected && (
+                            <CheckCircle className="w-3 h-3 text-white" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 mb-1">
+                            {platform.name}
+                          </h4>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {platform.best_for}
+                          </p>
+                          <Badge className="bg-cyan-100 text-cyan-700 text-xs">
+                            {platform.style}
+                          </Badge>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">🎯</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-cyan-800">
+                      <strong>Het juiste platform verhoogt je match kwaliteit met 60%:</strong> {currentQuestion.interactive?.recommendation}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* CTA Optimizer */}
+          {currentQuestion.type === 'cta_optimizer' && (
+            <div className="space-y-4 mb-6">
+              <div className="bg-lime-50 border border-lime-200 rounded-lg p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-lime-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">💬</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-lime-800">
+                      <strong>Welke openingszinnen passen bij jou?</strong> Selecteer de CTA's die het beste bij je persoonlijkheid passen.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {currentQuestion.hooks?.map((hook) => {
+                  const isSelected = currentAnswer?.answerId === hook.id;
+                  return (
+                    <button
+                      key={hook.id}
+                      onClick={() => handleAnswer(hook.id, hook.text)}
+                      className={`p-4 border-2 rounded-lg text-left transition-all w-full ${
+                        isSelected
+                          ? 'border-lime-500 bg-lime-50 shadow-sm'
+                          : 'border-gray-200 hover:border-lime-300'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                          isSelected ? 'border-lime-500 bg-lime-500' : 'border-gray-300'
+                        }`}>
+                          {isSelected && (
+                            <CheckCircle className="w-3 h-3 text-white" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 mb-1">
+                            "{hook.text}"
+                          </h4>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge className="bg-lime-100 text-lime-700 text-xs">
+                              {hook.category}
+                            </Badge>
+                            <span className="text-xs text-gray-500">
+                              Effectiviteit: {hook.effectiveness}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="bg-lime-50 border border-lime-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 bg-lime-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">🚀</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-lime-800">
+                      <strong>De juiste CTA verhoogt respons rates met 150%:</strong> {currentQuestion.interactive?.tip}
                     </p>
                   </div>
                 </div>
