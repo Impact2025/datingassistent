@@ -39,9 +39,10 @@ interface ProfileResultsProps {
   answers: QuizAnswer[];
   onReset: () => void;
   markAsCompleted: (actionName: string, metadata?: Record<string, any>) => Promise<boolean>;
+  onProfileUsed?: (profile: ProfileOption) => void;
 }
 
-export function ProfileResults({ profiles, answers, onReset, markAsCompleted }: ProfileResultsProps) {
+export function ProfileResults({ profiles, answers, onReset, markAsCompleted, onProfileUsed }: ProfileResultsProps) {
   const { user } = useUser();
   const { trackEvent } = useProfileAnalytics();
   const { trackConversion: trackProfileConversion } = useABTest('profile_variants');
@@ -97,6 +98,70 @@ export function ProfileResults({ profiles, answers, onReset, markAsCompleted }: 
       setTimeout(() => setCopiedId(null), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
+    }
+  };
+
+  const handleUseProfile = async () => {
+    if (!selectedProfile) return;
+
+    const selectedProfileData = profiles.find(p => p.id === selectedProfile);
+    if (!selectedProfileData) return;
+
+    try {
+      // Save profile to user's profile
+      const token = localStorage.getItem('datespark_auth_token');
+      const response = await fetch('/api/user/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          profileData: {
+            aiGeneratedProfile: selectedProfileData.content,
+            profileTitle: selectedProfileData.title,
+            profileScore: selectedProfileData.score,
+            strengths: selectedProfileData.strengths,
+            improvements: selectedProfileData.improvements
+          },
+          profileType: 'ai_generated'
+        })
+      });
+
+      if (response.ok) {
+        // Track profile usage event
+        if (user?.id) {
+          trackEvent({
+            userId: user.id.toString(),
+            sessionId,
+            eventType: 'profile_shared',
+            metadata: {
+              profile_id: selectedProfile,
+              profile_title: selectedProfileData.title,
+              profile_score: selectedProfileData.score
+            }
+          });
+
+          // Track A/B test conversion for using profile
+          trackProfileConversion(selectedProfile.split('-')[1], user.id.toString(), 'profile_used');
+        }
+
+        await markAsCompleted('profile_used', {
+          profile_id: selectedProfile,
+          profile_title: selectedProfileData.title
+        });
+
+        // Call the onProfileUsed callback if provided
+        onProfileUsed?.(selectedProfileData);
+
+        // Show success message (you could add a toast notification here)
+        alert('Profiel succesvol opgeslagen! Je kunt het nu gebruiken in je dating apps.');
+      } else {
+        throw new Error('Failed to save profile');
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      alert('Er is een fout opgetreden bij het opslaan van je profiel. Probeer het opnieuw.');
     }
   };
 
@@ -221,7 +286,10 @@ export function ProfileResults({ profiles, answers, onReset, markAsCompleted }: 
               Opnieuw Beginnen
             </Button>
             {selectedProfile && (
-              <Button className="flex items-center gap-2">
+              <Button
+                onClick={handleUseProfile}
+                className="flex items-center gap-2"
+              >
                 <ArrowRight className="w-4 h-4" />
                 Profiel Gebruiken
               </Button>

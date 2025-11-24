@@ -616,6 +616,11 @@ function InteractiveProfileCoachInner() {
         answers={state.answers}
         onReset={resetWizard}
         markAsCompleted={markAsCompleted}
+        onProfileUsed={(profile) => {
+          console.log('Profile used:', profile);
+          // You could add additional logic here, like showing a success message
+          // or navigating to a different page
+        }}
       />
     );
   }
