@@ -51,9 +51,14 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
                   Stap {currentStepIndex + 1} van {steps.length} - Voltooi je onboarding voor toegang tot alle tools
                 </p>
               </div>
-              <Badge variant="outline" className="text-pink-600 border-pink-200 bg-pink-50">
-                {Math.round(progress)}% compleet
-              </Badge>
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary" className="bg-pink-50 text-pink-700 border-pink-200">
+                  PRO
+                </Badge>
+                <Badge variant="outline" className="text-pink-600 border-pink-200 bg-pink-50">
+                  {Math.round(progress)}% compleet
+                </Badge>
+              </div>
             </div>
 
             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
