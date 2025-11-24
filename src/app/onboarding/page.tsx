@@ -7,7 +7,7 @@ import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle2, Sparkles, Target, Rocket } from 'lucide-react';
+import { CheckCircle2, Sparkles, Target } from 'lucide-react';
 import { getAuthErrorMessage, AuthManager } from '@/lib/auth-manager';
 import { AuthErrorBoundary } from '@/components/auth-error-boundary';
 
@@ -346,9 +346,6 @@ export default function OnboardingPage() {
           {journeyState.currentStep === 'welcome' && (
             <Card className="border border-border shadow-sm">
               <CardHeader className="text-center space-y-4 pb-8">
-                <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Rocket className="h-8 w-8 text-primary" />
-                </div>
                 <CardTitle className="text-2xl font-bold text-foreground">
                   Welkom bij DatingAssistent
                 </CardTitle>
