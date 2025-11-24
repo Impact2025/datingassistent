@@ -89,9 +89,9 @@ export default function OverOnsPage() {
           <h2 className="text-3xl md-text-4xl font-bold text-gray-900 mb-8">
             Onze missie: Daten toegankelijker maken
           </h2>
-          <div className="bg-white rounded-2xl p-8 border border-gray-200 max-w-3xl mx-auto mb-8">
+          <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl p-8 border border-pink-200 max-w-3xl mx-auto mb-8">
             <p className="text-xl text-gray-700 leading-relaxed italic">
-              "Met 10+ jaar expertise maken we daten makkelijker, succesvoller en leuker. Je staat er nooit alleen voor – wij zijn er om je te helpen slagen."
+              "Onze missie blijft onveranderd: jouw datingleven makkelijker, persoonlijker en succesvoller maken. Of je nu net begint, al even bezig bent of compleet vastloopt, DatingAssistent helpt je graag om met meer rust, helderheid en vertrouwen je volgende stap te zetten richting liefde."
             </p>
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
