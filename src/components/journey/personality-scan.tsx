@@ -215,7 +215,7 @@ export function PersonalityScan({ onComplete, onBack }: PersonalityScanProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4">
+    <div className="min-h-screen bg-white p-4">
       <div className="max-w-2xl mx-auto py-8">
 
         {/* Header */}
@@ -250,12 +250,9 @@ export function PersonalityScan({ onComplete, onBack }: PersonalityScanProps) {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="border border-border shadow-sm">
+            <Card className="border border-gray-200 bg-white">
               <CardHeader className="text-center pb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-                  <CurrentIcon className="w-8 h-8 text-primary" />
-                </div>
-                <CardTitle className="text-xl md:text-2xl text-foreground">
+                <CardTitle className="text-xl md:text-2xl text-gray-900">
                   {currentQ.title}
                 </CardTitle>
               </CardHeader>

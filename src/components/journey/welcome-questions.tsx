@@ -115,12 +115,9 @@ export function WelcomeQuestions({ onComplete }: WelcomeQuestionsProps) {
     : answers[currentQ.id as keyof WelcomeAnswers] !== '';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <Card className="max-w-2xl w-full shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <Card className="max-w-2xl w-full border border-gray-200 bg-white">
         <CardHeader className="text-center pb-6">
-          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white">
-            {currentQ.icon}
-          </div>
           <div className="flex items-center justify-center space-x-2 mb-4">
             {questions.map((_, index) => (
               <div
@@ -153,7 +150,7 @@ export function WelcomeQuestions({ onComplete }: WelcomeQuestionsProps) {
                 className="space-y-3"
               >
                 {currentQ.options.map((option) => (
-                  <div key={option.value} className="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 hover:border-pink-300 hover:bg-pink-50/50 transition-colors">
+                  <div key={option.value} className="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                     <RadioGroupItem value={option.value} id={option.value} className="mt-0.5" />
                     <div className="flex-1">
                       <Label
@@ -172,7 +169,7 @@ export function WelcomeQuestions({ onComplete }: WelcomeQuestionsProps) {
             ) : (
               <div className="space-y-3">
                 {currentQ.options.map((option) => (
-                  <div key={option.value} className="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 hover:border-pink-300 hover:bg-pink-50/50 transition-colors">
+                  <div key={option.value} className="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                     <Checkbox
                       id={option.value}
                       checked={(answers.datingApps as string[]).includes(option.value)}
@@ -199,8 +196,8 @@ export function WelcomeQuestions({ onComplete }: WelcomeQuestionsProps) {
           </div>
 
           {/* Reason */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm text-blue-800">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <p className="text-sm text-gray-700">
               <strong>Waarom deze vraag?</strong> {currentQ.reason}
             </p>
           </div>

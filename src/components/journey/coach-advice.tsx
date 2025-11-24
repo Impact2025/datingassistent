@@ -72,16 +72,13 @@ export function CoachAdvice({ advice, onComplete }: CoachAdviceProps) {
   }, [advice]);
 
   return (
-    <div className="min-h-screen bg-background p-4">
+    <div className="min-h-screen bg-white p-4">
       <div className="max-w-3xl mx-auto py-8 space-y-6">
 
         {/* Header */}
-        <Card className="border border-border shadow-sm">
+        <Card className="border border-gray-200 bg-white">
           <CardHeader className="text-center space-y-4">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mx-auto">
-              <Sparkles className="w-8 h-8 text-primary" />
-            </div>
-            <CardTitle className="text-2xl md:text-3xl font-bold text-foreground">
+            <CardTitle className="text-2xl md:text-3xl font-bold text-gray-900">
               Jouw Persoonlijke Coach Advies
             </CardTitle>
           </CardHeader>
