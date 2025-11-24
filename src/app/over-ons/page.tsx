@@ -197,7 +197,7 @@ export default function OverOnsPage() {
             </div>
 
             <div className="relative">
-              <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 max-w-sm mx-auto">
+              <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 max-w-xs mx-auto">
                 <video
                   className="w-full h-auto"
                   controls
