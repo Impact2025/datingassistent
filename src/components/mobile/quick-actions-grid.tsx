@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Camera, MessageCircle, Target, BookOpen } from 'lucide-react';
+import { Camera, MessageCircle, Target, BookOpen, Image, Heart, Mic, Users, Shield, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface QuickAction {
@@ -28,30 +28,90 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
     {
       id: 'profile',
       icon: <Camera className="w-6 h-6" />,
-      title: 'Profiel Check',
+      title: 'Profiel Coach',
       subtitle: 'Foto + Bio',
       route: '/profiel',
       priority: 'high',
       color: 'text-blue-600',
       bgColor: 'bg-blue-50 hover:bg-blue-100',
     },
+    // {
+    //   id: 'photo-analysis',
+    //   icon: <Image className="w-6 h-6" />,
+    //   title: 'Foto Analyse',
+    //   subtitle: 'Professionele beoordeling',
+    //   route: '/foto',
+    //   priority: 'high',
+    //   color: 'text-purple-600',
+    //   bgColor: 'bg-purple-50 hover:bg-purple-100',
+    // },
     {
       id: 'chat',
       icon: <MessageCircle className="w-6 h-6" />,
       title: 'Chat Coach',
-      subtitle: 'Upload/chat direct',
+      subtitle: 'Gespreksanalyse',
       route: '/chat',
       priority: 'high',
       color: 'text-green-600',
       bgColor: 'bg-green-50 hover:bg-green-100',
     },
+    // {
+    //   id: 'opener-lab',
+    //   icon: <Heart className="w-6 h-6" />,
+    //   title: 'Opener Lab',
+    //   subtitle: 'Openingszinnen',
+    //   route: '/opener',
+    //   priority: 'high',
+    //   color: 'text-pink-600',
+    //   bgColor: 'bg-pink-50 hover:bg-pink-100',
+    // },
+    // {
+    //   id: 'voice-notes',
+    //   icon: <Mic className="w-6 h-6" />,
+    //   title: 'Stem Berichten',
+    //   subtitle: 'Audio analyse',
+    //   route: '/voice',
+    //   priority: 'medium',
+    //   color: 'text-orange-600',
+    //   bgColor: 'bg-orange-50 hover:bg-orange-100',
+    // },
+    // {
+    //   id: 'match-analysis',
+    //   icon: <Users className="w-6 h-6" />,
+    //   title: 'Match Analyse',
+    //   subtitle: 'Profielen analyseren',
+    //   route: '/match',
+    //   priority: 'medium',
+    //   color: 'text-indigo-600',
+    //   bgColor: 'bg-indigo-50 hover:bg-indigo-100',
+    // },
+    {
+      id: 'date-planner',
+      icon: <Target className="w-6 h-6" />,
+      title: 'Date Planner',
+      subtitle: 'Perfecte date ideeën',
+      route: '/date-planner',
+      priority: 'medium',
+      color: 'text-teal-600',
+      bgColor: 'bg-teal-50 hover:bg-teal-100',
+    },
+    // {
+    //   id: 'safety-check',
+    //   icon: <Shield className="w-6 h-6" />,
+    //   title: 'Veiligheidscheck',
+    //   subtitle: 'Rode vlaggen',
+    //   route: '/veiligheid',
+    //   priority: 'high',
+    //   color: 'text-red-600',
+    //   bgColor: 'bg-red-50 hover:bg-red-100',
+    // },
     {
       id: 'goals',
       icon: <Target className="w-6 h-6" />,
       title: 'Doelen',
       subtitle: 'Weekdoelen + voortgang',
       route: '/groei',
-      priority: 'high',
+      priority: 'medium',
       color: 'text-purple-600',
       bgColor: 'bg-purple-50 hover:bg-purple-100',
     },
@@ -65,6 +125,16 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
       color: 'text-orange-600',
       bgColor: 'bg-orange-50 hover:bg-orange-100',
     },
+    {
+      id: 'all-tools',
+      icon: <Wrench className="w-6 h-6" />,
+      title: 'Alle Tools',
+      subtitle: 'Volledig overzicht',
+      route: '/tools',
+      priority: 'low',
+      color: 'text-gray-600',
+      bgColor: 'bg-gray-50 hover:bg-gray-100',
+    },
   ];
 
   const handleActionClick = (action: QuickAction) => {
@@ -72,7 +142,7 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
   };
 
   return (
-    <div className={cn("grid grid-cols-2 gap-3", className)}>
+    <div className={cn("grid grid-cols-3 gap-3", className)}>
       {quickActions.map((action) => (
         <div
           key={action.id}
