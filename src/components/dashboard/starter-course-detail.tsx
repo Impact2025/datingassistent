@@ -12,8 +12,32 @@ import { Label } from '@/components/ui/label';
 import { AIResultCard } from '@/components/shared/ai-result-card';
 import { QuizRenderer, type QuizData } from '@/components/quiz/quiz-renderer';
 import { redFlagsIntroSlides } from '@/data/example-slides';
+import {
+  executiveAssessmentSlides,
+  cognitiveRestructuringSlides,
+  executivePresenceSlides,
+  resilienceMasterySlides,
+  strategicRelationshipSlides,
+  masteryIntegrationSlides,
+  executiveMasterySlides,
+} from '@/data/confidence-mastery-slides';
+import {
+  profilePsychologyIntroSlides,
+  zelfkennisFundamentSlides,
+  doelgroepPsychologieSlides,
+  structuurMeesterschapSlides,
+  charismaEliminatieSlides,
+  aiOptimalisatieSlides,
+  validatieMasterySlides,
+  lanceringMasterySlides,
+  masteryCertificeringSlides,
+} from '@/data/profile-text-psychology-slides';
 import { DatabaseSlidesViewer, type DatabaseSlidesData } from '@/components/slides/database-slides-viewer';
 import { VideoPlayer } from '@/components/shared/video-player';
+import { InteractiveProfileBuilder } from '@/components/interactive/interactive-profile-builder';
+import { GamificationSystem } from '@/components/interactive/gamification-system';
+import { RealTimeAIFeedback } from '@/components/interactive/real-time-ai-feedback';
+import { SocialLearning } from '@/components/interactive/social-learning';
 
 // Simple markdown to HTML converter for quiz content
 function convertMarkdownToHTML(markdown: string): string {
@@ -275,6 +299,15 @@ const SelfConfidenceProgressTracker = dynamic(() => import('@/components/quiz/se
   ),
 });
 
+const AIConfidenceCoach = dynamic(() => import('@/components/quiz/ai-confidence-coach').then(mod => mod.AIConfidenceCoach), {
+  ssr: false,
+  loading: () => (
+    <div className="rounded-lg border border-primary/30 bg-primary/5 p-6 text-sm text-muted-foreground">
+      AI Confidence Coach wordt geladen…
+    </div>
+  ),
+});
+
 const SlideViewer = dynamic(() => import('@/components/slides/slide-viewer'), {
   ssr: false,
   loading: () => (
@@ -311,6 +344,46 @@ const getLucideIcon = (name?: string) => {
 type ResponseMap = Record<string, string>;
 
 const storageKey = (starterId: string) => `starter_${starterId}_responses`;
+
+const getSlideDeckForLesson = (lessonId: string) => {
+  switch (lessonId) {
+    case 'executive-assessment-slides':
+      return executiveAssessmentSlides;
+    case 'cognitive-restructuring-slides':
+      return cognitiveRestructuringSlides;
+    case 'executive-presence-slides':
+      return executivePresenceSlides;
+    case 'resilience-slides':
+      return resilienceMasterySlides;
+    case 'relationship-slides':
+      return strategicRelationshipSlides;
+    case 'mastery-slides':
+      return masteryIntegrationSlides;
+    case 'certification-slides':
+      return executiveMasterySlides;
+    // Profile Text Psychology slides
+    case 'profile-psychology-intro-slides':
+      return profilePsychologyIntroSlides;
+    case 'zelfkennis-fundament-slides':
+      return zelfkennisFundamentSlides;
+    case 'doelgroep-psychologie-slides':
+      return doelgroepPsychologieSlides;
+    case 'structuur-meesterschap-slides':
+      return structuurMeesterschapSlides;
+    case 'charisma-eliminatie-slides':
+      return charismaEliminatieSlides;
+    case 'ai-optimalisatie-slides':
+      return aiOptimalisatieSlides;
+    case 'validatie-mastery-slides':
+      return validatieMasterySlides;
+    case 'lancering-mastery-slides':
+      return lanceringMasterySlides;
+    case 'mastery-certificering-slides':
+      return masteryCertificeringSlides;
+    default:
+      return null;
+  }
+};
 
 function LessonItem({ lesson }: { lesson: CourseLesson }) {
   const IconComponent = getLucideIcon(LESSON_TYPE_ICONS[lesson.type]) ?? Lucide.BookOpen;
@@ -355,6 +428,7 @@ function CourseSectionCard({
   interactiveCoach,
   isBioCourse,
   savingFields,
+  courseId,
 }: {
   section: CourseSection | null;
   responses: ResponseMap;
@@ -363,7 +437,12 @@ function CourseSectionCard({
   interactiveCoach?: React.ReactNode;
   isBioCourse: boolean;
   savingFields: Set<string>;
+  courseId: string;
 }) {
+  // Import required hooks and utilities
+  const { user, userProfile } = useUser();
+  const { toast } = useToast();
+
   // State to track which lessons are expanded
   const [expandedLessons, setExpandedLessons] = useState<Set<number>>(new Set());
 
@@ -612,6 +691,56 @@ function CourseSectionCard({
                               )}
                             </button>
                           )}
+
+                          {/* Beautiful AI Coach Integration for Confidence Course */}
+                          {courseId === 'boost-je-dating-zelfvertrouwen' && (
+                            (() => {
+                              const title = lesson.title.toLowerCase();
+                              const content = lesson.content.toLowerCase();
+
+                              // Add coach check-ins for relevant lessons
+                              const shouldShowCoach = (
+                                title.includes('reflectie') ||
+                                title.includes('mindset') ||
+                                title.includes('zelfvertrouwen') ||
+                                title.includes('angst') ||
+                                title.includes('uitdaging') ||
+                                content.includes('denk na') ||
+                                content.includes('reflecteer') ||
+                                lesson.lesson_type === 'assignment'
+                              );
+
+                              if (shouldShowCoach) {
+                                return (
+                                  <div className="mt-4 p-4 bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20">
+                                    <div className="flex items-center gap-3 mb-3">
+                                      <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                                        <Lucide.Sparkles className="w-4 h-4 text-primary" />
+                                      </div>
+                                      <div>
+                                        <h5 className="text-sm font-semibold text-primary">💬 Persoonlijke Coach Check-in</h5>
+                                        <p className="text-xs text-muted-foreground">Krijg gepersonaliseerd advies voor deze les</p>
+                                      </div>
+                                    </div>
+                                    <AIConfidenceCoach
+                                      userId={user?.id}
+                                      currentModule={dbModule?.id || 1}
+                                      userProfile={userProfile}
+                                      compact={true}
+                                      context={`Les: ${lesson.title}`}
+                                      onCoachingComplete={(response) => {
+                                        toast({
+                                          title: 'Coach check-in voltooid!',
+                                          description: 'Je advies is opgeslagen voor later.',
+                                        });
+                                      }}
+                                    />
+                                  </div>
+                                );
+                              }
+                              return null;
+                            })()
+                          )}
                         </div>
                       )}
 
@@ -652,6 +781,106 @@ function CourseSectionCard({
                         lesson.title.toLowerCase().includes('de 5 v')) && (
                         <div className="mt-3">
                           <SlideViewer deck={redFlagsIntroSlides} />
+                        </div>
+                      )}
+
+                      {/* Slide Viewer for confidence mastery slides */}
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('executive assessment slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={executiveAssessmentSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('cognitive restructuring slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={cognitiveRestructuringSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('executive presence mastery slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={executivePresenceSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('advanced resilience training slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={resilienceMasterySlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('strategic relationship building slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={strategicRelationshipSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('mastery integration slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={masteryIntegrationSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('executive mastery certification slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={executiveMasterySlides} />
+                        </div>
+                      )}
+
+                      {/* Slide Viewer for confidence mastery slides */}
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('executive assessment slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={executiveAssessmentSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('cognitive restructuring slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={cognitiveRestructuringSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('executive presence mastery slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={executivePresenceSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('resilience slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={resilienceMasterySlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('relationship slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={strategicRelationshipSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('mastery slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={masteryIntegrationSlides} />
+                        </div>
+                      )}
+
+                      {lesson.lesson_type === 'lesson' &&
+                       lesson.title.toLowerCase().includes('certification slides') && (
+                        <div className="mt-3">
+                          <SlideViewer deck={executiveMasterySlides} />
                         </div>
                       )}
 
@@ -778,6 +1007,103 @@ function CourseSectionCard({
                               toast({
                                 title: 'Entry opgeslagen! 💪',
                                 description: 'Je dagelijkse voortgang is bijgewerkt.',
+                              });
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {/* Interactive Profile Builder for Profile Text Course */}
+                      {courseId === 'de-psychologie-van-de-onweerstaanbare-profieltekst' &&
+                       (lesson.title.toLowerCase().includes('profiel builder') ||
+                        lesson.title.toLowerCase().includes('interactive profile') ||
+                        lesson.title.toLowerCase().includes('profieltekst bouwen') ||
+                        lesson.title.toLowerCase().includes('kernwaarden explorer') ||
+                        lesson.title.toLowerCase().includes('partner shopping') ||
+                        lesson.title.toLowerCase().includes('relatie landscape') ||
+                        lesson.title.toLowerCase().includes('ritme bouwen') ||
+                        lesson.title.toLowerCase().includes('charisma transformeren') ||
+                        lesson.title.toLowerCase().includes('authentiek') ||
+                        lesson.title.toLowerCase().includes('ai bio generator') ||
+                        lesson.title.toLowerCase().includes('profiel analyse') ||
+                        lesson.title.toLowerCase().includes('lancering') ||
+                        lesson.title.toLowerCase().includes('transformatie')) && (
+                        <div className="mt-3">
+                          <InteractiveProfileBuilder
+                            onComplete={(profile, score) => {
+                              onChange(fieldKey, profile);
+                              toast({
+                                title: 'Profiel opgeslagen!',
+                                description: `Score: ${score}/100 - Geweldig werk!`,
+                              });
+                            }}
+                            initialProfile={responses[fieldKey] || ''}
+                          />
+                        </div>
+                      )}
+
+                      {/* Real-time AI Feedback for Profile Text Creation */}
+                      {courseId === 'de-psychologie-van-de-onweerstaanbare-profieltekst' &&
+                       (lesson.title.toLowerCase().includes('ai feedback') ||
+                        lesson.title.toLowerCase().includes('real-time') ||
+                        lesson.title.toLowerCase().includes('schrijf je profiel') ||
+                        lesson.title.toLowerCase().includes('bio generator') ||
+                        lesson.title.toLowerCase().includes('ai optimalisatie') ||
+                        lesson.title.toLowerCase().includes('genereren en analyseren')) && (
+                        <div className="mt-3">
+                          <RealTimeAIFeedback
+                            text={responses[fieldKey] || ''}
+                            onTextChange={(text) => onChange(fieldKey, text)}
+                            onFeedbackUpdate={(feedback) => {
+                              // Optional: Store feedback data
+                              onChange(`${fieldKey}-feedback`, JSON.stringify(feedback));
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {/* Gamification System for Progress Tracking */}
+                      {courseId === 'de-psychologie-van-de-onweerstaanbare-profieltekst' &&
+                       (lesson.title.toLowerCase().includes('gamification') ||
+                        lesson.title.toLowerCase().includes('punten') ||
+                        lesson.title.toLowerCase().includes('badges') ||
+                        lesson.title.toLowerCase().includes('voortgang') ||
+                        lesson.title.toLowerCase().includes('momentum building') ||
+                        lesson.title.toLowerCase().includes('continue optimalisatie')) && (
+                        <div className="mt-3">
+                          <GamificationSystem
+                            userId={user?.id?.toString() || ''}
+                            courseId={courseId}
+                            onPointsEarned={(points, reason) => {
+                              toast({
+                                title: `+${points} punten!`,
+                                description: `Verdiend door: ${reason}`,
+                              });
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {/* Social Learning for Community Features */}
+                      {courseId === 'de-psychologie-van-de-onweerstaanbare-profieltekst' &&
+                       (lesson.title.toLowerCase().includes('social learning') ||
+                        lesson.title.toLowerCase().includes('community') ||
+                        lesson.title.toLowerCase().includes('peer review') ||
+                        lesson.title.toLowerCase().includes('feedback delen') ||
+                        lesson.title.toLowerCase().includes('transformatie & community')) && (
+                        <div className="mt-3">
+                          <SocialLearning
+                            currentUserId={user?.id?.toString() || ''}
+                            onReviewSubmitted={(review) => {
+                              toast({
+                                title: 'Review verstuurd!',
+                                description: 'Bedankt voor je bijdrage aan de community.',
+                              });
+                            }}
+                            onProfileShared={(profile) => {
+                              toast({
+                                title: 'Profiel gedeeld!',
+                                description: 'Je profiel is nu zichtbaar voor de community.',
                               });
                             }}
                           />
@@ -949,7 +1275,7 @@ function CourseSectionCard({
         )}
 
         {/* Interactive Profile Coach for STAP 5 - AI Bio Generator with 3 variants */}
-        {isBioCourse && section?.id === 'stap-5-ai' && interactiveCoach && (
+        {isBioCourse && ((section?.id === 'stap-5-ai') || (dbModule?.title?.toLowerCase().includes('ai') && dbModule?.title?.toLowerCase().includes('optimalisatie'))) && interactiveCoach && (
           <div className="rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 p-6">
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-purple-900">
@@ -1663,6 +1989,7 @@ export default function StarterCourseDetail({ starterId, course, courseSlug, dbC
                           interactiveCoach={interactiveCoach}
                           isBioCourse={isBioCourse}
                           savingFields={savingFields}
+                          courseId={course.id}
                         />
                       </CarouselItem>
                     );
@@ -1785,6 +2112,7 @@ export default function StarterCourseDetail({ starterId, course, courseSlug, dbC
               </CardContent>
             </Card>
           )}
+
         </div>
       )}
     </div>

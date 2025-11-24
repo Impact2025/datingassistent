@@ -63,7 +63,11 @@
       "Bash(git push:*)",
       "Bash(git filter-branch:*)",
       "Bash(git stash:*)",
-      "Bash(routes_zonder_edge.txt)"
+      "Bash(routes_zonder_edge.txt)",
+      "Bash(cmd /c \"if not exist src\\components\\guards mkdir src\\components\\guards\")",
+      "Bash(cmd /c \"dir src\\components\\guards 2>nul || echo Directory does not exist\")",
+      "Bash(cmd /c \"echo. > src\\components\\guards\\device-guard.tsx\")",
+      "Bash(cmd /c \"echo. > src\\hooks\\use-device-detection.ts\")"
     ],
     "deny": [],
     "ask": []

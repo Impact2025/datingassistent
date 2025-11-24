@@ -10,16 +10,7 @@ import { DashboardTab } from '@/components/dashboard/dashboard-tab';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { OnlineCursusTab } from '@/components/dashboard/online-cursus-tab';
-import { ProfielCoachTab } from '@/components/dashboard/profiel-coach-tab';
-import { ProfielAnalyseTab } from '@/components/dashboard/profiel-analyse-tab';
-import { FotoAdviesTab } from '@/components/dashboard/foto-advies-tab';
-import { GesprekStarterTab } from '@/components/dashboard/gesprek-starter-tab';
-import { DatePlannerTab } from '@/components/dashboard/date-planner-tab';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
-import { ChatCoachTab } from '@/components/dashboard/chat-coach-tab';
-import { SkillsAssessmentTab } from '@/components/dashboard/skills-assessment-tab';
-import { PersonalRecommendations } from '@/components/dashboard/personal-recommendations';
 import { CommunityTab } from '@/components/dashboard/community-tab';
 import { DatingProfilerAI } from '@/components/dashboard/dating-profiler-ai';
 import { ProgressTracker } from '@/components/dashboard/progress-tracker';
@@ -34,9 +25,6 @@ import { DatingActivityLogger } from '@/components/engagement/dating-activity-lo
 import { TrialProgress } from '@/components/dashboard/trial-progress';
 import { AIContextNotifications } from '@/components/shared/ai-context-notifications';
 import { SocialMediaLinks } from '@/components/shared/social-media-links';
-import { ConversationCoach } from '@/components/dashboard/conversation-coach';
-import { SuccessMetricsDashboard } from '@/components/dashboard/success-metrics-dashboard';
-import { ProfileOptimizationEngine } from '@/components/dashboard/profile-optimization-engine';
 import { DatingWeekNotificationModal } from '@/components/dashboard/dating-week-notification-modal';
 
 // NIEUWE CONSOLIDATED MODULES
@@ -195,6 +183,26 @@ export default function DashboardPage() {
       // Reset to dashboard after navigation
       setActiveTab('dashboard');
     }
+
+    // REDIRECT LEGACY DUPLICATE TABS TO CONSOLIDATED MODULES
+    const redirectMap: Record<string, string> = {
+      'online-cursus': 'leren-ontwikkelen',
+      'profiel-coach': 'profiel-persoonlijkheid',
+      'dateplanner': 'daten-relaties',
+      'skills-assessment': 'leren-ontwikkelen',
+      'voortgang': 'groei-doelen',
+      'doelen': 'groei-doelen',
+      'profiel-analyse': 'profiel-persoonlijkheid',
+      'foto-advies': 'profiel-persoonlijkheid',
+      'gesprek-starter': 'communicatie-matching',
+      'chat-coach': 'communicatie-matching',
+      'recommendations': 'leren-ontwikkelen'
+    };
+
+    if (redirectMap[activeTab]) {
+      console.log(`🔄 Redirecting legacy tab '${activeTab}' to consolidated module '${redirectMap[activeTab]}'`);
+      setActiveTab(redirectMap[activeTab]);
+    }
   }, [activeTab, router]);
 
   // While loading user data, show a loading state
@@ -286,43 +294,22 @@ export default function DashboardPage() {
       case 'yearly-review':
         return <YearlyReview userId={user?.id || 0} year={new Date().getFullYear()} />;
 
-      // Individuele legacy tabs (voor debugging/toegang)
-      case 'week-review':
-        return <WeekReview userId={user?.id || 0} weekNumber={1} onComplete={() => setActiveTab('daily')} />;
-      case 'dating-activity':
-        return <DatingActivityLogger userId={user?.id || 0} />;
-      case 'badges':
-        return <BadgesShowcase userId={user?.id || 0} />;
-      case 'online-cursus':
-        return <OnlineCursusTab />;
-      case 'profiel-coach':
-        return <ProfielCoachTab />;
-      case 'profiel-analyse':
-        return <ProfielAnalyseTab />;
-      case 'foto-advies':
-        return <FotoAdviesTab />;
-      case 'gesprek-starter':
-        return <GesprekStarterTab />;
-      case 'chat-coach':
-        return <ChatCoachTab />;
-      case 'gesprek-coach':
-        return <ConversationCoach />;
-      case 'succes-metrics':
-        return <SuccessMetricsDashboard />;
-      case 'profiel-optimalisatie':
-        return <ProfileOptimizationEngine />;
-      case 'dateplanner':
-        return <DatePlannerTab />;
-      case 'skills-assessment':
-        return <SkillsAssessmentTab />;
-      case 'recommendations':
-        return <PersonalRecommendations />;
+      // REMOVED: Legacy duplicate tabs - all functionality now consolidated in the 5 main modules
+      // - online-cursus → consolidated into 'leren-ontwikkelen'
+      // - profiel-coach → consolidated into 'profiel-persoonlijkheid'
+      // - dateplanner → consolidated into 'daten-relaties'
+      // - skills-assessment → consolidated into 'leren-ontwikkelen'
+      // - voortgang → consolidated into 'groei-doelen'
+      // - doelen → consolidated into 'groei-doelen'
+      // - All other legacy tabs removed for cleaner UX
+
+      // Keep only essential standalone tabs
       case 'community':
         return <CommunityTab />;
-      case 'voortgang':
-        return <ProgressTracker onTabChange={setActiveTab} />;
-      case 'doelen':
-        return <GoalManagement onTabChange={setActiveTab} />;
+      case 'badges':
+        return <BadgesShowcase userId={user?.id || 0} />;
+      case 'dating-activity':
+        return <DatingActivityLogger userId={user?.id || 0} />;
       case 'select-package':
         // Navigation handled by useEffect above
         return <DashboardTab onTabChange={setActiveTab} />;

@@ -11,6 +11,7 @@ import { securityHeadersMiddleware, applyAPISecurityHeaders, applyAdminSecurityH
 import { csrfProtectionMiddleware, getCSRFConfig } from '@/lib/csrf-edge';
 import { rateLimitMiddleware, getRateLimitConfigForPath } from '@/lib/rate-limit-edge';
 import { adminSecurityMiddleware } from '@/lib/admin-security';
+import { getDeviceRedirectPath } from '@/lib/device-detection-server';
 
 // ============================================================================
 // CONFIGURATION
@@ -118,6 +119,15 @@ export async function middleware(request: NextRequest) {
   // Bypass security for certain paths
   if (shouldBypassSecurity(pathname)) {
     return NextResponse.next();
+  }
+
+  // 📱 DEVICE-BASED ROUTING
+  // Check if device needs to be redirected based on dashboard access
+  const redirectPath = getDeviceRedirectPath(request, pathname);
+  if (redirectPath) {
+    const url = request.nextUrl.clone();
+    url.pathname = redirectPath;
+    return NextResponse.redirect(url);
   }
 
   // Apply rate limiting based on path

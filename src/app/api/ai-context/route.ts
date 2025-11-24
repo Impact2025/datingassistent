@@ -14,7 +14,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { select, insert, update } from '@/lib/db/query-wrapper';
 import { logDatabaseError } from '@/lib/error-logging';
-import { AuthManager } from '@/lib/auth-manager';
+import { jwtVerify } from 'jose';
+
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+);
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -37,12 +41,30 @@ export async function GET(request: NextRequest) {
     }
 
     const token = authHeader.substring(7);
-    const authManager = new AuthManager();
-    const decoded = authManager.verifyToken(token);
 
-    if (!decoded || !decoded.userId) {
+    // Verify token using jose
+    let decoded;
+    try {
+      const { payload } = await jwtVerify(token, JWT_SECRET);
+      decoded = payload;
+    } catch (err) {
       return NextResponse.json(
         { error: 'Invalid or expired token' },
+        { status: 401 }
+      );
+    }
+
+    // Get userId from token - handle both old and new token formats
+    let userId: number;
+    if (decoded.user && typeof decoded.user === 'object' && 'id' in decoded.user) {
+      // New format: { user: { id, email, displayName } }
+      userId = decoded.user.id as number;
+    } else if (decoded.userId) {
+      // Old format: { userId, email }
+      userId = decoded.userId as number;
+    } else {
+      return NextResponse.json(
+        { error: 'Invalid token format' },
         { status: 401 }
       );
     }
@@ -58,7 +80,7 @@ export async function GET(request: NextRequest) {
             expires_at,
             last_used
           FROM ai_content_cache
-          WHERE user_id = ${decoded.userId}
+          WHERE user_id = ${userId}
             AND (expires_at IS NULL OR expires_at > CURRENT_TIMESTAMP)
           ORDER BY last_used DESC
         `;
@@ -115,12 +137,30 @@ export async function POST(request: NextRequest) {
     }
 
     const token = authHeader.substring(7);
-    const authManager = new AuthManager();
-    const decoded = authManager.verifyToken(token);
 
-    if (!decoded || !decoded.userId) {
+    // Verify token using jose
+    let decoded;
+    try {
+      const { payload } = await jwtVerify(token, JWT_SECRET);
+      decoded = payload;
+    } catch (err) {
       return NextResponse.json(
         { error: 'Invalid or expired token' },
+        { status: 401 }
+      );
+    }
+
+    // Get userId from token - handle both old and new token formats
+    let userId: number;
+    if (decoded.user && typeof decoded.user === 'object' && 'id' in decoded.user) {
+      // New format: { user: { id, email, displayName } }
+      userId = decoded.user.id as number;
+    } else if (decoded.userId) {
+      // Old format: { userId, email }
+      userId = decoded.userId as number;
+    } else {
+      return NextResponse.json(
+        { error: 'Invalid token format' },
         { status: 401 }
       );
     }
@@ -152,7 +192,7 @@ export async function POST(request: NextRequest) {
         // Check if entry exists
         const existing = await sql`
           SELECT id FROM ai_content_cache
-          WHERE user_id = ${decoded.userId}
+          WHERE user_id = ${userId}
             AND content_type = ${contentType}
             AND content_key = ${contentKey}
         `;
@@ -172,7 +212,7 @@ export async function POST(request: NextRequest) {
                   usage_count,
                   last_used
                 ) VALUES (
-                  ${decoded.userId},
+                  ${userId},
                   ${contentType},
                   ${contentKey},
                   ${JSON.stringify(contentData)}::jsonb,
@@ -195,7 +235,7 @@ export async function POST(request: NextRequest) {
                   content_data = ${JSON.stringify(contentData)}::jsonb,
                   usage_count = usage_count + 1,
                   last_used = CURRENT_TIMESTAMP
-                WHERE user_id = ${decoded.userId}
+                WHERE user_id = ${userId}
                   AND content_type = ${contentType}
                   AND content_key = ${contentKey}
               `;

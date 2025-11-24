@@ -59,6 +59,12 @@ export const FREE_STARTER_RESOURCES: StarterResource[] = [
     description:
       'Een interactieve module in het platform die laat zien hoe je een match in drie strategische berichten naar een echte date leidt.',
   },
+  {
+    id: 'starter-6',
+    title: 'De Psychologie van de Onweerstaanbare Profieltekst',
+    format: 'bundle',
+    description: 'Complete 11-module masterclass over de psychologie van aantrekkingskracht. Leer profielteksten schrijven die consistent quality matches binnenhalen met data, AI-tools en bewezen methodes.',
+  },
 ];
 
 export const STARTER_RESOURCE_COURSE_MAP: Record<string, string> = {
@@ -67,6 +73,20 @@ export const STARTER_RESOURCE_COURSE_MAP: Record<string, string> = {
   'starter-3': 'boost-je-dating-zelfvertrouwen',
   'starter-4': 'herken-de-5-red-flags',
   'starter-5': 'je-profieltekst-die-wel-werkt',
+  'starter-6': 'de-psychologie-van-de-onweerstaanbare-profieltekst',
+  'onweerstaanbare-profieltekst': 'de-psychologie-van-de-onweerstaanbare-profieltekst',
+};
+
+// SEO-friendly URL mappings for direct course access
+export const SEO_COURSE_URLS: Record<string, string> = {
+  'boost-je-dating-zelfvertrouwen': '/dashboard/boost-je-dating-zelfvertrouwen',
+  'perfecte-profielfoto': '/dashboard/perfecte-profielfoto',
+  'match-naar-date-3-berichten': '/dashboard/match-naar-date-3-berichten',
+  'herken-de-5-red-flags': '/dashboard/herken-de-5-red-flags',
+  'je-profieltekst-die-wel-werkt': '/dashboard/je-profieltekst-die-wel-werkt',
+  'de-psychologie-van-de-onweerstaanbare-profieltekst': '/dashboard/onweerstaanbare-profieltekst-psychologie',
+  'onweerstaanbare-profieltekst': '/dashboard/onweerstaanbare-profieltekst',
+  'je-bent-een-topper': '/dashboard/je-bent-een-topper',
 };
 
 export type CourseLessonType = 'video' | 'audio' | 'lesson' | 'exercise' | 'tip' | 'download' | 'interactive' | 'quiz';
@@ -1869,141 +1889,436 @@ export const DETAILED_COURSES: DetailedCourse[] = [
   },
   {
     id: 'boost-je-dating-zelfvertrouwen',
-    title: 'Boost je dating zelfvertrouwen',
+    title: 'Pro: Zelfvertrouwen Mastery - Van Angst naar Autoriteit',
     provider: 'DatingAssistent',
-    duration: 'Audio + opdrachten (10 minuten)',
-    level: 'Beginner',
-    format: 'Audio pep-talk met interactieve opdrachten',
+    duration: '8 modules (40+ professionele oefeningen)',
+    level: 'Professioneel - Executive Level',
+    format: 'AI-gedreven coaching programma met diepgaande psychologie en gedragsverandering',
     language: 'Nederlands',
-    accessTier: 'free',
+    accessTier: 'pro',
     summary:
-      'Herpak je mindset met een krachtige audio pep-talk en vertaal de energie naar concrete micro-oefeningen en een actieplan voor je volgende date.',
+      'Transformeer jezelf van onzekere dater naar zelfverzekerde autoriteit. Een wetenschappelijk onderbouwd programma met AI-coaching, professionele mindset technieken en executive-level strategieën voor dating succes.',
     sections: [
       {
-        id: 'module-1',
-        label: 'MODULE 1',
-        emoji: '🎧',
-        title: 'Reset je Mindset',
+        id: 'executive-assessment',
+        label: 'EXECUTIVE ASSESSMENT',
+        emoji: '🎯',
+        title: 'Executive Confidence Audit - Waar Sta Je Nu?',
         description:
-          'Creëer focus, luister naar de pep-talk en merk hoe spanning verandert in positieve verwachting.',
+          'Voer een diepgaande analyse uit van je huidige zelfvertrouwen niveau, identificatie patronen en executive presence in dating context.',
         lessons: [
           {
-            id: 'lesson-1-audio',
-            type: 'audio',
-            title: 'Audio pep-talk: Sta zeker in je schoenen',
-            description:
-              'Luister naar de tien minuten durende pep-talk en laat je meenemen in ademhaling, visualisatie en affirmaties.',
-            bullets: [
-              'Begin met een kalmerende ademhaling in 4-5-6 ritme',
-              'Herhaal drie krachtige affirmaties die bij jouw datingdoel passen',
-              'Visualiseer een concrete date-situatie waarin jij ontspannen en nieuwsgierig verschijnt',
-            ],
-            downloads: ['Audio pep-talk – 10 minuten (luister via de speler in deze module)'],
-          },
-          {
-            id: 'lesson-1-voorbereiding',
+            id: 'executive-assessment-slides',
             type: 'lesson',
-            title: 'Maak je omgeving klaar',
+            title: 'Executive Assessment Slides - De Wetenschappelijke Basis',
             description:
-              'Zet je telefoon op stil, kies een rustige plek en open je notities om inzichten te noteren.',
-          },
-        ],
-        exercises: [
-          'Hoe voelt je lichaam vóór de pep-talk? Beschrijf spanning of gedachten die nu spelen.',
-          'Noteer drie affirmaties uit de audio die jij het komende week gaat herhalen.',
-        ],
-        downloads: ['Checklist – Voorbereiding op je pep-talk moment'],
-        interactive:
-          'Schrijf na het luisteren één alinea over je energieniveau en de intentie die je meeneemt naar je volgende interactie.',
-      },
-      {
-        id: 'module-2',
-        label: 'MODULE 2',
-        emoji: '📝',
-        title: 'Micro-oefeningen voor Zelfvertrouwen',
-        description:
-          'Vertaal de inzichten naar korte herhaalbare acties zodat je zelfvertrouwen gedurende de week groeit.',
-        lessons: [
-          {
-            id: 'lesson-2-1',
-            type: 'lesson',
-            title: 'Body-language boost',
-            description:
-              'Gebruik power poses en open lichaamstaal om direct een krachtigere uitstraling neer te zetten.',
+              'Start met uitgebreide slides over executive confidence assessment, limiting beliefs en ontwikkelroadmap.',
           },
           {
-            id: 'lesson-2-2',
-            type: 'lesson',
-            title: 'Stem en tempo',
-            description:
-              'Train een warme toon en rustig tempo door bewust glimlachend te spreken terwijl je oefent.',
-          },
-          {
-            id: 'lesson-2-3',
-            type: 'tip',
-            title: 'Mini-ankers',
-            description:
-              'Koppel een subtiele aanraking (bijv. duim en wijsvinger samen) aan een affirmatie voor instant focus.',
-          },
-        ],
-        exercises: [
-          'Plan drie momenten in je agenda om de body-language oefening te doen en noteer hoe je je erna voelt.',
-          'Schrijf een korte voicemail naar jezelf waarin je ideale zelfvertrouwen hoorbaar is.',
-        ],
-        interactive:
-          'Vul je weekplanning in met drie micro-oefeningen en geef jezelf na ieder moment een score van 1 tot 5.',
-      },
-      {
-        id: 'module-3',
-        label: 'MODULE 3',
-        emoji: '🚀',
-        title: 'Van Mindset naar Actie',
-        description:
-          'Maak een concreet stappenplan voor je volgende gesprek, match of date zodat je momentum houdt.',
-        lessons: [
-          {
-            id: 'lesson-3-1',
-            type: 'lesson',
-            title: 'Kies je eerstvolgende actie',
-            description:
-              'Bepaal of je een match gaat berichten, een date plant of je profiel finetunet voor meer resultaat.',
-          },
-          {
-            id: 'lesson-3-2',
-            type: 'lesson',
-            title: 'Communiceer vanuit zekerheid',
-            description:
-              'Gebruik het “ik wil – jij krijgt – laten we”-model om duidelijk en uitnodigend te blijven.',
-          },
-        ],
-        exercises: [
-          'Schrijf je eerstvolgende bericht of datevoorstel uit en lees het hardop voor.',
-          'Formuleer een antwoord op een onzekerheidstrigger (bijv. ghosting) dat jou in je kracht zet.',
-        ],
-        downloads: ['Checklist – Mijn Zelfvertrouwen Actieplan'],
-        interactive:
-          'Kopieer je definitieve actieplan en noteer hoe je jezelf verantwoordelijk houdt (buddy, reminder, coachingscall).',
-      },
-      {
-        id: 'self-confidence-progress-tracker',
-        label: 'TRACKER',
-        emoji: '📊',
-        title: 'Zelfvertrouwen Voortgang Tracker',
-        description:
-          'Monitor je dating zelfvertrouwen ontwikkeling met deze interactieve voortgangstool die je helpt om concrete verbeteringen te zien.',
-        lessons: [
-          {
-            id: 'self-confidence-tracker-lesson',
+            id: 'executive-self-assessment',
             type: 'interactive',
-            title: 'Zelfvertrouwen Voortgang Tracker',
-            description: 'Een interactieve tool om je dating zelfvertrouwen te meten en bij te houden hoe je groeit in verschillende aspecten van daten.',
+            title: 'Executive Self-Assessment Framework',
+            description:
+              'Een wetenschappelijk onderbouwde zelfanalyse die je huidige zelfvertrouwen niveau meet op 12 dimensies van executive presence.',
+            bullets: [
+              'Cognitive Confidence: Hoe zeker ben je van je intellectuele capaciteiten?',
+              'Emotional Resilience: Hoe goed ga je om met afwijzing en kritiek?',
+              'Social Authority: Hoe comfortabel ben je met leiderschap in sociale situaties?',
+              'Physical Presence: Hoe straal je autoriteit uit door lichaamstaal?',
+              'Communication Mastery: Hoe effectief communiceer je behoeften en grenzen?',
+              'Relationship Intelligence: Hoe goed begrijp je relationele dynamieken?',
+            ],
+          },
+          {
+            id: 'limiting-beliefs-audit',
+            type: 'lesson',
+            title: 'Limiting Beliefs Inventory - De Verborgen Saboteurs',
+            description:
+              'Identificeer de diepgewortelde overtuigingen die je zelfvertrouwen ondermijnen en creëer een strategie om ze te transformeren.',
+            bullets: [
+              'Core Identity Beliefs: "Ik ben niet goed genoeg"',
+              'Performance Beliefs: "Ik faal altijd in belangrijke momenten"',
+              'Social Beliefs: "Mensen vinden me niet interessant"',
+              'Success Beliefs: "Ik verdien geen liefde"',
+            ],
+          },
+          {
+            id: 'executive-presence-baseline',
+            type: 'lesson',
+            title: 'Executive Presence Baseline Measurement',
+            description:
+              'Meet je huidige executive presence op een schaal van 1-10 en identificeer specifieke verbetergebieden.',
           },
         ],
         exercises: [
-          'Beoordeel jezelf eerlijk op alle aspecten van dating zelfvertrouwen.',
-          'Stel concrete doelen voor verbetering in de komende weken.',
-          'Plan wanneer je de tracker opnieuw invult om je voortgang te meten.',
+          'Voer de Executive Self-Assessment uit en noteer je scores op alle 12 dimensies.',
+          'Identificeer je top 3 limiting beliefs en schrijf een counter-statement voor elk.',
+          'Beschrijf een situatie waarin je executive presence sterk was en een waarin het zwak was.',
+          'Creëer een persoonlijke ontwikkel roadmap voor de komende 8 weken.',
         ],
+        interactive:
+          'Gebruik de AI Confidence Coach om je assessment resultaten te analyseren en een persoonlijk ontwikkelplan te ontvangen.',
+      },
+      {
+        id: 'cognitive-restructuring',
+        label: 'MODULE 3',
+        emoji: '🧠',
+        title: 'Cognitive Restructuring - Herschrijf Je Innerlijke Dialoog',
+        description:
+          'Transformeer negatieve gedachtepatronen naar empowering overtuigingen met geavanceerde cognitieve gedragstechnieken.',
+        lessons: [
+          {
+            id: 'cognitive-restructuring-slides',
+            type: 'lesson',
+            title: 'Cognitive Restructuring Slides - Gedachten Herschrijven',
+            description:
+              'Professionele slides over cognitive gedragstherapie principes toegepast op dating zelfvertrouwen.',
+          },
+          {
+            id: 'cognitive-distortions',
+            type: 'lesson',
+            title: 'Cognitive Distortions in Dating Context',
+            description:
+              'Leer de 15 meest voorkomende denkfouten te herkennen die je zelfvertrouwen saboteren in dating situaties.',
+            bullets: [
+              'All-or-Nothing Thinking: "Als deze date niet perfect gaat, ben ik een mislukkeling"',
+              'Catastrophizing: "Als ze me afwijst, betekent dat niemand me ooit wil"',
+              'Mind Reading: "Ze vindt me vast saai"',
+              'Emotional Reasoning: "Ik voel me onzeker, dus moet ik wel onaantrekkelijk zijn"',
+              'Should Statements: "Ik zou perfect moeten zijn"',
+            ],
+          },
+          {
+            id: 'executive-belief-system',
+            type: 'interactive',
+            title: 'Executive Belief System Architecture',
+            description:
+              'Bouw een nieuw fundament van overtuigingen gebaseerd op evidence-based psychologie en executive mindset principes.',
+          },
+          {
+            id: 'neural-rewiring',
+            type: 'lesson',
+            title: 'Neural Rewiring Techniques - Hersenen Herschrijven',
+            description:
+              'Gebruik neuroplasticiteit principes om nieuwe, empowering gedachtepatronen te installeren.',
+            bullets: [
+              'Repetition Training: 21 dagen consistente affirmaties',
+              'Pattern Interruption: Bewuste onderbreking van negatieve spirals',
+              'Evidence-Based Beliefs: Onderbouwde overtuigingen vs. emotionele assumpties',
+              'Context Reframing: Situaties anders interpreteren',
+            ],
+          },
+        ],
+        exercises: [
+          'Identificeer 5 cognitive distortions die je deze week hebt ervaren en herschrijf ze naar rationele alternatieven.',
+          'Creëer 10 evidence-based affirmaties gebaseerd op je echte kwaliteiten en prestaties.',
+          'Ontwikkel een "Neural Rewiring Protocol" voor dagelijks gebruik (15 minuten per dag).',
+          'Houd een Cognitive Journal bij voor 7 dagen en analyseer patronen.',
+        ],
+        interactive:
+          'Gebruik de AI Confidence Coach voor real-time gedachte patroon analyse en executive-level reframing technieken.',
+      },
+      {
+        id: 'executive-presence-mastery',
+        label: 'MODULE 4',
+        emoji: '👑',
+        title: 'Executive Presence Mastery - Stral Autoriteit Uit',
+        description:
+          'Ontwikkel een onwankelbare executive presence die mensen onmiddellijk herkennen als leider in sociale situaties.',
+        lessons: [
+          {
+            id: 'executive-presence-slides',
+            type: 'lesson',
+            title: 'Executive Presence Slides - Autoriteit Stralen',
+            description:
+              'Professionele slides over executive presence, lichaamstaal van leiders en autoriteit in sociale situaties.',
+          },
+          {
+            id: 'executive-body-language',
+            type: 'lesson',
+            title: 'Executive Body Language - De Taal van Autoriteit',
+            description:
+              'Leer de lichaamstaal van CEO\'s en wereldleiders die vertrouwen en respect afdwingen zonder woorden.',
+            bullets: [
+              'Power Postures: De "CEO Stance" voor instant autoriteit',
+              'Executive Eye Contact: Dominant maar niet intimiderend',
+              'Commanding Voice: Diep, kalm en zelfverzekerd spreken',
+              'Spatial Awareness: Hoe je ruimte inneemt als leider',
+            ],
+          },
+          {
+            id: 'social-authority-framework',
+            type: 'interactive',
+            title: 'Social Authority Framework - Leid in Sociale Situaties',
+            description:
+              'Bouw een framework voor het nemen van natuurlijke leiderschap in gesprekken en groepssituaties.',
+          },
+          {
+            id: 'executive-communication-mastery',
+            type: 'lesson',
+            title: 'Executive Communication Mastery - Woorden met Gewicht',
+            description:
+              'Leer communiceren met de precisie en impact van een executive die gewend is gehoord te worden.',
+            bullets: [
+              'Concise Expression: Zeg meer met minder woorden',
+              'Strategic Pausing: Gebruik stilte als krachttool',
+              'Executive Questions: Vragen die diepgang en betrokkenheid creëren',
+              'Boundary Setting: Grenzen stellen met autoriteit en respect',
+            ],
+          },
+        ],
+        exercises: [
+          'Film jezelf in een "executive presentation" van 2 minuten en analyseer je lichaamstaal.',
+          'Oefen de CEO Stance voor 10 minuten per dag en noteer gedragsveranderingen.',
+          'Stel executive-level vragen in je volgende 5 gesprekken en observeer de respons.',
+          'Creëer een "Executive Presence Ritual" voor belangrijke sociale momenten.',
+        ],
+        interactive:
+          'Gebruik de AI Confidence Coach voor executive presence feedback en oefeningen.',
+      },
+      {
+        id: 'advanced-resilience-training',
+        label: 'MODULE 5',
+        emoji: '🛡️',
+        title: 'Advanced Resilience Training - Onverwoestbare Mentale Veerkracht',
+        description:
+          'Bouw een onverwoestbare mentale veerkracht die je beschermt tegen afwijzing en tegenslagen in dating.',
+        lessons: [
+          {
+            id: 'resilience-slides',
+            type: 'lesson',
+            title: 'Resilience Slides - Onverwoestbare Mentale Veerkracht',
+            description:
+              'Professionele slides over resilience psychologie, post-traumatische groei en mentale veerkracht in dating context.',
+          },
+          {
+            id: 'resilience-psychology',
+            type: 'lesson',
+            title: 'Resilience Psychology - Wetenschappelijke Fundamenten',
+            description:
+              'Leer de psychologie achter mentale veerkracht en hoe topperformers met tegenslagen omgaan.',
+            bullets: [
+              'Post-Traumatic Growth: Groeien door tegenslagen',
+              'Cognitive Flexibility: Aanpassen aan veranderende omstandigheden',
+              'Emotional Regulation: Controle over emotionele responsen',
+              'Self-Compassion: Vriendelijkheid naar jezelf in moeilijke tijden',
+            ],
+          },
+          {
+            id: 'executive-rejection-handling',
+            type: 'interactive',
+            title: 'Executive Rejection Handling Framework',
+            description:
+              'Ontwikkel een professionele aanpak voor het omgaan met afwijzing die je kracht versterkt in plaats van verzwakt.',
+          },
+          {
+            id: 'failure-to-feedback-loop',
+            type: 'lesson',
+            title: 'Failure to Feedback Loop - Van Mislukking naar Meesterschap',
+            description:
+              'Transformeer elke "mislukking" in waardevolle data voor verbetering en groei.',
+            bullets: [
+              'Data-Driven Analysis: Objectieve evaluatie van ervaringen',
+              'Pattern Recognition: Herkennen van verbetergebieden',
+              'Iterative Improvement: Continue optimalisatie van aanpak',
+              'Success Metrics: Concrete meetbare doelen stellen',
+            ],
+          },
+        ],
+        exercises: [
+          'Analyseer je laatste 5 "mislukte" ervaringen en identificeer 3 leerpunten per ervaring.',
+          'Creëer een "Rejection Response Protocol" voor verschillende scenario\'s.',
+          'Stel een "Growth Through Adversity" journal op voor dagelijks reflectie.',
+          'Ontwikkel 5 resilience-building rituals voor verschillende uitdagingen.',
+        ],
+        interactive:
+          'Gebruik de AI Confidence Coach voor resilience strategieën en afwijzing verwerking.',
+      },
+      {
+        id: 'strategic-relationship-building',
+        label: 'MODULE 6',
+        emoji: '🎯',
+        title: 'Strategic Relationship Building - Langetermijn Succes',
+        description:
+          'Leer relaties opbouwen met strategische visie, gebaseerd op executive relatiebouw principes.',
+        lessons: [
+          {
+            id: 'relationship-slides',
+            type: 'lesson',
+            title: 'Relationship Slides - Strategische Relatiebouw',
+            description:
+              'Professionele slides over relatie architectuur, executive dating strategieën en langetermijn relatieplanning.',
+          },
+          {
+            id: 'relationship-architecture',
+            type: 'lesson',
+            title: 'Relationship Architecture - Het Ontwerp van Verbinding',
+            description:
+              'Leer relaties te ontwerpen met duidelijke structuur, doelen en groeipaden.',
+            bullets: [
+              'Foundation Building: Sterke basis leggen in vroege stadia',
+              'Value Alignment: Delen van kernwaarden en levensvisie',
+              'Growth Partnership: Samen groeien en ontwikkelen',
+              'Long-term Vision: Duidelijke toekomstplanning',
+            ],
+          },
+          {
+            id: 'executive-dating-strategy',
+            type: 'interactive',
+            title: 'Executive Dating Strategy Framework',
+            description:
+              'Ontwikkel een professionele dating strategie die efficiency combineert met betekenisvolle connecties.',
+          },
+          {
+            id: 'authentic-leadership-in-love',
+            type: 'lesson',
+            title: 'Authentic Leadership in Love - Leiderschap in Relaties',
+            description:
+              'Leer authentiek leiderschap tonen in romantische relaties zonder dominantie.',
+            bullets: [
+              'Servant Leadership: Anderen eerst zetten met liefde',
+              'Emotional Intelligence: Diep begrijpen van partner behoeften',
+              'Conflict Resolution: Professionele conflictoplossing',
+              'Growth Facilitation: Partner helpen groeien en ontwikkelen',
+            ],
+          },
+        ],
+        exercises: [
+          'Ontwerp een "Relationship Blueprint" voor je ideale langetermijn relatie.',
+          'Creëer een "Dating Strategy Roadmap" voor de komende 6 maanden.',
+          'Oefen authentic leadership in je huidige relaties en noteer resultaten.',
+          'Stel concrete relatie milestones vast voor verschillende fases.',
+        ],
+        interactive:
+          'Gebruik de AI Confidence Coach voor relatie strategie advies en langetermijn planning.',
+      },
+      {
+        id: 'mastery-integration',
+        label: 'MODULE 7',
+        emoji: '🏆',
+        title: 'Mastery Integration - Van Kennis naar Uitmuntendheid',
+        description:
+          'Integreer alle geleerde technieken tot een coherente, automatische aanpak voor dating succes.',
+        lessons: [
+          {
+            id: 'mastery-slides',
+            type: 'lesson',
+            title: 'Mastery Integration Slides - Van Kennis naar Uitmuntendheid',
+            description:
+              'Professionele slides over skill synthesis, executive performance coaching en mastery assessment frameworks.',
+          },
+          {
+            id: 'skill-synthesis',
+            type: 'lesson',
+            title: 'Skill Synthesis - Alle Technieken Samenbrengen',
+            description:
+              'Leer hoe je alle technieken combineert tot een natuurlijke, vloeiende aanpak.',
+            bullets: [
+              'Cognitive Restructuring + Executive Presence',
+              'Resilience Training + Strategic Relationship Building',
+              'Integrated Response Patterns: Automatische juiste reacties',
+              'Flow State Achievement: Natuurlijke excellentie bereiken',
+            ],
+          },
+          {
+            id: 'executive-performance-coaching',
+            type: 'interactive',
+            title: 'Executive Performance Coaching Session',
+            description:
+              'Een diepgaande coaching sessie om je geïntegreerde aanpak te perfectioneren.',
+          },
+          {
+            id: 'mastery-assessment',
+            type: 'lesson',
+            title: 'Mastery Assessment - Waar Sta Je Nu?',
+            description:
+              'Een uitgebreide evaluatie van je voortgang en resterende ontwikkelgebieden.',
+            bullets: [
+              'Comprehensive Skills Audit: Alle geleerde competenties',
+              'Integration Level Assessment: Hoe goed combineer je technieken',
+              'Performance Metrics: Concrete resultaten meting',
+              'Future Growth Planning: Volgende ontwikkelstappen',
+            ],
+          },
+        ],
+        exercises: [
+          'Voer een complete "Skills Integration Audit" uit en identificeer sterke en zwakke punten.',
+          'Creëer een "Mastery Action Plan" voor de komende 30 dagen.',
+          'Oefen geïntegreerde technieken in 3 verschillende sociale situaties.',
+          'Stel concrete mastery milestones vast en meet je voortgang.',
+        ],
+        interactive:
+          'Gebruik de AI Confidence Coach voor geïntegreerde techniek oefeningen en mastery coaching.',
+      },
+      {
+        id: 'executive-mastery-certification',
+        label: 'MODULE 8',
+        emoji: '🎓',
+        title: 'Executive Mastery Certification - De Transformatie Compleet',
+        description:
+          'Vier je transformatie, ontvang je executive mastery certificaat en word lid van de elite gemeenschap.',
+        lessons: [
+          {
+            id: 'certification-slides',
+            type: 'lesson',
+            title: 'Executive Mastery Certification Slides - De Transformatie Compleet',
+            description:
+              'Professionele slides over executive transformation review, certificering en legacy building voor confidence masters.',
+          },
+          {
+            id: 'transformation-review',
+            type: 'lesson',
+            title: 'Executive Transformation Review - Jouw Reis',
+            description:
+              'Een diepgaande reflectie op je transformatie van onzekere dater naar zelfverzekerde executive.',
+            bullets: [
+              'Before & After Analysis: Concrete verandering meting',
+              'Skill Mastery Demonstration: Toon je nieuwe competenties',
+              'Impact Assessment: Hoe je leven is veranderd',
+              'Future Vision: Waar je heen gaat als executive',
+            ],
+          },
+          {
+            id: 'executive-certification',
+            type: 'download',
+            title: 'Executive Confidence Mastery Certificate',
+            description: 'Ontvang je professionele certificaat als executive confidence master.',
+          },
+          {
+            id: 'elite-community-access',
+            type: 'lesson',
+            title: 'Elite Executive Community - Levenslang Ondersteuning',
+            description: 'Word lid van de exclusieve gemeenschap van executive confidence masters.',
+            bullets: [
+              'Monthly Mastermind Sessions: Strategische discussies met gelijkgestemden',
+              'Executive Coaching Access: Continue professionele begeleiding',
+              'Advanced Content Library: Diepgaande mastery materialen',
+              'Peer Accountability Groups: Wekelijkse voortgang sessies',
+              'Lifetime Support: Altijd toegang tot je executive coach',
+            ],
+          },
+          {
+            id: 'legacy-building',
+            type: 'lesson',
+            title: 'Legacy Building - Jouw Impact op Anderen',
+            description: 'Leer anderen te helpen met je nieuwe executive confidence mastery.',
+            bullets: [
+              'Mentorship Programs: Leid anderen op tot confidence masters',
+              'Knowledge Sharing: Deel je inzichten in de community',
+              'Executive Presence Workshops: Leid workshops voor anderen',
+              'Philanthropic Impact: Gebruik je skills voor groter goed',
+            ],
+          },
+        ],
+        exercises: [
+          'Schrijf je "Executive Transformation Story" en deel deze in de community.',
+          'Mentor een beginner met je nieuwe executive confidence technieken.',
+          'Stel een "Legacy Impact Plan" op voor de komende 5 jaar.',
+          'Creëer een persoonlijk "Executive Confidence Manifesto".',
+        ],
+        downloads: ['Executive Confidence Mastery Certificate', 'Elite Community Access Guide'],
+        interactive:
+          'Deel je transformatie verhaal in de executive community en ontvang feedback van masters.',
       },
     ],
   },
@@ -2270,6 +2585,1006 @@ export const DETAILED_COURSES: DetailedCourse[] = [
         ],
         downloads: ['Veilig Daten Toolkit (PDF)'],
         interactive: 'Plan het moment waarop je de toolkit doorkijkt en deel één inzicht met een vertrouwenspersoon.',
+      },
+    ],
+  },
+  {
+    id: 'de-psychologie-van-de-onweerstaanbare-profieltekst',
+    title: 'De Psychologie van de Onweerstaanbare Profieltekst',
+    provider: 'DatingAssistent',
+    duration: '11 modules + bonus materiaal',
+    level: 'Van beginner naar profiel-expert',
+    format: 'Online masterclass met psychologie, data en AI-tools',
+    language: 'Nederlands',
+    accessTier: 'pro',
+    summary: 'Transformeer je dating profiel van onzichtbaar naar onweerstaanbaar met de psychologie van aantrekkingskracht. Leer in 11 modules hoe je profielteksten schrijft die consistent quality matches binnenhalen - geen gokwerk meer, maar slimme psychologie en data. Gebaseerd op vier pijlers: Psychologische transformatie, Didactische structuur, Technologische interactie en Resultaatgerichte meting.',
+    sections: [
+      {
+        id: 'module-1-goed-jezelf-kennen',
+        label: 'MODULE 1',
+        emoji: '🧭',
+        title: 'Goed Jezelf Kennen - De Basis Om Echt Te Zijn',
+        description: 'Alle onzekerheden wegnemen en de diepste, leukste kanten van jouw persoonlijkheid blootleggen. Echt zijn is de enige valuta die werkt in dating.',
+        lessons: [
+          {
+            id: 'module-1-video-intro',
+            type: 'video',
+            title: 'Introductie Module 1: Goed Jezelf Kennen',
+            description: 'Waarom zelfkennis de basis is voor aantrekkelijke profielen en hoe je onzekerheden omzet in kracht.',
+          },
+          {
+            id: 'module-1-video-impact',
+            type: 'video',
+            title: 'De Impact van een Goede Bio - 47 Berichten in Één Week',
+            description: 'Echte casestudy: Hoe één zin in een profieltekst leidde tot 47 berichten met data en psychologie uitgelegd.',
+          },
+          {
+            id: 'module-1-lesstof-wetenschap',
+            type: 'lesson',
+            title: 'De Wetenschap Achter Aantrekkingskracht',
+            description: 'Leer de psychologische principes die bepalen of iemand reageert: reciprociteit, unieke waarde, deelbare kwetsbaarheid, sociale bewijskracht.',
+          },
+          {
+            id: 'module-1-lesstof-stappen',
+            type: 'lesson',
+            title: 'Wat Je Gaat Bereiken in 8 Stappen',
+            description: 'Van authentieke kern naar gecertificeerde profiel-expert met meetbare resultaten.',
+          },
+          {
+            id: 'module-1-lesstof-kaik-regel',
+            type: 'lesson',
+            title: 'De K.A.I.K. Regel - Aantrekkelijkheid als Vaardigheid',
+            description: 'Kennis, Actie, Interactie, Korrel: Hoe je profieltekst een proef wordt die je optimaliseert met data.',
+          },
+          {
+            id: 'module-1-lesstof-verhalen',
+            type: 'lesson',
+            title: 'Je Echte Verhalen Vinden - Kern van de Module',
+            description: 'Waarom harde feiten saai zijn en zachte verhalen mensen raken: passie, humor, kwetsbaarheid.',
+          },
+          {
+            id: 'module-1-opdrachten-doelen',
+            type: 'interactive',
+            title: 'Jouw Dating Doelen Tool',
+            description: 'Stel je persoonlijke doelen voor deze masterclass vast met meetbare targets.',
+          },
+          {
+            id: 'module-1-opdrachten-quiz',
+            type: 'interactive',
+            title: 'Profieltekst Kennis Quiz',
+            description: 'Test je huidige kennis over wat werkt in dating profielen voordat je begint.',
+          },
+          {
+            id: 'module-1-opdrachten-frustratie',
+            type: 'exercise',
+            title: 'Oefeningen: Frustratie & Profiel-angst',
+            description: 'Beschrijf je huidige frustratie, grootste angsten en welke woorden mensen over jou moeten gebruiken.',
+          },
+          {
+            id: 'module-1-opdrachten-reflectie',
+            type: 'exercise',
+            title: 'Oefeningen: Reflectie - Weg met Negatieve Gedachten',
+            description: 'Vind je hardnekkige negatieve gedachten en draai ze om in krachtige power statements.',
+          },
+        ],
+        exercises: [
+          'Schrijf 3 korte verhalen over je passie, humor en kwetsbaarheid',
+          'Bepaal je 3 ononderhandelbare trefwoorden',
+          'Wat zouden familie/vrienden zeggen dat jou uniek maakt?',
+          'Beschrijf een "fake moment" dat je veranderde',
+          'Wat doe je wanneer je iemand blij maakt?',
+        ],
+        downloads: ['Zelfkennis Workbook - 25 reflectievragen'],
+      },
+      {
+        id: 'module-2-diepgaande-psychologie',
+        label: 'MODULE 2',
+        emoji: '🎯',
+        title: 'Diepgaande Psychologie - Voor Wie Schrijf Jij?',
+        description: 'De psychologische fundamenten van aantrekkingskracht begrijpen en een ideale partner blueprint creëren om te weten voor wie je schrijft.',
+        lessons: [
+          {
+            id: 'module-2-video-kosten',
+            type: 'video',
+            title: 'Waarom \'Ik Hou van Reizen\' Je Berichten Kost',
+            description: 'De onbekende tevredenheids-kosten van generieke zinnen en de psychologie erachter.',
+          },
+          {
+            id: 'module-2-lesstof-blueprint',
+            type: 'lesson',
+            title: 'Jouw Ideale Partner Blueprint',
+            description: 'Het partner shopping principe: schrijf niet voor iedereen, schrijf voor je ideale partner.',
+          },
+          {
+            id: 'module-2-lesstof-energie',
+            type: 'lesson',
+            title: 'Energie Compatibility Framework',
+            description: 'High vs. low energy types en hoe je energie uitstraalt in je profiel.',
+          },
+          {
+            id: 'module-2-lesstof-must-haves',
+            type: 'lesson',
+            title: 'De 3 Must-Haves - Ononderhandelbare Eigenschappen',
+            description: 'Identificeer de 3 kernkaraktereigenschappen die je zoekt en hoe je ze zelf toont.',
+          },
+          {
+            id: 'module-2-opdrachten-shopping',
+            type: 'interactive',
+            title: 'Partner Shopping Tool',
+            description: 'Creëer gedetailleerd profiel van je ideale partner.',
+          },
+          {
+            id: 'module-2-opdrachten-optimalisatie',
+            type: 'exercise',
+            title: 'Oefeningen: De Partner Optimalisatie',
+            description: 'Typ je ideale date tot in detail en definieer je energie level.',
+          },
+          {
+            id: 'module-2-opdrachten-diepgaand',
+            type: 'exercise',
+            title: 'Oefeningen: Diepgaande Zelfreflectie',
+            description: 'Welke activiteiten kosten je energie? Wat zijn je must-haves? Wat is je ideale toekomstbeeld?',
+          },
+        ],
+        exercises: [
+          'Beantwoord: Wat is de core value van je ideale partner?',
+          'Beschrijf je dominante energie (high/low) in 3 zinnen',
+          'Wat zijn je 3 dealbreakers?',
+          'Hoe wil je dat iemand zich voelt bij jou?',
+        ],
+        downloads: ['Partner Blueprint Template', 'Energie Compatibility Guide'],
+      },
+      {
+        id: 'module-3-structuur-meesterschap',
+        label: 'MODULE 3',
+        emoji: '🏗️',
+        title: 'Structuur Meesterschap - Het Skelet van Succes',
+        description: 'De 4 onweerstaanbare profiel-structuren leren en toepassen om jouw unieke waarde over te brengen in de meest compacte en aantrekkelijke vorm.',
+        lessons: [
+          {
+            id: 'module-3-video-ritmisch',
+            type: 'video',
+            title: 'Waarom Zinnen Ritmisch Werken - De 4 Ritmes van Aantrekkingskracht',
+            description: 'Waarom je bio een ritmisch liedje is dat de lezer meeneemt, niet een statische tekst.',
+          },
+          {
+            id: 'module-3-lesstof-8-woorden',
+            type: 'lesson',
+            title: 'De Perfecte 8 Woorden - Hook, Bridge & Anchor',
+            description: 'Hook (eerste zin), Bridge (authenticiteit) en Anchor (call-to-action) voor maximale impact.',
+          },
+          {
+            id: 'module-3-lesstof-18-seconden',
+            type: 'lesson',
+            title: 'De 18-Seconden Regel - Bondig en Krachtig',
+            description: 'Hoe mensen profielen lezen en waarom je moet schrappen wat niet essentieel is.',
+          },
+          {
+            id: 'module-3-opdrachten-ritme',
+            type: 'interactive',
+            title: 'Oefeningen: Ritme Bouwen',
+            description: 'Bouw de complete 4-delige structuur met je zelfkennis.',
+          },
+          {
+            id: 'module-3-opdrachten-diepte',
+            type: 'exercise',
+            title: 'Oefeningen: Diepte & Schrapbaarheid',
+            description: 'Herschrijf je huidige bio met 40% minder woorden maar 100% meer impact.',
+          },
+        ],
+        exercises: [
+          'Schrijf 10 verschillende hooks voor je profiel',
+          'Bouw de complete 4-delige structuur',
+          'Schrijf 3 verschillende CTA\'s en kies de beste',
+          'Laat vrienden raden welke versie van jou is',
+        ],
+        downloads: ['Structuur Template - 4-delige bio opbouw', 'Hook Examples Database'],
+      },
+      {
+        id: 'module-4-charisma-eliminatie',
+        label: 'MODULE 4',
+        emoji: '🚫',
+        title: 'Charisma Eliminatie - Van Generiek naar Geniaal',
+        description: 'Leren hoe je de meest generieke, \'dode\' zinnen uit je bio omzet in charisma-statements die onmiddellijk opvallen en verbinding creëren.',
+        lessons: [
+          {
+            id: 'module-4-video-charisma',
+            type: 'video',
+            title: 'Charisma Eliminatie - Van \'Gezellig\' naar \'Onweerstaanbaar\'',
+            description: 'Waarom clichés doden en hoe je ze transformeert met 3 formule technieken.',
+          },
+          {
+            id: 'module-4-lesstof-zelfbeeld',
+            type: 'lesson',
+            title: 'Het Verbeterd Zelfbeeld - Verhaal Creatie',
+            description: 'Je bio moet je karakter en waarden tonen, niet alleen je hobby\'s.',
+            bullets: [
+              'Waarom verhalen werken: Hersenen onthouden verhalen 22x beter dan feiten',
+              'Van "Ik hou van reizen" naar "Ik heb mijn baan opgezegd om 6 maanden door Azië te backpacken"',
+              'Kernwaarden als kompas: Integriteit, verbinding, groei, avontuur, rust',
+              'Authenticiteit schept vertrouwen: Mensen voelen wanneer iets echt is',
+              'Uniciteit trekt de juiste mensen aan: Sta op tussen de grijze massa'
+            ],
+          },
+          {
+            id: 'module-4-lesstof-verhaal-framework',
+            type: 'lesson',
+            title: 'Het Verhaal Framework - Van Hobby naar Karakter',
+            description: 'Leer de 5-staps methode om verhalen te creëren die je ware zelf tonen.',
+            bullets: [
+              'Stap 1: Identificeer je kernwaarde (Wat drijft je echt?)',
+              'Stap 2: Kies een authentiek moment (Wanneer leefde je deze waarde?)',
+              'Stap 3: Voeg emotionele diepte toe (Wat voelde je? Wat leerde je?)',
+              'Stap 4: Maak het specifiek (Concrete details maken het levend)',
+              'Stap 5: Sluit af met inzicht (Wat zegt dit over wie je bent?)'
+            ],
+          },
+          {
+            id: 'module-4-lesstof-transformatie-voorbeelden',
+            type: 'lesson',
+            title: 'Transformatie Voorbeelden - Voor & Na',
+            description: 'Zie hoe gewone hobby\'s transformeren naar verhalen die karakter tonen.',
+            bullets: [
+              'VOOR: "Ik hou van sporten" → NA: "Ik begon met hardlopen na mijn scheiding - het gaf me kracht terug"',
+              'VOOR: "Ik lees graag" → NA: "Ik lees filosofie om mijn wereldbeeld te verbreden"',
+              'VOOR: "Ik kook voor vrienden" → NA: "Ik geloof in het samenbrengen van mensen rond eten - het verbindt ons"',
+              'VOOR: "Ik reis veel" → NA: "Ik heb mijn comfortzone verlaten door alleen naar Japan te reizen"',
+              'VOOR: "Ik ben creatief" → NA: "Ik teken om mijn gedachten te verwerken wanneer woorden tekortschieten"'
+            ],
+          },
+          {
+            id: 'module-4-opdrachten-verhaal-creatie',
+            type: 'interactive',
+            title: 'Verhaal Creatie Workshop',
+            description: 'Stapsgewijze oefening om je eerste karakter-verhaal te creëren.',
+          },
+          {
+            id: 'module-4-opdrachten-waardentest',
+            type: 'interactive',
+            title: 'Kernwaarden Discovery Tool',
+            description: 'Ontdek je top 3 kernwaarden door middel van scenario-based vragen.',
+          },
+          {
+            id: 'module-4-lesstof-ankers',
+            type: 'lesson',
+            title: 'De 3 Soorten Ankers - Emotie, Actie, Intrigue',
+            description: 'Elke zin moet een emotional anchor creëren die mensen raakt.',
+          },
+          {
+            id: 'module-4-lesstof-dode-zinnen',
+            type: 'lesson',
+            title: 'De Dode Zinnen Detector - Authenticiteit Scannen',
+            description: 'Herken zinnen die door iedereen gebruikt kunnen worden en leiden niet tot reactie.',
+          },
+          {
+            id: 'module-4-opdrachten-charisma',
+            type: 'interactive',
+            title: 'Oefeningen: Charisma Transformeren',
+            description: 'Transformeer 5 generieke zinnen naar charisma-statements.',
+          },
+          {
+            id: 'module-4-opdrachten-authentiek',
+            type: 'exercise',
+            title: 'Oefeningen: De Authentieke Waarde Vinden',
+            description: 'Vertel een verhaal over een \'faal\'-moment dat achteraf een kracht bleek.',
+          },
+        ],
+        exercises: [
+          'Identificeer alle \'dode\' zinnen in je huidige profiel',
+          'Creëer 3 verschillende versies van dezelfde eigenschap',
+          'Test je verhalen op authenticiteit bij vrienden',
+          'Schrijf een verhaal dat je kernwaarde toont in plaats van een hobby te noemen',
+          'Transformeer "Ik ben spontaan" naar een verhaal dat karakter toont',
+          'Kies één kernwaarde en schrijf er een profielverhaal over',
+        ],
+        downloads: ['Cliché naar Charisma Transformatie Guide', 'Verhaal Crafting Workbook'],
+      },
+      {
+        id: 'module-5-authenticiteit-detector',
+        label: 'MODULE 5',
+        emoji: '🎯',
+        title: 'De Authenticiteit Detector Quiz',
+        description: 'Je vermogen trainen om échte authenticiteit te herkennen in profielen en tegelijkertijd je eigen \'bullshit detector\' op scherp zetten.',
+        lessons: [
+          {
+            id: 'module-5-quiz-lesstof',
+            type: 'interactive',
+            title: 'Authenticiteit Detector Quiz',
+            description: 'Beoordeel profielzinnen: authentiek (specifiek, kwetsbaar) of generiek (vlak, onpersoonlijk).',
+          },
+          {
+            id: 'module-5-opdrachten-analyse',
+            type: 'interactive',
+            title: 'Oefeningen: Analyseer en Herschrijf',
+            description: 'Herkende je waar je details miste? Herschrijf generieke zinnen authentiek.',
+          },
+          {
+            id: 'module-5-opdrachten-spiegel',
+            type: 'exercise',
+            title: 'Oefeningen: De Spiegel Test',
+            description: 'Lees je nieuwe profiel hardop: klinkt het als jou op je beste dag?',
+          },
+        ],
+        exercises: [
+          'Beantwoord alle vragen zorgvuldig en neem de tijd om na te denken',
+          'Herschrijf de 5 generieke zinnen uit de quiz zodat ze wél authentiek worden',
+        ],
+        downloads: ['Authenticiteit Detector Quiz Guide'],
+      },
+      {
+        id: 'module-6-ai-optimalisatie',
+        label: 'MODULE 6',
+        emoji: '🤖',
+        title: 'AI-Optimalisatie - Professionele Verbetering',
+        description: 'Leer hoe je AI inzet als je professionele editor en testing partner om je profieltekst te finetunen tot het hoogste niveau, zonder je eigen stem te verliezen.',
+        lessons: [
+          {
+            id: 'module-6-video-ai-coach',
+            type: 'video',
+            title: 'AI als Je Profiel Co-Coach - Niet Vervanging, Maar Verbetering',
+            description: 'AI is fantastisch in optimalisatie, maar schrijf nooit scratch met AI - behoud je authenticiteit.',
+          },
+          {
+            id: 'module-6-lesstof-3-prompts',
+            type: 'lesson',
+            title: 'De 3 Gouden AI Prompts',
+            description: 'Variatie prompt, Optimalisatie prompt, Compatibiliteits prompt voor professionele resultaten.',
+          },
+          {
+            id: 'module-6-lesstof-tonaal',
+            type: 'lesson',
+            title: 'Tonaal Repertoire & Testing Strategie',
+            description: '4 professionele tonen (vlot, grappig, charmant, authentiek) en A/B testing voor data-driven optimalisatie.',
+          },
+          {
+            id: 'module-6-opdrachten-genereer',
+            type: 'interactive',
+            title: 'Oefeningen: Genereer en Analyseer',
+            description: 'Voer je concept in de AI Bio Generator Pro en vergelijk de 5 varianten.',
+          },
+          {
+            id: 'module-6-opdrachten-testing',
+            type: 'exercise',
+            title: 'Oefeningen: AI Testing Storyplan',
+            description: 'Stel een A/B test op voor je profiel met hypotheses en meetpunten.',
+          },
+        ],
+        exercises: [
+          'Test verschillende tonen voor verschillende doelgroepen',
+          'Analyseer resultaten na 3 dagen testing',
+          'Welke variant ging beter werken en waarom?',
+        ],
+        downloads: ['AI-Optimalisatie Playbook', 'A/B Testing Template'],
+      },
+      {
+        id: 'module-7-validatie-mastery',
+        label: 'MODULE 7',
+        emoji: '✅',
+        title: 'Validatie Mastery - Test & Optimaliseer',
+        description: 'Leren hoe je data verzamelt om je profiel te valideren, feedback in winst omzet en platform-specifieke tuning toepast voor maximale resultaten.',
+        lessons: [
+          {
+            id: 'module-7-video-feedback',
+            type: 'video',
+            title: 'Stop met Gissen - Het Validatie Dashboard',
+            description: 'Elke match en elk bericht is feedback - leer data zien als je beste vriend.',
+          },
+          {
+            id: 'module-7-lesstof-3-cs',
+            type: 'lesson',
+            title: 'De 3 C\'s van Feedback - Collect, Categorize, Correct',
+            description: 'Systeem voor het omzetten van ervaringen in concrete verbeteringen.',
+          },
+          {
+            id: 'module-7-lesstof-dashboard',
+            type: 'interactive',
+            title: 'Profiel Analyse Dashboard',
+            description: 'Track je performance: kwaliteit matches, gesprek starters, respons rates.',
+          },
+          {
+            id: 'module-7-lesstof-platform',
+            type: 'lesson',
+            title: 'Platform-Specific Tuning - Tinder vs. Bumble vs. Hinge',
+            description: 'Optimaliseer voor elk platform: korter voor Tinder, diepte voor Hinge.',
+          },
+          {
+            id: 'module-7-opdrachten-data',
+            type: 'interactive',
+            title: 'Oefeningen: Data Verzamelen',
+            description: 'Loop de 27-punts checklist door en laat mensen je profiel reviewen.',
+          },
+          {
+            id: 'module-7-opdrachten-diepgaand',
+            type: 'exercise',
+            title: 'Oefeningen: Diepgaande Feedback Analyse',
+            description: 'Wat ging mis in ongewenste matches? Herschrijf je bio om die types af te schrikken.',
+          },
+        ],
+        exercises: [
+          'Maak platform-specifieke versies van je profiel',
+          'Test respons rates na optimalisatie',
+          'Analyseer wat werkt en wat niet werkt',
+        ],
+        downloads: ['Professionele Validatie Checklist (27 punten)', 'Platform Tuning Guide'],
+      },
+      {
+        id: 'module-8-lancering-mastery',
+        label: 'MODULE 8',
+        emoji: '🚀',
+        title: 'Lancering Mastery - Loop Clean & Momentum',
+        description: 'Je profiel lanceren, een onderhoudssysteem opbouwen en het momentum vasthouden om langdurige, hoogwaardige resultaten te garanderen.',
+        lessons: [
+          {
+            id: 'module-8-video-30-dagen',
+            type: 'video',
+            title: 'Je 30 Dagen Succes Plan - Momentum Building System',
+            description: 'Van lancering naar onderhoud: dagelijkse clean, wekelijkse check-in, psychologische momentum.',
+          },
+          {
+            id: 'module-8-lesstof-momentum',
+            type: 'lesson',
+            title: 'Het Momentum Building Systeem',
+            description: 'Micro-wins vieren, macro-optimalisatie en psychologische momentum technieken.',
+          },
+          {
+            id: 'module-8-lesstof-dualiteit',
+            type: 'lesson',
+            title: 'Project Profiel Dualiteit - Kwetsbaarheid + Kracht',
+            description: 'De perfecte balans tussen zachtheid en autoriteit die mensen aantrekt.',
+          },
+          {
+            id: 'module-8-opdrachten-lancering',
+            type: 'interactive',
+            title: 'Oefeningen: De Lancering',
+            description: 'Plan je strategische lancering en momentum building rituals.',
+          },
+          {
+            id: 'module-8-opdrachten-expert',
+            type: 'exercise',
+            title: 'Oefeningen: De Profiel Expert',
+            description: 'Schrijf je transformatieverhaal en word lid van de expert community.',
+          },
+        ],
+        exercises: [
+          'Stel je 30-dagen verbeterplan op',
+          'Configureer je continue optimalisatie dashboard',
+          'Schrijf je expert mindset affirmaties',
+        ],
+        downloads: ['Lancering Playbook', '30-Dagen Optimalisatie Plan'],
+      },
+      {
+        id: 'module-9-mastery-certificering',
+        label: 'MODULE 9',
+        emoji: '🏆',
+        title: 'Mastery & Certificering - Jouw Transformatie Compleet',
+        description: 'Afronding van het traject, zelfreflectie en het behalen van de certificering, en toetreden tot de expert community.',
+        lessons: [
+          {
+            id: 'module-9-lesstof-review',
+            type: 'lesson',
+            title: 'Jouw Transformatie Review',
+            description: 'Bekijk je voortgang: van frustraties naar zelfverzekerde profiel-expert.',
+          },
+          {
+            id: 'module-9-lesstof-community',
+            type: 'lesson',
+            title: 'Profiel Expert Community',
+            description: 'De plek voor continue feedback, nieuwe trends en expert-level ondersteuning.',
+          },
+          {
+            id: 'module-9-lesstof-leven-lang',
+            type: 'lesson',
+            title: 'Leven Lang Leren in Dating',
+            description: 'Profiel optimalisatie is een journey - blijf je levend document onderhouden.',
+          },
+          {
+            id: 'module-9-opdrachten-transformatie',
+            type: 'interactive',
+            title: 'Oefeningen: Transformatie & Community',
+            description: 'Deel je succes in de community en mentor een beginner.',
+          },
+          {
+            id: 'module-9-opdrachten-certificering',
+            type: 'exercise',
+            title: 'Oefeningen: Je Certificering',
+            description: 'Download je certificaat en reflecteer op je moeilijkste inzichten.',
+          },
+        ],
+        exercises: [
+          'Schrijf je persoonlijke transformatie verhaal',
+          'Wat was het moeilijkste deel van deze cursus?',
+          'Stel 3 nieuwe dating doelen voor de komende 3 maanden',
+        ],
+        downloads: ['Profieltekst Expert Certificate', 'Community Access Guide'],
+      },
+      {
+        id: 'module-10-expert-bonus',
+        label: 'MODULE 10',
+        emoji: '🎁',
+        title: 'Expert Bonus Materiaal - Diepgaande Mastery',
+        description: 'Exclusieve verdieping voor mensen die het spel écht willen beheersen en de psychologie achter aantrekkingskracht tot in detail willen begrijpen.',
+        lessons: [
+          {
+            id: 'module-10-lesstof-overzicht',
+            type: 'lesson',
+            title: 'Bonus Inhoudsoverzicht',
+            description: 'Diepe psychologie, coaching voor niche-profielen, platform secrets en AI advanced tools.',
+          },
+          {
+            id: 'module-10-psychologie-diep',
+            type: 'video',
+            title: 'Diepe Psychologie van Aantrekkingskracht',
+            description: 'Wetenschappelijke inzichten over feromonen, spiegelneuronen en onbewuste waardeprioriteiten.',
+          },
+          {
+            id: 'module-10-copywriting-masterclass',
+            type: 'video',
+            title: 'Copywriting voor Dating Profielen',
+            description: 'Professionele schrijftechnieken toegepast op niche-dating (veganisten, d&d-spelers, ceo\'s).',
+          },
+          {
+            id: 'module-10-platform-secrets',
+            type: 'download',
+            title: 'Platform Secrets Manual',
+            description: 'Insider informatie over ranking algoritmes van grote dating platforms.',
+          },
+          {
+            id: 'module-10-ai-advanced',
+            type: 'interactive',
+            title: 'AI Advanced Tools Guide',
+            description: 'Geavanceerde AI-tools, prompts en workflows voor profiel experts.',
+          },
+        ],
+        downloads: ['Complete Expert Toolkit', 'Advanced Psychology Guide', 'Platform Secrets Manual'],
+      },
+      {
+        id: 'module-11-koelkast',
+        label: 'MODULE 11',
+        emoji: '📁',
+        title: 'Koelkast - Alle Downloads & Tools',
+        description: 'Een centrale plek voor alle downloadbare bronnen, tools en checklists uit de cursus.',
+        lessons: [
+          {
+            id: 'module-11-downloads-overzicht',
+            type: 'download',
+            title: 'Complete Expert Toolkit',
+            description: 'Alle templates, checklists en werkbladen in één download.',
+          },
+          {
+            id: 'module-11-advanced-psychology',
+            type: 'download',
+            title: 'Advanced Psychology Guide',
+            description: 'Diepgaande inzichten in menselijke aantrekkingskracht.',
+          },
+          {
+            id: 'module-11-platform-secrets',
+            type: 'download',
+            title: 'Platform Secrets Manual',
+            description: 'Insider kennis over algoritmes en optimalisatie.',
+          },
+          {
+            id: 'module-11-zelfkennis-workbook',
+            type: 'download',
+            title: 'Zelfkennis Workbook (PDF)',
+            description: '25 reflectievragen voor diepgaande zelfkennis.',
+          },
+          {
+            id: 'module-11-configuratie-template',
+            type: 'download',
+            title: 'Configuratie Profiel Template',
+            description: 'Template voor het opzetten van je ideale profiel.',
+          },
+          {
+            id: 'module-11-woorden-checklist',
+            type: 'download',
+            title: 'Woorden Compatibility Checklist',
+            description: 'Checklist voor taalgebruik en compatibiliteit.',
+          },
+          {
+            id: 'module-11-verbal-crafting',
+            type: 'download',
+            title: 'Verbal Crafting Workbook',
+            description: 'Werkboek voor het craften van aantrekkelijke teksten.',
+          },
+          {
+            id: 'module-11-expert-certificaat',
+            type: 'download',
+            title: 'Profiel Expert Certificaat (PDF)',
+            description: 'Jouw professionele certificaat als profiel expert.',
+          },
+        ],
+        downloads: [
+          'Complete Expert Toolkit',
+          'Advanced Psychology Guide',
+          'Platform Secrets Manual',
+          'Zelfkennis Workbook (PDF)',
+          'Configuratie Profiel Template',
+          'Woorden Compatibility Checklist',
+          'Verbal Crafting Workbook',
+          'Profiel Expert Certificaat (PDF)',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'je-bent-een-topper',
+    title: 'Je bent een topper',
+    provider: 'DatingAssistent',
+    duration: '10 lessen masterclass',
+    level: 'Van beginner naar zelfverzekerde dater',
+    format: 'Interactieve masterclass met video, oefeningen en AI-tools',
+    language: 'Nederlands',
+    accessTier: 'free',
+    summary: 'De psychologische transformatie van de cursist is de basis. Authenticiteit is de enige valuta in dating. Leer hoe je jezelf positioneert als de persoon die anderen willen ontmoeten.',
+    sections: [
+      {
+        id: 'module-1-welkom-transformatie',
+        label: 'MODULE 1',
+        emoji: '🎯',
+        title: 'Welkom: Jouw Profiel is geen CV, maar een Magneet',
+        description: 'Start je transformatie met de fundamentele mindset shift: van perfectie naar authenticiteit.',
+        lessons: [
+          {
+            id: 'les-1-1-welkom-video',
+            type: 'video',
+            title: 'Les 1.1: Welkom - Jouw Profiel is geen CV, maar een Magneet',
+            description: 'Echt zijn is de enige valuta in dating. De mythe van perfectie versus de aantrekkingskracht van authenticiteit. Doel: niet kwantiteit, maar kwaliteit matches.',
+            bullets: [
+              'Waarom oppervlakkige profielen worden overgeslagen',
+              'De psychologische kracht van authenticiteit',
+              'Hoe je jezelf positioneert als iemand die anderen willen ontmoeten',
+              'Het verschil tussen "perfect" en "authentiek aantrekkelijk"'
+            ],
+          },
+          {
+            id: 'les-1-2-persoonlijk-doel',
+            type: 'interactive',
+            title: 'Les 1.2: Definieer je Persoonlijke Doel',
+            description: 'Stel je persoonlijke doel voor deze module vast en maak het meetbaar.',
+          },
+          {
+            id: 'les-1-3-startmeting',
+            type: 'interactive',
+            title: 'Les 1.3: Startmeting - Jouw Grootste Frustratie',
+            description: 'Identificeer je huidige pijnpunten in dating apps.',
+          },
+        ],
+        exercises: [
+          'Schrijf op wat je wilt bereiken met deze cursus (specifiek en meetbaar)',
+          'Beantwoord: Wat is je grootste frustratie met dating apps?',
+          'Maak een lijst van 3 dingen die je uniek maken als persoon',
+        ],
+        interactive: 'Startmeting Poll: Selecteer je grootste frustratie (verkeerde types / te weinig matches / weet niet wat te schrijven)',
+      },
+      {
+        id: 'module-2-specificiteit-case',
+        label: 'MODULE 2',
+        emoji: '🎯',
+        title: 'De 47-Berichten Case: De Kracht van Specificiteit',
+        description: 'Leer hoe één specifieke zin een meetbaar verschil maakt in je dating resultaten.',
+        lessons: [
+          {
+            id: 'les-2-1-case-study',
+            type: 'video',
+            title: 'Les 2.1: De 47-Berichten Case Study',
+            description: 'Hoe één unieke, specifieke zin leidde tot 47 berichten in één week. De psychologie achter waarom details werken.',
+            bullets: [
+              'Voorbeeld van generiek ("Ik hou van reizen") vs. specifiek',
+              'Waarom hersenen verhalen 22x beter onthouden dan feiten',
+              'Specificity binds: de psychologische reden waarom details de lezer grijpen',
+              'Hoe je jezelf onderscheidt in een zee van oppervlakkige profielen'
+            ],
+          },
+          {
+            id: 'les-2-2-specificiteit-quiz',
+            type: 'interactive',
+            title: 'Les 2.2: Specificiteit Test',
+            description: 'Test je vermogen om generieke uitspraken om te zetten in specifieke verhalen.',
+          },
+          {
+            id: 'les-2-3-jouw-ding',
+            type: 'exercise',
+            title: 'Les 2.3: Jouw Ding - Met Waarom',
+            description: 'Noteer één ding dat je graag doet, inclusief de diepere waarom-reden.',
+          },
+        ],
+        exercises: [
+          'Analyseer je huidige profieltekst: hoeveel procent is specifiek?',
+          'Herschrijf één generieke zin naar iets specifieks',
+          'Deel je "ding met waarom" in de community voor feedback',
+        ],
+        interactive: 'Specificiteit Quiz: 1 vraag over de 47 berichten casestudy om specificiteit te testen',
+      },
+      {
+        id: 'module-3-psychologische-principes',
+        label: 'MODULE 3',
+        emoji: '🧠',
+        title: 'De 4 Psychologische Principes van Aantrekkelijkheid',
+        description: 'De wetenschappelijke fundamenten van wat mensen echt aantrekt in profielen.',
+        lessons: [
+          {
+            id: 'les-3-1-principes-uitleg',
+            type: 'lesson',
+            title: 'Les 3.1: De 4 Principes Uitgelegd',
+            description: 'Leer de psychologische principes die bepalen of iemand reageert.',
+            bullets: [
+              '1. Reciprociteit: De uitnodiging tot actie - mensen reageren op mensen die initiatief tonen',
+              '2. Unieke waarde: Jouw onderscheidende eigenschap - wat maakt jou anders dan anderen?',
+              '3. Deelbare kwetsbaarheid: Het creëren van vertrouwen door menselijkheid te tonen',
+              '4. Sociale bewijskracht: Indirect bewijs van gewildheid door verhalen te vertellen'
+            ],
+          },
+          {
+            id: 'les-3-2-principe-toepassing',
+            type: 'interactive',
+            title: 'Les 3.2: Principe Detector Tool',
+            description: 'Analyseer bestaande profielen op deze 4 principes.',
+          },
+          {
+            id: 'les-3-3-jouw-principes',
+            type: 'exercise',
+            title: 'Les 3.3: Identificeer Jouw Sterkste Principes',
+            description: 'Welke van de 4 principes komen het meest natuurlijk bij jou naar voren?',
+          },
+        ],
+        exercises: [
+          'Analyseer 3 succesvolle profielen op de 4 principes',
+          'Schrijf voor elk principe één zin die bij jou past',
+          'Combineer 2 principes in één profielzin',
+        ],
+        downloads: ['Psychologische Principes Cheat Sheet'],
+      },
+      {
+        id: 'module-4-kernwaarden-ontdekken',
+        label: 'MODULE 4',
+        emoji: '💎',
+        title: 'Kernwaarden Ontdekken - Wat Drijft Je Echt?',
+        description: 'Ontdek je diepste waarden en hoe je ze vertaalt naar aantrekkelijke profielcontent.',
+        lessons: [
+          {
+            id: 'les-4-1-waardentest',
+            type: 'interactive',
+            title: 'Les 4.1: Kernwaarden Discovery Test',
+            description: 'Een diepgaande test om je top 5 relatie-waarden te identificeren.',
+          },
+          {
+            id: 'les-4-2-waarden-vertalen',
+            type: 'lesson',
+            title: 'Les 4.2: Van Waarden naar Verhalen',
+            description: 'Leer hoe je abstracte waarden omzet in concrete, aantrekkelijke verhalen.',
+            bullets: [
+              'Integriteit: "Ik zeg altijd wat ik bedoel, ook als het moeilijk is"',
+              'Verbinding: "Ik geloof in diepgaande gesprekken die ertoe doen"',
+              'Groei: "Ik zie elke ervaring als een kans om te leren"',
+              'Avontuur: "Ik omarm nieuwe ervaringen met open armen"',
+              'Rust: "Ik creëer kalmte te midden van de chaos"'
+            ],
+          },
+          {
+            id: 'les-4-3-waarden-matching',
+            type: 'exercise',
+            title: 'Les 4.3: Welke Partner Past Bij Jouw Waarden?',
+            description: 'Beschrijf de persoon die perfect aansluit bij je kernwaarden.',
+          },
+        ],
+        exercises: [
+          'Doorloop de Kernwaarden Discovery Test volledig',
+          'Kies je top 3 waarden en schrijf er een verhaal over',
+          'Beschrijf hoe je ideale partner je waarden weerspiegelt',
+        ],
+        interactive: 'Kernwaarden Discovery Tool: Scenario-based vragen om je relatie-DNA te ontdekken',
+      },
+      {
+        id: 'module-5-verhaal-creatie-workshop',
+        label: 'MODULE 5',
+        emoji: '📖',
+        title: 'Verhaal Creatie Workshop - Van Hobby naar Karakter',
+        description: 'Stapsgewijze workshop om je eerste karakter-verhaal te creëren.',
+        lessons: [
+          {
+            id: 'les-5-1-verhaal-framework',
+            type: 'lesson',
+            title: 'Les 5.1: Het 5-Stappen Verhaal Framework',
+            description: 'De bewezen methode om verhalen te creëren die karakter tonen.',
+            bullets: [
+              'Stap 1: Identificeer je kernwaarde (Wat drijft je echt?)',
+              'Stap 2: Kies een authentiek moment (Wanneer leefde je deze waarde?)',
+              'Stap 3: Voeg emotionele diepte toe (Wat voelde je? Wat leerde je?)',
+              'Stap 4: Maak het specifiek (Concrete details maken het levend)',
+              'Stap 5: Sluit af met inzicht (Wat zegt dit over wie je bent?)'
+            ],
+          },
+          {
+            id: 'les-5-2-verhaal-builder',
+            type: 'interactive',
+            title: 'Les 5.2: Verhaal Builder Tool',
+            description: 'Stapsgewijze tool om je verhaal op te bouwen volgens het framework.',
+          },
+          {
+            id: 'les-5-3-verhaal-feedback',
+            type: 'exercise',
+            title: 'Les 5.3: Peer Feedback Rondje',
+            description: 'Deel je verhaal in de community voor eerlijke feedback.',
+          },
+        ],
+        exercises: [
+          'Bouw een compleet verhaal volgens het 5-stappen framework',
+          'Test je verhaal op 3 mensen buiten de app',
+          'Herschrijf je verhaal op basis van feedback',
+        ],
+        interactive: 'Verhaal Creatie Workshop: Stapsgewijze oefening om je eerste karakter-verhaal te creëren',
+      },
+      {
+        id: 'module-6-transformatie-voorbeelden',
+        label: 'MODULE 6',
+        emoji: '🔄',
+        title: 'Transformatie Voorbeelden - Voor & Na',
+        description: 'Zie hoe gewone uitspraken transformeren naar verhalen die karakter tonen.',
+        lessons: [
+          {
+            id: 'les-6-1-voorbeelden-database',
+            type: 'lesson',
+            title: 'Les 6.1: Transformatie Voorbeelden Database',
+            description: 'Voor & na voorbeelden van verschillende persoonlijkheden.',
+            bullets: [
+              'VOOR: "Ik hou van sporten" → NA: "Ik begon met hardlopen na mijn scheiding - het gaf me kracht terug"',
+              'VOOR: "Ik lees graag" → NA: "Ik lees filosofie om mijn wereldbeeld te verbreden"',
+              'VOOR: "Ik kook voor vrienden" → NA: "Ik geloof in het samenbrengen van mensen rond eten - het verbindt ons"',
+              'VOOR: "Ik reis veel" → NA: "Ik heb mijn comfortzone verlaten door alleen naar Japan te reizen"',
+              'VOOR: "Ik ben creatief" → NA: "Ik teken om mijn gedachten te verwerken wanneer woorden tekortschieten"'
+            ],
+          },
+          {
+            id: 'les-6-2-jouw-transformatie',
+            type: 'interactive',
+            title: 'Les 6.2: Jouw Persoonlijke Transformatie Tool',
+            description: 'Transformeer je eigen generieke uitspraken naar verhalen.',
+          },
+          {
+            id: 'les-6-3-transformatie-quiz',
+            type: 'interactive',
+            title: 'Les 6.3: Transformatie Mastery Quiz',
+            description: 'Test je vermogen om clichés te herkennen en te transformeren.',
+          },
+        ],
+        exercises: [
+          'Transformeer 5 uitspraken uit je huidige profiel',
+          'Kies je favoriete transformatie en schrijf er een volledig verhaal over',
+          'Deel je "voor & na" in de community',
+        ],
+        downloads: ['Transformatie Voorbeelden Database (PDF)'],
+      },
+      {
+        id: 'module-7-ai-optimalisatie',
+        label: 'MODULE 7',
+        emoji: '🤖',
+        title: 'AI-Optimalisatie - Professionele Verfijning',
+        description: 'Gebruik AI als professionele editor om je verhalen naar het volgende niveau te tillen.',
+        lessons: [
+          {
+            id: 'les-7-1-ai-principes',
+            type: 'video',
+            title: 'Les 7.1: AI als Je Persoonlijke Profiel Coach',
+            description: 'Leer AI in te zetten voor objectieve feedback en professionele verbeteringen.',
+          },
+          {
+            id: 'les-7-2-ai-bio-generator',
+            type: 'interactive',
+            title: 'Les 7.2: AI Bio Generator Pro Tool',
+            description: 'Geavanceerde tool die 5 professionele varianten genereert van je verhaal.',
+          },
+          {
+            id: 'les-7-3-ai-feedback-analyse',
+            type: 'exercise',
+            title: 'Les 7.3: AI Feedback Analyse',
+            description: 'Analyseer welke AI suggesties werken voor jouw stem.',
+          },
+        ],
+        exercises: [
+          'Voer je verhaal in de AI Bio Generator Pro',
+          'Vergelijk de 5 varianten - welke voelt het meest als jou?',
+          'Pas 3 AI suggesties toe en test het resultaat',
+        ],
+        interactive: 'AI Bio Generator Pro Tool: Geavanceerde tool die 5 professionele varianten genereert',
+      },
+      {
+        id: 'module-8-validatie-mastery',
+        label: 'MODULE 8',
+        emoji: '✅',
+        title: 'Validatie Mastery - Test & Optimaliseer',
+        description: 'Leer je verhalen te testen voordat je live gaat met professionele checklists.',
+        lessons: [
+          {
+            id: 'les-8-1-professionele-checklist',
+            type: 'lesson',
+            title: 'Les 8.1: De Complete Profiel Audit Checklist',
+            description: '27-punts checklist die professionele profielschrijvers gebruiken.',
+          },
+          {
+            id: 'les-8-2-peer-feedback-setup',
+            type: 'interactive',
+            title: 'Les 8.2: Peer Feedback Optimalisatie',
+            description: 'Leer feedback effectief in te zetten voor verbetering.',
+          },
+          {
+            id: 'les-8-3-data-tracking',
+            type: 'exercise',
+            title: 'Les 8.3: Resultaten Tracking Setup',
+            description: 'Stel een systeem op om je voortgang te meten.',
+          },
+        ],
+        exercises: [
+          'Loop de complete 27-punts checklist door',
+          'Laat 5 mensen je verhaal reviewen',
+          'Stel meetbare doelen vast voor je resultaten',
+        ],
+        downloads: ['Professionele Validatie Checklist (27 punten)'],
+      },
+      {
+        id: 'module-9-lancering-strategie',
+        label: 'MODULE 9',
+        emoji: '🚀',
+        title: 'Lancering Strategie - Live Gaan & Momentum',
+        description: 'Strategisch lanceren voor maximale impact en momentum opbouwen.',
+        lessons: [
+          {
+            id: 'les-9-1-lancering-timing',
+            type: 'video',
+            title: 'Les 9.1: Strategische Lancering voor Maximaal Impact',
+            description: 'Leer wanneer, hoe en waarom je je verhalen lanceert.',
+          },
+          {
+            id: 'les-9-2-momentum-building',
+            type: 'lesson',
+            title: 'Les 9.2: Momentum Building Systeem',
+            description: 'Leer positieve energie en resultaten op te bouwen.',
+          },
+          {
+            id: 'les-9-3-30-dagen-plan',
+            type: 'interactive',
+            title: 'Les 9.3: Jouw 30 Dagen Succes Plan',
+            description: 'Creëer je persoonlijke roadmap voor de komende maand.',
+          },
+        ],
+        exercises: [
+          'Plan je strategische lancering (dag, tijd, volgorde)',
+          'Stel momentum building rituals op',
+          'Maak je 30 dagen verbeterplan',
+        ],
+        downloads: ['Lancering Playbook & 30 Dagen Template'],
+      },
+      {
+        id: 'module-10-mastery-certificering',
+        label: 'MODULE 10',
+        emoji: '🏆',
+        title: 'Mastery & Certificering - Jouw Transformatie Compleet',
+        description: 'Vier je succes, ontvang je certificaat en word lid van de Topper Community.',
+        lessons: [
+          {
+            id: 'les-10-1-transformatie-review',
+            type: 'video',
+            title: 'Les 10.1: Jouw Transformatie Review',
+            description: 'Bekijk hoe ver je bent gekomen en wat je hebt geleerd.',
+          },
+          {
+            id: 'les-10-2-topper-certificaat',
+            type: 'download',
+            title: 'Les 10.2: Je bent een Topper Certificaat',
+            description: 'Download je professionele certificaat.',
+          },
+          {
+            id: 'les-10-3-community-access',
+            type: 'lesson',
+            title: 'Les 10.3: Topper Community Access',
+            description: 'Word lid van de exclusieve gemeenschap van toppers.',
+          },
+        ],
+        exercises: [
+          'Schrijf je persoonlijke transformatie verhaal',
+          'Deel je succes in de community',
+          'Mentor een beginner met je nieuwe kennis',
+        ],
+        downloads: ['Je bent een Topper Certificate', 'Community Access Guide'],
       },
     ],
   },

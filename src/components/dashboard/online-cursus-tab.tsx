@@ -9,6 +9,7 @@ import {
   MEMBERSHIP_RANK,
   MODULES,
   STARTER_RESOURCE_COURSE_MAP,
+  SEO_COURSE_URLS,
 } from '@/lib/data';
 import type {
   StarterResourceFormat,
@@ -1309,7 +1310,8 @@ export function OnlineCursusTab({
                 getLucideIcon(STARTER_RESOURCE_ICONS[resource.format]) ?? Lucide.HelpCircle;
               const formatLabel = STARTER_RESOURCE_LABELS[resource.format];
               const courseId = STARTER_RESOURCE_COURSE_MAP[resource.id];
-              const href = courseId ? `/dashboard/starter/${resource.id}` : undefined;
+              const seoUrl = courseId ? SEO_COURSE_URLS[courseId] : undefined;
+              const href = seoUrl || (courseId ? `/dashboard/starter/${resource.id}` : undefined);
               const starterCompleted = completedStarters.includes(resource.id);
 
               const card = (

@@ -12,9 +12,10 @@ interface AIResultCardProps {
   linkText?: string;
   onSave?: () => void;
   onDelete?: () => void;
+  compact?: boolean;
 }
 
-export function AIResultCard({ content, tip, link, linkText = "Bezoek site", onSave, onDelete }: AIResultCardProps) {
+export function AIResultCard({ content, tip, link, linkText = "Bezoek site", onSave, onDelete, compact = false }: AIResultCardProps) {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
 
@@ -34,6 +35,20 @@ export function AIResultCard({ content, tip, link, linkText = "Bezoek site", onS
     return <div className="whitespace-pre-wrap text-foreground" dangerouslySetInnerHTML={{ __html: boldedText }} />;
   };
 
+
+  if (compact) {
+    return (
+      <div className="rounded-md bg-muted/30 p-3 text-sm">
+        {renderContent(content.length > 150 ? content.substring(0, 150) + '...' : content)}
+        <div className="mt-2 flex items-center justify-end gap-1">
+          <Button variant="ghost" size="sm" onClick={handleCopy} className="h-6 px-2 text-xs gap-1 text-primary hover:text-primary">
+            {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+            {copied ? "Gekopieerd" : "Kopieer"}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-lg bg-secondary/50 p-4">
@@ -55,14 +70,14 @@ export function AIResultCard({ content, tip, link, linkText = "Bezoek site", onS
             </Button>
         )}
          <Button variant="ghost" size="sm" onClick={handleCopy} className="gap-2 text-primary hover:text-primary">
-          {copied ? <Check /> : <Copy />}
-          {copied ? "Gekopieerd!" : "Kopiëren"}
-        </Button>
-        {onDelete && (
-            <Button variant="ghost" size="sm" onClick={onDelete} className="gap-2 text-destructive hover:text-destructive">
-                <Trash2 /> Verwijderen
-            </Button>
-        )}
+           {copied ? <Check /> : <Copy />}
+           {copied ? "Gekopieerd!" : "Kopiëren"}
+         </Button>
+         {onDelete && (
+             <Button variant="ghost" size="sm" onClick={onDelete} className="gap-2 text-destructive hover:text-destructive">
+                 <Trash2 /> Verwijderen
+             </Button>
+         )}
       </div>
     </div>
   );

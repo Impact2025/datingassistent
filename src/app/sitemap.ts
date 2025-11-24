@@ -21,6 +21,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: 'https://datingassistent.nl/dashboard/boost-je-dating-zelfvertrouwen',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
       url: 'https://datingassistent.nl/blog',
       lastModified: new Date(),
       changeFrequency: 'weekly',

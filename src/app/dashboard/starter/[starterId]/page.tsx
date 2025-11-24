@@ -3,6 +3,7 @@ import { sql } from '@vercel/postgres';
 
 import StarterCourseDetail from '@/components/dashboard/starter-course-detail';
 import { InteractiveProfileCoach } from '@/components/dashboard/interactive-profile-coach';
+import { AIConfidenceCoach } from '@/components/quiz/ai-confidence-coach';
 import {
   DETAILED_COURSES,
   STARTER_RESOURCE_COURSE_MAP,
@@ -95,7 +96,7 @@ export default async function StarterCoursePage({ params }: StarterPageProps) {
     staticCourse = {
       id: courseId,
       title: (dbCourse as any).title || courseId,
-      description: (dbCourse as any).description || '',
+      description: (dbCourse as any).summary || '',
       provider: 'DatingAssistent',
       duration: `${dbCourse.modules?.length || 0} modules`,
       level: (dbCourse as any).level || 'beginner',

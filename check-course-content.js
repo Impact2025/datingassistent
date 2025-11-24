@@ -1,65 +1,53 @@
-// Check content of course 18
 require('dotenv').config({ path: '.env.local' });
 const { sql } = require('@vercel/postgres');
 
-async function checkCourseContent() {
+async function checkCourse() {
   try {
-    const courseId = 18;
-
-    console.log(`📚 Checking content for course ID ${courseId}...\n`);
-
-    // Get course info
-    const course = await sql`
-      SELECT * FROM courses WHERE id = ${courseId}
+    const result = await sql`
+      SELECT c.id, c.title, c.description,
+             COUNT(DISTINCT m.id) as modules,
+             COUNT(DISTINCT l.id) as lessons
+      FROM courses c
+      LEFT JOIN course_modules m ON c.id = m.course_id
+      LEFT JOIN course_lessons l ON m.id = l.module_id
+      WHERE c.title LIKE '%zelfvertrouwen%'
+      GROUP BY c.id, c.title, c.description
     `;
 
-    if (course.rows.length === 0) {
-      console.log('❌ Course not found');
-      process.exit(1);
-    }
+    console.log('Course content:');
+    console.log(JSON.stringify(result.rows, null, 2));
 
-    console.log('Course:', course.rows[0].title);
-    console.log('Published:', course.rows[0].is_published);
-    console.log();
+    if (result.rows.length > 0) {
+      const courseId = result.rows[0].id;
 
-    // Get modules
-    const modules = await sql`
-      SELECT * FROM course_modules
-      WHERE course_id = ${courseId}
-      ORDER BY position
-    `;
-
-    console.log(`Found ${modules.rows.length} modules:\n`);
-
-    for (const module of modules.rows) {
-      console.log(`📖 Module ${module.position}: ${module.title}`);
-      console.log(`   Description: ${module.description || 'N/A'}`);
-
-      // Get lessons for this module
-      const lessons = await sql`
-        SELECT * FROM course_lessons
-        WHERE module_id = ${module.id}
-        ORDER BY position
+      // Get modules
+      const modules = await sql`
+        SELECT id, title, description, position
+        FROM course_modules
+        WHERE course_id = ${courseId}
+        ORDER BY position ASC
       `;
 
-      console.log(`   Lessons: ${lessons.rows.length}`);
+      console.log('\nModules:');
+      console.log(JSON.stringify(modules.rows, null, 2));
 
-      for (const lesson of lessons.rows) {
-        console.log(`   - ${lesson.position}. ${lesson.title}`);
-        console.log(`     Type: ${lesson.lesson_type}`);
-        console.log(`     Video URL: ${lesson.video_url || 'None'}`);
-        console.log(`     Duration: ${lesson.video_duration || 'N/A'}`);
-        console.log(`     Preview: ${lesson.is_preview ? 'Yes' : 'No'}`);
+      // Get lessons for each module
+      for (const module of modules.rows) {
+        const lessons = await sql`
+          SELECT id, title, lesson_type, content, description
+          FROM course_lessons
+          WHERE module_id = ${module.id}
+          ORDER BY position ASC
+        `;
+
+        console.log(`\nLessons for module "${module.title}":`);
+        console.log(JSON.stringify(lessons.rows, null, 2));
       }
-
-      console.log();
     }
 
-    process.exit(0);
   } catch (error) {
-    console.error('❌ Error:', error);
-    process.exit(1);
+    console.error('Error:', error);
   }
 }
 
-checkCourseContent();
+checkCourse();

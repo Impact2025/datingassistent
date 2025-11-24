@@ -10,66 +10,62 @@ import { CheckCircle } from 'lucide-react';
 // Pricing plans data - consistent with actual subscription system
 const plans = [
   {
-    name: 'Sociaal',
-    description: 'Voor mensen met beperking',
-    monthlyPrice: 10,
-    yearlyPrice: 100, // €99.50 in cents converted to euros
-    features: [
-      '25 AI-berichten per week',
-      '2 profiel-rewrites per 30 dagen',
-      '5 foto-checks per 30 dagen',
-      '1 cursus per week (max 8 totaal)',
-      '10 icebreakers per dag',
-      'Begeleide onboarding'
-    ],
-    popular: false
-  },
-  {
     name: 'Core',
-    description: 'De complete coach',
-    monthlyPrice: 24,
-    yearlyPrice: 245, // €245 in cents converted to euros
+    description: 'Slim starten met AI',
+    monthlyPrice: 29,
+    yearlyPrice: 290, // €290 per jaar (bespaar 17%)
     features: [
-      '60 AI-berichten per week',
-      '4 profiel-rewrites per 30 dagen',
-      '12 foto-checks per 30 dagen',
-      '1 cursus per week (unlimited totaal)',
-      '20 icebreakers per dag',
-      'Reactie-assistent',
-      'Date Planner'
+      '50 AI-berichten per week',
+      'Profiel Coach – analyseer en verbeter je bio',
+      'Chat Coach – 24/7 hulp bij gesprekken',
+      'AI Foto Check – feedback op je foto\'s',
+      '1 cursus per maand',
+      '+ 1 meer features'
     ],
     popular: true
   },
   {
     name: 'Pro',
-    description: 'Voor serieuze daters',
-    monthlyPrice: 40,
-    yearlyPrice: 395, // €395 in cents converted to euros
+    description: 'Versnel je groei met AI & feedback',
+    monthlyPrice: 49,
+    yearlyPrice: 490, // €490 per jaar (bespaar 17%)
     features: [
       '125 AI-berichten per week',
-      '8 profiel-rewrites per 30 dagen',
-      '25 foto-checks per 30 dagen',
-      '2 cursussen per week (unlimited totaal)',
-      '40 icebreakers per dag',
-      'Alles van Core',
-      'Priority Support'
+      'Alle tools van Core, plus:',
+      'Opener Lab – originele openingszinnen',
+      'Match Analyse – waarom wel/niet matches',
+      'Date Planner – creatieve date-ideeën',
+      '+ 3 meer features'
     ],
     popular: false
   },
   {
-    name: 'Premium',
-    description: 'VIP behandeling',
-    monthlyPrice: 70,
-    yearlyPrice: 695, // €695 in cents converted to euros
+    name: 'Premium AI',
+    description: 'Persoonlijke begeleiding met slimme AI-assistentie',
+    monthlyPrice: 99,
+    yearlyPrice: 990, // €990 per jaar (bespaar 17%)
     features: [
+      'Alle tools en cursussen direct unlocked',
       '250 AI-berichten per week',
-      '15 profiel-rewrites per 30 dagen',
-      '50 foto-checks per 30 dagen',
-      'Alle cursussen direct beschikbaar',
-      '100 icebreakers per dag',
-      'Alles van Pro',
-      'Live 1-op-1 coach',
-      'VIP Support'
+      'Persoonlijke intake (45 minuten video)',
+      'Persoonlijk verbeterplan op maat',
+      '3 Coach Check-ins (chat of voice)',
+      '+ 2 meer features'
+    ],
+    popular: false
+  },
+  {
+    name: 'Premium Plus',
+    description: 'De complete persoonlijke datingtransformatie',
+    monthlyPrice: null, // One-time payment
+    yearlyPrice: 2490, // €2490 éénmalig (geen abonnement)
+    features: [
+      'Alles uit Premium AI Coaching',
+      'Live startgesprek van 2 uur met jouw coach',
+      '4 extra 1-op-1 sessies van 60 minuten',
+      'Persoonlijke fotoshoot met professionele fotograaf',
+      'Feedback op profiel, gesprekken en dates',
+      '+ 2 meer features'
     ],
     popular: false
   }
@@ -78,13 +74,20 @@ const plans = [
 const handleCheckout = (planName: string) => {
   // Map landing page plan names to package types
   const planMapping: Record<string, string> = {
-    'Sociaal': 'sociaal',
     'Core': 'core',
     'Pro': 'pro',
-    'Premium': 'premium'
+    'Premium AI': 'premium',
+    'Premium Plus': 'premium_plus'
   };
 
   const packageType = planMapping[planName] || planName.toLowerCase();
+
+  // Special handling for Premium Plus (one-time payment)
+  if (planName === 'Premium Plus') {
+    console.log(`Redirecting to registration for Premium Plus plan`);
+    window.location.href = `/register?plan=${packageType}&billing=yearly&redirect_after_payment=true`;
+    return;
+  }
 
   // Redirect to registration with plan selection for paid plans
   if (packageType !== 'free' && packageType !== 'gratis') {
@@ -148,17 +151,30 @@ export default function PrijzenPage() {
                   </div>
 
                   <div className="text-center mb-6">
-                    <div className="flex items-baseline justify-center gap-2 mb-2">
-                      <span className="text-3xl font-bold text-gray-900">
-                        €{plan.monthlyPrice}
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        / maand
-                      </span>
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      of €{plan.yearlyPrice} éénmalig (jaarlijks)
-                    </div>
+                    {plan.name === 'Premium Plus' ? (
+                      <div className="mb-2">
+                        <span className="text-3xl font-bold text-gray-900">
+                          €{plan.yearlyPrice}
+                        </span>
+                        <div className="text-sm text-gray-600">
+                          éénmalig (geen abonnement)
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-baseline justify-center gap-2 mb-2">
+                          <span className="text-3xl font-bold text-gray-900">
+                            €{plan.monthlyPrice}
+                          </span>
+                          <span className="text-sm text-gray-500">
+                            / maand
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          of €{plan.yearlyPrice} per jaar (bespaar 17%)
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <ul className="space-y-3 mb-6">
@@ -183,10 +199,10 @@ export default function PrijzenPage() {
                         : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                     }`}
                   >
-                    {plan.name === 'Sociaal' && 'Start met Sociaal'}
-                    {plan.name === 'Core' && 'Kies Core'}
-                    {plan.name === 'Pro' && 'Kies Pro'}
-                    {plan.name === 'Premium' && 'Kies Premium'}
+                    {plan.name === 'Core' && 'Start vandaag met Core'}
+                    {plan.name === 'Pro' && 'Upgrade naar Pro'}
+                    {plan.name === 'Premium AI' && 'Plan jouw intake'}
+                    {plan.name === 'Premium Plus' && 'Reserveer jouw Premium Plus traject'}
                   </Button>
                 </CardContent>
               </Card>
@@ -204,7 +220,8 @@ export default function PrijzenPage() {
                 <div>
                   <p className="text-sm text-blue-800">
                     <strong>Jaarlijkse toegang</strong> = blijvende toegang tot tools & cursussen voor een heel jaar.<br />
-                    <strong>Alle abonnementen</strong> worden automatisch verlengd, je kunt altijd opzeggen.
+                    <strong>Maandelijkse abonnementen</strong> worden automatisch verlengd, je kunt altijd opzeggen.<br />
+                    <strong>Premium Plus</strong> is een eenmalige investering zonder vervolgkosten.
                   </p>
                 </div>
               </div>
