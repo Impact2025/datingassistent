@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -28,15 +28,15 @@ interface Tool {
   popular?: boolean;
 }
 
-export default function ToolsPage() {
+function ToolsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   // Handle URL parameters for direct tool access
   useEffect(() => {
-    const tool = searchParams.get('tool');
-    const category = searchParams.get('category');
+    const tool = searchParams?.get('tool');
+    const category = searchParams?.get('category');
 
     if (tool) {
       // Map tool names to categories
@@ -259,5 +259,20 @@ export default function ToolsPage() {
 
       <BottomNavigation />
     </div>
+  );
+}
+
+export default function ToolsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 pb-20 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="text-4xl">🔧</div>
+          <p className="text-gray-600">Tools laden...</p>
+        </div>
+      </div>
+    }>
+      <ToolsPageContent />
+    </Suspense>
   );
 }
