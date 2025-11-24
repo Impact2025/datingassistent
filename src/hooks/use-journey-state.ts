@@ -86,32 +86,9 @@ export function useJourneyState({ userId, userProfile, enabled = true }: UseJour
 
             setShowOnboarding(true);
           } else {
-            // Journey is marked as completed - but allow restart for users who just paid
-            try {
-              const subscriptionResponse = await fetch(`/api/user/subscription?userId=${userId}`);
-              if (subscriptionResponse.ok) {
-                const subscriptionData = await subscriptionResponse.json();
-                if (subscriptionData.subscription?.status === 'active') {
-                  console.log('🎯 User has active subscription - allowing onboarding restart');
-                  setIsInitializingOnboarding(true);
-
-                  const hasProfile = userProfile && userProfile.name && userProfile.age;
-
-                  setJourneyState({
-                    currentStep: hasProfile ? 'welcome' : 'profile',
-                    completedSteps: [],
-                    scanData: null,
-                    coachAdvice: null,
-                  });
-
-                  setShowOnboarding(true);
-                } else {
-                  console.log('✅ Journey completed and no active subscription - no onboarding needed');
-                }
-              }
-            } catch (error) {
-              console.log('✅ Journey completed - no onboarding needed (subscription check failed)');
-            }
+            // Journey is completed - no onboarding needed
+            console.log('✅ Journey completed - no onboarding needed');
+            setShowOnboarding(false);
           }
         } else {
           console.log('ℹ️ Journey data not available, checking if onboarding needed...');
