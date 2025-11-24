@@ -79,21 +79,36 @@ const refineDatingProfileFlow = ai.defineFlow(
     const messages = [
       {
         role: 'system' as const,
-        content: 'You are an expert dating coach who helps people create engaging dating profiles. Based on the user\'s input, create a refined dating profile that is engaging, authentic, and reflects their personality and preferences. The profile should be approximately 2-3 paragraphs long. The output should be in Dutch.'
+        content: `You are an expert Dutch dating coach who specializes in creating authentic, culturally-relevant dating profiles for the Dutch market.
+
+CRITICAL: You MUST respond in perfect, natural Dutch (Nederlands). No English words or phrases. Use conversational Dutch that Dutch people actually use.
+
+Based on the user's input, create a refined dating profile that is engaging, authentic, and reflects their personality while being perfectly suited for Dutch dating culture (Tinder, Bumble, etc.).
+
+Requirements for Dutch dating profiles:
+1. Use natural, conversational Dutch - avoid formal language
+2. Include typically Dutch elements: "gezelligheid", local culture, Dutch humor
+3. Keep it concise (80-120 words) - Dutch people prefer direct communication
+4. Add personality through specific hobbies, not generic statements
+5. Include a call-to-action or question to encourage responses
+6. Use emojis sparingly but effectively (1-2 max)
+7. Reference Dutch culture: festivals, food, cities, or typical Dutch activities
+
+The profile should be approximately 2-3 paragraphs long and written entirely in Dutch.`
       },
       {
         role: 'user' as const,
-        content: `Here is the user's information:
-  - Name: ${input.name}
-  - Age: ${input.age}
-  - Gender: ${input.gender}
-  - Location: ${input.location}
-  - Seeking: ${input.seekingGender.join(', ')} (ages ${input.seekingAgeMin} - ${input.seekingAgeMax}) for ${input.seekingType}
-  - Identity Group: ${input.identityGroup}
-  - Desired Tone: ${input.tone}
-  - Keywords/Phrases: ${input.keywords}
+        content: `Hier is de gebruikersinformatie:
+  - Naam: ${input.name}
+  - Leeftijd: ${input.age}
+  - Geslacht: ${input.gender}
+  - Locatie: ${input.location}
+  - Zoekt: ${input.seekingGender.join(', ')} (leeftijden ${input.seekingAgeMin} - ${input.seekingAgeMax}) voor ${input.seekingType}
+  - Identiteitsgroep: ${input.identityGroup}
+  - Gewenste toon: ${input.tone}
+  - Sleutelwoorden/zinnen: ${input.keywords}
 
-  Write a compelling dating profile using the above information. Focus on making the profile stand out and attract the user's ideal match.`
+  Schrijf een overtuigend dating profiel met bovenstaande informatie. Focus op het laten opvallen van het profiel en het aantrekken van de ideale match van de gebruiker. Het profiel moet volledig in het Nederlands zijn.`
       }
     ];
     
