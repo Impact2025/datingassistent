@@ -35,83 +35,122 @@ interface SmartCard {
 
 interface AISmartFlowProps {
   className?: string;
+  userId?: number;
 }
 
-export function AISmartFlow({ className }: AISmartFlowProps) {
-   const [smartCards, setSmartCards] = useState<SmartCard[]>([]);
-   const [refreshing, setRefreshing] = useState(false);
-   const [visibleCards, setVisibleCards] = useState(3);
+export function AISmartFlow({ className, userId }: AISmartFlowProps) {
+    const [smartCards, setSmartCards] = useState<SmartCard[]>([]);
+    const [refreshing, setRefreshing] = useState(false);
+    const [visibleCards, setVisibleCards] = useState(3);
+    const [recommendations, setRecommendations] = useState<any[]>([]);
 
-  // Generate personalized smart cards based on user data
-  const generateSmartCards = () => {
-    // This would be replaced with real AI logic based on user behavior
-    const mockSmartCards: SmartCard[] = [
-      {
-        id: 'achievement-1',
-        type: 'achievement',
-        icon: <Star className="w-5 h-5 text-yellow-500" />,
-        title: 'Goed bezig gisteren!',
-        description: 'Je hebt je eerste profiel update voltooid. Dat is een grote stap!',
-        badge: '🏆 Eerste succes',
-        priority: 'high',
-      },
-      {
-        id: 'opportunity-1',
-        type: 'opportunity',
-        icon: <Lightbulb className="w-5 h-5 text-blue-500" />,
-        title: 'Profielscore +12% mogelijk',
-        description: 'Met een betere profielfoto kan je score aanzienlijk verbeteren.',
-        actionText: 'Verbeter Nu',
-        onAction: () => console.log('Navigate to profile improvement'),
-        priority: 'high',
-      },
-      {
-        id: 'progress-1',
+  // Generate personalized smart cards based on user data and AI recommendations
+  const generateSmartCards = (recommendations: any[] = []) => {
+    const smartCards: SmartCard[] = [];
+
+    // Convert AI recommendations to smart cards
+    recommendations.forEach((rec, index) => {
+      let cardType: SmartCard['type'] = 'insight';
+      let icon: React.ReactNode;
+      let actionText: string | undefined;
+      let onAction: (() => void) | undefined;
+
+      // Determine card type and icon based on recommendation type
+      switch (rec.type) {
+        case 'module':
+          cardType = 'opportunity';
+          icon = <BookOpen className="w-5 h-5 text-blue-500" />;
+          actionText = 'Start Module';
+          onAction = () => console.log(`Navigate to module ${rec.id}`);
+          break;
+        case 'course':
+          cardType = 'opportunity';
+          icon = <Target className="w-5 h-5 text-green-500" />;
+          actionText = 'Bekijk Cursus';
+          onAction = () => console.log(`Navigate to course ${rec.id}`);
+          break;
+        case 'feature':
+          cardType = 'insight';
+          icon = <Lightbulb className="w-5 h-5 text-purple-500" />;
+          actionText = 'Probeer Uit';
+          onAction = () => console.log(`Navigate to feature ${rec.id}`);
+          break;
+        default:
+          cardType = 'insight';
+          icon = <Sparkles className="w-5 h-5 text-pink-500" />;
+      }
+
+      // Determine priority based on confidence
+      let priority: SmartCard['priority'] = 'medium';
+      if (rec.confidence >= 0.8) priority = 'high';
+      else if (rec.confidence <= 0.4) priority = 'low';
+
+      smartCards.push({
+        id: `rec-${rec.type}-${rec.id}-${index}`,
+        type: cardType,
+        icon,
+        title: rec.title,
+        description: rec.reason,
+        actionText,
+        onAction,
+        priority,
+      });
+    });
+
+    // Add some default smart cards if we don't have enough recommendations
+    if (smartCards.length < 3) {
+      // Add achievement/progress cards
+      smartCards.push({
+        id: 'progress-weekly',
         type: 'progress',
         icon: <TrendingUp className="w-5 h-5 text-green-500" />,
-        title: 'Weekscore: 65%',
-        description: 'Je bent goed op weg! Nog 35% naar je doel.',
-        progress: 65,
+        title: 'Deze week actief',
+        description: 'Je bent goed op weg! Blijf consistent voor de beste resultaten.',
+        progress: 75,
         target: 100,
         priority: 'medium',
-      },
-      {
-        id: 'insight-1',
-        type: 'insight',
-        icon: <Flame className="w-5 h-5 text-orange-500" />,
-        title: 'Nieuwe match analyse klaar',
-        description: 'Ik heb je laatste matches geanalyseerd. Er zijn interessante inzichten!',
-        actionText: 'Bekijk Analyse',
-        onAction: () => console.log('Navigate to match analysis'),
-        priority: 'high',
-      },
-      {
-        id: 'motivation-1',
+      });
+
+      smartCards.push({
+        id: 'motivation-daily',
         type: 'motivation',
         icon: <Heart className="w-5 h-5 text-pink-500" />,
-        title: 'Nieuwe date ideeën',
-        description: 'Gepersonaliseerde date suggesties gebaseerd op jouw interesses.',
-        actionText: 'Ontdek Ideeën',
-        onAction: () => console.log('Navigate to date ideas'),
-        priority: 'medium',
-      },
-      {
-        id: 'streak-1',
-        type: 'achievement',
-        icon: <Flame className="w-5 h-5 text-orange-500" />,
-        title: '7-dagen streak!',
-        description: 'Je bent een week actief geweest. Dat verdient een feestje! 🎉',
-        badge: '🔥 Streak Master',
-        priority: 'high',
-      },
-    ];
+        title: 'Dagelijkse reminder',
+        description: 'Elke stap telt. Je dating succes is een marathon, geen sprint.',
+        priority: 'low',
+      });
+    }
 
-    return mockSmartCards;
+    // Limit to 6 cards max
+    return smartCards.slice(0, 6);
   };
 
+  // Fetch real AI recommendations
   useEffect(() => {
-    setSmartCards(generateSmartCards());
-  }, []);
+    const fetchRecommendations = async () => {
+      if (!userId) return;
+
+      try {
+        const response = await fetch(`/api/recommendations?userId=${userId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setRecommendations(data.recommendations || []);
+        }
+      } catch (error) {
+        console.error('Error fetching recommendations:', error);
+        // Fallback to empty array
+        setRecommendations([]);
+      }
+    };
+
+    fetchRecommendations();
+  }, [userId]);
+
+  // Generate smart cards based on recommendations
+  useEffect(() => {
+    const cards = generateSmartCards(recommendations);
+    setSmartCards(cards);
+  }, [recommendations]);
 
   // Pull-to-refresh functionality
   const handleRefresh = async () => {
@@ -120,11 +159,27 @@ export function AISmartFlow({ className }: AISmartFlowProps) {
     // Simulate AI processing delay
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // Generate fresh recommendations
-    const newCards = generateSmartCards();
-    // Shuffle and add some new insights
-    const shuffled = [...newCards].sort(() => Math.random() - 0.5);
-    setSmartCards(shuffled);
+    // Fetch fresh recommendations if userId is available
+    if (userId) {
+      try {
+        const response = await fetch(`/api/recommendations?userId=${userId}&refresh=true`);
+        if (response.ok) {
+          const data = await response.json();
+          setRecommendations(data.recommendations || []);
+        }
+      } catch (error) {
+        console.error('Error refreshing recommendations:', error);
+        // Fallback: regenerate cards with current recommendations
+        const newCards = generateSmartCards(recommendations);
+        const shuffled = [...newCards].sort(() => Math.random() - 0.5);
+        setSmartCards(shuffled);
+      }
+    } else {
+      // Fallback for users without ID
+      const newCards = generateSmartCards(recommendations);
+      const shuffled = [...newCards].sort(() => Math.random() - 0.5);
+      setSmartCards(shuffled);
+    }
 
     setRefreshing(false);
   };

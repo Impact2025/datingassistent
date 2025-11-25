@@ -5,6 +5,16 @@ import { usePathname } from 'next/navigation';
 import { Home, MessageCircle, Wrench, User, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+// Haptic feedback utility
+const triggerHapticFeedback = () => {
+  if (typeof window !== 'undefined' && 'navigator' in window) {
+    // Check for vibration API support
+    if ('vibrate' in navigator) {
+      navigator.vibrate(50); // 50ms vibration
+    }
+  }
+};
+
 export function BottomNavigation() {
   const pathname = usePathname();
 
@@ -78,11 +88,12 @@ export function BottomNavigation() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={triggerHapticFeedback}
               className={cn(
-                "flex flex-col items-center justify-center px-3 py-2 rounded-xl transition-all duration-200 min-w-[60px]",
+                "flex flex-col items-center justify-center px-3 py-2 rounded-xl transition-all duration-300 ease-out min-w-[60px] active:scale-95",
                 isActive
-                  ? "bg-gradient-to-t from-pink-50 to-transparent"
-                  : "hover:bg-gray-50"
+                  ? "bg-gradient-to-t from-pink-50 to-transparent shadow-sm"
+                  : "hover:bg-gray-50 hover:scale-105"
               )}
             >
               <Icon

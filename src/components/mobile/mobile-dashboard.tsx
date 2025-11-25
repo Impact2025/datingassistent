@@ -1,16 +1,39 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/providers/user-provider';
-import { AIHeroSection } from './ai-hero-section';
 import { QuickActionsGrid } from './quick-actions-grid';
-import { AISmartFlow } from './ai-smart-flow';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LogIn, UserPlus, Shield } from 'lucide-react';
+
+// Lazy load heavy AI components for better performance
+const AIHeroSection = lazy(() => import('./ai-hero-section').then(mod => ({ default: mod.AIHeroSection })));
+const AISmartFlow = lazy(() => import('./ai-smart-flow').then(mod => ({ default: mod.AISmartFlow })));
+
+// Simple Error Boundary for AI components
+function AIComponentErrorBoundary({ children, fallback }: { children: React.ReactNode, fallback: React.ReactNode }) {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    const handleError = (error: ErrorEvent) => {
+      console.error('AI Component Error:', error);
+      setHasError(true);
+    };
+
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
+
+  if (hasError) {
+    return <>{fallback}</>;
+  }
+
+  return <>{children}</>;
+}
 
 // Import centralized onboarding system
 import { useJourneyState } from '@/hooks/use-journey-state';
@@ -74,6 +97,10 @@ interface MobileDashboardProps {
 export function MobileDashboard({ className }: MobileDashboardProps) {
   const router = useRouter();
   const { user, userProfile, loading } = useUser();
+  const [refreshing, setRefreshing] = useState(false);
+  const [pullDistance, setPullDistance] = useState(0);
+  const [startY, setStartY] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Use dashboard data hook
   const dashboardStats = useDashboardData(user?.id);
@@ -160,10 +187,84 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
     router.push('/profiel');
   };
 
+  // Pull-to-refresh functionality
+  const handleRefresh = async () => {
+    setRefreshing(true);
+
+    try {
+      // Refresh dashboard stats
+      if (user?.id) {
+        const response = await fetch(`/api/user/dashboard-stats?userId=${user.id}&refresh=true`);
+        if (response.ok) {
+          const data = await response.json();
+          // Update stats (this would need to be passed down to the hook)
+          window.location.reload(); // Simple refresh for now
+        }
+      }
+    } catch (error) {
+      console.error('Error refreshing dashboard:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  // Touch event handlers for pull-to-refresh
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+
+    const currentY = e.touches[0].clientY;
+    const diff = currentY - startY;
+
+    // Only allow pull down from top
+    if (containerRef.current.scrollTop === 0 && diff > 0) {
+      setPullDistance(Math.min(diff * 0.5, 80)); // Dampen the pull, max 80px
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (pullDistance > 50) { // Threshold for refresh
+      handleRefresh();
+    }
+    setPullDistance(0);
+    setStartY(0);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
+      {/* Pull to Refresh Indicator */}
+      {pullDistance > 0 && (
+        <div
+          className="fixed top-0 left-0 right-0 z-50 bg-pink-500 text-white text-center py-2 transition-transform duration-200"
+          style={{ transform: `translateY(${Math.max(-20, pullDistance - 60)}px)` }}
+        >
+          <div className="flex items-center justify-center gap-2">
+            {pullDistance > 50 ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                <span className="text-sm font-medium">Verversen...</span>
+              </>
+            ) : (
+              <>
+                <span className="text-sm">↓ Trek om te verversen</span>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
-      <div className="max-w-md mx-auto px-4 py-6 space-y-4">
+      <div
+        ref={containerRef}
+        className="max-w-md mx-auto px-4 py-6 space-y-4 transition-transform duration-200"
+        style={{ transform: `translateY(${pullDistance}px)` }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Show onboarding flow if needed */}
         {showOnboarding ? (
           <OnboardingFlow
@@ -173,6 +274,36 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
           />
         ) : (
           <>
+            {/* AI Hero Section - Show for users who completed onboarding */}
+            {!showOnboarding && (
+              <AIComponentErrorBoundary fallback={
+                <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+                  <CardContent className="p-6 text-center">
+                    <p className="text-sm text-gray-600">AI Coach tijdelijk niet beschikbaar</p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-2"
+                      onClick={() => window.location.reload()}
+                    >
+                      Opnieuw proberen
+                    </Button>
+                  </CardContent>
+                </Card>
+              }>
+                <Suspense fallback={
+                  <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+                    <CardContent className="p-6 text-center">
+                      <LoadingSpinner />
+                      <p className="text-sm text-gray-600 mt-2">AI Coach laden...</p>
+                    </CardContent>
+                  </Card>
+                }>
+                  <AIHeroSection onStartGuidedFlow={handleStartGuidedFlow} />
+                </Suspense>
+              </AIComponentErrorBoundary>
+            )}
+
             {/* Welcome Header */}
             <div className="text-center mb-6">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">
@@ -300,8 +431,33 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
               </CardContent>
             </Card>
 
-            {/* AI Smart Flow - Keep this as is for now */}
-            <AISmartFlow />
+            {/* AI Smart Flow - Now with real AI recommendations */}
+            <AIComponentErrorBoundary fallback={
+              <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+                <CardContent className="p-6 text-center">
+                  <p className="text-sm text-gray-600">AI Aanbevelingen tijdelijk niet beschikbaar</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => window.location.reload()}
+                  >
+                    Opnieuw proberen
+                  </Button>
+                </CardContent>
+              </Card>
+            }>
+              <Suspense fallback={
+                <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+                  <CardContent className="p-6 text-center">
+                    <LoadingSpinner />
+                    <p className="text-sm text-gray-600 mt-2">AI Aanbevelingen laden...</p>
+                  </CardContent>
+                </Card>
+              }>
+                <AISmartFlow userId={user?.id} />
+              </Suspense>
+            </AIComponentErrorBoundary>
           </>
         )}
       </div>

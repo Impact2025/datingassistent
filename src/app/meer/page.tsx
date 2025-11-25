@@ -47,7 +47,7 @@ export default function MeerPage() {
       icon: <User className="w-5 h-5" />,
       title: 'Profiel',
       subtitle: 'Foto, bio en persoonlijke info',
-      route: '/profile',
+      route: '/profiel',
       type: 'navigation',
     },
     {
@@ -55,7 +55,7 @@ export default function MeerPage() {
       icon: <Crown className="w-5 h-5" />,
       title: 'Abonnement',
       subtitle: 'Pro features en upgrades',
-      route: '/subscription',
+      route: '/prijzen',
       badge: 'Pro',
       type: 'navigation',
     },
@@ -84,14 +84,6 @@ export default function MeerPage() {
       title: 'Donkere modus',
       subtitle: 'Makkelijker voor de ogen',
       type: 'toggle',
-    },
-    {
-      id: 'language',
-      icon: <Globe className="w-5 h-5" />,
-      title: 'Taal',
-      subtitle: 'Nederlands',
-      route: '/settings/language',
-      type: 'navigation',
     },
 
     // Support Section
@@ -137,7 +129,7 @@ export default function MeerPage() {
   const groupedItems = {
     profile: menuItems.filter(item => ['profile', 'subscription'].includes(item.id)),
     communication: menuItems.filter(item => item.id === 'community'),
-    settings: menuItems.filter(item => ['notifications', 'dark-mode', 'language'].includes(item.id)),
+    settings: menuItems.filter(item => ['notifications', 'dark-mode'].includes(item.id)),
     support: menuItems.filter(item => ['help', 'privacy'].includes(item.id)),
     account: menuItems.filter(item => item.id === 'logout'),
   };
