@@ -14,7 +14,9 @@ import {
   Heart,
   ArrowRight,
   CheckCircle,
-  RefreshCw
+  RefreshCw,
+  BookOpen,
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
