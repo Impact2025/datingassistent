@@ -22,6 +22,7 @@ import { useState } from "react";
 import { LoadingSpinner } from "../shared/loading-spinner";
 import { useSearchParams, usePathname } from "next/navigation";
 import { useRecaptchaV3 } from "../shared/recaptcha";
+import { useDeviceDetection } from "@/hooks/use-device-detection";
 
 const loginSchema = z.object({
   email: z.string().email("Ongeldig e-mailadres."),
@@ -37,6 +38,7 @@ export function LoginForm() {
   const pathname = usePathname();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const hasRedirectedRef = useRef(false);
+  const { isMobile } = useDeviceDetection();
 
   // reCAPTCHA v3 hook
   const { execute: executeRecaptcha, isLoaded: isRecaptchaLoaded } = useRecaptchaV3(
@@ -110,15 +112,20 @@ export function LoginForm() {
       console.log('✅ Login successful, redirecting to dashboard...');
       hasRedirectedRef.current = true;
 
+      // Determine correct dashboard based on device
+      const dashboardUrl = isMobile ? '/mobile-dashboard' : '/dashboard';
+      console.log('📱 Redirecting to:', dashboardUrl, 'for device type:', isMobile ? 'mobile' : 'desktop');
+
       // Small delay to ensure state is updated
       setTimeout(() => {
-        window.location.href = '/dashboard';
+        window.location.href = dashboardUrl;
       }, 500);
     }
-  }, [user, pathname]);
+  }, [user, pathname, isMobile]);
 
   // Show success message while redirecting
   if (user && pathname === '/login') {
+    const dashboardName = isMobile ? 'mobiele dashboard' : 'dashboard';
     return (
       <Card className="w-full max-w-md bg-card/50 shadow-2xl">
         <CardHeader className="text-center">
@@ -130,7 +137,7 @@ export function LoginForm() {
         <CardContent className="space-y-4 text-center">
           <LoadingSpinner />
           <p className="text-sm text-muted-foreground">
-            Je wordt doorgestuurd naar het dashboard...
+            Je wordt doorgestuurd naar je {dashboardName}...
           </p>
         </CardContent>
       </Card>
@@ -153,37 +160,42 @@ export function LoginForm() {
     }
 
     try {
-      // Execute reCAPTCHA v3
-      const recaptchaToken = await executeRecaptcha('login');
-      if (!recaptchaToken) {
-        toast({
-          title: "Fout",
-          description: "reCAPTCHA verificatie mislukt. Probeer het opnieuw.",
-          variant: "destructive",
+      // Skip reCAPTCHA in development for easier testing
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('🔧 Skipping reCAPTCHA verification in development mode');
+      } else {
+        // Execute reCAPTCHA v3 in production
+        const recaptchaToken = await executeRecaptcha('login');
+        if (!recaptchaToken) {
+          toast({
+            title: "Fout",
+            description: "reCAPTCHA verificatie mislukt. Probeer het opnieuw.",
+            variant: "destructive",
+          });
+          setIsLoggingIn(false);
+          return;
+        }
+
+        // Verify token on server
+        const verifyResponse = await fetch('/api/recaptcha/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: recaptchaToken, action: 'login' }),
         });
-        setIsLoggingIn(false);
-        return;
+
+        if (!verifyResponse.ok) {
+          const errorData = await verifyResponse.json();
+          toast({
+            title: "Fout",
+            description: errorData.error || "reCAPTCHA verificatie mislukt.",
+            variant: "destructive",
+          });
+          setIsLoggingIn(false);
+          return;
+        }
+
+        console.log('✅ reCAPTCHA verification successful');
       }
-
-      // Verify token on server
-      const verifyResponse = await fetch('/api/recaptcha/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: recaptchaToken, action: 'login' }),
-      });
-
-      if (!verifyResponse.ok) {
-        const errorData = await verifyResponse.json();
-        toast({
-          title: "Fout",
-          description: errorData.error || "reCAPTCHA verificatie mislukt.",
-          variant: "destructive",
-        });
-        setIsLoggingIn(false);
-        return;
-      }
-
-      console.log('✅ reCAPTCHA verification successful');
       console.log('🔐 Attempting login with email:', data.email);
       const result = await login(data.email, data.password);
       console.log('✅ Login successful, result:', result);
