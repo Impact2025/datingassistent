@@ -6,47 +6,48 @@ interface ContentSlideTemplateProps {
 }
 
 export function ContentSlideTemplate({ slide }: ContentSlideTemplateProps) {
-  const bgColor = slide.backgroundColor || 'bg-gradient-to-br from-blue-50 to-purple-50';
-  const highlightColor = slide.highlightColor || 'text-purple-600';
+  const bgColor = slide.backgroundColor || 'bg-gray-50';
+  const highlightColor = slide.highlightColor || 'text-pink-600';
 
   return (
-    <div className={`w-full h-full ${bgColor} rounded-xl p-8 md:p-12 flex flex-col`}>
-      {/* Title with optional emoji */}
-      <div className="mb-6">
-        {slide.emoji && (
-          <div className="text-5xl mb-3">{slide.emoji}</div>
+    <div className={`w-full h-full ${bgColor} flex flex-col items-center justify-center p-6`}>
+      {/* Main content card */}
+      <div className="w-full max-w-3xl bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+        {/* Title */}
+        <div className="mb-6 text-center">
+          <h2 className={`text-2xl md:text-3xl font-bold ${highlightColor} leading-tight`}>
+            {slide.title}
+          </h2>
+        </div>
+
+        {/* Content text (if provided) */}
+        {slide.content && (
+          <div className="mb-6 text-center">
+            <p className="text-base text-gray-700 leading-relaxed max-w-2xl mx-auto">
+              {slide.content}
+            </p>
+          </div>
         )}
-        <h2 className={`text-3xl md:text-4xl font-bold ${highlightColor}`}>
-          {slide.title}
-        </h2>
-      </div>
 
-      {/* Content text (if provided) */}
-      {slide.content && (
-        <div className="mb-6 text-lg text-gray-700 leading-relaxed">
-          {slide.content}
-        </div>
-      )}
-
-      {/* Bullet points */}
-      {slide.bullets && slide.bullets.length > 0 && (
-        <div className="space-y-4 flex-1">
-          {slide.bullets.map((bullet, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-3 animate-fadeIn"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className={`flex-shrink-0 mt-1 p-1 rounded-full ${highlightColor} bg-purple-100`}>
-                <Lucide.Check className="h-5 w-5" />
+        {/* Bullet points */}
+        {slide.bullets && slide.bullets.length > 0 && (
+          <div className="space-y-3 w-full max-w-2xl mx-auto">
+            {slide.bullets.map((bullet, index) => (
+              <div
+                key={index}
+                className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100"
+              >
+                <div className={`flex-shrink-0 mt-0.5 p-1.5 rounded-full ${highlightColor} bg-pink-50`}>
+                  <Lucide.Check className="h-3.5 w-3.5" />
+                </div>
+                <p className="text-sm text-gray-800 leading-relaxed flex-1">
+                  {bullet}
+                </p>
               </div>
-              <p className="text-lg text-gray-800 leading-relaxed">
-                {bullet}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

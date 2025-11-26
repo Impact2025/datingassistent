@@ -43,6 +43,10 @@ async function setupDatabase() {
     console.log('   - password_reset_tokens');
     console.log('   - coupons');
     console.log('   - podcasts');
+    console.log('   - waarden_kompas_sessions');
+    console.log('   - waarden_kompas_responses');
+    console.log('   - waarden_kompas_results');
+    console.log('   - waarden_kompas_integrations');
     
     process.exit(0);
   } catch (error) {

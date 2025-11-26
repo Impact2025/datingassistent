@@ -103,18 +103,18 @@ export default function SlideViewer({ deck, onComplete }: SlideViewerProps) {
   const progressPercentage = ((currentSlide + 1) / totalSlides) * 100;
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto">
       {/* Progress bar */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-600">
             Slide {currentSlide + 1} van {totalSlides}
           </span>
-          <span className="text-sm text-purple-600">{deck.title}</span>
+          <span className="text-sm text-pink-600 font-medium">{deck.title}</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="w-full bg-gray-200 rounded-full h-1.5">
           <div
-            className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
+            className="bg-pink-500 h-1.5 rounded-full transition-all duration-300"
             style={{ width: `${progressPercentage}%` }}
           />
         </div>
@@ -122,14 +122,14 @@ export default function SlideViewer({ deck, onComplete }: SlideViewerProps) {
 
       {/* Slide container */}
       <div
-        className="relative bg-white rounded-2xl shadow-2xl overflow-hidden"
-        style={{ minHeight: '500px', aspectRatio: '16/9' }}
+        className="relative bg-gray-50 rounded-xl overflow-hidden shadow-sm border border-gray-100"
+        style={{ minHeight: '500px', aspectRatio: '16/10' }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
         {/* Slide content */}
-        <div className="w-full h-full p-8 md:p-12 flex flex-col">
+        <div className="w-full h-full flex flex-col">
           {renderSlide(deck.slides[currentSlide])}
         </div>
 
@@ -137,20 +137,20 @@ export default function SlideViewer({ deck, onComplete }: SlideViewerProps) {
         {!isFirstSlide && (
           <button
             onClick={goToPrevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/90 hover:bg-white shadow-lg transition-all hover:scale-110"
+            className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white hover:bg-gray-50 shadow-sm border border-gray-200 transition-all hover:scale-105"
             aria-label="Vorige slide"
           >
-            <Lucide.ChevronLeft className="h-6 w-6 text-gray-800" />
+            <Lucide.ChevronLeft className="h-4 w-4 text-gray-600" />
           </button>
         )}
 
         {!isLastSlide && (
           <button
             onClick={goToNextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/90 hover:bg-white shadow-lg transition-all hover:scale-110"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white hover:bg-gray-50 shadow-sm border border-gray-200 transition-all hover:scale-105"
             aria-label="Volgende slide"
           >
-            <Lucide.ChevronRight className="h-6 w-6 text-gray-800" />
+            <Lucide.ChevronRight className="h-4 w-4 text-gray-600" />
           </button>
         )}
       </div>
@@ -161,22 +161,22 @@ export default function SlideViewer({ deck, onComplete }: SlideViewerProps) {
           variant="outline"
           onClick={goToPrevSlide}
           disabled={isFirstSlide}
-          className="gap-2"
+          className="gap-1.5 px-4 py-2 h-9 border-gray-300 text-gray-600 hover:bg-gray-50 rounded-lg text-sm"
         >
-          <Lucide.ChevronLeft className="h-4 w-4" />
+          <Lucide.ChevronLeft className="h-3.5 w-3.5" />
           Vorige
         </Button>
 
         {/* Slide dots */}
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           {deck.slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`h-2 rounded-full transition-all ${
+              className={`h-1.5 rounded-full transition-all ${
                 index === currentSlide
-                  ? 'w-8 bg-purple-600'
-                  : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  ? 'w-5 bg-pink-500'
+                  : 'w-1.5 bg-gray-300 hover:bg-gray-400'
               }`}
               aria-label={`Ga naar slide ${index + 1}`}
             />
@@ -185,24 +185,24 @@ export default function SlideViewer({ deck, onComplete }: SlideViewerProps) {
 
         <Button
           onClick={goToNextSlide}
-          className="gap-2"
+          className="gap-1.5 px-4 py-2 h-9 bg-pink-500 hover:bg-pink-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all text-sm"
         >
           {isLastSlide ? (
             <>
               Afronden
-              <Lucide.Check className="h-4 w-4" />
+              <Lucide.Check className="h-3.5 w-3.5" />
             </>
           ) : (
             <>
               Volgende
-              <Lucide.ChevronRight className="h-4 w-4" />
+              <Lucide.ChevronRight className="h-3.5 w-3.5" />
             </>
           )}
         </Button>
       </div>
 
       {/* Keyboard hints */}
-      <div className="mt-4 text-center text-sm text-gray-500">
+      <div className="mt-4 text-center text-xs text-gray-400">
         <span className="hidden md:inline">
           Gebruik ← → pijltjestoetsen of spatiebalk om te navigeren
         </span>

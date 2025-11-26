@@ -21,6 +21,7 @@ export interface DeviceGuardProps {
   requiredDevice: 'mobile' | 'desktop';
   children: React.ReactNode;
   allowOverride?: boolean; // Allow user to continue anyway
+  allowMobileTabs?: boolean; // Allow mobile access to specific dashboard tabs
 }
 
 /**
@@ -33,7 +34,8 @@ export interface DeviceGuardProps {
 export function DeviceGuard({
   requiredDevice,
   children,
-  allowOverride = false
+  allowOverride = false,
+  allowMobileTabs = false
 }: DeviceGuardProps) {
   const router = useRouter();
   const { isMobile, isTablet, isDesktop, screenWidth } = useDeviceDetection();
@@ -64,6 +66,17 @@ export function DeviceGuard({
 
     // Check preference first
     if (devicePreference === requiredDevice) return true;
+
+    // Allow mobile access to specific dashboard tabs if allowMobileTabs is enabled
+    if (allowMobileTabs && requiredDevice === 'desktop' && isMobile) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tab = urlParams.get('tab');
+      // Allow mobile access to these specific tabs
+      const allowedMobileTabs = ['subscription', 'data-management', 'chat-coach'];
+      if (tab && allowedMobileTabs.includes(tab)) {
+        return true;
+      }
+    }
 
     // Check actual device
     if (requiredDevice === 'mobile') {

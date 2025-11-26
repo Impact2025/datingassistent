@@ -49,23 +49,23 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <Card className="max-w-4xl w-full shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+    <div className="space-y-6">
+      <Card className="border-0 bg-white/95 backdrop-blur-sm shadow-lg">
         <CardHeader className="text-center pb-6">
-          <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-            <span className="text-3xl">👋</span>
+          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+            <span className="text-2xl">👋</span>
           </div>
-          <CardTitle className="text-2xl font-bold text-gray-900">
+          <CardTitle className="text-xl font-bold text-gray-900">
             Welkom bij DatingAssistent!
           </CardTitle>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 mt-2 text-sm">
             Voordat we beginnen, wil ik je graag persoonlijk welkom heten.
           </p>
         </CardHeader>
 
         <CardContent className="space-y-6">
           {/* Video Player */}
-          <div className="relative aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-inner max-h-[400px]">
+          <div className="relative aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-inner max-h-[300px]">
             <video
               ref={videoRef}
               className="w-full h-full object-cover"

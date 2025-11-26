@@ -406,6 +406,38 @@ function InteractiveProfileCoachInner() {
   const handleError = useErrorHandler();
   const { showTutorial, startTutorial, completeTutorial, setShowTutorial } = useTutorial('profile-coach');
 
+  // Waarden Kompas integration
+  const [waardenKompasCompleted, setWaardenKompasCompleted] = useState(false);
+  const [waardenKompasData, setWaardenKompasData] = useState<any>(null);
+
+  // Check if user has completed Waarden Kompas
+  useEffect(() => {
+    const checkWaardenKompasStatus = async () => {
+      if (!user?.id) return;
+
+      try {
+        const response = await fetch('/api/waarden-kompas/status', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setWaardenKompasCompleted(data.completed);
+          if (data.completed && data.results) {
+            setWaardenKompasData(data.results);
+          }
+        }
+      } catch (error) {
+        console.log('Waarden Kompas status check failed:', error);
+      }
+    };
+
+    checkWaardenKompasStatus();
+  }, [user?.id]);
+
   const [state, setState] = useState<WizardState>({
     currentStep: 0,
     answers: [],
@@ -453,6 +485,26 @@ function InteractiveProfileCoachInner() {
       const personalityAnswers = state.answers.filter(a => PROFESSIONAL_PERSONALITY_QUIZ.find(q => q.id === a.questionId)?.phase === 1);
       const profileData = personalityAnswers.map(a => a.label).join(', ');
 
+      // Enhance with Waarden Kompas data if available
+      let enhancedKeywords = profileData;
+      let waardenKompasInsights = '';
+
+      if (waardenKompasCompleted && waardenKompasData) {
+        // Extract core values and personality insights from Waarden Kompas
+        const coreValues = waardenKompasData.core_values || [];
+        const greenFlags = waardenKompasData.green_flags || [];
+        const datingStrategies = waardenKompasData.dating_strategies || [];
+
+        waardenKompasInsights = `
+        Waarden Kompas Insights:
+        - Kernwaarden: ${coreValues.slice(0, 3).join(', ')}
+        - Groene vlaggen: ${greenFlags.slice(0, 2).join(', ')}
+        - Dating strategieën: ${datingStrategies.slice(0, 2).join(', ')}
+        `;
+
+        enhancedKeywords += waardenKompasInsights;
+      }
+
       // Generate 3 profile options
       const profiles: ProfileOption[] = [];
 
@@ -468,17 +520,24 @@ function InteractiveProfileCoachInner() {
           seekingType: userProfile?.seekingType || 'relationship',
           identityGroup: userProfile?.identityGroup || 'mainstream',
           tone: i === 0 ? 'mysterieus' : i === 1 ? 'energiek' : 'authentiek',
-          keywords: profileData,
+          keywords: enhancedKeywords,
         });
 
         const qualityMetrics = calculateQuality(result.refinedProfile);
 
+        // Adjust title and add Waarden Kompas indicator
+        let title = i === 0 ? 'Authentiek & Betrouwbaar' : i === 1 ? 'Mysterieus & Intrigerend' : 'Energie & Avontuurlijk';
+        if (waardenKompasCompleted) {
+          title += ' ✨'; // Add sparkle indicator for Waarden Kompas enhanced profiles
+        }
+
         profiles.push({
           id: `profile-${i + 1}`,
-          title: i === 0 ? 'Authentiek & Betrouwbaar' : i === 1 ? 'Mysterieus & Intrigerend' : 'Energie & Avontuurlijk',
+          title,
           content: result.refinedProfile,
-          score: qualityMetrics.overallScore,
+          score: waardenKompasCompleted ? Math.min(100, qualityMetrics.overallScore + 5) : qualityMetrics.overallScore, // Boost score for Waarden Kompas users
           strengths: [
+            ...(waardenKompasCompleted ? ['✨ Waarden Kompas Enhanced'] : []),
             qualityMetrics.engagementPotential > 70 ? 'Hoge engagement potentie' : 'Goede persoonlijkheid',
             qualityMetrics.culturalRelevance > 60 ? 'Cultureel relevant' : 'Duidelijke interesses',
             qualityMetrics.readabilityScore > 70 ? 'Goede leesbaarheid' : 'Goede balans tussen humor en diepgang'
@@ -648,6 +707,51 @@ function InteractiveProfileCoachInner() {
           Handleiding
         </Button>
       </div>
+
+      {/* Waarden Kompas Integration Banner */}
+      {!waardenKompasCompleted && (
+        <Card className="border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
+          <CardContent className="p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <Compass className="w-5 h-5 text-amber-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-amber-900 mb-1">Ontgrendel Waarden Kompas voor Betere Resultaten! ✨</h3>
+                <p className="text-sm text-amber-800 mb-3">
+                  Door je kernwaarden en relatievoorkeuren te ontdekken, kunnen we profielen maken die 40% beter aansluiten bij je ideale matches.
+                </p>
+                <Button
+                  size="sm"
+                  onClick={() => window.location.href = '/tools/waarden-kompas'}
+                  className="bg-amber-600 hover:bg-amber-700 text-white"
+                >
+                  Start Waarden Kompas
+                  <ArrowRight className="w-3 h-3 ml-1" />
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Waarden Kompas Completed Badge */}
+      {waardenKompasCompleted && (
+        <Card className="border-2 border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-green-900">Waarden Kompas Voltooid! 🎉</h3>
+                <p className="text-sm text-green-800">Je profielen worden nu versterkt met je persoonlijke waarden en voorkeuren.</p>
+              </div>
+              <Badge className="bg-green-100 text-green-700">✨ Enhanced</Badge>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Progress Section */}
       <Card className="border-2 border-pink-100">

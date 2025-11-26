@@ -295,8 +295,8 @@ export function ChatCoachTab() {
 
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col">
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          {/* Header - Hidden on Mobile to Save Space */}
+          <div className="hidden md:flex items-center justify-between p-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="flex items-center gap-3">
               <Avatar className="h-8 w-8 bg-primary">
                 <AvatarFallback>
@@ -332,8 +332,8 @@ export function ChatCoachTab() {
           </div>
 
           {/* Messages Area */}
-          <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-            <div className="max-w-4xl mx-auto space-y-6">
+          <ScrollArea className={`flex-1 ${showHistory ? 'md:p-4' : 'p-4'}`} ref={scrollAreaRef}>
+            <div className={`${showHistory ? 'max-w-4xl mx-auto' : 'max-w-4xl mx-auto md:max-w-4xl'} space-y-6`}>
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -351,7 +351,7 @@ export function ChatCoachTab() {
                     <div className={`rounded-2xl px-4 py-3 ${
                       message.role === 'user'
                         ? 'bg-primary text-primary-foreground ml-auto'
-                        : 'bg-muted border'
+                        : 'bg-white border border-gray-200 shadow-sm md:bg-muted md:border'
                     }`}>
                       {message.role === 'user' ? (
                         <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -360,16 +360,16 @@ export function ChatCoachTab() {
                           <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             components={{
-                              p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>,
+                              p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed text-gray-900 md:text-foreground">{children}</p>,
                               ul: ({ children }) => <ul className="mb-3 ml-4 list-disc space-y-1">{children}</ul>,
                               ol: ({ children }) => <ol className="mb-3 ml-4 list-decimal space-y-1">{children}</ol>,
-                              li: ({ children }) => <li className="leading-relaxed">{children}</li>,
-                              strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
-                              em: ({ children }) => <em className="italic">{children}</em>,
-                              h3: ({ children }) => <h3 className="font-semibold mt-4 mb-2 text-base">{children}</h3>,
-                              h4: ({ children }) => <h4 className="font-semibold mt-3 mb-1 text-sm">{children}</h4>,
+                              li: ({ children }) => <li className="leading-relaxed text-gray-900 md:text-foreground">{children}</li>,
+                              strong: ({ children }) => <strong className="font-semibold text-gray-900 md:text-foreground">{children}</strong>,
+                              em: ({ children }) => <em className="italic text-gray-900 md:text-foreground">{children}</em>,
+                              h3: ({ children }) => <h3 className="font-semibold mt-4 mb-2 text-base text-gray-900 md:text-foreground">{children}</h3>,
+                              h4: ({ children }) => <h4 className="font-semibold mt-3 mb-1 text-sm text-gray-900 md:text-foreground">{children}</h4>,
                               blockquote: ({ children }) => (
-                                <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground my-2">
+                                <blockquote className="border-l-4 border-primary pl-4 italic text-gray-700 md:text-muted-foreground my-2">
                                   {children}
                                 </blockquote>
                               ),
@@ -431,8 +431,94 @@ export function ChatCoachTab() {
           </ScrollArea>
 
           {/* Input Area - Fixed at Bottom */}
-          <div className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
-            <div className="max-w-4xl mx-auto">
+          <div className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            {/* Mobile Layout - Full Width */}
+            <div className="md:hidden">
+              {/* Quick Suggestions - Only show when no messages */}
+              {messages.length <= 1 && (
+                <div className="px-4 pt-4">
+                  <div className="mb-3">
+                    <p className="text-sm font-medium text-muted-foreground mb-3">Voorbeelden om te beginnen:</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentMessage("Hoe maak ik mijn dating profiel aantrekkelijker?")}
+                        className="text-xs h-auto py-2 px-3"
+                      >
+                        Profiel verbeteren
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentMessage("Wat zijn goede gespreksonderwerpen voor een eerste date?")}
+                        className="text-xs h-auto py-2 px-3"
+                      >
+                        Date gesprekken
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentMessage("Hoe ga ik om met afwijzing?")}
+                        className="text-xs h-auto py-2 px-3"
+                      >
+                        Afwijzing verwerken
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentMessage("Welke dating app past bij mij?")}
+                        className="text-xs h-auto py-2 px-3"
+                      >
+                        App advies
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Input Field - Compact when messages exist */}
+              <div className={`px-4 ${messages.length <= 1 ? 'pt-2 pb-4' : 'py-3'}`}>
+                <div className="flex items-end gap-2">
+                  <div className="flex-1">
+                    <Textarea
+                      value={currentMessage}
+                      onChange={(e) => setCurrentMessage(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && !isResponding && handleSendMessage()}
+                      placeholder="Stel je vraag aan de dating coach..."
+                      className={`w-full resize-none border-0 shadow-none focus:ring-0 bg-pink-50/50 border-pink-200/50 text-base leading-relaxed placeholder:text-muted-foreground/70 rounded-2xl px-4 ${
+                        messages.length <= 1 ? 'min-h-[80px] py-3' : 'min-h-[60px] py-2'
+                      }`}
+                      disabled={isResponding}
+                      rows={messages.length <= 1 ? 2 : 1}
+                    />
+                  </div>
+
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={isResponding || !currentMessage.trim()}
+                    size="lg"
+                    className="bg-primary hover:bg-primary/90 h-12 w-12 rounded-full p-0 flex-shrink-0"
+                  >
+                    {isResponding ? (
+                      <LoadingSpinner />
+                    ) : (
+                      <Send className="h-5 w-5" />
+                    )}
+                  </Button>
+                </div>
+
+                <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+                  <span>Druk op Enter om te versturen</span>
+                  <span className="text-muted-foreground/70">
+                    Coach Iris • Altijd beschikbaar
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden md:block max-w-4xl mx-auto">
               {/* Quick Suggestions - Only show when no conversation or first message */}
               {messages.length <= 1 && (
                 <div className="mb-4">

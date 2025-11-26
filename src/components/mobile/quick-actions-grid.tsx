@@ -66,16 +66,16 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
       bgColor: 'bg-pink-50 hover:bg-pink-100',
     },
     // Voice notes tool - commented out until voice analysis feature is implemented
-    // {
-    //   id: 'voice-notes',
-    //   icon: <Mic className="w-6 h-6" />,
-    //   title: 'Stem Berichten',
-    //   subtitle: 'Audio analyse',
-    //   route: '/voice',
-    //   priority: 'medium',
-    //   color: 'text-orange-600',
-    //   bgColor: 'bg-orange-50 hover:bg-orange-100',
-    // },
+    {
+      id: 'voice-notes',
+      icon: <Mic className="w-6 h-6" />,
+      title: 'Stem Berichten',
+      subtitle: 'Audio analyse',
+      route: '/voice',
+      priority: 'medium',
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-50 hover:bg-orange-100',
+    },
     {
       id: 'match-analysis',
       icon: <Users className="w-6 h-6" />,
@@ -125,6 +125,16 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
       priority: 'medium',
       color: 'text-orange-600',
       bgColor: 'bg-orange-50 hover:bg-orange-100',
+    },
+    {
+      id: 'cursus',
+      icon: <BookOpen className="w-6 h-6" />,
+      title: 'Cursussen',
+      subtitle: 'Leer & ontwikkel',
+      route: '/cursus',
+      priority: 'medium',
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-50 hover:bg-indigo-100',
     },
     {
       id: 'all-tools',

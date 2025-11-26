@@ -219,14 +219,22 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-lg">{recommendation.title}</h3>
-                <Badge
-                  variant={recommendation.urgency === 'high' ? 'default' : 'secondary'}
-                  className={recommendation.urgency === 'high' ? 'bg-red-500' : ''}
-                >
-                  {recommendation.urgency === 'high' ? '🔥 Urgent' :
-                   recommendation.urgency === 'medium' ? '📈 Aanbevolen' : '💡 Tip'}
-                </Badge>
+                <h3 className="font-semibold text-lg text-pink-600">{recommendation.title}</h3>
+                {recommendation.urgency === 'high' && (
+                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                    Urgent
+                  </span>
+                )}
+                {recommendation.urgency === 'medium' && (
+                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                    Aanbevolen
+                  </span>
+                )}
+                {recommendation.urgency === 'low' && (
+                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                    Tip
+                  </span>
+                )}
               </div>
 
               <p className="text-muted-foreground mb-2">{recommendation.description}</p>
@@ -235,7 +243,8 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
               <div className="flex items-center gap-3 mt-4">
                 <Button
                   onClick={() => handleAction(recommendation.tool)}
-                  className="gap-2"
+                  size="sm"
+                  className="gap-2 px-3 py-1.5 bg-pink-500 hover:bg-pink-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
                 >
                   {recommendation.actionLabel}
                   <ArrowRight className="w-4 h-4" />

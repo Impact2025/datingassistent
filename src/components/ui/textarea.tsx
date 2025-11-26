@@ -1,21 +1,50 @@
-import * as React from 'react';
+'use client';
 
-import {cn} from '@/lib/utils';
+import { forwardRef } from 'react';
+import { cn } from '@/lib/utils';
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<'textarea'>>(
-  ({className, ...props}, ref) => {
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  error?: string;
+  showCount?: boolean;
+  maxLength?: number;
+}
+
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ className, error, showCount, maxLength, value, ...props }, ref) => {
+    const currentLength = String(value || '').length;
+
     return (
-      <textarea
-        className={cn(
-          'flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-          className
+      <div className="space-y-1">
+        <textarea
+          ref={ref}
+          className={cn(
+            'w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl',
+            'text-gray-900 placeholder-gray-500',
+            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+            'transition-colors duration-200 resize-none',
+            error && 'border-error focus:ring-error',
+            className
+          )}
+          maxLength={maxLength}
+          value={value}
+          {...props}
+        />
+        {showCount && maxLength && (
+          <div className="flex justify-end">
+            <span className={cn(
+              'text-xs',
+              currentLength > maxLength * 0.9 ? 'text-warning' : 'text-gray-500'
+            )}>
+              {currentLength}/{maxLength}
+            </span>
+          </div>
         )}
-        ref={ref}
-        {...props}
-      />
+        {error && (
+          <p className="text-sm text-error">{error}</p>
+        )}
+      </div>
     );
   }
 );
-Textarea.displayName = 'Textarea';
 
-export {Textarea};
+Textarea.displayName = 'Textarea';

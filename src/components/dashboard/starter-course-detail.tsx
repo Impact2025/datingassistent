@@ -144,6 +144,7 @@ type StarterCourseDetailProps = {
   courseSlug?: string;
   dbCourse?: any;
   interactiveCoach?: React.ReactNode;
+  isHydrated?: boolean;
 };
 
 const STARTER_RESOURCE_ICONS: Record<StarterResource['format'], string> = {
@@ -429,6 +430,7 @@ function CourseSectionCard({
   isBioCourse,
   savingFields,
   courseId,
+  isHydrated,
 }: {
   section: CourseSection | null;
   responses: ResponseMap;
@@ -438,6 +440,7 @@ function CourseSectionCard({
   isBioCourse: boolean;
   savingFields: Set<string>;
   courseId: string;
+  isHydrated: boolean;
 }) {
   // Import required hooks and utilities
   const { user, userProfile } = useUser();
@@ -1275,8 +1278,8 @@ function CourseSectionCard({
         )}
 
         {/* Interactive Profile Coach for STAP 5 - AI Bio Generator with 3 variants */}
-        {isBioCourse && ((section?.id === 'stap-5-ai') || (dbModule?.title?.toLowerCase().includes('ai') && dbModule?.title?.toLowerCase().includes('optimalisatie'))) && interactiveCoach && (
-          <div className="rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 p-6">
+        {isHydrated && isBioCourse && ((section?.id === 'stap-5-ai') || (dbModule?.title?.toLowerCase().includes('ai') && dbModule?.title?.toLowerCase().includes('optimalisatie'))) && interactiveCoach && (
+          <div key="interactive-coach" className="rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 p-6">
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-purple-900">
                 <Lucide.Sparkles className="h-6 w-6" />
@@ -1424,8 +1427,19 @@ function CourseSectionCard({
   );
 }
 
-export default function StarterCourseDetail({ starterId, course, courseSlug, dbCourse: dbCourseProp, interactiveCoach }: StarterCourseDetailProps) {
-  const { user, userProfile } = useUser();
+export default function StarterCourseDetail({ starterId, course, courseSlug, dbCourse: dbCourseProp, interactiveCoach, isHydrated: isHydratedProp }: StarterCourseDetailProps) {
+  // Handle UserProvider context gracefully
+  let user, userProfile;
+  try {
+    const userContext = useUser();
+    user = userContext.user;
+    userProfile = userContext.userProfile;
+  } catch (error) {
+    // UserProvider not available (server-side rendering)
+    user = null;
+    userProfile = null;
+  }
+
   const { toast } = useToast();
 
   const subscriptionType = user?.subscriptionType ?? (userProfile as any)?.subscriptionType ?? null;
@@ -1441,6 +1455,7 @@ export default function StarterCourseDetail({ starterId, course, courseSlug, dbC
   const [starterCompleted, setStarterCompleted] = useState(false);
   const [dbCourse, setDbCourse] = useState<any>(dbCourseProp);
   const [loadingDbCourse, setLoadingDbCourse] = useState(!dbCourseProp);
+  const [isHydrated, setIsHydrated] = useState(isHydratedProp || false);
 
   const isBioCourse = course.id === 'je-profieltekst-die-wel-werkt';
   const [bioTone, setBioTone] = useState<typeof BIO_TONES[number]['id']>('vlot');
@@ -1603,6 +1618,11 @@ export default function StarterCourseDetail({ starterId, course, courseSlug, dbC
       console.error('Kon starter voortgang niet laden', error);
     }
   }, [starterId]);
+
+  // Set hydrated state after component mounts
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const persistResponses = useCallback(
     (updater: (prev: ResponseMap) => ResponseMap) => {
@@ -1990,6 +2010,7 @@ export default function StarterCourseDetail({ starterId, course, courseSlug, dbC
                           isBioCourse={isBioCourse}
                           savingFields={savingFields}
                           courseId={course.id}
+                          isHydrated={isHydrated}
                         />
                       </CarouselItem>
                     );

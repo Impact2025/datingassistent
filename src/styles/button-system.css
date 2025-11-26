@@ -1,0 +1,392 @@
+/* ===========================================
+   DATINGASSISTENT BUTTON SYSTEM
+   Comprehensive hierarchical button design system
+   Created: 2025-11-26
+   =========================================== */
+
+/* ===========================================
+   COLOR SYSTEM VARIABLES
+   =========================================== */
+
+:root {
+  /* Primary Magenta/Pink Colors */
+  --button-primary: #FF4081;
+  --button-primary-hover: #E03071;
+  --button-primary-active: #D02061;
+
+  /* Secondary Colors */
+  --button-secondary-bg: #FFFFFF;
+  --button-secondary-text: #FF4081;
+  --button-secondary-border: #FF4081;
+  --button-secondary-hover-bg: #FFF0F5;
+  --button-secondary-active-bg: #FFE0EB;
+
+  /* Tertiary Colors */
+  --button-tertiary-text: #FF4081;
+  --button-tertiary-hover: #C03061;
+  --button-tertiary-active: #902041;
+
+  /* Supporting Colors */
+  --button-white: #FFFFFF;
+  --button-text-dark: #333333;
+
+  /* Common Properties */
+  --button-border-radius: 10px;
+  --button-padding: 12px 24px;
+  --button-font-weight: 600;
+  --button-transition: all 0.2s ease-in-out;
+}
+
+/* ===========================================
+   PRIMARY ACTION BUTTONS
+   Most important actions that users should take immediately
+   =========================================== */
+
+.btn-primary {
+  /* Base Styles */
+  background: linear-gradient(90deg, #b065ec, #ff4081);
+  color: var(--button-white);
+  border: none;
+  border-radius: var(--button-border-radius);
+  padding: var(--button-padding);
+  font-weight: var(--button-font-weight);
+  font-size: 14px;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--button-transition);
+  box-shadow: 0 2px 4px rgba(255, 64, 129, 0.2);
+
+  /* Focus Styles */
+  outline: none;
+}
+
+.btn-primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.3);
+}
+
+/* Hover State */
+.btn-primary:hover {
+  background: linear-gradient(90deg, #a055db, #e03071);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 64, 129, 0.3);
+}
+
+/* Active/Pressed State */
+.btn-primary:active {
+  background: linear-gradient(90deg, #9045ca, #d02061);
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(255, 64, 129, 0.2);
+}
+
+/* Disabled State */
+.btn-primary:disabled {
+  background: #cccccc;
+  color: #999999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ===========================================
+   SECONDARY ACTION BUTTONS
+   Less urgent but still important actions
+   =========================================== */
+
+.btn-secondary {
+  /* Base Styles */
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: var(--button-border-radius);
+  padding: var(--button-padding);
+  font-weight: var(--button-font-weight);
+  font-size: 14px;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--button-transition);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--button-secondary-border);
+  outline-offset: 2px;
+}
+
+/* Hover State */
+.btn-secondary:hover {
+  background: var(--button-secondary-hover-bg);
+  border-color: var(--button-primary-hover);
+  color: var(--button-primary-hover);
+}
+
+/* Active/Pressed State */
+.btn-secondary:active {
+  background: var(--button-secondary-active-bg);
+  border-color: var(--button-primary-active);
+  color: var(--button-primary-active);
+}
+
+/* Disabled State */
+.btn-secondary:disabled {
+  background: #f5f5f5;
+  color: #cccccc;
+  border-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* ===========================================
+   TERTIARY ACTION BUTTONS
+   Subtle links and less prominent actions
+   =========================================== */
+
+.btn-tertiary {
+  /* Base Styles */
+  background: transparent;
+  color: var(--button-tertiary-text);
+  border: none;
+  padding: 8px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: var(--button-transition);
+  border-radius: 6px;
+}
+
+.btn-tertiary:focus-visible {
+  outline: 2px solid var(--button-tertiary-text);
+  outline-offset: 2px;
+}
+
+/* Hover State */
+.btn-tertiary:hover {
+  color: var(--button-tertiary-hover);
+  text-decoration: underline;
+  background: rgba(255, 64, 129, 0.05);
+}
+
+/* Active/Pressed State */
+.btn-tertiary:active {
+  color: var(--button-tertiary-active);
+  text-decoration: underline;
+  background: rgba(255, 64, 129, 0.1);
+}
+
+/* Disabled State */
+.btn-tertiary:disabled {
+  color: #cccccc;
+  cursor: not-allowed;
+  text-decoration: none;
+  background: transparent;
+}
+
+/* ===========================================
+   BUTTON SIZE VARIANTS
+   =========================================== */
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.btn-xl {
+  padding: 20px 40px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ===========================================
+   SPECIALIZED BUTTON TYPES
+   =========================================== */
+
+/* Full Width Buttons */
+.btn-full {
+  width: 100%;
+}
+
+/* Icon Only Buttons */
+.btn-icon-only {
+  padding: 12px;
+  aspect-ratio: 1;
+}
+
+/* Floating Action Button Style */
+.btn-fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(255, 64, 129, 0.4);
+}
+
+.btn-fab:hover {
+  box-shadow: 0 6px 16px rgba(255, 64, 129, 0.5);
+}
+
+/* ===========================================
+   FOCUS OBJECTIVE ITEMS (from Image 2)
+   Tertiary action styling for focus items
+   =========================================== */
+
+.focus-objective-item {
+  background: var(--button-secondary-hover-bg);
+  color: var(--button-tertiary-text);
+  border: 1px solid rgba(255, 64, 129, 0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--button-transition);
+}
+
+.focus-objective-item::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--button-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.focus-objective-item:hover {
+  background: var(--button-secondary-active-bg);
+  border-color: rgba(255, 64, 129, 0.2);
+  color: var(--button-tertiary-hover);
+}
+
+.focus-objective-item.selected {
+  background: var(--button-primary);
+  color: var(--button-white);
+  border-color: var(--button-primary);
+}
+
+.focus-objective-item.selected::before {
+  background: var(--button-white);
+}
+
+/* ===========================================
+   DARK MODE SUPPORT (if needed)
+   =========================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --button-text-dark: #e0e0e0;
+    --button-secondary-bg: #2a2a2a;
+    --button-secondary-hover-bg: #3a3a3a;
+    --button-secondary-active-bg: #4a4a4a;
+  }
+}
+
+/* ===========================================
+   RESPONSIVE ADJUSTMENTS
+   =========================================== */
+
+@media (max-width: 640px) {
+  :root {
+    --button-padding: 10px 20px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: var(--button-padding);
+    font-size: 13px;
+  }
+
+  .btn-tertiary {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
+/* ===========================================
+   ACCESSIBILITY ENHANCEMENTS
+   =========================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn-primary {
+    background: var(--button-primary);
+    border: 2px solid var(--button-white);
+  }
+
+  .btn-secondary {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary,
+  .btn-secondary,
+  .btn-tertiary,
+  .focus-objective-item {
+    transition: none;
+  }
+
+  .btn-primary:hover,
+  .btn-primary:active {
+    transform: none;
+  }
+}
+
+/* ===========================================
+   HTML STRUCTURE EXAMPLES
+   =========================================== */
+
+/*
+PRIMARY BUTTON EXAMPLE:
+<button class="btn-primary">
+  <svg>...</svg>
+  Start met mijn advies
+</button>
+
+SECONDARY BUTTON EXAMPLE:
+<button class="btn-secondary">
+  Voorkeuren Aanpassen
+</button>
+
+TERTIARY BUTTON EXAMPLE:
+<button class="btn-tertiary">
+  Meer informatie
+</button>
+
+FOCUS OBJECTIVE ITEM EXAMPLE:
+<div class="focus-objective-item">
+  Profiel foto optimaliseren
+</div>
+
+FULL WIDTH PRIMARY BUTTON:
+<button class="btn-primary btn-full">
+  Bekijken & Integreren
+</button>
+
+SMALL SECONDARY BUTTON:
+<button class="btn-secondary btn-sm">
+  Annuleren
+</button>
+*/

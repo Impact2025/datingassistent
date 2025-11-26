@@ -15,6 +15,7 @@ import {
   TrendingUp,
   Sparkles
 } from "lucide-react";
+import { AchievementSystem } from "@/components/ui/achievement-system";
 
 interface BadgesShowcaseProps {
   userId: number;
@@ -79,6 +80,9 @@ export function BadgesShowcase({ userId }: BadgesShowcaseProps) {
 
   return (
     <div className="space-y-6">
+      {/* Achievement System */}
+      <AchievementSystem />
+
       {/* Header Stats */}
       <Card>
         <CardHeader>

@@ -49,6 +49,7 @@ export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {
               aria-label={actualTheme === 'dark' ? 'Schakel naar licht thema' : 'Schakel naar donker thema'}
               title={actualTheme === 'dark' ? 'Licht thema' : 'Donker thema'}
               suppressHydrationWarning
+              noFocusRing
             >
               {actualTheme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
@@ -59,6 +60,7 @@ export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {
             onClick={onSubscriptionClick || (() => router.push('/select-package'))}
             aria-label="Abonnement"
             title="Mijn Abonnement"
+            noFocusRing
           >
             <CreditCard className="h-5 w-5" />
           </Button>
@@ -67,6 +69,7 @@ export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {
             size="icon"
             onClick={onSettingsClick || (() => router.push('/dashboard?tab=settings'))}
             aria-label="Instellingen"
+            noFocusRing
           >
             <Settings className="h-5 w-5" />
           </Button>
@@ -75,6 +78,7 @@ export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {
             size="icon"
             onClick={() => logout()}
             aria-label="Uitloggen"
+            noFocusRing
           >
             <LogOut className="h-5 w-5" />
           </Button>

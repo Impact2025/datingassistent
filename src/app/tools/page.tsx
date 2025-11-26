@@ -14,9 +14,14 @@ import {
   Shield,
   Mic,
   Heart,
-  ArrowLeft
+  ArrowLeft,
+  Compass,
+  User,
+  Sparkles,
+  BookOpen
 } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
+import { GuidedFlow } from '@/components/dashboard/guided-flow';
 
 interface Tool {
   id: string;
@@ -32,6 +37,7 @@ function ToolsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [showGuidedFlow, setShowGuidedFlow] = useState(false);
 
   // Handle URL parameters for direct tool access
   useEffect(() => {
@@ -56,7 +62,10 @@ function ToolsPageContent() {
         'ai-gespreks-ehbo': 'safety',
         'confidence-coach': 'analysis',
         'ai-confidence-coach': 'analysis',
-        'ai-profiel-coach': 'analysis'
+        'ai-profiel-coach': 'analysis',
+        'waarden-kompas': 'analysis',
+        'waardenkompas': 'analysis',
+        'kompas': 'analysis'
       };
 
       const mappedCategory = toolCategoryMap[tool.toLowerCase()];
@@ -69,6 +78,17 @@ function ToolsPageContent() {
   }, [searchParams]);
 
   const tools: Tool[] = [
+    // Core Tools
+    {
+      id: 'waarden-kompas',
+      icon: <Compass className="w-6 h-6" />,
+      title: 'Waarden Kompas™',
+      description: 'Ontdek je kernwaarden voor betere matches',
+      route: '/waarden-kompas',
+      category: 'analysis',
+      popular: true,
+    },
+
     // Profile Tools
     {
       id: 'profile-coach',
@@ -84,7 +104,7 @@ function ToolsPageContent() {
       icon: <Heart className="w-6 h-6" />,
       title: 'AI Bio Generator',
       description: 'Professionele bio varianten genereren',
-      route: '/profiel',
+      route: '/tools/ai-bio-generator',
       category: 'profile',
       popular: true,
     },
@@ -193,21 +213,32 @@ function ToolsPageContent() {
           </div>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                selectedCategory === category.id
-                  ? 'bg-pink-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {category.label} ({category.count})
-            </button>
-          ))}
+        {/* Category Filter and Guide Button */}
+        <div className="flex items-center justify-between">
+          <div className="flex gap-2 overflow-x-auto pb-2 flex-1">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                  selectedCategory === category.id
+                    ? 'bg-pink-500 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {category.label} ({category.count})
+              </button>
+            ))}
+          </div>
+
+          <Button
+            onClick={() => setShowGuidedFlow(true)}
+            className="ml-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white shadow-lg"
+            size="sm"
+          >
+            <Sparkles className="w-4 h-4 mr-2" />
+            Persoonlijke Gids
+          </Button>
         </div>
       </div>
 
@@ -268,6 +299,14 @@ function ToolsPageContent() {
           </div>
         )}
       </div>
+
+      {/* Guided Flow Modal */}
+      {showGuidedFlow && (
+        <GuidedFlow
+          onComplete={() => setShowGuidedFlow(false)}
+          onClose={() => setShowGuidedFlow(false)}
+        />
+      )}
 
       <BottomNavigation />
     </div>

@@ -8,8 +8,8 @@ const STATIC_ASSETS = [
   '/',
   '/manifest.json',
   '/favicon.ico',
-  '/icon-192.png',
-  '/icon-512.png',
+  '/images/Logo Icon DatingAssistent.png',
+  '/images/LogoDatingAssistent.png',
   // Core app shell
   '/_next/static/css/main.css',
   '/_next/static/js/main.js',
@@ -173,8 +173,8 @@ self.addEventListener('push', (event) => {
 
     const options = {
       body: data.body,
-      icon: '/icon-192.png',
-      badge: '/icon-96.png',
+      icon: '/images/Logo Icon DatingAssistent.png',
+      badge: '/images/Logo Icon DatingAssistent.png',
       vibrate: [100, 50, 100],
       data: data.data,
       actions: data.actions || [],
@@ -254,8 +254,8 @@ async function sendDailyReminder() {
   // Send daily motivation notification
   const options = {
     body: 'Tijd om aan je dating doelen te werken! 💪',
-    icon: '/icon-192.png',
-    badge: '/icon-96.png',
+    icon: '/images/Logo Icon DatingAssistent.png',
+    badge: '/images/Logo Icon DatingAssistent.png',
     tag: 'daily-reminder',
     requireInteraction: false
   };

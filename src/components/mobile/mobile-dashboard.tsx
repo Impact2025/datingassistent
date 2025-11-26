@@ -13,6 +13,7 @@ import { LogIn, UserPlus, Shield } from 'lucide-react';
 // Lazy load heavy AI components for better performance
 const AIHeroSection = lazy(() => import('./ai-hero-section').then(mod => ({ default: mod.AIHeroSection })));
 const AISmartFlow = lazy(() => import('./ai-smart-flow').then(mod => ({ default: mod.AISmartFlow })));
+const GuidedFlow = lazy(() => import('../dashboard/guided-flow').then(mod => ({ default: mod.GuidedFlow })));
 
 // Simple Error Boundary for AI components
 function AIComponentErrorBoundary({ children, fallback }: { children: React.ReactNode, fallback: React.ReactNode }) {
@@ -100,6 +101,7 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
   const [refreshing, setRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
   const [startY, setStartY] = useState(0);
+  const [showGuidedFlow, setShowGuidedFlow] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Use dashboard data hook
@@ -182,9 +184,14 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
   }
 
   const handleStartGuidedFlow = () => {
-    // This would start a personalized guided flow
-    // For now, navigate to the most important action
-    router.push('/profiel');
+    // Start the comprehensive guided flow for existing users
+    setShowGuidedFlow(true);
+  };
+
+  const handleGuidedFlowComplete = () => {
+    setShowGuidedFlow(false);
+    // Optionally refresh dashboard data or show success message
+    window.location.reload(); // Simple refresh to show any updates
   };
 
   // Pull-to-refresh functionality
@@ -464,6 +471,23 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
 
       {/* Bottom Navigation */}
       <BottomNavigation />
+
+      {/* Guided Flow Modal */}
+      {showGuidedFlow && (
+        <Suspense fallback={
+          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+            <div className="bg-white rounded-lg p-6 max-w-sm mx-4 text-center">
+              <LoadingSpinner />
+              <p className="text-gray-600 mt-4">Je persoonlijke coach laden...</p>
+            </div>
+          </div>
+        }>
+          <GuidedFlow
+            onComplete={handleGuidedFlowComplete}
+            onClose={() => setShowGuidedFlow(false)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

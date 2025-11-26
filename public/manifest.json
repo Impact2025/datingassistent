@@ -12,49 +12,49 @@
   "categories": ["lifestyle", "social", "productivity"],
   "icons": [
     {
-      "src": "/icon-72.png",
+      "src": "/images/Logo Icon DatingAssistent.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-96.png",
+      "src": "/images/Logo Icon DatingAssistent.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-128.png",
+      "src": "/images/Logo Icon DatingAssistent.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-144.png",
+      "src": "/images/Logo Icon DatingAssistent.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-152.png",
+      "src": "/images/Logo Icon DatingAssistent.png",
       "sizes": "152x152",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-192.png",
+      "src": "/images/Logo Icon DatingAssistent.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-384.png",
+      "src": "/images/LogoDatingAssistent.png",
       "sizes": "384x384",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/images/LogoDatingAssistent.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -66,21 +66,21 @@
       "short_name": "Profiel",
       "description": "Check je dating profiel",
       "url": "/profiel",
-      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/images/Logo Icon DatingAssistent.png", "sizes": "96x96" }]
     },
     {
       "name": "Chat Coach",
       "short_name": "Chat",
       "description": "AI hulp bij gesprekken",
       "url": "/chat",
-      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/images/Logo Icon DatingAssistent.png", "sizes": "96x96" }]
     },
     {
       "name": "Doelen",
       "short_name": "Doelen",
       "description": "Je dating doelen beheren",
       "url": "/groei",
-      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/images/Logo Icon DatingAssistent.png", "sizes": "96x96" }]
     }
   ],
   "screenshots": [

@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, MessageCircle, Wrench, User, Settings } from 'lucide-react';
+import { MessageCircle, Wrench, User, Settings } from 'lucide-react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 // Haptic feedback utility
@@ -21,17 +22,18 @@ export function BottomNavigation() {
   const navItems = [
     {
       href: '/',
-      icon: Home,
+      icon: null, // Logo image instead of icon
       label: 'Home',
       active: pathname === '/' || pathname?.startsWith('/dashboard') || pathname?.startsWith('/mobile-dashboard'),
       color: 'text-gray-600',
       activeColor: 'text-pink-500',
+      isLogo: true,
     },
     {
       href: '/chat',
       icon: MessageCircle,
       label: 'Chat',
-      active: pathname?.startsWith('/chat'),
+      active: pathname?.startsWith('/chat') || pathname?.includes('chat-coach'),
       color: 'text-gray-600',
       activeColor: 'text-blue-500',
     },
@@ -96,12 +98,26 @@ export function BottomNavigation() {
                   : "hover:bg-gray-50 hover:scale-105"
               )}
             >
-              <Icon
-                className={cn(
-                  "w-6 h-6 mb-1 transition-colors duration-200",
-                  isActive ? item.activeColor : item.color
-                )}
-              />
+              {item.isLogo ? (
+                <div className="w-6 h-6 mb-1 relative">
+                  <Image
+                    src="/images/Logo Icon DatingAssistent.png"
+                    alt="DatingAssistent Logo"
+                    fill
+                    className={cn(
+                      "object-contain transition-opacity duration-200",
+                      isActive ? "opacity-100" : "opacity-70"
+                    )}
+                  />
+                </div>
+              ) : Icon ? (
+                <Icon
+                  className={cn(
+                    "w-6 h-6 mb-1 transition-colors duration-200",
+                    isActive ? item.activeColor : item.color
+                  )}
+                />
+              ) : null}
               <span className={cn(
                 "text-xs font-medium transition-colors duration-200",
                 isActive ? item.activeColor : item.color

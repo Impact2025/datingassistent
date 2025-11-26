@@ -10,13 +10,45 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['DM Sans', 'sans-serif'],
-        body: ['DM Sans', 'sans-serif'],
-        heading: ['Montserrat', 'sans-serif'],
-        headline: ['Montserrat', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        body: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        heading: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        headline: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
+        // DatingAssistent Design System kleuren
+        primary: {
+          50: 'var(--primary-50)',
+          100: 'var(--primary-100)',
+          200: 'var(--primary-200)',
+          300: 'var(--primary-300)',
+          400: 'var(--primary-400)',
+          500: 'var(--primary-500)',
+          600: 'var(--primary-600)',
+          700: 'var(--primary-700)',
+        },
+        accent: {
+          500: 'var(--accent-500)',
+          600: 'var(--accent-600)',
+        },
+        gray: {
+          50: 'var(--gray-50)',
+          100: 'var(--gray-100)',
+          200: 'var(--gray-200)',
+          300: 'var(--gray-300)',
+          400: 'var(--gray-400)',
+          500: 'var(--gray-500)',
+          600: 'var(--gray-600)',
+          700: 'var(--gray-700)',
+          800: 'var(--gray-800)',
+          900: 'var(--gray-900)',
+        },
+        success: 'var(--success)',
+        warning: 'var(--warning)',
+        error: 'var(--error)',
+
+        // Legacy shadcn kleuren (voor compatibiliteit)
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -27,7 +59,7 @@ export default {
           DEFAULT: 'hsl(var(--popover))',
           foreground: 'hsl(var(--popover-foreground))',
         },
-        primary: {
+        'primary-legacy': {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
         },
@@ -39,7 +71,7 @@ export default {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
-        accent: {
+        'accent-legacy': {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
         },
@@ -59,11 +91,11 @@ export default {
         },
       },
       borderRadius: {
-        lg: 'var(--radius-lg)', // 24px
-        md: 'var(--radius)', // 16px
-        sm: 'calc(var(--radius) - 4px)', // 12px
-        xl: 'var(--radius-xl)', // 32px
-        '2xl': '2.5rem', // 40px
+        sm: 'var(--radius-sm)', // 6px
+        md: 'var(--radius-md)', // 8px
+        lg: 'var(--radius-lg)', // 12px
+        xl: 'var(--radius-xl)', // 16px
+        '2xl': 'var(--radius-2xl)', // 24px
         '3xl': '3rem', // 48px
         full: 'var(--radius-full)', // 9999px (pill shape)
       },

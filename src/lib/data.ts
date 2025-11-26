@@ -128,6 +128,39 @@ export interface DetailedCourse {
 
 export const DETAILED_COURSES: DetailedCourse[] = [
   {
+    id: 'de-fundering',
+    title: 'De Fundering',
+    provider: 'DatingAssistent',
+    duration: '1 module',
+    level: 'Beginner',
+    format: 'Online & interactief',
+    language: 'Nederlands',
+    accessTier: 'free',
+    summary: 'Bouw een solide basis voor je datingleven. Deze cursus helpt je de fundamenten van zelfkennis en intentie te leggen voordat je begint met swipen.',
+    sections: [
+      {
+        id: 'module-0-welkom',
+        label: 'MODULE 0',
+        emoji: ' фундамент',
+        title: 'Welkom & Introductie',
+        description: 'Start met het leggen van een sterk fundament voor je dating avontuur.',
+        lessons: [
+          {
+            id: 'lesson-0-1-welkom',
+            type: 'video',
+            title: 'Les 0.1: Welkom bij De Fundering',
+            description: 'Een introductie tot de cursus en wat je kunt verwachten te leren over jezelf en je datingdoelen.',
+            bullets: [
+              'Het belang van een sterke basis',
+              'Overzicht van de cursusmodules',
+              'Hoe je het meeste uit deze cursus haalt',
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
     id: 'perfecte-profielfoto',
     title: 'De perfecte profielfoto in 5 stappen',
     provider: 'DatingAssistent',
@@ -566,16 +599,16 @@ export const DETAILED_COURSES: DetailedCourse[] = [
           },
           {
             id: 'module-2-lesson-2',
-            type: 'video',
-            title: 'Les 2.2: Een bio schrijven die gesprekken uitlokt',
+            type: 'lesson',
+            title: 'Les 2.2: De psychologie van eerste indrukken',
             description:
-              'Gebruik de “laat zien, vertel niet”-methode om een bio van 100-150 woorden te schrijven die uitnodigt tot reactie.',
+              'Leer hoe mensen binnen 3 seconden een eerste indruk vormen en hoe je foto\'s kiest die de juiste boodschap overbrengen.',
             bullets: [
-              'Open met een opvallende haak, laat je wereld zien en sluit af met een call-to-action.',
-              'Focus op wat je wél zoekt; vermijd defensieve of negatieve zinnen.',
-              'Werk met drie stijlen: humoristisch, authentiek en mysterieus.',
-            ],
-            downloads: ['Werkblad – Bio templates & voorbeelden (PDF)'],
+              'Waarom eerste indrukken cruciaal zijn in dating',
+              'De rol van gezichtsuitdrukkingen en lichaamstaal',
+              'Hoe foto\'s je persoonlijkheid communiceren',
+              'De balans tussen aantrekkelijk en authentiek'
+            ]
           },
           {
             id: 'module-2-lesson-3',
@@ -605,9 +638,13 @@ export const DETAILED_COURSES: DetailedCourse[] = [
           },
         ],
         exercises: [
-          'Verzamel minimaal 10 tot 15 ruwe foto’s en selecteer jouw top zes.',
-          'Upload je beste drie foto’s naar de AI Foto-Checker en noteer de feedback.',
-          'Upload je volledige set van zes foto’s in de AI Foto Advies-tool, pas de volgorde aan en herhaal dit ieder kwartaal.',
+          'Analyseer je huidige foto\'s: Welke eerste indruk wekken ze? Welke boodschap communiceren ze over je persoonlijkheid?',
+          'Bekijk succesvolle profielen: Wat maakt dat mensen binnen 3 seconden besluiten om verder te kijken?',
+          'Fotografie oefening: Neem één foto die specifiek je persoonlijkheid uitstraalt en analyseer wat deze communiceert.',
+          'Reflectie: Welke eerste indruk wil jij maken en hoe kun je dat vertalen naar je foto-selectie?',
+          'Verzamel minimaal 10 tot 15 ruwe foto\'s en selecteer jouw top zes.',
+          'Upload je beste drie foto\'s naar de AI Foto-Checker en noteer de feedback.',
+          'Upload je volledige set van zes foto\'s in de AI Foto Advies-tool, pas de volgorde aan en herhaal dit ieder kwartaal.',
           'Schrijf drie bio-versies (humor, authentiek, mysterieus) en lees ze hardop voor.',
           'Vraag feedback van een vriend(in) en kies de bio die het meest als jou klinkt.',
           'Bedenk antwoorden op minimaal drie prompts of profielvragen van jouw gekozen app.',

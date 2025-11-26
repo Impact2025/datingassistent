@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/providers/user-provider';
+import { useTheme } from '@/providers/theme-provider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -18,8 +19,13 @@ import {
   ArrowLeft,
   Bell,
   Moon,
+  Sun,
   Globe,
-  Crown
+  Crown,
+  Star,
+  TrendingUp,
+  CheckCircle,
+  X
 } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 
@@ -32,13 +38,47 @@ interface MenuItem {
   action?: () => void;
   badge?: string;
   type: 'navigation' | 'toggle' | 'action';
+  disabled?: boolean;
 }
 
 export default function MeerPage() {
   const router = useRouter();
-  const { user, logout } = useUser();
-  const [notifications, setNotifications] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
+  const { user, logout, userProfile } = useUser();
+  const { theme, setTheme, actualTheme, mounted } = useTheme();
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  // Load user preferences on mount
+  useEffect(() => {
+    if (mounted) {
+      // Load notification preferences
+      const savedNotifications = localStorage.getItem('notifications_enabled');
+      if (savedNotifications !== null) {
+        setNotificationsEnabled(JSON.parse(savedNotifications));
+      }
+    }
+  }, [mounted]);
+
+  // Save notification preferences
+  const handleNotificationToggle = (enabled: boolean) => {
+    setNotificationsEnabled(enabled);
+    localStorage.setItem('notifications_enabled', JSON.stringify(enabled));
+
+    // Here you could also send to backend API
+    console.log('Notifications', enabled ? 'enabled' : 'disabled');
+  };
+
+  // Handle theme toggle
+  const handleThemeToggle = () => {
+    if (theme === 'light') {
+      setTheme('dark');
+    } else if (theme === 'dark') {
+      setTheme('light');
+    } else {
+      // If system, switch to opposite of current actual theme
+      setTheme(actualTheme === 'dark' ? 'light' : 'dark');
+    }
+  };
 
   const menuItems: MenuItem[] = [
     // Profile Section
@@ -54,19 +94,28 @@ export default function MeerPage() {
       id: 'subscription',
       icon: <Crown className="w-5 h-5" />,
       title: 'Abonnement',
-      subtitle: 'Pro features en upgrades',
-      route: '/prijzen',
-      badge: 'Pro',
+      subtitle: user?.subscriptionType === 'premium' ? 'Je huidige abonnement beheren' : 'Pro features en upgrades',
+      route: user?.subscriptionType === 'premium' ? '/mobile-subscription' : '/select-package',
+      badge: user?.subscriptionType === 'premium' ? 'Pro' : undefined,
       type: 'navigation',
     },
 
     // Communication Section
+    {
+      id: 'chat',
+      icon: <MessageCircle className="w-5 h-5" />,
+      title: 'Chat Coach',
+      subtitle: 'AI hulp bij gesprekken',
+      route: '/chat',
+      type: 'navigation',
+    },
     {
       id: 'community',
       icon: <MessageCircle className="w-5 h-5" />,
       title: 'Community',
       subtitle: 'Forum en peer support',
       route: '/community',
+      disabled: true,
       type: 'navigation',
     },
 
@@ -75,14 +124,14 @@ export default function MeerPage() {
       id: 'notifications',
       icon: <Bell className="w-5 h-5" />,
       title: 'Notificaties',
-      subtitle: 'Push berichten en alerts',
+      subtitle: notificationsEnabled ? 'Aan - Je ontvangt herinneringen' : 'Uit - Geen notificaties',
       type: 'toggle',
     },
     {
-      id: 'dark-mode',
-      icon: <Moon className="w-5 h-5" />,
-      title: 'Donkere modus',
-      subtitle: 'Makkelijker voor de ogen',
+      id: 'theme',
+      icon: actualTheme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />,
+      title: actualTheme === 'dark' ? 'Lichte modus' : 'Donkere modus',
+      subtitle: actualTheme === 'dark' ? 'Aan - Donker thema actief' : 'Uit - Licht thema actief',
       type: 'toggle',
     },
 
@@ -98,9 +147,9 @@ export default function MeerPage() {
     {
       id: 'privacy',
       icon: <Shield className="w-5 h-5" />,
-      title: 'Privacy & Veiligheid',
-      subtitle: 'Gegevens en account beveiliging',
-      route: '/privacy',
+      title: 'Data & Privacy Beheer',
+      subtitle: 'Gegevens beheren en privacy instellingen',
+      route: '/mobile-data-management',
       type: 'navigation',
     },
 
@@ -110,15 +159,14 @@ export default function MeerPage() {
       icon: <LogOut className="w-5 h-5" />,
       title: 'Uitloggen',
       subtitle: 'Veilig afmelden',
-      action: () => {
-        logout();
-        router.push('/login');
-      },
+      action: () => setShowLogoutConfirm(true),
       type: 'action',
     },
   ];
 
   const handleMenuClick = (item: MenuItem) => {
+    if (item.disabled) return;
+
     if (item.route) {
       router.push(item.route);
     } else if (item.action) {
@@ -128,10 +176,21 @@ export default function MeerPage() {
 
   const groupedItems = {
     profile: menuItems.filter(item => ['profile', 'subscription'].includes(item.id)),
-    communication: menuItems.filter(item => item.id === 'community'),
-    settings: menuItems.filter(item => ['notifications', 'dark-mode'].includes(item.id)),
+    communication: menuItems.filter(item => ['chat', 'community'].includes(item.id)),
+    settings: menuItems.filter(item => ['notifications', 'theme'].includes(item.id)),
     support: menuItems.filter(item => ['help', 'privacy'].includes(item.id)),
     account: menuItems.filter(item => item.id === 'logout'),
+  };
+
+  // Calculate user level/progress (mock data for now)
+  const getUserLevel = () => {
+    // This could be calculated based on user activity, tools used, etc.
+    return 12; // Mock level
+  };
+
+  const getUserProgress = () => {
+    // This could be calculated based on completed actions
+    return 75; // Mock progress percentage
   };
 
   return (
@@ -156,26 +215,43 @@ export default function MeerPage() {
 
       <div className="p-4 space-y-6">
         {/* User Profile Card */}
-        <Card className="border-0 bg-gradient-to-r from-pink-50 to-purple-50">
-          <CardContent className="p-4">
+        <Card className="border-0 bg-gradient-to-r from-pink-50 to-purple-50 shadow-sm">
+          <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center">
-                <span className="text-2xl text-white">
+              <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-2xl text-white font-bold">
                   {user?.name?.charAt(0)?.toUpperCase() || 'U'}
                 </span>
               </div>
               <div className="flex-1">
-                <h2 className="font-semibold text-gray-900">
+                <h2 className="font-semibold text-gray-900 text-lg">
                   {user?.name || 'Dating Expert'}
                 </h2>
-                <p className="text-sm text-gray-600">{user?.email}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <Badge className="bg-pink-100 text-pink-700 text-xs">
-                    Pro Member
+                <p className="text-sm text-gray-600 mb-2">{user?.email}</p>
+                <div className="flex items-center gap-2">
+                  <Badge className={`text-xs px-2 py-1 ${
+                    user?.subscriptionType === 'premium'
+                      ? 'bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 border-pink-200'
+                      : 'bg-gray-100 text-gray-700 border-gray-200'
+                  }`}>
+                    {user?.subscriptionType === 'premium' ? 'Pro Member' : 'Free Account'}
                   </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    Level 12
+                  <Badge variant="outline" className="text-xs px-2 py-1 border-gray-300">
+                    Level {getUserLevel()}
                   </Badge>
+                </div>
+                {/* Progress bar */}
+                <div className="mt-3">
+                  <div className="flex justify-between text-xs text-gray-500 mb-1">
+                    <span>Voortgang</span>
+                    <span>{getUserProgress()}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-gradient-to-r from-pink-400 to-purple-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${getUserProgress()}%` }}
+                    ></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -198,7 +274,11 @@ export default function MeerPage() {
                 {items.map((item) => (
                   <Card
                     key={item.id}
-                    className="border-0 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+                    className={`border-0 transition-colors ${
+                      item.disabled
+                        ? 'bg-gray-50 cursor-not-allowed opacity-60'
+                        : 'bg-white cursor-pointer hover:bg-gray-50'
+                    }`}
                     onClick={() => handleMenuClick(item)}
                   >
                     <CardContent className="p-4">
@@ -211,7 +291,7 @@ export default function MeerPage() {
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <h4 className="font-medium text-gray-900">
+                              <h4 className={`font-medium ${item.disabled ? 'text-gray-400' : 'text-gray-900'}`}>
                                 {item.title}
                               </h4>
                               {item.badge && (
@@ -221,7 +301,7 @@ export default function MeerPage() {
                               )}
                             </div>
                             {item.subtitle && (
-                              <p className="text-sm text-gray-600">
+                              <p className={`text-sm ${item.disabled ? 'text-gray-400' : 'text-gray-600'}`}>
                                 {item.subtitle}
                               </p>
                             )}
@@ -232,20 +312,22 @@ export default function MeerPage() {
                         <div className="flex items-center">
                           {item.type === 'toggle' && item.id === 'notifications' && (
                             <Switch
-                              checked={notifications}
-                              onCheckedChange={setNotifications}
+                              checked={notificationsEnabled}
+                              onCheckedChange={handleNotificationToggle}
                               onClick={(e) => e.stopPropagation()}
+                              className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                             />
                           )}
-                          {item.type === 'toggle' && item.id === 'dark-mode' && (
+                          {item.type === 'toggle' && item.id === 'theme' && mounted && (
                             <Switch
-                              checked={darkMode}
-                              onCheckedChange={setDarkMode}
+                              checked={actualTheme === 'dark'}
+                              onCheckedChange={handleThemeToggle}
                               onClick={(e) => e.stopPropagation()}
+                              className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                             />
                           )}
                           {(item.type === 'navigation' || item.type === 'action') && (
-                            <div className="w-5 h-5 text-gray-400">
+                            <div className={`w-5 h-5 ${item.disabled ? 'text-gray-300' : 'text-gray-400'}`}>
                               →
                             </div>
                           )}
@@ -260,7 +342,7 @@ export default function MeerPage() {
         ))}
 
         {/* App Info */}
-        <Card className="border-0 bg-white">
+        <Card className="border-0 bg-white shadow-sm">
           <CardContent className="p-4 text-center">
             <div className="text-sm text-gray-500 space-y-1">
               <div>DatingAssistent v2.1.0</div>
@@ -269,6 +351,43 @@ export default function MeerPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <LogOut className="w-5 h-5 text-red-500" />
+                Uitloggen bevestigen
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-600">
+                Weet je zeker dat je wilt uitloggen? Je wordt teruggestuurd naar de inlogpagina.
+              </p>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowLogoutConfirm(false)}
+                  className="flex-1"
+                >
+                  Annuleren
+                </Button>
+                <Button
+                  onClick={() => {
+                    logout();
+                    router.push('/login');
+                  }}
+                  className="flex-1 bg-red-500 hover:bg-red-600 text-white"
+                >
+                  Uitloggen
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       <BottomNavigation />
     </div>

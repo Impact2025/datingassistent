@@ -1,22 +1,34 @@
-import * as React from "react"
+'use client';
 
-import { cn } from "@/lib/utils"
+import { forwardRef } from 'react';
+import { cn } from '@/lib/utils';
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...props }, ref) => {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  error?: string;
+}
+
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ className, error, ...props }, ref) => {
     return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-12 w-full rounded-[16px] border-2 border-border bg-input px-5 py-4 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-primary focus-visible:bg-white transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50",
-          className
+      <div className="space-y-1">
+        <input
+          ref={ref}
+          className={cn(
+            'w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl',
+            'text-gray-900 placeholder-gray-500',
+            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+            'transition-colors duration-200',
+            error && 'border-error focus:ring-error',
+            className
+          )}
+          {...props}
+        />
+        {error && (
+          <p className="text-sm text-error">{error}</p>
         )}
-        ref={ref}
-        {...props}
-      />
-    )
+      </div>
+    );
   }
-)
-Input.displayName = "Input"
+);
 
-export { Input }
+Input.displayName = 'Input';

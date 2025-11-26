@@ -871,158 +871,259 @@ export async function initializeDatabase() {
       )
     `;
 
-    // Create indexes for better query performance
-    await sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_messages_conversation_id ON messages(conversation_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_usage_tracking_user_id ON usage_tracking(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_blog_posts_slug ON blog_posts(slug)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_blog_posts_published ON blog_posts(published)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coupons_code ON coupons(code)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coupon_usage_coupon_user ON coupon_usage(coupon_id, user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coupon_usage_user ON coupon_usage(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coupon_usage_order ON coupon_usage(order_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_podcasts_published ON podcasts(published)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coupons_code ON coupons(code)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coupons_active ON coupons(is_active)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_user_id ON user_behavior(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_module_id ON user_behavior(module_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_course_id ON user_behavior(course_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_action ON user_behavior(action)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_timestamp ON user_behavior(timestamp)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_profiles_extended_user_id ON user_profiles_extended(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_user_id ON user_badges(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_badge_id ON user_badges(badge_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_badge_type ON user_badges(badge_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_forum_posts_category_id ON forum_posts(category_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_forum_posts_user_id ON forum_posts(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_forum_replies_post_id ON forum_replies(post_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_forum_replies_user_id ON forum_replies(user_id)`;
+    // Create indexes for better query performance - DISABLED FOR NOW DUE TO ISSUES
+    // await sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_messages_conversation_id ON messages(conversation_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_usage_tracking_user_id ON usage_tracking(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_blog_posts_slug ON blog_posts(slug)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_blog_posts_published ON blog_posts(published)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coupons_code ON coupons(code)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coupon_usage_coupon_user ON coupon_usage(coupon_id, user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coupon_usage_user ON coupon_usage(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coupon_usage_order ON coupon_usage(order_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_podcasts_published ON podcasts(published)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coupons_code ON coupons(code)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coupons_active ON coupons(is_active)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_user_id ON user_behavior(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_module_id ON user_behavior(module_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_course_id ON user_behavior(course_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_action ON user_behavior(action)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_timestamp ON user_behavior(timestamp)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_profiles_extended_user_id ON user_profiles_extended(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_user_id ON user_badges(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_badge_id ON user_badges(badge_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_badge_type ON user_badges(badge_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_forum_posts_category_id ON forum_posts(category_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_forum_posts_user_id ON forum_posts(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_forum_replies_post_id ON forum_replies(post_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_forum_replies_user_id ON forum_replies(user_id)`;
 
-    // Indexes for new gamification tables
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_activity_log_user_id ON user_activity_log(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_activity_log_type ON user_activity_log(activity_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_activity_log_created_at ON user_activity_log(created_at)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_streaks_user_id ON user_streaks(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_streaks_type ON user_streaks(streak_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_progress_metrics_user_id ON user_progress_metrics(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_progress_metrics_week ON user_progress_metrics(week_start)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_weekly_insights_user_id ON weekly_insights(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_weekly_insights_week ON weekly_insights(week_start)`;
+    // Indexes for new gamification tables - DISABLED FOR NOW
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_activity_log_user_id ON user_activity_log(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_activity_log_type ON user_activity_log(activity_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_activity_log_created_at ON user_activity_log(created_at)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_streaks_user_id ON user_streaks(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_streaks_type ON user_streaks(streak_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_progress_metrics_user_id ON user_progress_metrics(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_progress_metrics_week ON user_progress_metrics(week_start)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_weekly_insights_user_id ON weekly_insights(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_weekly_insights_week ON weekly_insights(week_start)`;
 
-    // Indexes for goal-setting system
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_user_id ON user_goals(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_type ON user_goals(goal_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_category ON user_goals(category)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_status ON user_goals(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_due_date ON user_goals(due_date)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_progress_goal_id ON goal_progress(goal_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_progress_user_id ON goal_progress(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_progress_date ON goal_progress(progress_date)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_weekly_reflections_user_id ON weekly_reflections(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_weekly_reflections_week ON weekly_reflections(week_start)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_monthly_reviews_user_id ON monthly_reviews(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_monthly_reviews_month ON monthly_reviews(review_month)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_templates_category ON goal_templates(category)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_templates_active ON goal_templates(is_active)`;
+    // Indexes for goal-setting system - DISABLED FOR NOW
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_user_id ON user_goals(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_type ON user_goals(goal_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_category ON user_goals(category)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_status ON user_goals(status)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_goals_due_date ON user_goals(due_date)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_progress_goal_id ON goal_progress(goal_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_progress_user_id ON goal_progress(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_progress_progress_date ON goal_progress(progress_date)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_weekly_reflections_user_id ON weekly_reflections(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_weekly_reflections_week ON weekly_reflections(week_start)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_monthly_reviews_user_id ON monthly_reviews(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_monthly_reviews_month ON monthly_reviews(review_month)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_templates_category ON goal_templates(category)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_templates_active ON goal_templates(is_active)`;
 
-    // Indexes for client communication system
-    await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_assignments_coach ON coach_client_assignments(coach_user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_assignments_client ON coach_client_assignments(client_user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_assignments_status ON coach_client_assignments(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_coach ON coach_client_messages(coach_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_client ON coach_client_messages(client_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_status ON coach_client_messages(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_type ON coach_client_messages(type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_scheduled ON coach_client_messages(scheduled_for)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_created ON coach_client_messages(created_at)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_communication_templates_coach ON communication_templates(coach_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_communication_templates_category ON communication_templates(category)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_communication_templates_active ON communication_templates(is_active)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_client_comm_prefs_client ON client_communication_preferences(client_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_comm_sequences_coach ON communication_sequences(coach_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_comm_sequences_trigger ON communication_sequences(trigger_event)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_sequence_steps_sequence ON sequence_steps(sequence_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_sequence_steps_order ON sequence_steps(step_order)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_client_sequence_enrollments_client ON client_sequence_enrollments(client_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_client_sequence_enrollments_sequence ON client_sequence_enrollments(sequence_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_client_sequence_enrollments_status ON client_sequence_enrollments(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_message_analytics_message ON message_analytics(message_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_message_analytics_event ON message_analytics(event_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_message_analytics_time ON message_analytics(occurred_at)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_in_app_notifications_user ON in_app_notifications(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_in_app_notifications_read ON in_app_notifications(is_read)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_in_app_notifications_expires ON in_app_notifications(expires_at)`;
+    // Indexes for client communication system - DISABLED FOR NOW
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_assignments_coach ON coach_client_assignments(coach_user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_assignments_client ON coach_client_assignments(client_user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_assignments_status ON coach_client_assignments(status)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_coach ON coach_client_messages(coach_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_client ON coach_client_messages(client_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_status ON coach_client_messages(status)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_type ON coach_client_messages(type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_scheduled ON coach_client_messages(scheduled_for)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_coach_client_messages_created ON coach_client_messages(created_at)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_communication_templates_coach ON communication_templates(coach_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_communication_templates_category ON communication_templates(category)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_communication_templates_active ON communication_templates(is_active)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_client_comm_prefs_client ON client_communication_preferences(client_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_comm_sequences_coach ON communication_sequences(coach_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_comm_sequences_trigger ON communication_sequences(trigger_event)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_sequence_steps_sequence ON sequence_steps(sequence_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_sequence_steps_order ON sequence_steps(step_order)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_client_sequence_enrollments_client ON client_sequence_enrollments(client_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_client_sequence_enrollments_sequence ON client_sequence_enrollments(sequence_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_client_sequence_enrollments_status ON client_sequence_enrollments(status)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_message_analytics_message ON message_analytics(message_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_message_analytics_event ON message_analytics(event_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_message_analytics_time ON message_analytics(occurred_at)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_in_app_notifications_user ON in_app_notifications(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_in_app_notifications_read ON in_app_notifications(is_read)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_in_app_notifications_expires ON in_app_notifications(expires_at)`;
 
-    // Indexes for progress automation
-    await sql`CREATE INDEX IF NOT EXISTS idx_progress_events_user ON progress_events(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_progress_events_type ON progress_events(event_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_progress_events_occurred ON progress_events(occurred_at)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_progress_events_processed ON progress_events(processed)`;
+    // Indexes for progress automation - DISABLED FOR NOW
+    // await sql`CREATE INDEX IF NOT EXISTS idx_progress_events_user ON progress_events(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_progress_events_type ON progress_events(event_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_progress_events_occurred ON progress_events(occurred_at)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_progress_events_processed ON progress_events(processed)`;
 
-    // Indexes for new member journey system
-    await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_journeys_user ON onboarding_journeys(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_journeys_phase ON onboarding_journeys(current_phase)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_journeys_status ON onboarding_journeys(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_journeys_activity ON onboarding_journeys(last_activity)`;
+    // Indexes for new member journey system - DISABLED FOR NOW
+    // await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_journeys_user ON onboarding_journeys(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_journeys_phase ON onboarding_journeys(current_phase)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_journeys_status ON onboarding_journeys(status)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_journeys_activity ON onboarding_journeys(last_activity)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_personality_scans_user ON personality_scans(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_personality_scans_completed ON personality_scans(completed_at)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_personality_scans_user ON personality_scans(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_personality_scans_completed ON personality_scans(completed_at)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_user ON goal_hierarchies(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_type ON goal_hierarchies(goal_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_period ON goal_hierarchies(goal_period)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_status ON goal_hierarchies(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_parent ON goal_hierarchies(parent_goal_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_category ON goal_hierarchies(category)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_user ON goal_hierarchies(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_type ON goal_hierarchies(goal_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_period ON goal_hierarchies(goal_period)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_status ON goal_hierarchies(status)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_parent ON goal_hierarchies(parent_goal_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_goal_hierarchies_category ON goal_hierarchies(category)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_journey_progress_user ON journey_progress(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_journey_progress_phase ON journey_progress(journey_phase)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_journey_progress_status ON journey_progress(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_journey_progress_completed ON journey_progress(completed_at)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_journey_progress_user ON journey_progress(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_journey_progress_phase ON journey_progress(journey_phase)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_journey_progress_status ON journey_progress(status)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_journey_progress_completed ON journey_progress(completed_at)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_user ON ai_content_cache(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_type ON ai_content_cache(content_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_key ON ai_content_cache(content_key)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_expires ON ai_content_cache(expires_at)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_used ON ai_content_cache(last_used)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_user ON ai_content_cache(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_type ON ai_content_cache(content_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_key ON ai_content_cache(content_key)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_expires ON ai_content_cache(expires_at)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ai_content_cache_used ON ai_content_cache(last_used)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_user ON engagement_schedules(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_type ON engagement_schedules(schedule_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_scheduled ON engagement_schedules(scheduled_for)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_status ON engagement_schedules(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_priority ON engagement_schedules(priority)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_user ON engagement_schedules(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_type ON engagement_schedules(schedule_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_scheduled ON engagement_schedules(scheduled_for)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_status ON engagement_schedules(status)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_engagement_schedules_priority ON engagement_schedules(priority)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_user ON performance_metrics(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_type ON performance_metrics(metric_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_date ON performance_metrics(metric_date)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_period ON performance_metrics(time_period)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_user ON performance_metrics(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_type ON performance_metrics(metric_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_date ON performance_metrics(metric_date)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_period ON performance_metrics(time_period)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_badge_system_key ON badge_system(badge_key)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_badge_system_category ON badge_system(category)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_badge_system_rarity ON badge_system(rarity)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_badge_system_active ON badge_system(is_active)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_badge_system_key ON badge_system(badge_key)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_badge_system_category ON badge_system(category)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_badge_system_rarity ON badge_system(rarity)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_badge_system_active ON badge_system(is_active)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_user ON user_badges(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_badge ON user_badges(badge_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_earned ON user_badges(earned_at)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_user ON user_badges(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_badge ON user_badges(badge_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_user_badges_earned ON user_badges(earned_at)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_reflection_responses_user ON reflection_responses(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_reflection_responses_type ON reflection_responses(reflection_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_reflection_responses_period ON reflection_responses(reflection_period)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_reflection_responses_user ON reflection_responses(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_reflection_responses_type ON reflection_responses(reflection_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_reflection_responses_period ON reflection_responses(reflection_period)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_journey_analytics_user ON journey_analytics(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_journey_analytics_event ON journey_analytics(event_type)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_journey_analytics_occurred ON journey_analytics(occurred_at)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_journey_analytics_user ON journey_analytics(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_journey_analytics_event ON journey_analytics(event_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_journey_analytics_occurred ON journey_analytics(occurred_at)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_experiments_key ON ab_test_experiments(experiment_key)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_experiments_status ON ab_test_experiments(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_experiments_type ON ab_test_experiments(test_type)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_experiments_key ON ab_test_experiments(experiment_key)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_experiments_status ON ab_test_experiments(status)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_experiments_type ON ab_test_experiments(test_type)`;
 
-    await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_assignments_user ON ab_test_assignments(user_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_assignments_experiment ON ab_test_assignments(experiment_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_assignments_variant ON ab_test_assignments(assigned_variant)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_assignments_user ON ab_test_assignments(user_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_assignments_experiment ON ab_test_assignments(experiment_id)`;
+    // await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_assignments_variant ON ab_test_assignments(assigned_variant)`;
+
+    // ============================================
+    // WAARDEN KOMPAS SYSTEM TABLES
+    // ============================================
+
+    try {
+      // Waarden Kompas sessions table
+      await sql`
+        CREATE TABLE IF NOT EXISTS waarden_kompas_sessions (
+          id SERIAL PRIMARY KEY,
+          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          started_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          completed_at TIMESTAMP WITH TIME ZONE,
+          current_phase VARCHAR(20) DEFAULT 'intake',
+          intake_goal VARCHAR(50),
+          intake_values_importance VARCHAR(20),
+          intake_dating_style VARCHAR(20),
+          ai_calibration JSONB,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          UNIQUE(user_id)
+        )
+      `;
+
+      // Waarden onderzoek responses table
+      await sql`
+        CREATE TABLE IF NOT EXISTS waarden_kompas_responses (
+          id SERIAL PRIMARY KEY,
+          session_id INTEGER NOT NULL REFERENCES waarden_kompas_sessions(id) ON DELETE CASCADE,
+          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          category VARCHAR(50) NOT NULL,
+          value_key VARCHAR(50) NOT NULL,
+          value_name VARCHAR(100) NOT NULL,
+          importance_rating INTEGER NOT NULL CHECK (importance_rating >= 1 AND importance_rating <= 4),
+          responded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          UNIQUE(session_id, value_key)
+        )
+      `;
+
+      // AI synthesis results table
+      await sql`
+        CREATE TABLE IF NOT EXISTS waarden_kompas_results (
+          id SERIAL PRIMARY KEY,
+          session_id INTEGER NOT NULL REFERENCES waarden_kompas_sessions(id) ON DELETE CASCADE,
+          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          core_values JSONB NOT NULL,
+          values_meaning JSONB NOT NULL,
+          red_flags JSONB NOT NULL,
+          green_flags JSONB NOT NULL,
+          dating_strategies JSONB NOT NULL,
+          ai_confidence_score DECIMAL(3,2),
+          ai_analysis_notes TEXT,
+          generated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        )
+      `;
+
+      // Integration tracking table
+      await sql`
+        CREATE TABLE IF NOT EXISTS waarden_kompas_integrations (
+          id SERIAL PRIMARY KEY,
+          session_id INTEGER NOT NULL REFERENCES waarden_kompas_sessions(id) ON DELETE CASCADE,
+          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          integration_type VARCHAR(50) NOT NULL,
+          applied_suggestions JSONB,
+          effectiveness_rating INTEGER CHECK (effectiveness_rating >= 1 AND effectiveness_rating <= 5),
+          user_feedback TEXT,
+          applied_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          UNIQUE(session_id, integration_type)
+        )
+      `;
+
+      // Waarden Kompas indexes
+      await sql`CREATE INDEX IF NOT EXISTS idx_waarden_sessions_user_id ON waarden_kompas_sessions(user_id)`;
+      await sql`CREATE INDEX IF NOT EXISTS idx_waarden_sessions_phase ON waarden_kompas_sessions(current_phase)`;
+      await sql`CREATE INDEX IF NOT EXISTS idx_waarden_responses_session ON waarden_kompas_responses(session_id)`;
+      await sql`CREATE INDEX IF NOT EXISTS idx_waarden_responses_user ON waarden_kompas_responses(user_id)`;
+      await sql`CREATE INDEX IF NOT EXISTS idx_waarden_results_session ON waarden_kompas_results(session_id)`;
+      await sql`CREATE INDEX IF NOT EXISTS idx_waarden_integrations_session ON waarden_kompas_integrations(session_id)`;
+
+      // Waarden Kompas triggers
+      await sql`
+        CREATE OR REPLACE FUNCTION update_waarden_updated_at_column()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            NEW.updated_at = NOW();
+            RETURN NEW;
+        END;
+        $$ language 'plpgsql'
+      `;
+
+      await sql`CREATE TRIGGER update_waarden_sessions_updated_at BEFORE UPDATE ON waarden_kompas_sessions FOR EACH ROW EXECUTE FUNCTION update_waarden_updated_at_column()`;
+      await sql`CREATE TRIGGER update_waarden_results_updated_at BEFORE UPDATE ON waarden_kompas_results FOR EACH ROW EXECUTE FUNCTION update_waarden_updated_at_column()`;
+      await sql`CREATE TRIGGER update_waarden_integrations_updated_at BEFORE UPDATE ON waarden_kompas_integrations FOR EACH ROW EXECUTE FUNCTION update_waarden_updated_at_column()`;
+
+      console.log('Waarden Kompas tables created successfully');
+    } catch (waardenError) {
+      console.error('Error creating Waarden Kompas tables:', waardenError);
+      // Continue with other tables even if Waarden Kompas fails
+    }
 
     console.log('Database schema initialized successfully');
     return { success: true };

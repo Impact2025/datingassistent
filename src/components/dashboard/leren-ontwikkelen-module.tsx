@@ -5,13 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GraduationCap, Sparkles, Award, BookOpen, Lightbulb, CheckCircle2, Play, Star } from "lucide-react";
+import { GraduationCap, Sparkles, Award, BookOpen, Lightbulb, CheckCircle2, Play, Star, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Import existing components
 import { OnlineCursusTab } from "./online-cursus-tab";
 import { PersonalRecommendations } from "./personal-recommendations";
 import { SkillsAssessmentTab } from "./skills-assessment-tab";
+import { WaardenKompasTool } from "../waarden-kompas/WaardenKompasTool";
 
 interface LerenOntwikkelenModuleProps {
   onTabChange?: (tab: string) => void;
@@ -44,6 +45,14 @@ export function LerenOntwikkelenModule({ onTabChange }: LerenOntwikkelenModulePr
       description: "Ontwikkel je dating vaardigheden",
       component: <SkillsAssessmentTab />,
       badge: null
+    },
+    {
+      id: "waarden-kompas",
+      label: "Waarden Kompas™",
+      icon: Compass,
+      description: "Ontdek je kernwaarden voor betere matches",
+      component: <WaardenKompasTool />,
+      badge: "Persoonlijk"
     }
   ];
 
@@ -92,7 +101,7 @@ export function LerenOntwikkelenModule({ onTabChange }: LerenOntwikkelenModulePr
             <p className="text-sm text-muted-foreground">Selecteer de tool die je nu wilt gebruiken</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
             {subModules.map((module) => {
               const Icon = module.icon;
               const isActive = activeSubTab === module.id;
@@ -230,7 +239,7 @@ export function LerenOntwikkelenModule({ onTabChange }: LerenOntwikkelenModulePr
       <Card>
         <CardContent className="p-6">
           <h4 className="font-semibold mb-4">Snelle Acties</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Button
               variant="outline"
               className="h-auto p-4 flex flex-col gap-2"
@@ -259,6 +268,16 @@ export function LerenOntwikkelenModule({ onTabChange }: LerenOntwikkelenModulePr
               <Award className="w-5 h-5" />
               <span className="font-medium">Skills Test</span>
               <span className="text-xs text-muted-foreground">Ontdek je niveau</span>
+            </Button>
+
+            <Button
+              variant="outline"
+              className="h-auto p-4 flex flex-col gap-2"
+              onClick={() => setActiveSubTab("waarden-kompas")}
+            >
+              <Compass className="w-5 h-5" />
+              <span className="font-medium">Waarden Kompas</span>
+              <span className="text-xs text-muted-foreground">Jouw kernwaarden</span>
             </Button>
           </div>
         </CardContent>

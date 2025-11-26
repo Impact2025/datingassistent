@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate tool name
-    const validTools = ['profiel-coach', 'foto-advies', 'chat-coach', 'gesprek-starter', 'date-planner'];
+    const validTools = ['profiel-coach', 'foto-advies', 'chat-coach', 'gesprek-starter', 'date-planner', 'waarden-kompas'];
     if (!validTools.includes(toolName)) {
       return NextResponse.json({
         error: 'Invalid tool name',

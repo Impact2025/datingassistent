@@ -8,28 +8,31 @@ export function ImageSlideTemplate({ slide }: ImageSlideTemplateProps) {
   const bgColor = slide.backgroundColor || 'bg-gray-50';
 
   return (
-    <div className={`w-full h-full ${bgColor} rounded-xl p-8 md:p-12 flex flex-col`}>
-      {slide.title && (
-        <h2 className="text-3xl md:text-4xl font-bold text-purple-600 mb-6 text-center">
-          {slide.title}
-        </h2>
-      )}
+    <div className={`w-full h-full ${bgColor} flex flex-col items-center justify-center p-6`}>
+      {/* Main content card */}
+      <div className="w-full max-w-4xl bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+        {slide.title && (
+          <h2 className="text-2xl md:text-3xl font-bold text-pink-600 mb-6 text-center">
+            {slide.title}
+          </h2>
+        )}
 
-      <div className="flex-1 flex items-center justify-center">
-        <div className="max-w-4xl w-full">
-          <img
-            src={slide.imageUrl}
-            alt={slide.caption || 'Slide image'}
-            className="w-full h-auto rounded-lg shadow-2xl"
-          />
+        <div className="flex items-center justify-center">
+          <div className="max-w-3xl w-full">
+            <img
+              src={slide.imageUrl}
+              alt={slide.caption || 'Slide image'}
+              className="w-full h-auto rounded-lg shadow-sm"
+            />
+          </div>
         </div>
-      </div>
 
-      {slide.caption && (
-        <p className="text-center text-lg text-gray-600 mt-6 italic">
-          {slide.caption}
-        </p>
-      )}
+        {slide.caption && (
+          <p className="text-center text-sm text-gray-600 mt-4 italic">
+            {slide.caption}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

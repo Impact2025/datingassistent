@@ -10,6 +10,7 @@ import { SkipLinks } from "@/components/accessibility/skip-links";
 import { StructuredData } from "@/components/structured-data";
 import ErrorBoundary from "@/components/error-boundary";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
+import { IrisFloatingButton } from "@/components/iris/IrisFloatingButton";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://datingassistent.nl'),
@@ -147,6 +148,7 @@ export default function RootLayout({
                 {children}
               </div>
               <Toaster />
+              <IrisFloatingButton />
             </UserProvider>
           </ThemeProvider>
         </ErrorBoundary>

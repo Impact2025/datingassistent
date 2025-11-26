@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Play, Heart, Zap } from 'lucide-react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface AIHeroSectionProps {
@@ -77,8 +78,14 @@ export function AIHeroSection({ onStartGuidedFlow, className }: AIHeroSectionPro
     <div className="bg-white border border-gray-200 rounded-lg p-6">
       {/* AI Coach Avatar */}
       <div className="flex items-center justify-center mb-6">
-        <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center">
-          <span className="text-xl">🤖</span>
+        <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center overflow-hidden">
+          <Image
+            src="/images/Logo Icon DatingAssistent.png"
+            alt="DatingAssistent AI Coach"
+            width={48}
+            height={48}
+            className="object-contain"
+          />
         </div>
       </div>
 
@@ -116,8 +123,8 @@ export function AIHeroSection({ onStartGuidedFlow, className }: AIHeroSectionPro
       <div>
         <Button
           onClick={onStartGuidedFlow}
-          className="w-full bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 rounded-lg"
-          size="lg"
+          size="sm"
+          className="w-full gap-2 px-3 py-1.5 bg-pink-500 hover:bg-pink-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
         >
           <Play className="w-4 h-4 mr-2" />
           Start met mijn advies

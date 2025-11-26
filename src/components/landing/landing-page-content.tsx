@@ -365,7 +365,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
           <div className="text-center mt-12">
             <Link href="/features">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full">Bekijk al onze tools</Button>
+              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all">Bekijk al onze tools</Button>
             </Link>
           </div>
         </div>
@@ -485,7 +485,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
           <div className="mt-12 text-center">
             <Link href="/blog">
-              <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-3 rounded-full transition-all">
+              <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-3 rounded-full transition-all shadow-lg hover:shadow-xl">
                 Bekijk alle blogs
               </Button>
             </Link>
@@ -634,7 +634,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
               <div className="pt-4">
                 <Link href="/register">
-                  <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full">Ontdek onze tools</Button>
+                  <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all">Ontdek onze tools</Button>
                 </Link>
               </div>
             </div>
@@ -743,7 +743,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             </div>
 
             <div className="text-center mt-8">
-              <Link href="/faq" className="text-pink-500 hover:text-pink-600 font-medium">
+              <Link href="/faq" className="text-pink-500 hover:text-pink-600 font-medium transition-all">
                 Bekijk alle veelgestelde vragen →
               </Link>
             </div>
@@ -756,12 +756,12 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/register">
-                  <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-6 text-base rounded-full shadow-lg w-full sm:w-auto">
+                  <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-6 text-base rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto">
                     Start gratis
                   </Button>
                 </Link>
                 <Link href="#prijzen">
-                  <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-6 text-base rounded-full w-full sm:w-auto">
+                  <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-6 text-base rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto">
                     Bekijk prijzen
                   </Button>
                 </Link>

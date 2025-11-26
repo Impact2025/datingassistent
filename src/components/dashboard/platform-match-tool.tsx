@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Users, Sparkles, Loader2, CheckCircle2, HelpCircle, ArrowRight, ArrowLeft, Target, Shield, Clock, DollarSign, MessageSquare, Video, Mic, AlertCircle, XCircle } from "lucide-react";
+import { Users, Sparkles, Loader2, CheckCircle2, HelpCircle, ArrowRight, ArrowLeft, Target, Shield, Clock, DollarSign, MessageSquare, Video, Mic, AlertCircle, XCircle, Compass } from "lucide-react";
 import { ToolOnboardingOverlay, useOnboardingOverlay } from "@/components/shared/tool-onboarding-overlay";
 import { getOnboardingSteps, getToolDisplayName } from "@/lib/tool-onboarding-content";
 import { useUser } from "@/providers/user-provider";
@@ -54,6 +54,38 @@ export function PlatformMatchTool() {
   const { showOverlay, setShowOverlay } = useOnboardingOverlay('platform-match');
   const { userProfile, user, loading } = useUser();
   const [authManager] = useState(() => new AuthManager());
+
+  // Waarden Kompas integration
+  const [waardenKompasCompleted, setWaardenKompasCompleted] = useState(false);
+  const [waardenKompasData, setWaardenKompasData] = useState<any>(null);
+
+  // Check if user has completed Waarden Kompas
+  useEffect(() => {
+    const checkWaardenKompasStatus = async () => {
+      if (!user?.id) return;
+
+      try {
+        const response = await fetch('/api/waarden-kompas/status', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setWaardenKompasCompleted(data.completed);
+          if (data.completed && data.results) {
+            setWaardenKompasData(data.results);
+          }
+        }
+      } catch (error) {
+        console.log('Waarden Kompas status check failed:', error);
+      }
+    };
+
+    checkWaardenKompasStatus();
+  }, [user?.id]);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -115,6 +147,34 @@ export function PlatformMatchTool() {
     setError(null);
 
     try {
+      // Enhance preferences with Waarden Kompas data if available
+      let enhancedPreferences = { ...preferences };
+      let waardenKompasInsights = '';
+
+      if (waardenKompasCompleted && waardenKompasData) {
+        // Extract relationship values and preferences from Waarden Kompas
+        const relationshipValues = waardenKompasData.relationship_values || [];
+        const greenFlags = waardenKompasData.green_flags || [];
+        const redFlags = waardenKompasData.red_flags || [];
+
+        waardenKompasInsights = `
+        Waarden Kompas Insights:
+        - Relatie waarden: ${relationshipValues.slice(0, 3).join(', ')}
+        - Groene vlaggen: ${greenFlags.slice(0, 2).join(', ')}
+        - Rode vlaggen: ${redFlags.slice(0, 2).join(', ')}
+        `;
+
+        // Adjust preferences based on Waarden Kompas data
+        if (relationshipValues.includes('Stabiliteit') || relationshipValues.includes('Betrouwbaarheid')) {
+          enhancedPreferences.privacyImportance = 'critical';
+          enhancedPreferences.meetingSpeed = 'slow';
+        }
+
+        if (relationshipValues.includes('Avontuur') || relationshipValues.includes('Nieuwe ervaringen')) {
+          enhancedPreferences.meetingSpeed = 'immediate';
+          enhancedPreferences.locationPreference = 'open';
+        }
+      }
 
       // Use AuthManager for authenticated request with automatic token refresh
       const response = await authManager.authenticatedRequest('/api/platform-match', {
@@ -126,7 +186,9 @@ export function PlatformMatchTool() {
             location: userProfile?.location,
             name: userProfile?.name
           },
-          preferences
+          preferences: enhancedPreferences,
+          waardenKompasInsights: waardenKompasInsights,
+          waardenKompasCompleted
         })
       });
 
@@ -203,6 +265,51 @@ export function PlatformMatchTool() {
           </Alert>
         )}
 
+        {/* Waarden Kompas Integration Banner */}
+        {!waardenKompasCompleted && (
+          <Card className="border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
+            <CardContent className="p-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Compass className="w-5 h-5 text-amber-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-amber-900 mb-1">Verbeter je Platform Aanbevelingen met Waarden Kompas! ✨</h3>
+                  <p className="text-sm text-amber-800 mb-3">
+                    Door je relatievoorkeuren en kernwaarden te ontdekken, kunnen we platforms aanbevelen die perfect aansluiten bij wat je zoekt in een partner.
+                  </p>
+                  <Button
+                    size="sm"
+                    onClick={() => window.location.href = '/tools/waarden-kompas'}
+                    className="bg-amber-600 hover:bg-amber-700 text-white"
+                  >
+                    Start Waarden Kompas
+                    <ArrowRight className="w-3 h-3 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Waarden Kompas Completed Badge */}
+        {waardenKompasCompleted && (
+          <Card className="border-2 border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-green-900">Waarden Kompas Actief! 🎉</h3>
+                  <p className="text-sm text-green-800">Je platform aanbevelingen zijn nu afgestemd op je persoonlijke relatievoorkeuren.</p>
+                </div>
+                <Badge className="bg-green-100 text-green-700">✨ Enhanced</Badge>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Header with Progress */}
         <Card>
           <CardHeader>
@@ -213,6 +320,7 @@ export function PlatformMatchTool() {
                   <CardTitle className="text-orange-600">Professionele Platform Match</CardTitle>
                   <p className="text-sm text-muted-foreground mt-1">
                     Wetenschappelijk onderbouwde platform aanbevelingen gebaseerd op je profiel
+                    {waardenKompasCompleted && ' + Waarden Kompas inzichten'}
                   </p>
                 </div>
               </div>

@@ -202,7 +202,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
               <Button
                 onClick={() => onTabChange?.('doelen')}
                 size="sm"
-                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white shadow-sm"
+                className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
               >
                 Bekijk leertraject
               </Button>
@@ -302,7 +302,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
                 variant="outline"
                 size="sm"
                 onClick={() => onTabChange?.('doelen')}
-                className="bg-white border-gray-200 hover:bg-gray-50"
+                className="bg-white border-gray-200 hover:bg-gray-50 rounded-full"
               >
                 Alles bekijken
               </Button>
@@ -344,7 +344,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
               </div>
             </div>
             <AIConfidenceCoach
-              userId={user?.id}
+              userId={user?.id?.toString()}
               currentModule={1}
               userProfile={userProfile}
               compact={true}

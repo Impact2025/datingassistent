@@ -10,6 +10,8 @@ import { DashboardTab } from '@/components/dashboard/dashboard-tab';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
+import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { CommunityTab } from '@/components/dashboard/community-tab';
 import { DatingProfilerAI } from '@/components/dashboard/dating-profiler-ai';
@@ -186,7 +188,7 @@ export default function DashboardPage() {
 
     // REDIRECT LEGACY DUPLICATE TABS TO CONSOLIDATED MODULES
     const redirectMap: Record<string, string> = {
-      'online-cursus': 'leren-ontwikkelen',
+      'online-cursus': 'cursus',
       'profiel-coach': 'profiel-persoonlijkheid',
       'dateplanner': 'daten-relaties',
       'skills-assessment': 'leren-ontwikkelen',
@@ -261,6 +263,13 @@ export default function DashboardPage() {
       case 'leren-ontwikkelen':
         return <LerenOntwikkelenModule onTabChange={setActiveTab} />;
 
+      case 'cursus':
+        // Navigate to the main cursus page
+        if (typeof window !== 'undefined') {
+          window.location.href = '/cursus';
+        }
+        return <DashboardTab onTabChange={setActiveTab} />;
+
       case 'settings':
         return <SettingsTab />;
 
@@ -318,72 +327,116 @@ export default function DashboardPage() {
     }
   };
 
+  // Check if this is mobile access to specific tabs
+  const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const tab = urlParams?.get('tab');
+  const isMobileTabAccess = tab && ['subscription', 'data-management', 'chat-coach'].includes(tab);
+
   return (
-    <DeviceGuard requiredDevice="desktop" allowOverride={true}>
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-        <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
-          <div className="space-y-6">
-            <Header
-              onSettingsClick={() => setActiveTab('settings')}
-              onSubscriptionClick={() => setActiveTab('subscription')}
-            />
-
-            {/* Trial Progress Banner - Only show for trial users */}
-            {user?.id && <TrialProgress userId={user.id} />}
-
-            <main className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20">
-            {/* Hide navigation during onboarding */}
-            {!showOnboarding && <MainNav activeTab={activeTab} onTabChange={setActiveTab} />}
-            <div className="mt-6">
-              {/* Show onboarding content if needed */}
-              {showOnboarding && (
-                <OnboardingFlow
-                  journeyState={journeyState}
-                  userName={user?.name}
-                  handlers={handlers}
-                />
-              )}
-
-              {/* Show regular dashboard content */}
-              {renderTabContent()}
-            </div>
-          </main>
-
-
-          {/* AI Context Notifications */}
-          <AIContextNotifications />
-
-          {/* Monday Dating Week Notification Modal */}
-          <DatingWeekNotificationModal
-            isOpen={datingWeekNotificationOpen}
-            onClose={() => setDatingWeekNotificationOpen(false)}
-            onComplete={(data) => {
-              console.log('Dating week log completed:', data);
-              // Could add success notification here
-            }}
-            />
-
-            <footer className="text-center text-sm text-muted-foreground space-y-4">
-              <div className="flex justify-center items-center gap-2">
-                <span>Volg ons:</span>
-                <SocialMediaLinks size="sm" />
-              </div>
+    <DeviceGuard requiredDevice="desktop" allowOverride={true} allowMobileTabs={true}>
+      {isMobileTabAccess ? (
+        // Mobile-friendly layout for specific tabs
+        <div className="min-h-screen bg-gray-50 pb-20">
+          {/* Mobile Header */}
+          <div className="bg-white border-b border-gray-200 px-4 py-4">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.back()}
+                className="p-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
               <div>
-                <p>&copy; 2025 DatingAssistent. Alle rechten voorbehouden.</p>
-                <p>
-                  Jouw data is veilig en AVG-proof.{' '}
-                  <button
-                    onClick={() => setActiveTab('data-management')}
-                    className="underline hover:text-primary bg-transparent border-none p-0 cursor-pointer"
-                  >
-                    Beheer je data
-                  </button>.
+                <h1 className="text-xl font-bold text-gray-900">
+                  {tab === 'subscription' && 'Abonnement'}
+                  {tab === 'data-management' && 'Data & Privacy'}
+                  {tab === 'chat-coach' && 'Chat Coach'}
+                </h1>
+                <p className="text-sm text-gray-600">
+                  {tab === 'subscription' && 'Je abonnement beheren'}
+                  {tab === 'data-management' && 'Gegevens en privacy instellingen'}
+                  {tab === 'chat-coach' && 'AI hulp bij gesprekken'}
                 </p>
               </div>
-            </footer>
+            </div>
+          </div>
+
+          {/* Mobile Content */}
+          <div className="p-4">
+            {renderTabContent()}
+          </div>
+
+          <BottomNavigation />
+        </div>
+      ) : (
+        // Desktop layout
+        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+          <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
+            <div className="space-y-6">
+              <Header
+                onSettingsClick={() => setActiveTab('settings')}
+                onSubscriptionClick={() => setActiveTab('subscription')}
+              />
+
+              {/* Trial Progress Banner - Only show for trial users */}
+              {user?.id && <TrialProgress userId={user.id} />}
+
+              <main className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20">
+              {/* Hide navigation during onboarding */}
+              {!showOnboarding && <MainNav activeTab={activeTab} onTabChange={setActiveTab} />}
+              <div className="mt-6">
+                {/* Show onboarding content if needed */}
+                {showOnboarding && (
+                  <OnboardingFlow
+                    journeyState={journeyState}
+                    userName={user?.name}
+                    handlers={handlers}
+                  />
+                )}
+
+                {/* Show regular dashboard content */}
+                {renderTabContent()}
+              </div>
+            </main>
+
+
+            {/* AI Context Notifications */}
+            <AIContextNotifications />
+
+            {/* Monday Dating Week Notification Modal */}
+            <DatingWeekNotificationModal
+              isOpen={datingWeekNotificationOpen}
+              onClose={() => setDatingWeekNotificationOpen(false)}
+              onComplete={(data) => {
+                console.log('Dating week log completed:', data);
+                // Could add success notification here
+              }}
+              />
+
+              <footer className="text-center text-sm text-muted-foreground space-y-4">
+                <div className="flex justify-center items-center gap-2">
+                  <span>Volg ons:</span>
+                  <SocialMediaLinks size="sm" />
+                </div>
+                <div>
+                  <p>&copy; 2025 DatingAssistent. Alle rechten voorbehouden.</p>
+                  <p>
+                    Jouw data is veilig en AVG-proof.{' '}
+                    <button
+                      onClick={() => setActiveTab('data-management')}
+                      className="underline hover:text-primary bg-transparent border-none p-0 cursor-pointer"
+                    >
+                      Beheer je data
+                    </button>.
+                  </p>
+                </div>
+              </footer>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </DeviceGuard>
   );
 }

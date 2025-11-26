@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { ProfileAnalysis } from '@/components/profile-analysis';
+import { PhotoAnalysisTab } from '@/components/dashboard/photo-analysis-tab';
 
 interface ProfileStatus {
   completeness: number;
@@ -37,6 +38,7 @@ export default function ProfielPage() {
   const router = useRouter();
   const { user, userProfile } = useUser();
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const [showPhotoAnalysis, setShowPhotoAnalysis] = useState(false);
   const [profileStatus, setProfileStatus] = useState<ProfileStatus>({
     completeness: 0,
     hasBio: false,
@@ -92,7 +94,7 @@ export default function ProfielPage() {
       icon: <Camera className="w-5 h-5" />,
       title: 'Foto Optimalisatie',
       subtitle: 'Professionele foto tips',
-      action: () => router.push('/tools?tool=photo'),
+      action: () => setShowPhotoAnalysis(true),
       color: 'text-purple-600',
       bgColor: 'bg-purple-50'
     },
@@ -101,18 +103,18 @@ export default function ProfielPage() {
       icon: <MessageCircle className="w-5 h-5" />,
       title: 'Bio Coach',
       subtitle: 'AI-gedreven bio verbetering',
-      action: () => router.push('/tools?tool=chat'),
+      action: () => router.push('/tools?tool=ai-bio-generator'),
       color: 'text-green-600',
       bgColor: 'bg-green-50'
     },
     {
-      id: 'settings',
-      icon: <Settings className="w-5 h-5" />,
-      title: 'Profiel Instellingen',
-      subtitle: 'Bewerk je profiel gegevens',
-      action: () => router.push('/profile'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50'
+      id: 'chat-coach',
+      icon: <MessageCircle className="w-5 h-5" />,
+      title: 'Chat Coach',
+      subtitle: 'Persoonlijk gesprek advies',
+      action: () => router.push('/chat'),
+      color: 'text-pink-600',
+      bgColor: 'bg-pink-50'
     }
   ];
 
@@ -145,6 +147,33 @@ export default function ProfielPage() {
     );
   }
 
+  if (showPhotoAnalysis) {
+    return (
+      <div className="min-h-screen bg-gray-50 pb-20">
+        <div className="bg-white border-b border-gray-200 px-4 py-4">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowPhotoAnalysis(false)}
+              className="p-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">Foto Analyse</h1>
+              <p className="text-sm text-gray-600">AI beoordeling van je profielfoto's</p>
+            </div>
+          </div>
+        </div>
+        <div className="p-4">
+          <PhotoAnalysisTab />
+        </div>
+        <BottomNavigation />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
@@ -153,7 +182,7 @@ export default function ProfielPage() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/')}
+            onClick={() => router.back()}
             className="p-2"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -264,7 +293,7 @@ export default function ProfielPage() {
             </div>
             <Button
               onClick={() => setShowAnalysis(true)}
-              className="w-full mt-4 bg-pink-500 hover:bg-pink-600"
+              className="w-full mt-4 bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
             >
               <Target className="w-4 h-4 mr-2" />
               Volledige AI Analyse
