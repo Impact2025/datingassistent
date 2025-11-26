@@ -343,10 +343,10 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
                 </div>
                 <div className="flex gap-3">
                   <Button
-                    onClick={() => router.push('/profiel')}
+                    onClick={() => router.push('/dashboard/starter/starter-5')}
                     className="flex-1 bg-pink-500 hover:bg-pink-600 text-white"
                   >
-                    Profiel Optimaliseren
+                    Start les
                   </Button>
                   <Button
                     variant="outline"

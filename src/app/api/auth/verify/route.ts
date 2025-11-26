@@ -2,18 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { sql } from '@vercel/postgres';
 
+// JWT Secret validation
 const JWT_SECRET_RAW = process.env.JWT_SECRET;
-if (!JWT_SECRET_RAW || JWT_SECRET_RAW.length < 32) {
-  console.error('❌ FATAL: JWT_SECRET is not set or is too short. Please check environment variables.');
-  return NextResponse.json(
-    { error: 'Server configuration error: JWT secret is missing.' },
-    { status: 500 }
-  );
-}
-const JWT_SECRET = new TextEncoder().encode(JWT_SECRET_RAW);
+const JWT_SECRET = JWT_SECRET_RAW && JWT_SECRET_RAW.length >= 32
+  ? new TextEncoder().encode(JWT_SECRET_RAW)
+  : null;
 
 export async function GET(request: NextRequest) {
   console.log('🔍 Auth verify API called');
+
+  // Check JWT secret at runtime
+  if (!JWT_SECRET) {
+    console.error('❌ FATAL: JWT_SECRET is not set or is too short. Please check environment variables.');
+    return NextResponse.json(
+      { error: 'Server configuration error: JWT secret is missing.' },
+      { status: 500 }
+    );
+  }
 
   try {
     // Get token from Authorization header
