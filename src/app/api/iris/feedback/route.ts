@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization to avoid build-time errors when env vars are missing
+const getOpenAIClient = () => {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+};
 
 const IRIS_SYSTEEM_PROMPT = `
 Je bent Iris, de warme en deskundige AI dating coach van DatingAssistent.
@@ -42,6 +45,7 @@ export async function POST(req: NextRequest) {
       ? `CONTEXT: ${context}`
       : 'CONTEXT: Gebruiker vult een oefening in.';
 
+    const openai = getOpenAIClient();
     const completion = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
