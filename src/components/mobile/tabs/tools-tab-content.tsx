@@ -162,7 +162,7 @@ export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
           icon: Sparkles,
           title: 'Bio Generator',
           subtitle: 'AI geschreven',
-          route: '/profiel/bio',
+          route: '/tools/ai-bio-generator',
           color: 'bg-pink-50 text-pink-600',
         },
       ],

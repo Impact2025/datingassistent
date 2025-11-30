@@ -110,13 +110,9 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
   const router = useRouter();
   const [isPro] = useState(userProfile?.subscription_tier === 'pro');
 
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      router.push('/');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+  const handleLogout = () => {
+    // Redirect to logout page which handles the full logout flow
+    router.push('/logout');
   };
 
   return (
@@ -194,7 +190,7 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
         {!isPro && (
           <Card
             className="border-2 border-amber-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => router.push('/upgrade')}
+            onClick={() => router.push('/select-package')}
           >
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -218,17 +214,17 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
             icon={Edit3}
             label="Profiel Bewerken"
             description="Naam, bio en voorkeuren"
-            onClick={() => router.push('/profiel/bewerken')}
+            onClick={() => router.push('/profiel')}
           />
           <MenuItem
             icon={Camera}
             label="Foto's Beheren"
-            onClick={() => router.push('/profiel/fotos')}
+            onClick={() => router.push('/foto')}
           />
           <MenuItem
             icon={Lock}
             label="Wachtwoord"
-            onClick={() => router.push('/settings/password')}
+            onClick={() => router.push('/meer')}
           />
         </Card>
 
@@ -238,12 +234,12 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
           <MenuItem
             icon={Bell}
             label="Notificaties"
-            onClick={() => router.push('/settings/notifications')}
+            onClick={() => router.push('/meer')}
           />
           <MenuItem
             icon={Settings}
             label="App Instellingen"
-            onClick={() => router.push('/settings')}
+            onClick={() => router.push('/meer')}
           />
         </Card>
 
@@ -258,7 +254,7 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
           <MenuItem
             icon={Shield}
             label="Privacy"
-            onClick={() => router.push('/privacy')}
+            onClick={() => router.push('/privacyverklaring')}
           />
         </Card>
 
