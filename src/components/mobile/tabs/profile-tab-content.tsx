@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
   User,
   Settings,
@@ -17,19 +18,13 @@ import {
   Crown,
   TrendingUp,
   Award,
-  Heart,
   Edit3,
-  Mail,
-  Lock,
-  Palette,
-  Moon,
-  Globe
+  Lock
 } from 'lucide-react';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 // ============================================================================
-// PROFILE TAB - User Profile & Settings
+// PROFILE TAB - Clean, Minimalist Settings Design
 // ============================================================================
 
 interface ProfileTabContentProps {
@@ -37,15 +32,14 @@ interface ProfileTabContentProps {
   userProfile: any;
 }
 
-// Menu Item Component
+// Menu Item Component - Clean Design
 function MenuItem({
   icon: Icon,
   label,
   description,
   onClick,
   badge,
-  danger = false,
-  chevron = true
+  danger = false
 }: {
   icon: React.ElementType;
   label: string;
@@ -53,25 +47,24 @@ function MenuItem({
   onClick: () => void;
   badge?: string;
   danger?: boolean;
-  chevron?: boolean;
 }) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "w-full flex items-center gap-3 p-3 rounded-xl transition-all",
-        "hover:bg-gray-50 active:scale-98",
-        danger && "hover:bg-red-50"
+        "w-full flex items-center gap-3 p-3 transition-colors",
+        danger ? "hover:bg-red-50" : "hover:bg-gray-50",
+        "active:scale-99"
       )}
     >
       <div className={cn(
-        "w-10 h-10 rounded-xl flex items-center justify-center",
+        "w-9 h-9 rounded-xl flex items-center justify-center",
         danger ? "bg-red-50" : "bg-gray-100"
       )}>
-        <Icon className={cn("w-5 h-5", danger ? "text-red-500" : "text-gray-600")} />
+        <Icon className={cn("w-4.5 h-4.5", danger ? "text-red-500" : "text-gray-600")} />
       </div>
       <div className="flex-1 text-left">
-        <p className={cn("font-medium", danger ? "text-red-600" : "text-gray-900")}>
+        <p className={cn("font-medium text-sm", danger ? "text-red-600" : "text-gray-900")}>
           {label}
         </p>
         {description && (
@@ -79,17 +72,15 @@ function MenuItem({
         )}
       </div>
       {badge && (
-        <span className="px-2 py-0.5 bg-pink-100 text-pink-600 text-xs font-medium rounded-full">
-          {badge}
-        </span>
+        <Badge className="bg-pink-100 text-pink-600 text-[10px]">{badge}</Badge>
       )}
-      {chevron && <ChevronRight className="w-5 h-5 text-gray-300" />}
+      <ChevronRight className="w-4 h-4 text-gray-300" />
     </button>
   );
 }
 
-// Stats Card
-function ProfileStat({ label, value, icon: Icon, color }: {
+// Stats Item
+function StatItem({ label, value, icon: Icon, color }: {
   label: string;
   value: string | number;
   icon: React.ElementType;
@@ -97,27 +88,27 @@ function ProfileStat({ label, value, icon: Icon, color }: {
 }) {
   return (
     <div className="text-center">
-      <div className={cn("w-10 h-10 mx-auto mb-2 rounded-xl flex items-center justify-center", color)}>
-        <Icon className="w-5 h-5 text-white" />
+      <div className={cn("w-9 h-9 mx-auto mb-1.5 rounded-xl flex items-center justify-center", color)}>
+        <Icon className="w-4 h-4 text-white" />
       </div>
       <p className="text-lg font-bold text-gray-900">{value}</p>
-      <p className="text-xs text-gray-500">{label}</p>
+      <p className="text-[10px] text-gray-500">{label}</p>
     </div>
   );
 }
 
-// Section Header
-function SectionHeader({ title }: { title: string }) {
+// Section Divider
+function SectionDivider({ title }: { title: string }) {
   return (
-    <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-1 mb-2">
-      {title}
-    </h3>
+    <div className="px-4 pt-4 pb-2">
+      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{title}</h3>
+    </div>
   );
 }
 
 export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps) {
   const router = useRouter();
-  const [isPro] = useState(userProfile?.subscription_tier === 'pro' || userProfile?.subscription_tier === 'premium');
+  const [isPro] = useState(userProfile?.subscription_tier === 'pro');
 
   const handleLogout = async () => {
     try {
@@ -128,223 +119,164 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
     }
   };
 
-  const accountMenuItems = [
-    {
-      icon: Edit3,
-      label: 'Profiel Bewerken',
-      description: 'Naam, bio en voorkeuren',
-      onClick: () => router.push('/profiel/bewerken'),
-    },
-    {
-      icon: Camera,
-      label: 'Foto\'s Beheren',
-      description: 'Upload en organiseer foto\'s',
-      onClick: () => router.push('/profiel/fotos'),
-    },
-    {
-      icon: Mail,
-      label: 'E-mail Wijzigen',
-      description: user?.email || 'Niet ingesteld',
-      onClick: () => router.push('/settings/email'),
-    },
-    {
-      icon: Lock,
-      label: 'Wachtwoord',
-      description: 'Wijzig je wachtwoord',
-      onClick: () => router.push('/settings/password'),
-    },
-  ];
-
-  const preferencesMenuItems = [
-    {
-      icon: Bell,
-      label: 'Notificaties',
-      description: 'Push en email meldingen',
-      onClick: () => router.push('/settings/notifications'),
-    },
-    {
-      icon: Palette,
-      label: 'Uiterlijk',
-      description: 'Thema en kleuren',
-      onClick: () => router.push('/settings/appearance'),
-    },
-    {
-      icon: Globe,
-      label: 'Taal',
-      description: 'Nederlands',
-      onClick: () => router.push('/settings/language'),
-    },
-    {
-      icon: Moon,
-      label: 'Dark Mode',
-      description: 'Automatisch',
-      onClick: () => {},
-      badge: 'Binnenkort',
-    },
-  ];
-
-  const supportMenuItems = [
-    {
-      icon: HelpCircle,
-      label: 'Help & FAQ',
-      description: 'Veelgestelde vragen',
-      onClick: () => router.push('/help'),
-    },
-    {
-      icon: Shield,
-      label: 'Privacy & Veiligheid',
-      description: 'Je gegevens beschermen',
-      onClick: () => router.push('/privacy'),
-    },
-  ];
-
   return (
-    <div className="p-4 space-y-5">
-      {/* Profile Header Card */}
-      <Card className="border-0 shadow-md overflow-hidden">
-        <div className="bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 p-5">
-          <div className="flex items-center gap-4">
-            {/* Avatar */}
-            <div className="relative">
-              <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden border-3 border-white/30">
-                {userProfile?.avatar_url ? (
-                  <Image
-                    src={userProfile.avatar_url}
-                    alt="Avatar"
-                    width={80}
-                    height={80}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-3xl text-white">
-                    {user?.name?.charAt(0)?.toUpperCase() || '?'}
-                  </span>
-                )}
+    <div className="bg-gray-50 min-h-screen">
+      <div className="p-4 space-y-4">
+        {/* Profile Header - Clean Card */}
+        <Card className="border-0 shadow-sm overflow-hidden">
+          <CardContent className="p-5">
+            <div className="flex items-center gap-4">
+              {/* Avatar */}
+              <div className="relative">
+                <div className="w-16 h-16 rounded-full bg-pink-50 flex items-center justify-center overflow-hidden">
+                  {userProfile?.avatar_url ? (
+                    <img
+                      src={userProfile.avatar_url}
+                      alt="Avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-2xl text-pink-500 font-semibold">
+                      {user?.name?.charAt(0)?.toUpperCase() || '?'}
+                    </span>
+                  )}
+                </div>
+                <button className="absolute -bottom-1 -right-1 w-7 h-7 bg-white rounded-full shadow-md flex items-center justify-center border border-gray-100">
+                  <Camera className="w-3.5 h-3.5 text-gray-600" />
+                </button>
               </div>
-              <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
-                <Camera className="w-4 h-4 text-gray-600" />
-              </button>
-            </div>
 
-            {/* User Info */}
-            <div className="flex-1 text-white">
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold">{user?.name || 'Gebruiker'}</h1>
-                {isPro && (
-                  <span className="px-2 py-0.5 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-[10px] font-bold flex items-center gap-0.5">
-                    <Crown className="w-3 h-3" /> PRO
-                  </span>
-                )}
+              {/* User Info */}
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <h1 className="text-lg font-bold text-gray-900">{user?.name || 'Gebruiker'}</h1>
+                  {isPro && (
+                    <Badge className="bg-amber-100 text-amber-700 text-[10px] px-1.5">
+                      <Crown className="w-2.5 h-2.5 mr-0.5" /> PRO
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-sm text-gray-600">{user?.email}</p>
               </div>
-              <p className="text-white/80 text-sm">{user?.email}</p>
-              <p className="text-white/60 text-xs mt-1">Lid sinds {new Date(user?.created_at || Date.now()).toLocaleDateString('nl-NL', { month: 'long', year: 'numeric' })}</p>
             </div>
-          </div>
-        </div>
 
-        {/* Stats Row */}
-        <CardContent className="p-4">
-          <div className="grid grid-cols-4 gap-2">
-            <ProfileStat
-              label="Dagen actief"
-              value="47"
-              icon={TrendingUp}
-              color="bg-gradient-to-br from-blue-500 to-cyan-500"
-            />
-            <ProfileStat
-              label="Streak"
-              value="7"
-              icon={Award}
-              color="bg-gradient-to-br from-orange-500 to-red-500"
-            />
-            <ProfileStat
-              label="Achievements"
-              value="12"
-              icon={Star}
-              color="bg-gradient-to-br from-amber-500 to-yellow-500"
-            />
-            <ProfileStat
-              label="Level"
-              value="3"
-              icon={Heart}
-              color="bg-gradient-to-br from-pink-500 to-rose-500"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Upgrade Banner (for non-pro users) */}
-      {!isPro && (
-        <button
-          onClick={() => router.push('/upgrade')}
-          className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 rounded-xl p-4 text-white shadow-lg hover:shadow-xl transition-all active:scale-98"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-              <Crown className="w-6 h-6 text-white" />
+            {/* Stats Row */}
+            <div className="grid grid-cols-4 gap-2 mt-5 pt-5 border-t border-gray-100">
+              <StatItem
+                label="Dagen"
+                value="47"
+                icon={TrendingUp}
+                color="bg-blue-500"
+              />
+              <StatItem
+                label="Streak"
+                value="7"
+                icon={Award}
+                color="bg-orange-500"
+              />
+              <StatItem
+                label="Badges"
+                value="12"
+                icon={Star}
+                color="bg-amber-500"
+              />
+              <StatItem
+                label="Level"
+                value="3"
+                icon={Crown}
+                color="bg-pink-500"
+              />
             </div>
-            <div className="flex-1 text-left">
-              <h3 className="font-bold">Upgrade naar Pro</h3>
-              <p className="text-white/80 text-sm">Ontgrendel alle premium features</p>
-            </div>
-            <ChevronRight className="w-6 h-6 text-white/60" />
-          </div>
-        </button>
-      )}
-
-      {/* Account Section */}
-      <div className="space-y-1">
-        <SectionHeader title="Account" />
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-1">
-            {accountMenuItems.map((item, index) => (
-              <MenuItem key={index} {...item} />
-            ))}
           </CardContent>
         </Card>
-      </div>
 
-      {/* Preferences Section */}
-      <div className="space-y-1">
-        <SectionHeader title="Voorkeuren" />
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-1">
-            {preferencesMenuItems.map((item, index) => (
-              <MenuItem key={index} {...item} />
-            ))}
-          </CardContent>
+        {/* Upgrade Banner */}
+        {!isPro && (
+          <Card
+            className="border-2 border-amber-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => router.push('/upgrade')}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+                  <Crown className="w-5 h-5 text-amber-500" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">Upgrade naar Pro</h3>
+                  <p className="text-xs text-gray-600">Ontgrendel alle premium features</p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-300" />
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Account Section */}
+        <Card className="border-0 shadow-sm overflow-hidden">
+          <SectionDivider title="Account" />
+          <MenuItem
+            icon={Edit3}
+            label="Profiel Bewerken"
+            description="Naam, bio en voorkeuren"
+            onClick={() => router.push('/profiel/bewerken')}
+          />
+          <MenuItem
+            icon={Camera}
+            label="Foto's Beheren"
+            onClick={() => router.push('/profiel/fotos')}
+          />
+          <MenuItem
+            icon={Lock}
+            label="Wachtwoord"
+            onClick={() => router.push('/settings/password')}
+          />
         </Card>
-      </div>
 
-      {/* Support Section */}
-      <div className="space-y-1">
-        <SectionHeader title="Ondersteuning" />
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-1">
-            {supportMenuItems.map((item, index) => (
-              <MenuItem key={index} {...item} />
-            ))}
-          </CardContent>
+        {/* Preferences Section */}
+        <Card className="border-0 shadow-sm overflow-hidden">
+          <SectionDivider title="Voorkeuren" />
+          <MenuItem
+            icon={Bell}
+            label="Notificaties"
+            onClick={() => router.push('/settings/notifications')}
+          />
+          <MenuItem
+            icon={Settings}
+            label="App Instellingen"
+            onClick={() => router.push('/settings')}
+          />
         </Card>
-      </div>
 
-      {/* Logout */}
-      <Card className="border-0 shadow-sm">
-        <CardContent className="p-1">
+        {/* Support Section */}
+        <Card className="border-0 shadow-sm overflow-hidden">
+          <SectionDivider title="Ondersteuning" />
+          <MenuItem
+            icon={HelpCircle}
+            label="Help & FAQ"
+            onClick={() => router.push('/help')}
+          />
+          <MenuItem
+            icon={Shield}
+            label="Privacy"
+            onClick={() => router.push('/privacy')}
+          />
+        </Card>
+
+        {/* Logout */}
+        <Card className="border-0 shadow-sm overflow-hidden">
           <MenuItem
             icon={LogOut}
             label="Uitloggen"
             onClick={handleLogout}
             danger
-            chevron={false}
           />
-        </CardContent>
-      </Card>
+        </Card>
 
-      {/* App Version */}
-      <p className="text-center text-xs text-gray-400 py-4">
-        DatingAssistent v2.0.0
-      </p>
+        {/* App Version */}
+        <p className="text-center text-xs text-gray-400 py-4">
+          DatingAssistent v2.0.0
+        </p>
+      </div>
     </div>
   );
 }

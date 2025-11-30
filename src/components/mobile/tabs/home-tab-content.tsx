@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
   Sparkles,
   TrendingUp,
@@ -11,16 +12,14 @@ import {
   ChevronRight,
   Flame,
   Calendar,
-  Star,
   Zap,
-  Award,
-  Clock
+  CheckCircle2,
+  ArrowRight
 } from 'lucide-react';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 // ============================================================================
-// HOME TAB - AI Greeting, Stats, Personalized Recommendations
+// HOME TAB - Clean, Minimalist, Card-Based Design
 // ============================================================================
 
 interface HomeTabContentProps {
@@ -37,273 +36,203 @@ function getGreeting(): string {
   return 'Goedenavond';
 }
 
-// Get motivational message
-function getMotivationalMessage(): string {
-  const messages = [
-    'Klaar om je dating game te verbeteren?',
-    'Vandaag wordt een geweldige dag!',
-    'Je bent op de goede weg naar succes.',
-    'Elke stap brengt je dichter bij je doel.',
-    'Consistentie is de sleutel tot groei.',
-  ];
-  return messages[Math.floor(Math.random() * messages.length)];
-}
-
-// Stats Card Component
-function StatsCard({ icon: Icon, label, value, trend, color }: {
-  icon: React.ElementType;
-  label: string;
-  value: string | number;
-  trend?: string;
-  color: string;
-}) {
-  return (
-    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-      <div className="flex items-center justify-between mb-2">
-        <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center", color)}>
-          <Icon className="w-4 h-4 text-white" />
-        </div>
-        {trend && (
-          <span className="text-xs text-green-600 font-medium flex items-center gap-0.5">
-            <TrendingUp className="w-3 h-3" />
-            {trend}
-          </span>
-        )}
-      </div>
-      <div className="text-2xl font-bold text-gray-900">{value}</div>
-      <div className="text-xs text-gray-500">{label}</div>
-    </div>
-  );
-}
-
-// Quick Action Card
-function QuickActionCard({
-  title,
-  description,
-  icon: Icon,
-  gradient,
-  onClick
-}: {
-  title: string;
-  description: string;
-  icon: React.ElementType;
-  gradient: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className="w-full text-left bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md hover:border-pink-200 transition-all active:scale-98 group"
-    >
-      <div className="flex items-start gap-3">
-        <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0", gradient)}>
-          <Icon className="w-5 h-5 text-white" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 group-hover:text-pink-600 transition-colors">
-            {title}
-          </h3>
-          <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{description}</p>
-        </div>
-        <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-pink-500 transition-colors flex-shrink-0" />
-      </div>
-    </button>
-  );
-}
-
-// AI Insight Card
-function AIInsightCard({ insight }: { insight: { title: string; message: string; action: string; route: string } }) {
-  const router = useRouter();
-
-  return (
-    <div className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-xl p-4 border border-pink-100">
-      <div className="flex items-start gap-3">
-        <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Sparkles className="w-4 h-4 text-white" />
-        </div>
-        <div className="flex-1">
-          <h4 className="font-semibold text-gray-900 text-sm">{insight.title}</h4>
-          <p className="text-xs text-gray-600 mt-1">{insight.message}</p>
-          <Button
-            onClick={() => router.push(insight.route)}
-            size="sm"
-            className="mt-3 h-8 text-xs bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
-          >
-            {insight.action}
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function HomeTabContent({ user, userProfile }: HomeTabContentProps) {
   const router = useRouter();
-  const [stats, setStats] = useState({
+  const [stats] = useState({
     streak: 7,
+    phase: 1,
     goalsCompleted: 3,
-    toolsUsed: 12,
-    weeklyProgress: 68,
-  });
-
-  const [aiInsight] = useState({
-    title: 'Tip van Iris',
-    message: 'Je profiel foto\'s scoren goed! Overweeg nu je bio te optimaliseren voor meer matches.',
-    action: 'Bio Verbeteren',
-    route: '/profiel',
+    totalGoals: 5,
   });
 
   const quickActions = [
     {
-      title: 'Dagelijkse Check-in',
-      description: 'Bekijk je voortgang en doelen',
-      icon: Calendar,
-      gradient: 'bg-gradient-to-br from-blue-500 to-cyan-500',
-      route: '/groei',
+      title: 'Profiel Review',
+      description: 'Optimaliseer je dating profiel',
+      icon: Target,
+      color: 'bg-pink-50 text-pink-600',
+      route: '/profiel',
     },
     {
-      title: 'Chat Analyse',
+      title: 'Chat Coaching',
       description: 'Verbeter je gesprekken',
-      icon: Target,
-      gradient: 'bg-gradient-to-br from-purple-500 to-indigo-500',
+      icon: Sparkles,
+      color: 'bg-purple-50 text-purple-600',
       route: '/chat',
     },
     {
-      title: 'Profiel Boost',
-      description: 'Optimaliseer je dating profiel',
-      icon: Zap,
-      gradient: 'bg-gradient-to-br from-orange-500 to-red-500',
-      route: '/profiel',
+      title: 'Dagelijkse Check-in',
+      description: 'Track je voortgang',
+      icon: Calendar,
+      color: 'bg-blue-50 text-blue-600',
+      route: '/groei',
     },
   ];
 
+  const todayTasks = [
+    { title: 'Profiel foto beoordeling', status: 'completed' },
+    { title: 'Bio optimalisatie tips', status: 'in_progress' },
+    { title: 'Openingszinnen oefenen', status: 'pending' },
+  ];
+
   return (
-    <div className="p-4 space-y-5">
-      {/* Hero Greeting Section */}
-      <div className="bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 rounded-2xl p-5 text-white shadow-lg">
-        <div className="flex items-center gap-4">
-          {/* Avatar */}
-          <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden border-2 border-white/30">
-            {userProfile?.avatar_url ? (
-              <Image
-                src={userProfile.avatar_url}
-                alt="Avatar"
-                width={56}
-                height={56}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span className="text-2xl">
-                {user?.name?.charAt(0)?.toUpperCase() || '?'}
-              </span>
-            )}
-          </div>
+    <div className="bg-gray-50 min-h-screen">
+      <div className="p-4 space-y-4">
+        {/* Welcome Header - Clean, White Card */}
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">
+                  {getGreeting()}, {user?.name?.split(' ')[0] || 'Dater'}!
+                </h1>
+                <p className="text-sm text-gray-600 mt-1">
+                  Klaar om je dating game te verbeteren?
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5 bg-orange-50 px-3 py-1.5 rounded-full">
+                <Flame className="w-4 h-4 text-orange-500" />
+                <span className="text-sm font-medium text-orange-600">{stats.streak}</span>
+              </div>
+            </div>
 
-          {/* Greeting Text */}
-          <div className="flex-1">
-            <h1 className="text-xl font-bold">
-              {getGreeting()}, {user?.name?.split(' ')[0] || 'Dater'}!
-            </h1>
-            <p className="text-white/80 text-sm mt-0.5">
-              {getMotivationalMessage()}
-            </p>
-          </div>
-        </div>
+            {/* Progress Bar */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Fase {stats.phase} voortgang</span>
+                <span className="font-medium text-gray-900">{stats.goalsCompleted}/{stats.totalGoals} doelen</span>
+              </div>
+              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-pink-500 rounded-full transition-all duration-500"
+                  style={{ width: `${(stats.goalsCompleted / stats.totalGoals) * 100}%` }}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Streak Badge */}
-        <div className="mt-4 flex items-center gap-2">
-          <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-2">
-            <Flame className="w-4 h-4 text-orange-300" />
-            <span className="text-sm font-medium">{stats.streak} dagen streak</span>
-          </div>
-          <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-2">
-            <Star className="w-4 h-4 text-yellow-300" />
-            <span className="text-sm font-medium">Level 3</span>
-          </div>
-        </div>
-      </div>
+        {/* AI Recommendation - Highlighted Card */}
+        <Card className="border-2 border-pink-100 shadow-sm">
+          <CardContent className="p-5">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-6 h-6 text-pink-500" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="font-semibold text-gray-900">Aanbevolen voor jou</h3>
+                  <Badge className="bg-pink-500 text-white text-[10px] px-1.5 py-0.5">AI</Badge>
+                </div>
+                <p className="text-sm text-gray-600 mb-3">
+                  Je profiel foto's zijn goed! Focus nu op je bio om meer matches te krijgen.
+                </p>
+                <Button
+                  onClick={() => router.push('/profiel/bio')}
+                  className="bg-pink-500 hover:bg-pink-600 text-white h-9 text-sm"
+                >
+                  Bio verbeteren
+                  <ArrowRight className="w-4 h-4 ml-1.5" />
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-3">
-        <StatsCard
-          icon={Target}
-          label="Doelen deze week"
-          value={`${stats.goalsCompleted}/5`}
-          trend="+2"
-          color="bg-gradient-to-br from-green-500 to-emerald-500"
-        />
-        <StatsCard
-          icon={Zap}
-          label="Tools gebruikt"
-          value={stats.toolsUsed}
-          trend="+5"
-          color="bg-gradient-to-br from-purple-500 to-indigo-500"
-        />
-        <StatsCard
-          icon={TrendingUp}
-          label="Week voortgang"
-          value={`${stats.weeklyProgress}%`}
-          color="bg-gradient-to-br from-blue-500 to-cyan-500"
-        />
-        <StatsCard
-          icon={Award}
-          label="Achievements"
-          value="8"
-          color="bg-gradient-to-br from-orange-500 to-red-500"
-        />
-      </div>
-
-      {/* AI Insight */}
-      <AIInsightCard insight={aiInsight} />
-
-      {/* Quick Actions */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-gray-900">Aanbevolen voor jou</h2>
-          <button className="text-xs text-pink-600 font-medium">Bekijk alles</button>
-        </div>
-
-        <div className="space-y-2">
-          {quickActions.map((action, index) => (
-            <QuickActionCard
-              key={index}
-              title={action.title}
-              description={action.description}
-              icon={action.icon}
-              gradient={action.gradient}
-              onClick={() => router.push(action.route)}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Today's Schedule */}
-      <Card className="border-0 shadow-sm">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Clock className="w-4 h-4 text-gray-500" />
-            <h3 className="font-semibold text-gray-900 text-sm">Vandaag</h3>
-          </div>
-
+        {/* Quick Actions */}
+        <div className="space-y-3">
+          <h2 className="text-sm font-semibold text-gray-900 px-1">Quick Actions</h2>
           <div className="space-y-2">
-            <div className="flex items-center gap-3 p-2 bg-green-50 rounded-lg border border-green-100">
-              <div className="w-2 h-2 bg-green-500 rounded-full" />
-              <span className="text-sm text-gray-700 flex-1">Profiel review voltooid</span>
-              <span className="text-xs text-green-600">Klaar</span>
-            </div>
-            <div className="flex items-center gap-3 p-2 bg-blue-50 rounded-lg border border-blue-100">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-              <span className="text-sm text-gray-700 flex-1">Chat coaching sessie</span>
-              <span className="text-xs text-blue-600">In progress</span>
-            </div>
-            <div className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg border border-gray-100">
-              <div className="w-2 h-2 bg-gray-300 rounded-full" />
-              <span className="text-sm text-gray-500 flex-1">Date planning tips bekijken</span>
-              <span className="text-xs text-gray-400">Later</span>
-            </div>
+            {quickActions.map((action, index) => {
+              const Icon = action.icon;
+              return (
+                <Card
+                  key={index}
+                  className="border-0 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => router.push(action.route)}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", action.color)}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-medium text-gray-900 text-sm">{action.title}</h3>
+                        <p className="text-xs text-gray-500">{action.description}</p>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-gray-300" />
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        {/* Today's Tasks */}
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <Zap className="w-5 h-5 text-pink-500" />
+              <h3 className="font-semibold text-gray-900">Vandaag</h3>
+            </div>
+
+            <div className="space-y-3">
+              {todayTasks.map((task, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "flex items-center gap-3 p-3 rounded-lg",
+                    task.status === 'completed' && "bg-green-50",
+                    task.status === 'in_progress' && "bg-blue-50",
+                    task.status === 'pending' && "bg-gray-50"
+                  )}
+                >
+                  <div className={cn(
+                    "w-2 h-2 rounded-full",
+                    task.status === 'completed' && "bg-green-500",
+                    task.status === 'in_progress' && "bg-blue-500 animate-pulse",
+                    task.status === 'pending' && "bg-gray-300"
+                  )} />
+                  <span className={cn(
+                    "text-sm flex-1",
+                    task.status === 'completed' && "text-green-700",
+                    task.status === 'in_progress' && "text-blue-700",
+                    task.status === 'pending' && "text-gray-500"
+                  )}>
+                    {task.title}
+                  </span>
+                  {task.status === 'completed' && (
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 gap-3">
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4 text-center">
+              <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mx-auto mb-2">
+                <TrendingUp className="w-5 h-5 text-purple-500" />
+              </div>
+              <p className="text-2xl font-bold text-gray-900">Fase {stats.phase}</p>
+              <p className="text-xs text-gray-500">Je reis</p>
+            </CardContent>
+          </Card>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4 text-center">
+              <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mx-auto mb-2">
+                <Target className="w-5 h-5 text-green-500" />
+              </div>
+              <p className="text-2xl font-bold text-gray-900">{stats.goalsCompleted}</p>
+              <p className="text-xs text-gray-500">Doelen behaald</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
