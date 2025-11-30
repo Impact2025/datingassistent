@@ -1,124 +1,456 @@
 "use client";
 
-import { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import { useState, useEffect, useRef, Suspense, lazy, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/providers/user-provider';
-import { QuickActionsGrid } from './quick-actions-grid';
-import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { LogIn, UserPlus, Shield } from 'lucide-react';
+import { LogIn, UserPlus, Shield, Home, Wrench, MessageCircle, User, Sparkles, ChevronRight, TrendingUp, Target, BookOpen, Camera, Heart } from 'lucide-react';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
-// Lazy load heavy AI components for better performance
-const AIHeroSection = lazy(() => import('./ai-hero-section').then(mod => ({ default: mod.AIHeroSection })));
-const AISmartFlow = lazy(() => import('./ai-smart-flow').then(mod => ({ default: mod.AISmartFlow })));
-const GuidedFlow = lazy(() => import('../dashboard/guided-flow').then(mod => ({ default: mod.GuidedFlow })));
+// ============================================================================
+// WERELDKLASSE 4-TAB MOBILE DASHBOARD
+// ============================================================================
+// Architecture:
+// - Tab 0: Home (AI Greeting, Stats, Recommendations)
+// - Tab 1: Tools (Quick Actions Grid)
+// - Tab 2: Coach (Iris AI Chat)
+// - Tab 3: Profiel (User Profile & Settings)
+// ============================================================================
 
-// Simple Error Boundary for AI components
-function AIComponentErrorBoundary({ children, fallback }: { children: React.ReactNode, fallback: React.ReactNode }) {
-  const [hasError, setHasError] = useState(false);
+// Lazy load tab content for optimal performance
+const HomeTabContent = lazy(() => import('./tabs/home-tab-content').then(mod => ({ default: mod.HomeTabContent })));
+const ToolsTabContent = lazy(() => import('./tabs/tools-tab-content').then(mod => ({ default: mod.ToolsTabContent })));
+const CoachTabContent = lazy(() => import('./tabs/coach-tab-content').then(mod => ({ default: mod.CoachTabContent })));
+const ProfileTabContent = lazy(() => import('./tabs/profile-tab-content').then(mod => ({ default: mod.ProfileTabContent })));
 
-  useEffect(() => {
-    const handleError = (error: ErrorEvent) => {
-      console.error('AI Component Error:', error);
-      setHasError(true);
-    };
+// ============================================================================
+// TYPES & INTERFACES
+// ============================================================================
 
-    window.addEventListener('error', handleError);
-    return () => window.removeEventListener('error', handleError);
-  }, []);
+type TabId = 'home' | 'tools' | 'coach' | 'profiel';
 
-  if (hasError) {
-    return <>{fallback}</>;
-  }
-
-  return <>{children}</>;
-}
-
-// Import centralized onboarding system
-import { useJourneyState } from '@/hooks/use-journey-state';
-import { OnboardingFlow } from '@/components/dashboard/onboarding-flow';
-
-// Custom hook for dashboard data
-function useDashboardData(userId?: number) {
-  const [stats, setStats] = useState({
-    goalsCompleted: 0,
-    toolsUsed: 0,
-    progress: 0,
-    loading: true,
-    error: null as string | null
-  });
-
-  useEffect(() => {
-    if (!userId) return;
-
-    const fetchStats = async () => {
-      try {
-        // Try to fetch real data, fallback to defaults
-        const response = await fetch(`/api/user/dashboard-stats?userId=${userId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setStats({
-            goalsCompleted: data.goalsCompleted || 0,
-            toolsUsed: data.toolsUsed || 0,
-            progress: data.progress || 0,
-            loading: false,
-            error: null
-          });
-        } else {
-          // Fallback to default values
-          setStats({
-            goalsCompleted: 0,
-            toolsUsed: 0,
-            progress: 0,
-            loading: false,
-            error: null
-          });
-        }
-      } catch (error) {
-        setStats(prev => ({
-          ...prev,
-          loading: false,
-          error: 'Kon statistieken niet laden'
-        }));
-      }
-    };
-
-    fetchStats();
-  }, [userId]);
-
-  return stats;
+interface Tab {
+  id: TabId;
+  label: string;
+  icon: React.ElementType;
+  color: string;
+  activeColor: string;
+  bgGradient: string;
 }
 
 interface MobileDashboardProps {
   className?: string;
+  initialTab?: TabId;
 }
 
-export function MobileDashboard({ className }: MobileDashboardProps) {
-  const router = useRouter();
-  const { user, userProfile, loading } = useUser();
-  const [refreshing, setRefreshing] = useState(false);
+// ============================================================================
+// TAB CONFIGURATION
+// ============================================================================
+
+const TABS: Tab[] = [
+  {
+    id: 'home',
+    label: 'Home',
+    icon: Home,
+    color: 'text-gray-500',
+    activeColor: 'text-pink-600',
+    bgGradient: 'from-pink-500 to-rose-500',
+  },
+  {
+    id: 'tools',
+    label: 'Tools',
+    icon: Wrench,
+    color: 'text-gray-500',
+    activeColor: 'text-purple-600',
+    bgGradient: 'from-purple-500 to-indigo-500',
+  },
+  {
+    id: 'coach',
+    label: 'Coach',
+    icon: MessageCircle,
+    color: 'text-gray-500',
+    activeColor: 'text-blue-600',
+    bgGradient: 'from-blue-500 to-cyan-500',
+  },
+  {
+    id: 'profiel',
+    label: 'Profiel',
+    icon: User,
+    color: 'text-gray-500',
+    activeColor: 'text-green-600',
+    bgGradient: 'from-green-500 to-emerald-500',
+  },
+];
+
+// ============================================================================
+// HAPTIC FEEDBACK
+// ============================================================================
+
+const triggerHaptic = (intensity: 'light' | 'medium' | 'heavy' = 'light') => {
+  if (typeof window !== 'undefined' && 'navigator' in window && 'vibrate' in navigator) {
+    const durations = { light: 10, medium: 25, heavy: 50 };
+    navigator.vibrate(durations[intensity]);
+  }
+};
+
+// ============================================================================
+// TAB LOADING SKELETON
+// ============================================================================
+
+function TabLoadingSkeleton() {
+  return (
+    <div className="p-4 space-y-4 animate-pulse">
+      <div className="h-32 bg-gray-100 rounded-2xl" />
+      <div className="h-24 bg-gray-100 rounded-xl" />
+      <div className="h-24 bg-gray-100 rounded-xl" />
+      <div className="grid grid-cols-2 gap-3">
+        <div className="h-20 bg-gray-100 rounded-xl" />
+        <div className="h-20 bg-gray-100 rounded-xl" />
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// SWIPE GESTURE HOOK
+// ============================================================================
+
+function useSwipeGesture(
+  onSwipeLeft: () => void,
+  onSwipeRight: () => void,
+  threshold = 50
+) {
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const touchEnd = useRef<{ x: number; y: number } | null>(null);
+
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    touchEnd.current = null;
+    touchStart.current = {
+      x: e.targetTouches[0].clientX,
+      y: e.targetTouches[0].clientY,
+    };
+  }, []);
+
+  const onTouchMove = useCallback((e: React.TouchEvent) => {
+    touchEnd.current = {
+      x: e.targetTouches[0].clientX,
+      y: e.targetTouches[0].clientY,
+    };
+  }, []);
+
+  const onTouchEnd = useCallback(() => {
+    if (!touchStart.current || !touchEnd.current) return;
+
+    const distanceX = touchStart.current.x - touchEnd.current.x;
+    const distanceY = touchStart.current.y - touchEnd.current.y;
+    const isHorizontalSwipe = Math.abs(distanceX) > Math.abs(distanceY);
+
+    if (isHorizontalSwipe && Math.abs(distanceX) > threshold) {
+      if (distanceX > 0) {
+        onSwipeLeft();
+      } else {
+        onSwipeRight();
+      }
+    }
+
+    touchStart.current = null;
+    touchEnd.current = null;
+  }, [onSwipeLeft, onSwipeRight, threshold]);
+
+  return { onTouchStart, onTouchMove, onTouchEnd };
+}
+
+// ============================================================================
+// PULL TO REFRESH HOOK
+// ============================================================================
+
+function usePullToRefresh(onRefresh: () => Promise<void>) {
   const [pullDistance, setPullDistance] = useState(0);
-  const [startY, setStartY] = useState(0);
-  const [showGuidedFlow, setShowGuidedFlow] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const startY = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Use dashboard data hook
-  const dashboardStats = useDashboardData(user?.id);
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (containerRef.current?.scrollTop === 0) {
+      startY.current = e.touches[0].clientY;
+    }
+  }, []);
 
-  // Use centralized journey state hook
-  const {
-    showOnboarding,
-    journeyState,
-    isInitializingOnboarding,
-    journeyCheckComplete,
-    handlers
-  } = useJourneyState({
-    userId: user?.id,
-    userProfile,
-    enabled: !loading && !!user
-  });
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!containerRef.current || containerRef.current.scrollTop > 0) return;
+
+    const currentY = e.touches[0].clientY;
+    const diff = currentY - startY.current;
+
+    if (diff > 0) {
+      setPullDistance(Math.min(diff * 0.4, 100));
+    }
+  }, []);
+
+  const handleTouchEnd = useCallback(async () => {
+    if (pullDistance > 60 && !isRefreshing) {
+      setIsRefreshing(true);
+      triggerHaptic('medium');
+      await onRefresh();
+      setIsRefreshing(false);
+    }
+    setPullDistance(0);
+    startY.current = 0;
+  }, [pullDistance, isRefreshing, onRefresh]);
+
+  return {
+    pullDistance,
+    isRefreshing,
+    containerRef,
+    handlers: {
+      onTouchStart: handleTouchStart,
+      onTouchMove: handleTouchMove,
+      onTouchEnd: handleTouchEnd,
+    },
+  };
+}
+
+// ============================================================================
+// BOTTOM TAB BAR COMPONENT
+// ============================================================================
+
+interface BottomTabBarProps {
+  activeTab: TabId;
+  onTabChange: (tab: TabId) => void;
+}
+
+function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
+  const activeIndex = TABS.findIndex(t => t.id === activeTab);
+
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-gray-100 safe-area-bottom">
+      {/* Sliding Indicator */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gray-100">
+        <div
+          className="h-full bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-300 ease-out"
+          style={{
+            width: `${100 / TABS.length}%`,
+            transform: `translateX(${activeIndex * 100}%)`,
+          }}
+        />
+      </div>
+
+      <div className="flex items-center justify-around px-2 py-1">
+        {TABS.map((tab, index) => {
+          const Icon = tab.icon;
+          const isActive = tab.id === activeTab;
+
+          return (
+            <button
+              key={tab.id}
+              onClick={() => {
+                triggerHaptic('light');
+                onTabChange(tab.id);
+              }}
+              className={cn(
+                "flex flex-col items-center justify-center px-4 py-2 rounded-xl transition-all duration-200 min-w-[70px] relative",
+                "active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2",
+                isActive ? "scale-105" : "hover:bg-gray-50"
+              )}
+              aria-label={tab.label}
+              aria-selected={isActive}
+              role="tab"
+            >
+              {/* Background glow for active tab */}
+              {isActive && (
+                <div className="absolute inset-0 bg-gradient-to-t from-pink-50 to-transparent rounded-xl opacity-50" />
+              )}
+
+              {/* Icon */}
+              <div className={cn(
+                "relative transition-all duration-200",
+                isActive && "transform -translate-y-0.5"
+              )}>
+                <Icon
+                  className={cn(
+                    "w-6 h-6 transition-colors duration-200",
+                    isActive ? tab.activeColor : tab.color
+                  )}
+                  strokeWidth={isActive ? 2.5 : 2}
+                />
+                {/* Active dot indicator */}
+                {isActive && (
+                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-pink-500 rounded-full" />
+                )}
+              </div>
+
+              {/* Label */}
+              <span className={cn(
+                "text-[10px] font-medium mt-1 transition-colors duration-200",
+                isActive ? tab.activeColor : tab.color
+              )}>
+                {tab.label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
+// ============================================================================
+// PULL TO REFRESH INDICATOR
+// ============================================================================
+
+function PullToRefreshIndicator({ distance, isRefreshing }: { distance: number; isRefreshing: boolean }) {
+  if (distance === 0 && !isRefreshing) return null;
+
+  return (
+    <div
+      className="absolute top-0 left-0 right-0 z-40 flex items-center justify-center transition-all duration-200 overflow-hidden"
+      style={{ height: Math.max(0, distance) }}
+    >
+      <div className={cn(
+        "flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg",
+        isRefreshing && "animate-pulse"
+      )}>
+        {isRefreshing ? (
+          <>
+            <div className="w-4 h-4 border-2 border-pink-500 border-t-transparent rounded-full animate-spin" />
+            <span className="text-xs font-medium text-gray-700">Verversen...</span>
+          </>
+        ) : distance > 60 ? (
+          <>
+            <Sparkles className="w-4 h-4 text-pink-500" />
+            <span className="text-xs font-medium text-gray-700">Loslaten om te verversen</span>
+          </>
+        ) : (
+          <>
+            <ChevronRight className="w-4 h-4 text-gray-400 rotate-90" />
+            <span className="text-xs text-gray-500">Trek om te verversen</span>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// AUTH SCREENS
+// ============================================================================
+
+function LoadingScreen() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-pink-50">
+      <div className="text-center space-y-4">
+        <div className="w-16 h-16 mx-auto relative">
+          <Image
+            src="/images/Logo Icon DatingAssistent.png"
+            alt="DatingAssistent"
+            fill
+            className="object-contain animate-pulse"
+          />
+        </div>
+        <div className="space-y-2">
+          <LoadingSpinner />
+          <p className="text-gray-600 text-sm">Dashboard laden...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AccessDeniedScreen({ onLogin, onRegister }: { onLogin: () => void; onRegister: () => void }) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-pink-50 flex items-center justify-center p-4">
+      <Card className="max-w-md w-full shadow-xl border-0 bg-white/80 backdrop-blur-sm">
+        <CardContent className="p-8">
+          <div className="text-center">
+            <div className="w-20 h-20 bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
+              <Shield className="w-10 h-10 text-pink-500" />
+            </div>
+
+            <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
+              Toegang Vereist
+            </CardTitle>
+
+            <p className="text-gray-600 mb-8">
+              Log in om toegang te krijgen tot je persoonlijke dashboard
+            </p>
+
+            <div className="space-y-3">
+              <Button
+                onClick={onLogin}
+                className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                size="lg"
+              >
+                <LogIn className="w-5 h-5 mr-2" />
+                Inloggen
+              </Button>
+
+              <Button
+                onClick={onRegister}
+                variant="outline"
+                className="w-full border-2 border-gray-200 text-gray-700 hover:bg-gray-50 py-6 rounded-xl"
+                size="lg"
+              >
+                <UserPlus className="w-5 h-5 mr-2" />
+                Account Aanmaken
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
+export function MobileDashboard({ className, initialTab = 'home' }: MobileDashboardProps) {
+  const router = useRouter();
+  const { user, userProfile, loading } = useUser();
+  const [activeTab, setActiveTab] = useState<TabId>(initialTab);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Pull to refresh
+  const handleRefresh = useCallback(async () => {
+    // Simulate refresh - in production this would refetch data
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }, []);
+
+  const { pullDistance, isRefreshing, containerRef, handlers: pullHandlers } = usePullToRefresh(handleRefresh);
+
+  // Tab navigation with animation
+  const handleTabChange = useCallback((newTab: TabId) => {
+    if (newTab === activeTab || isTransitioning) return;
+
+    setIsTransitioning(true);
+    setActiveTab(newTab);
+
+    // Reset transition state after animation
+    setTimeout(() => setIsTransitioning(false), 300);
+  }, [activeTab, isTransitioning]);
+
+  // Swipe gestures
+  const handleSwipeLeft = useCallback(() => {
+    const currentIndex = TABS.findIndex(t => t.id === activeTab);
+    if (currentIndex < TABS.length - 1) {
+      handleTabChange(TABS[currentIndex + 1].id);
+      triggerHaptic('light');
+    }
+  }, [activeTab, handleTabChange]);
+
+  const handleSwipeRight = useCallback(() => {
+    const currentIndex = TABS.findIndex(t => t.id === activeTab);
+    if (currentIndex > 0) {
+      handleTabChange(TABS[currentIndex - 1].id);
+      triggerHaptic('light');
+    }
+  }, [activeTab, handleTabChange]);
+
+  const swipeHandlers = useSwipeGesture(handleSwipeLeft, handleSwipeRight, 75);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -127,367 +459,89 @@ export function MobileDashboard({ className }: MobileDashboardProps) {
     }
   }, [loading, user, router]);
 
-  // Show loading while checking authentication
+  // Loading state
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-purple-50">
-        <div className="text-center space-y-4">
-          <LoadingSpinner />
-          <p className="text-gray-600">Dashboard laden...</p>
-        </div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
-  // Show access denied for non-authenticated users (fallback)
+  // Not authenticated
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full shadow-lg border-0 bg-white/95 backdrop-blur-sm">
-          <CardHeader className="text-center pb-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Shield className="w-10 h-10 text-white" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-gray-900">
-              Toegang geweigerd
-            </CardTitle>
-            <p className="text-gray-600 mt-2">
-              Je moet ingelogd zijn om dit dashboard te bekijken
-            </p>
-          </CardHeader>
-
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              <Button
-                onClick={() => router.push('/login')}
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-3"
-                size="lg"
-              >
-                <LogIn className="w-5 h-5 mr-2" />
-                Inloggen
-              </Button>
-
-              <Button
-                onClick={() => router.push('/register')}
-                variant="outline"
-                className="w-full border-pink-200 text-pink-700 hover:bg-pink-50"
-                size="lg"
-              >
-                <UserPlus className="w-5 h-5 mr-2" />
-                Account aanmaken
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <AccessDeniedScreen
+        onLogin={() => router.push('/login')}
+        onRegister={() => router.push('/register')}
+      />
     );
   }
 
-  const handleStartGuidedFlow = () => {
-    // Start the comprehensive guided flow for existing users
-    setShowGuidedFlow(true);
-  };
+  // Tab content renderer
+  const renderTabContent = () => {
+    const commonProps = {
+      user,
+      userProfile,
+    };
 
-  const handleGuidedFlowComplete = () => {
-    setShowGuidedFlow(false);
-    // Optionally refresh dashboard data or show success message
-    window.location.reload(); // Simple refresh to show any updates
-  };
-
-  // Pull-to-refresh functionality
-  const handleRefresh = async () => {
-    setRefreshing(true);
-
-    try {
-      // Refresh dashboard stats
-      if (user?.id) {
-        const response = await fetch(`/api/user/dashboard-stats?userId=${user.id}&refresh=true`);
-        if (response.ok) {
-          const data = await response.json();
-          // Update stats (this would need to be passed down to the hook)
-          window.location.reload(); // Simple refresh for now
-        }
-      }
-    } catch (error) {
-      console.error('Error refreshing dashboard:', error);
-    } finally {
-      setRefreshing(false);
+    switch (activeTab) {
+      case 'home':
+        return (
+          <Suspense fallback={<TabLoadingSkeleton />}>
+            <HomeTabContent {...commonProps} />
+          </Suspense>
+        );
+      case 'tools':
+        return (
+          <Suspense fallback={<TabLoadingSkeleton />}>
+            <ToolsTabContent {...commonProps} />
+          </Suspense>
+        );
+      case 'coach':
+        return (
+          <Suspense fallback={<TabLoadingSkeleton />}>
+            <CoachTabContent {...commonProps} />
+          </Suspense>
+        );
+      case 'profiel':
+        return (
+          <Suspense fallback={<TabLoadingSkeleton />}>
+            <ProfileTabContent {...commonProps} />
+          </Suspense>
+        );
+      default:
+        return null;
     }
-  };
-
-  // Touch event handlers for pull-to-refresh
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setStartY(e.touches[0].clientY);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!containerRef.current) return;
-
-    const currentY = e.touches[0].clientY;
-    const diff = currentY - startY;
-
-    // Only allow pull down from top
-    if (containerRef.current.scrollTop === 0 && diff > 0) {
-      setPullDistance(Math.min(diff * 0.5, 80)); // Dampen the pull, max 80px
-    }
-  };
-
-  const handleTouchEnd = () => {
-    if (pullDistance > 50) { // Threshold for refresh
-      handleRefresh();
-    }
-    setPullDistance(0);
-    setStartY(0);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className={cn("min-h-screen bg-gray-50", className)}>
       {/* Pull to Refresh Indicator */}
-      {pullDistance > 0 && (
-        <div
-          className="fixed top-0 left-0 right-0 z-50 bg-pink-500 text-white text-center py-2 transition-transform duration-200"
-          style={{ transform: `translateY(${Math.max(-20, pullDistance - 60)}px)` }}
-        >
-          <div className="flex items-center justify-center gap-2">
-            {pullDistance > 50 ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                <span className="text-sm font-medium">Verversen...</span>
-              </>
-            ) : (
-              <>
-                <span className="text-sm">↓ Trek om te verversen</span>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      <PullToRefreshIndicator distance={pullDistance} isRefreshing={isRefreshing} />
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <div
         ref={containerRef}
-        className="max-w-md mx-auto px-4 py-6 space-y-4 transition-transform duration-200"
-        style={{ transform: `translateY(${pullDistance}px)` }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        className="pb-20 overflow-y-auto min-h-screen"
+        style={{
+          transform: `translateY(${pullDistance}px)`,
+          transition: pullDistance === 0 ? 'transform 0.2s ease-out' : 'none',
+        }}
+        {...pullHandlers}
+        {...swipeHandlers}
       >
-        {/* Show onboarding flow if needed */}
-        {showOnboarding ? (
-          <OnboardingFlow
-            journeyState={journeyState}
-            userName={user?.name}
-            handlers={handlers}
-          />
-        ) : (
-          <>
-            {/* AI Hero Section - Show for users who completed onboarding */}
-            {!showOnboarding && (
-              <AIComponentErrorBoundary fallback={
-                <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
-                  <CardContent className="p-6 text-center">
-                    <p className="text-sm text-gray-600">AI Coach tijdelijk niet beschikbaar</p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-2"
-                      onClick={() => window.location.reload()}
-                    >
-                      Opnieuw proberen
-                    </Button>
-                  </CardContent>
-                </Card>
-              }>
-                <Suspense fallback={
-                  <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
-                    <CardContent className="p-6 text-center">
-                      <LoadingSpinner />
-                      <p className="text-sm text-gray-600 mt-2">AI Coach laden...</p>
-                    </CardContent>
-                  </Card>
-                }>
-                  <AIHeroSection onStartGuidedFlow={handleStartGuidedFlow} />
-                </Suspense>
-              </AIComponentErrorBoundary>
-            )}
-
-            {/* Welcome Header */}
-            <div className="text-center mb-6">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                Welkom terug, {user?.name?.split(' ')[0] || 'Dater'}! 👋
-              </h1>
-              <p className="text-gray-600">Laten we je dating succes optimaliseren</p>
-            </div>
-
-            {/* Profile Optimization Card - High Priority */}
-            <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-lg">🔥</span>
-                      <span className="text-sm font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full">
-                        Urgent
-                      </span>
-                    </div>
-                    <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                      Start met je profiel
-                    </h2>
-                    <p className="text-sm text-gray-600 mb-3">
-                      Een goed profiel is de basis van succes in dating
-                    </p>
-                    <p className="text-xs text-gray-500 italic">
-                      "Nieuwe gebruikers zien vaak de beste resultaten met een compleet profiel"
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <Button
-                    onClick={() => router.push('/dashboard/starter/starter-5')}
-                    className="flex-1 bg-pink-500 hover:bg-pink-600 text-white"
-                  >
-                    Start les
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => router.push('/tools')}
-                    className="px-4 border-gray-300 text-gray-700 hover:bg-gray-50"
-                  >
-                    Overslaan
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Learning Journey Card */}
-            <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl">🎓</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 mb-2">
-                      Jouw persoonlijke leertraject
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Gebaseerd op je vaardighedenbeoordeling hebben we een leertraject voor je samengesteld.
-                    </p>
-                    <Button
-                      onClick={() => router.push('/leren')}
-                      variant="outline"
-                      className="w-full border-pink-200 text-pink-700 hover:bg-pink-50"
-                    >
-                      Bekijk leertraject
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions Card */}
-            <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Snelle Acties</h3>
-                <QuickActionsGrid />
-              </CardContent>
-            </Card>
-
-            {/* Weekly Progress Card */}
-            <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-gray-900">Deze Week</h3>
-                  <span className="text-sm text-gray-500">
-                    Week {Math.ceil((new Date().getTime() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (1000 * 60 * 60 * 24 * 7))}
-                  </span>
-                </div>
-
-                {dashboardStats.error ? (
-                  <div className="text-center py-4">
-                    <p className="text-sm text-gray-500 mb-2">Kon statistieken niet laden</p>
-                    <button
-                      onClick={() => window.location.reload()}
-                      className="text-xs text-pink-600 hover:text-pink-700 underline"
-                    >
-                      Opnieuw proberen
-                    </button>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-pink-600 mb-1">
-                        {dashboardStats.loading ? '...' : dashboardStats.goalsCompleted}
-                      </div>
-                      <div className="text-xs text-gray-600">Doelen behaald</div>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-pink-600 mb-1">
-                        {dashboardStats.loading ? '...' : dashboardStats.toolsUsed}
-                      </div>
-                      <div className="text-xs text-gray-600">Tools gebruikt</div>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-pink-600 mb-1">
-                        {dashboardStats.loading ? '...' : `${dashboardStats.progress}%`}
-                      </div>
-                      <div className="text-xs text-gray-600">Voortgang</div>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* AI Smart Flow - Now with real AI recommendations */}
-            <AIComponentErrorBoundary fallback={
-              <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
-                <CardContent className="p-6 text-center">
-                  <p className="text-sm text-gray-600">AI Aanbevelingen tijdelijk niet beschikbaar</p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mt-2"
-                    onClick={() => window.location.reload()}
-                  >
-                    Opnieuw proberen
-                  </Button>
-                </CardContent>
-              </Card>
-            }>
-              <Suspense fallback={
-                <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
-                  <CardContent className="p-6 text-center">
-                    <LoadingSpinner />
-                    <p className="text-sm text-gray-600 mt-2">AI Aanbevelingen laden...</p>
-                  </CardContent>
-                </Card>
-              }>
-                <AISmartFlow userId={user?.id} />
-              </Suspense>
-            </AIComponentErrorBoundary>
-          </>
-        )}
+        {/* Tab Content with Animation */}
+        <div
+          className={cn(
+            "transition-all duration-300 ease-out",
+            isTransitioning ? "opacity-0 translate-x-4" : "opacity-100 translate-x-0"
+          )}
+        >
+          {renderTabContent()}
+        </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <BottomNavigation />
-
-      {/* Guided Flow Modal */}
-      {showGuidedFlow && (
-        <Suspense fallback={
-          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-            <div className="bg-white rounded-lg p-6 max-w-sm mx-4 text-center">
-              <LoadingSpinner />
-              <p className="text-gray-600 mt-4">Je persoonlijke coach laden...</p>
-            </div>
-          </div>
-        }>
-          <GuidedFlow
-            onComplete={handleGuidedFlowComplete}
-            onClose={() => setShowGuidedFlow(false)}
-          />
-        </Suspense>
-      )}
+      {/* Bottom Tab Bar */}
+      <BottomTabBar activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   );
 }
+
+export default MobileDashboard;
