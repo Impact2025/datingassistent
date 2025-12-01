@@ -12,20 +12,11 @@ import {
   ArrowRight,
   Target,
   Crown,
-  TrendingUp
+  TrendingUp,
+  Lock,
+  UserPlus
 } from 'lucide-react';
-
-interface Assessment {
-  recommended_program: string;
-  recommendation_confidence: number;
-  question_1: string;
-  question_2: string;
-  question_3: string;
-  question_4: string;
-  question_5: string;
-  question_6: string;
-  question_7: string;
-}
+import { getRecommendedProgram } from '@/lib/assessment-questions';
 
 interface ProgramData {
   id: number;
@@ -56,49 +47,61 @@ const programColors: Record<string, string> = {
 
 export default function AssessmentResultPage() {
   const router = useRouter();
-  const [assessment, setAssessment] = useState<Assessment | null>(null);
   const [program, setProgram] = useState<ProgramData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [recommendation, setRecommendation] = useState<any>(null);
 
   useEffect(() => {
-    const fetchAssessment = async () => {
+    const loadResults = async () => {
       try {
-        // Get assessment
-        const assessmentRes = await fetch('/api/assessment/save');
-        if (!assessmentRes.ok) {
-          throw new Error('Assessment not found');
+        // Get answers from localStorage
+        const saved = localStorage.getItem('assessment_answers');
+        if (!saved) {
+          throw new Error('No assessment data found');
         }
-        const assessmentData = await assessmentRes.json();
-        setAssessment(assessmentData);
 
-        // Get recommended program details
-        const programRes = await fetch(`/api/programs?slug=${assessmentData.recommended_program}`);
-        if (!programRes.ok) {
-          throw new Error('Program not found');
-        }
+        const answers = JSON.parse(saved);
+
+        // Calculate recommendation locally
+        const rec = getRecommendedProgram(answers);
+        setRecommendation(rec);
+
+        // Get program details
+        const programRes = await fetch(`/api/programs?slug=${rec.program}`);
+        if (!programRes.ok) throw new Error('Program not found');
         const programData = await programRes.json();
         setProgram(programData);
 
+        // Check if user is authenticated
+        const authRes = await fetch('/api/auth/verify');
+        setIsAuthenticated(authRes.ok);
+
       } catch (err) {
-        console.error('Error fetching data:', err);
+        console.error('Error loading results:', err);
         setError(err instanceof Error ? err.message : 'Failed to load results');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAssessment();
+    loadResults();
   }, []);
+
+  const handleRegister = () => {
+    // Save recommendation to localStorage for post-registration
+    localStorage.setItem('pending_recommendation', JSON.stringify({
+      program: recommendation.program,
+      confidence: recommendation.confidence
+    }));
+    router.push('/register?from=assessment');
+  };
 
   const handleContinue = () => {
     if (program) {
       router.push(`/checkout/${program.slug}`);
     }
-  };
-
-  const handleViewOtherPrograms = () => {
-    router.push('/#programmas');
   };
 
   if (loading) {
@@ -112,16 +115,14 @@ export default function AssessmentResultPage() {
     );
   }
 
-  if (error || !assessment || !program) {
+  if (error || !program || !recommendation) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex items-center justify-center p-4">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center space-y-4">
             <div className="text-red-500 text-5xl">⚠️</div>
             <h2 className="text-xl font-bold text-gray-900">Er ging iets mis</h2>
-            <p className="text-gray-600">
-              {error || 'Kon je assessment niet laden.'}
-            </p>
+            <p className="text-gray-600">{error || 'Kon je resultaten niet laden.'}</p>
             <Button onClick={() => router.push('/assessment/1')} className="w-full">
               Opnieuw beginnen
             </Button>
@@ -160,7 +161,7 @@ export default function AssessmentResultPage() {
         <div className="text-center mb-8">
           <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 text-lg">
             <TrendingUp className="w-5 h-5 mr-2" />
-            {assessment.recommendation_confidence}% match met jouw situatie
+            {recommendation.confidence}% match met jouw situatie
           </Badge>
         </div>
 
@@ -170,7 +171,34 @@ export default function AssessmentResultPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <Card className="border-2 border-pink-500 shadow-2xl bg-white">
+          <Card className="border-2 border-pink-500 shadow-2xl bg-white relative overflow-hidden">
+            {/* Blur overlay for non-authenticated users */}
+            {!isAuthenticated && (
+              <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center">
+                <div className="text-center p-8 max-w-md">
+                  <Lock className="w-16 h-16 mx-auto text-pink-500 mb-4" />
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                    🎉 Bijna klaar!
+                  </h3>
+                  <p className="text-gray-700 mb-6">
+                    Maak een <strong>gratis account</strong> om je volledige aanbeveling en persoonlijk actieplan te zien.
+                  </p>
+                  <div className="space-y-3">
+                    <Button
+                      onClick={handleRegister}
+                      className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white py-6 text-lg shadow-lg"
+                    >
+                      <UserPlus className="w-5 h-5 mr-2" />
+                      Gratis account maken
+                    </Button>
+                    <p className="text-xs text-gray-500">
+                      100% gratis • Geen creditcard vereist • Direct toegang
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <CardHeader className="text-center pb-4">
               <div className="inline-flex items-center justify-center mx-auto mb-4">
                 <Badge className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2">
@@ -229,49 +257,24 @@ export default function AssessmentResultPage() {
                 </p>
               </div>
 
-              {/* Why This Program */}
-              <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
-                <h3 className="font-semibold text-gray-900 mb-3">
-                  💡 Waarom dit programma perfect bij je past:
-                </h3>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  {assessment.question_2.includes('profiel') && (
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 mt-0.5 text-green-500 flex-shrink-0" />
-                      <span>Je profiel verbeteren is een focus in dit programma</span>
-                    </li>
-                  )}
-                  {assessment.question_3.includes('5-10u') && (
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 mt-0.5 text-green-500 flex-shrink-0" />
-                      <span>Het tijdsinvestment past bij jouw beschikbaarheid</span>
-                    </li>
-                  )}
-                  {assessment.question_5.includes('ai-hulp') && (
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 mt-0.5 text-green-500 flex-shrink-0" />
-                      <span>24/7 AI begeleiding zoals jij wilt</span>
-                    </li>
-                  )}
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="w-4 h-4 mt-0.5 text-green-500 flex-shrink-0" />
-                    <span>Budget past bij jouw investering</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Outcomes */}
+              {/* Teaser: Top 3 outcomes */}
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">
                   Wat je bereikt:
                 </h3>
                 <ul className="space-y-2">
-                  {program.outcomes.map((outcome, i) => (
+                  {program.outcomes.slice(0, 3).map((outcome, i) => (
                     <li key={i} className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 mt-0.5 text-green-500 flex-shrink-0" />
                       <span className="text-gray-700">{outcome}</span>
                     </li>
                   ))}
+                  {program.outcomes.length > 3 && !isAuthenticated && (
+                    <li className="flex items-start gap-2 text-gray-400">
+                      <Lock className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                      <span>+ {program.outcomes.length - 3} meer voordelen (registreer om te zien)</span>
+                    </li>
+                  )}
                 </ul>
               </div>
 
@@ -281,24 +284,26 @@ export default function AssessmentResultPage() {
                 <span className="font-medium">{program.tangible_proof}</span>
               </div>
 
-              {/* CTA Buttons */}
-              <div className="space-y-3 pt-4">
-                <Button
-                  onClick={handleContinue}
-                  className={`w-full bg-gradient-to-r ${gradientColor} hover:opacity-90 text-white py-6 text-lg shadow-lg hover:shadow-xl transition-all`}
-                >
-                  Start met {program.name}
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
+              {/* CTA Buttons - Only show if authenticated */}
+              {isAuthenticated && (
+                <div className="space-y-3 pt-4">
+                  <Button
+                    onClick={handleContinue}
+                    className={`w-full bg-gradient-to-r ${gradientColor} hover:opacity-90 text-white py-6 text-lg shadow-lg hover:shadow-xl transition-all`}
+                  >
+                    Start met {program.name}
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
 
-                <Button
-                  onClick={handleViewOtherPrograms}
-                  variant="outline"
-                  className="w-full border-2 border-gray-300 hover:border-pink-500 hover:text-pink-500"
-                >
-                  Bekijk andere programma's
-                </Button>
-              </div>
+                  <Button
+                    onClick={() => router.push('/#programmas')}
+                    variant="outline"
+                    className="w-full border-2 border-gray-300 hover:border-pink-500 hover:text-pink-500"
+                  >
+                    Bekijk andere programma's
+                  </Button>
+                </div>
+              )}
 
               {/* Guarantee */}
               <div className="text-center text-sm text-gray-600 pt-4 border-t">
@@ -308,6 +313,32 @@ export default function AssessmentResultPage() {
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* Trust badges for non-authenticated */}
+        {!isAuthenticated && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 grid grid-cols-3 gap-4 max-w-2xl mx-auto"
+          >
+            <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+              <div className="text-3xl mb-2">🎯</div>
+              <p className="text-sm font-semibold text-gray-900">85%</p>
+              <p className="text-xs text-gray-600">Succesrate</p>
+            </div>
+            <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+              <div className="text-3xl mb-2">⚡</div>
+              <p className="text-sm font-semibold text-gray-900">2 min</p>
+              <p className="text-xs text-gray-600">Registratie</p>
+            </div>
+            <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+              <div className="text-3xl mb-2">💯</div>
+              <p className="text-sm font-semibold text-gray-900">Gratis</p>
+              <p className="text-xs text-gray-600">Account</p>
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
