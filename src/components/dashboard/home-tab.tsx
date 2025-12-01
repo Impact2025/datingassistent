@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { Sparkles, TrendingUp, Target, Calendar, GraduationCap } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { MijnCursussenWidget } from './mijn-cursussen-widget';
+import { MyProgramsWidget } from './my-programs-widget';
 import { Button } from '../ui/button';
 
 interface HomeTabProps {
@@ -103,6 +104,9 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
 
         {/* Mijn Cursussen Widget */}
         <MijnCursussenWidget />
+
+        {/* Mijn Programma's Widget - NIEUW Sprint 4! */}
+        <MyProgramsWidget />
 
         {/* Vandaag Focus */}
         <motion.div
