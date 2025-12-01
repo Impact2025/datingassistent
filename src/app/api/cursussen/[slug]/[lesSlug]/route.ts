@@ -1,0 +1,235 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { neon } from '@neondatabase/serverless';
+import { getServerSession } from 'next-auth';
+
+const sql = neon(process.env.DATABASE_URL!);
+
+/**
+ * GET /api/cursussen/[slug]/[lesSlug]
+ * Haal specifieke les op met alle secties en quiz vragen
+ */
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ slug: string; lesSlug: string }> }
+) {
+  try {
+    // Fixed: Await params as required by Next.js 15
+    const { slug, lesSlug } = await params;
+    console.log(`🚀 Fetching lesson: ${lesSlug} from course: ${slug}`);
+
+    // 1. Haal cursus op
+    const cursusResult = await sql`
+      SELECT * FROM cursussen
+      WHERE slug = ${slug} AND status = 'published'
+    `;
+
+    if (cursusResult.length === 0) {
+      return NextResponse.json({ error: 'Cursus niet gevonden' }, { status: 404 });
+    }
+
+    const cursus = cursusResult[0];
+
+    // 2. Haal les op
+    const lesResult = await sql`
+      SELECT * FROM cursus_lessen
+      WHERE cursus_id = ${cursus.id}
+        AND slug = ${lesSlug}
+        AND status = 'published'
+    `;
+
+    if (lesResult.length === 0) {
+      return NextResponse.json({ error: 'Les niet gevonden' }, { status: 404 });
+    }
+
+    const les = lesResult[0];
+
+    // 3. Haal alle secties op voor deze les
+    const sectiesResult = await sql`
+      SELECT * FROM cursus_secties
+      WHERE les_id = ${les.id}
+      ORDER BY volgorde ASC
+    `;
+
+    // 4. Voor elke quiz sectie, haal de vragen op
+    const secties = await Promise.all(
+      sectiesResult.map(async (sectie: any) => {
+        if (sectie.sectie_type === 'quiz') {
+          const vragenResult = await sql`
+            SELECT * FROM cursus_quiz_vragen
+            WHERE sectie_id = ${sectie.id}
+            ORDER BY volgorde ASC
+          `;
+
+          console.log(`📝 Loaded ${vragenResult.length} quiz vragen for sectie ${sectie.id}`);
+
+          return {
+            ...sectie,
+            quiz_vragen: vragenResult
+          };
+        }
+
+        return sectie;
+      })
+    );
+
+    // 5. Haal vorige en volgende les op voor navigatie
+    const vorige = await sql`
+      SELECT id, slug, titel FROM cursus_lessen
+      WHERE cursus_id = ${cursus.id}
+        AND volgorde < ${les.volgorde}
+        AND status = 'published'
+      ORDER BY volgorde DESC
+      LIMIT 1
+    `;
+
+    const volgende = await sql`
+      SELECT id, slug, titel FROM cursus_lessen
+      WHERE cursus_id = ${cursus.id}
+        AND volgorde > ${les.volgorde}
+        AND status = 'published'
+      ORDER BY volgorde ASC
+      LIMIT 1
+    `;
+
+    // 6. Haal user progress op
+    const session = await getServerSession();
+    const userId = session?.user?.id;
+
+    // Als geen user ingelogd, geen progress
+    const progressResult = userId ? await sql`
+      SELECT * FROM user_sectie_progress
+      WHERE les_id = ${les.id}
+        AND user_id = ${userId}
+    ` : [];
+
+    // Bereken les status op basis van voltooide secties
+    const voltooideSecties = progressResult.filter(p => p.is_completed).map(p => p.sectie_id);
+    const totaalSecties = secties.length;
+    const alleSectiesTotalVoltooide = voltooideSecties.length === totaalSecties && totaalSecties > 0;
+
+    let lesStatus = 'niet-gestart';
+    if (progressResult.length > 0) {
+      lesStatus = alleSectiesTotalVoltooide ? 'afgerond' : 'bezig';
+    }
+
+    const userProgress = {
+      status: lesStatus,
+      voltooide_secties: voltooideSecties,
+      laatste_sectie_id: progressResult.length > 0 ? progressResult[progressResult.length - 1].sectie_id : null,
+      quiz_scores: progressResult.reduce((acc: any, p: any) => {
+        if (p.quiz_score) acc[p.sectie_id] = p.quiz_score;
+        return acc;
+      }, {})
+    };
+
+    // Voeg progress toe aan elke sectie
+    const sectiesMetProgress = secties.map((sectie: any) => {
+      const progress = progressResult.find((p: any) => p.sectie_id === sectie.id);
+      return {
+        ...sectie,
+        user_progress: progress || null
+      };
+    });
+
+    const lesData = {
+      ...les,
+      secties: sectiesMetProgress,
+      user_progress: userProgress,
+      navigatie: {
+        vorige: vorige[0] || null,
+        volgende: volgende[0] || null
+      },
+      cursus: {
+        id: cursus.id,
+        slug: cursus.slug,
+        titel: cursus.titel
+      }
+    };
+
+    console.log(`✅ Lesson fetched: ${les.titel} with ${secties.length} sections`);
+
+    return NextResponse.json({ les: lesData });
+  } catch (error: any) {
+    console.error('Error fetching lesson:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch lesson', details: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * POST /api/cursussen/[slug]/[lesSlug]
+ * Update voortgang voor een specifieke sectie
+ */
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ slug: string; lesSlug: string }> }
+) {
+  try {
+    const { slug, lesSlug } = await params;
+    const body = await request.json();
+    const { userId, sectieId, lesId, cursusId, status, quizScore, quizAntwoorden, reflectieAntwoord, opdrachtVoltooide, actieplanVoltooide } = body;
+
+    console.log(`💾 Updating progress for user ${userId}, section ${sectieId}`);
+
+    // Upsert sectie progress
+    const result = await sql`
+      INSERT INTO user_sectie_progress (
+        user_id,
+        sectie_id,
+        les_id,
+        cursus_id,
+        status,
+        is_completed,
+        completed_at,
+        quiz_score,
+        quiz_antwoorden,
+        reflectie_antwoord,
+        opdracht_voltooide_taken,
+        actieplan_voltooide_acties,
+        updated_at
+      ) VALUES (
+        ${userId},
+        ${sectieId},
+        ${lesId},
+        ${cursusId},
+        ${status || 'bezig'},
+        ${status === 'completed'},
+        ${status === 'completed' ? new Date().toISOString() : null},
+        ${quizScore || null},
+        ${quizAntwoorden ? JSON.stringify(quizAntwoorden) : null}::jsonb,
+        ${reflectieAntwoord || null},
+        ${opdrachtVoltooide ? JSON.stringify(opdrachtVoltooide) : null}::jsonb,
+        ${actieplanVoltooide ? JSON.stringify(actieplanVoltooide) : null}::jsonb,
+        NOW()
+      )
+      ON CONFLICT (user_id, sectie_id)
+      DO UPDATE SET
+        status = EXCLUDED.status,
+        is_completed = EXCLUDED.is_completed,
+        completed_at = EXCLUDED.completed_at,
+        quiz_score = COALESCE(EXCLUDED.quiz_score, user_sectie_progress.quiz_score),
+        quiz_antwoorden = COALESCE(EXCLUDED.quiz_antwoorden, user_sectie_progress.quiz_antwoorden),
+        reflectie_antwoord = COALESCE(EXCLUDED.reflectie_antwoord, user_sectie_progress.reflectie_antwoord),
+        opdracht_voltooide_taken = COALESCE(EXCLUDED.opdracht_voltooide_taken, user_sectie_progress.opdracht_voltooide_taken),
+        actieplan_voltooide_acties = COALESCE(EXCLUDED.actieplan_voltooide_acties, user_sectie_progress.actieplan_voltooide_acties),
+        updated_at = NOW()
+      RETURNING *
+    `;
+
+    console.log(`✅ Progress saved for sectie ${sectieId}`);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Voortgang opgeslagen',
+      progress: result[0]
+    });
+  } catch (error: any) {
+    console.error('Error updating lesson progress:', error);
+    return NextResponse.json(
+      { error: 'Failed to update progress', details: error.message },
+      { status: 500 }
+    );
+  }
+}
