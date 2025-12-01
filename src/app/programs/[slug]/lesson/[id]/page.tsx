@@ -18,8 +18,9 @@ import {
   BookOpen,
   Award
 } from 'lucide-react';
-import type { LessonResponse, LessonWithProgress } from '@/types/content-delivery.types';
+import type { LessonResponse, LessonWithProgress, QuizAnswer } from '@/types/content-delivery.types';
 import { formatDuration } from '@/types/content-delivery.types';
+import { QuizComponent } from '@/components/lessons/quiz-component';
 
 export default function LessonPlayerPage() {
   const params = useParams();
@@ -185,6 +186,45 @@ export default function LessonPlayerPage() {
       console.error('Error completing lesson:', error);
     } finally {
       setCompletingLesson(false);
+    }
+  };
+
+  const handleQuizComplete = async (score: number, passed: boolean, answers: QuizAnswer[]) => {
+    console.log('📝 Quiz completed:', { score, passed });
+
+    try {
+      const response = await fetch(`/api/lessons/${lessonId}/progress`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          quiz_answers: answers,
+          is_completed: passed // Auto-complete if passed
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ Quiz progress saved!', data);
+
+        // Update local state
+        setLessonData(prev => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            lesson: {
+              ...prev.lesson,
+              is_completed: passed,
+              user_progress: data.progress
+            }
+          };
+        });
+
+        if (data.achievements_unlocked && data.achievements_unlocked.length > 0) {
+          console.log('🏆 Achievements unlocked:', data.achievements_unlocked);
+        }
+      }
+    } catch (error) {
+      console.error('Error saving quiz progress:', error);
     }
   };
 
@@ -373,6 +413,18 @@ export default function LessonPlayerPage() {
                   <div dangerouslySetInnerHTML={{ __html: lesson.text_content.replace(/\n/g, '<br>') }} />
                 </CardContent>
               </Card>
+            )}
+
+            {/* Quiz */}
+            {lesson.content_type === 'quiz' && lesson.quiz_data && (
+              <QuizComponent
+                quizData={lesson.quiz_data as any}
+                lessonId={lessonId}
+                onComplete={handleQuizComplete}
+                initialAnswers={lesson.user_progress?.quiz_answers as any || []}
+                maxAttempts={lesson.quiz_data.max_attempts}
+                currentAttempts={lesson.user_progress?.quiz_attempts || 0}
+              />
             )}
 
             {/* Download */}
