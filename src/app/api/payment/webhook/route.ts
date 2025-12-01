@@ -59,7 +59,58 @@ export async function POST(request: NextRequest) {
           ON CONFLICT (user_id, program_id, order_id) DO NOTHING
         \`;
 
-        console.log('✅ Payment completed and enrollment created');
+        // Initialize program progress (Sprint 4 Enhancement)
+        // Count total modules and lessons
+        const statsResult = await sql\`
+          SELECT
+            COUNT(DISTINCT pm.id) as total_modules,
+            COUNT(DISTINCT l.id) as total_lessons
+          FROM program_modules pm
+          LEFT JOIN lessons l ON l.module_id = pm.id AND l.is_published = true
+          WHERE pm.program_id = \${transaction.program_id}
+            AND pm.is_published = true
+        \`;
+
+        const { total_modules, total_lessons } = statsResult.rows[0];
+
+        // Find first lesson as current lesson
+        const firstLessonResult = await sql\`
+          SELECT l.id
+          FROM lessons l
+          JOIN program_modules pm ON l.module_id = pm.id
+          WHERE pm.program_id = \${transaction.program_id}
+            AND pm.is_published = true
+            AND l.is_published = true
+          ORDER BY pm.display_order, l.display_order
+          LIMIT 1
+        \`;
+
+        const currentLessonId = firstLessonResult.rows[0]?.id || null;
+
+        // Initialize user_program_progress
+        await sql\`
+          INSERT INTO user_program_progress (
+            user_id, program_id,
+            started_at, total_modules, total_lessons,
+            overall_progress_percentage,
+            current_lesson_id
+          ) VALUES (
+            \${transaction.user_id},
+            \${transaction.program_id},
+            NOW(),
+            \${total_modules},
+            \${total_lessons},
+            0,
+            \${currentLessonId}
+          )
+          ON CONFLICT (user_id, program_id) DO UPDATE SET
+            total_modules = \${total_modules},
+            total_lessons = \${total_lessons},
+            current_lesson_id = COALESCE(user_program_progress.current_lesson_id, \${currentLessonId})
+        \`;
+
+        console.log('✅ Payment completed, enrollment created, and progress initialized');
+        console.log(\`📊 Program stats: \${total_modules} modules, \${total_lessons} lessons\`);
         break;
 
       case 'cancelled':
