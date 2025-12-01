@@ -1,0 +1,192 @@
+{
+  "id": "les2-glimlach",
+  "cursusId": "profielfoto-5-stappen",
+  "titel": "De Psychologie van een Goede Lach",
+  "volgorde": 2,
+  "duur": "7 min",
+  
+  "video": {
+    "url": "",
+    "duur": "2:50",
+    "thumbnail": "/images/lessen/les2-thumb.jpg"
+  },
+  
+  "secties": [
+    {
+      "id": "video",
+      "type": "video",
+      "titel": "Bekijk de les",
+      "inhoud": {
+        "introTekst": "Ontdek waarom een echte glimlach het verschil maakt - en hoe je die krijgt."
+      }
+    },
+    {
+      "id": "samenvatting",
+      "type": "tekst",
+      "titel": "Samenvatting",
+      "inhoud": {
+        "body": "Een echte glimlach - de Duchenne glimlach - is je geheime wapen. Het verschil? Je ogen doen mee. Dit communiceert warmte, authenticiteit en positieve energie."
+      }
+    },
+    {
+      "id": "kernpunten",
+      "type": "kernpunten",
+      "titel": "Wat je glimlach communiceert",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "heart",
+            "titel": "Warmte",
+            "beschrijving": "Een echte glimlach zegt: 'Ik ben benaderbaar, ik bijt niet.'"
+          },
+          {
+            "icon": "check-circle",
+            "titel": "Authenticiteit",
+            "beschrijving": "Je ogen kunnen niet liegen. Als ze meedoen, ben je echt."
+          },
+          {
+            "icon": "sparkles",
+            "titel": "Positieve energie",
+            "beschrijving": "Mensen worden aangetrokken tot positieve energie. Het is besmettelijk."
+          }
+        ]
+      }
+    },
+    {
+      "id": "tips",
+      "type": "kernpunten",
+      "titel": "3 Tips voor een echte glimlach",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "lightbulb",
+            "titel": "Tip 1: Denk aan iets grappigs",
+            "beschrijving": "Net voordat de foto wordt gemaakt, denk aan een grappige herinnering. Dit activeert automatisch de juiste spieren."
+          },
+          {
+            "icon": "clock",
+            "titel": "Tip 2: Timing is alles",
+            "beschrijving": "Lach net VOOR de foto wordt gemaakt, niet erop. Spontaniteit wint altijd van poseren."
+          },
+          {
+            "icon": "camera",
+            "titel": "Tip 3: Neem 50+ foto's",
+            "beschrijving": "Serieus. Van 50 foto's zijn er 2-3 echt goed. Dat is normaal. Kwantiteit levert kwaliteit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "quiz",
+      "type": "quiz",
+      "titel": "Test je kennis",
+      "inhoud": {
+        "vragen": [
+          {
+            "id": "q1",
+            "vraag": "Wat is het verschil tussen een 'sociale' glimlach en een Duchenne glimlach?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "a", "tekst": "Duchenne toont meer tanden", "correct": false },
+              { "id": "b", "tekst": "Bij Duchenne doen je ogen mee", "correct": true },
+              { "id": "c", "tekst": "Duchenne duurt langer", "correct": false },
+              { "id": "d", "tekst": "Er is geen verschil", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Precies! De ogen (kraaienpootjes) maken het verschil.",
+              "incorrect": "Het zit hem in de ogen: bij een echte glimlach zie je kraaienpootjes."
+            }
+          },
+          {
+            "id": "q2",
+            "vraag": "Hoeveel foto's moet je ongeveer maken voor 2-3 goede shots?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "a", "tekst": "5-10 foto's", "correct": false },
+              { "id": "b", "tekst": "15-20 foto's", "correct": false },
+              { "id": "c", "tekst": "50+ foto's", "correct": true },
+              { "id": "d", "tekst": "100+ foto's", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Juist! Professionele fotografen maken ook tientallen foto's voor één goede.",
+              "incorrect": "Meer dan je denkt: 50+ foto's voor 2-3 echt goede."
+            }
+          },
+          {
+            "id": "q3",
+            "vraag": "Wanneer is het beste moment om te glimlachen voor de foto?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "a", "tekst": "5 seconden voordat de foto wordt gemaakt", "correct": false },
+              { "id": "b", "tekst": "Net VOOR de foto wordt gemaakt", "correct": true },
+              { "id": "c", "tekst": "Precies op het moment van de foto", "correct": false },
+              { "id": "d", "tekst": "Het maakt niet uit", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Ja! Net ervoor zorgt voor spontaniteit.",
+              "incorrect": "Net VOOR de foto - zo blijft het spontaan en echt."
+            }
+          }
+        ],
+        "succesMessage": "Top! Je weet nu het geheim van een goede glimlach.",
+        "minimumScore": 2
+      }
+    },
+    {
+      "id": "reflectie",
+      "type": "reflectie",
+      "titel": "Reflectie",
+      "inhoud": {
+        "vragen": [
+          "Denk aan de laatste keer dat je écht moest lachen. Wat was er gebeurd?",
+          "Wie of wat kan jou aan het lachen maken voor je volgende fotosessie?"
+        ],
+        "aiAnalyse": false
+      }
+    },
+    {
+      "id": "opdracht",
+      "type": "opdracht",
+      "titel": "Praktijkopdracht",
+      "inhoud": {
+        "stappen": [
+          "Vraag een vriend of vriendin om foto's van je te maken",
+          "Laat diegene je aan het lachen maken (inside jokes werken goed!)",
+          "Maak minimaal 50 foto's in 10-15 minuten",
+          "Selecteer de 3 beste waar je ogen écht meedoen",
+          "Upload je favoriete naar de AI Foto Checker"
+        ],
+        "tijdsduur": "30 minuten",
+        "benodigdheden": ["Smartphone", "Vriend/vriendin als fotograaf", "Goede locatie met licht"],
+        "uploadMogelijk": false
+      }
+    },
+    {
+      "id": "tool",
+      "type": "tool",
+      "titel": "Laat de AI je glimlach analyseren",
+      "inhoud": {
+        "toolId": "foto-checker",
+        "introTekst": "Onze AI kan herkennen of je glimlach authentiek overkomt.",
+        "ctaTekst": "Analyseer mijn glimlach"
+      }
+    }
+  ],
+  
+  "aiCoach": {
+    "actief": true,
+    "context": "Gebruiker heeft Les 2 over de psychologie van glimlachen doorgewerkt.",
+    "suggesties": [
+      "Ik vind het lastig om natuurlijk te lachen voor een camera",
+      "Moet ik op elke foto lachen?",
+      "Wat als ik niet van mijn lach houd?"
+    ],
+    "triggerMomenten": ["na-quiz", "na-reflectie"]
+  },
+  
+  "volgendeStap": {
+    "type": "les",
+    "id": "les3-techniek",
+    "tekst": "Volgende: De Technische Checklist"
+  }
+}

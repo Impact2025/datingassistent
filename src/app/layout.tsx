@@ -11,6 +11,7 @@ import { StructuredData } from "@/components/structured-data";
 import ErrorBoundary from "@/components/error-boundary";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
 import { IrisFloatingButton } from "@/components/iris/IrisFloatingButton";
+import { TutorialEngine } from "@/components/onboarding/tutorial-engine/tutorial-engine";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://datingassistent.nl'),
@@ -144,11 +145,13 @@ export default function RootLayout({
             <WebVitals />
             <ServiceWorkerRegistration />
             <UserProvider>
-              <div id="main-content">
-                {children}
-              </div>
-              <Toaster />
-              <IrisFloatingButton />
+              <TutorialEngine>
+                <div id="main-content">
+                  {children}
+                </div>
+                <Toaster />
+                <IrisFloatingButton />
+              </TutorialEngine>
             </UserProvider>
           </ThemeProvider>
         </ErrorBoundary>

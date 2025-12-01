@@ -1,0 +1,9 @@
+{
+  "meta": {"id": "les-3-3", "module": 3, "titel": "Profielen Lezen", "subtitel": "Red flags en green flags", "duur_minuten": 20},
+  "secties": [
+    {"id": "red-flags", "type": "waarschuwing", "titel": "Red Flags in Profielen", "content": {"flags": [{"flag": "Alleen groepsfoto's", "betekent": "Wil niet laten zien hoe ie eruitziet"}, {"flag": "Negativiteit in bio", "betekent": "Draagt bagage mee"}, {"flag": "Geen bio", "betekent": "Lui of niet serieus"}, {"flag": "Alle foto's met filters", "betekent": "Onzeker over uiterlijk"}, {"flag": "Alleen selfies", "betekent": "Mogelijk geen sociaal leven"}]}},
+    {"id": "green-flags", "type": "positief", "titel": "Green Flags", "content": {"flags": [{"flag": "Gevarieerde foto's", "betekent": "Heeft een leven"}, {"flag": "Specifieke bio", "betekent": "Weet wie ie is"}, {"flag": "Echte glimlach", "betekent": "Benaderbaar"}, {"flag": "Hobby/activiteit foto's", "betekent": "Gespreksonderwerpen"}]}},
+    {"id": "lezen", "type": "skill", "titel": "Tussen de Regels Lezen", "content": {"vraag": "Wat zegt dit profiel écht?", "voorbeelden": [{"tekst": "Geen drama", "betekent": "Heeft drama gehad"}, {"tekst": "Weet wat ik wil", "betekent": "Mogelijk inflexibel"}, {"tekst": "Partner in crime", "betekent": "Cliché, weinig moeite"}]}}
+  ],
+  "opdracht": {"titel": "Profiel Analyse", "stappen": ["Bekijk 10 profielen bewust", "Noteer red flags en green flags", "Reflecteer: wat trek jij aan?"]}
+}

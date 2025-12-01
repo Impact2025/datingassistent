@@ -1,0 +1,9 @@
+{
+  "meta": {"id": "les-6-1", "module": 6, "titel": "Omgaan met Afwijzing", "subtitel": "Het hoort erbij", "duur_minuten": 18},
+  "secties": [
+    {"id": "normaliseren", "type": "perspectief", "titel": "Afwijzing is Normaal", "content": {"statistiek": "Zelfs de meest succesvolle daters worden 90%+ van de tijd afgewezen", "reframe": "Afwijzing is geen falen - het is feedback dat deze persoon niet jouw match is"}},
+    {"id": "niet-persoonlijk", "type": "mindset", "titel": "Het Gaat Niet (Alleen) Om Jou", "content": {"redenen_afwijzing": ["Zij zijn niet klaar voor dating", "Timing is verkeerd", "Ze zoeken iets anders", "Chemie is subjectief", "100 redenen die niks met jou te maken hebben"], "vraag": "Als jij iemand afwijst, betekent dat dat zij slecht zijn? Nee. Alleen dat het niet paste."}},
+    {"id": "verwerken", "type": "proces", "titel": "Afwijzing Verwerken", "content": {"stappen": [{"stap": 1, "actie": "Erken het gevoel", "waarom": "Het mag pijn doen"}, {"stap": 2, "actie": "Zoek niet naar 'waarom'", "waarom": "Je krijgt zelden een eerlijk antwoord"}, {"stap": 3, "actie": "Doe iets voor jezelf", "waarom": "Zelfzorg na teleurstelling"}, {"stap": 4, "actie": "Ga door", "waarom": "Elke afwijzing brengt je dichter bij je match"}]}},
+    {"id": "growth", "type": "reframe", "titel": "Afwijzing als Groei", "content": {"vraag": "Wat heb ik geleerd?", "voorbeelden": ["Ik wil iemand die beter communiceert", "Ik moet duidelijker zijn over wat ik zoek", "Ik ben okay, ook na een 'nee'"]}}
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "id": "les-2-2",
+  "slug": "bio-formule",
+  "module": {
+    "id": 2,
+    "naam": "Het Onweerstaanbare Profiel"
+  },
+  "volgorde": 2,
+  "titel": "De Bio Formule",
+  "subtitel": "Show, Don't Tell",
+  "beschrijving": "Leer een dating bio schrijven die opvalt, gesprekken start en echt bij jou past.",
+  "duur_minuten": 22,
+  "niveau": "beginner",
+  "tags": ["profiel", "bio", "schrijven", "praktisch"],
+  
+  "leerdoelen": [
+    "Het verschil begrijpen tussen 'tell' en 'show' in je bio",
+    "De 3-delige bio formule kunnen toepassen",
+    "Weten welke fouten je moet vermijden",
+    "Je eigen bio kunnen schrijven en testen"
+  ],
+  
+  "vereisten": {
+    "vorige_les": "les-2-1",
+    "tools": ["profiel-coach"]
+  },
+  
+  "secties": [
+    {"id": "intro", "type": "video", "duur": 90},
+    {"id": "probleem", "type": "content", "duur": 120},
+    {"id": "show-dont-tell", "type": "content", "duur": 180},
+    {"id": "formule", "type": "content", "duur": 180},
+    {"id": "quiz-1", "type": "quiz", "duur": 60},
+    {"id": "voorbeelden", "type": "content", "duur": 120},
+    {"id": "vermijd", "type": "content", "duur": 90},
+    {"id": "quiz-2", "type": "quiz", "duur": 60},
+    {"id": "reflectie", "type": "reflectie", "duur": 180},
+    {"id": "opdracht", "type": "opdracht", "duur": 240}
+  ],
+  
+  "tool_integratie": {
+    "tool_id": "profiel-coach",
+    "actie": "bio-check",
+    "trigger_na_sectie": "reflectie"
+  },
+  
+  "volgende_les": {
+    "id": "les-2-3",
+    "titel": "Platform Strategie"
+  }
+}

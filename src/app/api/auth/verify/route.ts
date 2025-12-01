@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
+
+const sql = neon(process.env.DATABASE_URL!);
 
 // JWT Secret validation
 const JWT_SECRET_RAW = process.env.JWT_SECRET;
@@ -74,9 +76,9 @@ export async function GET(request: NextRequest) {
       WHERE id = ${userId}
     `;
 
-    console.log('🔍 Database query result:', result.rows.length, 'rows found');
+    console.log('🔍 Database query result:', result.length, 'rows found');
 
-    if (result.rows.length === 0) {
+    if (result.length === 0) {
       console.log('❌ User not found in database');
       return NextResponse.json(
         { error: 'User not found' },
@@ -84,7 +86,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const user = result.rows[0];
+    const user = result[0];
 
     const responseData = {
       user: {

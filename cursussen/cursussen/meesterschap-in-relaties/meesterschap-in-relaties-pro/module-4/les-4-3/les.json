@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "id": "les-4-3",
+    "module": 4,
+    "volgorde": 3,
+    "titel": "Integratie - Levens Verweven",
+    "subtitel": "Vrienden, familie, routines",
+    "duur_minuten": 20,
+    "kernvraag": "Hoe verweven jullie je levens?",
+    "leerdoelen": [
+      "Begrijpen wat integratie - levens verweven betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Vrienden, familie, routines. De kernvraag die we beantwoorden: Hoe verweven jullie je levens?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Hoe verweven jullie je levens?",
+        "context": "Neem even de tijd om na te denken over integratie - levens verweven in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Integratie - Levens Verweven",
+      "content": {
+        "intro": "Vrienden, familie, routines",
+        "items": [
+          {
+            "naam": "Fase 1: Vrienden",
+            "desc": "Elkaars sociale kring leren kennen"
+          },
+          {
+            "naam": "Fase 2: Familie",
+            "desc": "Belangrijke mensen ontmoeten"
+          },
+          {
+            "naam": "Fase 3: Routines",
+            "desc": "Dagelijks leven delen"
+          },
+          {
+            "naam": "Fase 4: Toekomst",
+            "desc": "Samen plannen maken"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je integratie - levens verweven begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe integratie - levens verweven zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-4-3",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Integratie - Levens Verweven?",
+        "opties": [
+          "Elkaars sociale kring leren kennen",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-4-3",
+    "vraag": "Hoe herken je integratie - levens verweven in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Integratie - Levens Verweven. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Integratie - Levens Verweven toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over integratie - levens verweven in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me integratie - levens verweven toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

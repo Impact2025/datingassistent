@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { MessageCircle, X, User } from 'lucide-react';
+import { trackInviteShown, trackInviteAccepted, trackInviteDismissed } from '@/lib/analytics/chat-analytics';
 
 interface ProactiveInviteProps {
   onAccept: () => void;
@@ -35,12 +36,25 @@ export function ProactiveInvite({
       setIsVisible(true);
       // Start animation after a brief delay
       setTimeout(() => setIsAnimating(true), 100);
+
+      // Track that invite was shown
+      trackInviteShown({
+        companyName,
+        agentName,
+        delay
+      });
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [delay]);
+  }, [delay, companyName, agentName]);
 
   const handleAccept = () => {
+    // Track acceptance (conversion!)
+    trackInviteAccepted({
+      companyName,
+      agentName
+    });
+
     setIsAnimating(false);
     setTimeout(() => {
       setIsVisible(false);
@@ -49,6 +63,12 @@ export function ProactiveInvite({
   };
 
   const handleDismiss = () => {
+    // Track dismissal
+    trackInviteDismissed({
+      companyName,
+      agentName
+    });
+
     setIsAnimating(false);
     setTimeout(() => {
       setIsVisible(false);

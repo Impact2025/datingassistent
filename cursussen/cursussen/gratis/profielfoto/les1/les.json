@@ -1,0 +1,158 @@
+{
+  "id": "les1-fotofouten",
+  "cursusId": "profielfoto-5-stappen",
+  "titel": "De 3 Grote Foto-Fouten",
+  "volgorde": 1,
+  "duur": "7 min",
+  
+  "video": {
+    "url": "",
+    "duur": "2:45",
+    "thumbnail": "/images/lessen/les1-thumb.jpg"
+  },
+  
+  "secties": [
+    {
+      "id": "video",
+      "type": "video",
+      "titel": "Bekijk de les",
+      "inhoud": {
+        "introTekst": "In deze video leer je welke 3 fouten je absoluut moet vermijden."
+      }
+    },
+    {
+      "id": "samenvatting",
+      "type": "tekst",
+      "titel": "Samenvatting",
+      "inhoud": {
+        "body": "Je hebt maar 7 seconden om een eerste indruk te maken op dating apps. En 83% van die beslissing is gebaseerd op je foto's. In deze les leer je de 3 fouten die de meeste mensen maken - en hoe je ze vermijdt."
+      }
+    },
+    {
+      "id": "kernpunten",
+      "type": "kernpunten",
+      "titel": "De 3 Grote Fouten",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "sunglasses",
+            "titel": "Fout #1: Zonnebrillen",
+            "beschrijving": "Ogen zijn het raam naar de ziel. Zonder oogcontact is er geen vertrouwen. Princeton-onderzoek bewijst: we beoordelen betrouwbaarheid in milliseconden via de ogen."
+          },
+          {
+            "icon": "users",
+            "titel": "Fout #2: Groepsfoto's",
+            "beschrijving": "Als iemand moet puzzelen wie jij bent, swipen ze links. Bonus-probleem: wat als je vriend(in) aantrekkelijker lijkt?"
+          },
+          {
+            "icon": "image-off",
+            "titel": "Fout #3: Vage foto's",
+            "beschrijving": "Donker, korrelig, of van 5 jaar geleden? Lage kwaliteit = weinig moeite = weinig interesse. Simpel."
+          }
+        ]
+      }
+    },
+    {
+      "id": "quiz",
+      "type": "quiz",
+      "titel": "Test je kennis",
+      "inhoud": {
+        "vragen": [
+          {
+            "id": "q1",
+            "vraag": "Hoeveel seconden heb je gemiddeld om een eerste indruk te maken op een dating app?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "a", "tekst": "3 seconden", "correct": false },
+              { "id": "b", "tekst": "7 seconden", "correct": true },
+              { "id": "c", "tekst": "15 seconden", "correct": false },
+              { "id": "d", "tekst": "30 seconden", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Precies! In slechts 7 seconden besluit iemand of ze interesse hebben.",
+              "incorrect": "Het is nog sneller: gemiddeld maar 7 seconden!"
+            }
+          },
+          {
+            "id": "q2",
+            "vraag": "Waarom zijn zonnebrillen een probleem op profielfoto's?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "a", "tekst": "Ze zijn uit de mode", "correct": false },
+              { "id": "b", "tekst": "Ze verbergen je ogen, waardoor vertrouwen ontbreekt", "correct": true },
+              { "id": "c", "tekst": "Ze maken de foto te donker", "correct": false },
+              { "id": "d", "tekst": "Ze leiden af van je glimlach", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Juist! Ogen zijn cruciaal voor het opbouwen van vertrouwen.",
+              "incorrect": "Het draait om vertrouwen: zonder ogen kunnen mensen je niet 'lezen'."
+            }
+          },
+          {
+            "id": "q3",
+            "vraag": "Wat communiceert een vage of donkere foto volgens de les?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "a", "tekst": "Je bent mysterieus", "correct": false },
+              { "id": "b", "tekst": "Je hebt een oude telefoon", "correct": false },
+              { "id": "c", "tekst": "Je hebt weinig moeite gedaan = weinig interesse", "correct": true },
+              { "id": "d", "tekst": "Je houdt van avontuur", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Precies! Kwaliteit van je foto = hoeveel moeite je doet = hoeveel je geïnteresseerd bent.",
+              "incorrect": "Een vage foto communiceert: 'ik heb hier weinig moeite in gestoken'."
+            }
+          }
+        ],
+        "succesMessage": "Goed gedaan! Je kent nu de 3 grote fouten.",
+        "minimumScore": 2
+      }
+    },
+    {
+      "id": "reflectie",
+      "type": "reflectie",
+      "titel": "Reflectie",
+      "inhoud": {
+        "vragen": [
+          "Bekijk je huidige profielfoto's. Maak je één van deze 3 fouten?"
+        ],
+        "aiAnalyse": false
+      }
+    },
+    {
+      "id": "tool",
+      "type": "tool",
+      "titel": "Probeer de AI Foto Checker",
+      "inhoud": {
+        "toolId": "foto-checker",
+        "introTekst": "Upload één foto en krijg direct 1 gratis tip van onze AI.",
+        "ctaTekst": "Check mijn foto"
+      }
+    },
+    {
+      "id": "tip",
+      "type": "tip",
+      "titel": "Pro tip",
+      "inhoud": {
+        "tekst": "Vraag een vriend of vriendin om eerlijke feedback op je foto's. Soms zien anderen dingen die wij zelf missen!"
+      }
+    }
+  ],
+  
+  "aiCoach": {
+    "actief": true,
+    "context": "Gebruiker heeft Les 1 over de 3 grote foto-fouten doorgewerkt.",
+    "suggesties": [
+      "Hoe weet ik of mijn foto te donker is?",
+      "Mag ik wel een huisdier op de foto?",
+      "Wat als ik geen recente foto's heb?"
+    ],
+    "triggerMomenten": ["na-quiz", "na-reflectie"]
+  },
+  
+  "volgendeStap": {
+    "type": "les",
+    "id": "les2-glimlach",
+    "tekst": "Volgende: De Psychologie van een Goede Lach"
+  }
+}

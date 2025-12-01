@@ -1,0 +1,9 @@
+{
+  "meta": {"id": "les-3-2", "module": 3, "titel": "Selectief Swipen", "subtitel": "Minder is meer", "duur_minuten": 18},
+  "secties": [
+    {"id": "probleem", "type": "insight", "titel": "Het Swipe Probleem", "content": {"statistiek": "Gemiddelde Tinder gebruiker swiped 140 keer per dag", "probleem": "Je brein gaat op autopilot. Je ziet geen mensen meer, alleen profielen."}},
+    {"id": "methode", "type": "systeem", "titel": "De 10-Seconden Regel", "content": {"stappen": ["Bekijk hoofdfoto: eerste indruk?", "Check bio: is er iets interessants?", "Bekijk andere foto's: verhaal?", "Besluit: zou ik een gesprek kunnen voeren?"], "tijd": "10 seconden max per profiel"}},
+    {"id": "dagelijks", "type": "regel", "titel": "Dagelijkse Limiet", "content": {"max_swipes": "20-30 per dag", "waarom": "Forceert bewuste keuzes", "wanneer": "Vaste momenten, niet als je verveeld bent"}}
+  ],
+  "opdracht": {"titel": "Swipe Experiment", "stappen": ["1 week: max 20 swipes per dag", "Noteer: voel je je anders?", "Vergelijk: match kwaliteit vs voorheen"]}
+}

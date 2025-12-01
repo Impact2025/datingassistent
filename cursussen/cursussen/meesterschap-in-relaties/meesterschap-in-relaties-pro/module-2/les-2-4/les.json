@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-2-4",
+    "module": 2,
+    "volgorde": 4,
+    "titel": "De 90-Dagen Realiteitscheck",
+    "subtitel": "Hoe je iemand écht leert kennen",
+    "duur_minuten": 20,
+    "kernvraag": "Geef je de relatie genoeg tijd?",
+    "leerdoelen": [
+      "Begrijpen wat de 90-dagen realiteitscheck betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Hoe je iemand écht leert kennen. De kernvraag die we beantwoorden: Geef je de relatie genoeg tijd?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Geef je de relatie genoeg tijd?",
+        "context": "Neem even de tijd om na te denken over de 90-dagen realiteitscheck in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "De 90-Dagen Realiteitscheck",
+      "content": {
+        "intro": "Hoe je iemand écht leert kennen",
+        "items": [
+          {
+            "naam": "Week 1-4: Euforie",
+            "desc": "Beste gedrag, hormonen hoog"
+          },
+          {
+            "naam": "Week 5-8: Intensivering",
+            "desc": "Eerste irritaties, diepere gesprekken"
+          },
+          {
+            "naam": "Week 9-12: Realiteit",
+            "desc": "Echte persoon wordt zichtbaar"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je de 90-dagen realiteitscheck begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe de 90-dagen realiteitscheck zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-2-4",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van De 90-Dagen Realiteitscheck?",
+        "opties": [
+          "Beste gedrag, hormonen hoog",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-2-4",
+    "vraag": "Hoe herken je de 90-dagen realiteitscheck in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op De 90-Dagen Realiteitscheck. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas De 90-Dagen Realiteitscheck toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over de 90-dagen realiteitscheck in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me de 90-dagen realiteitscheck toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

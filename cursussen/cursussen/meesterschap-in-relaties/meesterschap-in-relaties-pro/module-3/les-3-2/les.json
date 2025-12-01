@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "id": "les-3-2",
+    "module": 3,
+    "volgorde": 2,
+    "titel": "Behoeften Uiten Zonder Te Eisen",
+    "subtitel": "De NVC-formule voor relaties",
+    "duur_minuten": 25,
+    "kernvraag": "Kun je vragen wat je nodig hebt?",
+    "leerdoelen": [
+      "Begrijpen wat behoeften uiten zonder te eisen betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: De NVC-formule voor relaties. De kernvraag die we beantwoorden: Kun je vragen wat je nodig hebt?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Kun je vragen wat je nodig hebt?",
+        "context": "Neem even de tijd om na te denken over behoeften uiten zonder te eisen in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Behoeften Uiten Zonder Te Eisen",
+      "content": {
+        "intro": "De NVC-formule voor relaties",
+        "items": [
+          {
+            "naam": "Observatie",
+            "desc": "Wat zie/hoor ik (zonder oordeel)"
+          },
+          {
+            "naam": "Gevoel",
+            "desc": "Wat voel ik daarbij"
+          },
+          {
+            "naam": "Behoefte",
+            "desc": "Wat heb ik nodig"
+          },
+          {
+            "naam": "Verzoek",
+            "desc": "Concrete vraag (geen eis)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je behoeften uiten zonder te eisen begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe behoeften uiten zonder te eisen zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-3-2",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Behoeften Uiten Zonder Te Eisen?",
+        "opties": [
+          "Wat zie/hoor ik (zonder oordeel)",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-3-2",
+    "vraag": "Hoe herken je behoeften uiten zonder te eisen in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Behoeften Uiten Zonder Te Eisen. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Behoeften Uiten Zonder Te Eisen toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over behoeften uiten zonder te eisen in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me behoeften uiten zonder te eisen toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

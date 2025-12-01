@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "id": "les-1-5",
+    "module": 1,
+    "volgorde": 5,
+    "titel": "Van Inzicht naar Actie",
+    "subtitel": "Je patronen doorbreken in de praktijk",
+    "duur_minuten": 20,
+    "kernvraag": "Wat ga je anders doen?",
+    "leerdoelen": [
+      "Begrijpen wat van inzicht naar actie betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Je patronen doorbreken in de praktijk. De kernvraag die we beantwoorden: Wat ga je anders doen?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Wat ga je anders doen?",
+        "context": "Neem even de tijd om na te denken over van inzicht naar actie in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Van Inzicht naar Actie",
+      "content": {
+        "intro": "Je patronen doorbreken in de praktijk",
+        "items": [
+          {
+            "naam": "Erkennen",
+            "desc": "Je patronen benoemen"
+          },
+          {
+            "naam": "Observeren",
+            "desc": "Herkennen in het moment"
+          },
+          {
+            "naam": "Pauzeren",
+            "desc": "Ruimte creëren tussen trigger en reactie"
+          },
+          {
+            "naam": "Kiezen",
+            "desc": "Bewust een andere reactie kiezen"
+          },
+          {
+            "naam": "Oefenen",
+            "desc": "Herhalen tot het nieuw normaal voelt"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je van inzicht naar actie begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe van inzicht naar actie zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-1-5",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Van Inzicht naar Actie?",
+        "opties": [
+          "Je patronen benoemen",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-1-5",
+    "vraag": "Hoe herken je van inzicht naar actie in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Van Inzicht naar Actie. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Van Inzicht naar Actie toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over van inzicht naar actie in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me van inzicht naar actie toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

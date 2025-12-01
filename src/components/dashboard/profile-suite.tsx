@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { UserCircle2, Sparkles, Camera, Users, Award, CheckCircle2, FileText, Target, Heart } from "lucide-react";
+import { UserCircle2, Sparkles, Camera, Users, Award, CheckCircle2, FileText, Target, Heart, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Import existing profile components
@@ -14,6 +14,10 @@ import { PhotoAnalysisTab } from "./photo-analysis-tab";
 import { PlatformMatchTool } from "./platform-match-tool";
 import { SkillsAssessmentTab } from "./skills-assessment-tab";
 import { StatsTab } from "./stats-tab";
+import { ProfileSuiteTutorial } from "@/components/onboarding/tutorials/profile-suite-tutorial";
+import { ContextualHelpButton } from "@/components/onboarding/contextual-help-button";
+import { AttachmentAssessmentFlow } from "@/components/attachment-assessment/attachment-assessment-flow";
+import { EmotioneleReadinessFlow } from "@/components/emotional-readiness/emotionele-readiness-flow";
 
 interface ProfileSuiteProps {
   onTabChange?: (tab: string) => void;
@@ -24,13 +28,71 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
 
   const profileTools = [
     {
+      id: "hechtingsstijl",
+      label: "🏆 Hechtingsstijl QuickScan",
+      icon: Heart,
+      description: "Ontdek je hechtingsdynamiek - de basis van hoe je liefhebt en verbindt",
+      component: <AttachmentAssessmentFlow />,
+      badge: "AI-PRO",
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      id: "emotionele-ready",
+      label: "💙 Emotionele Ready Scan",
+      icon: Sparkles,
+      description: "Ben je klaar voor dating? Ontdek je emotionele beschikbaarheid",
+      component: <EmotioneleReadinessFlow />,
+      badge: "AI",
+      color: "from-blue-500 to-cyan-500"
+    },
+    {
+      id: "zelfbeeld",
+      label: "🪩 Zelfbeeld & Eerste Indruk",
+      icon: UserCircle2,
+      description: "Camera AI voor profile optimization en eerste indruk maximalisatie",
+      component: <div className="p-6 text-center">
+        <h3 className="text-xl font-bold mb-4">Zelfbeeld & Eerste Indruk PRO</h3>
+        <p className="text-muted-foreground mb-6">
+          AI-gedreven profile enhancement met camera integratie.
+        </p>
+        <Button
+          onClick={() => window.location.href = '/zelfbeeld'}
+          className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+        >
+          Start Profile Analysis
+        </Button>
+      </div>,
+      badge: "AI-PRO",
+      color: "from-purple-500 to-indigo-500"
+    },
+    {
+      id: "dating-archetypes",
+      label: "🎭 Dating Archetypes",
+      icon: Users,
+      description: "Ontdek je dominante dating energie archetype",
+      component: <div className="p-6 text-center">
+        <h3 className="text-xl font-bold mb-4">Mini-Persoonlijkheidsprofiel</h3>
+        <p className="text-muted-foreground mb-6">
+          8 professionele dating energie archetypes voor betere matches.
+        </p>
+        <Button
+          onClick={() => window.location.href = '/dating-archetypes'}
+          className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+        >
+          Start Archetype Scan
+        </Button>
+      </div>,
+      badge: "AI",
+      color: "from-orange-500 to-red-500"
+    },
+    {
       id: "profile-builder",
       label: "Profiel Bouwer",
-      icon: UserCircle2,
+      icon: FileText,
       description: "Maak je ideale profieltekst met AI hulp",
       component: <InteractiveProfileCoach />,
       badge: "Aanbevolen",
-      color: "bg-blue-500"
+      color: "from-green-500 to-emerald-500"
     },
     {
       id: "photo-analysis",
@@ -39,16 +101,16 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "AI feedback op je profielfoto's",
       component: <PhotoAnalysisTab />,
       badge: "AI",
-      color: "bg-purple-500"
+      color: "from-indigo-500 to-purple-500"
     },
     {
       id: "platform-match",
       label: "Professionele Platform Match",
-      icon: Users,
+      icon: Target,
       description: "Wetenschappelijk onderbouwde platform aanbevelingen gebaseerd op je profiel",
       component: <PlatformMatchTool />,
       badge: "AI",
-      color: "bg-orange-500"
+      color: "from-teal-500 to-cyan-500"
     },
     {
       id: "skills-scan",
@@ -57,7 +119,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Ontdek je sterke punten",
       component: <SkillsAssessmentTab />,
       badge: "Nieuw",
-      color: "bg-pink-500"
+      color: "from-pink-500 to-rose-500"
     },
     {
       id: "stats",
@@ -66,7 +128,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Overzicht van je voortgang",
       component: <StatsTab />,
       badge: "Overzicht",
-      color: "bg-indigo-500"
+      color: "from-gray-500 to-slate-500"
     }
   ];
 
@@ -76,7 +138,33 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     <div className="space-y-6">
       {/* Tool Selector */}
       <div className="space-y-6">
-        <div className="text-center">
+        <div className="text-center relative">
+          <div className="absolute top-0 right-0">
+            <ContextualHelpButton
+              tutorialId="profile-suite-basics"
+              helpTitle="Profiel Suite Hulp"
+              helpText="Leer hoe je een sterk, aantrekkelijk profiel bouwt dat de juiste matches aantrekt. Van hechtingsstijl tot platform matching."
+              variant="icon"
+              size="sm"
+              quickTips={[
+                {
+                  icon: <User className="w-4 h-4 text-blue-600" />,
+                  title: "Begin met jezelf kennen",
+                  description: "Hechtingsstijl scan helpt je begrijpen hoe je liefhebt"
+                },
+                {
+                  icon: <Camera className="w-4 h-4 text-green-600" />,
+                  title: "Foto's zijn cruciaal",
+                  description: "Gebruik de AI foto analyse voor professionele feedback"
+                },
+                {
+                  icon: <FileText className="w-4 h-4 text-purple-600" />,
+                  title: "Bio schrijven",
+                  description: "Laat AI helpen met pakkende, authentieke teksten"
+                }
+              ]}
+            />
+          </div>
           <h3 className="text-lg font-semibold mb-2">Kies je profiel tool</h3>
           <p className="text-sm text-muted-foreground">Van tekst tot foto's tot platform keuze</p>
         </div>
@@ -89,36 +177,27 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
             return (
               <Card
                 key={tool.id}
+                data-tutorial={`${tool.id}-card`}
                 className={cn(
-                  "cursor-pointer transition-all duration-200 hover:shadow-lg border-2",
-                  isActive
-                    ? "border-primary bg-primary/5 dark:bg-primary/10 ring-2 ring-primary/20"
-                    : "border-border hover:border-primary/50 hover:bg-primary/5/30 dark:hover:bg-primary/5/10"
+                  "cursor-pointer transition-all duration-200 border-0 shadow-sm hover:shadow-md bg-white",
+                  isActive && "ring-2 ring-pink-200 shadow-lg"
                 )}
                 onClick={() => setActiveTab(tool.id)}
               >
-                <CardContent className="p-4">
-                  <div className="text-center space-y-3">
-                    <div className={cn(
-                      "w-12 h-12 mx-auto rounded-full flex items-center justify-center transition-colors",
-                      isActive
-                        ? tool.color + " text-white"
-                        : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white"
-                    )}>
-                      <Icon className="w-6 h-6" />
+                <CardContent className="p-6">
+                  <div className="text-center space-y-4">
+                    <div className={`w-12 h-12 mx-auto rounded-full bg-gradient-to-br ${tool.color} flex items-center justify-center shadow-lg`}>
+                      <Icon className="h-6 w-6 text-white" />
                     </div>
 
-                    <div className="space-y-1">
+                    <div className="space-y-2">
                       <div className="flex items-center justify-center gap-2">
-                        <h4 className={cn(
-                          "font-semibold text-sm",
-                          isActive ? "text-primary" : "text-foreground"
-                        )}>
+                        <h3 className="font-semibold text-sm text-gray-900">
                           {tool.label}
-                        </h4>
+                        </h3>
                         {tool.badge && (
                           <Badge
-                            variant={isActive ? "default" : "secondary"}
+                            variant="secondary"
                             className="text-xs"
                           >
                             {tool.badge}
@@ -126,7 +205,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
                         )}
                       </div>
 
-                      <p className="text-xs text-muted-foreground leading-tight">
+                      <p className="text-sm text-gray-600 leading-tight">
                         {tool.description}
                       </p>
                     </div>
@@ -224,6 +303,9 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Profile Suite Tutorial */}
+      <ProfileSuiteTutorial />
     </div>
   );
 }

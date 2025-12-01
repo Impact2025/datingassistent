@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { chatCompletion } from '@/lib/ai-service';
 import { AIContextManager } from '@/lib/ai-context-manager';
+import { neon } from '@neondatabase/serverless';
+
+const sql = neon(process.env.DATABASE_URL!);
 
 export async function POST(request: Request) {
   try {
@@ -32,66 +35,136 @@ export async function POST(request: Request) {
     // Build context summary
     const contextSummary = AIContextManager.getContextSummary(userContext);
 
+    // Get previous weeks' data for context (last 4 weeks)
+    let previousWeeksContext = '';
+    try {
+      const previousLogs = await sql`
+        SELECT
+          week_start,
+          week_end,
+          total_matches,
+          total_conversations,
+          total_dates,
+          total_ghosting,
+          iris_insight
+        FROM weekly_dating_logs
+        WHERE user_id = ${user.id}
+          AND week_start < ${weekStart}
+        ORDER BY week_start DESC
+        LIMIT 4
+      `;
+
+      if (previousLogs && previousLogs.length > 0) {
+        previousWeeksContext = '\n\n**VORIGE WEKEN (voor context):**\n';
+        previousLogs.forEach((log: any, index: number) => {
+          previousWeeksContext += `\n Week ${index + 1} geleden: `;
+          previousWeeksContext += `${log.total_matches || 0} matches, `;
+          previousWeeksContext += `${log.total_conversations || 0} gesprekken, `;
+          previousWeeksContext += `${log.total_dates || 0} dates`;
+          if (log.total_ghosting > 0) {
+            previousWeeksContext += `, ${log.total_ghosting} ghosting`;
+          }
+          if (log.iris_insight) {
+            // Include a very brief summary of previous insight
+            const shortInsight = log.iris_insight.substring(0, 100);
+            previousWeeksContext += `\n   Vorig advies: "${shortInsight}..."`;
+          }
+        });
+
+        // Calculate trends
+        const totalPrevMatches = previousLogs.reduce((sum: number, log: any) => sum + (log.total_matches || 0), 0);
+        const totalPrevConversations = previousLogs.reduce((sum: number, log: any) => sum + (log.total_conversations || 0), 0);
+        const totalPrevDates = previousLogs.reduce((sum: number, log: any) => sum + (log.total_dates || 0), 0);
+        const avgMatches = totalPrevMatches / previousLogs.length;
+        const avgConversations = totalPrevConversations / previousLogs.length;
+        const avgDates = totalPrevDates / previousLogs.length;
+
+        const currentMatches = activities.filter((a: string) => a === 'new_match').length;
+        const currentConversations = activities.filter((a: string) => a === 'conversation').length;
+        const currentDates = activities.filter((a: string) => a === 'date').length;
+
+        previousWeeksContext += '\n\n**TREND ANALYSE:**';
+        if (currentMatches > avgMatches) {
+          previousWeeksContext += '\n- Matches: STIJGEND (boven gemiddelde)';
+        } else if (currentMatches < avgMatches) {
+          previousWeeksContext += '\n- Matches: DALEND (onder gemiddelde)';
+        }
+        if (currentConversations > avgConversations) {
+          previousWeeksContext += '\n- Gesprekken: STIJGEND';
+        } else if (currentConversations < avgConversations) {
+          previousWeeksContext += '\n- Gesprekken: DALEND';
+        }
+        if (currentDates > avgDates) {
+          previousWeeksContext += '\n- Dates: STIJGEND';
+        } else if (currentDates < avgDates) {
+          previousWeeksContext += '\n- Dates: DALEND';
+        }
+      }
+    } catch (historyError) {
+      // Table might not exist yet, continue without history
+      console.log('Could not fetch previous logs:', historyError);
+    }
+
     // Analyze activities and create insights prompt
     const activitySummary = createActivitySummary(activities, activityDetails);
 
-    const systemPrompt = `Je bent Iris, een professionele dating psycholoog en gedragsanalist uit Nederland. Je analyseert dating gedrag met de precisie van een onderzoeker en de empathie van een coach.
+    const systemPrompt = `Je bent Iris, een warme en ervaren dating coach uit Nederland. Je helpt mensen met praktische inzichten en persoonlijke begeleiding op hun dating reis.
 
-ALS EEN PROFESSIONELE ANALIST:
+ALS DATING COACH:
 - Vertel een verhaal over hun dating week gebaseerd op de data
-- Identificeer gedragspatronen en psychologische inzichten
-- Gebruik professionele taal maar blijf warm en benaderbaar
+- Herken patronen en geef praktische inzichten
+- Wees warm, benaderbaar en bemoedigend
 - Maak het persoonlijk en verhaal-achtig, niet als een lijst
-- Wees specifiek over wat de data onthult over hun karakter en strategie
-- Koppel inzichten aan concrete gedragsvoorbeelden
-- Geef diepgaande psychologische interpretatie
+- Wees specifiek over wat je ziet in hun gedrag en strategie
+- Koppel inzichten aan concrete voorbeelden
+- Focus op groei en positieve stappen
 
-STRUCTUUR ALS EEN VERHALEND RAPPORT:
-1. **Opening**: Betrek de gebruiker met een verhaal-opening over hun week
-2. **Analyse**: Interpreteer gedragspatronen als verhalen over karakter
-3. **Inzicht**: Koppel data aan psychologische concepten
-4. **Aanbeveling**: 1 specifieke, actiegerichte volgende stap
-5. **Afsluiting**: Motiverende boodschap over groei
+STRUCTUUR:
+1. **Opening**: Begin met een persoonlijke observatie over hun week
+2. **Patroon**: Wat valt op in hun dating gedrag?
+3. **Inzicht**: Wat betekent dit voor hun dating reis?
+4. **Tip**: 1 specifieke, praktische volgende stap
+5. **Afsluiting**: Bemoedigende woorden
 
-PROFESSIONELE STIJL:
-- Gebruik metaforen en verhalen om inzichten te illustreren
+STIJL:
+- Spreek als een vriendelijke coach, niet als een therapeut
 - Vermijd clichés en generieke adviezen
-- Maak het analytisch maar niet afstandelijk
-- 200-300 woorden voor diepte zonder te langdradig te worden
-- Nederlandse taal met professionele terminologie waar passend`;
+- Wees concreet en actionable
+- 150-200 woorden - kort en krachtig
+- Nederlandse taal, informeel maar respectvol`;
 
-    const userPrompt = `Analyseer deze dating week als een professionele gedragspsycholoog. Vertel het verhaal van hun dating gedrag deze week.
+    const userPrompt = `Geef een persoonlijke terugblik op deze dating week.
 
-**RUWE DATA:**
+**DATA VAN DEZE WEEK:**
 ${activitySummary}
+${previousWeeksContext}
 
-**GEBRUIKERS CONTEXT:**
+**CONTEXT:**
 ${contextSummary || 'Nieuwe gebruiker - eerste week op het platform'}
 
-**PSYCHOLOGISCHE ANALYSE OPDRACHT:**
+**OPDRACHT:**
 
-Schrijf een verhaal over hun dating gedrag dat onthult wie ze zijn als dater. Interpreteer de data als psychologische indicatoren:
+Schrijf een korte, persoonlijke terugblik op hun dating week. Wees specifiek en praktisch:
 
-**VERHALENDE STRUCTUUR:**
-- **Begin met een karakterisering**: Wat zegt deze week over hun persoonlijkheid als dater?
-- **Analyseer gedragspatronen**: Welke psychologische concepten zie je terug (bijv. risicobereidheid, sociale intelligentie, emotionele beschikbaarheid)?
-- **Koppel aan concrete data**: Gebruik specifieke voorbeelden uit hun activiteiten
-- **Geef professionele inzichten**: Wat onthult dit over hun relatie met intimiteit, zelfvertrouwen, sociale vaardigheden?
-- **Eindig met 1 specifieke, therapeutische interventie**: Niet "probeer harder", maar een gedrag dat hun kernkwaliteiten versterkt
+**STRUCTUUR:**
+1. **Wat zie je?** - Beschrijf kort wat er deze week gebeurde
+2. **Wat valt op?** - Noem 1 interessant patroon of keuze die je ziet
+3. **Wat kun je meenemen?** - Geef 1 concrete, praktische tip voor volgende week
+4. **Bemoediging** - Eindig positief en persoonlijk
 
-**PROFESSIONELE DIEPTE:**
-- Vermijd oppervlakkige complimenten ("goed gedaan!")
-- Focus op karakterontwikkeling en zelfbewustzijn
-- Gebruik metaforen die hun gedrag illustreren
-- Maak het analytisch maar bemoedigend
-- Koppel technische data aan menselijke verhalen
+**STIJL:**
+- Spreek direct tot de gebruiker (je/jouw)
+- Wees concreet, niet vaag
+- Geen therapeutische of psychologische termen
+- Gewoon Nederlands, als een coach die je kent
+- Max 150 woorden - kort en krachtig
 
-**CONCRETE VOORBEELDEN:**
-- Een nieuwe match + date = "Je springt in het diepe met de energie van een ontdekkingsreiziger"
-- Alleen gesprekken = "Je bouwt bruggen met de zorgvuldigheid van een architect"
-- Ghosting ervaringen = "Je leert de grenzen van digitale intimiteit kennen"
+**VOORBEELDEN VAN GOEDE OBSERVATIES:**
+- "Je hebt deze week lef getoond door direct een date te plannen"
+- "Je neemt de tijd om iemand te leren kennen via chat - dat is slim"
+- "Ghosting is vervelend, maar het zegt meer over hen dan over jou"
 
-Vertel hun verhaal door de lens van een professionele coach die hun potentieel ziet.`;
+Wees warm maar direct.`;
 
     // Generate insight using OpenRouter
     const response = await chatCompletion(

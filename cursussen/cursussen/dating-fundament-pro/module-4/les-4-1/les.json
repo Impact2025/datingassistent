@@ -1,0 +1,11 @@
+{
+  "meta": {"id": "les-4-1", "module": 4, "titel": "De Perfecte Opener", "subtitel": "Voorbij 'hey' en 'hoi'", "duur_minuten": 18},
+  "secties": [
+    {"id": "waarom-opener", "type": "data", "titel": "Waarom Openers Ertoe Doen", "content": {"statistiek": "Een goede opener verhoogt je response rate met 3x", "probleem": "90% stuurt 'hey' of 'hoi'. Je valt niet op."}},
+    {"id": "formule", "type": "framework", "titel": "De Opener Formule", "content": {"formule": "Observatie + Vraag", "voorbeeld": {"observatie": "Die foto bij de Eiffeltoren", "vraag": "Hoe lang geleden was dat? Ik overweeg te gaan"}, "waarom_werkt": "Toont dat je profiel las + geeft makkelijke reactie"}},
+    {"id": "voorbeelden", "type": "voorbeelden", "titel": "20 Openers Die Werken", "content": {"categorieen": [{"naam": "Gebaseerd op foto", "voorbeelden": ["Die hond op foto 3 - van jou? Ras?", "Die plek ziet er geweldig uit - waar is dat?"]}, {"naam": "Gebaseerd op bio", "voorbeelden": ["Je bio zegt X - vertel meer!", "Team X of team Y? Belangrijk."]}, {"naam": "Playful", "voorbeelden": ["Okee maar... beste pizza topping?", "Unpopular opinion: [iets uit hun profiel]"]}]}},
+    {"id": "vermijd", "type": "waarschuwing", "titel": "Wat NIET Te Doen", "content": {"niet": ["Hey/Hoi/Hi", "Hoe gaat het?", "Leuk profiel", "Je bent mooi/knap", "Zin om af te spreken? (te snel)"]}}
+  ],
+  "tool": {"id": "opener-generator", "cta": "Genereer openers"},
+  "opdracht": {"titel": "Opener Oefening", "stappen": ["Schrijf 5 openers voor je laatste matches", "Gebruik de formule: Observatie + Vraag", "Stuur ze en track response rate"]}
+}

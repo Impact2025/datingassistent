@@ -116,40 +116,40 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
 
   return (
     <Card className="bg-white border-0 shadow-sm rounded-xl max-w-2xl mx-auto">
-      <CardHeader className="text-center p-8">
-        <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mx-auto mb-6">
+      <CardHeader className="text-center p-10">
+        <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
           {currentQ.icon}
         </div>
-        <CardTitle className="text-xl font-bold text-gray-900 mb-3">
+        <CardTitle className="text-2xl font-bold text-gray-900 mb-4">
           {currentQ.title}
         </CardTitle>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 mb-8 text-lg leading-relaxed">
           {currentQ.subtitle}
         </p>
 
         {/* Progress indicator */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div className="flex justify-between text-sm text-gray-500">
             <span>Vraag {currentQuestion + 1} van {questions.length}</span>
             <span>{Math.round(progress)}% compleet</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-gray-200 rounded-full h-3">
             <div
-              className="bg-pink-500 h-2 rounded-full transition-all duration-300"
+              className="bg-pink-500 h-3 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className="px-10 pb-10 space-y-8">
         <RadioGroup
           value={answers[currentQ.id as keyof typeof answers]}
           onValueChange={handleAnswerSelect}
-          className="space-y-3"
+          className="space-y-4"
         >
           {currentQ.options.map((option) => (
-            <div key={option.value} className="flex items-start space-x-3">
+            <div key={option.value} className="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors">
               <RadioGroupItem
                 value={option.value}
                 id={option.value}
@@ -159,10 +159,10 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
                 htmlFor={option.value}
                 className="flex-1 cursor-pointer"
               >
-                <div className="font-medium text-gray-900">
+                <div className="font-semibold text-gray-900 text-lg">
                   {option.label}
                 </div>
-                <div className="text-sm text-gray-600 mt-1">
+                <div className="text-gray-600 mt-2 leading-relaxed">
                   {option.description}
                 </div>
               </Label>
@@ -170,36 +170,38 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
           ))}
         </RadioGroup>
 
-        <Button
-          onClick={handleNext}
-          disabled={!canProceed || submitting}
-          className="w-full bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 rounded-xl"
-          size="lg"
-        >
-          {submitting ? (
-            'Opslaan...'
-          ) : currentQuestion === questions.length - 1 ? (
-            <>
-              Start Waarden Onderzoek
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </>
-          ) : (
-            <>
-              Volgende Vraag
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </>
-          )}
-        </Button>
-
-        {currentQuestion > 0 && (
+        <div className="space-y-4">
           <Button
-            variant="outline"
-            onClick={() => setCurrentQuestion(prev => prev - 1)}
-            className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl"
+            onClick={handleNext}
+            disabled={!canProceed || submitting}
+            className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all py-4 text-lg"
+            size="lg"
           >
-            Vorige Vraag
+            {submitting ? (
+              'Opslaan...'
+            ) : currentQuestion === questions.length - 1 ? (
+              <>
+                Start Waarden Onderzoek
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </>
+            ) : (
+              <>
+                Volgende Vraag
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </>
+            )}
           </Button>
-        )}
+
+          {currentQuestion > 0 && (
+            <Button
+              variant="outline"
+              onClick={() => setCurrentQuestion(prev => prev - 1)}
+              className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 rounded-full shadow-lg hover:shadow-xl transition-all py-4 text-lg"
+            >
+              Vorige Vraag
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

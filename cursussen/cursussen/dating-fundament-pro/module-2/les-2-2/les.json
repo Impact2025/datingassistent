@@ -1,0 +1,278 @@
+{
+  "secties": [
+    {
+      "id": "intro",
+      "type": "video",
+      "video_id": "les-2-2-intro",
+      "thumbnail": "thumbnail-bio-formule.jpg",
+      "duur_seconden": 90,
+      "transcript_preview": "Je foto's zijn belangrijk, maar je bio is waar de magie gebeurt..."
+    },
+    
+    {
+      "id": "probleem",
+      "type": "content",
+      "titel": "Bio's Die Niemand Leest",
+      "inhoud": [
+        {
+          "type": "intro_tekst",
+          "tekst": "90% van alle dating bio's zijn inwisselbaar. Ze zeggen letterlijk niks. Herken je deze?"
+        },
+        {
+          "type": "voorbeelden_slecht",
+          "items": [
+            {
+              "tekst": "Ik ben een spontane, eerlijke man die houdt van reizen en lekker eten.",
+              "probleem": "Zegt letterlijk niks - dit geldt voor iedereen"
+            },
+            {
+              "tekst": "Geen zin om hier veel te schrijven. Vraag maar.",
+              "probleem": "Lui en ongeïnteresseerd - waarom zou iemand moeite doen?"
+            },
+            {
+              "tekst": "Zoek iemand die weet wat ze wil. Geen drama graag.",
+              "probleem": "Negatief en defensief - schreeuwt 'ik heb bagage'"
+            }
+          ]
+        },
+        {
+          "type": "kernpunt",
+          "tekst": "Als iedereen hetzelfde schrijft, valt niemand op. Jij gaat het anders doen."
+        }
+      ]
+    },
+    
+    {
+      "id": "show-dont-tell",
+      "type": "content",
+      "titel": "Show, Don't Tell",
+      "inhoud": [
+        {
+          "type": "intro_tekst",
+          "tekst": "Dit is de belangrijkste regel voor elke goede bio: laat zien wie je bent, vertel het niet."
+        },
+        {
+          "type": "vergelijking",
+          "kolommen": [
+            {
+              "label": "❌ TELL (Saai)",
+              "kleur": "rood",
+              "items": [
+                "Ik ben avontuurlijk",
+                "Ik ben grappig", 
+                "Ik hou van koken",
+                "Ik ben romantisch"
+              ]
+            },
+            {
+              "label": "✓ SHOW (Memorabel)",
+              "kleur": "groen",
+              "items": [
+                "Afgelopen zomer gehikt door Noorwegen",
+                "Mijn vrienden zeggen dat ik te veel dad jokes maak",
+                "Zondag = pasta maken vanaf scratch",
+                "Bewaar kaartjes van elke eerste date"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "uitleg",
+          "tekst": "Zie je het verschil? De rechterkolom geeft concrete beelden. Je ziet de persoon voor je. De linkerkolom zijn lege woorden die iedereen kan claimen."
+        },
+        {
+          "type": "tip",
+          "tekst": "Specifieke details maken je memorabel én geven gespreksstarters. Iemand kan reageren op 'Noorwegen' of 'dad jokes' - maar wat zeg je op 'avontuurlijk'?"
+        }
+      ]
+    },
+    
+    {
+      "id": "formule",
+      "type": "content", 
+      "titel": "De 3-Delige Bio Formule",
+      "inhoud": [
+        {
+          "type": "intro_tekst",
+          "tekst": "Een sterke bio heeft drie onderdelen. Elk heeft een functie."
+        },
+        {
+          "type": "formule_stappen",
+          "stappen": [
+            {
+              "nummer": 1,
+              "naam": "HOOK",
+              "beschrijving": "Je eerste zin moet aandacht pakken. Iets onverwachts, grappigs of intrigerends.",
+              "voorbeeld": "Waarschuwing: ik steel de dekens.",
+              "waarom_werkt": "Verrassend, toont humor, maakt nieuwsgierig"
+            },
+            {
+              "nummer": 2,
+              "naam": "SUBSTANCE",
+              "beschrijving": "2-3 specifieke dingen over jou. Hobby's, passies, quirks. Altijd concreet.",
+              "voorbeeld": "Weekenden: wielrennen → koffie → Netflix. Op zoek naar iemand die snapt dat dit de perfecte dag is.",
+              "waarom_werkt": "Geeft een beeld van je leven, makkelijk om op te reageren"
+            },
+            {
+              "nummer": 3,
+              "naam": "INVITE",
+              "beschrijving": "Eindig met een vraag of uitnodiging die reactie uitlokt.",
+              "voorbeeld": "Vertel me je guilty pleasure serie.",
+              "waarom_werkt": "Geeft een makkelijke opening voor een gesprek"
+            }
+          ]
+        },
+        {
+          "type": "kernpunt",
+          "tekst": "Hook + Substance + Invite = Bio die gesprekken start"
+        }
+      ]
+    },
+    
+    {
+      "id": "voorbeelden",
+      "type": "content",
+      "titel": "Complete Voorbeelden",
+      "inhoud": [
+        {
+          "type": "intro_tekst",
+          "tekst": "Zo zien complete bio's eruit die de formule volgen:"
+        },
+        {
+          "type": "voorbeelden_goed",
+          "items": [
+            {
+              "bio": "Professionele koffie-snob 's ochtends, amateur chef 's avonds. Zoek iemand om mijn nieuwe recepten op uit te testen (beloof dat het eetbaar is). Jouw beste kook-fail?",
+              "analyse": {
+                "hook": "Professionele koffie-snob",
+                "substance": "amateur chef, nieuwe recepten",
+                "invite": "Jouw beste kook-fail?"
+              }
+            },
+            {
+              "bio": "Overdag: spreadsheets en deadlines. Weekend: bergpaden en campingtrips. Zoek iemand die mee wil naar plekken zonder WiFi. Bonus punten als je marshmallows kunt roosteren.",
+              "analyse": {
+                "hook": "Het contrast overdag/weekend",
+                "substance": "bergpaden, campingtrips, geen WiFi",
+                "invite": "marshmallows roosteren"
+              }
+            },
+            {
+              "bio": "Mijn vrienden noemen me de 'obscure film guy'. Verslaafd aan arthouse cinema en slechte horror. Zoek partner-in-crime voor filmmarathons. Welke film ken alleen jij?",
+              "analyse": {
+                "hook": "obscure film guy (quote van vrienden)",
+                "substance": "arthouse + slechte horror",
+                "invite": "Welke film ken alleen jij?"
+              }
+            }
+          ]
+        },
+        {
+          "type": "tip",
+          "tekst": "Elk voorbeeld is specifiek, toont persoonlijkheid, en eindigt met een makkelijke vraag."
+        }
+      ]
+    },
+    
+    {
+      "id": "vermijd",
+      "type": "content",
+      "titel": "Wat Je Moet Vermijden",
+      "inhoud": [
+        {
+          "type": "intro_tekst",
+          "tekst": "Deze dingen maken je bio onzichtbaar of onaantrekkelijk:"
+        },
+        {
+          "type": "vermijd_lijst",
+          "items": [
+            {
+              "icon": "📋",
+              "naam": "Opsommingen",
+              "voorbeeld": "Reizen, eten, sport, vrienden, Netflix",
+              "waarom_slecht": "Zegt niks, geldt voor 90% van de mensen"
+            },
+            {
+              "icon": "😤",
+              "naam": "Negativiteit",
+              "voorbeeld": "Geen players, geen liars, geen drama",
+              "waarom_slecht": "Klinkt bitter en defensief"
+            },
+            {
+              "icon": "🤷",
+              "naam": "Vaagheid",
+              "voorbeeld": "Vraag maar of Weet niet wat ik moet schrijven",
+              "waarom_slecht": "Lui - waarom zou iemand moeite doen?"
+            },
+            {
+              "icon": "📏",
+              "naam": "Eisen stellen",
+              "voorbeeld": "Minimaal 1.80m of Alleen als je X bent",
+              "waarom_slecht": "Arrogant en afstotend"
+            },
+            {
+              "icon": "😴",
+              "naam": "Clichés",
+              "voorbeeld": "Partner in crime of Carpe diem",
+              "waarom_slecht": "1000 anderen schrijven hetzelfde"
+            }
+          ]
+        },
+        {
+          "type": "kernpunt",
+          "tekst": "Alles wat 1000 anderen ook schrijven maakt je onzichtbaar."
+        }
+      ]
+    },
+    
+    {
+      "id": "opdracht",
+      "type": "opdracht",
+      "titel": "Jouw Opdracht: Schrijf Je Bio",
+      "inhoud": [
+        {
+          "type": "intro_tekst",
+          "tekst": "Nu is het jouw beurt. Volg deze stappen:"
+        },
+        {
+          "type": "stappen",
+          "items": [
+            {
+              "nummer": 1,
+              "tekst": "Schrijf 10 specifieke dingen over jezelf (hobby's, quirks, gewoontes, passies)"
+            },
+            {
+              "nummer": 2,
+              "tekst": "Kies de 3 meest unieke of interessante"
+            },
+            {
+              "nummer": 3,
+              "tekst": "Schrijf een Hook die aandacht pakt"
+            },
+            {
+              "nummer": 4,
+              "tekst": "Voeg Substance toe met je 3 specifieke dingen"
+            },
+            {
+              "nummer": 5,
+              "tekst": "Eindig met een Invite (vraag of uitnodiging)"
+            }
+          ]
+        },
+        {
+          "type": "tool_koppeling",
+          "tool_id": "profiel-coach",
+          "actie": "bio-check",
+          "cta_tekst": "Test je bio met AI Profiel Coach",
+          "beschrijving": "Plak je bio hieronder en krijg direct feedback op sterke punten en verbetermogelijkheden."
+        },
+        {
+          "type": "volgende_les",
+          "les_id": "les-2-3",
+          "titel": "Platform Strategie",
+          "beschrijving": "Nu je profiel klaar is, leer je welk platform het beste bij jou past."
+        }
+      ]
+    }
+  ]
+}

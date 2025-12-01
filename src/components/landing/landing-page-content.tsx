@@ -24,6 +24,7 @@ import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { CookieConsentBanner } from '@/components/cookie-consent-banner';
 import { ChatWidgetWrapper } from '@/components/live-chat/chat-widget-wrapper';
 import { HeroSection } from '@/components/landing/hero-section';
+import { useUser } from '@/providers/user-provider';
 
 type Review = {
   id: number;
@@ -56,6 +57,7 @@ type LandingPageContentProps = {
 };
 
 export function LandingPageContent({ hero }: LandingPageContentProps) {
+  const { user } = useUser();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [blogsError, setBlogsError] = useState<string | null>(null);
@@ -365,7 +367,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
           <div className="text-center mt-12">
             <Link href="/features">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all">Bekijk al onze tools</Button>
+              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all">Bekijk al onze tools</Button>
             </Link>
           </div>
         </div>
@@ -426,7 +428,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
           <div className="mt-16 text-center">
             <Link href="/register">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
+              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all">
                 Start je dating succes vandaag!
               </Button>
             </Link>
@@ -485,7 +487,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
           <div className="mt-12 text-center">
             <Link href="/blog">
-              <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-3 rounded-full transition-all shadow-lg hover:shadow-xl">
+              <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-6 py-2.5 rounded-full transition-all shadow-lg hover:shadow-xl">
                 Bekijk alle blogs
               </Button>
             </Link>
@@ -634,7 +636,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
               <div className="pt-4">
                 <Link href="/register">
-                  <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all">Ontdek onze tools</Button>
+                  <Button className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all">Ontdek onze tools</Button>
                 </Link>
               </div>
             </div>
@@ -756,12 +758,12 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/register">
-                  <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-6 text-base rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto">
+                  <Button className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto">
                     Start gratis
                   </Button>
                 </Link>
                 <Link href="#prijzen">
-                  <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-6 text-base rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto">
+                  <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto">
                     Bekijk prijzen
                   </Button>
                 </Link>
@@ -775,17 +777,20 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
       <BottomNavigation />
       <CookieConsentBanner />
 
-      <ChatWidgetWrapper
-        apiUrl="/api/chatbot"
-        position="bottom-right"
-        primaryColor="#E14874"
-        companyName="DatingAssistent"
-        welcomeMessage="Hallo! Ik ben je AI-assistent voor dating advies. Ik kan je helpen met vragen over daten, relaties en persoonlijke ontwikkeling. Stel je vraag gerust!"
-        enableProactiveInvites={false}
-        proactiveDelay={15000}
-        proactiveMessage="Hallo! Heeft u vragen over dating? Ik help u graag!"
-        agentName="AI Dating Coach"
-      />
+      {/* Chat Widget - Only show for non-registered members */}
+      {!user && (
+        <ChatWidgetWrapper
+          apiUrl="/api/chatbot"
+          position="bottom-right"
+          primaryColor="#E14874"
+          companyName="Iris"
+          welcomeMessage="Hoi! 👋 Ik ben Iris, je dating coach. Heb je een vraag over de les of je dating reis? Ik help je graag!"
+          enableProactiveInvites={true}
+          proactiveDelay={20000}
+          proactiveMessage="Hoi! 👋 Ik zie dat je rondkijkt. Heb je vragen over DatingAssistent?"
+          agentName="Iris"
+        />
+      )}
     </div>
   );
 }

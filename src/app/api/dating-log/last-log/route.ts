@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
+
+const sql = neon(process.env.DATABASE_URL!);
 
 export async function GET(request: Request) {
   try {
@@ -37,7 +39,7 @@ export async function GET(request: Request) {
         ORDER BY week_end DESC
         LIMIT 1
       `;
-      lastLogDate = result.rows.length > 0 ? result.rows[0].week_end : null;
+      lastLogDate = result.length > 0 ? result[0].week_end : null;
     } catch (error: any) {
       // If table doesn't exist, assume no logs
       if (error.message?.includes('relation "weekly_dating_logs" does not exist')) {
@@ -62,7 +64,7 @@ export async function GET(request: Request) {
         SELECT id FROM weekly_dating_logs
         WHERE user_id = ${user.id} AND week_start = ${currentWeekStartStr}
       `;
-      hasLoggedCurrentWeek = currentWeekLog.rows.length > 0;
+      hasLoggedCurrentWeek = currentWeekLog.length > 0;
     } catch (error: any) {
       // If table doesn't exist, assume no logs
       if (error.message?.includes('relation "weekly_dating_logs" does not exist')) {
@@ -80,8 +82,8 @@ export async function GET(request: Request) {
         FROM user_notification_preferences
         WHERE user_id = ${user.id}
       `;
-      remindersEnabled = preferences.rows.length === 0 || preferences.rows[0].monday_reminders_enabled;
-      lastReminderSent = preferences.rows.length > 0 ? preferences.rows[0].last_reminder_sent : null;
+      remindersEnabled = preferences.length === 0 || preferences[0].monday_reminders_enabled;
+      lastReminderSent = preferences.length > 0 ? preferences[0].last_reminder_sent : null;
     } catch (error: any) {
       // If table doesn't exist, use defaults
       if (error.message?.includes('relation "user_notification_preferences" does not exist')) {

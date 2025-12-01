@@ -42,11 +42,13 @@ export default function ProWelcomePage() {
   }, [user, router, isLoading]);
 
   const handleVideoComplete = () => {
+    console.log('🎥 DEBUG: Welcome video completed successfully');
     setVideoCompleted(true);
     setCurrentStep('writing-style');
   };
 
   const handleSkipVideo = () => {
+    console.log('⏭️ DEBUG: User skipped welcome video');
     setVideoCompleted(true);
     setCurrentStep('writing-style');
   };
@@ -86,15 +88,29 @@ export default function ProWelcomePage() {
   };
 
   const handleComplete = async () => {
-    if (!user?.id) return;
+    if (!user?.id) {
+      console.log('❌ DEBUG: No user ID available for pro-welcome completion');
+      return;
+    }
+
+    console.log('💾 DEBUG: Saving pro-welcome data for user:', user.id);
+    console.log('💾 DEBUG: Data to save:', {
+      writingStyle,
+      datingApps,
+      genderPreference,
+      reminderPreference
+    });
 
     setIsLoading(true);
     try {
+      const token = localStorage.getItem('datespark_auth_token');
+      console.log('🔐 DEBUG: Auth token available:', !!token);
+
       const response = await fetch('/api/pro-welcome', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
+          'Authorization': token || ''
         },
         body: JSON.stringify({
           writingStyle,
@@ -104,19 +120,24 @@ export default function ProWelcomePage() {
         })
       });
 
+      console.log('💾 DEBUG: Pro-welcome API response status:', response.status, 'ok:', response.ok);
+
       if (response.ok) {
+        console.log('✅ DEBUG: Pro-welcome data saved successfully');
         setCurrentStep('complete');
         // Redirect to dashboard after a short delay
         setTimeout(() => {
           router.push('/dashboard');
         }, 3000);
       } else {
-        console.error('Failed to save pro welcome data');
+        console.error('❌ DEBUG: Failed to save pro welcome data - status:', response.status);
+        const errorText = await response.text();
+        console.error('❌ DEBUG: Error response:', errorText);
         // Still redirect to dashboard on error
         router.push('/dashboard');
       }
     } catch (error) {
-      console.error('Error saving pro welcome data:', error);
+      console.error('❌ DEBUG: Error saving pro welcome data:', error);
       router.push('/dashboard');
     } finally {
       setIsLoading(false);

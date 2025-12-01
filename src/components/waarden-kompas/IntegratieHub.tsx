@@ -189,11 +189,11 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
                 </ul>
 
                 <Button
-                  className={`w-full ${
+                  className={`w-full rounded-full shadow-lg hover:shadow-xl transition-all ${
                     isCompleted
-                      ? 'bg-green-600 hover:bg-green-700'
-                      : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
-                  } text-white`}
+                      ? 'bg-green-600 hover:bg-green-700 text-white'
+                      : 'bg-pink-500 hover:bg-pink-600 text-white'
+                  }`}
                   disabled={isCompleted}
                 >
                   {isCompleted ? (
@@ -242,7 +242,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
 
             <Button
               onClick={handleComplete}
-              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold px-8 py-3"
+              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all px-8 py-4 text-lg"
               size="lg"
             >
               Start met Waarde-Gedreven Dating

@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-2-5",
+    "module": 2,
+    "volgorde": 5,
+    "titel": "Het Partner Prototype",
+    "subtitel": "Jouw wetenschappelijk onderbouwde match-profiel",
+    "duur_minuten": 20,
+    "kernvraag": "Wie past echt bij jou?",
+    "leerdoelen": [
+      "Begrijpen wat het partner prototype betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Jouw wetenschappelijk onderbouwde match-profiel. De kernvraag die we beantwoorden: Wie past echt bij jou?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Wie past echt bij jou?",
+        "context": "Neem even de tijd om na te denken over het partner prototype in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Het Partner Prototype",
+      "content": {
+        "intro": "Jouw wetenschappelijk onderbouwde match-profiel",
+        "items": [
+          {
+            "naam": "Must-haves",
+            "desc": "Non-negotiables"
+          },
+          {
+            "naam": "Nice-to-haves",
+            "desc": "Bonus maar niet essentieel"
+          },
+          {
+            "naam": "Dealbreakers",
+            "desc": "Absolute no-go's"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je het partner prototype begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe het partner prototype zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-2-5",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Het Partner Prototype?",
+        "opties": [
+          "Non-negotiables",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-2-5",
+    "vraag": "Hoe herken je het partner prototype in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Het Partner Prototype. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Het Partner Prototype toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over het partner prototype in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me het partner prototype toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

@@ -1,0 +1,9 @@
+{
+  "meta": {"id": "les-3-1", "module": 3, "titel": "Hoe Algoritmes Werken", "subtitel": "Het spel begrijpen dat je speelt", "duur_minuten": 15},
+  "secties": [
+    {"id": "elo-score", "type": "concept", "titel": "Je 'Desirability Score'", "content": {"uitleg": "Elke app geeft je een onzichtbare score gebaseerd op hoe aantrekkelijk je profiel is", "factoren": ["Wie swiped rechts op jou", "Wie jij rechts swiped", "Hoe snel je matches reageert", "Hoeveel gesprekken naar dates leiden"]}},
+    {"id": "boosten", "type": "strategie", "titel": "Je Score Verhogen", "content": {"acties": ["Selectief swipen (kwaliteit > kwantiteit)", "Snel reageren op matches", "Gesprekken starten", "Regelmatig actief zijn"]}},
+    {"id": "killers", "type": "waarschuwing", "titel": "Score Killers", "content": {"vermijd": ["Mass-swiping naar rechts", "Matches negeren", "Account resetten", "Lange inactiviteit gevolgd door binge-swipen"]}}
+  ],
+  "opdracht": {"titel": "Algorithme Audit", "stappen": ["Analyseer je huidige swipe gedrag", "Stel regels voor selectiever swipen", "Plan vaste momenten voor dating apps"]}
+}

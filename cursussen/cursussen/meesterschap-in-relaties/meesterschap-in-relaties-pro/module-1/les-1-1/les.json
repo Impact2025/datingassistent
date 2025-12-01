@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "id": "les-1-1",
+    "module": 1,
+    "volgorde": 1,
+    "titel": "De Hechtingskaart",
+    "subtitel": "Ontdek hoe je liefhebt en verbinding zoekt",
+    "duur_minuten": 25,
+    "kernvraag": "Welke hechtingsstijl bepaalt jouw relatiegedrag?",
+    "leerdoelen": [
+      "Begrijpen wat de hechtingskaart betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Ontdek hoe je liefhebt en verbinding zoekt. De kernvraag die we beantwoorden: Welke hechtingsstijl bepaalt jouw relatiegedrag?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Welke hechtingsstijl bepaalt jouw relatiegedrag?",
+        "context": "Neem even de tijd om na te denken over de hechtingskaart in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "De Hechtingskaart",
+      "content": {
+        "intro": "Ontdek hoe je liefhebt en verbinding zoekt",
+        "items": [
+          {
+            "naam": "Veilig (50%)",
+            "desc": "Comfortabel met intimiteit én onafhankelijkheid"
+          },
+          {
+            "naam": "Angstig (20%)",
+            "desc": "Sterk verlangen naar nabijheid, angst voor verlating"
+          },
+          {
+            "naam": "Vermijdend (25%)",
+            "desc": "Waardeert onafhankelijkheid, ongemak bij nabijheid"
+          },
+          {
+            "naam": "Angstig-Vermijdend (5%)",
+            "desc": "Wil intimiteit maar ervaart het als gevaarlijk"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je de hechtingskaart begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe de hechtingskaart zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-1-1",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van De Hechtingskaart?",
+        "opties": [
+          "Comfortabel met intimiteit én onafhankelijkheid",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-1-1",
+    "vraag": "Hoe herken je de hechtingskaart in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op De Hechtingskaart. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas De Hechtingskaart toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over de hechtingskaart in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me de hechtingskaart toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

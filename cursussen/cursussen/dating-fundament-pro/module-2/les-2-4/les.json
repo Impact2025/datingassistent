@@ -1,0 +1,153 @@
+{
+  "meta": {
+    "id": "les-2-4",
+    "module": 2,
+    "volgorde": 4,
+    "titel": "De Lancering",
+    "subtitel": "Live gaan met maximale impact",
+    "duur_minuten": 18,
+    "kernvraag": "Ben je klaar voor de newbie boost?"
+  },
+
+  "secties": [
+    {
+      "id": "checklist",
+      "type": "checklist",
+      "titel": "De Lancering Checklist",
+      "content": {
+        "fotos": [
+          "Hoofdfoto: glimlach, oogcontact ✓",
+          "Full body foto ✓",
+          "Hobby/activiteit foto ✓",
+          "Optioneel: sociaal, lifestyle ✓",
+          "AI Foto Check score 70+ ✓"
+        ],
+        "bio": [
+          "Hook die aandacht pakt ✓",
+          "2-3 specifieke dingen over jou ✓",
+          "Uitnodiging/vraag aan het eind ✓",
+          "AI Profiel Coach feedback verwerkt ✓"
+        ],
+        "platform": [
+          "Primair platform gekozen ✓",
+          "Account aangemaakt of reset ✓",
+          "Alle velden ingevuld ✓",
+          "Notificaties aan ✓"
+        ]
+      }
+    },
+
+    {
+      "id": "eerste-48-uur",
+      "type": "strategie",
+      "titel": "De Eerste 48 Uur",
+      "content": {
+        "waarom_cruciaal": "De newbie boost is actief. Wat je nu doet bepaalt je zichtbaarheid voor weken.",
+        "doe": [
+          "Swipe selectief (max 20-30 per dag)",
+          "Beantwoord ELKE match snel",
+          "Stuur persoonlijke openers",
+          "Check 2-3x per dag, niet constant"
+        ],
+        "vermijd": [
+          "Alles naar rechts swipen",
+          "Matches laten liggen",
+          "Copy-paste berichten",
+          "Uren achter elkaar swipen"
+        ]
+      }
+    },
+
+    {
+      "id": "eerste-berichten",
+      "type": "voorbeelden",
+      "titel": "Je Eerste Berichten",
+      "content": {
+        "niet": [
+          "Hey",
+          "Hoi, hoe gaat het?",
+          "Leuk profiel!",
+          "Je bent mooi"
+        ],
+        "wel": [
+          "Die foto in Lissabon - welke wijk was dat? Ik ga volgende maand!",
+          "Okee maar... team hond of team kat? Dit is belangrijk.",
+          "Je bio zegt dat je van slechte horror houdt. Wat is de slechtste die je hebt gezien?"
+        ],
+        "formule": "[Iets specifieks uit profiel] + [Vraag die makkelijk te beantwoorden is]"
+      }
+    },
+
+    {
+      "id": "verwachtingen",
+      "type": "realiteit",
+      "titel": "Realistische Verwachtingen - Week 1",
+      "content": {
+        "gemiddelden": [
+          {"metric": "Matches week 1", "range": "5-15", "note": "Varieert sterk per persoon"},
+          {"metric": "Response rate", "range": "30-50%", "note": "Met goede opener"},
+          {"metric": "Gesprekken die doorlopen", "range": "1-3", "note": "Naar telefoon/date"}
+        ],
+        "boodschap": "Dit is normaal. Dating is een marathon, geen sprint."
+      }
+    },
+
+    {
+      "id": "troubleshooting",
+      "type": "diagnose",
+      "titel": "Troubleshooting: Geen/Weinig Matches",
+      "content": {
+        "checks": [
+          {"check": "Is je hoofdfoto sterk genoeg?", "actie": "Test met AI Foto Check, score moet 70+ zijn"},
+          {"check": "Swipe je te veel naar rechts?", "actie": "Het algoritme straft dit af"},
+          {"check": "Zijn je andere foto's gevarieerd?", "actie": "Alleen selfies werkt niet"},
+          {"check": "Is je bio compleet en interessant?", "actie": "Lege bio = grote afknapper"}
+        ],
+        "tip": "Vaak is het één ding dat 80% van het probleem veroorzaakt. Vind dat ene ding."
+      }
+    },
+
+    {
+      "id": "routine",
+      "type": "systeem",
+      "titel": "Je Wekelijkse Dating Routine",
+      "content": {
+        "dagelijks": {
+          "tijd": "15 minuten",
+          "activiteiten": ["Check matches en berichten", "Beantwoord gesprekken", "5-10 selectieve swipes"]
+        },
+        "wekelijks": {
+          "activiteiten": ["1-2 dates plannen", "Profiel evalueren", "Nieuwe foto's overwegen"]
+        },
+        "maandelijks": {
+          "activiteiten": ["Stats reviewen", "Bio refreshen", "Foto's updaten indien nodig"]
+        },
+        "regel": "Consistentie > Intensiteit. 15 min/dag werkt beter dan 3 uur op zondag."
+      }
+    }
+  ],
+
+  "module_afsluiting": {
+    "samenvatting": [
+      "Les 2.1: Foto's die werken - de wetenschap",
+      "Les 2.2: Bio die gesprekken start - show don't tell",
+      "Les 2.3: Het juiste platform kiezen",
+      "Les 2.4: Lanceren met maximale impact"
+    ],
+    "volgende_module": {
+      "id": "module-3",
+      "titel": "Slim Matchen",
+      "teaser": "Je profiel staat. Nu leren we hoe je het algoritme voor je laat werken."
+    }
+  },
+
+  "opdracht": {
+    "titel": "GO LIVE",
+    "stappen": [
+      "Voltooi de checklist",
+      "Publiceer je profiel",
+      "Swipe 15-20x selectief",
+      "Stuur opener naar elke match"
+    ]
+  }
+}

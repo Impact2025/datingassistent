@@ -110,7 +110,8 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
     try {
       const token = localStorage.getItem('datespark_auth_token');
       if (token) {
-        const phaseActionMap = {
+        const phaseActionMap: Record<WaardenKompasPhase, string> = {
+          'intake': 'waarden_kompas_started',
           'onderzoek': 'waarden_onderzoek_completed',
           'synthese': 'ai_synthese_completed',
           'integratie': 'integratie_completed',
@@ -155,76 +156,76 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
         <div className="max-w-2xl mx-auto space-y-6">
           {/* Hero Card */}
           <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
-            <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Compass className="w-8 h-8 text-pink-600" />
+            <CardContent className="p-12 text-center">
+              <div className="w-20 h-20 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                <Compass className="w-10 h-10 text-pink-600" />
               </div>
-              <CardTitle className="text-2xl font-bold text-gray-900 mb-4">
+              <CardTitle className="text-3xl font-bold text-gray-900 mb-6">
                 Ontdek Jouw Waarden Kompas™
               </CardTitle>
-              <p className="text-gray-600 mb-8">
+              <p className="text-gray-600 mb-10 text-lg leading-relaxed max-w-2xl mx-auto">
                 Ontdek jouw kernwaarden in liefde, relaties en levensstijl — en vertaal ze direct naar betere datingkeuzes.
               </p>
 
               <Button
                 onClick={startNewSession}
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 rounded-xl"
+                className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all py-4 text-lg max-w-md mx-auto"
                 size="lg"
               >
                 <Compass className="w-5 h-5 mr-2" />
                 Start Jouw Waarden Kompas
               </Button>
 
-              <p className="text-xs text-gray-500 mt-4">
+              <p className="text-sm text-gray-500 mt-6">
                 ± 5 minuten • 4 interactieve fases • Persoonlijk advies
               </p>
             </CardContent>
           </Card>
 
           {/* Promise Card */}
-          <Card className="bg-white border-0 shadow-sm rounded-xl">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-pink-600" />
+          <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-0 shadow-sm rounded-xl">
+            <CardContent className="p-8">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-7 h-7 text-pink-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Onze Belofte</h3>
-                  <p className="text-sm text-gray-600">Binnen 5 minuten weet jij wat jij écht nodig hebt in een relatie</p>
+                  <h3 className="font-bold text-gray-900 text-lg">Onze Belofte</h3>
+                  <p className="text-gray-700 leading-relaxed">Binnen 5 minuten weet jij wat jij écht nodig hebt in een relatie</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Benefits Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="bg-white border-0 shadow-sm rounded-xl">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Target className="w-6 h-6 text-blue-600" />
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Target className="w-8 h-8 text-blue-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Helderheid</h4>
-                <p className="text-sm text-gray-600">Meer zelfkennis over wat je wilt</p>
+                <h4 className="font-bold text-gray-900 mb-3 text-lg">Helderheid</h4>
+                <p className="text-gray-600 leading-relaxed">Meer zelfkennis over wat je wilt</p>
               </CardContent>
             </Card>
 
             <Card className="bg-white border-0 shadow-sm rounded-xl">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Heart className="w-6 h-6 text-green-600" />
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Heart className="w-8 h-8 text-green-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Betere Matches</h4>
-                <p className="text-sm text-gray-600">Kwalitatieve connecties vinden</p>
+                <h4 className="font-bold text-gray-900 mb-3 text-lg">Betere Matches</h4>
+                <p className="text-gray-600 leading-relaxed">Kwalitatieve connecties vinden</p>
               </CardContent>
             </Card>
 
             <Card className="bg-white border-0 shadow-sm rounded-xl">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Zap className="w-6 h-6 text-purple-600" />
+              <CardContent className="p-8 text-center">
+                <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Zap className="w-8 h-8 text-purple-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Snellere Besluiten</h4>
-                <p className="text-sm text-gray-600">Minder twijfel, meer actie</p>
+                <h4 className="font-bold text-gray-900 mb-3 text-lg">Snellere Besluiten</h4>
+                <p className="text-gray-600 leading-relaxed">Minder twijfel, meer actie</p>
               </CardContent>
             </Card>
           </div>
@@ -258,38 +259,59 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
 
   return (
     <div className={`min-h-screen bg-gray-50 p-4 ${className}`}>
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-4 py-4">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.back()}
-              className="p-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">Waarden Kompas</h1>
-              <p className="text-sm text-gray-600">Persoonlijke waarden ontdekken</p>
+        <Card className="border-0 bg-white shadow-sm rounded-xl">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.back()}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-pink-100 rounded-2xl flex items-center justify-center">
+                  <Compass className="w-6 h-6 text-pink-600" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Waarden Kompas</h1>
+                  <p className="text-gray-600">Persoonlijke waarden ontdekken</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Progress Card */}
-        <Card className="bg-white border-0 shadow-sm rounded-xl mx-4">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
+        <Card className="bg-white border-0 shadow-sm rounded-xl">
+          <CardContent className="p-8">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">Voortgang</h2>
-                <p className="text-sm text-gray-600">Fase {getPhaseTitle()}</p>
+                <h2 className="text-xl font-bold text-gray-900">Voortgang</h2>
+                <p className="text-gray-600">Fase {getPhaseTitle()}</p>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-pink-600">{getProgressPercentage()}%</div>
+                <div className="text-3xl font-bold text-pink-600">{getProgressPercentage()}%</div>
               </div>
             </div>
-            <Progress value={getProgressPercentage()} className="h-2" />
+            <Progress value={getProgressPercentage()} className="h-3 bg-gray-200" />
+            <div className="mt-6 flex justify-end">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  if (confirm('Weet je zeker dat je opnieuw wilt beginnen? Je huidige voortgang gaat verloren.')) {
+                    setSession(null);
+                    setCurrentPhase('intake');
+                  }
+                }}
+                className="text-gray-600 hover:text-gray-800 border-gray-300 hover:border-gray-400 rounded-full shadow-lg hover:shadow-xl transition-all"
+              >
+                Opnieuw Beginnen
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
@@ -302,7 +324,7 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
         />
 
         {/* Phase Content */}
-        <div className="space-y-6">
+        <div className="space-y-8">
         {currentPhase === 'intake' && (
           <MiniIntake
             sessionId={session.id}
@@ -333,20 +355,20 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
 
         {currentPhase === 'completed' && (
           <Card className="bg-white border-0 shadow-sm rounded-xl">
-            <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <CheckCircle className="w-8 h-8 text-green-600" />
+            <CardContent className="p-12 text-center">
+              <div className="w-20 h-20 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                <CheckCircle className="w-10 h-10 text-green-600" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
                 Jouw Waarden Kompas is Voltooid! 🎉
               </h2>
-              <p className="text-gray-600 mb-8">
+              <p className="text-gray-600 mb-10 text-lg leading-relaxed max-w-2xl mx-auto">
                 Je hebt nu helder zicht op wat jij écht belangrijk vindt in relaties.
                 Deze inzichten helpen je om betere dating beslissingen te maken.
               </p>
               <Button
                 onClick={() => window.location.reload()}
-                className="bg-pink-500 hover:bg-pink-600 text-white font-medium px-8 py-3 rounded-xl"
+                className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all px-8 py-4 text-lg"
               >
                 Bekijk Resultaten Opnieuw
               </Button>

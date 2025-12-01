@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "id": "les-1-4",
+    "module": 1,
+    "volgorde": 4,
+    "titel": "Je Trigger Landschap",
+    "subtitel": "Wat activeert je emotionele reacties?",
+    "duur_minuten": 25,
+    "kernvraag": "Wat triggert jou en waarom?",
+    "leerdoelen": [
+      "Begrijpen wat je trigger landschap betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Wat activeert je emotionele reacties?. De kernvraag die we beantwoorden: Wat triggert jou en waarom?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Wat triggert jou en waarom?",
+        "context": "Neem even de tijd om na te denken over je trigger landschap in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Je Trigger Landschap",
+      "content": {
+        "intro": "Wat activeert je emotionele reacties?",
+        "items": [
+          {
+            "naam": "Trigger",
+            "desc": "Situatie die je activeert"
+          },
+          {
+            "naam": "Interpretatie",
+            "desc": "Automatische betekenisgeving"
+          },
+          {
+            "naam": "Emotie",
+            "desc": "Het gevoel dat opkomt"
+          },
+          {
+            "naam": "Gedrag",
+            "desc": "Je automatische reactie"
+          },
+          {
+            "naam": "Resultaat",
+            "desc": "Vaak bevestiging van trigger"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je je trigger landschap begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe je trigger landschap zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-1-4",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Je Trigger Landschap?",
+        "opties": [
+          "Situatie die je activeert",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-1-4",
+    "vraag": "Hoe herken je je trigger landschap in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Je Trigger Landschap. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Je Trigger Landschap toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over je trigger landschap in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me je trigger landschap toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

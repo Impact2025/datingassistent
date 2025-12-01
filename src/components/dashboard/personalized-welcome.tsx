@@ -50,8 +50,33 @@ export function PersonalizedWelcome({ onTabChange }: PersonalizedWelcomeProps) {
         // Simple logic-based recommendations first
         let simpleRecommendation: PersonalizedRecommendation | null = null;
 
+        // Check if user has taken attachment assessment
+        const assessmentResponse = await fetch('/api/attachment-assessment', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
+          }
+        });
+
+        let hasTakenAssessment = false;
+        if (assessmentResponse.ok) {
+          const assessmentData = await assessmentResponse.json();
+          hasTakenAssessment = !!assessmentData.assessment;
+        }
+
+        // Priority 1: Attachment style assessment for all users who haven't taken it
+        if (!hasTakenAssessment) {
+          simpleRecommendation = {
+            tool: 'hechtingsstijl',
+            title: 'Ontdek je relatiepatronen',
+            description: 'Leer hoe je hechtingsstijl je dating gedrag beïnvloedt',
+            reason: 'Wetenschappelijk onderbouwde inzichten voor betere relaties',
+            urgency: 'high',
+            icon: <Heart className="w-5 h-5" />,
+            actionLabel: 'Hechtingsstijl Test'
+          };
+        }
         // New users - recommend profile building
-        if (!context.toolUsage || Object.values(context.toolUsage).reduce((sum, count) => sum + count, 0) < 3) {
+        else if (!context.toolUsage || Object.values(context.toolUsage).reduce((sum, count) => sum + count, 0) < 3) {
           simpleRecommendation = {
             tool: 'profiel-persoonlijkheid',
             title: 'Start met je profiel',

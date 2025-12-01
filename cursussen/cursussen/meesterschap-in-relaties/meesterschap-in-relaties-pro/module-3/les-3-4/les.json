@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-3-4",
+    "module": 3,
+    "volgorde": 4,
+    "titel": "De Moeilijke Gesprekken",
+    "subtitel": "Scripts voor DTR, grenzen en toekomst",
+    "duur_minuten": 25,
+    "kernvraag": "Welk gesprek stel je uit?",
+    "leerdoelen": [
+      "Begrijpen wat de moeilijke gesprekken betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Scripts voor DTR, grenzen en toekomst. De kernvraag die we beantwoorden: Welk gesprek stel je uit?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Welk gesprek stel je uit?",
+        "context": "Neem even de tijd om na te denken over de moeilijke gesprekken in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "De Moeilijke Gesprekken",
+      "content": {
+        "intro": "Scripts voor DTR, grenzen en toekomst",
+        "items": [
+          {
+            "naam": "DTR-gesprek",
+            "desc": "Waar staan we, wat willen we"
+          },
+          {
+            "naam": "Grenzen-gesprek",
+            "desc": "Dit is oké, dit niet"
+          },
+          {
+            "naam": "Toekomst-gesprek",
+            "desc": "Waar gaan we naartoe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je de moeilijke gesprekken begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe de moeilijke gesprekken zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-3-4",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van De Moeilijke Gesprekken?",
+        "opties": [
+          "Waar staan we, wat willen we",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-3-4",
+    "vraag": "Hoe herken je de moeilijke gesprekken in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op De Moeilijke Gesprekken. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas De Moeilijke Gesprekken toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over de moeilijke gesprekken in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me de moeilijke gesprekken toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

@@ -1,0 +1,247 @@
+{
+  "meta": {
+    "id": "les-1-2",
+    "module": 1,
+    "volgorde": 2,
+    "titel": "De Mythe van De Vonk",
+    "subtitel": "Waarom instant chemistry overschat wordt",
+    "duur_minuten": 18,
+    "kernvraag": "Geef je mensen genoeg kans?",
+    "leerdoelen": [
+      "Begrijpen waarom 'geen klik' na één date misleidend is",
+      "Het verschil kennen tussen chemie en compatibiliteit",
+      "De 3-dates regel kunnen toepassen"
+    ]
+  },
+
+  "intro": {
+    "type": "video",
+    "duur_sec": 70,
+    "script": "les-1-2-video.md"
+  },
+
+  "secties": [
+    {
+      "id": "opening",
+      "type": "scenario",
+      "content": {
+        "titel": "Herkenbaar?",
+        "scenario": "Je hebt een date gehad. Die persoon was aardig, zag er goed uit, gesprek liep prima. Maar je voelde geen 'vonk'. Dus je besluit: geen tweede date.",
+        "vraag": "Klinkt dit bekend?",
+        "reveal": "Je hebt net misschien je toekomstige partner afgewezen op basis van 60 minuten en een vage 'klik' die je niet voelde."
+      }
+    },
+
+    {
+      "id": "mythe",
+      "type": "myth-bust",
+      "titel": "De Hollywood Leugen",
+      "content": {
+        "mythe": {
+          "tekst": "Als het de ware is, voel je het meteen. Er moet een vonk zijn, vlinders, een instant connectie.",
+          "bron": "Elke romcom ooit gemaakt"
+        },
+        "realiteit": {
+          "tekst": "Onderzoek toont aan dat de sterkste relaties vaak NIET begonnen met 'love at first sight'. Integendeel.",
+          "feiten": [
+            "Stellen die als vrienden begonnen hebben duurzamere relaties",
+            "Instant 'chemistry' is vaak gewoon fysieke aantrekkingskracht of spanning - niet compatibiliteit",
+            "'Vlinders' zijn letterlijk angst-symptomen, geen liefdes-signalen"
+          ]
+        },
+        "conclusie": "Die 'vonk' die je zoekt? Het is vaak je zenuwstelsel dat reageert, niet je hart dat de ware herkent."
+      }
+    },
+
+    {
+      "id": "chemie-vs-compatibiliteit",
+      "type": "framework",
+      "titel": "Chemie vs. Compatibiliteit",
+      "content": {
+        "intro": "Dit zijn twee verschillende dingen. De meeste mensen verwarren ze.",
+        "vergelijking": [
+          {
+            "type": "Chemie",
+            "definitie": "Fysieke aantrekkingskracht, spanning, opwinding",
+            "kenmerken": [
+              "Kan instant zijn",
+              "Gebaseerd op uiterlijk, energie, mysterie",
+              "Kan groeien OF afnemen over tijd",
+              "Niet voorspellend voor relatie-succes"
+            ],
+            "waarschuwing": "Hoge chemie met iemand die slecht voor je is = toxic aantrekkingskracht"
+          },
+          {
+            "type": "Compatibiliteit", 
+            "definitie": "Gedeelde waarden, doelen, communicatiestijl",
+            "kenmerken": [
+              "Wordt duidelijk over tijd",
+              "Gebaseerd op diepere kenmerken",
+              "Meestal stabiel of groeiend",
+              "Voorspellend voor relatie-succes"
+            ],
+            "waarschuwing": "Hoge compatibiliteit zonder enige chemie = vriendschap, geen romantiek"
+          }
+        ],
+        "ideaal": "Je zoekt beiden. Maar compatibiliteit moet de basis zijn, chemie kan groeien."
+      }
+    },
+
+    {
+      "id": "wetenschap",
+      "type": "insight",
+      "titel": "De 3 Fases van Aantrekking",
+      "content": {
+        "intro": "Wetenschappelijk gezien verloopt aantrekking in fases:",
+        "fases": [
+          {
+            "nummer": 1,
+            "naam": "Eerste Indruk",
+            "timing": "Eerste seconden tot minuten",
+            "basis": "Uiterlijk, lichaamstaal, stem",
+            "betrouwbaarheid": "Laag - je brein maakt shortcuts",
+            "probleem": "Te veel mensen stoppen hier met hun oordeel"
+          },
+          {
+            "nummer": 2,
+            "naam": "Kennismaking",
+            "timing": "Eerste uren tot weken",
+            "basis": "Gesprekken, humor, interesses",
+            "betrouwbaarheid": "Gemiddeld - nog steeds eerste indrukken",
+            "probleem": "Nervositeit kan echte persoonlijkheid maskeren"
+          },
+          {
+            "nummer": 3,
+            "naam": "Diepere Connectie",
+            "timing": "Weken tot maanden",
+            "basis": "Waarden, omgang met stress, echte persoonlijkheid",
+            "betrouwbaarheid": "Hoog - je ziet de echte persoon",
+            "realiteit": "Hier begint echte aantrekking vaak pas"
+          }
+        ],
+        "conclusie": "Als je na één date besluit, oordeel je op Fase 1 data over een Fase 3 vraag."
+      }
+    },
+
+    {
+      "id": "slow-burn",
+      "type": "concept",
+      "titel": "De 'Slow Burn' Connectie",
+      "content": {
+        "wat": "Aantrekking die groeit over tijd, niet instant is",
+        "kenmerken": [
+          "Eerste date: 'Leuk, maar geen vlinders'",
+          "Tweede date: 'Hmm, interessanter dan ik dacht'",
+          "Derde date: 'Oké, hier is iets'",
+          "Daarna: 'Hoe heb ik dit bijna gemist?'"
+        ],
+        "waarom_vaak_beter": [
+          "Gebaseerd op wie iemand IS, niet hoe spannend het voelt",
+          "Groeit in plaats van afneemt",
+          "Minder kans op 'toxic attraction'",
+          "Vaak duurzamere relaties"
+        ],
+        "beroemde_voorbeelden": "Vraag getrouwde stellen hoe hun eerste date was. Vaak: 'Het was leuk, maar niet spectaculair. We gaven het nog een kans.'",
+        "probleem": "In de swipe-cultuur geven we niemand meer die kans."
+      }
+    },
+
+    {
+      "id": "drie-dates-regel",
+      "type": "regel",
+      "titel": "De 3-Dates Regel",
+      "content": {
+        "regel": "Geef iemand minimaal 3 dates voordat je een definitief oordeel velt.",
+        "waarom_drie": [
+          "Date 1: Iedereen is nerveus. Je ziet een gecureerde versie.",
+          "Date 2: Minder spanning. Meer echte persoonlijkheid.",
+          "Date 3: Je ziet patronen. Je voelt of er iets groeit."
+        ],
+        "uitzonderingen": [
+          "Red flags (respect, veiligheid) - dan meteen stoppen",
+          "Absoluut geen fysieke aantrekkingskracht - dat verandert zelden",
+          "Fundamentele waarden-clash"
+        ],
+        "niet_van_toepassing": "Bij duidelijke deal-breakers of onveilig gedrag. Altijd je grenzen respecteren."
+      }
+    },
+
+    {
+      "id": "nervositeit",
+      "type": "insight",
+      "titel": "Het Nervositeit Probleem",
+      "content": {
+        "probleem": "Nerveuze mensen komen anders over dan ze zijn",
+        "effecten": [
+          "Praten te veel of te weinig",
+          "Maken slechte grappen",
+          "Zijn stijf of onnatuurlijk",
+          "Vergeten vragen te stellen",
+          "Zijn te eager of juist afstandelijk"
+        ],
+        "vraag": "Hoeveel potentieel goede matches heb je afgewezen omdat zij - of jij - nerveus waren?",
+        "oplossing": "Een tweede date in een andere setting kan een compleet ander beeld geven."
+      }
+    }
+  ],
+
+  "quiz": {
+    "id": "quiz-1-2",
+    "vragen": [
+      {
+        "vraag": "Wat is het verschil tussen chemie en compatibiliteit?",
+        "opties": [
+          "Het is hetzelfde",
+          "Chemie is fysiek/spanning, compatibiliteit is waarden/doelen",
+          "Compatibiliteit is belangrijker dan chemie",
+          "Chemie kun je niet leren"
+        ],
+        "correct": 1,
+        "feedback": "Chemie is de vonk, compatibiliteit is de fundering. Je hebt beiden nodig, maar compatibiliteit is belangrijker voor lange termijn."
+      },
+      {
+        "vraag": "Waarom is de 3-dates regel nuttig?",
+        "opties": [
+          "Drie is een magisch getal",
+          "Het geeft iemand de kans om voorbij nervositeit te komen en hun echte zelf te tonen",
+          "Na 3 dates weet je alles",
+          "Het is een harde regel die altijd geldt"
+        ],
+        "correct": 1,
+        "feedback": "Precies. Nervositeit en eerste-indruk-effecten verdwijnen vaak na de eerste date. Date 2 en 3 tonen de echte persoon."
+      },
+      {
+        "vraag": "Wanneer moet je de 3-dates regel NIET volgen?",
+        "opties": [
+          "Als je geen vlinders voelt",
+          "Als de gesprekken moeilijk zijn",
+          "Bij red flags, onveiligheid of fundamentele waarden-conflicten",
+          "Als vrienden zeggen dat het niks is"
+        ],
+        "correct": 2,
+        "feedback": "Bij veiligheids-issues of echte red flags moet je altijd je grenzen respecteren. De regel is voor 'geen instant klik', niet voor 'iets voelt verkeerd'."
+      }
+    ]
+  },
+
+  "reflectie": {
+    "vraag": "Denk aan een date die je niet hebt voortgezet omdat er 'geen klik' was. Was er een echte reden (red flag, fundamentele mismatch) of oordeelde je te snel?",
+    "ai_coach_context": "Help de gebruiker om te reflecteren zonder oordeel. Het doel is bewustzijn creëren, niet schuldgevoel."
+  },
+
+  "opdracht": {
+    "titel": "Je 'Klik' Criteria Herzien",
+    "stappen": [
+      "Schrijf op wat je tot nu toe als 'geen klik' beschouwde",
+      "Onderscheid: was het een echte red flag of gewoon geen instant chemie?",
+      "Maak een regel voor jezelf: onder welke omstandigheden geef je iemand 3 dates?",
+      "Bedenk: welk type persoon mis je misschien door te snelle oordelen?"
+    ]
+  },
+
+  "volgende": {
+    "les": "les-1-3",
+    "titel": "Jouw Dating Energie",
+    "teaser": "Hoe je date zonder burned out te raken."
+  }
+}

@@ -26,6 +26,44 @@ export function GroeiDoelenModule({ onTabChange, userId }: GroeiDoelenModuleProp
 
   const subModules = [
     {
+      id: "ai-coach-dashboard",
+      label: "🤖 AI RELATIONSHIP COACH DASHBOARD",
+      icon: Star,
+      description: "Integrated insights engine met cross-tool analyse en personalized coaching plannen",
+      component: <div className="p-6 text-center">
+        <h3 className="text-xl font-bold mb-4">AI Relationship Coach Dashboard</h3>
+        <p className="text-muted-foreground mb-6">
+          Geïntegreerde inzichten uit al je tools met personalized coaching plannen en progress tracking.
+        </p>
+        <Button
+          onClick={() => window.location.href = '/ai-relationship-coach'}
+          className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700"
+        >
+          Start Integrated Coaching
+        </Button>
+      </div>,
+      badge: "AI-PRO"
+    },
+    {
+      id: "premium-coaching",
+      label: "👑 PREMIUM COACHING & PROGRESS DASHBOARD",
+      icon: Trophy,
+      description: "Complete user progress tracking, success metrics en VIP coaching integration",
+      component: <div className="p-6 text-center">
+        <h3 className="text-xl font-bold mb-4">Premium Coaching Dashboard</h3>
+        <p className="text-muted-foreground mb-6">
+          Advanced analytics, personalized coaching plannen en success tracking voor elite results.
+        </p>
+        <Button
+          onClick={() => window.location.href = '/premium-coaching'}
+          className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
+        >
+          Start Premium Coaching
+        </Button>
+      </div>,
+      badge: "VIP"
+    },
+    {
       id: "doelen",
       label: "Doelen",
       icon: Target,

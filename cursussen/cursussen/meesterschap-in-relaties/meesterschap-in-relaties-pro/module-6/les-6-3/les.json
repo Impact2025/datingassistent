@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "id": "les-6-3",
+    "module": 6,
+    "volgorde": 3,
+    "titel": "Live Q&A Sessie 1",
+    "subtitel": "Relatie-DNA en Patronen (Module 1-3)",
+    "duur_minuten": 60,
+    "kernvraag": "Wat zijn je vragen over Module 1-3?",
+    "leerdoelen": [
+      "Begrijpen wat live q&a sessie 1 betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Relatie-DNA en Patronen (Module 1-3). De kernvraag die we beantwoorden: Wat zijn je vragen over Module 1-3?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Wat zijn je vragen over Module 1-3?",
+        "context": "Neem even de tijd om na te denken over live q&a sessie 1 in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Live Q&A Sessie 1",
+      "content": {
+        "intro": "Relatie-DNA en Patronen (Module 1-3)",
+        "items": [
+          {
+            "naam": "Live sessie",
+            "desc": "60 minuten Q&A met coach"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je live q&a sessie 1 begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe live q&a sessie 1 zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-6-3",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Live Q&A Sessie 1?",
+        "opties": [
+          "60 minuten Q&A met coach",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-6-3",
+    "vraag": "Hoe herken je live q&a sessie 1 in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Live Q&A Sessie 1. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Live Q&A Sessie 1 toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over live q&a sessie 1 in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me live q&a sessie 1 toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

@@ -281,13 +281,14 @@ export function getSecurityConfig(): SecurityHeadersConfig {
   const isProduction = process.env.NODE_ENV === 'production';
 
   if (!isProduction) {
-    // Relaxed config for development
+    // Relaxed config for development - CSP disabled to prevent dev errors
+    console.log('🔧 Security Middleware loaded in DEVELOPMENT mode');
+    console.log('⚠️  Some security features may be relaxed for development');
     return {
       ...DEFAULT_SECURITY_CONFIG,
       csp: {
         ...DEFAULT_SECURITY_CONFIG.csp,
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'localhost:*', '127.0.0.1:*'],
-        connectSrc: ["'self'", 'localhost:*', '127.0.0.1:*', 'ws:', 'wss:']
+        enabled: false // Disable CSP in development to prevent false errors
       },
       hsts: {
         ...DEFAULT_SECURITY_CONFIG.hsts,
@@ -356,25 +357,31 @@ export function applyAdminSecurityHeaders(response: NextResponse): NextResponse 
  */
 export async function handleCSPViolation(request: NextRequest): Promise<NextResponse> {
   try {
-    const violation = await request.json();
+    // CSP reports come in a specific format with a 'csp-report' wrapper
+    const body = await request.json();
+    const violation = body['csp-report'] || body;
 
-    console.warn('CSP Violation:', {
-      documentUri: violation['document-uri'],
-      violatedDirective: violation['violated-directive'],
-      originalPolicy: violation['original-policy'],
-      blockedUri: violation['blocked-uri'],
-      sourceFile: violation['source-file'],
-      lineNumber: violation['line-number'],
-      columnNumber: violation['column-number'],
-      timestamp: new Date().toISOString()
-    });
+    // Only log if we have actual violation data (not all undefined)
+    if (violation['document-uri'] || violation['violated-directive'] || violation['blocked-uri']) {
+      console.warn('CSP Violation:', {
+        documentUri: violation['document-uri'],
+        violatedDirective: violation['violated-directive'],
+        originalPolicy: violation['original-policy'],
+        blockedUri: violation['blocked-uri'],
+        sourceFile: violation['source-file'],
+        lineNumber: violation['line-number'],
+        columnNumber: violation['column-number'],
+        timestamp: new Date().toISOString()
+      });
 
-    // In production, you might want to log this to a monitoring service
-    // await logSecurityEvent('csp_violation', 'medium', null, request.ip, request.headers.get('user-agent'), violation);
+      // In production, you might want to log this to a monitoring service
+      // await logSecurityEvent('csp_violation', 'medium', null, request.ip, request.headers.get('user-agent'), violation);
+    }
 
     return NextResponse.json({ received: true });
   } catch (error) {
-    console.error('CSP violation handling error:', error);
-    return NextResponse.json({ error: 'Failed to process CSP violation' }, { status: 500 });
+    // Silently handle errors in CSP reporting to avoid recursion
+    // CSP violations shouldn't cause more errors
+    return NextResponse.json({ received: true }, { status: 200 });
   }
 }

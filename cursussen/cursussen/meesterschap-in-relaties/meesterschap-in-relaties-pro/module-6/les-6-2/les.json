@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "id": "les-6-2",
+    "module": 6,
+    "volgorde": 2,
+    "titel": "De Meesterschap Mindset",
+    "subtitel": "De 5 elementen van relatie-meesterschap",
+    "duur_minuten": 15,
+    "kernvraag": "Hoe blijf je groeien?",
+    "leerdoelen": [
+      "Begrijpen wat de meesterschap mindset betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: De 5 elementen van relatie-meesterschap. De kernvraag die we beantwoorden: Hoe blijf je groeien?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Hoe blijf je groeien?",
+        "context": "Neem even de tijd om na te denken over de meesterschap mindset in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "De Meesterschap Mindset",
+      "content": {
+        "intro": "De 5 elementen van relatie-meesterschap",
+        "items": [
+          {
+            "naam": "Ownership",
+            "desc": "Jij bent verantwoordelijk voor je relatie-succes"
+          },
+          {
+            "naam": "Bewustzijn",
+            "desc": "Patronen herkennen in het moment"
+          },
+          {
+            "naam": "Keuze",
+            "desc": "Bewust kiezen, niet reageren"
+          },
+          {
+            "naam": "Compassie",
+            "desc": "Voor jezelf en je partner"
+          },
+          {
+            "naam": "Commitment",
+            "desc": "Elke dag opnieuw kiezen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je de meesterschap mindset begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe de meesterschap mindset zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-6-2",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van De Meesterschap Mindset?",
+        "opties": [
+          "Jij bent verantwoordelijk voor je relatie-succes",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-6-2",
+    "vraag": "Hoe herken je de meesterschap mindset in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op De Meesterschap Mindset. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas De Meesterschap Mindset toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over de meesterschap mindset in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me de meesterschap mindset toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

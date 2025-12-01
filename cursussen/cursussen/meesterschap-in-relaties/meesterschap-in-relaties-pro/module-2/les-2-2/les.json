@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "id": "les-2-2",
+    "module": 2,
+    "volgorde": 2,
+    "titel": "De 5 Lagen van Compatibiliteit",
+    "subtitel": "Van waarden tot fysiek",
+    "duur_minuten": 25,
+    "kernvraag": "Op welke lagen match je écht?",
+    "leerdoelen": [
+      "Begrijpen wat de 5 lagen van compatibiliteit betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Van waarden tot fysiek. De kernvraag die we beantwoorden: Op welke lagen match je écht?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Op welke lagen match je écht?",
+        "context": "Neem even de tijd om na te denken over de 5 lagen van compatibiliteit in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "De 5 Lagen van Compatibiliteit",
+      "content": {
+        "intro": "Van waarden tot fysiek",
+        "items": [
+          {
+            "naam": "Waarden",
+            "desc": "Kernovertuigingen en levensprioriteiten"
+          },
+          {
+            "naam": "Lifestyle",
+            "desc": "Dagelijks leven, gewoontes, plannen"
+          },
+          {
+            "naam": "Emotioneel",
+            "desc": "Hoe jullie omgaan met gevoelens"
+          },
+          {
+            "naam": "Intellectueel",
+            "desc": "Gesprekken, humor, interesses"
+          },
+          {
+            "naam": "Fysiek",
+            "desc": "Aantrekkingskracht en intimiteit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je de 5 lagen van compatibiliteit begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe de 5 lagen van compatibiliteit zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-2-2",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van De 5 Lagen van Compatibiliteit?",
+        "opties": [
+          "Kernovertuigingen en levensprioriteiten",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-2-2",
+    "vraag": "Hoe herken je de 5 lagen van compatibiliteit in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op De 5 Lagen van Compatibiliteit. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas De 5 Lagen van Compatibiliteit toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over de 5 lagen van compatibiliteit in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me de 5 lagen van compatibiliteit toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

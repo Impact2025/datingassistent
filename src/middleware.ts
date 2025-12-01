@@ -9,9 +9,10 @@ import { NextRequest, NextResponse } from 'next/server';
 // EDGE-COMPATIBLE SECURITY - Re-enabled with proper Edge Runtime support
 import { securityHeadersMiddleware, applyAPISecurityHeaders, applyAdminSecurityHeaders } from '@/lib/security-headers';
 import { csrfProtectionMiddleware, getCSRFConfig } from '@/lib/csrf-edge';
-import { rateLimitMiddleware, getRateLimitConfigForPath } from '@/lib/rate-limit-edge';
+import { rateLimitMiddleware, getRateLimiterForPath } from '@/lib/security/rate-limiter';
 import { adminSecurityMiddleware } from '@/lib/admin-security';
 import { getDeviceRedirectPath } from '@/lib/device-detection-server';
+import { securityMiddleware } from '@/lib/security/security-middleware';
 
 // ============================================================================
 // CONFIGURATION
@@ -131,8 +132,8 @@ export async function middleware(request: NextRequest) {
   }
 
   // Apply rate limiting based on path
-  const rateLimitConfig = getRateLimitConfigForPath(pathname);
-  const rateLimitResponse = await rateLimitMiddleware(request, rateLimitConfig);
+  const rateLimiter = getRateLimiterForPath(pathname);
+  const rateLimitResponse = await rateLimitMiddleware(request, rateLimiter);
   if (rateLimitResponse) {
     return rateLimitResponse;
   }

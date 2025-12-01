@@ -90,6 +90,25 @@ export function DatenRelatiesModule({ onTabChange }: DatenRelatiesModuleProps) {
 
   const subModules = [
     {
+      id: "levensvisie",
+      label: "🧭 Levensvisie & Toekomstkompas PRO",
+      icon: Target,
+      description: "Ontdek jullie toekomst compatibility en levensdoelen alignment",
+      component: <div className="p-6 text-center">
+        <h3 className="text-xl font-bold mb-4">Levensvisie & Toekomstkompas PRO</h3>
+        <p className="text-muted-foreground mb-6">
+          Wetenschappelijke analyse van jullie toekomst compatibility en gedeelde levensvisie.
+        </p>
+        <Button
+          onClick={() => window.location.href = '/levensvisie'}
+          className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
+        >
+          Start Toekomst Analyse
+        </Button>
+      </div>,
+      badge: "AI-PRO"
+    },
+    {
       id: "date-planner",
       label: "Date Planner",
       icon: CalendarHeart,
@@ -458,7 +477,29 @@ export function DatenRelatiesModule({ onTabChange }: DatenRelatiesModuleProps) {
       label: "Mijn Dating Week",
       icon: Calendar,
       description: "Wekelijkse check-in met AI insights",
-      component: <DatingWeekLogger onComplete={(data) => console.log('Weekly log completed:', data)} onCancel={() => setActiveSubTab('date-planner')} />,
+      component: <DatingWeekLogger onComplete={async (data) => {
+        try {
+          const response = await fetch('/api/dating-log/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            console.log('Weekly log saved:', result);
+            // Show success message or redirect
+            setActiveSubTab('date-planner');
+          } else {
+            console.error('Failed to save weekly log');
+          }
+        } catch (error) {
+          console.error('Error saving weekly log:', error);
+        }
+      }} onCancel={() => setActiveSubTab('date-planner')} />,
       badge: "PRO"
     },
     {

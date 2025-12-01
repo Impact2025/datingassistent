@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-1-2",
+    "module": 1,
+    "volgorde": 2,
+    "titel": "Jouw Relatiegeschiedenis Decoderen",
+    "subtitel": "Herken de rode draad in je relaties",
+    "duur_minuten": 20,
+    "kernvraag": "Welk patroon herhaal je steeds opnieuw?",
+    "leerdoelen": [
+      "Begrijpen wat jouw relatiegeschiedenis decoderen betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Herken de rode draad in je relaties. De kernvraag die we beantwoorden: Welk patroon herhaal je steeds opnieuw?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Welk patroon herhaal je steeds opnieuw?",
+        "context": "Neem even de tijd om na te denken over jouw relatiegeschiedenis decoderen in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Jouw Relatiegeschiedenis Decoderen",
+      "content": {
+        "intro": "Herken de rode draad in je relaties",
+        "items": [
+          {
+            "naam": "Reparatie-patroon",
+            "desc": "Steeds hetzelfde type kiezen, andere uitkomst hopen"
+          },
+          {
+            "naam": "Vermijdings-patroon",
+            "desc": "Tegenovergestelde kiezen, maar onvervuld blijven"
+          },
+          {
+            "naam": "Exit-patroon",
+            "desc": "Relatie saboteren voordat het te diep wordt"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je jouw relatiegeschiedenis decoderen begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe jouw relatiegeschiedenis decoderen zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-1-2",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Jouw Relatiegeschiedenis Decoderen?",
+        "opties": [
+          "Steeds hetzelfde type kiezen, andere uitkomst hopen",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-1-2",
+    "vraag": "Hoe herken je jouw relatiegeschiedenis decoderen in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Jouw Relatiegeschiedenis Decoderen. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Jouw Relatiegeschiedenis Decoderen toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over jouw relatiegeschiedenis decoderen in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me jouw relatiegeschiedenis decoderen toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

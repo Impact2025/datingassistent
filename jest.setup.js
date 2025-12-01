@@ -11,7 +11,6 @@ jest.mock('next/navigation', () => ({
       forward: jest.fn(),
       refresh: jest.fn(),
       pathname: '/',
-      query: {},
     }
   },
   useSearchParams() {
@@ -23,39 +22,53 @@ jest.mock('next/navigation', () => ({
 }))
 
 // Mock environment variables
-process.env.NEXT_PUBLIC_BASE_URL = 'http://localhost:3000'
-process.env.JWT_SECRET = 'test-jwt-secret'
-process.env.NEXT_PUBLIC_GA4_PROPERTY_ID = 'G-TEST123'
+process.env.NEXT_PUBLIC_API_URL = 'http://localhost:3000'
+process.env.NEXTAUTH_SECRET = 'test-secret'
+process.env.NEXTAUTH_URL = 'http://localhost:3000'
 
-// Global test utilities
+// Mock localStorage
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+}
+global.localStorage = localStorageMock
+
+// Mock fetch
 global.fetch = jest.fn()
 
-// Mock console methods to reduce noise in tests
-const originalConsoleError = console.error
-const originalConsoleWarn = console.warn
-
-beforeAll(() => {
-  console.error = jest.fn()
-  console.warn = jest.fn()
-})
-
-afterAll(() => {
-  console.error = originalConsoleError
-  console.warn = originalConsoleWarn
-})
-
-// Mock database for tests
-jest.mock('@vercel/postgres', () => ({
-  sql: jest.fn(() => Promise.resolve({ rows: [] })),
+// Mock ResizeObserver
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
 }))
 
-// Mock Sentry
-jest.mock('@sentry/nextjs', () => ({
-  init: jest.fn(),
-  captureException: jest.fn(),
-  captureMessage: jest.fn(),
-  withSentryConfig: jest.fn((config) => config),
+// Mock IntersectionObserver
+global.IntersectionObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
 }))
+
+// Mock matchMedia
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // deprecated
+    removeListener: jest.fn(), // deprecated
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+})
+
+// Mock canvas
+HTMLCanvasElement.prototype.getContext = jest.fn()
 
 // Clean up after each test
 afterEach(() => {

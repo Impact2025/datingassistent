@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-2-1",
+    "module": 2,
+    "volgorde": 1,
+    "titel": "Voorbij de Chemie",
+    "subtitel": "Waarom vlinders niet genoeg zijn",
+    "duur_minuten": 20,
+    "kernvraag": "Is je aantrekkingspatroon gezond?",
+    "leerdoelen": [
+      "Begrijpen wat voorbij de chemie betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Waarom vlinders niet genoeg zijn. De kernvraag die we beantwoorden: Is je aantrekkingspatroon gezond?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Is je aantrekkingspatroon gezond?",
+        "context": "Neem even de tijd om na te denken over voorbij de chemie in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Voorbij de Chemie",
+      "content": {
+        "intro": "Waarom vlinders niet genoeg zijn",
+        "items": [
+          {
+            "naam": "Chemie ≠ Compatibiliteit",
+            "desc": "Vlinders kunnen wijzen op trauma-herkenning"
+          },
+          {
+            "naam": "Bekende pijn",
+            "desc": "We voelen ons aangetrokken tot wat we kennen"
+          },
+          {
+            "naam": "Gezonde aantrekking",
+            "desc": "Groeit langzaam, voelt rustiger"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je voorbij de chemie begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe voorbij de chemie zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-2-1",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Voorbij de Chemie?",
+        "opties": [
+          "Vlinders kunnen wijzen op trauma-herkenning",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-2-1",
+    "vraag": "Hoe herken je voorbij de chemie in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Voorbij de Chemie. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Voorbij de Chemie toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over voorbij de chemie in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me voorbij de chemie toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

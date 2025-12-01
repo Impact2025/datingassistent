@@ -1,0 +1,9 @@
+{
+  "meta": {"id": "les-6-2", "module": 6, "titel": "Patronen Doorbreken", "subtitel": "Waarom je steeds hetzelfde aantrekt", "duur_minuten": 20},
+  "secties": [
+    {"id": "herkenning", "type": "reflectie", "titel": "Herken Je Dit?", "content": {"patronen": ["Je valt steeds op hetzelfde type", "Je relaties eindigen om dezelfde reden", "Je trekt 'emotioneel onbeschikbare' mensen aan", "Je saboteert goede dingen"]}},
+    {"id": "hechtingsstijlen", "type": "theorie", "titel": "Hechtingsstijlen Basis", "content": {"intro": "Je vroege ervaringen beïnvloeden hoe je relateert", "stijlen": [{"naam": "Veilig", "kenmerken": "Comfortabel met intimiteit en autonomie", "in_dating": "Kan connecten zonder wanhopig of afstandelijk te zijn"}, {"naam": "Angstig", "kenmerken": "Zoekt bevestiging, bang voor afwijzing", "in_dating": "Kan te eager zijn, leest te veel in signalen"}, {"naam": "Vermijdend", "kenmerken": "Houdt afstand, oncomfortabel met te veel intimiteit", "in_dating": "Trekt zich terug als het serieus wordt"}], "belangrijk": "Dit is geen diagnose, maar bewustzijn helpt"}},
+    {"id": "doorbreken", "type": "actie", "titel": "Het Patroon Doorbreken", "content": {"stappen": ["Herken je patroon (eerlijk naar jezelf)", "Begrijp waar het vandaan komt (geen schuld, wel inzicht)", "Kies bewust anders (geef 'niet je type' een kans)", "Zoek hulp als nodig (coaching, therapie)"]}}
+  ],
+  "reflectie": {"vraag": "Wat is jouw dating patroon? Wat zou je willen veranderen?"}
+}

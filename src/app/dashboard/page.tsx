@@ -45,12 +45,26 @@ import { SettingsTab } from '@/components/dashboard/settings-tab';
 import { useJourneyState } from '@/hooks/use-journey-state';
 import { OnboardingFlow } from '@/components/dashboard/onboarding-flow';
 
+// NIEUWE 4-TAB NAVIGATIE SYSTEEM (Masterplan)
+import { MainNavNew } from '@/components/layout/main-nav-new';
+import { HomeTab } from '@/components/dashboard/home-tab';
+import { SmartHomeTab } from '@/components/dashboard/smart-home-tab';
+import { PadTab } from '@/components/dashboard/pad-tab';
+import { EnhancedPadTab } from '@/components/dashboard/enhanced-pad-tab';
+import { ProfielTab } from '@/components/dashboard/profiel-tab-new';
+import { CoachTab } from '@/components/dashboard/coach-tab';
+import { IrisInsightsPanel } from '@/components/iris/iris-insights-panel';
+
 export default function DashboardPage() {
   const { user, userProfile, loading } = useUser();
 
   const isLoading = loading;
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('dashboard');
+
+  // Feature flag: gebruik nieuwe 4-tab navigatie (Masterplan)
+  const [useNewNav, setUseNewNav] = useState(true); // Zet op true voor nieuwe navigatie
+
+  const [activeTab, setActiveTab] = useState(useNewNav ? 'home' : 'dashboard');
   const [checkinModalOpen, setCheckinModalOpen] = useState(false);
   const [journeyDay, setJourneyDay] = useState(1);
   const [datingWeekNotificationOpen, setDatingWeekNotificationOpen] = useState(false);
@@ -184,6 +198,14 @@ export default function DashboardPage() {
       router.push('/select-package');
       // Reset to dashboard after navigation
       setActiveTab('dashboard');
+    } else if (activeTab === 'hechtingsstijl-redirect') {
+      router.push('/hechtingsstijl');
+      // Reset to dashboard after navigation
+      setActiveTab('dashboard');
+    } else if (activeTab === 'datingstijl') {
+      router.push('/datingstijl');
+      // Reset to dashboard after navigation
+      setActiveTab('dashboard');
     }
 
     // REDIRECT LEGACY DUPLICATE TABS TO CONSOLIDATED MODULES
@@ -198,7 +220,8 @@ export default function DashboardPage() {
       'foto-advies': 'profiel-persoonlijkheid',
       'gesprek-starter': 'communicatie-matching',
       'chat-coach': 'communicatie-matching',
-      'recommendations': 'leren-ontwikkelen'
+      'recommendations': 'leren-ontwikkelen',
+      'hechtingsstijl': 'hechtingsstijl-redirect'
     };
 
     if (redirectMap[activeTab]) {
@@ -245,7 +268,20 @@ export default function DashboardPage() {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      // NIEUWE 5-MODULE STRUCTUUR
+      // NIEUWE 4-TAB NAVIGATIE (Masterplan)
+      case 'home':
+        return <SmartHomeTab onTabChange={setActiveTab} userId={user?.id} />;
+
+      case 'pad':
+        return <EnhancedPadTab onTabChange={setActiveTab} userId={user?.id} />;
+
+      case 'coach':
+        return <CoachTab onTabChange={setActiveTab} userId={user?.id} />;
+
+      case 'profiel':
+        return <ProfielTab onTabChange={setActiveTab} />;
+
+      // NIEUWE 5-MODULE STRUCTUUR (legacy support)
       case 'profiel-persoonlijkheid':
         return <ProfileSuite onTabChange={setActiveTab} />;
 
@@ -385,7 +421,11 @@ export default function DashboardPage() {
 
               <main className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20">
               {/* Hide navigation during onboarding */}
-              {!showOnboarding && <MainNav activeTab={activeTab} onTabChange={setActiveTab} />}
+              {!showOnboarding && (
+                useNewNav
+                  ? <MainNavNew activeTab={activeTab} onTabChange={setActiveTab} />
+                  : <MainNav activeTab={activeTab} onTabChange={setActiveTab} />
+              )}
               <div className="mt-6">
                 {/* Show onboarding content if needed */}
                 {showOnboarding && (
@@ -435,6 +475,15 @@ export default function DashboardPage() {
               </footer>
             </div>
           </div>
+
+          {/* Iris Insights Panel - Floating assistant */}
+          {useNewNav && !showOnboarding && (
+            <IrisInsightsPanel
+              currentTab={activeTab}
+              userId={user?.id}
+              onTabChange={setActiveTab}
+            />
+          )}
         </div>
       )}
     </DeviceGuard>

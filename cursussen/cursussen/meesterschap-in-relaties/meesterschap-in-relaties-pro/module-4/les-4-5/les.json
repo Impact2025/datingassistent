@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "id": "les-4-5",
+    "module": 4,
+    "volgorde": 5,
+    "titel": "Wanneer Het Niet Werkt",
+    "subtitel": "Blijven vs. Gaan - het eerlijke gesprek",
+    "duur_minuten": 20,
+    "kernvraag": "Weet je wanneer je moet stoppen?",
+    "leerdoelen": [
+      "Begrijpen wat wanneer het niet werkt betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Blijven vs. Gaan - het eerlijke gesprek. De kernvraag die we beantwoorden: Weet je wanneer je moet stoppen?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Weet je wanneer je moet stoppen?",
+        "context": "Neem even de tijd om na te denken over wanneer het niet werkt in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Wanneer Het Niet Werkt",
+      "content": {
+        "intro": "Blijven vs. Gaan - het eerlijke gesprek",
+        "items": [
+          {
+            "naam": "Vraag 1",
+            "desc": "Wil ik dit écht of ben ik bang om alleen te zijn?"
+          },
+          {
+            "naam": "Vraag 2",
+            "desc": "Zijn de problemen oplosbaar?"
+          },
+          {
+            "naam": "Vraag 3",
+            "desc": "Groei ik in deze relatie?"
+          },
+          {
+            "naam": "Vraag 4",
+            "desc": "Respecteer ik deze persoon nog?"
+          },
+          {
+            "naam": "Vraag 5",
+            "desc": "Zou ik dit aanraden aan mijn beste vriend?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je wanneer het niet werkt begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe wanneer het niet werkt zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-4-5",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Wanneer Het Niet Werkt?",
+        "opties": [
+          "Wil ik dit écht of ben ik bang om alleen te zijn?",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-4-5",
+    "vraag": "Hoe herken je wanneer het niet werkt in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Wanneer Het Niet Werkt. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Wanneer Het Niet Werkt toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over wanneer het niet werkt in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me wanneer het niet werkt toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

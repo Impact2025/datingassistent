@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "id": "les-6-1",
+    "module": 6,
+    "volgorde": 1,
+    "titel": "Jouw Relatie Blauwdruk",
+    "subtitel": "Alles samen in één document",
+    "duur_minuten": 20,
+    "kernvraag": "Wat is jouw complete relatieplan?",
+    "leerdoelen": [
+      "Begrijpen wat jouw relatie blauwdruk betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Alles samen in één document. De kernvraag die we beantwoorden: Wat is jouw complete relatieplan?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Wat is jouw complete relatieplan?",
+        "context": "Neem even de tijd om na te denken over jouw relatie blauwdruk in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Jouw Relatie Blauwdruk",
+      "content": {
+        "intro": "Alles samen in één document",
+        "items": [
+          {
+            "naam": "Deel 1: Relatie-DNA",
+            "desc": "Hechtingsstijl, patronen, triggers"
+          },
+          {
+            "naam": "Deel 2: Partner Criteria",
+            "desc": "Must-haves, dealbreakers"
+          },
+          {
+            "naam": "Deel 3: Communicatie",
+            "desc": "Je NVC-scripts, reparatie-toolkit"
+          },
+          {
+            "naam": "Deel 4: Transitie",
+            "desc": "DTR-plan, tempo-afspraken"
+          },
+          {
+            "naam": "Deel 5: Onderhoud",
+            "desc": "Dagelijkse 5, rituelen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je jouw relatie blauwdruk begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe jouw relatie blauwdruk zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-6-1",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Jouw Relatie Blauwdruk?",
+        "opties": [
+          "Hechtingsstijl, patronen, triggers",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-6-1",
+    "vraag": "Hoe herken je jouw relatie blauwdruk in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Jouw Relatie Blauwdruk. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Jouw Relatie Blauwdruk toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over jouw relatie blauwdruk in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me jouw relatie blauwdruk toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

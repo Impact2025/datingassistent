@@ -37,6 +37,30 @@ export default function OnboardingPage() {
   const [isInitializing, setIsInitializing] = useState(true);
   const [authManager] = useState(() => new AuthManager());
 
+  // Helper function to save journey state to localStorage
+  const saveJourneyStateToStorage = (state: JourneyState) => {
+    if (user?.id) {
+      try {
+        localStorage.setItem(`onboarding_journey_${user.id}`, JSON.stringify({
+          ...state,
+          lastSaved: Date.now()
+        }));
+        console.log('💾 DEBUG: Journey state saved to localStorage');
+      } catch (error) {
+        console.error('❌ DEBUG: Failed to save journey state to localStorage:', error);
+      }
+    }
+  };
+
+  // Custom setJourneyState that also saves to localStorage
+  const setJourneyStateWithStorage = (newState: JourneyState | ((prev: JourneyState) => JourneyState)) => {
+    setJourneyState(prevState => {
+      const updatedState = typeof newState === 'function' ? newState(prevState) : newState;
+      saveJourneyStateToStorage(updatedState);
+      return updatedState;
+    });
+  };
+
   // Initialize journey on mount
   useEffect(() => {
     const initializeJourney = async () => {
@@ -53,34 +77,61 @@ export default function OnboardingPage() {
         return;
       }
 
+      console.log('🔍 DEBUG: Checking user profile completeness...');
+      const hasProfile = userProfile && userProfile.name && userProfile.age;
+      console.log('🔍 DEBUG: User profile check - hasProfile:', hasProfile, 'userProfile:', userProfile);
+
+      // Check for saved journey state in localStorage as backup
+      const savedJourneyState = localStorage.getItem(`onboarding_journey_${user.id}`);
+      if (savedJourneyState) {
+        try {
+          const parsedState = JSON.parse(savedJourneyState);
+          console.log('💾 DEBUG: Found saved journey state in localStorage:', parsedState);
+          // Use saved state if it's more recent than API state
+          setJourneyState(parsedState);
+          return;
+        } catch (error) {
+          console.error('❌ DEBUG: Failed to parse saved journey state:', error);
+          localStorage.removeItem(`onboarding_journey_${user.id}`);
+        }
+      }
+
       try {
         // Check if user has profile
         const hasProfile = userProfile && userProfile.name && userProfile.age;
+        console.log('🔍 DEBUG: Profile check result - hasProfile:', hasProfile);
 
         // Check if user has already completed journey
+        console.log('🔍 DEBUG: Fetching journey status from API...');
         const response = await fetch(`/api/journey/status?userId=${user.id}`);
+        console.log('🔍 DEBUG: Journey status API response:', response.status, response.ok);
 
         if (response.ok) {
           const data = await response.json();
+          console.log('🔍 DEBUG: Journey status data:', data);
 
           // If journey is complete, redirect to dashboard
           if (data.status === 'completed') {
+            console.log('✅ DEBUG: Journey already completed, redirecting to dashboard');
             router.push('/dashboard');
             return;
           }
 
           // Resume from current step, but check if profile is needed first
           const currentStep = !hasProfile ? 'profile' : (data.currentStep || 'welcome');
-          setJourneyState({
+          console.log('🔍 DEBUG: Resuming journey - currentStep:', currentStep, 'hasProfile:', hasProfile);
+          setJourneyStateWithStorage({
             currentStep,
             completedSteps: data.completedSteps || [],
             scanData: data.scanData,
             coachAdvice: data.coachAdvice,
           });
         } else {
+          console.log('⚠️ DEBUG: Journey status API failed, starting fresh journey');
           // Start fresh journey - check if profile is needed
           const currentStep = !hasProfile ? 'profile' : 'welcome';
-          setJourneyState({
+          console.log('🔍 DEBUG: Starting fresh journey - currentStep:', currentStep);
+          setJourneyStateWithStorage({
             currentStep,
             completedSteps: [],
           });
@@ -88,7 +139,7 @@ export default function OnboardingPage() {
       } catch (error) {
         console.error('Failed to initialize journey:', error);
         // Default to welcome screen on error
-        setJourneyState({
+        setJourneyStateWithStorage({
           currentStep: 'welcome',
           completedSteps: [],
         });
@@ -108,7 +159,7 @@ export default function OnboardingPage() {
   // Step handlers
   const handleProfileComplete = async () => {
     await saveJourneyProgress('welcome', ['profile']);
-    setJourneyState(prev => ({
+    setJourneyStateWithStorage(prev => ({
       ...prev,
       currentStep: 'welcome',
       completedSteps: [...prev.completedSteps, 'profile'],
@@ -117,7 +168,7 @@ export default function OnboardingPage() {
 
   const handleWelcomeComplete = async () => {
     await saveJourneyProgress('scan', ['profile', 'welcome']);
-    setJourneyState(prev => ({
+    setJourneyStateWithStorage(prev => ({
       ...prev,
       currentStep: 'scan',
       completedSteps: [...prev.completedSteps, 'welcome'],
@@ -125,8 +176,10 @@ export default function OnboardingPage() {
   };
 
   const handleScanComplete = async (scanData: any): Promise<void> => {
+    console.log('🎯 DEBUG: Scan completed, received scanData:', scanData);
+
     // Show loading state
-    setJourneyState(prev => ({
+    setJourneyStateWithStorage(prev => ({
       ...prev,
       currentStep: 'loading',
     }));
@@ -134,8 +187,9 @@ export default function OnboardingPage() {
     try {
       // Generate coach advice via AI with improved error handling
       const token = authManager.getToken();
-      console.log('🔐 Onboarding: Token available:', !!token, token ? token.substring(0, 20) + '...' : 'none');
+      console.log('🔐 DEBUG: Token available for coach advice:', !!token, token ? token.substring(0, 20) + '...' : 'none');
 
+      console.log('🔍 DEBUG: Sending scan data to coach API...');
       const response = await fetch('/api/coach/analyze-start', {
         method: 'POST',
         headers: {
@@ -145,7 +199,7 @@ export default function OnboardingPage() {
         body: JSON.stringify(scanData),
       });
 
-      console.log('🔐 Onboarding: API response status:', response.status);
+      console.log('🔐 DEBUG: Coach API response status:', response.status, 'ok:', response.ok);
 
       if (!response.ok) {
         // Handle different error types
@@ -159,7 +213,7 @@ export default function OnboardingPage() {
 
       // Save and move to coach advice screen
       await saveJourneyProgress('coach-advice', ['welcome', 'scan'], { scanData, coachAdvice: advice });
-      setJourneyState(prev => ({
+      setJourneyStateWithStorage(prev => ({
         ...prev,
         currentStep: 'coach-advice',
         completedSteps: [...prev.completedSteps, 'scan'],
@@ -167,31 +221,103 @@ export default function OnboardingPage() {
         coachAdvice: advice,
       }));
     } catch (error) {
-      console.error('Failed to generate coach advice:', error);
+      console.error('❌ DEBUG: Failed to generate coach advice:', error);
 
       // Use enhanced error messaging
       const errorMessage = getAuthErrorMessage(error as Error);
+      console.log('🔍 DEBUG: Error message from auth manager:', errorMessage);
 
-      // Show user-friendly error message
-      alert(errorMessage);
+      // Determine error type and provide appropriate fallback
+      const isAuthError = errorMessage.includes('AUTH_FALLBACK_MODE') ||
+                         errorMessage.includes('Invalid or expired token') ||
+                         errorMessage.includes('No authorization token');
 
-      // Handle fallback mode
-      if (errorMessage.includes('AUTH_FALLBACK_MODE')) {
+      const isNetworkError = errorMessage.includes('Failed to fetch') ||
+                            errorMessage.includes('Network') ||
+                            errorMessage.includes('timeout');
+
+      if (isAuthError) {
+        console.log('🔐 DEBUG: Auth error detected, providing fallback coach advice');
         // Allow user to continue with limited functionality
-        setJourneyState(prev => ({
+        setJourneyStateWithStorage(prev => ({
           ...prev,
           currentStep: 'coach-advice',
+          completedSteps: [...prev.completedSteps, 'scan'],
           coachAdvice: {
             tools: { tool1: { name: 'Chat Coach' }, tool2: { name: 'Profiel Coach' } },
-            summary: 'Je kunt beperkt gebruik maken van de app. Log opnieuw in voor volledige functionaliteit.',
-            fallback: true
+            summary: 'Welkom! Ik help je graag met dating advies. Log opnieuw in voor persoonlijke AI-analyses.',
+            fallback: true,
+            greeting: 'Hoi! Ik ben je Dating Coach 👋',
+            analysis: {
+              currentState: 'Je bent net begonnen met je dating journey',
+              mainChallenge: 'Aanmelden en kennismaken met de app',
+              biggestOpportunity: 'Direct starten met praktische dating tips'
+            },
+            recommendations: {
+              step1: { title: 'Maak je profiel compleet', description: 'Voeg foto\'s en info toe voor betere matches' },
+              step2: { title: 'Probeer de chat coach', description: 'Stel vragen over dating onderwerpen' },
+              step3: { title: 'Bekijk je dashboard', description: 'Ontdek alle beschikbare tools' }
+            }
           },
         }));
+      } else if (isNetworkError) {
+        console.log('🌐 DEBUG: Network error detected, offering retry option');
+        // Show retry option for network errors
+        const retry = confirm('Netwerkfout bij het genereren van advies. Wil je het opnieuw proberen?\n\nKlik OK om opnieuw te proberen, Cancel om door te gaan zonder advies.');
+        if (retry) {
+          setJourneyStateWithStorage(prev => ({
+            ...prev,
+            currentStep: 'scan', // Go back to scan for retry
+          }));
+          return;
+        } else {
+          // Continue with basic advice
+          setJourneyStateWithStorage(prev => ({
+            ...prev,
+            currentStep: 'coach-advice',
+            completedSteps: [...prev.completedSteps, 'scan'],
+            coachAdvice: {
+              tools: { tool1: { name: 'Chat Coach' }, tool2: { name: 'Profiel Coach' } },
+              summary: 'Welkom bij DatingAssistent! Ontdek alle tools in je dashboard.',
+              fallback: true,
+              greeting: 'Welkom bij je dating journey! 🎯',
+              analysis: {
+                currentState: 'Nieuwe gebruiker',
+                mainChallenge: 'Kennismaken met dating',
+                biggestOpportunity: 'Leren van ervaringen van anderen'
+              },
+              recommendations: {
+                step1: { title: 'Verken je dashboard', description: 'Bekijk alle beschikbare functies' },
+                step2: { title: 'Stel vragen', description: 'Gebruik de chat coach voor advies' },
+                step3: { title: 'Bouw je profiel op', description: 'Maak kans op betere matches' }
+              }
+            },
+          }));
+        }
       } else {
-        // Reset to scan step for retry
-        setJourneyState(prev => ({
+        console.log('❓ DEBUG: Unknown error type, providing generic fallback');
+        // Generic fallback for unknown errors
+        alert('Er ging iets mis bij het genereren van je persoonlijke advies. Je kunt wel doorgaan met de app!');
+        setJourneyStateWithStorage(prev => ({
           ...prev,
-          currentStep: 'scan',
+          currentStep: 'coach-advice',
+          completedSteps: [...prev.completedSteps, 'scan'],
+          coachAdvice: {
+            tools: { tool1: { name: 'Chat Coach' }, tool2: { name: 'Profiel Coach' } },
+            summary: 'Welkom! Gebruik de beschikbare tools om je dating skills te verbeteren.',
+            fallback: true,
+            greeting: 'Hoi! Laten we beginnen! 🚀',
+            analysis: {
+              currentState: 'Start van je dating avontuur',
+              mainChallenge: 'Nieuwe dingen leren',
+              biggestOpportunity: 'Groeien en betere matches vinden'
+            },
+            recommendations: {
+              step1: { title: 'Chat coach uitproberen', description: 'Stel je eerste dating vraag' },
+              step2: { title: 'Profiel optimaliseren', description: 'Maak je profiel aantrekkelijker' },
+              step3: { title: 'Matches analyseren', description: 'Leer van je ervaringen' }
+            }
+          },
         }));
       }
     }
@@ -201,7 +327,7 @@ export default function OnboardingPage() {
     // Transition to welcome video instead of completing journey
     console.log('🎯 Coach advice completed, transitioning to welcome video');
     await saveJourneyProgress('welcome-video', ['profile', 'welcome', 'scan', 'coach-advice']);
-    setJourneyState(prev => ({
+    setJourneyStateWithStorage(prev => ({
       ...prev,
       currentStep: 'welcome-video',
       completedSteps: [...prev.completedSteps, 'coach-advice'],
@@ -210,7 +336,7 @@ export default function OnboardingPage() {
 
   const handleWelcomeVideoComplete = async () => {
     await saveJourneyProgress('welcome-questions', ['profile', 'welcome', 'scan', 'coach-advice', 'welcome-video']);
-    setJourneyState(prev => ({
+    setJourneyStateWithStorage(prev => ({
       ...prev,
       currentStep: 'welcome-questions',
       completedSteps: [...prev.completedSteps, 'welcome-video'],

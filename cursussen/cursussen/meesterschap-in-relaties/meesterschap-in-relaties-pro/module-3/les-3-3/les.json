@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "id": "les-3-3",
+    "module": 3,
+    "volgorde": 3,
+    "titel": "Conflict als Connectie-Moment",
+    "subtitel": "De 4 Ruiters vermijden",
+    "duur_minuten": 25,
+    "kernvraag": "Hoe ga je om met conflict?",
+    "leerdoelen": [
+      "Begrijpen wat conflict als connectie-moment betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: De 4 Ruiters vermijden. De kernvraag die we beantwoorden: Hoe ga je om met conflict?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Hoe ga je om met conflict?",
+        "context": "Neem even de tijd om na te denken over conflict als connectie-moment in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Conflict als Connectie-Moment",
+      "content": {
+        "intro": "De 4 Ruiters vermijden",
+        "items": [
+          {
+            "naam": "Kritiek → Klacht",
+            "desc": "Van 'jij bent...' naar 'ik voel...'"
+          },
+          {
+            "naam": "Minachting → Waardering",
+            "desc": "Respect behouden, ook in conflict"
+          },
+          {
+            "naam": "Verdediging → Verantwoordelijkheid",
+            "desc": "Eigen aandeel erkennen"
+          },
+          {
+            "naam": "Stonewalling → Zelfregulatie",
+            "desc": "Pauze nemen, niet afsluiten"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je conflict als connectie-moment begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe conflict als connectie-moment zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-3-3",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Conflict als Connectie-Moment?",
+        "opties": [
+          "Van 'jij bent...' naar 'ik voel...'",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-3-3",
+    "vraag": "Hoe herken je conflict als connectie-moment in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Conflict als Connectie-Moment. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Conflict als Connectie-Moment toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over conflict als connectie-moment in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me conflict als connectie-moment toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

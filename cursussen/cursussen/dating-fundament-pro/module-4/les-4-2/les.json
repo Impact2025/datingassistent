@@ -1,0 +1,10 @@
+{
+  "meta": {"id": "les-4-2", "module": 4, "titel": "Gesprek Gaande Houden", "subtitel": "Van oppervlakkig naar interessant", "duur_minuten": 20},
+  "secties": [
+    {"id": "probleem", "type": "insight", "titel": "Waarom Gesprekken Doodlopen", "content": {"redenen": ["Te veel vragen = interview", "Te weinig vragen = monoloog", "Alleen feiten uitwisselen = saai", "Te snel te diep = awkward"]}},
+    {"id": "balans", "type": "framework", "titel": "De Vraag-Statement Balans", "content": {"regel": "Voor elke vraag die je stelt, deel ook iets over jezelf", "voorbeeld": {"slecht": "Waar werk je? Wat voor werk? Leuk? Hoe lang al?", "goed": "Ik werk in marketing, soms chaotisch maar nooit saai. Jij?"}}},
+    {"id": "diepgang", "type": "techniek", "titel": "Van Oppervlakkig naar Interessant", "content": {"levels": [{"level": 1, "type": "Feiten", "voorbeeld": "Wat doe je voor werk?"}, {"level": 2, "type": "Mening", "voorbeeld": "Wat vind je het leukste aan je werk?"}, {"level": 3, "type": "Gevoel", "voorbeeld": "Hoe voelde het toen je die promotie kreeg?"}], "tip": "Ga geleidelijk dieper, niet in één keer"}},
+    {"id": "threading", "type": "skill", "titel": "Conversation Threading", "content": {"wat": "Pak één element uit hun antwoord en bouw daarop verder", "voorbeeld": {"zij": "Ik was vorige week in Barcelona", "slecht": "Leuk! Waar ga je nog meer heen?", "goed": "Barcelona! Ik was daar 2 jaar geleden. Heb je die kleine tapasbar in de Gothic Quarter gevonden?"}}}
+  ],
+  "opdracht": {"titel": "Gesprek Analyse", "stappen": ["Neem een recent gesprek dat doodliep", "Analyseer: waar ging het mis?", "Herschrijf 3 berichten met de geleerde technieken"]}
+}

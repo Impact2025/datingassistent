@@ -1,0 +1,278 @@
+{
+  "id": "profielfoto-les-2",
+  "cursusId": "profielfoto-5-stappen",
+  "titel": "De Psychologie van een Goede Lach",
+  "slug": "glimlach",
+  "subtitel": "Waarom sommige foto's gewoon werken",
+  "volgorde": 2,
+  "duur": "7 minuten",
+  
+  "video": {
+    "url": "",
+    "thumbnail": "/cursussen/profielfoto/les-2/thumbnail.jpg",
+    "duur": "2:50",
+    "script": "script.md"
+  },
+  
+  "secties": [
+    {
+      "id": "les2-video",
+      "type": "video",
+      "titel": "Bekijk de les",
+      "inhoud": {
+        "introTekst": "Ontdek waarom sommige glimlachen onweerstaanbaar zijn - en hoe je die van jou kunt activeren."
+      }
+    },
+    
+    {
+      "id": "les2-samenvatting",
+      "type": "tekst",
+      "titel": "📝 Samenvatting",
+      "inhoud": {
+        "body": "Niet alle glimlachen zijn gelijk. In 1862 ontdekte de Franse neuroloog Guillaume Duchenne dat er twee soorten zijn:\n\n**De sociale glimlach**: Je mond gaat omhoog, maar je ogen doen niet mee. Dit is de glimlach die je gebruikt als je collega een slechte grap maakt.\n\n**De Duchenne glimlach**: De échte. Je mondhoeken én de kleine spiertjes rond je ogen trekken samen. Je krijgt kraaienpootjes. Je ogen worden kleiner, maar warmer.\n\nHet verschil? Mensen voelen dit onbewust - in milliseconden.",
+        "format": "markdown"
+      }
+    },
+    
+    {
+      "id": "les2-kernpunten",
+      "type": "kernpunten",
+      "titel": "🎯 Wat een Echte Glimlach Communiceert",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "🌡️",
+            "titel": "Warmte",
+            "beschrijving": "Je zegt eigenlijk: 'Ik ben vriendelijk. Ik bijt niet.' In een wereld vol vreemden op dating apps is dat enorm belangrijk."
+          },
+          {
+            "icon": "✨",
+            "titel": "Authenticiteit",
+            "beschrijving": "Een echte lach is moeilijk te faken. Als iemand een échte glimlach ziet, denken ze onbewust: 'Deze persoon is echt. Betrouwbaar.'"
+          },
+          {
+            "icon": "⚡",
+            "titel": "Positieve Energie",
+            "beschrijving": "Emoties zijn besmettelijk. Als jij gelukkig lijkt, voelen zij zich ook beter bij het bekijken van je profiel."
+          }
+        ]
+      }
+    },
+    
+    {
+      "id": "les2-tips",
+      "type": "kernpunten",
+      "titel": "💡 Hoe Krijg Je Die Glimlach op de Foto?",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "😂",
+            "titel": "Tip 1: Denk aan iets grappigs",
+            "beschrijving": "Letterlijk. Denk aan die keer dat je vriend iets stoms deed. Of die meme die je niet uit je hoofd krijgt. Die gedachte activeert de juiste spieren - automatisch."
+          },
+          {
+            "icon": "📸",
+            "titel": "Tip 2: Lach nét voor de foto",
+            "beschrijving": "Vraag degene die de foto maakt om je aan het lachen te maken. Grap, rare beweging, whatever. En klik precies op dat moment. Spontaniteit wint altijd van poseren."
+          },
+          {
+            "icon": "🔢",
+            "titel": "Tip 3: Neem 50+ foto's",
+            "beschrijving": "Ja, echt. De beste profielfoto's komen uit grote aantallen. In die 50 foto's zitten 2-3 waar alles klopt: je ogen, je mond, de energie. Die kies je."
+          }
+        ]
+      }
+    },
+    
+    {
+      "id": "les2-quiz",
+      "type": "quiz",
+      "titel": "🧠 Test je kennis",
+      "inhoud": {
+        "introTekst": "Even checken of je het verschil begrijpt.",
+        "vragen": [
+          {
+            "id": "q1",
+            "vraag": "Wat is het verschil tussen een sociale glimlach en een Duchenne glimlach?",
+            "type": "multiple-choice",
+            "opties": [
+              {
+                "id": "q1a",
+                "tekst": "Een Duchenne glimlach toont meer tanden",
+                "correct": false
+              },
+              {
+                "id": "q1b", 
+                "tekst": "Bij een Duchenne glimlach doen je ogen mee (kraaienpootjes)",
+                "correct": true
+              },
+              {
+                "id": "q1c",
+                "tekst": "Een sociale glimlach is breder",
+                "correct": false
+              },
+              {
+                "id": "q1d",
+                "tekst": "Er is geen echt verschil",
+                "correct": false
+              }
+            ],
+            "uitleg": {
+              "correct": "Precies! Bij een Duchenne glimlach trekken de spiertjes rond je ogen samen, waardoor je kraaienpootjes krijgt. Dit is wat mensen als 'echt' en 'warm' ervaren.",
+              "incorrect": "Het gaat om de ogen! Bij een échte (Duchenne) glimlach doen je ogen mee - je krijgt kraaienpootjes en je ogen worden kleiner maar warmer."
+            }
+          },
+          {
+            "id": "q2",
+            "vraag": "Waarom werkt 'denk aan iets grappigs' beter dan 'zeg cheese'?",
+            "type": "multiple-choice",
+            "opties": [
+              {
+                "id": "q2a",
+                "tekst": "Het activeert automatisch de juiste gezichtsspieren",
+                "correct": true
+              },
+              {
+                "id": "q2b",
+                "tekst": "Omdat 'cheese' in het Nederlands raar klinkt",
+                "correct": false
+              },
+              {
+                "id": "q2c",
+                "tekst": "Het maakt de foto scherper",
+                "correct": false
+              },
+              {
+                "id": "q2d",
+                "tekst": "Het zorgt voor betere belichting",
+                "correct": false
+              }
+            ],
+            "uitleg": {
+              "correct": "Juist! Een echte emotie activeert automatisch alle juiste spieren - inclusief die rond je ogen. Poseren voor de camera doet dat niet.",
+              "incorrect": "Het gaat om de spieren! Een echte grappige gedachte activeert automatisch alle gezichtsspieren die nodig zijn voor een authentieke glimlach."
+            }
+          },
+          {
+            "id": "q3",
+            "vraag": "Hoeveel foto's zou je idealiter maken om 2-3 goede te krijgen?",
+            "type": "multiple-choice",
+            "opties": [
+              {
+                "id": "q3a",
+                "tekst": "5-10 foto's",
+                "correct": false
+              },
+              {
+                "id": "q3b",
+                "tekst": "15-20 foto's",
+                "correct": false
+              },
+              {
+                "id": "q3c",
+                "tekst": "50+ foto's",
+                "correct": true
+              },
+              {
+                "id": "q3d",
+                "tekst": "1 foto is genoeg als je goed poseert",
+                "correct": false
+              }
+            ],
+            "uitleg": {
+              "correct": "Exact! Professionals maken honderden foto's voor die ene perfecte shot. Met 50+ foto's vergroot je de kans enorm dat er 2-3 echt goede tussen zitten.",
+              "incorrect": "Meer is beter! Met slechts een paar foto's is de kans klein dat je die perfecte combinatie van glimlach, belichting en expressie vangt. Ga voor 50+."
+            }
+          }
+        ],
+        "succesMessage": "Top! Je begrijpt nu de psychologie achter een goede glimlach. In les 3 leer je de technische kant: belichting, achtergrond en compositie.",
+        "minimumScore": 2
+      }
+    },
+    
+    {
+      "id": "les2-reflectie",
+      "type": "reflectie",
+      "titel": "🪞 Zelfkennis Moment",
+      "inhoud": {
+        "introTekst": "Even reflecteren op je eigen glimlach.",
+        "vragen": [
+          {
+            "id": "r1",
+            "vraag": "Wanneer lach jij écht? Beschrijf een moment of situatie waarin je spontaan en oprecht moet lachen.",
+            "placeholder": "Bijvoorbeeld: als mijn beste vriend die ene grap maakt, of als ik met mijn hond speel...",
+            "minLengte": 30
+          },
+          {
+            "id": "r2",
+            "vraag": "Kijk naar je huidige profielfoto's. Zie je een échte glimlach (kraaienpootjes) of een 'pose-glimlach'?",
+            "placeholder": "Beschrijf wat je ziet...",
+            "minLengte": 20
+          }
+        ],
+        "aiAnalyse": true
+      }
+    },
+    
+    {
+      "id": "les2-opdracht",
+      "type": "opdracht",
+      "titel": "📋 Praktijkopdracht",
+      "inhoud": {
+        "beschrijving": "Maak deze week nieuwe foto's met een échte glimlach.",
+        "stappen": [
+          "Vraag een vriend/vriendin om foto's van je te maken",
+          "Laat diegene je aan het lachen maken (grap, herinnering, grappige video)",
+          "Maak minstens 50 foto's in 10-15 minuten",
+          "Selecteer de 3 beste waar je ogen écht meedoen",
+          "Upload je favoriete naar de AI Foto Checker"
+        ],
+        "tijdsduur": "15-20 minuten",
+        "benodigdheden": [
+          "Smartphone met camera",
+          "Een vriend/vriendin die foto's maakt",
+          "Een locatie met goed licht (bij raam of buiten)"
+        ],
+        "uploadMogelijk": true
+      }
+    },
+    
+    {
+      "id": "les2-tool",
+      "type": "tool",
+      "titel": "📸 AI Foto Checker",
+      "inhoud": {
+        "toolId": "foto-checker",
+        "introTekst": "Benieuwd hoe je glimlach overkomt? De AI analyseert ook je gezichtsuitdrukking.",
+        "ctaTekst": "Laat je glimlach analyseren →"
+      }
+    }
+  ],
+  
+  "aiCoach": {
+    "actief": true,
+    "context": "De gebruiker heeft net geleerd over de Duchenne glimlach versus sociale glimlach, en hoe warmte, authenticiteit en positieve energie worden gecommuniceerd. Ze kennen nu de tips: denk aan iets grappigs, lach net voor de foto, maak 50+ foto's. Help ze om dit toe te passen. Focus op het activeren van echte emoties, niet op 'beter poseren'.",
+    "suggesties": [
+      "Hoe weet ik of mijn glimlach 'echt' is op een foto?",
+      "Ik vind het lastig om natuurlijk te lachen voor een camera",
+      "Moet ik op elke foto lachen?",
+      "Wat als ik niet van mijn lach houd?"
+    ],
+    "triggerMomenten": [
+      {
+        "trigger": "quiz_completed",
+        "bericht": "Je snapt de theorie! Nu komt het echte werk: ga die foto's maken. Onthoud: 50+ foto's, denk aan iets grappigs, en kies de beste. 📸"
+      },
+      {
+        "trigger": "reflection_submitted",
+        "bericht": "Mooi dat je hebt nagedacht over wanneer je écht lacht. Gebruik die situaties of herinneringen bij je volgende fotosessie!"
+      }
+    ]
+  },
+  
+  "volgendeStap": {
+    "type": "les",
+    "id": "profielfoto-les-3",
+    "tekst": "Klaar voor de laatste les? Leer de technische kant: belichting, achtergrond en compositie."
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "id": "les-1-3",
+    "module": 1,
+    "volgorde": 3,
+    "titel": "Schema's - De Onzichtbare Scripts",
+    "subtitel": "De diepe overtuigingen die je relaties sturen",
+    "duur_minuten": 25,
+    "kernvraag": "Welke overtuiging saboteert je relaties?",
+    "leerdoelen": [
+      "Begrijpen wat schema's - de onzichtbare scripts betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: De diepe overtuigingen die je relaties sturen. De kernvraag die we beantwoorden: Welke overtuiging saboteert je relaties?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Welke overtuiging saboteert je relaties?",
+        "context": "Neem even de tijd om na te denken over schema's - de onzichtbare scripts in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Schema's - De Onzichtbare Scripts",
+      "content": {
+        "intro": "De diepe overtuigingen die je relaties sturen",
+        "items": [
+          {
+            "naam": "Verlating",
+            "desc": "Mensen gaan uiteindelijk weg"
+          },
+          {
+            "naam": "Wantrouwen",
+            "desc": "Mensen zullen me pijn doen"
+          },
+          {
+            "naam": "Emotionele Verwaarlozing",
+            "desc": "Mijn behoeften worden niet gezien"
+          },
+          {
+            "naam": "Tekortschieten",
+            "desc": "Er is iets fundamenteel mis met mij"
+          },
+          {
+            "naam": "Mislukking",
+            "desc": "Ik ben gedoemd te falen in relaties"
+          },
+          {
+            "naam": "Onderwerping",
+            "desc": "Mijn behoeften zijn minder belangrijk"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je schema's - de onzichtbare scripts begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe schema's - de onzichtbare scripts zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-1-3",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Schema's - De Onzichtbare Scripts?",
+        "opties": [
+          "Mensen gaan uiteindelijk weg",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-1-3",
+    "vraag": "Hoe herken je schema's - de onzichtbare scripts in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Schema's - De Onzichtbare Scripts. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Schema's - De Onzichtbare Scripts toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over schema's - de onzichtbare scripts in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me schema's - de onzichtbare scripts toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-4-2",
+    "module": 4,
+    "volgorde": 2,
+    "titel": "Tempo & Timing",
+    "subtitel": "Te snel vs. te langzaam",
+    "duur_minuten": 20,
+    "kernvraag": "Gaat jullie relatie in een gezond tempo?",
+    "leerdoelen": [
+      "Begrijpen wat tempo & timing betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Te snel vs. te langzaam. De kernvraag die we beantwoorden: Gaat jullie relatie in een gezond tempo?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Gaat jullie relatie in een gezond tempo?",
+        "context": "Neem even de tijd om na te denken over tempo & timing in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Tempo & Timing",
+      "content": {
+        "intro": "Te snel vs. te langzaam",
+        "items": [
+          {
+            "naam": "Te snel",
+            "desc": "Love bombing, direct samenwonen"
+          },
+          {
+            "naam": "Gezond",
+            "desc": "Geleidelijke opbouw van intimiteit"
+          },
+          {
+            "naam": "Te langzaam",
+            "desc": "Commitment vermijden, in limbo blijven"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je tempo & timing begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe tempo & timing zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-4-2",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Tempo & Timing?",
+        "opties": [
+          "Love bombing, direct samenwonen",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-4-2",
+    "vraag": "Hoe herken je tempo & timing in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Tempo & Timing. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Tempo & Timing toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over tempo & timing in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me tempo & timing toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

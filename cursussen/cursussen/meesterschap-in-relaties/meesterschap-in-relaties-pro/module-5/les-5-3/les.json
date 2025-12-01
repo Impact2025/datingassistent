@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-5-3",
+    "module": 5,
+    "volgorde": 3,
+    "titel": "De 5:1 Ratio",
+    "subtitel": "Het magische getal voor relatie-succes",
+    "duur_minuten": 20,
+    "kernvraag": "Hoe is jouw positief/negatief balans?",
+    "leerdoelen": [
+      "Begrijpen wat de 5:1 ratio betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Het magische getal voor relatie-succes. De kernvraag die we beantwoorden: Hoe is jouw positief/negatief balans?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Hoe is jouw positief/negatief balans?",
+        "context": "Neem even de tijd om na te denken over de 5:1 ratio in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "De 5:1 Ratio",
+      "content": {
+        "intro": "Het magische getal voor relatie-succes",
+        "items": [
+          {
+            "naam": "De wetenschap",
+            "desc": "5 positieve interacties per 1 negatieve"
+          },
+          {
+            "naam": "Positief",
+            "desc": "Compliment, aanraking, interesse, humor, steun"
+          },
+          {
+            "naam": "Je dagelijkse 5",
+            "desc": "Plan bewust 5 positieve momenten"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je de 5:1 ratio begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe de 5:1 ratio zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-5-3",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van De 5:1 Ratio?",
+        "opties": [
+          "5 positieve interacties per 1 negatieve",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-5-3",
+    "vraag": "Hoe herken je de 5:1 ratio in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op De 5:1 Ratio. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas De 5:1 Ratio toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over de 5:1 ratio in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me de 5:1 ratio toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

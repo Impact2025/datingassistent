@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-4-1",
+    "module": 4,
+    "volgorde": 1,
+    "titel": "De DTR (Define The Relationship)",
+    "subtitel": "Wanneer en hoe het gesprek voeren",
+    "duur_minuten": 25,
+    "kernvraag": "Ben je klaar om te definiëren wat je hebt?",
+    "leerdoelen": [
+      "Begrijpen wat de dtr (define the relationship) betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Wanneer en hoe het gesprek voeren. De kernvraag die we beantwoorden: Ben je klaar om te definiëren wat je hebt?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Ben je klaar om te definiëren wat je hebt?",
+        "context": "Neem even de tijd om na te denken over de dtr (define the relationship) in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "De DTR (Define The Relationship)",
+      "content": {
+        "intro": "Wanneer en hoe het gesprek voeren",
+        "items": [
+          {
+            "naam": "Timing",
+            "desc": "Na 6-10 dates of 2-3 maanden"
+          },
+          {
+            "naam": "Setting",
+            "desc": "Rustig, privé, niet na seks"
+          },
+          {
+            "naam": "Aanpak",
+            "desc": "Deel je gevoelens, vraag de zijne"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je de dtr (define the relationship) begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe de dtr (define the relationship) zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-4-1",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van De DTR (Define The Relationship)?",
+        "opties": [
+          "Na 6-10 dates of 2-3 maanden",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-4-1",
+    "vraag": "Hoe herken je de dtr (define the relationship) in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op De DTR (Define The Relationship). Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas De DTR (Define The Relationship) toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over de dtr (define the relationship) in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me de dtr (define the relationship) toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

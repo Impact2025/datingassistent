@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
+
+const sql = neon(process.env.DATABASE_URL!);
 
 export async function POST(request: Request) {
   try {
@@ -23,7 +25,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { activities, activityDetails, weekStart, weekEnd } = await request.json();
+    const { activities, activityDetails, weekStart, weekEnd, irisInsight } = await request.json();
 
     if (!activities || !Array.isArray(activities) || activities.length === 0) {
       return NextResponse.json(
@@ -47,6 +49,9 @@ export async function POST(request: Request) {
       averageMatchQuality = matchQualities.reduce((sum: number, rating: number) => sum + rating, 0) / matchQualities.length;
     }
 
+    // Calculate ghosting count
+    const totalGhosting = activities.filter((a: string) => a === 'ghosting').length;
+
     // Save to database
     const result = await sql`
       INSERT INTO weekly_dating_logs (
@@ -54,27 +59,39 @@ export async function POST(request: Request) {
         week_start,
         week_end,
         activities,
+        activity_details,
         total_matches,
         total_conversations,
         total_dates,
-        average_match_quality
+        total_ghosting,
+        average_match_quality,
+        iris_insight,
+        iris_insight_generated_at
       ) VALUES (
         ${user.id},
         ${weekStart},
         ${weekEnd},
         ${JSON.stringify(activities)},
+        ${JSON.stringify(activityDetails || {})},
         ${totalMatches},
         ${totalConversations},
         ${totalDates},
-        ${averageMatchQuality}
+        ${totalGhosting},
+        ${averageMatchQuality},
+        ${irisInsight || null},
+        ${irisInsight ? new Date().toISOString() : null}
       )
       ON CONFLICT (user_id, week_start)
       DO UPDATE SET
         activities = EXCLUDED.activities,
+        activity_details = EXCLUDED.activity_details,
         total_matches = EXCLUDED.total_matches,
         total_conversations = EXCLUDED.total_conversations,
         total_dates = EXCLUDED.total_dates,
+        total_ghosting = EXCLUDED.total_ghosting,
         average_match_quality = EXCLUDED.average_match_quality,
+        iris_insight = EXCLUDED.iris_insight,
+        iris_insight_generated_at = EXCLUDED.iris_insight_generated_at,
         updated_at = NOW()
       RETURNING id
     `;
@@ -127,7 +144,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      logId: result.rows[0].id,
+      logId: result[0]?.id,
       message: 'Weekly log saved successfully'
     });
 

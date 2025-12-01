@@ -146,10 +146,17 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
     },
     {
       icon: Brain,
-      title: "Profiel Optimalisatie",
-      description: "AI analyse",
-      action: "profiel-optimalisatie",
+      title: "Hechtingsstijl Test",
+      description: "Ontdek je relatiepatronen",
+      action: "hechtingsstijl",
       color: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: Sparkles,
+      title: "Dating Stijl Scan",
+      description: "Stijl & blinde vlekken",
+      action: "datingstijl",
+      color: "from-pink-500 to-rose-500"
     },
     {
       icon: BookOpen,

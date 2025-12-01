@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "id": "les-1-4",
+    "module": 1,
+    "volgorde": 4,
+    "titel": "Standaarden vs. Perfectie",
+    "subtitel": "De balans die werkt",
+    "duur_minuten": 18,
+    "kernvraag": "Wat is negotiable en wat niet?",
+    "leerdoelen": [
+      "Het verschil begrijpen tussen gezonde standaarden en perfectie",
+      "Je niet-onderhandelbaren definiëren",
+      "Loskomen van onrealistische verwachtingen"
+    ]
+  },
+
+  "secties": [
+    {
+      "id": "twee-extremen",
+      "type": "contrast",
+      "titel": "De Twee Valkuilen",
+      "content": {
+        "intro": "Beide extremen saboteren je dating leven:",
+        "links": {
+          "label": "Te Hoge Standaarden",
+          "kenmerken": [
+            "Minimaal 1.85m",
+            "Moet exact dezelfde hobby's hebben",
+            "Moet perfect passen vanaf dag 1",
+            "Geen enkel gebrek acceptabel"
+          ],
+          "resultaat": "Niemand is ooit goed genoeg",
+          "oorzaak": "Vaak: angst voor intimiteit, bescherming tegen teleurstelling"
+        },
+        "rechts": {
+          "label": "Te Lage Standaarden",
+          "kenmerken": [
+            "Als ie maar aardig is",
+            "Ik neem wel wat ik kan krijgen",
+            "Misschien verandert ie wel",
+            "Red flags? Ik geef wel een kans"
+          ],
+          "resultaat": "Verkeerde relaties, pijn, tijdverspilling",
+          "oorzaak": "Vaak: angst om alleen te zijn, laag zelfbeeld"
+        }
+      }
+    },
+
+    {
+      "id": "gezonde-standaarden",
+      "type": "framework",
+      "titel": "Wat Zijn Gezonde Standaarden?",
+      "content": {
+        "definitie": "Grenzen gebaseerd op waarden en welzijn, niet op checklists.",
+        "niet_onderhandelbaar": {
+          "label": "Niet-Onderhandelbaar",
+          "focus": "Karakter en waarden",
+          "voorbeelden": [
+            "Behandelt me met respect",
+            "Is eerlijk en betrouwbaar",
+            "Kan communiceren over problemen",
+            "Deelt dezelfde relatiedoelen",
+            "Neemt verantwoordelijkheid voor eigen leven"
+          ]
+        },
+        "flexibel": {
+          "label": "Flexibel",
+          "focus": "Uiterlijk en details",
+          "voorbeelden": [
+            "Specifieke lengte",
+            "Exact dezelfde hobby's",
+            "Bepaald beroep of inkomen",
+            "100% overlap in interesses",
+            "Perfecte communicatie vanaf dag 1"
+          ]
+        },
+        "vraag": "Is dit iets wat ik NODIG heb, of iets wat ik WENS?"
+      }
+    },
+
+    {
+      "id": "onrealistische-verwachtingen",
+      "type": "myth-bust",
+      "titel": "5 Onrealistische Verwachtingen",
+      "content": {
+        "verwachtingen": [
+          {
+            "mythe": "De vonk moet er meteen zijn",
+            "realiteit": "Aantrekking groeit vaak. Geef het 3 dates."
+          },
+          {
+            "mythe": "We moeten alles gemeenschappelijk hebben",
+            "realiteit": "Complementaire verschillen maken relaties interessant."
+          },
+          {
+            "mythe": "Het moet moeiteloos gaan",
+            "realiteit": "Elke relatie vraagt werk. Makkelijk ≠ goed."
+          },
+          {
+            "mythe": "Mijn partner moet mij compleet maken",
+            "realiteit": "Jij bent al compleet. Een partner is een bonus."
+          },
+          {
+            "mythe": "Er is maar één 'de ware'",
+            "realiteit": "Er zijn duizenden mensen waarmee je gelukkig kunt zijn."
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "realiteit-cijfers",
+      "type": "data",
+      "titel": "De Realiteit van Dating in Cijfers",
+      "content": {
+        "funnel": [
+          {"fase": "100 matches", "conversie": "→"},
+          {"fase": "5-10 gesprekken", "conversie": "→"},
+          {"fase": "1-2 dates", "conversie": "→"},
+          {"fase": "Misschien 1 tweede date", "conversie": ""}
+        ],
+        "boodschap": "Dit is normaal. Het is een numbers game. Elk 'nee' brengt je dichter bij een 'ja'.",
+        "perspectief": "Die ene persoon waarmee je gelukkig wordt? Die hoef je maar één keer te vinden."
+      }
+    },
+
+    {
+      "id": "proces-vs-resultaat",
+      "type": "mindset",
+      "titel": "Focus op het Proces, Niet het Resultaat",
+      "content": {
+        "vergelijking": [
+          {
+            "type": "Resultaat Focus",
+            "gedachten": [
+              "Ik moet dit jaar een relatie hebben",
+              "Deze date moet lukken",
+              "Ik moet de ware vinden"
+            ],
+            "gevolg": "Druk, wanhoop, slechte keuzes"
+          },
+          {
+            "type": "Proces Focus",
+            "gedachten": [
+              "Ik ga elke week 1 date plannen",
+              "Ik ga beter leren communiceren",
+              "Ik ga mijn grenzen bewaken"
+            ],
+            "gevolg": "Groei, vertrouwen, betere matches"
+          }
+        ],
+        "kernboodschap": "Je kunt het resultaat niet controleren. Je kunt wel controleren hoe je date."
+      }
+    },
+
+    {
+      "id": "lange-termijn",
+      "type": "perspectief",
+      "titel": "Het Lange Termijn Perspectief",
+      "content": {
+        "vraag": "Als je 80 wordt en terugkijkt...",
+        "vragen": [
+          "Maakt het dan uit of je op je 28e of 32e je partner ontmoette?",
+          "Of dat je 50 of 150 dates hebt gehad?",
+          "Of dat het 6 maanden of 3 jaar duurde?"
+        ],
+        "antwoord": "Het enige dat telt is dat je de juiste persoon vindt. Timing is bijzaak.",
+        "conclusie": "Haal de druk eraf. Je hebt alle tijd."
+      }
+    }
+  ],
+
+  "quiz": {
+    "vragen": [
+      {
+        "vraag": "Wat is het verschil tussen gezonde standaarden en perfectionisme?",
+        "opties": [
+          "Er is geen verschil",
+          "Gezonde standaarden focussen op waarden, perfectionisme op checklists",
+          "Perfectionisme is beter",
+          "Gezonde standaarden zijn lager"
+        ],
+        "correct": 1,
+        "feedback": "Gezonde standaarden beschermen je welzijn (eerlijkheid, respect). Perfectionisme zoekt het onvindbare (perfecte lengte, perfecte timing, perfecte klik)."
+      }
+    ]
+  },
+
+  "reflectie": {
+    "vraag": "Schrijf je 3 niet-onderhandelbare waarden op (karakter, niet uiterlijk). En schrijf 3 dingen op waar je misschien te streng in bent.",
+    "ai_coach_context": "Help onderscheiden tussen beschermende grenzen en beperkende eisen. Als iemand alleen uiterlijke zaken noemt, vraag door naar waarden."
+  },
+
+  "opdracht": {
+    "titel": "Mijn Verwachtingen Audit",
+    "stappen": [
+      "Lijst 5 dingen die je zoekt in een partner",
+      "Per punt: is dit een NOODZAAK of een WENS?",
+      "Welke onrealistische verwachting laat je los?",
+      "Formuleer een proces-doel voor de komende maand"
+    ]
+  },
+
+  "module_afsluiting": {
+    "samenvatting": [
+      "Les 1.1: Weet wat je zoekt en waarom",
+      "Les 1.2: Geef mensen genoeg kans",
+      "Les 1.3: Date sustainable, niet uitputtend",
+      "Les 1.4: Heb standaarden, geen perfectie"
+    ],
+    "volgende_module": {
+      "id": "module-2",
+      "titel": "Je Profiel",
+      "teaser": "Nu we het fundament hebben, gaan we bouwen. Je digitale eerste indruk perfectioneren."
+    }
+  }
+}

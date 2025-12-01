@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-4-4",
+    "module": 4,
+    "volgorde": 4,
+    "titel": "De Eerste 90 Dagen als Stel",
+    "subtitel": "Het fundament leggen dat blijft",
+    "duur_minuten": 25,
+    "kernvraag": "Welke gewoontes bouw je nu?",
+    "leerdoelen": [
+      "Begrijpen wat de eerste 90 dagen als stel betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Het fundament leggen dat blijft. De kernvraag die we beantwoorden: Welke gewoontes bouw je nu?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Welke gewoontes bouw je nu?",
+        "context": "Neem even de tijd om na te denken over de eerste 90 dagen als stel in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "De Eerste 90 Dagen als Stel",
+      "content": {
+        "intro": "Het fundament leggen dat blijft",
+        "items": [
+          {
+            "naam": "Maand 1: Honeymoon",
+            "desc": "Genieten maar realistisch blijven"
+          },
+          {
+            "naam": "Maand 2: Eerste conflict",
+            "desc": "Hoe jullie hiermee omgaan bepaalt alles"
+          },
+          {
+            "naam": "Maand 3: Patronen",
+            "desc": "Nu leggen jullie de basis voor later"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je de eerste 90 dagen als stel begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe de eerste 90 dagen als stel zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-4-4",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van De Eerste 90 Dagen als Stel?",
+        "opties": [
+          "Genieten maar realistisch blijven",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-4-4",
+    "vraag": "Hoe herken je de eerste 90 dagen als stel in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op De Eerste 90 Dagen als Stel. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas De Eerste 90 Dagen als Stel toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over de eerste 90 dagen als stel in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me de eerste 90 dagen als stel toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

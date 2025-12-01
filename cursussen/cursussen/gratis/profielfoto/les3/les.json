@@ -1,0 +1,233 @@
+{
+  "id": "les3-techniek",
+  "cursusId": "profielfoto-5-stappen",
+  "titel": "De Technische Checklist",
+  "volgorde": 3,
+  "duur": "8 min",
+  
+  "video": {
+    "url": "",
+    "duur": "3:15",
+    "thumbnail": "/images/lessen/les3-thumb.jpg"
+  },
+  
+  "secties": [
+    {
+      "id": "video",
+      "type": "video",
+      "titel": "Bekijk de les",
+      "inhoud": {
+        "introTekst": "De technische basis: belichting, achtergrond en compositie."
+      }
+    },
+    {
+      "id": "samenvatting",
+      "type": "tekst",
+      "titel": "Samenvatting",
+      "inhoud": {
+        "body": "Een goede foto rust op 3 pijlers: belichting (licht op je gezicht), achtergrond (simpel en rustig), en compositie (hoe je in beeld staat). Beheers deze basics en je foto's verbeteren direct."
+      }
+    },
+    {
+      "id": "pijler1",
+      "type": "kernpunten",
+      "titel": "Pijler 1: Belichting",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "sun",
+            "titel": "Gouden regel",
+            "beschrijving": "Je gezicht NAAR het licht toe. Niet je rug naar het raam."
+          },
+          {
+            "icon": "sunrise",
+            "titel": "Gouden uur",
+            "beschrijving": "Net na zonsopkomst of voor zonsondergang. Warm, zacht licht."
+          },
+          {
+            "icon": "cloud",
+            "titel": "Bewolkt = perfect",
+            "beschrijving": "Wolken werken als een gigantische softbox. Geen harde schaduwen."
+          },
+          {
+            "icon": "x-circle",
+            "titel": "Vermijd",
+            "beschrijving": "Direct middaglicht (harde schaduwen) en TL-licht (groenige tint)."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pijler2",
+      "type": "kernpunten",
+      "titel": "Pijler 2: Achtergrond",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "check",
+            "titel": "Goed",
+            "beschrijving": "Bakstenen muur, groen gebladerte, café met warme tinten, strand, effen muur."
+          },
+          {
+            "icon": "x",
+            "titel": "Slecht",
+            "beschrijving": "Rommelige slaapkamer, volle woonkamer, toilet/badkamer, drukke straat."
+          },
+          {
+            "icon": "move",
+            "titel": "Afstand = blur",
+            "beschrijving": "Sta 2-3 meter van de achtergrond voor natuurlijke onscherpte."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pijler3",
+      "type": "kernpunten",
+      "titel": "Pijler 3: Compositie",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "grid",
+            "titel": "Rule of Thirds",
+            "beschrijving": "Zet grid aan op je telefoon. Ogen op de bovenste 1/3 lijn."
+          },
+          {
+            "icon": "eye",
+            "titel": "Kijkrichting",
+            "beschrijving": "Meer ruimte in de richting waar je kijkt. Creëert balans."
+          },
+          {
+            "icon": "smartphone",
+            "titel": "Camera hoek",
+            "beschrijving": "Ooghoogte of iets erboven. Te laag = dubbele kin, te hoog = kinderachtig."
+          },
+          {
+            "icon": "crop",
+            "titel": "Frame",
+            "beschrijving": "Van borst tot boven je hoofd. Niet te ver weg, hoofd niet afsnijden."
+          }
+        ]
+      }
+    },
+    {
+      "id": "quiz",
+      "type": "quiz",
+      "titel": "Finale Test",
+      "inhoud": {
+        "vragen": [
+          {
+            "id": "q1",
+            "vraag": "Wat is de beste weerconditie voor profielfoto's?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "a", "tekst": "Felle zonneschijn", "correct": false },
+              { "id": "b", "tekst": "Bewolkt", "correct": true },
+              { "id": "c", "tekst": "Regen", "correct": false },
+              { "id": "d", "tekst": "Maakt niet uit", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Ja! Wolken werken als natuurlijke softbox - zacht, egaal licht.",
+              "incorrect": "Bewolkt is ideaal: de wolken zorgen voor zacht, egaal licht."
+            }
+          },
+          {
+            "id": "q2",
+            "vraag": "Waar moeten je ogen zich bevinden volgens de Rule of Thirds?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "a", "tekst": "Precies in het midden", "correct": false },
+              { "id": "b", "tekst": "Op de bovenste 1/3 lijn", "correct": true },
+              { "id": "c", "tekst": "Op de onderste 1/3 lijn", "correct": false },
+              { "id": "d", "tekst": "Helemaal bovenaan", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Precies! Dit creëert een natuurlijke, professionele compositie.",
+              "incorrect": "Op de bovenste 1/3 lijn - zet het grid aan op je telefoon!"
+            }
+          },
+          {
+            "id": "q3",
+            "vraag": "Welke camera hoek werkt het beste voor de meeste mensen?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "a", "tekst": "Van onder naar boven", "correct": false },
+              { "id": "b", "tekst": "Ooghoogte of iets erboven", "correct": true },
+              { "id": "c", "tekst": "Ver van boven", "correct": false },
+              { "id": "d", "tekst": "Maakt niet uit", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Juist! Dit is de meest flatterende hoek voor de meeste gezichten.",
+              "incorrect": "Ooghoogte of iets erboven werkt het beste."
+            }
+          }
+        ],
+        "succesMessage": "Gefeliciteerd! Je hebt alle 3 de lessen afgerond! 🎉",
+        "minimumScore": 2
+      }
+    },
+    {
+      "id": "opdracht",
+      "type": "opdracht",
+      "titel": "Actieplan: Maak nieuwe foto's",
+      "inhoud": {
+        "stappen": [
+          "Kies een dag met goed weer (bewolkt of gouden uur)",
+          "Zoek een locatie met een simpele achtergrond",
+          "Vraag iemand om je te fotograferen",
+          "Zet het grid aan op je telefoon",
+          "Denk aan iets grappigs en lach echt",
+          "Maak minimaal 50 foto's",
+          "Selecteer je top 3",
+          "Upload naar de AI Foto Checker voor feedback"
+        ],
+        "tijdsduur": "30-45 minuten",
+        "benodigdheden": ["Smartphone met camera", "Vriend/vriendin", "Goede locatie"],
+        "uploadMogelijk": false
+      }
+    },
+    {
+      "id": "tool",
+      "type": "tool",
+      "titel": "Krijg volledige foto-analyse",
+      "inhoud": {
+        "toolId": "foto-checker",
+        "introTekst": "Upload je nieuwe foto's en krijg gedetailleerde feedback op alle aspecten.",
+        "ctaTekst": "Analyseer mijn foto's"
+      }
+    },
+    {
+      "id": "afsluiting",
+      "type": "tekst",
+      "titel": "Gefeliciteerd!",
+      "inhoud": {
+        "body": "Je hebt nu alle kennis om geweldige profielfoto's te maken. Het enige wat rest is: DOEN. Plan je fotosessie, pas alles toe wat je geleerd hebt, en upload je beste foto's voor feedback."
+      }
+    },
+    {
+      "id": "upsell",
+      "type": "tekst",
+      "titel": "Klaar voor de volgende stap?",
+      "inhoud": {
+        "body": "Goede foto's zijn de basis, maar er is meer nodig voor dating succes. In de Dating Fundament cursus (€47) leer je: je complete profieltekst optimaliseren, gesprekken die leiden tot dates, en de perfecte eerste date plannen."
+      }
+    }
+  ],
+  
+  "aiCoach": {
+    "actief": true,
+    "context": "Gebruiker heeft alle 3 de lessen afgerond! Ze kennen nu de 3 fouten, glimlach-psychologie, en technische basis.",
+    "suggesties": [
+      "Hoe begin ik praktisch met een fotosessie?",
+      "Welke smartphone-instellingen moet ik gebruiken?",
+      "Wat is de volgende stap na profielfoto's?"
+    ],
+    "triggerMomenten": ["cursus-voltooid"]
+  },
+  
+  "volgendeStap": {
+    "type": "cursus",
+    "id": "dating-fundament",
+    "tekst": "Verdiep je kennis met Dating Fundament (€47)"
+  }
+}

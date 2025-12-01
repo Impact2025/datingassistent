@@ -224,54 +224,57 @@ export function AiBioGenerator() {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="flex items-center gap-3 mb-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => window.history.back()}
-            className="p-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">AI Bio Generator</h1>
-            <p className="text-sm text-gray-600">Professionele bio varianten genereren</p>
+      <div className="bg-white border-b border-gray-100 px-6 py-6">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => window.history.back()}
+              className="p-2 hover:bg-gray-100"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">AI Bio Generator</h1>
+              <p className="text-sm text-gray-600">Professionele bio varianten genereren</p>
+            </div>
           </div>
-        </div>
 
-        {/* Quick Actions */}
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowTutorial(true)}
-            className="flex items-center gap-2"
-          >
-            <HelpCircle className="w-4 h-4" />
-            Handleiding
-          </Button>
-          {suggestions.length > 0 && (
-            <Badge variant="secondary" className="bg-green-100 text-green-700">
-              {suggestions.length} bio's gegenereerd
-            </Badge>
-          )}
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowTutorial(true)}
+              className="border-gray-200 hover:bg-gray-50"
+            >
+              <HelpCircle className="w-4 h-4 mr-2" />
+              Handleiding
+            </Button>
+            {suggestions.length > 0 && (
+              <Badge className="bg-pink-100 text-pink-700 border-pink-200">
+                {suggestions.length} bio's gegenereerd
+              </Badge>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="p-4 space-y-6">
+      <div className="max-w-4xl mx-auto p-6 space-y-8">
         {/* Input Section */}
         <Card className="bg-white border-0 shadow-sm rounded-xl">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-pink-500" />
+          <CardHeader className="pb-6">
+            <CardTitle className="text-xl flex items-center gap-3">
+              <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-pink-600" />
+              </div>
               Vertel ons over jezelf
             </CardTitle>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 mt-2">
               Hoe meer details je geeft, hoe beter de bio's worden
             </p>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <Textarea
               placeholder="Bijv: Ik ben een 28-jarige marketeer die van hardlopen houdt, regelmatig reist, en op zoek is naar iemand om diepe gesprekken mee te voeren en samen te lachen..."
               value={userInput}
@@ -280,9 +283,9 @@ export function AiBioGenerator() {
             />
 
             {/* Style Selection */}
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-3 block">Bio Stijl</label>
-              <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-gray-700">Bio Stijl</label>
+              <div className="grid grid-cols-2 gap-3">
                 {[
                   { value: 'fun', label: 'Leuk & Energiek', icon: '🎉' },
                   { value: 'serious', label: 'Serieus & Betrouwbaar', icon: '💼' },
@@ -292,14 +295,14 @@ export function AiBioGenerator() {
                   <button
                     key={style.value}
                     onClick={() => setSelectedStyle(style.value as any)}
-                    className={`p-3 text-left rounded-lg border transition-all ${
+                    className={`p-4 text-left rounded-xl border-2 transition-all ${
                       selectedStyle === style.value
                         ? 'border-pink-500 bg-pink-50 text-pink-700'
-                        : 'border-gray-200 hover:border-gray-300'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">{style.icon}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">{style.icon}</span>
                       <span className="text-sm font-medium">{style.label}</span>
                     </div>
                   </button>
@@ -308,9 +311,9 @@ export function AiBioGenerator() {
             </div>
 
             {/* Length Selection */}
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-3 block">Bio Lengte</label>
-              <div className="grid grid-cols-3 gap-2">
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-gray-700">Bio Lengte</label>
+              <div className="grid grid-cols-3 gap-3">
                 {[
                   { value: 'short', label: 'Kort' },
                   { value: 'medium', label: 'Medium' },
@@ -319,10 +322,10 @@ export function AiBioGenerator() {
                   <button
                     key={length.value}
                     onClick={() => setSelectedLength(length.value as any)}
-                    className={`p-3 text-center rounded-lg border transition-all ${
+                    className={`p-4 text-center rounded-xl border-2 transition-all ${
                       selectedLength === length.value
                         ? 'border-pink-500 bg-pink-50 text-pink-700'
-                        : 'border-gray-200 hover:border-gray-300'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
                     }`}
                   >
                     <span className="text-sm font-medium">{length.label}</span>
@@ -334,17 +337,17 @@ export function AiBioGenerator() {
             <Button
               onClick={generateBios}
               disabled={!userInput.trim() || isGenerating}
-              className="w-full bg-pink-500 hover:bg-pink-600"
+              className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
               size="lg"
             >
               {isGenerating ? (
                 <>
-                  <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                  <RefreshCw className="w-5 h-5 mr-3 animate-spin" />
                   Bio's genereren...
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-4 h-4 mr-2" />
+                  <Sparkles className="w-5 h-5 mr-3" />
                   Genereer Bio Varianten
                 </>
               )}
@@ -354,81 +357,89 @@ export function AiBioGenerator() {
 
         {/* Results Section */}
         {suggestions.length > 0 && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Jouw Bio Suggesties</h2>
-              <Badge variant="secondary" className="bg-pink-100 text-pink-700">
-                {getStyleIcon(selectedStyle)} {selectedStyle} • {getLengthLabel(selectedLength)}
-              </Badge>
-            </div>
-
-            {suggestions.map((suggestion) => (
-              <Card key={suggestion.id} className="bg-white border-0 shadow-sm rounded-xl">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <Badge
-                        variant="secondary"
-                        className="bg-green-100 text-green-700 text-xs"
-                      >
-                        <Star className="w-3 h-3 mr-1" />
-                        {suggestion.score}% match
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {suggestion.length}
-                      </Badge>
+          <div className="space-y-6">
+            <Card className="bg-white border-0 shadow-sm rounded-xl">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-xl flex items-center gap-3">
+                    <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center">
+                      <Star className="w-4 h-4 text-pink-600" />
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => copyToClipboard(suggestion.content, suggestion.id)}
-                      className="text-gray-400 hover:text-gray-600"
-                    >
-                      {copiedId === suggestion.id ? (
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <Copy className="w-4 h-4" />
-                      )}
-                    </Button>
-                  </div>
+                    Jouw Bio Suggesties
+                  </CardTitle>
+                  <Badge className="bg-pink-100 text-pink-700 border-pink-200">
+                    {getStyleIcon(selectedStyle)} {selectedStyle} • {getLengthLabel(selectedLength)}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {suggestions.map((suggestion) => (
+                  <Card key={suggestion.id} className="bg-gray-50 border-0 rounded-xl">
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <Badge className="bg-green-100 text-green-700 border-green-200">
+                            <Star className="w-3 h-3 mr-1" />
+                            {suggestion.score}% match
+                          </Badge>
+                          <Badge variant="outline" className="border-gray-300">
+                            {suggestion.length}
+                          </Badge>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => copyToClipboard(suggestion.content, suggestion.id)}
+                          className="text-gray-400 hover:text-gray-600 hover:bg-gray-200"
+                        >
+                          {copiedId === suggestion.id ? (
+                            <CheckCircle className="w-4 h-4 text-green-500" />
+                          ) : (
+                            <Copy className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
 
-                  <p className="text-gray-700 leading-relaxed mb-3">
-                    {suggestion.content}
-                  </p>
+                      <p className="text-gray-700 leading-relaxed mb-4 text-sm">
+                        {suggestion.content}
+                      </p>
 
-                  <div className="flex items-center justify-between text-xs text-gray-500">
-                    <span>{suggestion.content.length} karakters</span>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => copyToClipboard(suggestion.content, suggestion.id)}
-                        className="text-xs"
-                      >
-                        Kopiëren
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs text-pink-600 border-pink-200 hover:bg-pink-50"
-                      >
-                        <Heart className="w-3 h-3 mr-1" />
-                        Gebruiken
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-500">{suggestion.content.length} karakters</span>
+                        <div className="flex gap-3">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => copyToClipboard(suggestion.content, suggestion.id)}
+                            className="border-gray-300 hover:bg-gray-50"
+                          >
+                            Kopiëren
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+                          >
+                            <Heart className="w-3 h-3 mr-1" />
+                            Gebruiken
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </CardContent>
+            </Card>
 
             {/* Tips Card */}
-            <Card className="bg-blue-50 border-blue-200 rounded-xl">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-blue-600 mt-0.5" />
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-0 rounded-xl">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Zap className="w-4 h-4 text-blue-600" />
+                  </div>
                   <div>
-                    <h3 className="font-medium text-blue-800 mb-1">Pro Tip</h3>
-                    <p className="text-sm text-blue-700">
+                    <h3 className="font-semibold text-blue-900 mb-2">Pro Tip</h3>
+                    <p className="text-sm text-blue-700 leading-relaxed">
                       Test verschillende stijlen om te zien welke het beste bij je past.
                       Een goede bio kan je match rate met 300% verhogen!
                     </p>
@@ -442,22 +453,22 @@ export function AiBioGenerator() {
         {/* Empty State */}
         {suggestions.length === 0 && !isGenerating && (
           <Card className="bg-white border-0 shadow-sm rounded-xl">
-            <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-8 h-8 text-pink-600" />
+            <CardContent className="p-12 text-center">
+              <div className="w-20 h-20 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Sparkles className="w-10 h-10 text-pink-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-3">
                 Klaar om je bio te verbeteren?
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-8 max-w-md mx-auto">
                 Vertel ons over jezelf en laat onze AI professionele bio varianten voor je genereren
               </p>
               <Button
                 variant="outline"
                 onClick={() => setShowTutorial(true)}
-                className="flex items-center gap-2"
+                className="border-gray-300 hover:bg-gray-50 px-6 py-3"
               >
-                <HelpCircle className="w-4 h-4" />
+                <HelpCircle className="w-4 h-4 mr-2" />
                 Hoe werkt het?
               </Button>
             </CardContent>

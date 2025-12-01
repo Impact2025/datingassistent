@@ -1,0 +1,12 @@
+{
+  "meta": {"id": "les-6-3", "module": 6, "titel": "Je Dating Journey", "subtitel": "Van hier naar je doel", "duur_minuten": 15},
+  "secties": [
+    {"id": "terugblik", "type": "reflectie", "titel": "Wat Je Hebt Geleerd", "content": {"modules": [{"module": 1, "les": "Weet wat je zoekt en waarom"}, {"module": 2, "les": "Presenteer jezelf authentiek en aantrekkelijk"}, {"module": 3, "les": "Selecteer bewust en slim"}, {"module": 4, "les": "Communiceer effectief"}, {"module": 5, "les": "Date met vertrouwen"}, {"module": 6, "les": "Bouw veerkracht"}]}},
+    {"id": "actieplan", "type": "planning", "titel": "Je Persoonlijke Actieplan", "content": {"vragen": ["Wat is je #1 verbeterpunt?", "Wat ga je deze week doen?", "Wat is je doel voor de komende 3 maanden?", "Hoe weet je wanneer je succesvol bent?"]}},
+    {"id": "reminder", "type": "afsluiting", "titel": "Onthoud Dit", "content": {"kernboodschappen": ["Dating is een vaardigheid - je kunt het leren", "De juiste persoon is het wachten waard", "Elke date is oefening, elke afwijzing is feedback", "Je bent al compleet - een partner is een bonus", "Blijf jezelf, maar wees de beste versie"]}}
+  ],
+  "cursus_afsluiting": {
+    "boodschap": "Je hebt nu alle tools. De rest is actie. Succes - en vergeet niet: Iris is er altijd om te helpen.",
+    "volgende_stappen": ["Gebruik de AI tools voor feedback", "Pas toe wat je hebt geleerd", "Kom terug als je vastloopt"]
+  }
+}

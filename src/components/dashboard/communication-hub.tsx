@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Sparkles, Shield, HelpCircle, Zap, Target, Heart, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Target, HelpCircle, MessageSquare, Sparkles, Zap, Shield } from "lucide-react";
 
 // Import existing communication tools
 import { ChatCoachTab } from "./chat-coach-tab";
@@ -14,6 +14,8 @@ import { OpeningszinnenTool } from "./openingszinnen-tool";
 import { IJsbrekerGeneratorTool } from "./ijsbreker-generator-tool";
 import { VeiligheidscheckTool } from "./veiligheidscheck-tool";
 import { GespreksAssistent } from "./gespreks-assistent";
+import { CommunicationHubTutorial } from "@/components/onboarding/tutorials/communication-hub-tutorial";
+import { ContextualHelpButton } from "@/components/onboarding/contextual-help-button";
 
 interface CommunicationHubProps {
   onTabChange?: (tab: string) => void;
@@ -23,6 +25,46 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
   const [activeTab, setActiveTab] = useState("chat");
 
   const communicationTools = [
+    {
+      id: "dating-stijl",
+      label: "🎯 Dating Stijl Scan",
+      icon: Target,
+      description: "Ontdek je natuurlijke dating gedragsstijl en hoe je die kunt optimaliseren",
+      component: <div className="p-6 text-center">
+        <h3 className="text-xl font-bold mb-4">Dating Stijl Scan</h3>
+        <p className="text-muted-foreground mb-6">
+          Gedragsgebaseerde analyse van je dating patronen met 8 professionele stijlen.
+        </p>
+        <Button
+          onClick={() => window.location.href = '/dating-stijl'}
+          className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700"
+        >
+          Start Stijl Scan
+        </Button>
+      </div>,
+      badge: "AI",
+      color: "bg-green-500"
+    },
+    {
+      id: "blind-vlekken",
+      label: "🔍 Blind Vlek Scan — AI·PRO",
+      icon: HelpCircle,
+      description: "Advanced behavioral analysis om je blinde vlekken te detecteren",
+      component: <div className="p-6 text-center">
+        <h3 className="text-xl font-bold mb-4">Dating Stijl & Blind Vlek Scan</h3>
+        <p className="text-muted-foreground mb-6">
+          Professionele gedragsanalyse met mismatch detectie en concrete interventies.
+        </p>
+        <Button
+          onClick={() => window.location.href = '/blind-vlekken'}
+          className="bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700"
+        >
+          Start Advanced Scan
+        </Button>
+      </div>,
+      badge: "AI-PRO",
+      color: "bg-red-500"
+    },
     {
       id: "chat",
       label: "Chat Coach",
@@ -39,7 +81,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
       description: "AI analyse van je dating gesprekken",
       component: <GespreksAssistent onTabChange={onTabChange} />,
       badge: "AI",
-      color: "bg-blue-500"
+      color: "bg-indigo-500"
     },
     {
       id: "openers",
@@ -66,7 +108,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
       description: "Analyseer gesprekken op veiligheid",
       component: <VeiligheidscheckTool />,
       badge: "Essentieel",
-      color: "bg-green-500"
+      color: "bg-emerald-500"
     }
   ];
 
@@ -77,10 +119,36 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
       {/* Header */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Heart className="w-6 h-6 text-primary" />
-            Communicatie Hub
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Heart className="w-6 h-6 text-primary" />
+              Communicatie Hub
+            </CardTitle>
+            <ContextualHelpButton
+              tutorialId="communication-hub-basics"
+              helpTitle="Communicatie Hub Hulp"
+              helpText="Leer hoe je effectief communiceert in dating. Van eerste berichten tot diepgaande gesprekken."
+              variant="icon"
+              size="sm"
+              quickTips={[
+                {
+                  icon: <MessageSquare className="w-4 h-4 text-blue-600" />,
+                  title: "Chat Coach",
+                  description: "Stel vragen aan je AI coach voor directe hulp"
+                },
+                {
+                  icon: <Sparkles className="w-4 h-4 text-green-600" />,
+                  title: "Openers",
+                  description: "Genereer persoonlijke openingsberichten"
+                },
+                {
+                  icon: <Shield className="w-4 h-4 text-red-600" />,
+                  title: "Veiligheid eerst",
+                  description: "Check altijd gesprekken op rode vlaggen"
+                }
+              ]}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground mb-4">
@@ -125,6 +193,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
               return (
                 <Card
                   key={tool.id}
+                  data-tutorial={`${tool.id}-card`}
                   className={cn(
                     "cursor-pointer transition-all duration-200 hover:shadow-md border-2",
                     isActive
@@ -145,12 +214,27 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
                       </div>
 
                       <div className="space-y-1">
-                        <h4 className={cn(
-                          "font-semibold text-xs leading-tight",
-                          isActive ? "text-pink-700 dark:text-pink-300" : "text-foreground"
-                        )}>
-                          {tool.label}
-                        </h4>
+                        <div className="flex items-center justify-center gap-1 relative">
+                          <h4 className={cn(
+                            "font-semibold text-xs leading-tight",
+                            isActive ? "text-pink-700 dark:text-pink-300" : "text-foreground"
+                          )}>
+                            {tool.label}
+                          </h4>
+                          {/* Contextual help for key tools */}
+                          {(tool.id === 'chat' || tool.id === 'safety' || tool.id === 'openers') && (
+                            <div className="absolute -top-1 -right-1">
+                              <ContextualHelpButton
+                                tutorialId={tool.id === 'chat' ? 'communication-hub-basics' : undefined}
+                                helpTitle={`${tool.label} Hulp`}
+                                helpText={tool.description}
+                                variant="icon"
+                                size="sm"
+                                position="top"
+                              />
+                            </div>
+                          )}
+                        </div>
 
                         <p className="text-xs text-muted-foreground leading-tight">
                           {tool.description}
@@ -220,6 +304,9 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Communication Hub Tutorial */}
+      <CommunicationHubTutorial />
     </div>
   );
 }

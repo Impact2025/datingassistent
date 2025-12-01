@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-2-3",
+    "module": 2,
+    "volgorde": 3,
+    "titel": "Rode Vlaggen vs. Gele Vlaggen",
+    "subtitel": "Wat is een dealbreaker en wat niet?",
+    "duur_minuten": 20,
+    "kernvraag": "Negeer je rode vlaggen?",
+    "leerdoelen": [
+      "Begrijpen wat rode vlaggen vs. gele vlaggen betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Wat is een dealbreaker en wat niet?. De kernvraag die we beantwoorden: Negeer je rode vlaggen?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Negeer je rode vlaggen?",
+        "context": "Neem even de tijd om na te denken over rode vlaggen vs. gele vlaggen in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Rode Vlaggen vs. Gele Vlaggen",
+      "content": {
+        "intro": "Wat is een dealbreaker en wat niet?",
+        "items": [
+          {
+            "naam": "Rode vlaggen",
+            "desc": "Dealbreakers - altijd weglopen"
+          },
+          {
+            "naam": "Gele vlaggen",
+            "desc": "Observeren - kan veranderen"
+          },
+          {
+            "naam": "Groene vlaggen",
+            "desc": "Positieve signalen - koesteren"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je rode vlaggen vs. gele vlaggen begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe rode vlaggen vs. gele vlaggen zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-2-3",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Rode Vlaggen vs. Gele Vlaggen?",
+        "opties": [
+          "Dealbreakers - altijd weglopen",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-2-3",
+    "vraag": "Hoe herken je rode vlaggen vs. gele vlaggen in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Rode Vlaggen vs. Gele Vlaggen. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Rode Vlaggen vs. Gele Vlaggen toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over rode vlaggen vs. gele vlaggen in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me rode vlaggen vs. gele vlaggen toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

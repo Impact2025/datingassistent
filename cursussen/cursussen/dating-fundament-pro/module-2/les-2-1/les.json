@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "id": "les-2-1",
+    "module": 2,
+    "volgorde": 1,
+    "titel": "De Wetenschap van Foto's",
+    "subtitel": "Wat mensen zien in 3 seconden",
+    "duur_minuten": 22,
+    "kernvraag": "Welk verhaal vertellen je foto's?",
+    "leerdoelen": [
+      "Begrijpen hoe eerste indrukken worden gevormd",
+      "De psychologie achter aantrekkelijke foto's kennen",
+      "Weten welke foto's je nodig hebt en waarom"
+    ],
+    "tools": ["foto-check"]
+  },
+
+  "secties": [
+    {
+      "id": "drie-seconden",
+      "type": "hook",
+      "titel": "3 Seconden",
+      "content": {
+        "getal": "3",
+        "eenheid": "seconden",
+        "uitleg": "Dat is alles wat je hebt voordat iemand besluit om links of rechts te swipen.",
+        "impact": "In die 3 seconden vormt iemand een oordeel over je aantrekkelijkheid, betrouwbaarheid en persoonlijkheid.",
+        "toon": "Geen druk, toch? 😅"
+      }
+    },
+
+    {
+      "id": "wat-ze-zien",
+      "type": "analyse",
+      "titel": "Wat Mensen Onbewust Beoordelen",
+      "content": {
+        "intro": "Dit wordt allemaal in milliseconden verwerkt:",
+        "elementen": [
+          {
+            "element": "Ogen",
+            "icon": "👀",
+            "vraag": "Kijken ze in de camera? Vriendelijk of afstandelijk?"
+          },
+          {
+            "element": "Glimlach",
+            "icon": "😊",
+            "vraag": "Echt of geforceerd? Warm of koel?"
+          },
+          {
+            "element": "Houding",
+            "icon": "🧍",
+            "vraag": "Open of gesloten? Zelfverzekerd of onzeker?"
+          },
+          {
+            "element": "Context",
+            "icon": "🎨",
+            "vraag": "Waar ben je? Wat doe je? Welk verhaal vertelt het?"
+          },
+          {
+            "element": "Energie",
+            "icon": "✨",
+            "vraag": "Levendig of saai? Authentiek of nep?"
+          }
+        ],
+        "conclusie": "Dit alles wordt automatisch en onbewust verwerkt."
+      }
+    },
+
+    {
+      "id": "dodelijke-fouten",
+      "type": "waarschuwing",
+      "titel": "De 5 Dodelijke Foto-Fouten",
+      "content": {
+        "intro": "Elk van deze fouten kan je match-rate met 50%+ verlagen:",
+        "fouten": [
+          {
+            "fout": "Zonnebril op hoofdfoto",
+            "icon": "🕶️",
+            "waarom": "Verbergt je ogen = verbergt je persoonlijkheid",
+            "fix": "Zonnebril mag op foto 4-5, nooit op hoofdfoto"
+          },
+          {
+            "fout": "Groepsfoto als eerste",
+            "icon": "👥",
+            "waarom": "Wie ben jij? Raden is niet leuk.",
+            "fix": "Hoofdfoto = alleen jij, duidelijk zichtbaar"
+          },
+          {
+            "fout": "Spiegelselfie",
+            "icon": "🪞",
+            "waarom": "Schreeuwt: geen moeite gedaan",
+            "fix": "Vraag iemand om een foto te maken"
+          },
+          {
+            "fout": "Geen glimlach",
+            "icon": "😐",
+            "waarom": "Serieus = onbenaderbaar",
+            "fix": "Glimlach met je ogen (Duchenne smile)"
+          },
+          {
+            "fout": "Alleen selfies",
+            "icon": "🤳",
+            "waarom": "Suggereert dat niemand foto's van je maakt",
+            "fix": "Mix van selfies, posed, en candids"
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "goede-hoofdfoto",
+      "type": "template",
+      "titel": "Anatomie van een Goede Hoofdfoto",
+      "content": {
+        "checklist": [
+          {"item": "Ogen zichtbaar", "uitleg": "Direct oogcontact met camera"},
+          {"item": "Natuurlijke glimlach", "uitleg": "Ogen betrokken, niet alleen mond"},
+          {"item": "Goede belichting", "uitleg": "Natuurlijk licht, geen harde schaduwen"},
+          {"item": "Simpele achtergrond", "uitleg": "Focus op jou, niet de rommel"},
+          {"item": "Hoofd + schouders", "uitleg": "Niet te ver weg, niet alleen gezicht"}
+        ],
+        "kernboodschap": "Je hoofdfoto is 80% van je eerste indruk. Investeer hier het meest."
+      }
+    },
+
+    {
+      "id": "foto-mix",
+      "type": "systeem",
+      "titel": "De Perfecte Foto Mix (6 Foto's)",
+      "content": {
+        "intro": "Variatie toont verschillende kanten van je persoonlijkheid:",
+        "fotos": [
+          {
+            "nummer": 1,
+            "type": "Hoofdfoto",
+            "wat": "Close-up, glimlach, oogcontact",
+            "doel": "Eerste indruk - dit is mijn gezicht"
+          },
+          {
+            "nummer": 2,
+            "type": "Full Body",
+            "wat": "Hele lichaam zichtbaar, goede kleding",
+            "doel": "Laat zien hoe je eruitziet"
+          },
+          {
+            "nummer": 3,
+            "type": "Hobby/Activiteit",
+            "wat": "Jij in actie, iets wat je leuk vindt",
+            "doel": "Gespreksstarter + persoonlijkheid"
+          },
+          {
+            "nummer": 4,
+            "type": "Sociaal",
+            "wat": "Met vrienden, jij duidelijk herkenbaar",
+            "doel": "Je hebt een sociaal leven"
+          },
+          {
+            "nummer": 5,
+            "type": "Lifestyle",
+            "wat": "Reizen, event, iets bijzonders",
+            "doel": "Je leven is interessant"
+          },
+          {
+            "nummer": 6,
+            "type": "Candid",
+            "wat": "Natuurlijk moment, niet geposeerd",
+            "doel": "Authenticiteit"
+          }
+        ],
+        "tip": "Heb je niet alle 6? Start met de eerste 3-4, voeg later toe."
+      }
+    },
+
+    {
+      "id": "psychologie",
+      "type": "wetenschap",
+      "titel": "De Psychologie van Aantrekking",
+      "content": {
+        "intro": "Wat wetenschappelijk trekt aan en afstoot:",
+        "trekt_aan": [
+          "Echte glimlach (ogen betrokken)",
+          "Open lichaamshouding",
+          "Lichte kanteling hoofd",
+          "Warme kleuren in kleding",
+          "Activiteit / beweging in foto"
+        ],
+        "stoot_af": [
+          "Geforceerde of neppe glimlach",
+          "Gekruiste armen",
+          "Wegkijken van camera",
+          "Te donkere of onduidelijke foto's",
+          "Statische, saaie poses"
+        ],
+        "conclusie": "Mensen willen iemand die er gelukkig, benaderbaar en interessant uitziet."
+      }
+    },
+
+    {
+      "id": "pro-tips",
+      "type": "tips",
+      "titel": "Pro Tips voor Betere Foto's",
+      "content": {
+        "technisch": [
+          "Fotografeer tijdens golden hour (ochtend/avond)",
+          "Camera op ooghoogte",
+          "Portret mode voor blur achtergrond",
+          "Hoge resolutie, scherp beeld"
+        ],
+        "pose": [
+          "Ontspan je schouders",
+          "Kin iets naar voren en omlaag",
+          "Denk aan iets grappigs voor echte glimlach",
+          "Draai lichaam 45 graden"
+        ],
+        "styling": [
+          "Kleding die past en flatteert",
+          "Kleuren die bij je passen",
+          "Geen afleidende prints",
+          "Verzorgd maar niet overdressed"
+        ]
+      }
+    }
+  ],
+
+  "quiz": {
+    "vragen": [
+      {
+        "vraag": "Waarom is een zonnebril op je hoofdfoto een probleem?",
+        "opties": [
+          "Het ziet er arrogant uit",
+          "Je ogen zijn de belangrijkste bron van connectie en persoonlijkheid",
+          "Zonnebrillen zijn uit de mode",
+          "Het is niet een probleem"
+        ],
+        "correct": 1,
+        "feedback": "Ogen zijn het 'venster naar de ziel'. Zonder oogcontact mist je hoofdfoto het belangrijkste element van menselijke connectie."
+      },
+      {
+        "vraag": "Welke fotomix is ideaal?",
+        "opties": [
+          "6 selfies met verschillende filters",
+          "Alleen foto's van reizen",
+          "Mix van hoofdfoto, full body, hobby, sociaal, lifestyle, candid",
+          "Zo min mogelijk foto's"
+        ],
+        "correct": 2,
+        "feedback": "Variatie toont verschillende kanten van je persoonlijkheid en geeft gespreksstarters."
+      }
+    ]
+  },
+
+  "opdracht": {
+    "titel": "Foto Audit",
+    "stappen": [
+      "Upload je huidige foto's naar de AI Foto Check",
+      "Noteer de scores en feedback per foto",
+      "Maak een lijst van welke foto-types je mist",
+      "Plan een moment om nieuwe foto's te maken",
+      "Vraag 2-3 vrienden om je foto's te ranken"
+    ],
+    "tool": {
+      "id": "foto-check",
+      "cta": "Start Foto Check"
+    }
+  }
+}

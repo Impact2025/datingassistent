@@ -5,6 +5,7 @@ import type { UserProfile } from '@/lib/types';
 import { useRouter, usePathname } from 'next/navigation';
 import { WelcomeTour } from '@/components/welcome-tour';
 import { AuthManager, getAuthErrorMessage } from '@/lib/auth-manager';
+import { safeStorage } from '@/lib/safe-storage';
 
 interface User {
   id: number;
@@ -70,7 +71,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('🔐 Authentication error detected, logging out user');
 
       // Clear authentication state
-      localStorage.removeItem(TOKEN_STORAGE_KEY);
+      safeStorage.removeItem(TOKEN_STORAGE_KEY);
       authManager.clearAuth();
       setUser(null);
       setUserProfile(null);
@@ -102,12 +103,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUserProfile(profile);
 
         // Cache in localStorage
-        localStorage.setItem(USER_PROFILE_STORAGE_KEY_PREFIX + userId, JSON.stringify(profile));
+        safeStorage.setItem(USER_PROFILE_STORAGE_KEY_PREFIX + userId, JSON.stringify(profile));
       } else {
         console.log('⚠️ No profile found in database');
 
         // Try localStorage as fallback
-        const storedProfile = localStorage.getItem(USER_PROFILE_STORAGE_KEY_PREFIX + userId);
+        const storedProfile = safeStorage.getItem(USER_PROFILE_STORAGE_KEY_PREFIX + userId);
         if (storedProfile) {
           console.log('📱 Using localStorage fallback');
           setUserProfile(JSON.parse(storedProfile));
@@ -124,7 +125,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       // Try localStorage as fallback
-      const storedProfile = localStorage.getItem(USER_PROFILE_STORAGE_KEY_PREFIX + userId);
+      const storedProfile = safeStorage.getItem(USER_PROFILE_STORAGE_KEY_PREFIX + userId);
       if (storedProfile) {
         console.log('📱 Using localStorage fallback after database error');
         setUserProfile(JSON.parse(storedProfile));
@@ -139,15 +140,23 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const verifyToken = async () => {
       console.log('🔍 UserProvider: Starting token verification for pathname:', pathname);
 
+      // Skip auth verification for public pages (logout, login, register, etc.)
+      const publicPages = ['/logout', '/login', '/register', '/verify-email', '/reset-password'];
+      if (publicPages.some(page => pathname?.startsWith(page))) {
+        console.log('🔓 Skipping auth verification for public page:', pathname);
+        setLoading(false);
+        return;
+      }
+
       // ALWAYS prioritize localStorage over cookies for client-side auth
-      let token = localStorage.getItem(TOKEN_STORAGE_KEY);
+      let token = safeStorage.getItem(TOKEN_STORAGE_KEY);
 
       // Fallback to cookie if localStorage is empty
       if (!token) {
         token = getCookie(TOKEN_STORAGE_KEY);
         if (token) {
           console.log('📝 Found token in cookie, syncing to localStorage');
-          localStorage.setItem(TOKEN_STORAGE_KEY, token);
+          safeStorage.setItem(TOKEN_STORAGE_KEY, token);
         }
       }
 
@@ -189,7 +198,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Check if user has verified email
           if (!data.user.emailVerified) {
             console.log('❌ User email not verified, clearing session');
-            localStorage.removeItem(TOKEN_STORAGE_KEY);
+            safeStorage.removeItem(TOKEN_STORAGE_KEY);
             setUser(null);
             setUserProfile(null);
             setError('Email not verified. Please check your email and verify your account.');
@@ -214,13 +223,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           console.log('✅ User session restored for pathname:', pathname);
         } else {
           console.log('❌ Token verification failed for pathname:', pathname);
-          localStorage.removeItem(TOKEN_STORAGE_KEY);
+          safeStorage.removeItem(TOKEN_STORAGE_KEY);
           setUser(null);
           setUserProfile(null);
         }
       } catch (err) {
         console.error('❌ Error verifying token for pathname:', pathname, err);
-        localStorage.removeItem(TOKEN_STORAGE_KEY);
+        safeStorage.removeItem(TOKEN_STORAGE_KEY);
         setUser(null);
         setUserProfile(null);
       } finally {
@@ -234,6 +243,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Handle authentication redirects - ONLY for protected pages, NOT for login redirects
   useEffect(() => {
     if (loading) return;
+
+    // Skip redirect logic for public pages
+    const publicPages = ['/logout', '/login', '/register', '/verify-email', '/reset-password', '/'];
+    if (publicPages.some(page => pathname?.startsWith(page))) {
+      return;
+    }
 
     const isProtectedPage = ((pathname?.startsWith('/dashboard')) || (pathname?.startsWith('/admin'))) && pathname !== '/admin/login';
 
@@ -282,7 +297,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       // Save token to localStorage
-      localStorage.setItem(TOKEN_STORAGE_KEY, data.token);
+      safeStorage.setItem(TOKEN_STORAGE_KEY, data.token);
 
       // Update AuthManager with new auth state
       authManager.setAuth({
@@ -302,7 +317,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await loadUserProfile(data.user.id);
 
       // Check if user has seen the welcome tour
-      const tourSeen = localStorage.getItem('dating-assistant-tour-seen');
+      const tourSeen = safeStorage.getItem('dating-assistant-tour-seen');
       if (!tourSeen) {
         console.log('🎯 First login detected - will show welcome tour');
         setShowWelcomeTour(true);
@@ -349,7 +364,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Legacy: if somehow a token is still returned (shouldn't happen with new system)
       if (data.token) {
-        localStorage.setItem(TOKEN_STORAGE_KEY, data.token);
+        safeStorage.setItem(TOKEN_STORAGE_KEY, data.token);
         setUser({
           ...data.user,
           emailVerified: data.user.emailVerified ?? true,
@@ -372,27 +387,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const logout = useCallback(async () => {
-    console.log('🚪 Logging out user');
+    console.log('🚪 Logging out user - redirecting to logout page');
 
-    // Clear token from localStorage
-    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    // Redirect to logout page which handles the full logout process
+    router.push('/logout');
 
-    // Clear AuthManager state
-    authManager.clearAuth();
-
-    // Clear cookie by calling logout API
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-    } catch (err) {
-      console.error('Error clearing auth cookie:', err);
-    }
-
-    // Clear user state
-    setUser(null);
-    setUserProfile(null);
-
-    console.log('✅ Logout successful');
-  }, []);
+    console.log('✅ Redirected to logout page');
+  }, [router]);
 
   const updateProfile = useCallback(async (profile: UserProfile) => {
     if (!user) {
@@ -417,7 +418,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('✅ Profile saved to database successfully');
 
         // Also save to localStorage as cache
-        localStorage.setItem(USER_PROFILE_STORAGE_KEY_PREFIX + user.id, JSON.stringify(profile));
+        safeStorage.setItem(USER_PROFILE_STORAGE_KEY_PREFIX + user.id, JSON.stringify(profile));
         console.log('💾 Profile cached in localStorage');
 
         // Update state
@@ -444,7 +445,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Still try to save to localStorage as fallback
         try {
-          localStorage.setItem(USER_PROFILE_STORAGE_KEY_PREFIX + user.id, JSON.stringify(profile));
+          safeStorage.setItem(USER_PROFILE_STORAGE_KEY_PREFIX + user.id, JSON.stringify(profile));
           setUserProfile(profile);
           // Don't redirect to onboarding for existing users
           console.log('📍 Profile saved to localStorage fallback, staying on current page');
@@ -456,7 +457,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [user, router]);
 
   const refreshUser = useCallback(async () => {
-    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    const token = safeStorage.getItem(TOKEN_STORAGE_KEY);
 
     if (!token) {
       setUser(null);

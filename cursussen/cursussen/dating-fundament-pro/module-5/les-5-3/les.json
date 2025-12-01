@@ -1,0 +1,8 @@
+{
+  "meta": {"id": "les-5-3", "module": 5, "titel": "Lichaamstaal en Signalen", "subtitel": "Wat je zegt zonder woorden", "duur_minuten": 18},
+  "secties": [
+    {"id": "jouw-lichaamstaal", "type": "zelfbeeld", "titel": "Wat Jij Uitstraalt", "content": {"doe": ["Oogcontact (70% van de tijd)", "Glimlachen", "Open houding", "Naar voren leunen bij interesse", "Knikken bij luisteren"], "niet": ["Armen over elkaar", "Telefoon checken", "Wegkijken", "Friemelen", "Naar de uitgang kijken"]}},
+    {"id": "hun-signalen", "type": "lezen", "titel": "Signalen Lezen", "content": {"interesse": ["Leunt naar je toe", "Raakt haar aan/speelt met haar", "Langdurig oogcontact", "Lacht om je grappen", "Stelt vragen terug"], "geen_interesse": ["Leunt achterover", "Korte antwoorden", "Kijkt rond", "Checkt telefoon", "Gesloten houding"]}},
+    {"id": "touch", "type": "gevoelig", "titel": "Aanraking", "content": {"regel": "Alleen als er duidelijke signalen zijn", "opbouw": ["Arm aanraken tijdens lachen", "Hand op schouder bij binnenkomen", "Omhelzing bij afscheid"], "belangrijk": "Let op hun reactie. Trek terug bij ongemak."}}
+  ]
+}

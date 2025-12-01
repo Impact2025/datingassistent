@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-5-4",
+    "module": 5,
+    "volgorde": 4,
+    "titel": "Groei als Individu én Koppel",
+    "subtitel": "Differentiatie in de praktijk",
+    "duur_minuten": 20,
+    "kernvraag": "Blijf je jezelf in de relatie?",
+    "leerdoelen": [
+      "Begrijpen wat groei als individu én koppel betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Differentiatie in de praktijk. De kernvraag die we beantwoorden: Blijf je jezelf in de relatie?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Blijf je jezelf in de relatie?",
+        "context": "Neem even de tijd om na te denken over groei als individu én koppel in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Groei als Individu én Koppel",
+      "content": {
+        "intro": "Differentiatie in de praktijk",
+        "items": [
+          {
+            "naam": "Versmelting",
+            "desc": "Jezelf verliezen in de relatie"
+          },
+          {
+            "naam": "Differentiatie",
+            "desc": "Jezelf blijven terwijl je verbonden bent"
+          },
+          {
+            "naam": "Balance",
+            "desc": "Samen-tijd en apart-tijd"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je groei als individu én koppel begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe groei als individu én koppel zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-5-4",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Groei als Individu én Koppel?",
+        "opties": [
+          "Jezelf verliezen in de relatie",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-5-4",
+    "vraag": "Hoe herken je groei als individu én koppel in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Groei als Individu én Koppel. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Groei als Individu én Koppel toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over groei als individu én koppel in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me groei als individu én koppel toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

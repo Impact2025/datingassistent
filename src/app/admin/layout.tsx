@@ -1,166 +1,181 @@
 "use client";
 
-import { useUser } from '@/providers/user-provider';
-import { useRouter, usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { LoadingSpinner } from '@/components/shared/loading-spinner';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  LayoutDashboard,
+  Users,
+  BarChart3,
+  Settings,
+  Shield,
+  Database,
+  LogOut,
+  Menu,
+  X,
+  Activity,
+  AlertTriangle,
+  CheckCircle
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const ADMIN_EMAILS = ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'];
+interface AdminLayoutProps {
+  children: React.ReactNode;
+}
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useUser();
+const adminNavigation = [
+  {
+    name: "Dashboard",
+    href: "/admin",
+    icon: LayoutDashboard,
+    description: "Overzicht en key metrics"
+  },
+  {
+    name: "Users",
+    href: "/admin/users",
+    icon: Users,
+    description: "Gebruikersbeheer en analytics"
+  },
+  {
+    name: "Analytics",
+    href: "/admin/analytics",
+    icon: BarChart3,
+    description: "Gedetailleerde gebruikersdata"
+  },
+  {
+    name: "Content",
+    href: "/admin/content",
+    icon: Database,
+    description: "Content en assessment beheer"
+  },
+  {
+    name: "Security",
+    href: "/admin/security",
+    icon: Shield,
+    description: "Beveiliging en monitoring"
+  },
+  {
+    name: "Settings",
+    href: "/admin/settings",
+    icon: Settings,
+    description: "Systeem configuratie"
+  }
+];
+
+export default function AdminLayout({ children }: AdminLayoutProps) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-  const [checkingAdmin, setCheckingAdmin] = useState(true);
 
-  // Check if current page is the login page
-  const isLoginPage = pathname === '/admin/login';
+  const handleLogout = () => {
+    // Implement logout logic
+    router.push('/login');
+  };
 
-  // Check admin status
-  useEffect(() => {
-    const checkAdminStatus = async () => {
-      if (!user) {
-        setIsAdmin(false);
-        setCheckingAdmin(false);
-        return;
-      }
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      // First check email-based admin (immediate)
-      const emailIsAdmin = user.email && ADMIN_EMAILS.includes(user.email);
+      {/* Sidebar */}
+      <div className={cn(
+        "fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0",
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <Shield className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Admin Panel</h2>
+                <p className="text-xs text-gray-500">DatingAssistent</p>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="lg:hidden"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
 
-      // If email-based admin, no need for API call
-      if (emailIsAdmin) {
-        console.log('👤 Admin check: Email-based admin access granted', { email: user.email });
-        setIsAdmin(true);
-        setCheckingAdmin(false);
-        return;
-      }
+          {/* Navigation */}
+          <nav className="flex-1 px-4 py-6 space-y-2">
+            {adminNavigation.map((item) => {
+              const Icon = item.icon;
+              const isActive = typeof window !== 'undefined' && window.location.pathname === item.href;
 
-      // For non-email admins, check role from API/database
-      try {
-        const token = localStorage.getItem('datespark_auth_token');
-        if (!token) {
-          console.log('👤 Admin check: No token found, not admin');
-          setIsAdmin(false);
-          setCheckingAdmin(false);
-          return;
-        }
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => {
+                    router.push(item.href);
+                    setSidebarOpen(false);
+                  }}
+                  className={cn(
+                    "w-full flex items-center space-x-3 px-3 py-2 text-left rounded-lg transition-colors",
+                    isActive
+                      ? "bg-blue-50 text-blue-700 border border-blue-200"
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}
+                >
+                  <Icon className="w-5 h-5 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium truncate">{item.name}</div>
+                    <div className="text-xs text-gray-500 truncate">{item.description}</div>
+                  </div>
+                </button>
+              );
+            })}
+          </nav>
 
-        const response = await fetch('/api/auth/verify', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const roleIsAdmin = data.user?.role === 'admin';
-
-          // Check 2FA status
-          const twoFactorEnabled = data.user?.two_factor_enabled || false;
-          const twoFactorLastVerified = data.user?.two_factor_last_verified;
-
-          // If 2FA is enabled, check if it was verified recently (within last 24 hours)
-          let twoFactorVerified = !twoFactorEnabled; // If 2FA not enabled, consider it verified
-          if (twoFactorEnabled && twoFactorLastVerified) {
-            const lastVerified = new Date(twoFactorLastVerified);
-            const now = new Date();
-            const hoursSinceVerification = (now.getTime() - lastVerified.getTime()) / (1000 * 60 * 60);
-            twoFactorVerified = hoursSinceVerification < 24; // Valid for 24 hours
-          }
-
-          // User is fully authorized only if admin AND 2FA verified (if required)
-          const isFullyAuthorized = roleIsAdmin && twoFactorVerified;
-
-          console.log('👤 Admin check:', {
-            email: user.email,
-            role: data.user?.role,
-            isRoleAdmin: roleIsAdmin,
-            twoFactorEnabled,
-            twoFactorVerified,
-            isFullyAuthorized
-          });
-
-          setIsAdmin(isFullyAuthorized);
-        } else {
-          console.log('👤 Admin check: API verify failed, not admin');
-          setIsAdmin(false);
-        }
-      } catch (error) {
-        console.error('Error checking admin status:', error);
-        setIsAdmin(false);
-      } finally {
-        setCheckingAdmin(false);
-      }
-    };
-
-    if (!loading) {
-      checkAdminStatus();
-    }
-  }, [user, loading]);
-
-  useEffect(() => {
-    if (loading || checkingAdmin) return;
-
-    // If no user and not on login page, redirect to login
-    if (!user && !isLoginPage) {
-      console.log('🔒 AdminLayout - No user, redirecting to admin login');
-      router.replace('/admin/login');
-      return;
-    }
-
-    // If user exists but is not admin, redirect to regular dashboard
-    if (user && !isLoginPage && isAdmin === false) {
-      console.log('🔒 AdminLayout - User is not admin, redirecting to dashboard');
-      router.replace('/dashboard');
-      return;
-    }
-
-    // If admin user is on login page, redirect to admin dashboard
-    if (user && isLoginPage && isAdmin === true) {
-      console.log('✅ AdminLayout - Admin already logged in, redirecting to admin dashboard');
-      router.replace('/admin');
-      return;
-    }
-  }, [user, loading, isAdmin, checkingAdmin, isLoginPage, router, pathname]);
-
-  // Show loading while checking auth
-  if (loading || checkingAdmin) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner />
-          <p className="mt-4 text-muted-foreground">Authenticatie controleren...</p>
+          {/* Footer */}
+          <div className="p-4 border-t border-gray-200">
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              onClick={handleLogout}
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Uitloggen
+            </Button>
+          </div>
         </div>
       </div>
-    );
-  }
 
-  // Show loading while redirecting
-  if (!user && !isLoginPage) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner />
-          <p className="mt-4 text-muted-foreground">Redirecting to login...</p>
+      {/* Main content */}
+      <div className="lg:pl-64">
+        {/* Top bar */}
+        <div className="sticky top-0 z-30 bg-white border-b border-gray-200 lg:hidden">
+          <div className="flex items-center justify-between px-4 py-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <Menu className="w-5 h-5" />
+            </Button>
+            <h1 className="text-lg font-semibold text-gray-900">Admin Dashboard</h1>
+            <div className="w-10" /> {/* Spacer */}
+          </div>
         </div>
-      </div>
-    );
-  }
 
-  // Check if user is admin (for non-login pages)
-  if (user && !isLoginPage && isAdmin === false) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner />
-          <p className="mt-4 text-muted-foreground">Access denied. Redirecting...</p>
-        </div>
+        {/* Page content */}
+        <main className="p-6">
+          {children}
+        </main>
       </div>
-    );
-  }
-
-  // Render children (admin pages or login page)
-  return <>{children}</>;
+    </div>
+  );
 }

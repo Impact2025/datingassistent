@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
 import { getClientIdentifier, rateLimitAuthEndpoint, createRateLimitHeaders } from '@/lib/rate-limit';
 import { logger } from '@/lib/logger';
+
+const sql = neon(process.env.DATABASE_URL!);
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'your-secret-key-change-in-production'
@@ -30,7 +32,19 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { email, password } = await request.json();
+    // Parse request body with error handling
+    let email, password;
+    try {
+      const body = await request.json();
+      email = body.email;
+      password = body.password;
+    } catch (parseError) {
+      console.error('❌ Failed to parse login request body:', parseError);
+      return NextResponse.json(
+        { error: 'Invalid request body. Please provide email and password.' },
+        { status: 400 }
+      );
+    }
 
     // Validate input
     if (!email || !password) {
@@ -47,14 +61,14 @@ export async function POST(request: NextRequest) {
       WHERE email = ${email}
     `;
 
-    if (result.rows.length === 0) {
+    if (result.length === 0) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
       );
     }
 
-    const user = result.rows[0];
+    const user = result[0];
 
     // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password_hash);

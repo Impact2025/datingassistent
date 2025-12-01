@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "id": "les-1-3",
+    "module": 1,
+    "volgorde": 3,
+    "titel": "Jouw Dating Energie",
+    "subtitel": "Sustainable daten zonder burnout",
+    "duur_minuten": 15,
+    "kernvraag": "Hoeveel energie kun en wil je investeren?",
+    "leerdoelen": [
+      "Dating burnout herkennen en voorkomen",
+      "Je persoonlijke energie-budget bepalen",
+      "Een duurzame dating routine opzetten"
+    ]
+  },
+
+  "secties": [
+    {
+      "id": "herkenning",
+      "type": "check-in",
+      "titel": "Herken Je Dit?",
+      "content": {
+        "quotes": [
+          "Ugh, ik moet weer swipen...",
+          "Nog een date die nergens heen gaat",
+          "Ik ben het allemaal zo zat",
+          "Iedereen is hetzelfde",
+          "Ik geef het op"
+        ],
+        "vraag": "Als je deze zinnen herkent, heb je waarschijnlijk dating burnout."
+      }
+    },
+
+    {
+      "id": "wat-is-burnout",
+      "type": "uitleg",
+      "titel": "Wat is Dating Burnout?",
+      "content": {
+        "definitie": "Emotionele uitputting door het dating proces, waardoor je cynisch, moe en gedemotiveerd raakt.",
+        "symptomen": [
+          {"symptoom": "Cynisme", "voorbeeld": "Ze zijn toch allemaal hetzelfde"},
+          {"symptoom": "Verlies van enthousiasme", "voorbeeld": "Een match voelt niet meer spannend"},
+          {"symptoom": "Vermijding", "voorbeeld": "Je opent de app niet meer, beantwoordt berichten niet"},
+          {"symptoom": "Emotionele vermoeidheid", "voorbeeld": "Je hebt geen energie om jezelf weer te presenteren"}
+        ],
+        "statistiek": "78% van Gen Z en 47% van alle singles ervaart dating burnout."
+      }
+    },
+
+    {
+      "id": "oorzaken",
+      "type": "analyse",
+      "titel": "Waarom Gebeurt Dit?",
+      "content": {
+        "oorzaken": [
+          {
+            "naam": "Paradox of Choice",
+            "uitleg": "Te veel opties leidt tot beslismoeheid en FOMO",
+            "effect": "Je blijft swipen in plaats van focussen"
+          },
+          {
+            "naam": "Rejection Mindset",
+            "uitleg": "Constant swipen traint je brein om mensen af te wijzen",
+            "effect": "Je wordt hyperkritisch en ziet alleen gebreken"
+          },
+          {
+            "naam": "Ghosting Cultuur",
+            "uitleg": "Investeren in gesprekken die zomaar stoppen",
+            "effect": "Je beschermt jezelf door minder te investeren"
+          },
+          {
+            "naam": "Hoop-Teleurstelling Cyclus",
+            "uitleg": "Elke match is hoop, elke misser is teleurstelling",
+            "effect": "Emotionele achtbaan die uitput"
+          }
+        ]
+      }
+    },
+
+    {
+      "id": "energie-vampieren",
+      "type": "waarschuwing",
+      "titel": "De Energie Vampieren",
+      "content": {
+        "intro": "Sommige matches kosten meer dan ze opleveren:",
+        "types": [
+          {
+            "naam": "De Eindeloze Chatter",
+            "gedrag": "Wil nooit afspreken, alleen maar appen",
+            "regel": "Na 5 dagen chatten: vraag om date of stop"
+          },
+          {
+            "naam": "De Breadcrumber",
+            "gedrag": "Geeft net genoeg aandacht om je geïnteresseerd te houden",
+            "regel": "Inconsistent = niet geïnteresseerd"
+          },
+          {
+            "naam": "De Ghost-in-Waiting",
+            "gedrag": "Dates gaan goed maar daarna stilte",
+            "regel": "Geen bericht na 48u = move on"
+          }
+        ],
+        "kernboodschap": "Je tijd en energie zijn kostbaar. Investeer ze in mensen die teruggeveren."
+      }
+    },
+
+    {
+      "id": "protocol",
+      "type": "systeem",
+      "titel": "Het 15-Minuten Protocol",
+      "content": {
+        "principe": "Dating moet passen in je leven, niet je leven overnemen.",
+        "dagelijks": {
+          "totaal": "15 minuten max",
+          "verdeling": [
+            {"activiteit": "Berichten checken/beantwoorden", "tijd": "5 min"},
+            {"activiteit": "Bewust swipen", "tijd": "5 min"},
+            {"activiteit": "Nieuwe matches bekijken", "tijd": "5 min"}
+          ]
+        },
+        "wekelijks": {
+          "max_dates": "1-2 dates",
+          "vrije_dagen": "Minimaal 2 dating-vrije dagen",
+          "evaluatie": "5 min reflectie: wat werkte, wat niet?"
+        },
+        "waarom_werkt": "Beperking creëert focus. Minder swipen = bewuster swipen = betere matches."
+      }
+    },
+
+    {
+      "id": "waarschuwingssignalen",
+      "type": "checklist",
+      "titel": "Wanneer Je Een Pauze Nodig Hebt",
+      "content": {
+        "signalen": [
+          "Je opent de app met tegenzin",
+          "Je voelt je cynisch over iedereen",
+          "Elke date voelt als een karwei",
+          "Je vergelijkt jezelf constant met anderen",
+          "Je zelfvertrouwen is gedaald door dating"
+        ],
+        "regel": "2 of meer = neem minimaal een week pauze",
+        "reminder": "Een pauze is geen opgeven. Het is opladen."
+      }
+    },
+
+    {
+      "id": "pauze-protocol",
+      "type": "actieplan",
+      "titel": "Hoe Je Pauzeert",
+      "content": {
+        "stappen": [
+          {"stap": 1, "actie": "Verwijder de apps van je telefoon (niet je account)", "waarom": "Uit het zicht, uit het hart"},
+          {"stap": 2, "actie": "Zet een datum om terug te komen", "waarom": "Een pauze met einddatum is geen opgeven"},
+          {"stap": 3, "actie": "Focus op andere dingen die je energie geven", "waarom": "Vul je tank"},
+          {"stap": 4, "actie": "Reflecteer: wat wil ik anders doen als ik terugkom?", "waarom": "Leren van de pauze"}
+        ],
+        "valkuil": "Check niet stiekem via browser. Een pauze is een pauze."
+      }
+    }
+  ],
+
+  "quiz": {
+    "vragen": [
+      {
+        "vraag": "Wat is het 15-minuten protocol?",
+        "opties": [
+          "15 minuten per date",
+          "Maximaal 15 minuten per dag aan dating besteden",
+          "Elke 15 minuten checken",
+          "15 minuten wachten voor je reageert"
+        ],
+        "correct": 1,
+        "feedback": "Door je dating tijd te beperken tot 15 min/dag, forceer je jezelf om bewuster te swipen en voorkom je burnout."
+      }
+    ]
+  },
+
+  "reflectie": {
+    "vraag": "Hoeveel tijd besteed je nu aan dating per dag? Is dat sustainable? Wat zou een realistisch 'energie budget' zijn voor jou?",
+    "ai_coach_context": "Help de gebruiker om realistisch te zijn. Niet te veel (burnout) maar ook niet te weinig (geen resultaat). Vraag naar hun leven, werk, andere verplichtingen."
+  },
+
+  "opdracht": {
+    "titel": "Mijn Dating Energie Plan",
+    "stappen": [
+      "Bepaal je dagelijkse swipe-limiet in minuten",
+      "Bepaal je max dates per week",
+      "Kies je dating-vrije dagen",
+      "Stel een regel in voor wanneer je pauzeert"
+    ]
+  }
+}

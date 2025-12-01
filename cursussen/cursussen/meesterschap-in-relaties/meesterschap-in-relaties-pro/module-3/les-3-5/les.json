@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "id": "les-3-5",
+    "module": 3,
+    "volgorde": 5,
+    "titel": "Reparatie na een Conflict",
+    "subtitel": "Hoe je weer naar elkaar toekomt",
+    "duur_minuten": 20,
+    "kernvraag": "Kun je herstellen na een ruzie?",
+    "leerdoelen": [
+      "Begrijpen wat reparatie na een conflict betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Hoe je weer naar elkaar toekomt. De kernvraag die we beantwoorden: Kun je herstellen na een ruzie?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Kun je herstellen na een ruzie?",
+        "context": "Neem even de tijd om na te denken over reparatie na een conflict in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Reparatie na een Conflict",
+      "content": {
+        "intro": "Hoe je weer naar elkaar toekomt",
+        "items": [
+          {
+            "naam": "Timing",
+            "desc": "Niet te snel, niet te laat"
+          },
+          {
+            "naam": "Verantwoordelijkheid",
+            "desc": "Eigen aandeel benoemen"
+          },
+          {
+            "naam": "Begrip",
+            "desc": "De ander echt horen"
+          },
+          {
+            "naam": "Herstel",
+            "desc": "Concreet goedmaken"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je reparatie na een conflict begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe reparatie na een conflict zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-3-5",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Reparatie na een Conflict?",
+        "opties": [
+          "Niet te snel, niet te laat",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-3-5",
+    "vraag": "Hoe herken je reparatie na een conflict in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Reparatie na een Conflict. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Reparatie na een Conflict toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over reparatie na een conflict in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me reparatie na een conflict toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

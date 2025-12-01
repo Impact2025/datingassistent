@@ -1,0 +1,271 @@
+{
+  "cursus": {
+    "id": "dating-fundament-pro",
+    "titel": "Dating Fundament PRO",
+    "subtitel": "Van Swipe naar Succes",
+    "versie": "1.0",
+    "prijs": 97,
+    "valuta": "EUR",
+    "duur_uren": 6,
+    "niveau": "beginner-intermediate",
+    "taal": "nl",
+    
+    "beschrijving": {
+      "kort": "De complete cursus om online dating te leren. Van profiel tot eerste date.",
+      "lang": "In 6 modules leer je alles wat je nodig hebt om succesvol te daten. Geen vage tips, maar concrete strategieën die werken. Met AI-coaching die je persoonlijk begeleidt."
+    },
+    
+    "resultaten": [
+      "Een profiel dat 3x meer matches krijgt",
+      "Gesprekken die daadwerkelijk naar dates leiden", 
+      "Zelfvertrouwen in elke stap van het dating proces",
+      "Een sustainable aanpak zonder burnout"
+    ],
+    
+    "voor_wie": {
+      "ideaal": ["25-45 jaar", "Serieus op zoek naar relatie", "Bereid te leren"],
+      "niet_voor": ["Alleen validatie zoeken", "Niet bereid actie te ondernemen"]
+    }
+  },
+  
+  "modules": [
+    {
+      "id": "module-1",
+      "nummer": 1,
+      "titel": "Het Fundament",
+      "subtitel": "Wie ben je en wat zoek je?",
+      "beschrijving": "De basis die 90% overslaat. Zonder dit bouw je op drijfzand.",
+      "icoon": "🧭",
+      "kleur": "#8B1538",
+      "lessen": [
+        {
+          "id": "les-1-1",
+          "titel": "Wat Zoek Je Écht?",
+          "subtitel": "Voorbij 'gewoon iemand leuk'",
+          "duur_min": 20,
+          "kernvraag": "Date je vanuit eenzaamheid of vanuit verlangen?"
+        },
+        {
+          "id": "les-1-2", 
+          "titel": "De Mythe van De Vonk",
+          "subtitel": "Waarom instant chemistry overschat wordt",
+          "duur_min": 18,
+          "kernvraag": "Geef je mensen genoeg kans?"
+        },
+        {
+          "id": "les-1-3",
+          "titel": "Jouw Dating Energie",
+          "subtitel": "Sustainable daten zonder burnout",
+          "duur_min": 15,
+          "kernvraag": "Hoeveel energie kun en wil je investeren?"
+        },
+        {
+          "id": "les-1-4",
+          "titel": "Standaarden vs Perfectie",
+          "subtitel": "De balans die werkt",
+          "duur_min": 18,
+          "kernvraag": "Wat is negotiable en wat niet?"
+        }
+      ]
+    },
+    
+    {
+      "id": "module-2",
+      "nummer": 2,
+      "titel": "Je Profiel",
+      "subtitel": "Je digitale eerste indruk",
+      "beschrijving": "Van onzichtbaar naar onweerstaanbaar. Foto's, bio, alles.",
+      "icoon": "📸",
+      "kleur": "#E91E63",
+      "lessen": [
+        {
+          "id": "les-2-1",
+          "titel": "De Wetenschap van Foto's",
+          "subtitel": "Wat mensen zien in 3 seconden",
+          "duur_min": 22,
+          "kernvraag": "Welk verhaal vertellen je foto's?"
+        },
+        {
+          "id": "les-2-2",
+          "titel": "De Bio Formule",
+          "subtitel": "Show, Don't Tell",
+          "duur_min": 20,
+          "kernvraag": "Geeft je bio gespreksstarters?"
+        },
+        {
+          "id": "les-2-3",
+          "titel": "Platform Strategie",
+          "subtitel": "Waar zit jouw match?",
+          "duur_min": 15,
+          "kernvraag": "Ben je op het juiste platform?"
+        },
+        {
+          "id": "les-2-4",
+          "titel": "De Lancering",
+          "subtitel": "Live gaan met maximale impact",
+          "duur_min": 18,
+          "kernvraag": "Ben je klaar voor de newbie boost?"
+        }
+      ]
+    },
+    
+    {
+      "id": "module-3",
+      "nummer": 3,
+      "titel": "Slim Matchen",
+      "subtitel": "Kwaliteit boven kwantiteit",
+      "beschrijving": "Het algoritme begrijpen en voor je laten werken.",
+      "icoon": "🎯",
+      "kleur": "#9C27B0",
+      "lessen": [
+        {
+          "id": "les-3-1",
+          "titel": "Hoe Algoritmes Werken",
+          "subtitel": "Het spel begrijpen dat je speelt",
+          "duur_min": 15,
+          "kernvraag": "Werk je met of tegen het algoritme?"
+        },
+        {
+          "id": "les-3-2",
+          "titel": "Selectief Swipen",
+          "subtitel": "Minder is meer",
+          "duur_min": 18,
+          "kernvraag": "Swipe je bewust of op autopilot?"
+        },
+        {
+          "id": "les-3-3",
+          "titel": "Profielen Lezen",
+          "subtitel": "Red flags en green flags",
+          "duur_min": 20,
+          "kernvraag": "Wat zie je dat anderen missen?"
+        }
+      ]
+    },
+    
+    {
+      "id": "module-4",
+      "nummer": 4,
+      "titel": "Het Gesprek",
+      "subtitel": "Van match naar date",
+      "beschrijving": "De kunst van online communicatie die naar offline leidt.",
+      "icoon": "💬",
+      "kleur": "#2196F3",
+      "lessen": [
+        {
+          "id": "les-4-1",
+          "titel": "De Perfecte Opener",
+          "subtitel": "Voorbij 'hey' en 'hoi'",
+          "duur_min": 18,
+          "kernvraag": "Geef je iemand een reden om te reageren?"
+        },
+        {
+          "id": "les-4-2",
+          "titel": "Gesprek Gaande Houden",
+          "subtitel": "Van oppervlakkig naar interessant",
+          "duur_min": 20,
+          "kernvraag": "Stel je vragen of voer je een interview?"
+        },
+        {
+          "id": "les-4-3",
+          "titel": "Spanning en Flirten",
+          "subtitel": "Het verschil tussen vriendelijk en interessant",
+          "duur_min": 18,
+          "kernvraag": "Is er chemie in je berichten?"
+        },
+        {
+          "id": "les-4-4",
+          "titel": "Naar de Date",
+          "subtitel": "Wanneer en hoe voorstellen",
+          "duur_min": 15,
+          "kernvraag": "Wacht je te lang?"
+        },
+        {
+          "id": "les-4-5",
+          "titel": "Ghosting en Stiltes",
+          "subtitel": "Wat te doen als het stopt",
+          "duur_min": 15,
+          "kernvraag": "Neem je het persoonlijk?"
+        }
+      ]
+    },
+    
+    {
+      "id": "module-5",
+      "nummer": 5,
+      "titel": "De Eerste Date",
+      "subtitel": "Van awkward naar authentiek",
+      "beschrijving": "Alles wat je moet weten voor een succesvolle eerste ontmoeting.",
+      "icoon": "☕",
+      "kleur": "#4CAF50",
+      "lessen": [
+        {
+          "id": "les-5-1",
+          "titel": "Date Planning",
+          "subtitel": "Waar, wanneer, hoe lang",
+          "duur_min": 15,
+          "kernvraag": "Zet de setting je op voor succes?"
+        },
+        {
+          "id": "les-5-2",
+          "titel": "Gesprekken op de Date",
+          "subtitel": "Diepgang zonder interview",
+          "duur_min": 20,
+          "kernvraag": "Leer je elkaar echt kennen?"
+        },
+        {
+          "id": "les-5-3",
+          "titel": "Lichaamstaal en Signalen",
+          "subtitel": "Wat je zegt zonder woorden",
+          "duur_min": 18,
+          "kernvraag": "Wat straal je uit?"
+        },
+        {
+          "id": "les-5-4",
+          "titel": "Na de Date",
+          "subtitel": "Follow-up die werkt",
+          "duur_min": 15,
+          "kernvraag": "Hoe bouw je momentum?"
+        }
+      ]
+    },
+    
+    {
+      "id": "module-6",
+      "nummer": 6,
+      "titel": "Mindset & Groei",
+      "subtitel": "Het lange spel winnen",
+      "beschrijving": "De mentale kant van dating die niemand je leert.",
+      "icoon": "🌱",
+      "kleur": "#FF9800",
+      "lessen": [
+        {
+          "id": "les-6-1",
+          "titel": "Omgaan met Afwijzing",
+          "subtitel": "Het hoort erbij",
+          "duur_min": 18,
+          "kernvraag": "Laat je een 'nee' je stoppen?"
+        },
+        {
+          "id": "les-6-2",
+          "titel": "Patronen Doorbreken",
+          "subtitel": "Waarom je steeds hetzelfde aantrekt",
+          "duur_min": 20,
+          "kernvraag": "Wat is jouw patroon?"
+        },
+        {
+          "id": "les-6-3",
+          "titel": "Je Dating Journey",
+          "subtitel": "Van hier naar je doel",
+          "duur_min": 15,
+          "kernvraag": "Wat is je volgende stap?"
+        }
+      ]
+    }
+  ],
+  
+  "totalen": {
+    "modules": 6,
+    "lessen": 23,
+    "geschatte_uur": 6.5
+  }
+}

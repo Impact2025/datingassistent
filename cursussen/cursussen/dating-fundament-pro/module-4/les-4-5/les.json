@@ -1,0 +1,9 @@
+{
+  "meta": {"id": "les-4-5", "module": 4, "titel": "Ghosting en Stiltes", "subtitel": "Wat te doen als het stopt", "duur_minuten": 15},
+  "secties": [
+    {"id": "realiteit", "type": "normaliseren", "titel": "Ghosting is Normaal", "content": {"statistiek": "50%+ van online dating gesprekken eindigt in ghosting", "waarom": ["Te veel opties, te weinig investment", "Makkelijker dan afwijzen", "Leven kwam ertussen"]}},
+    {"id": "niet-persoonlijk", "type": "mindset", "titel": "Het Gaat Niet Om Jou", "content": {"feiten": ["Je kent deze persoon niet echt", "Zij kennen jou niet echt", "100 redenen hebben niks met jou te maken"], "reframe": "Ghosting is informatie: deze persoon is niet jouw match"}},
+    {"id": "wat-doen", "type": "actieplan", "titel": "Wat Te Doen", "content": {"bij_stilte": {"dag_1_2": "Wacht af, mensen zijn druk", "dag_3_4": "Eén follow-up is oké: 'Hey, drukke week?'", "dag_5_plus": "Move on. Geen derde bericht."}, "na_date": {"24_48u": "Stuur kort bericht als je interesse hebt", "geen_reactie": "Accepteer en ga door"}}}
+  ],
+  "reflectie": {"vraag": "Hoe reageer jij op ghosting? Is dat reactie helpend of schadelijk voor je?"}
+}

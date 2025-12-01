@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DatingAssistent Cursus Schema",
+  "description": "Universeel schema voor alle cursussen",
+  
+  "definitions": {
+    "cursus": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "titel": { "type": "string" },
+        "slug": { "type": "string" },
+        "type": { "enum": ["gratis", "basis", "intermediate", "premium"] },
+        "prijs": { "type": "number" },
+        "beschrijving": { "type": "string" },
+        "doelen": { "type": "array", "items": { "type": "string" } },
+        "duur": { "type": "string" },
+        "niveau": { "enum": ["beginner", "intermediate", "advanced"] },
+        "lessen": { "type": "array", "items": { "$ref": "#/definitions/lesOverzicht" } },
+        "werkboek": {
+          "type": "object",
+          "properties": {
+            "url": { "type": "string" },
+            "bestandsnaam": { "type": "string" }
+          }
+        },
+        "upsell": {
+          "type": "object",
+          "properties": {
+            "cursusId": { "type": "string" },
+            "titel": { "type": "string" },
+            "prijs": { "type": "number" },
+            "ctaTekst": { "type": "string" }
+          }
+        }
+      },
+      "required": ["id", "titel", "type", "lessen"]
+    },
+    
+    "lesOverzicht": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "titel": { "type": "string" },
+        "duur": { "type": "string" },
+        "volgorde": { "type": "integer" }
+      }
+    },
+    
+    "les": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "cursusId": { "type": "string" },
+        "titel": { "type": "string" },
+        "volgorde": { "type": "integer" },
+        "duur": { "type": "string" },
+        "video": {
+          "type": "object",
+          "properties": {
+            "url": { "type": "string" },
+            "duur": { "type": "string" },
+            "thumbnail": { "type": "string" }
+          }
+        },
+        "secties": { "type": "array", "items": { "$ref": "#/definitions/sectie" } },
+        "aiCoach": { "$ref": "#/definitions/aiCoachConfig" },
+        "volgendeStap": {
+          "type": "object",
+          "properties": {
+            "type": { "enum": ["les", "tool", "cursus"] },
+            "id": { "type": "string" },
+            "tekst": { "type": "string" }
+          }
+        }
+      },
+      "required": ["id", "titel", "secties"]
+    },
+    
+    "sectie": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "enum": ["video", "tekst", "kernpunten", "quiz", "reflectie", "opdracht", "tool", "tip"] },
+        "titel": { "type": "string" },
+        "inhoud": { "type": "object" }
+      },
+      "required": ["type"]
+    },
+    
+    "quizVraag": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "vraag": { "type": "string" },
+        "type": { "enum": ["multiple-choice", "true-false", "image-choice"] },
+        "opties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "tekst": { "type": "string" },
+              "correct": { "type": "boolean" },
+              "afbeelding": { "type": "string" }
+            }
+          }
+        },
+        "uitleg": {
+          "type": "object",
+          "properties": {
+            "correct": { "type": "string" },
+            "incorrect": { "type": "string" }
+          }
+        }
+      },
+      "required": ["vraag", "opties"]
+    },
+    
+    "aiCoachConfig": {
+      "type": "object",
+      "properties": {
+        "actief": { "type": "boolean" },
+        "context": { "type": "string" },
+        "suggesties": { "type": "array", "items": { "type": "string" } },
+        "triggerMomenten": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

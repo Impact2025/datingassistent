@@ -1,0 +1,356 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DatingAssistent Cursus Schema",
+  "description": "Universeel schema voor alle cursussen",
+  "version": "1.0.0",
+  
+  "definitions": {
+    
+    "cursus": {
+      "type": "object",
+      "required": ["id", "titel", "slug", "type", "lessen"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unieke identifier"
+        },
+        "titel": {
+          "type": "string",
+          "description": "Display titel"
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "URL-friendly naam"
+        },
+        "subtitel": {
+          "type": "string"
+        },
+        "beschrijving": {
+          "type": "string",
+          "description": "Korte beschrijving (max 200 tekens)"
+        },
+        "langeBeschrijving": {
+          "type": "string",
+          "description": "Volledige beschrijving voor salespagina"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["gratis", "basis", "intermediate", "premium"]
+        },
+        "prijs": {
+          "type": "number",
+          "description": "Prijs in euro's (0 voor gratis)"
+        },
+        "duur": {
+          "type": "string",
+          "description": "Geschatte totale duur (bijv. '25 minuten')"
+        },
+        "niveau": {
+          "type": "string",
+          "enum": ["beginner", "gemiddeld", "gevorderd"]
+        },
+        "thumbnail": {
+          "type": "string",
+          "description": "Pad naar thumbnail afbeelding"
+        },
+        "doelen": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Wat leer je? (3-5 punten)"
+        },
+        "voorWie": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Voor wie is deze cursus?"
+        },
+        "vereisten": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Voorkennis/vereisten"
+        },
+        "tools": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Gekoppelde AI tools (bijv. 'foto-checker')"
+        },
+        "lessen": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/les" }
+        },
+        "werkboek": {
+          "type": "object",
+          "properties": {
+            "url": { "type": "string" },
+            "format": { "type": "string", "enum": ["pdf", "docx"] }
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "auteur": { "type": "string" },
+            "creatiedatum": { "type": "string", "format": "date" },
+            "laatstBijgewerkt": { "type": "string", "format": "date" },
+            "versie": { "type": "string" }
+          }
+        }
+      }
+    },
+    
+    "les": {
+      "type": "object",
+      "required": ["id", "titel", "volgorde", "secties"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "titel": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "subtitel": {
+          "type": "string"
+        },
+        "volgorde": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duur": {
+          "type": "string",
+          "description": "Geschatte duur (bijv. '7 minuten')"
+        },
+        "video": {
+          "$ref": "#/definitions/video"
+        },
+        "secties": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/sectie" }
+        },
+        "aiCoach": {
+          "$ref": "#/definitions/aiCoachConfig"
+        },
+        "volgendeStap": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["les", "tool", "cursus"] },
+            "id": { "type": "string" },
+            "tekst": { "type": "string" }
+          }
+        }
+      }
+    },
+    
+    "video": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "HeyGen video URL (later toe te voegen)"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "duur": {
+          "type": "string"
+        },
+        "script": {
+          "type": "string",
+          "description": "Pad naar script.md bestand"
+        },
+        "slides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "volgorde": { "type": "integer" },
+              "bestand": { "type": "string" },
+              "startTijd": { "type": "string" },
+              "eindTijd": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    
+    "sectie": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["video", "tekst", "kernpunten", "quiz", "reflectie", "opdracht", "tool", "download", "tip", "waarschuwing"]
+        },
+        "titel": { "type": "string" },
+        "inhoud": {
+          "oneOf": [
+            { "$ref": "#/definitions/tekstInhoud" },
+            { "$ref": "#/definitions/kernpuntenInhoud" },
+            { "$ref": "#/definitions/quizInhoud" },
+            { "$ref": "#/definitions/reflectieInhoud" },
+            { "$ref": "#/definitions/opdrachtInhoud" },
+            { "$ref": "#/definitions/toolInhoud" },
+            { "$ref": "#/definitions/downloadInhoud" }
+          ]
+        }
+      }
+    },
+    
+    "tekstInhoud": {
+      "type": "object",
+      "properties": {
+        "body": { "type": "string" },
+        "format": { "type": "string", "enum": ["plain", "markdown", "html"] }
+      }
+    },
+    
+    "kernpuntenInhoud": {
+      "type": "object",
+      "properties": {
+        "punten": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "icon": { "type": "string" },
+              "titel": { "type": "string" },
+              "beschrijving": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    
+    "quizInhoud": {
+      "type": "object",
+      "properties": {
+        "introTekst": { "type": "string" },
+        "vragen": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/quizVraag" }
+        },
+        "succesMessage": { "type": "string" },
+        "minimumScore": { "type": "integer" }
+      }
+    },
+    
+    "quizVraag": {
+      "type": "object",
+      "required": ["id", "vraag", "type"],
+      "properties": {
+        "id": { "type": "string" },
+        "vraag": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["multiple-choice", "true-false", "image-choice", "ranking"]
+        },
+        "afbeelding": { "type": "string" },
+        "opties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "tekst": { "type": "string" },
+              "afbeelding": { "type": "string" },
+              "correct": { "type": "boolean" }
+            }
+          }
+        },
+        "uitleg": {
+          "type": "object",
+          "properties": {
+            "correct": { "type": "string" },
+            "incorrect": { "type": "string" }
+          }
+        },
+        "punten": { "type": "integer", "default": 1 }
+      }
+    },
+    
+    "reflectieInhoud": {
+      "type": "object",
+      "properties": {
+        "introTekst": { "type": "string" },
+        "vragen": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "vraag": { "type": "string" },
+              "placeholder": { "type": "string" },
+              "minLengte": { "type": "integer" }
+            }
+          }
+        },
+        "aiAnalyse": { "type": "boolean" }
+      }
+    },
+    
+    "opdrachtInhoud": {
+      "type": "object",
+      "properties": {
+        "beschrijving": { "type": "string" },
+        "stappen": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "tijdsduur": { "type": "string" },
+        "benodigdheden": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "uploadMogelijk": { "type": "boolean" }
+      }
+    },
+    
+    "toolInhoud": {
+      "type": "object",
+      "properties": {
+        "toolId": { "type": "string" },
+        "introTekst": { "type": "string" },
+        "ctaTekst": { "type": "string" }
+      }
+    },
+    
+    "downloadInhoud": {
+      "type": "object",
+      "properties": {
+        "titel": { "type": "string" },
+        "beschrijving": { "type": "string" },
+        "url": { "type": "string" },
+        "format": { "type": "string" },
+        "grootte": { "type": "string" }
+      }
+    },
+    
+    "aiCoachConfig": {
+      "type": "object",
+      "properties": {
+        "actief": { "type": "boolean", "default": true },
+        "context": {
+          "type": "string",
+          "description": "Specifieke instructies voor Iris in deze les"
+        },
+        "suggesties": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Voorgestelde vragen die gebruiker kan stellen"
+        },
+        "triggerMomenten": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "trigger": { "type": "string" },
+              "bericht": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

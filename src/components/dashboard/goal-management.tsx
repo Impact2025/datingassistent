@@ -27,7 +27,6 @@ import {
   Puzzle
 } from 'lucide-react';
 import { useUser } from '@/providers/user-provider';
-import { GoalsOnboardingModal } from './goals-onboarding-modal';
 
 interface UserGoal {
   id: number;
@@ -53,7 +52,6 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
   const [goals, setGoals] = useState<UserGoal[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddGoal, setShowAddGoal] = useState(false);
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [newGoal, setNewGoal] = useState({
     title: '',
     description: '',
@@ -66,14 +64,6 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
     if (user?.id) {
       loadGoals();
 
-      // Check if user has seen goals onboarding
-      const hasSeenOnboarding = localStorage.getItem('goals_onboarding_watched');
-      if (!hasSeenOnboarding) {
-        // Show onboarding after a short delay to let goals load
-        setTimeout(() => {
-          setShowOnboarding(true);
-        }, 1000);
-      }
     }
   }, [user]);
 
@@ -207,8 +197,121 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
   }
 
 
+  // Check if user has seen goals onboarding
+  const hasSeenOnboarding = localStorage.getItem('goals_onboarding_watched');
+
   return (
     <div className="space-y-6">
+      {/* Welcome Section - Only show for new users */}
+      {!hasSeenOnboarding && (
+        <div className="space-y-6">
+          {/* Header Card */}
+          <Card className="bg-white border-0 shadow-sm">
+            <CardContent className="p-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <Target className="w-8 h-8 text-pink-500" />
+                </div>
+
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                  Welkom bij je Doelen Dashboard
+                </h2>
+
+                <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                  Leer hoe je doelen stelt en je voortgang bijhoudt voor maximale dating success.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="bg-white border-0 shadow-sm">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-6 h-6 text-pink-500" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Stel Slimme Doelen</h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Specifiek, meetbaar en haalbaar - voor echte resultaten.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white border-0 shadow-sm">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-6 h-6 text-pink-500" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Track Voortgang</h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Visualiseer je success en blijf gemotiveerd.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white border-0 shadow-sm">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-6 h-6 text-pink-500" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Krijg Ondersteuning</h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      AI coach en community staan voor je klaar.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Action Card */}
+          <Card className="bg-white border-0 shadow-sm">
+            <CardContent className="p-8">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Klaar om te beginnen?
+                </h3>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    onClick={() => setShowAddGoal(true)}
+                    size="lg"
+                    className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3"
+                  >
+                    <Plus className="w-5 h-5 mr-2" />
+                    Start met je Eerste Doel
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => {
+                      localStorage.setItem('goals_onboarding_watched', 'true');
+                      // Force re-render by updating state
+                      window.location.reload();
+                    }}
+                    className="px-8 py-3 border-gray-200 hover:bg-gray-50"
+                  >
+                    Misschien Later
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       <div className="flex justify-end mb-4">
         <Button onClick={() => setShowAddGoal(true)} className="flex items-center gap-2">
           <Plus className="w-4 h-4" />
@@ -286,7 +389,6 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
                       {goal.tool_link && (
                         <Button
                           size="sm"
-                          variant="default"
                           className="bg-pink-500 hover:bg-pink-600"
                           onClick={() => onTabChange?.(goal.tool_link!)}
                         >
@@ -368,7 +470,6 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
                       {goal.tool_link && (
                         <Button
                           size="sm"
-                          variant="default"
                           className="bg-pink-500 hover:bg-pink-600"
                           onClick={() => onTabChange?.(goal.tool_link!)}
                         >
@@ -522,11 +623,6 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
         </Card>
       )}
 
-      {/* Goals Onboarding Modal */}
-      <GoalsOnboardingModal
-        isOpen={showOnboarding}
-        onClose={() => setShowOnboarding(false)}
-      />
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

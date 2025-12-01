@@ -1,0 +1,8 @@
+{
+  "meta": {"id": "les-5-2", "module": 5, "titel": "Gesprekken op de Date", "subtitel": "Diepgang zonder interview", "duur_minuten": 20},
+  "secties": [
+    {"id": "geen-interview", "type": "waarschuwing", "titel": "Vermijd het Interview", "content": {"probleem": "Vraag-antwoord-vraag-antwoord is saai en awkward", "oplossing": "Gesprekken, geen ondervragingen"}},
+    {"id": "onderwerpen", "type": "framework", "titel": "Goede Gespreksonderwerpen", "content": {"categorieen": [{"naam": "Passies en Interesses", "voorbeelden": ["Waar word je enthousiast van?", "Wat doe je als je vrij hebt?"]}, {"naam": "Ervaringen en Verhalen", "voorbeelden": ["Beste reis ooit?", "Grappigste moment op werk?"]}, {"naam": "Dromen en Doelen", "voorbeelden": ["Waar zie je jezelf over 5 jaar?", "Bucket list item?"]}], "vermijd": ["Exen", "Politiek (eerste date)", "Klachten over dating", "Salaris/financiën"]}},
+    {"id": "36-vragen", "type": "techniek", "titel": "Diepgang Creëren", "content": {"methode": "Ga van oppervlakkig naar persoonlijk", "voorbeelden": [{"level": "Light", "vraag": "Wat is je favoriete manier om een zondag door te brengen?"}, {"level": "Medium", "vraag": "Wat is iets dat weinig mensen van je weten?"}, {"level": "Deep", "vraag": "Wat waardeer je het meest in een vriendschap?"}], "tip": "Ga alleen dieper als de ander ook opent"}}
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "id": "les-2-3",
+    "module": 2,
+    "volgorde": 3,
+    "titel": "Platform Strategie",
+    "subtitel": "Waar zit jouw match?",
+    "duur_minuten": 15,
+    "kernvraag": "Ben je op het juiste platform?"
+  },
+
+  "secties": [
+    {
+      "id": "landschap",
+      "type": "overzicht",
+      "titel": "Het Nederlandse Dating Landschap",
+      "content": {
+        "platforms": [
+          {"naam": "Tinder", "icon": "🔥", "doelgroep": "18-35, breedste publiek", "intentie": "Casual tot serieus", "sfeer": "Snel, oppervlakkig maar groot bereik"},
+          {"naam": "Bumble", "icon": "🐝", "doelgroep": "22-38, meer vrouwen", "intentie": "Serieuzer dan Tinder", "sfeer": "Vrouwen nemen initiatief"},
+          {"naam": "Hinge", "icon": "💜", "doelgroep": "24-40, relatie-zoekers", "intentie": "Relatie-focus", "sfeer": "Diepere profielen, langzamer"},
+          {"naam": "Lexa/Parship", "icon": "❤️", "doelgroep": "30-55, serieus", "intentie": "Relatie", "sfeer": "Oudere doelgroep, vragenlijsten"},
+          {"naam": "Inner Circle", "icon": "☕", "doelgroep": "25-42, professionals", "intentie": "Serieus", "sfeer": "Selectief, steden"}
+        ]
+      }
+    },
+
+    {
+      "id": "keuze-matrix",
+      "type": "beslisboom",
+      "titel": "Welk Platform Past Bij Jou?",
+      "content": {
+        "scenarios": [
+          {"zoekt": "Casual/fun", "aanbeveling": "Tinder + Bumble", "waarom": "Grootste pools, snelste tempo"},
+          {"zoekt": "Serieuze relatie", "aanbeveling": "Hinge + Bumble", "waarom": "Beste balans kwaliteit/kwantiteit"},
+          {"zoekt": "30+ serieus", "aanbeveling": "Hinge + Lexa", "waarom": "Meer mensen in je leeftijd met dezelfde intentie"},
+          {"zoekt": "Professional", "aanbeveling": "Inner Circle + Hinge", "waarom": "Selectiever, meer gelijkgestemden"}
+        ],
+        "gouden_regel": "Maximaal 2 platforms tegelijk. Focus > verspreiding."
+      }
+    },
+
+    {
+      "id": "algoritme",
+      "type": "uitleg",
+      "titel": "Hoe Algoritmes Werken",
+      "content": {
+        "boosters": [
+          "Volledig ingevuld profiel",
+          "Regelmatig actief (niet 24/7)",
+          "Gesprekken die je start",
+          "Berichten die beantwoord worden"
+        ],
+        "killers": [
+          "Account verwijderen/opnieuw maken",
+          "Alles naar rechts swipen",
+          "Matches laten liggen",
+          "Uren achter elkaar swipen"
+        ],
+        "kernboodschap": "Kwaliteit > Kwantiteit. De apps belonen selectief gedrag."
+      }
+    },
+
+    {
+      "id": "newbie-boost",
+      "type": "strategie",
+      "titel": "De Newbie Boost",
+      "content": {
+        "wat": "Nieuwe accounts krijgen tijdelijk meer zichtbaarheid",
+        "timing": {
+          "week_1_2": "Maximale boost - zorg dat profiel 100% klaar is VOORDAT je live gaat",
+          "week_3_4": "Boost neemt af - nu telt je gedrag",
+          "maand_2_plus": "Alleen je 'score' telt"
+        },
+        "advies": "Maak je profiel perfect VOORDAT je start. Je krijgt maar één eerste indruk bij het algoritme."
+      }
+    },
+
+    {
+      "id": "premium-waarde",
+      "type": "analyse",
+      "titel": "Premium Betalen - Waard of Niet?",
+      "content": {
+        "waard": [
+          "Zien wie je geliked heeft (tijdsbesparing)",
+          "Onbeperkt likes (als je selectief blijft)",
+          "Locatie wijzigen (voor reizen)",
+          "Super likes / Roses"
+        ],
+        "niet_waard": [
+          "Boosts (tijdelijk effect, duur)",
+          "VIP status (weinig verschil)",
+          "Alle extra's zonder goed profiel",
+          "Betalen terwijl je niet actief bent"
+        ],
+        "advies": "Start gratis. Upgrade alleen als je al matches krijgt maar sneller wilt."
+      }
+    }
+  ],
+
+  "opdracht": {
+    "titel": "Kies Je Platforms",
+    "stappen": [
+      "Bepaal: wat zoek ik? (casual/relatie/serieus)",
+      "Kies je primaire platform",
+      "Kies je secundaire platform",
+      "Verwijder alle andere dating apps"
+    ]
+  }
+}

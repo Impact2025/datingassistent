@@ -1,0 +1,266 @@
+{
+  "meta": {
+    "id": "les-1-1",
+    "module": 1,
+    "volgorde": 1,
+    "titel": "Wat Zoek Je Écht?",
+    "subtitel": "Voorbij 'gewoon iemand leuk'",
+    "duur_minuten": 20,
+    "kernvraag": "Date je vanuit eenzaamheid of vanuit verlangen?",
+    "leerdoelen": [
+      "Je ware motivatie voor dating ontdekken",
+      "Het verschil tussen eenzaamheid en verlangen begrijpen",
+      "Concrete dating doelen kunnen formuleren"
+    ]
+  },
+
+  "intro": {
+    "type": "video",
+    "duur_sec": 75,
+    "script": "les-1-1-video.md",
+    "thumbnail": "les-1-1-thumb.jpg"
+  },
+
+  "secties": [
+    {
+      "id": "opening",
+      "type": "hook",
+      "content": {
+        "vraag": "Waarom wil je daten?",
+        "opties": [
+          {"tekst": "Ik wil een relatie", "tag": "relatie"},
+          {"tekst": "Ik wil gewoon wat plezier", "tag": "casual"},
+          {"tekst": "Ik weet het eigenlijk niet zo goed", "tag": "onzeker"},
+          {"tekst": "Ik ben eenzaam", "tag": "eenzaam"}
+        ],
+        "context": "Er is geen goed of fout antwoord. Maar je antwoord bepaalt alles wat volgt."
+      }
+    },
+
+    {
+      "id": "probleem",
+      "type": "insight",
+      "titel": "Het Probleem Met 'Gewoon Iemand'",
+      "content": [
+        {
+          "type": "contrast",
+          "links": {
+            "label": "Wat mensen zeggen",
+            "items": ["Ik wil gewoon iemand leuk", "Iemand om dingen mee te doen", "Een partner"]
+          },
+          "rechts": {
+            "label": "Wat dit eigenlijk betekent",
+            "items": ["Ik wil niet meer alleen zijn", "Ik zoek een oplossing voor mijn eenzaamheid", "Ik wil dat iemand mij compleet maakt"]
+          }
+        },
+        {
+          "type": "kernpunt",
+          "tekst": "Hier gaat het mis: je zoekt een OPLOSSING in plaats van een AANVULLING.",
+          "toelichting": "Een relatie kan je leven verrijken. Maar het kan geen gat vullen dat er al was."
+        }
+      ]
+    },
+
+    {
+      "id": "eenzaamheid-vs-verlangen",
+      "type": "framework",
+      "titel": "Eenzaamheid vs. Verlangen naar een Partner",
+      "content": {
+        "intro": "Dit klinkt misschien als hetzelfde, maar het verschil is cruciaal.",
+        "vergelijking": [
+          {
+            "type": "Eenzaamheid",
+            "kenmerken": [
+              "Urgentie - 'Ik moet NU iemand vinden'",
+              "Wanhoop - 'Wat als ik alleen blijf?'",
+              "Compromis - 'Ik neem wel wat ik kan krijgen'",
+              "Validatie zoeken - 'Iemand moet mij willen'"
+            ],
+            "gevolg": "Je trekt de verkeerde mensen aan of schrikt de juiste af",
+            "kleur": "warning"
+          },
+          {
+            "type": "Verlangen naar Partner",
+            "kenmerken": [
+              "Geduld - 'De juiste persoon is het wachten waard'",
+              "Standaarden - 'Ik weet wat ik zoek'",
+              "Compleetheid - 'Ik ben al oké, een partner is een bonus'",
+              "Selectief - 'Niet iedereen past bij mij'"
+            ],
+            "gevolg": "Je straalt zelfvertrouwen uit en trekt betere matches aan",
+            "kleur": "success"
+          }
+        ],
+        "conclusie": "Je kunt pas echt connecten als je niet NODIG hebt dat het werkt."
+      }
+    },
+
+    {
+      "id": "check",
+      "type": "zelfreflectie",
+      "titel": "De Eerlijke Check",
+      "content": {
+        "intro": "Beantwoord deze vragen eerlijk voor jezelf:",
+        "vragen": [
+          {
+            "vraag": "Check je dating apps als je je verveelt of eenzaam voelt?",
+            "ja_betekent": "Je gebruikt dating als afleiding, niet als zoektocht"
+          },
+          {
+            "vraag": "Zou je ja zeggen tegen iemand die 'oké' is omdat je bang bent alleen te blijven?",
+            "ja_betekent": "Je standaarden worden bepaald door angst, niet door wat je wilt"
+          },
+          {
+            "vraag": "Voel je je slechter over jezelf na een avond swipen?",
+            "ja_betekent": "Dating voedt je onzekerheid in plaats van je te helpen"
+          },
+          {
+            "vraag": "Denk je dat een relatie je gelukkiger zal maken?",
+            "ja_betekent": "Je legt de verantwoordelijkheid voor je geluk bij iemand anders"
+          },
+          {
+            "vraag": "Ben je jaloers op vrienden in relaties?",
+            "ja_betekent": "Je focust op wat je mist, niet op wat je hebt"
+          }
+        ],
+        "interpretatie": {
+          "0-1": "Je lijkt vanuit een gezonde plek te daten. Goed bezig.",
+          "2-3": "Er zit wat eenzaamheid in je motivatie. Niet erg, maar wees je ervan bewust.",
+          "4-5": "Je date waarschijnlijk vanuit eenzaamheid. Dit gaan we aanpakken."
+        }
+      }
+    },
+
+    {
+      "id": "shift",
+      "type": "transformatie",
+      "titel": "De Mindset Shift",
+      "content": {
+        "van_naar": [
+          {
+            "van": "Ik wil niet meer alleen zijn",
+            "naar": "Ik wil iemand die bij mij past",
+            "waarom": "Focus op kwaliteit, niet op het oplossen van eenzaamheid"
+          },
+          {
+            "van": "Ik hoop dat iemand mij leuk vindt",
+            "naar": "Ik selecteer wie bij mij past",
+            "waarom": "Jij kiest ook, niet alleen zij"
+          },
+          {
+            "van": "Een relatie maakt me gelukkig",
+            "naar": "Een relatie verrijkt mijn al goede leven",
+            "waarom": "Niemand kan je geluk voor je regelen"
+          }
+        ],
+        "kernboodschap": "Je bent al compleet. Een partner is een bonus, geen noodzaak."
+      }
+    },
+
+    {
+      "id": "doelen",
+      "type": "praktijk",
+      "titel": "Van Vaag naar Concreet",
+      "content": {
+        "intro": "Vage doelen leiden tot vage resultaten. Laten we specifiek worden.",
+        "voorbeelden": {
+          "vaag": ["Iemand leuk vinden", "Een relatie krijgen", "Gelukkig worden"],
+          "concreet": [
+            "Elke maand 2-3 kwalitatieve dates hebben",
+            "Binnen 6 maanden iemand ontmoeten waarmee ik een tweede date wil",
+            "Leren communiceren wat ik zoek zonder dat het wanhopig klinkt"
+          ],
+          "proces": [
+            "Deze week mijn profiel optimaliseren",
+            "Bewuster swipen - kwaliteit boven kwantiteit",
+            "Na elke date reflecteren: wat heb ik geleerd?"
+          ]
+        },
+        "tip": "Procesdoelen > Resultaatdoelen. Je kunt niet controleren of iemand je leuk vindt, wel hoe je jezelf presenteert."
+      }
+    },
+
+    {
+      "id": "dealbreakers",
+      "type": "oefening",
+      "titel": "Jouw Niet-Onderhandelbaren",
+      "content": {
+        "intro": "Voordat je gaat swipen, moet je weten wat je zoekt én wat je absoluut niet accepteert.",
+        "categorieen": [
+          {
+            "naam": "Harde Dealbreakers",
+            "beschrijving": "Hier ga je NOOIT overheen, ongeacht hoe leuk iemand is",
+            "voorbeelden": ["Roken", "Geen kinderwens (als jij die wel hebt)", "Andere kernwaarden"]
+          },
+          {
+            "naam": "Zachte Dealbreakers",
+            "beschrijving": "Liever niet, maar voor de juiste persoon kun je het overwegen",
+            "voorbeelden": ["Afstand", "Bepaalde hobby's", "Leeftijdsverschil"]
+          },
+          {
+            "naam": "Voorkeuren",
+            "beschrijving": "Leuk om te hebben, maar geen criteria om iemand af te wijzen",
+            "voorbeelden": ["Lengte", "Specifieke interesses", "Uiterlijke kenmerken"]
+          }
+        ],
+        "waarschuwing": "Pas op: te veel 'harde dealbreakers' kan een bescherming zijn tegen echte intimiteit."
+      }
+    }
+  ],
+
+  "quiz": {
+    "id": "quiz-1-1",
+    "titel": "Check Je Begrip",
+    "vragen": [
+      {
+        "vraag": "Wat is het verschil tussen daten vanuit eenzaamheid en vanuit verlangen?",
+        "opties": [
+          "Er is geen verschil",
+          "Eenzaamheid leidt tot wanhoop en compromissen, verlangen tot geduld en standaarden",
+          "Verlangen is intenser dan eenzaamheid",
+          "Eenzaamheid is alleen voor singles"
+        ],
+        "correct": 1,
+        "feedback": "Precies. Vanuit eenzaamheid neem je genoegen met minder. Vanuit verlangen selecteer je bewust."
+      },
+      {
+        "vraag": "Waarom zijn procesdoelen beter dan resultaatdoelen?",
+        "opties": [
+          "Ze zijn makkelijker te behalen",
+          "Je kunt ze controleren - het resultaat niet",
+          "Ze klinken beter",
+          "Er is geen verschil"
+        ],
+        "correct": 1,
+        "feedback": "Je kunt niet controleren of iemand je leuk vindt. Wel hoeveel moeite je doet en hoe je je presenteert."
+      }
+    ]
+  },
+
+  "reflectie": {
+    "id": "reflectie-1-1",
+    "vraag": "Schrijf in 3 zinnen op wat je ECHT zoekt in een partner. Niet wat je denkt te moeten zeggen, maar wat je echt wilt.",
+    "placeholder": "Ik zoek iemand die...",
+    "ai_coach_context": "Help de gebruiker om concreet en eerlijk te zijn. Als ze vage dingen schrijven als 'iemand leuk', vraag door. Wat betekent 'leuk' voor hen? Welke eigenschappen?"
+  },
+
+  "opdracht": {
+    "titel": "Je Dating Manifest",
+    "stappen": [
+      "Schrijf 3 harde dealbreakers op",
+      "Schrijf 3 dingen die je zoekt (specifiek!)",
+      "Beantwoord: 'Waarom wil ik op dit moment daten?' in 2-3 zinnen",
+      "Als je antwoord 'eenzaamheid' bevat - dat is oké, maar erken het"
+    ],
+    "ai_tool": {
+      "id": "chat-coach",
+      "prompt": "Laat de gebruiker hun manifest delen en geef feedback. Wees direct maar empathisch. Help hen om eerlijker en specifieker te worden."
+    }
+  },
+
+  "volgende": {
+    "les": "les-1-2",
+    "titel": "De Mythe van De Vonk",
+    "teaser": "Waarom 'geen klik' na één date niet betekent wat je denkt."
+  }
+}

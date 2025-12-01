@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-5-5",
+    "module": 5,
+    "volgorde": 5,
+    "titel": "De Lange Termijn Visie",
+    "subtitel": "Van verliefdheid naar volwassen liefde",
+    "duur_minuten": 20,
+    "kernvraag": "Bouw je voor nu of voor altijd?",
+    "leerdoelen": [
+      "Begrijpen wat de lange termijn visie betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Van verliefdheid naar volwassen liefde. De kernvraag die we beantwoorden: Bouw je voor nu of voor altijd?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Bouw je voor nu of voor altijd?",
+        "context": "Neem even de tijd om na te denken over de lange termijn visie in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "De Lange Termijn Visie",
+      "content": {
+        "intro": "Van verliefdheid naar volwassen liefde",
+        "items": [
+          {
+            "naam": "Fase 1: Verliefdheid",
+            "desc": "0-2 jaar, hormonen, idealisering"
+          },
+          {
+            "naam": "Fase 2: Realisatie",
+            "desc": "2-5 jaar, echte persoon zien"
+          },
+          {
+            "naam": "Fase 3: Volwassen liefde",
+            "desc": "5+ jaar, bewuste keuze elke dag"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je de lange termijn visie begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe de lange termijn visie zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-5-5",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van De Lange Termijn Visie?",
+        "opties": [
+          "0-2 jaar, hormonen, idealisering",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-5-5",
+    "vraag": "Hoe herken je de lange termijn visie in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op De Lange Termijn Visie. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas De Lange Termijn Visie toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over de lange termijn visie in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me de lange termijn visie toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

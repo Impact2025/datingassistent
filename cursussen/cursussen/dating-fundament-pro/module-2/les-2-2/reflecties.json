@@ -1,0 +1,28 @@
+{
+  "reflecties": [
+    {
+      "id": "reflectie-1",
+      "sectie": "na_formule",
+      "type": "open_vraag",
+      "vraag": "Schrijf 5 specifieke dingen over jezelf die je zou kunnen gebruiken in je bio. Denk aan: hobby's, gewoontes, grappige eigenschappen, dingen waar je trots op bent.",
+      "placeholder": "Bijvoorbeeld: Ik maak elke zondag pannenkoeken voor mijn neefjes...",
+      "min_karakters": 50,
+      "ai_coach_prompt": "Help de gebruiker om meer specifieke en interessante details te bedenken als ze vastlopen. Vraag door op wat ze leuk vinden, wat hun vrienden over hen zouden zeggen, of wat hun weekend routine is."
+    },
+    {
+      "id": "reflectie-2", 
+      "sectie": "opdracht",
+      "type": "bio_schrijven",
+      "vraag": "Schrijf nu je bio met de Hook + Substance + Invite formule:",
+      "placeholder": "Typ hier je nieuwe bio...",
+      "min_karakters": 80,
+      "max_karakters": 500,
+      "ai_coach_prompt": "Analyseer de bio op de 3 onderdelen (Hook, Substance, Invite). Geef specifieke feedback op elk onderdeel. Wees positief maar eerlijk. Geef concrete suggesties voor verbetering.",
+      "tool_koppeling": {
+        "tool_id": "profiel-coach",
+        "auto_trigger": true,
+        "cta": "Check met AI Profiel Coach"
+      }
+    }
+  ]
+}

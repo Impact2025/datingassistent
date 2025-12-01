@@ -35,6 +35,7 @@ interface WeeklyLogData {
   };
   weekStart: string;
   weekEnd: string;
+  irisInsight?: string;
 }
 
 interface ActivityOption {
@@ -176,7 +177,8 @@ export function DatingWeekLogger({ onComplete, onCancel }: DatingWeekLoggerProps
       activities: selectedActivities,
       activityDetails,
       weekStart: weekDates.start,
-      weekEnd: weekDates.end
+      weekEnd: weekDates.end,
+      irisInsight: irisInsight || undefined
     };
     onComplete(logData);
   };
@@ -713,6 +715,24 @@ function ActivityDetailCard({
   );
 }
 
+// Helper function to convert markdown to formatted HTML
+function formatMarkdownToHtml(text: string): string {
+  if (!text) return '';
+
+  // Split into paragraphs by double newlines or **Section Headers**
+  let formatted = text
+    // Convert **bold** to <strong>
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-purple-700 font-semibold">$1</strong>')
+    // Convert *italic* to <em>
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    // Convert newlines to <br> for single line breaks
+    .replace(/\n\n/g, '</p><p class="mb-3">')
+    .replace(/\n/g, '<br />');
+
+  // Wrap in paragraph tags
+  return `<p class="mb-3">${formatted}</p>`;
+}
+
 function IrisInsightStep({
   insight,
   isGenerating
@@ -720,9 +740,11 @@ function IrisInsightStep({
   insight: string;
   isGenerating: boolean;
 }) {
+  const formattedInsight = formatMarkdownToHtml(insight);
+
   return (
     <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
-      <CardHeader>
+      <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-purple-600" />
           Iris Insight
@@ -735,9 +757,12 @@ function IrisInsightStep({
             <span>Iris analyseert je week...</span>
           </div>
         ) : (
-          <div className="prose prose-sm max-w-none">
+          <div className="text-gray-700 leading-relaxed max-h-[300px] overflow-y-auto pr-2">
             {insight ? (
-              <div dangerouslySetInnerHTML={{ __html: insight }} />
+              <div
+                className="space-y-2"
+                dangerouslySetInnerHTML={{ __html: formattedInsight }}
+              />
             ) : (
               <p className="text-muted-foreground">Geen insight beschikbaar</p>
             )}
@@ -757,6 +782,16 @@ function ConfirmationStep({
   activityDetails: {[key: string]: any};
   insight: string;
 }) {
+  // Get a clean preview without markdown
+  const getCleanPreview = (text: string, maxLength: number = 200) => {
+    const clean = text
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/\*(.*?)\*/g, '$1')
+      .replace(/\n/g, ' ')
+      .trim();
+    return clean.length > maxLength ? clean.substring(0, maxLength) + '...' : clean;
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -781,8 +816,8 @@ function ConfirmationStep({
           {insight && (
             <div>
               <h4 className="font-medium mb-2">Iris zegt:</h4>
-              <div className="text-sm text-muted-foreground bg-gray-50 p-3 rounded-lg">
-                {insight.substring(0, 200)}...
+              <div className="text-sm text-gray-600 bg-purple-50 p-3 rounded-lg border border-purple-100">
+                {getCleanPreview(insight)}
               </div>
             </div>
           )}

@@ -1,0 +1,98 @@
+{
+  "id": "profielfoto-5-stappen",
+  "titel": "De Perfecte Profielfoto in 5 Stappen",
+  "slug": "profielfoto",
+  "subtitel": "Van onzichtbaar naar onweerstaanbaar",
+  "beschrijving": "Leer de geheimen achter profielfoto's die wél werken. Gebaseerd op psychologie en data van duizenden succesvolle profielen.",
+  "langeBeschrijving": "Je profielfoto is het belangrijkste element van je datingprofiel. Onderzoek toont aan dat 83% van de eerste indruk wordt bepaald door je foto's - en je hebt slechts 7 seconden om indruk te maken.\n\nIn deze gratis cursus ontdek je:\n• De 3 grootste fouten die bijna iedereen maakt\n• De psychologie achter een aantrekkelijke glimlach\n• Praktische technieken voor belichting, achtergrond en compositie\n\nNa deze cursus kun je direct aan de slag met het verbeteren van je profielfoto's. En met onze AI Foto Checker krijg je persoonlijke feedback op jouw foto's.",
+  
+  "type": "gratis",
+  "prijs": 0,
+  "duur": "22 minuten",
+  "niveau": "beginner",
+  
+  "thumbnail": "/cursussen/profielfoto/thumbnail.jpg",
+  
+  "doelen": [
+    "De 3 meest gemaakte foto-fouten herkennen en vermijden",
+    "Begrijpen waarom bepaalde foto's beter werken dan andere",
+    "Praktische technieken toepassen voor betere foto's",
+    "Je eigen foto's kritisch kunnen beoordelen",
+    "Direct actie ondernemen met de AI Foto Checker"
+  ],
+  
+  "voorWie": [
+    "Singles die net beginnen met online daten",
+    "Mensen die weinig matches krijgen",
+    "Iedereen die twijfelt over hun profielfoto's",
+    "Mensen die hun profiel willen verbeteren"
+  ],
+  
+  "vereisten": [],
+  
+  "tools": [
+    "foto-checker",
+    "profiel-optimalisatie"
+  ],
+  
+  "lessen": [
+    {
+      "id": "profielfoto-les-1",
+      "titel": "De 3 Grote Foto-Fouten",
+      "slug": "foto-fouten",
+      "subtitel": "Wat je absoluut moet vermijden",
+      "volgorde": 1,
+      "duur": "7 minuten"
+    },
+    {
+      "id": "profielfoto-les-2", 
+      "titel": "De Psychologie van een Goede Lach",
+      "slug": "glimlach",
+      "subtitel": "Waarom sommige foto's gewoon werken",
+      "volgorde": 2,
+      "duur": "7 minuten"
+    },
+    {
+      "id": "profielfoto-les-3",
+      "titel": "De Technische Checklist",
+      "slug": "techniek",
+      "subtitel": "Belichting, achtergrond & compositie",
+      "volgorde": 3,
+      "duur": "8 minuten"
+    }
+  ],
+  
+  "werkboek": {
+    "url": "/cursussen/profielfoto/werkboek.pdf",
+    "format": "pdf"
+  },
+  
+  "metadata": {
+    "auteur": "DatingAssistent",
+    "creatiedatum": "2024-12-01",
+    "laatstBijgewerkt": "2024-12-01",
+    "versie": "1.0.0"
+  },
+  
+  "conversie": {
+    "volgendeStap": {
+      "type": "cursus",
+      "id": "dating-fundament",
+      "tekst": "Klaar voor de volgende stap? In de Dating Fundament cursus leer je alles over je complete profiel, gespreksvaardigheden en meer."
+    },
+    "upsellMomenten": [
+      {
+        "naLes": 1,
+        "type": "tool",
+        "id": "foto-checker",
+        "tekst": "Upload je foto voor 1 gratis tip"
+      },
+      {
+        "naLes": 3,
+        "type": "cursus", 
+        "id": "dating-fundament",
+        "tekst": "Wil je meer? Ontdek de complete Dating Fundament cursus"
+      }
+    ]
+  }
+}

@@ -47,13 +47,13 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-2">
             <Link href="/register?plan=pro&billing=yearly" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
+              <Button className="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 text-base rounded-full shadow-lg hover:shadow-xl transition-all">
                 Start 3 dagen gratis →
               </Button>
             </Link>
 
             <Link href="/features" className="w-full sm:w-auto">
-              <Button variant="outline" className="w-full sm:w-auto border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full">
+              <Button variant="outline" className="w-full sm:w-auto border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-6 py-2.5 text-base rounded-full">
                 Bekijk hier al onze tools →
               </Button>
             </Link>

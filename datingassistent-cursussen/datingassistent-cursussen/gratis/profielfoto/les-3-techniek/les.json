@@ -1,0 +1,222 @@
+{
+  "id": "profielfoto-les-3",
+  "cursusId": "profielfoto-5-stappen",
+  "titel": "De Technische Checklist",
+  "slug": "techniek",
+  "subtitel": "Belichting, achtergrond & compositie",
+  "volgorde": 3,
+  "duur": "8 minuten",
+  
+  "video": {
+    "url": "",
+    "thumbnail": "/cursussen/profielfoto/les-3/thumbnail.jpg",
+    "duur": "3:15",
+    "script": "script.md"
+  },
+  
+  "secties": [
+    {
+      "id": "les3-video",
+      "type": "video",
+      "titel": "Bekijk de les",
+      "inhoud": {
+        "introTekst": "De laatste les! Leer de drie technische pijlers die elke foto beter maken."
+      }
+    },
+    
+    {
+      "id": "les3-samenvatting",
+      "type": "tekst",
+      "titel": "📝 Samenvatting",
+      "inhoud": {
+        "body": "Je weet nu welke fouten je moet vermijden (les 1) en hoe je een echte glimlach activeert (les 2). Nu de techniek.\n\nGoede profielfoto's rusten op **drie pijlers**:\n1. **Belichting** - Hoe het licht op je gezicht valt\n2. **Achtergrond** - Wat er achter je te zien is\n3. **Compositie** - Hoe je in het kader staat\n\nDit klinkt technisch, maar met de tips in deze les kun je het met elke smartphone.",
+        "format": "markdown"
+      }
+    },
+    
+    {
+      "id": "les3-pijler1",
+      "type": "kernpunten",
+      "titel": "💡 Pijler 1: Belichting",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "🌤️",
+            "titel": "De Gouden Regel: Licht in je gezicht",
+            "beschrijving": "Sta altijd MET je gezicht naar het licht toe. Niet met je rug naar het raam, maar met je gezicht naar het raam."
+          },
+          {
+            "icon": "🕐",
+            "titel": "Het Gouden Uur",
+            "beschrijving": "Het uur na zonsopkomst en voor zonsondergang geeft het mooiste, warmste licht."
+          },
+          {
+            "icon": "☁️",
+            "titel": "Bewolkt = Perfect",
+            "beschrijving": "Wolken werken als een gigantische softbox. Ze verspreiden het licht gelijkmatig."
+          },
+          {
+            "icon": "❌",
+            "titel": "Vermijd: Direct zonlicht & TL-licht",
+            "beschrijving": "Direct zonlicht = harde schaduwen. TL-licht = groenige tint."
+          }
+        ]
+      }
+    },
+    
+    {
+      "id": "les3-pijler2",
+      "type": "kernpunten",
+      "titel": "🖼️ Pijler 2: Achtergrond",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "🎯",
+            "titel": "De Regel: Simpel en rustig",
+            "beschrijving": "Jij bent het onderwerp, niet de achtergrond. Kies voor neutrale kleuren en weinig objecten."
+          },
+          {
+            "icon": "✅",
+            "titel": "Goede achtergronden",
+            "beschrijving": "Bakstenen muur, groen gebladerte, café met warme tinten, strand, effen muur."
+          },
+          {
+            "icon": "❌",
+            "titel": "Slechte achtergronden",
+            "beschrijving": "Rommelige slaapkamer, volle woonkamer, toilet/badkamer, drukke straat."
+          },
+          {
+            "icon": "📏",
+            "titel": "Afstand = Blur",
+            "beschrijving": "Sta minstens 2-3 meter van de achtergrond voor mooie onscherpte."
+          }
+        ]
+      }
+    },
+    
+    {
+      "id": "les3-pijler3",
+      "type": "kernpunten",
+      "titel": "📐 Pijler 3: Compositie",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "📷",
+            "titel": "De Rule of Thirds",
+            "beschrijving": "Plaats je ogen op de bovenste 1/3 lijn. Zet het grid aan op je telefoon!"
+          },
+          {
+            "icon": "↔️",
+            "titel": "Kijk naar de ruimte",
+            "beschrijving": "Kijk je naar links? Dan meer ruimte links van je. Creëert balans."
+          },
+          {
+            "icon": "📱",
+            "titel": "Camera op ooghoogte of iets hoger",
+            "beschrijving": "Te laag = dubbele kin. Te hoog = kinderachtig. Ooghoogte is de sweetspot."
+          },
+          {
+            "icon": "👤",
+            "titel": "Van borst tot bovenkant hoofd",
+            "beschrijving": "Niet te ver weg, niet je hoofd afsnijden. Borst tot boven hoofd is ideaal."
+          }
+        ]
+      }
+    },
+    
+    {
+      "id": "les3-quiz",
+      "type": "quiz",
+      "titel": "🧠 Finale Test",
+      "inhoud": {
+        "introTekst": "Laatste test! Laat zien dat je alles hebt geleerd.",
+        "vragen": [
+          {
+            "id": "q1",
+            "vraag": "Waarom is bewolkt weer goed voor profielfoto's?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "q1a", "tekst": "Omdat de kleuren feller worden", "correct": false },
+              { "id": "q1b", "tekst": "Omdat wolken het licht verspreiden en harde schaduwen voorkomen", "correct": true },
+              { "id": "q1c", "tekst": "Omdat je dan niet hoeft te squinten", "correct": false },
+              { "id": "q1d", "tekst": "Omdat de achtergrond mooier wordt", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Exact! Wolken werken als een gigantische softbox.",
+              "incorrect": "Het gaat om het licht! Wolken verspreiden het zonlicht gelijkmatig."
+            }
+          },
+          {
+            "id": "q2",
+            "vraag": "Waar moeten je ogen staan volgens de Rule of Thirds?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "q2a", "tekst": "Precies in het midden van het beeld", "correct": false },
+              { "id": "q2b", "tekst": "Onderaan het beeld", "correct": false },
+              { "id": "q2c", "tekst": "Op de bovenste horizontale derde lijn", "correct": true },
+              { "id": "q2d", "tekst": "Maakt niet uit", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Perfect! Ogen op de bovenste 1/3 lijn is visueel het meest aantrekkelijk.",
+              "incorrect": "De Rule of Thirds: ogen op de bovenste horizontale 1/3 lijn."
+            }
+          },
+          {
+            "id": "q3",
+            "vraag": "Welke camera-hoek flatteert de meeste mensen?",
+            "type": "multiple-choice",
+            "opties": [
+              { "id": "q3a", "tekst": "Van beneden naar boven", "correct": false },
+              { "id": "q3b", "tekst": "Op ooghoogte of iets erboven", "correct": true },
+              { "id": "q3c", "tekst": "Van ver boven naar beneden", "correct": false },
+              { "id": "q3d", "tekst": "Van de zijkant", "correct": false }
+            ],
+            "uitleg": {
+              "correct": "Juist! Ooghoogte of iets erboven flatteert vrijwel iedereen.",
+              "incorrect": "De beste hoek is net op ooghoogte of iets erboven."
+            }
+          }
+        ],
+        "succesMessage": "Gefeliciteerd! 🎉 Je hebt alle drie de lessen voltooid!",
+        "minimumScore": 2
+      }
+    },
+    
+    {
+      "id": "les3-tool",
+      "type": "tool",
+      "titel": "📸 AI Foto Checker - Volledige Analyse",
+      "inhoud": {
+        "toolId": "foto-checker",
+        "introTekst": "Je hebt nu alle kennis! Upload je foto en krijg een complete analyse.",
+        "ctaTekst": "Krijg je volledige foto-analyse →"
+      }
+    },
+    
+    {
+      "id": "les3-afsluiting",
+      "type": "tekst",
+      "titel": "🎉 Gefeliciteerd!",
+      "inhoud": {
+        "body": "Je hebt de cursus **De Perfecte Profielfoto in 5 Stappen** afgerond!\n\nWil je meer leren? De **Dating Fundament** cursus gaat verder met je complete profiel, gespreksvaardigheden, en eerste date tips.",
+        "format": "markdown"
+      }
+    }
+  ],
+  
+  "aiCoach": {
+    "actief": true,
+    "context": "De gebruiker heeft alle drie de lessen voltooid! Help ze om alles toe te passen bij hun nieuwe foto's. Wees bemoedigend - ze hebben de kennis, nu is het doen.",
+    "suggesties": [
+      "Hoe begin ik praktisch met nieuwe foto's?",
+      "Welke smartphone-instellingen moet ik gebruiken?",
+      "Wat is de volgende stap na mijn profielfoto?"
+    ]
+  },
+  
+  "volgendeStap": {
+    "type": "cursus",
+    "id": "dating-fundament",
+    "tekst": "Klaar voor de volgende stap? In Dating Fundament leer je alles over je complete profiel, gesprekken, en de eerste date."
+  }
+}

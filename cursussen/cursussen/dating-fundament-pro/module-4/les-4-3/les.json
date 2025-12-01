@@ -1,0 +1,8 @@
+{
+  "meta": {"id": "les-4-3", "module": 4, "titel": "Spanning en Flirten", "subtitel": "Het verschil tussen vriendelijk en interessant", "duur_minuten": 18},
+  "secties": [
+    {"id": "verschil", "type": "contrast", "titel": "Vriendelijk vs. Flirterig", "content": {"vriendelijk": {"toon": "Neutraal, veilig", "effect": "Gezellig maar geen chemie"}, "flirterig": {"toon": "Playful, licht uitdagend", "effect": "Spanning, interesse"}}},
+    {"id": "technieken", "type": "framework", "titel": "Flirt Technieken", "content": {"technieken": [{"naam": "Tease", "wat": "Licht plagen, met een knipoog", "voorbeeld": "Ahh, je bent zo iemand die [X]. Dat verklaart veel 😏"}, {"naam": "Push-Pull", "wat": "Compliment + kleine uitdaging", "voorbeeld": "Je hebt goede muzieksmaak... behalve die ene band"}, {"naam": "Callback", "wat": "Refereer naar eerder in gesprek", "voorbeeld": "Dit is precies wat iemand die [eerder grapje] zou zeggen"}]}},
+    {"id": "grenzen", "type": "belangrijk", "titel": "De Lijn", "content": {"regel": "Flirten is playful, niet seksueel of kwetsend", "niet_doen": ["Ongewenste seksuele opmerkingen", "Negatief commentaar op uiterlijk", "Doordrukken als iemand niet mee gaat"]}}
+  ]
+}

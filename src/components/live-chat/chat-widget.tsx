@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -76,7 +75,7 @@ export function ChatWidget({
         id: `welcome_${Date.now()}`,
         content: welcomeMessage,
         senderType: 'agent',
-        senderName: 'AI Assistent',
+        senderName: 'Iris',
         timestamp: new Date()
       }]);
 
@@ -138,7 +137,7 @@ export function ChatWidget({
           id: `ai_${Date.now()}`,
           content: data.replyText,
           senderType: 'agent',
-          senderName: 'AI Assistent',
+          senderName: 'Iris',
           timestamp: new Date()
         }]);
       } else {
@@ -189,7 +188,7 @@ export function ChatWidget({
 
   return (
     <div className={`fixed ${position === 'bottom-right' ? 'bottom-10 right-4' : 'bottom-10 left-4'} z-50`}>
-      <Card className={`w-96 sm:w-96 ${isMinimized ? 'h-14' : 'max-h-[28rem]'} shadow-2xl border-2 transition-all duration-300 max-w-[calc(100vw-2rem)] flex flex-col`}>
+      <Card className={`w-96 sm:w-96 ${isMinimized ? 'h-14' : 'h-[28rem]'} shadow-2xl border-2 transition-all duration-300 max-w-[calc(100vw-2rem)] flex flex-col`}>
         {/* Header */}
         <CardHeader className="pb-2 cursor-pointer flex-shrink-0" onClick={() => setIsMinimized(!isMinimized)}>
           <div className="flex items-center justify-between">
@@ -227,9 +226,9 @@ export function ChatWidget({
         </CardHeader>
 
         {!isMinimized && (
-          <CardContent className="p-0 flex flex-col flex-1 min-h-0">
+          <CardContent className="p-0 flex flex-col" style={{ height: 'calc(28rem - 3.5rem)' }}>
             {/* Messages */}
-            <ScrollArea className="flex-1 p-3 min-h-0">
+            <div className="overflow-y-auto p-3" style={{ flex: '1 1 0', minHeight: 0 }}>
               <div className="space-y-3">
                 {messages.map((message) => (
                   <div
@@ -276,7 +275,7 @@ export function ChatWidget({
                       </Avatar>
                       <div className="px-3 py-2 rounded-lg text-sm bg-gray-100 text-gray-900">
                         <div className="flex items-center gap-1">
-                          <span className="text-xs opacity-75">AI Assistent</span>
+                          <span className="text-xs opacity-75">Iris</span>
                         </div>
                         <div className="flex items-center gap-1 mt-1">
                           <div className="flex gap-1">
@@ -292,10 +291,10 @@ export function ChatWidget({
 
               </div>
               <div ref={messagesEndRef} />
-            </ScrollArea>
+            </div>
 
             {/* Message Input */}
-            <div className="p-2 sm:p-3 border-t flex-shrink-0">
+            <div className="p-2 sm:p-3 border-t flex-shrink-0 bg-white">
               <div className="flex gap-2">
                 <Input
                   ref={inputRef}
@@ -303,13 +302,14 @@ export function ChatWidget({
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className="text-base sm:text-sm flex-1"
+                  className="text-base sm:text-sm flex-1 bg-white text-gray-900 border-gray-300 placeholder:text-gray-400"
                 />
                 <Button
                   onClick={sendMessage}
                   disabled={!newMessage.trim()}
                   size="sm"
                   className="px-3 sm:px-4"
+                  style={{ backgroundColor: primaryColor }}
                 >
                   <Send className="w-4 h-4" />
                 </Button>

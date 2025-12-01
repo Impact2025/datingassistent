@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -28,9 +29,17 @@ import { useRecaptchaV3 } from "../shared/recaptcha";
 import { VerificationCodeInput } from "./verification-code-input";
 
 const signupSchema = z.object({
-  name: z.string().min(2, "Naam moet minimaal 2 karakters lang zijn."),
+  firstName: z.string().min(2, "Voornaam moet minimaal 2 karakters lang zijn."),
+  lastName: z.string().min(2, "Achternaam moet minimaal 2 karakters lang zijn."),
   email: z.string().email("Ongeldig e-mailadres."),
   password: z.string().min(6, "Wachtwoord moet minimaal 6 karakters bevatten."),
+  confirmPassword: z.string().min(1, "Bevestig je wachtwoord."),
+  termsAccepted: z.boolean().refine((val) => val === true, {
+    message: "Je moet akkoord gaan met de voorwaarden.",
+  }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Wachtwoorden komen niet overeen.",
+  path: ["confirmPassword"],
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -89,9 +98,12 @@ export function RegistrationClientComponent() {
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
+      termsAccepted: false,
     },
   });
 
@@ -241,17 +253,18 @@ export function RegistrationClientComponent() {
     }
 
     try {
-      const result = await signup(data.email, data.password, data.name);
+      const fullName = `${data.firstName} ${data.lastName}`.trim();
+      const result = await signup(data.email, data.password, fullName);
       const newUser = result.user;
       console.log('🔵 User created:', newUser.id);
 
       if (typeof window !== 'undefined') {
-        localStorage.setItem('profile_setup_name', data.name);
+        localStorage.setItem('profile_setup_name', fullName);
       }
 
       // Create basic profile
       const basicProfile = {
-        name: data.name,
+        name: fullName,
         email: data.email,
         age: null,
         gender: null,
@@ -711,12 +724,26 @@ export function RegistrationClientComponent() {
                 <div className="space-y-4">
                   <FormField
                     control={form.control}
-                    name="name"
+                    name="firstName"
                     render={({ field }) => (
                       <FormItem suppressHydrationWarning>
-                        <FormLabel suppressHydrationWarning>Naam / Roepnaam</FormLabel>
+                        <FormLabel suppressHydrationWarning>Voornaam</FormLabel>
                         <FormControl>
-                          <Input placeholder="Hoe wil je genoemd worden?" {...field} suppressHydrationWarning />
+                          <Input placeholder="Voornaam" {...field} suppressHydrationWarning />
+                        </FormControl>
+                        <FormMessage suppressHydrationWarning />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem suppressHydrationWarning>
+                        <FormLabel suppressHydrationWarning>Achternaam</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Achternaam" {...field} suppressHydrationWarning />
                         </FormControl>
                         <FormMessage suppressHydrationWarning />
                       </FormItem>
@@ -750,6 +777,48 @@ export function RegistrationClientComponent() {
                       </FormItem>
                     )}
                   />
+
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem suppressHydrationWarning>
+                        <FormLabel suppressHydrationWarning>Herhaal wachtwoord</FormLabel>
+                        <FormControl>
+                          <Input type="password" placeholder="Herhaal je wachtwoord" {...field} suppressHydrationWarning />
+                        </FormControl>
+                        <FormMessage suppressHydrationWarning />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="termsAccepted"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4" suppressHydrationWarning>
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel suppressHydrationWarning>
+                            Ik ga akkoord met de{" "}
+                            <Link href="/algemene-voorwaarden" className="text-primary hover:underline" target="_blank">
+                              Algemene Voorwaarden
+                            </Link>{" "}
+                            en{" "}
+                            <Link href="/privacyverklaring" className="text-primary hover:underline" target="_blank">
+                              Privacy Policy
+                            </Link>
+                          </FormLabel>
+                          <FormMessage suppressHydrationWarning />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
                 {/* Security Note */}
@@ -769,25 +838,15 @@ export function RegistrationClientComponent() {
                       Account aanmaken...
                     </>
                   ) : (
-                    "Verder naar Stap 2"
+                    "Registreren"
                   )}
                 </Button>
 
-                <div className="text-center space-y-2">
+                <div className="text-center">
                   <p className="text-sm text-muted-foreground">
                     Heb je al een account?{" "}
                     <Link href={loginUrl} className="font-semibold text-primary hover:underline">
                       Log hier in
-                    </Link>
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Door verder te gaan accepteer je onze{" "}
-                    <Link href="/privacyverklaring" className="text-primary hover:underline">
-                      Privacy Policy
-                    </Link>{" "}
-                    en{" "}
-                    <Link href="/algemene-voorwaarden" className="text-primary hover:underline">
-                      Algemene Voorwaarden
                     </Link>
                   </p>
                 </div>

@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "id": "les-5-1",
+    "module": 5,
+    "volgorde": 1,
+    "titel": "The Sound Relationship House",
+    "subtitel": "Gottman's 7 verdiepingen van relatie-succes",
+    "duur_minuten": 25,
+    "kernvraag": "Hoe stevig is jouw relatie-huis?",
+    "leerdoelen": [
+      "Begrijpen wat the sound relationship house betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: Gottman's 7 verdiepingen van relatie-succes. De kernvraag die we beantwoorden: Hoe stevig is jouw relatie-huis?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Hoe stevig is jouw relatie-huis?",
+        "context": "Neem even de tijd om na te denken over the sound relationship house in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "The Sound Relationship House",
+      "content": {
+        "intro": "Gottman's 7 verdiepingen van relatie-succes",
+        "items": [
+          {
+            "naam": "1. Love Maps",
+            "desc": "Ken je partners wereld"
+          },
+          {
+            "naam": "2. Fondness & Admiration",
+            "desc": "Waardering uiten"
+          },
+          {
+            "naam": "3. Turn Toward",
+            "desc": "Reageer op bids"
+          },
+          {
+            "naam": "4. Positive Perspective",
+            "desc": "Goede intenties aannemen"
+          },
+          {
+            "naam": "5. Manage Conflict",
+            "desc": "Productief ruziën"
+          },
+          {
+            "naam": "6. Make Life Dreams Come True",
+            "desc": "Elkaars dromen steunen"
+          },
+          {
+            "naam": "7. Create Shared Meaning",
+            "desc": "Gezamenlijke visie"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je the sound relationship house begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe the sound relationship house zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-5-1",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van The Sound Relationship House?",
+        "opties": [
+          "Ken je partners wereld",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-5-1",
+    "vraag": "Hoe herken je the sound relationship house in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op The Sound Relationship House. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas The Sound Relationship House toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over the sound relationship house in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me the sound relationship house toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

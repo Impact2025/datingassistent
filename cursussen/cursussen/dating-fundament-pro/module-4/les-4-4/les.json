@@ -1,0 +1,9 @@
+{
+  "meta": {"id": "les-4-4", "module": 4, "titel": "Naar de Date", "subtitel": "Wanneer en hoe voorstellen", "duur_minuten": 15},
+  "secties": [
+    {"id": "timing", "type": "strategie", "titel": "Het Juiste Moment", "content": {"te_vroeg": "Eerste paar berichten - lijkt wanhopig", "te_laat": "Na weken chatten - verliest momentum", "ideaal": "Na 5-10 goede berichten over 2-3 dagen", "signalen": ["Gesprek loopt soepel", "Wederzijdse interesse duidelijk", "Er is iets om over te praten op de date"]}},
+    {"id": "hoe", "type": "template", "titel": "Hoe Je Het Voorstelt", "content": {"formule": "Concrete suggestie + flexibiliteit", "goed": "Ik ken een leuke koffieplek in [wijk]. Zin om dit weekend af te spreken? Vrijdag of zaterdag?", "fout": "Zullen we een keer afspreken?", "waarom": "Concreet = makkelijker ja zeggen"}},
+    {"id": "overgang", "type": "proces", "titel": "Van App naar Telefoon", "content": {"wanneer": "Als de date is bevestigd", "hoe": "Zal ik je m'n nummer geven voor de praktische dingen?", "waarom": "Makkelijker plannen, toont serieuze intentie"}}
+  ],
+  "opdracht": {"titel": "Date Voorstel Oefening", "stappen": ["Kies een gesprek dat goed loopt", "Bereid een concreet voorstel voor", "Stuur het"]}
+}

@@ -1,0 +1,12 @@
+{
+  "meta": {"id": "les-5-4", "module": 5, "titel": "Na de Date", "subtitel": "Follow-up die werkt", "duur_minuten": 15},
+  "secties": [
+    {"id": "eerste-bericht", "type": "template", "titel": "Het Eerste Bericht Na de Date", "content": {"timing": "Dezelfde avond of volgende ochtend", "toon": "Positief maar niet overdreven", "voorbeelden": ["Hey, ik vond het gezellig! Die [specifiek iets van date] was leuk", "Thuis! Was een leuke avond, bedankt"], "niet": ["Ik mis je nu al", "Wanneer zien we elkaar weer??? (te eager)", "Stilte (verwarrend)"]}},
+    {"id": "tweede-date", "type": "strategie", "titel": "Tweede Date Voorstellen", "content": {"wanneer": "Binnen 2-3 dagen na eerste date", "hoe": "Refereer naar iets van de eerste date", "voorbeeld": "Je had het over [X], zullen we dat een keer doen samen?"}},
+    {"id": "geen-match", "type": "moeilijk", "titel": "Als Het Geen Match Is", "content": {"wanneer_afwijzen": "Als je zeker weet dat je geen tweede date wilt", "hoe": "Eerlijk maar vriendelijk", "voorbeeld": "Hey, ik vond het leuk je te ontmoeten, maar ik voel niet de klik die ik zoek. Succes met alles!", "niet_doen": ["Ghosten (onrespectful)", "Vage excuses (verwarrend)", "Valse hoop geven"]}}
+  ],
+  "module_afsluiting": {
+    "samenvatting": ["Goede locatie = half werk", "Gesprek = verhalen delen, geen interview", "Lichaamstaal zegt meer dan woorden", "Follow-up binnen 24-48u"],
+    "volgende": {"module": 6, "titel": "Mindset & Groei"}
+  }
+}

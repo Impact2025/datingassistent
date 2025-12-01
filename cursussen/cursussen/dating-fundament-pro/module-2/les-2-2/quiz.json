@@ -1,0 +1,95 @@
+{
+  "quizzes": [
+    {
+      "id": "quiz-1",
+      "titel": "Show vs Tell Check",
+      "beschrijving": "Test of je het verschil snapt",
+      "type": "multiple_choice",
+      "vragen": [
+        {
+          "id": "q1",
+          "vraag": "Welke zin is een voorbeeld van 'Show'?",
+          "opties": [
+            {"id": "a", "tekst": "Ik ben een avontuurlijk persoon"},
+            {"id": "b", "tekst": "Vorige maand heb ik voor het eerst gedoken in Egypte"},
+            {"id": "c", "tekst": "Ik hou van nieuwe dingen proberen"},
+            {"id": "d", "tekst": "Ik ben spontaan en open-minded"}
+          ],
+          "correct": "b",
+          "feedback": {
+            "correct": "Precies! Dit is specifiek, geeft een beeld, en iemand kan erop reageren ('Egypte! Hoe was het?').",
+            "incorrect": "Dit is nog steeds 'Tell' - het zegt iets over je, maar laat het niet zien. Probeer concreter te zijn."
+          }
+        },
+        {
+          "id": "q2",
+          "vraag": "Wat is het probleem met deze bio: 'Ik ben grappig, lief en loyaal'?",
+          "opties": [
+            {"id": "a", "tekst": "Te kort"},
+            {"id": "b", "tekst": "Te veel eigenschappen"},
+            {"id": "c", "tekst": "Het zijn claims zonder bewijs - iedereen kan dit zeggen"},
+            {"id": "d", "tekst": "Verkeerde volgorde"}
+          ],
+          "correct": "c",
+          "feedback": {
+            "correct": "Juist! Iedereen claimt grappig en lief te zijn. Laat het zien met voorbeelden.",
+            "incorrect": "Het echte probleem is dat dit lege claims zijn. 'Ik ben grappig' zegt niks - een voorbeeld van je humor wel."
+          }
+        },
+        {
+          "id": "q3",
+          "vraag": "Welke hook pakt het beste de aandacht?",
+          "opties": [
+            {"id": "a", "tekst": "Hoi, ik ben op zoek naar iemand leuk"},
+            {"id": "b", "tekst": "Ik ben een normale man die een vrouw zoekt"},
+            {"id": "c", "tekst": "Volgens mijn oma ben ik een goede vangst"},
+            {"id": "d", "tekst": "Welkom op mijn profiel!"}
+          ],
+          "correct": "c",
+          "feedback": {
+            "correct": "Dit is verrassend, grappig, en maakt nieuwsgierig. Perfect hook!",
+            "incorrect": "De andere opties zijn te generiek of saai. Een goede hook verrast of maakt nieuwsgierig."
+          }
+        }
+      ]
+    },
+    {
+      "id": "quiz-2",
+      "titel": "Vermijd de Valkuilen",
+      "beschrijving": "Herken wat je NIET moet doen",
+      "type": "multiple_choice",
+      "vragen": [
+        {
+          "id": "q4",
+          "vraag": "Welke bio zou je NIET moeten gebruiken?",
+          "opties": [
+            {"id": "a", "tekst": "Koffieverslaafde die je meeneemt naar de beste spots in de stad"},
+            {"id": "b", "tekst": "Geen players, geen liars. Als je niet serieus bent, swipe links."},
+            {"id": "c", "tekst": "Zoek iemand voor filmavonden en slechte woordgrappen"},
+            {"id": "d", "tekst": "Overdag architect, 's avonds amateur pizzabakker"}
+          ],
+          "correct": "b",
+          "feedback": {
+            "correct": "Precies. Negativiteit en eisen stellen is een enorme afknapper, zelfs als het terecht is.",
+            "incorrect": "Let op negativiteit en defensieve taal. 'Geen players' zegt meer over jouw bagage dan over wat je zoekt."
+          }
+        },
+        {
+          "id": "q5",
+          "vraag": "Wat mist in deze bio: 'Ik hou van reizen, lekker eten en quality time met vrienden'?",
+          "opties": [
+            {"id": "a", "tekst": "Het is te kort"},
+            {"id": "b", "tekst": "Het mist specificiteit - dit geldt voor bijna iedereen"},
+            {"id": "c", "tekst": "Het heeft te veel emoji's nodig"},
+            {"id": "d", "tekst": "Het moet langer zijn"}
+          ],
+          "correct": "b",
+          "feedback": {
+            "correct": "Exact! IEDEREEN houdt van reizen en eten. Wat maakt JOU uniek? Waar reis je? Wat eet je?",
+            "incorrect": "Het probleem is niet de lengte, maar het gebrek aan specifieke details die jou onderscheiden."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "meta": {"id": "les-5-1", "module": 5, "titel": "Date Planning", "subtitel": "Waar, wanneer, hoe lang", "duur_minuten": 15},
+  "secties": [
+    {"id": "locatie", "type": "strategie", "titel": "De Perfecte Locatie", "content": {"criteria": ["Publiek en veilig", "Rustig genoeg om te praten", "Makkelijk weg te gaan als het niet klikt", "Niet te duur of formeel"], "ideaal": ["Koffiebar", "Casual restaurant", "Wandeling in park", "Drankje bij leuke bar"], "vermijd": ["Bioscoop (geen gesprek)", "Duur restaurant (te veel druk)", "Bij jou/hun thuis (te intiem)", "Groepsactiviteiten"]}},
+    {"id": "timing", "type": "praktisch", "titel": "Timing", "content": {"duur": "60-90 minuten voor eerste date", "waarom": "Lang genoeg om gevoel te krijgen, kort genoeg om te stoppen als het niet klikt", "tip": "Plan iets erna zodat je een natuurlijk eindpunt hebt"}},
+    {"id": "voorbereiding", "type": "checklist", "titel": "Pre-Date Checklist", "content": {"checklist": ["Locatie bevestigd", "Tijd bevestigd (dag van tevoren)", "Route/parkeren bekend", "Backup plan als locatie vol is", "Iemand weet waar je bent (veiligheid)"]}}
+  ]
+}

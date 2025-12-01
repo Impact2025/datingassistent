@@ -1,0 +1,233 @@
+{
+  "id": "profielfoto-les-1",
+  "cursusId": "profielfoto-5-stappen",
+  "titel": "De 3 Grote Foto-Fouten",
+  "slug": "foto-fouten",
+  "subtitel": "Wat je absoluut moet vermijden",
+  "volgorde": 1,
+  "duur": "7 minuten",
+  
+  "video": {
+    "url": "",
+    "thumbnail": "/cursussen/profielfoto/les-1/thumbnail.jpg",
+    "duur": "2:45",
+    "script": "script.md"
+  },
+  
+  "secties": [
+    {
+      "id": "les1-video",
+      "type": "video",
+      "titel": "Bekijk de les",
+      "inhoud": {
+        "introTekst": "In deze video ontdek je de 3 meest gemaakte fouten bij profielfoto's - en hoe je ze vermijdt."
+      }
+    },
+    
+    {
+      "id": "les1-samenvatting",
+      "type": "tekst",
+      "titel": "📝 Samenvatting",
+      "inhoud": {
+        "body": "Je profielfoto is je eerste indruk. In slechts **7 seconden** besluit iemand om naar links of rechts te swipen. En maar liefst **83%** van die beslissing is gebaseerd op je foto's.\n\nDaarom is het cruciaal om de meest gemaakte fouten te vermijden. In deze les leer je welke drie fouten je kansen drastisch verkleinen.",
+        "format": "markdown"
+      }
+    },
+    
+    {
+      "id": "les1-kernpunten",
+      "type": "kernpunten",
+      "titel": "🎯 De 3 Grote Fouten",
+      "inhoud": {
+        "punten": [
+          {
+            "icon": "🕶️",
+            "titel": "Fout #1: De Zonnebril",
+            "beschrijving": "Ogen zijn het raam naar de ziel. Als mensen je ogen niet kunnen zien, kunnen ze geen verbinding met je maken. Onderzoek toont aan dat gezichten met zichtbare ogen als warmer en betrouwbaarder worden beoordeeld. **Oplossing**: Geen zonnebrillen op je eerste 3 foto's."
+          },
+          {
+            "icon": "👥",
+            "titel": "Fout #2: De Groepsfoto",
+            "beschrijving": "Als je een groepsfoto als hoofdfoto gebruikt, moet je potentiële match puzzelen wie jij bent. En als iemand moet nadenken bij het swipen? Dan swipen ze links. Bovendien vergelijken mensen je onbewust met de anderen op de foto. **Oplossing**: Hoofdfoto altijd solo. Groepsfoto's als foto 4, 5 of 6."
+          },
+          {
+            "icon": "📷",
+            "titel": "Fout #3: De Vage Foto",
+            "beschrijving": "Donkere, wazige of oude foto's communiceren: 'Ik geef niet genoeg om mezelf - of om jou - om een goede foto te maken.' Kwaliteit = moeite = interesse = aantrekkelijk. **Oplossing**: Foto's moeten scherp, goed belicht en recent zijn. Geen excuses."
+          }
+        ]
+      }
+    },
+    
+    {
+      "id": "les1-quiz",
+      "type": "quiz",
+      "titel": "🧠 Test je kennis",
+      "inhoud": {
+        "introTekst": "Even checken of je de stof begrijpt. Beantwoord deze 3 vragen.",
+        "vragen": [
+          {
+            "id": "q1",
+            "vraag": "Waarom is een zonnebril op je profielfoto geen goed idee?",
+            "type": "multiple-choice",
+            "opties": [
+              {
+                "id": "q1a",
+                "tekst": "Omdat zonnebrillen uit de mode zijn",
+                "correct": false
+              },
+              {
+                "id": "q1b", 
+                "tekst": "Omdat mensen geen verbinding kunnen maken als ze je ogen niet zien",
+                "correct": true
+              },
+              {
+                "id": "q1c",
+                "tekst": "Omdat het te casual overkomt",
+                "correct": false
+              },
+              {
+                "id": "q1d",
+                "tekst": "Omdat de app je foto dan niet accepteert",
+                "correct": false
+              }
+            ],
+            "uitleg": {
+              "correct": "Precies! Ogen zijn cruciaal voor het opbouwen van vertrouwen en verbinding. Onderzoek van Princeton bevestigt dit.",
+              "incorrect": "Niet helemaal. Het gaat om verbinding: zonder zichtbare ogen kunnen mensen geen emotionele connectie met je maken."
+            }
+          },
+          {
+            "id": "q2",
+            "vraag": "Waar mag een groepsfoto in je profiel staan?",
+            "type": "multiple-choice",
+            "opties": [
+              {
+                "id": "q2a",
+                "tekst": "Als eerste foto - het laat zien dat je vrienden hebt",
+                "correct": false
+              },
+              {
+                "id": "q2b",
+                "tekst": "Nooit - groepsfoto's zijn altijd fout",
+                "correct": false
+              },
+              {
+                "id": "q2c",
+                "tekst": "Als foto 4, 5 of 6 - niet als hoofdfoto",
+                "correct": true
+              },
+              {
+                "id": "q2d",
+                "tekst": "Alleen als jij de knapste bent van de groep",
+                "correct": false
+              }
+            ],
+            "uitleg": {
+              "correct": "Goed onthouden! Groepsfoto's mogen, maar alleen later in je profiel. Je hoofdfoto moet altijd solo zijn.",
+              "incorrect": "Bijna! Groepsfoto's zijn prima, maar alleen als foto 4, 5 of 6. Je hoofdfoto moet solo zijn zodat direct duidelijk is wie jij bent."
+            }
+          },
+          {
+            "id": "q3",
+            "vraag": "Wat communiceert een vage, donkere foto volgens deze les?",
+            "type": "multiple-choice",
+            "opties": [
+              {
+                "id": "q3a",
+                "tekst": "Dat je mysterieus bent",
+                "correct": false
+              },
+              {
+                "id": "q3b",
+                "tekst": "Dat je niet veel moeite doet",
+                "correct": true
+              },
+              {
+                "id": "q3c",
+                "tekst": "Dat je geen goede camera hebt",
+                "correct": false
+              },
+              {
+                "id": "q3d",
+                "tekst": "Dat je bescheiden bent",
+                "correct": false
+              }
+            ],
+            "uitleg": {
+              "correct": "Helaas wel. Kwaliteit = moeite = interesse. Als je geen moeite doet voor je foto, waarom zou iemand moeite doen om je te leren kennen?",
+              "incorrect": "Het klinkt hard, maar slechte fotokwaliteit communiceert: 'Ik geef niet genoeg om mezelf of om jou.' Kwaliteit toont moeite en interesse."
+            }
+          }
+        ],
+        "succesMessage": "Uitstekend! Je begrijpt nu welke fouten je moet vermijden. In de volgende les duiken we in de psychologie van een goede glimlach.",
+        "minimumScore": 2
+      }
+    },
+    
+    {
+      "id": "les1-reflectie",
+      "type": "reflectie",
+      "titel": "🪞 Zelfkennis Moment",
+      "inhoud": {
+        "introTekst": "Neem even de tijd om naar je eigen profielfoto's te kijken.",
+        "vragen": [
+          {
+            "id": "r1",
+            "vraag": "Maak jij een van deze 3 fouten op je huidige profielfoto's? Zo ja, welke?",
+            "placeholder": "Beschrijf wat je ziet als je kritisch naar je foto's kijkt...",
+            "minLengte": 20
+          }
+        ],
+        "aiAnalyse": true
+      }
+    },
+    
+    {
+      "id": "les1-tool",
+      "type": "tool",
+      "titel": "📸 AI Foto Checker",
+      "inhoud": {
+        "toolId": "foto-checker",
+        "introTekst": "Wil je weten hoe jouw foto scoort? Upload je profielfoto en krijg direct feedback van onze AI.",
+        "ctaTekst": "Upload je foto voor 1 gratis tip →"
+      }
+    },
+    
+    {
+      "id": "les1-tip",
+      "type": "tip",
+      "titel": "💡 Pro Tip",
+      "inhoud": {
+        "body": "Vraag een vriend of vriendin om eerlijk naar je profielfoto's te kijken. Vaak zien anderen dingen die wij zelf over het hoofd zien. Stel specifiek de vraag: 'Als je mij niet kende, zou je dan swipen?'"
+      }
+    }
+  ],
+  
+  "aiCoach": {
+    "actief": true,
+    "context": "De gebruiker heeft net geleerd over de 3 grote foto-fouten: zonnebrillen, groepsfoto's als hoofdfoto, en vage/donkere/oude foto's. Help ze om deze fouten in hun eigen profiel te herkennen. Wees bemoedigend maar eerlijk. Als ze vragen hebben over specifieke foto's, moedig ze aan om de AI Foto Checker te gebruiken. Focus op praktische, direct toepasbare tips.",
+    "suggesties": [
+      "Hoe weet ik of mijn foto te donker is?",
+      "Mag ik wel een huisdier op mijn foto?",
+      "Wat als ik geen recente foto's heb?",
+      "Hoeveel solo foto's heb ik nodig?"
+    ],
+    "triggerMomenten": [
+      {
+        "trigger": "quiz_completed",
+        "bericht": "Goed gedaan met de quiz! 🎉 Heb je al naar je eigen foto's gekeken? Ik help je graag om ze te beoordelen."
+      },
+      {
+        "trigger": "reflection_submitted",
+        "bericht": "Dank voor je eerlijke reflectie. Het herkennen van verbeterpunten is de eerste stap naar een beter profiel!"
+      }
+    ]
+  },
+  
+  "volgendeStap": {
+    "type": "les",
+    "id": "profielfoto-les-2",
+    "tekst": "Klaar voor les 2? Ontdek de psychologie achter een goede glimlach."
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "profielfoto-5-stappen",
+  "titel": "De Perfecte Profielfoto in 5 Stappen",
+  "slug": "profielfoto",
+  "type": "gratis",
+  "prijs": 0,
+  "beschrijving": "Leer in 3 korte lessen hoe je profielfoto's maakt die écht werken. Van de grootste fouten tot de perfecte techniek.",
+  "doelen": [
+    "De 3 grootste foto-fouten herkennen en vermijden",
+    "Begrijpen waarom een echte glimlach het verschil maakt",
+    "De technische basis beheersen (licht, achtergrond, compositie)",
+    "Direct feedback krijgen via de AI Foto Checker",
+    "Een actieplan hebben voor je volgende fotosessie"
+  ],
+  "duur": "22 minuten",
+  "niveau": "beginner",
+  "thumbnail": "/images/cursussen/profielfoto-thumb.jpg",
+  "lessen": [
+    {
+      "id": "les1-fotofouten",
+      "titel": "De 3 Grote Foto-Fouten",
+      "duur": "7 min",
+      "volgorde": 1
+    },
+    {
+      "id": "les2-glimlach", 
+      "titel": "De Psychologie van een Goede Lach",
+      "duur": "7 min",
+      "volgorde": 2
+    },
+    {
+      "id": "les3-techniek",
+      "titel": "De Technische Checklist",
+      "duur": "8 min",
+      "volgorde": 3
+    }
+  ],
+  "werkboek": {
+    "url": "/downloads/werkboek-profielfoto.docx",
+    "bestandsnaam": "werkboek-profielfoto.docx"
+  },
+  "tools": ["foto-checker", "profiel-optimalisatie"],
+  "upsell": {
+    "cursusId": "dating-fundament",
+    "titel": "Dating Fundament",
+    "prijs": 47,
+    "ctaTekst": "Wil je meer dan alleen foto's? Leer de complete basis van succesvol online daten."
+  },
+  "metadata": {
+    "auteur": "DatingAssistent",
+    "versie": "1.0",
+    "laatstBijgewerkt": "2025-11-28"
+  }
+}

@@ -9,26 +9,37 @@ import { GraduationCap, Sparkles, Award, BookOpen, Lightbulb, CheckCircle2, Play
 import { cn } from "@/lib/utils";
 
 // Import existing components
-import { OnlineCursusTab } from "./online-cursus-tab";
+import { CursussenGallery } from "./cursussen-gallery";
 import { PersonalRecommendations } from "./personal-recommendations";
 import { SkillsAssessmentTab } from "./skills-assessment-tab";
 import { WaardenKompasTool } from "../waarden-kompas/WaardenKompasTool";
+import { Module3Container } from "../courses/module3/Module3Container";
+import { useUser } from "@/providers/user-provider";
 
 interface LerenOntwikkelenModuleProps {
   onTabChange?: (tab: string) => void;
 }
 
 export function LerenOntwikkelenModule({ onTabChange }: LerenOntwikkelenModuleProps) {
+  const { userProfile } = useUser();
   const [activeSubTab, setActiveSubTab] = useState("cursus");
 
   const subModules = [
     {
       id: "cursus",
-      label: "Online Cursus",
+      label: "Online Cursussen",
       icon: GraduationCap,
       description: "Gestructureerde leerpaden voor dating skills",
-      component: <OnlineCursusTab />,
-      badge: "Structured"
+      component: <CursussenGallery />,
+      badge: "Vernieuwd"
+    },
+    {
+      id: "profieltekst",
+      label: "Profieltekst die werkt",
+      icon: Sparkles,
+      description: "Het A.C.T.I.E. model voor effectieve dating profielen",
+      component: userProfile ? <Module3Container userProfile={userProfile as any} /> : <div>Laden...</div>,
+      badge: "Nieuw"
     },
     {
       id: "aanbevelingen",

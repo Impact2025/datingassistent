@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "id": "les-3-1",
+    "module": 3,
+    "volgorde": 1,
+    "titel": "Van Dating-Talk naar Relatie-Talk",
+    "subtitel": "De 3 cruciale shifts in communicatie",
+    "duur_minuten": 20,
+    "kernvraag": "Communiceer je nog als date of al als partner?",
+    "leerdoelen": [
+      "Begrijpen wat van dating-talk naar relatie-talk betekent",
+      "Toepassen op je eigen situatie",
+      "Concrete acties identificeren"
+    ]
+  },
+  "secties": [
+    {
+      "id": "intro",
+      "type": "content",
+      "titel": "Introductie",
+      "content": {
+        "tekst": "In deze les ontdek je: De 3 cruciale shifts in communicatie. De kernvraag die we beantwoorden: Communiceer je nog als date of al als partner?"
+      }
+    },
+    {
+      "id": "hook",
+      "type": "hook",
+      "titel": "Reflectie",
+      "content": {
+        "vraag": "Communiceer je nog als date of al als partner?",
+        "context": "Neem even de tijd om na te denken over van dating-talk naar relatie-talk in je eigen leven."
+      }
+    },
+    {
+      "id": "framework",
+      "type": "framework",
+      "titel": "Van Dating-Talk naar Relatie-Talk",
+      "content": {
+        "intro": "De 3 cruciale shifts in communicatie",
+        "items": [
+          {
+            "naam": "Van indruk naar impact",
+            "desc": "Niet meer imponeren maar verbinden"
+          },
+          {
+            "naam": "Van monoloog naar dialoog",
+            "desc": "Echt luisteren en doorvragen"
+          },
+          {
+            "naam": "Van verhalen naar gevoelens",
+            "desc": "Kwetsbaarheid tonen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "praktijk",
+      "type": "praktijk",
+      "titel": "In de Praktijk",
+      "content": {
+        "tekst": "Nu je van dating-talk naar relatie-talk begrijpt, kun je dit toepassen in je dating leven.",
+        "acties": [
+          "Reflecteer op hoe van dating-talk naar relatie-talk zich uit in jouw situatie",
+          "Identificeer één concreet verbeterpunt",
+          "Plan wanneer je dit gaat toepassen"
+        ]
+      }
+    }
+  ],
+  "quiz": {
+    "id": "quiz-3-1",
+    "vragen": [
+      {
+        "vraag": "Wat is de kern van Van Dating-Talk naar Relatie-Talk?",
+        "opties": [
+          "Niet meer imponeren maar verbinden",
+          "Een verkeerde interpretatie",
+          "Iets dat niet relevant is",
+          "Geen van bovenstaande"
+        ],
+        "correct": 0,
+        "feedback": {
+          "correct": "Goed! Je begrijpt de kern.",
+          "incorrect": "Niet helemaal. Bekijk de les nog eens."
+        }
+      }
+    ]
+  },
+  "reflectie": {
+    "id": "reflectie-3-1",
+    "vraag": "Hoe herken je van dating-talk naar relatie-talk in je eigen dating ervaring? Geef een concreet voorbeeld.",
+    "ai_coach_context": "Help de gebruiker reflecteren op Van Dating-Talk naar Relatie-Talk. Wees empathisch, vraag door naar concrete situaties, en help ze verbanden leggen met hun eigen ervaring."
+  },
+  "opdracht": {
+    "titel": "Pas Van Dating-Talk naar Relatie-Talk toe",
+    "beschrijving": "Gebruik je nieuwe inzichten over van dating-talk naar relatie-talk in de praktijk.",
+    "stappen": [
+      "Lees de theorie nog eens door",
+      "Vul het werkboek in voor deze les",
+      "Identificeer 1 concrete actie voor deze week",
+      "Plan een moment om dit te bespreken met Iris"
+    ],
+    "ai_tool": {
+      "naam": "Chat Coach",
+      "prompt": "Help me van dating-talk naar relatie-talk toe te passen op mijn situatie."
+    }
+  },
+  "volgende": null
+}

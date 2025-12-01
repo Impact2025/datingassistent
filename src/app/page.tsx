@@ -1,39 +1,21 @@
-"use client";
+import { Metadata } from 'next';
+import SEOManager from '@/lib/seo/seo-manager';
+import { HomePageClient } from './home-page-client';
 
-import { LandingPageContent } from '@/components/landing/landing-page-content';
-import { useUser } from '@/providers/user-provider';
-import { useDeviceDetection } from '@/hooks/use-device-detection';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+// Generate SEO metadata for the homepage
+export async function generateMetadata(): Promise<Metadata> {
+  const seoConfig = SEOManager.getPageConfig('home');
+  if (seoConfig) {
+    return SEOManager.generateMetadata(seoConfig);
+  }
 
-export default function HomePage() {
-  return (
-    <ClientSideRedirect>
-      <LandingPageContent />
-    </ClientSideRedirect>
-  );
+  // Fallback metadata
+  return {
+    title: 'DatingAssistent - AI Dating Coach voor Moderne Singles',
+    description: 'De ultieme AI-gedreven dating coach voor moderne singles. Verbeter je dating skills met persoonlijke coaching, profiel optimalisatie en relatie advies.',
+  };
 }
 
-// Client-side component to handle authenticated user redirects
-function ClientSideRedirect({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useUser();
-  const { isDesktop } = useDeviceDetection();
-  const router = useRouter();
-
-  useEffect(() => {
-    // Only redirect authenticated users
-    if (!loading && user) {
-      if (isDesktop) {
-        // Redirect desktop users to dashboard
-        router.push('/dashboard');
-      } else {
-        // Mobile users get mobile dashboard
-        router.push('/mobile-dashboard');
-      }
-    }
-  }, [user, loading, isDesktop, router]);
-
-  // Show landing page for everyone (including loading states)
-  // Authenticated users will be redirected by the useEffect above
-  return <>{children}</>;
+export default function HomePage() {
+  return <HomePageClient />;
 }

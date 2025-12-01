@@ -1,0 +1,151 @@
+{
+  "cursus": {
+    "id": "meesterschap-in-relaties",
+    "titel": "Meesterschap in Relaties",
+    "subtitel": "Van Daten naar een Relatie die Blijft",
+    "versie": "1.0",
+    "prijs": 597,
+    "valuta": "EUR",
+    "duur_uren": 12,
+    "niveau": "advanced",
+    "taal": "nl",
+    "voorkennis": "Dating Fundament + De Connectie Code (of equivalent)",
+    
+    "beschrijving": {
+      "kort": "De complete transformatie van single naar duurzame relatie.",
+      "lang": "Gebaseerd op Attachment Theory, Gottman Method, Schema Therapy en Non-Violent Communication. In 6 modules leer je je relatiepatronen doorbreken, de juiste partner herkennen, communiceren als partners en een relatie onderhouden die blijft. Inclusief 2 live Q&A sessies en een persoonlijke profiel-audit."
+    },
+    
+    "resultaten": [
+      "Inzicht in je hechtingsstijl en hoe dit je relaties beïnvloedt",
+      "Herkennen of iemand écht bij je past (voorbij de chemie)",
+      "Communiceren zoals partners communiceren, niet zoals dates",
+      "De overgang van daten naar relatie soepel navigeren",
+      "Tools om een relatie gezond te houden voor de lange termijn"
+    ],
+    
+    "voor_wie": {
+      "ideaal": ["Singles die klaar zijn voor een serieuze relatie", "Mensen die patronen willen doorbreken", "Bereid tot diepe zelfreflectie"],
+      "niet_voor": ["Casual daters", "Wie niet bereid is naar zichzelf te kijken"]
+    },
+    
+    "wetenschappelijke_basis": [
+      "Attachment Theory (Bowlby, Ainsworth, Hazan & Shaver)",
+      "Gottman Method (40 jaar onderzoek, 94% voorspelkracht)",
+      "Schema Therapy (Jeffrey Young)",
+      "Non-Violent Communication (Marshall Rosenberg)",
+      "Emotionally Focused Therapy (Sue Johnson)"
+    ]
+  },
+  
+  "modules": [
+    {
+      "id": "module-1",
+      "nummer": 1,
+      "titel": "Jouw Relatie-DNA",
+      "subtitel": "Begrijp waarom je relaties het patroon volgen dat ze volgen",
+      "beschrijving": "Ontdek je hechtingsstijl, schema's en triggers. Leer waarom je steeds dezelfde patronen herhaalt en hoe je ze kunt doorbreken.",
+      "icoon": "🧬",
+      "kleur": "#6B2D5B",
+      "duur_minuten": 115,
+      "lessen": [
+        {"id": "les-1-1", "titel": "De Hechtingskaart", "subtitel": "Ontdek hoe je liefhebt en verbinding zoekt", "duur_min": 25, "kernvraag": "Welke hechtingsstijl bepaalt jouw relatiegedrag?"},
+        {"id": "les-1-2", "titel": "Jouw Relatiegeschiedenis Decoderen", "subtitel": "Herken de rode draad in je relaties", "duur_min": 20, "kernvraag": "Welk patroon herhaal je steeds opnieuw?"},
+        {"id": "les-1-3", "titel": "Schema's - De Onzichtbare Scripts", "subtitel": "De diepe overtuigingen die je relaties sturen", "duur_min": 25, "kernvraag": "Welke overtuiging saboteert je relaties?"},
+        {"id": "les-1-4", "titel": "Je Trigger Landschap", "subtitel": "Wat activeert je emotionele reacties?", "duur_min": 25, "kernvraag": "Wat triggert jou en waarom?"},
+        {"id": "les-1-5", "titel": "Van Inzicht naar Actie", "subtitel": "Je patronen doorbreken in de praktijk", "duur_min": 20, "kernvraag": "Wat ga je anders doen?"}
+      ]
+    },
+    {
+      "id": "module-2",
+      "nummer": 2,
+      "titel": "De Compatibiliteits-Code",
+      "subtitel": "Herken vroeg of iemand écht bij je past",
+      "beschrijving": "Leer kijken voorbij chemie en aantrekkingskracht. Ontdek de 5 lagen van compatibiliteit en herken rode, gele en groene vlaggen.",
+      "icoon": "🎯",
+      "kleur": "#E91E8C",
+      "duur_minuten": 105,
+      "lessen": [
+        {"id": "les-2-1", "titel": "Voorbij de Chemie", "subtitel": "Waarom 'vlinders' niet genoeg zijn", "duur_min": 20, "kernvraag": "Is je aantrekkingspatroon gezond?"},
+        {"id": "les-2-2", "titel": "De 5 Lagen van Compatibiliteit", "subtitel": "Van waarden tot fysiek", "duur_min": 25, "kernvraag": "Op welke lagen match je écht?"},
+        {"id": "les-2-3", "titel": "Rode Vlaggen vs. Gele Vlaggen", "subtitel": "Wat is een dealbreaker en wat niet?", "duur_min": 20, "kernvraag": "Negeer je rode vlaggen?"},
+        {"id": "les-2-4", "titel": "De 90-Dagen Realiteitscheck", "subtitel": "Hoe je iemand écht leert kennen", "duur_min": 20, "kernvraag": "Geef je de relatie genoeg tijd?"},
+        {"id": "les-2-5", "titel": "Het Partner Prototype", "subtitel": "Jouw wetenschappelijk onderbouwde match-profiel", "duur_min": 20, "kernvraag": "Wie past echt bij jou?"}
+      ]
+    },
+    {
+      "id": "module-3",
+      "nummer": 3,
+      "titel": "Communicatie voor Partners",
+      "subtitel": "Praat zoals partners praten, niet zoals dates",
+      "beschrijving": "Leer de shift van dating-talk naar relatie-talk. Van behoeften uiten tot conflicten oplossen.",
+      "icoon": "💬",
+      "kleur": "#5B21B6",
+      "duur_minuten": 115,
+      "lessen": [
+        {"id": "les-3-1", "titel": "Van Dating-Talk naar Relatie-Talk", "subtitel": "De 3 cruciale shifts in communicatie", "duur_min": 20, "kernvraag": "Communiceer je nog als date of al als partner?"},
+        {"id": "les-3-2", "titel": "Behoeften Uiten Zonder Te Eisen", "subtitel": "De NVC-formule voor relaties", "duur_min": 25, "kernvraag": "Kun je vragen wat je nodig hebt?"},
+        {"id": "les-3-3", "titel": "Conflict als Connectie-Moment", "subtitel": "De 4 Ruiters vermijden", "duur_min": 25, "kernvraag": "Hoe ga je om met conflict?"},
+        {"id": "les-3-4", "titel": "De Moeilijke Gesprekken", "subtitel": "Scripts voor DTR, grenzen en toekomst", "duur_min": 25, "kernvraag": "Welk gesprek stel je uit?"},
+        {"id": "les-3-5", "titel": "Reparatie na een Conflict", "subtitel": "Hoe je weer naar elkaar toekomt", "duur_min": 20, "kernvraag": "Kun je herstellen na een ruzie?"}
+      ]
+    },
+    {
+      "id": "module-4",
+      "nummer": 4,
+      "titel": "De Transitie-Zone",
+      "subtitel": "Van 'we daten' naar 'we zijn samen'",
+      "beschrijving": "Navigeer de kritieke overgang van daten naar een relatie. Van DTR tot de eerste 90 dagen als stel.",
+      "icoon": "🌉",
+      "kleur": "#059669",
+      "duur_minuten": 110,
+      "lessen": [
+        {"id": "les-4-1", "titel": "De DTR (Define The Relationship)", "subtitel": "Wanneer en hoe 'het gesprek' voeren", "duur_min": 25, "kernvraag": "Ben je klaar om te definiëren wat je hebt?"},
+        {"id": "les-4-2", "titel": "Tempo & Timing", "subtitel": "Te snel vs. te langzaam", "duur_min": 20, "kernvraag": "Gaat jullie relatie in een gezond tempo?"},
+        {"id": "les-4-3", "titel": "Integratie - Levens Verweven", "subtitel": "Vrienden, familie, routines", "duur_min": 20, "kernvraag": "Hoe verweven jullie je levens?"},
+        {"id": "les-4-4", "titel": "De Eerste 90 Dagen als Stel", "subtitel": "Het fundament leggen dat blijft", "duur_min": 25, "kernvraag": "Welke gewoontes bouw je nu?"},
+        {"id": "les-4-5", "titel": "Wanneer Het Niet Werkt", "subtitel": "Blijven vs. Gaan - het eerlijke gesprek", "duur_min": 20, "kernvraag": "Weet je wanneer je moet stoppen?"}
+      ]
+    },
+    {
+      "id": "module-5",
+      "nummer": 5,
+      "titel": "Relatie-Onderhoud",
+      "subtitel": "Een relatie laten bloeien, niet alleen overleven",
+      "beschrijving": "De wetenschappelijk bewezen praktijken om een relatie gezond te houden. Van Gottman's Sound Relationship House tot de 5:1 ratio.",
+      "icoon": "🏠",
+      "kleur": "#DC2626",
+      "duur_minuten": 105,
+      "lessen": [
+        {"id": "les-5-1", "titel": "The Sound Relationship House", "subtitel": "Gottman's 7 verdiepingen van relatie-succes", "duur_min": 25, "kernvraag": "Hoe stevig is jouw relatie-huis?"},
+        {"id": "les-5-2", "titel": "Bids for Connection", "subtitel": "De kleine momenten die alles bepalen", "duur_min": 20, "kernvraag": "Herken en beantwoord je bids?"},
+        {"id": "les-5-3", "titel": "De 5:1 Ratio", "subtitel": "Het magische getal voor relatie-succes", "duur_min": 20, "kernvraag": "Hoe is jouw positief/negatief balans?"},
+        {"id": "les-5-4", "titel": "Groei als Individu én Koppel", "subtitel": "Differentiatie in de praktijk", "duur_min": 20, "kernvraag": "Blijf je jezelf in de relatie?"},
+        {"id": "les-5-5", "titel": "De Lange Termijn Visie", "subtitel": "Van verliefdheid naar volwassen liefde", "duur_min": 20, "kernvraag": "Bouw je voor nu of voor altijd?"}
+      ]
+    },
+    {
+      "id": "module-6",
+      "nummer": 6,
+      "titel": "Meesterschap Integratie",
+      "subtitel": "Alles samenvoegen in jouw strategie",
+      "beschrijving": "Breng alle inzichten samen in je persoonlijke Relatie Blauwdruk. Plus live coaching en persoonlijke profiel-audit.",
+      "icoon": "👑",
+      "kleur": "#F59E0B",
+      "duur_minuten": 185,
+      "lessen": [
+        {"id": "les-6-1", "titel": "Jouw Relatie Blauwdruk", "subtitel": "Alles samen in één document", "duur_min": 20, "kernvraag": "Wat is jouw complete relatieplan?"},
+        {"id": "les-6-2", "titel": "De Meesterschap Mindset", "subtitel": "De 5 elementen van relatie-meesterschap", "duur_min": 15, "kernvraag": "Hoe blijf je groeien?"},
+        {"id": "les-6-3", "titel": "Live Q&A Sessie 1", "subtitel": "Relatie-DNA en Patronen", "duur_min": 60, "kernvraag": "Wat zijn je vragen over Module 1-3?", "type": "live"},
+        {"id": "les-6-4", "titel": "Live Q&A Sessie 2", "subtitel": "Communicatie en Onderhoud", "duur_min": 60, "kernvraag": "Wat zijn je vragen over Module 4-5?", "type": "live"}
+      ]
+    }
+  ],
+  
+  "totalen": {
+    "modules": 6,
+    "lessen": 29,
+    "video_uren": 12,
+    "live_uren": 2
+  }
+}

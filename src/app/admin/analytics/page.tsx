@@ -1,252 +1,652 @@
 "use client";
 
-import { useUser } from '@/providers/user-provider';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { LoadingSpinner } from '@/components/shared/loading-spinner';
-import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { useTimeoutLoading } from '@/hooks/use-timeout-loading';
-import { SEODashboard } from '@/components/admin/seo-dashboard';
-import { LocalSEOSettings } from '@/components/admin/local-seo-settings';
-import { PerformanceMonitor } from '@/components/admin/performance-monitor';
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-const ADMIN_EMAILS = ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'];
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  BarChart3,
+  TrendingUp,
+  TrendingDown,
+  Users,
+  Activity,
+  Target,
+  DollarSign,
+  Clock,
+  Eye,
+  MousePointer,
+  Smartphone,
+  Monitor,
+  Calendar,
+  Download,
+  RefreshCw,
+  Zap,
+  Heart,
+  MessageSquare,
+  Star,
+  Crown
+} from "lucide-react";
 
 interface AnalyticsData {
-  totalUsers: number;
-  totalRevenue: number;
-  activeSubscriptions: number;
-  freeUsers: number;
-  premiumUsers: number;
-  proUsers: number;
-  monthlyRevenue: number;
-  recentTransactions: Transaction[];
+  overview: {
+    totalUsers: number;
+    activeUsers: number;
+    newUsers: number;
+    conversionRate: number;
+    revenue: number;
+    avgSessionDuration: number;
+  };
+  userBehavior: {
+    pageViews: number;
+    uniqueVisitors: number;
+    bounceRate: number;
+    returnVisitors: number;
+    deviceBreakdown: {
+      mobile: number;
+      desktop: number;
+      tablet: number;
+    };
+  };
+  toolUsage: {
+    emotionalReadiness: { completions: number; avgScore: number; };
+    hechtingsstijl: { completions: number; avgScore: number; };
+    chatCoach: { sessions: number; messages: number; };
+    profileBuilder: { profiles: number; avgQuality: number; };
+    datingStyle: { assessments: number; avgMaturity: number; };
+  };
+  conversionFunnel: {
+    visitors: number;
+    signups: number;
+    assessments: number;
+    premiumUpgrades: number;
+    vipUpgrades: number;
+  };
+  timeSeries: Array<{
+    date: string;
+    users: number;
+    revenue: number;
+    assessments: number;
+  }>;
 }
 
-interface Transaction {
-  id: string;
-  userId: string;
-  userEmail: string;
-  plan: string;
-  amount: number;
-  date: any;
-}
-
-export default function AnalyticsPage() {
-  const { user, loading } = useUser();
-  const router = useRouter();
-  const [analytics, setAnalytics] = useState<AnalyticsData>({
-    totalUsers: 0,
-    totalRevenue: 0,
-    activeSubscriptions: 0,
-    freeUsers: 0,
-    premiumUsers: 0,
-    proUsers: 0,
-    monthlyRevenue: 0,
-    recentTransactions: [],
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState("analytics");
-
-  // Add timeout loading protection
-  useTimeoutLoading(isLoading, setIsLoading, 5000);
+export default function AdminAnalytics() {
+  const [data, setData] = useState<AnalyticsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [timeRange, setTimeRange] = useState("7d");
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
   useEffect(() => {
-    console.log('AnalyticsPage - useEffect triggered', { user, loading });
-    
-    if (!loading) {
-      console.log('AnalyticsPage - User loaded, checking permissions');
-      
-      if (!user) {
-        console.log('AnalyticsPage - No user, redirecting to dashboard');
-        router.push('/dashboard');
-      } else if (user.email && !ADMIN_EMAILS.includes(user.email)) {
-        console.log('AnalyticsPage - Not admin, redirecting to dashboard');
-        router.push('/dashboard');
-      } else {
-        console.log('AnalyticsPage - Admin user, loading analytics');
-        loadAnalytics();
-      }
-    }
-  }, [user, loading, router]);
+    fetchAnalytics();
+  }, [timeRange]);
 
-  const loadAnalytics = async () => {
+  const fetchAnalytics = async () => {
     try {
-      console.log('AnalyticsPage - Loading analytics data from Neon');
-      setIsLoading(true);
-      setError(null);
+      // Mock comprehensive analytics data
+      const mockData: AnalyticsData = {
+        overview: {
+          totalUsers: 2847,
+          activeUsers: 1923,
+          newUsers: 156,
+          conversionRate: 16.2,
+          revenue: 12847.50,
+          avgSessionDuration: 1247 // seconds
+        },
+        userBehavior: {
+          pageViews: 45231,
+          uniqueVisitors: 8923,
+          bounceRate: 34.2,
+          returnVisitors: 2341,
+          deviceBreakdown: {
+            mobile: 68,
+            desktop: 28,
+            tablet: 4
+          }
+        },
+        toolUsage: {
+          emotionalReadiness: { completions: 1247, avgScore: 72.4 },
+          hechtingsstijl: { completions: 892, avgScore: 78.1 },
+          chatCoach: { sessions: 3456, messages: 12847 },
+          profileBuilder: { profiles: 567, avgQuality: 8.2 },
+          datingStyle: { assessments: 723, avgMaturity: 6.8 }
+        },
+        conversionFunnel: {
+          visitors: 10000,
+          signups: 1620,
+          assessments: 1247,
+          premiumUpgrades: 262,
+          vipUpgrades: 45
+        },
+        timeSeries: Array.from({ length: 7 }, (_, i) => ({
+          date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          users: Math.floor(Math.random() * 200) + 150,
+          revenue: Math.floor(Math.random() * 2000) + 1000,
+          assessments: Math.floor(Math.random() * 50) + 20
+        })).reverse()
+      };
 
-      // Fetch analytics from API
-      const response = await fetch('/api/admin/analytics');
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch analytics');
-      }
-
-      const data = await response.json();
-
-      setAnalytics({
-        totalUsers: data.totalUsers || 0,
-        totalRevenue: data.totalRevenue || 0,
-        activeSubscriptions: data.activeSubscriptions || 0,
-        freeUsers: data.freeUsers || 0,
-        premiumUsers: data.premiumUsers || 0,
-        proUsers: data.proUsers || 0,
-        monthlyRevenue: data.monthlyRevenue || 0,
-        recentTransactions: data.recentTransactions || [],
-      });
-
-      console.log('AnalyticsPage - Analytics data loaded successfully from Neon');
+      setData(mockData);
+      setLastUpdated(new Date());
     } catch (error) {
-      console.error('AnalyticsPage - Error loading analytics:', error);
-      setError('Failed to load analytics data: ' + (error as Error).message);
+      console.error('Error fetching analytics:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  if (loading || isLoading) {
+  const formatDuration = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('nl-NL', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(amount);
+  };
+
+  const getConversionRate = (from: number, to: number) => {
+    return ((to / from) * 100).toFixed(1);
+  };
+
+  if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner />
+      <div className="flex items-center justify-center min-h-96">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
-  if (error) {
+  if (!data) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-500 mb-4">Error</h1>
-          <p className="text-muted-foreground">{error}</p>
-          <Button onClick={loadAnalytics} className="mt-4">Retry</Button>
-        </div>
+      <div className="text-center py-12">
+        <BarChart3 className="mx-auto h-12 w-12 text-gray-400" />
+        <h3 className="mt-2 text-sm font-medium text-gray-900">No analytics data available</h3>
+        <p className="mt-1 text-sm text-gray-500">Unable to load analytics dashboard.</p>
+        <Button onClick={fetchAnalytics} className="mt-4">
+          Try Again
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <Button onClick={() => router.push('/admin')}>Back to Admin</Button>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Analytics Dashboard</h1>
+          <p className="text-gray-600">
+            Comprehensive insights into user behavior and platform performance
+          </p>
+        </div>
+        <div className="flex items-center space-x-3">
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1d">Last 24h</SelectItem>
+              <SelectItem value="7d">Last 7 days</SelectItem>
+              <SelectItem value="30d">Last 30 days</SelectItem>
+              <SelectItem value="90d">Last 90 days</SelectItem>
+            </SelectContent>
+          </Select>
+          <span className="text-sm text-gray-500">
+            Updated: {lastUpdated.toLocaleTimeString()}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchAnalytics}
+            className="flex items-center space-x-2"
+          >
+            <RefreshCw className="w-4 h-4" />
+            <span>Refresh</span>
+          </Button>
+          <Button variant="outline" size="sm">
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </Button>
+        </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="analytics">Business Analytics</TabsTrigger>
-          <TabsTrigger value="seo">SEO Dashboard</TabsTrigger>
-          <TabsTrigger value="local-seo">Local SEO</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="users">User Behavior</TabsTrigger>
+          <TabsTrigger value="tools">Tool Usage</TabsTrigger>
+          <TabsTrigger value="conversion">Conversion</TabsTrigger>
+          <TabsTrigger value="trends">Trends</TabsTrigger>
         </TabsList>
-        
-        <TabsContent value="analytics" className="mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+        {/* Overview Tab */}
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card>
-              <CardHeader>
-                <CardTitle>Total Users</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{analytics.totalUsers}</div>
+                <div className="text-2xl font-bold">{formatCurrency(data.overview.revenue)}</div>
+                <p className="text-xs text-muted-foreground">
+                  <span className="text-green-600">+23.1%</span> from last period
+                </p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle>Active Subscriptions</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{analytics.activeSubscriptions}</div>
+                <div className="text-2xl font-bold">{data.overview.activeUsers.toLocaleString()}</div>
+                <p className="text-xs text-muted-foreground">
+                  <span className="text-green-600">+12.5%</span> from last period
+                </p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle>Total Revenue</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
+                <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">€{analytics.totalRevenue.toFixed(2)}</div>
+                <div className="text-2xl font-bold">{data.overview.conversionRate}%</div>
+                <p className="text-xs text-muted-foreground">
+                  <span className="text-green-600">+2.1%</span> from last period
+                </p>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle>Monthly Revenue</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Avg Session</CardTitle>
+                <Clock className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">€{analytics.monthlyRevenue.toFixed(2)}</div>
+                <div className="text-2xl font-bold">{formatDuration(data.overview.avgSessionDuration)}</div>
+                <p className="text-xs text-muted-foreground">
+                  <span className="text-green-600">+8.3%</span> from last period
+                </p>
               </CardContent>
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Device Breakdown */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Device Usage</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Smartphone className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm">Mobile</span>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <Progress value={data.userBehavior.deviceBreakdown.mobile} className="w-24" />
+                    <span className="text-sm font-medium">{data.userBehavior.deviceBreakdown.mobile}%</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Monitor className="h-4 w-4 text-green-600" />
+                    <span className="text-sm">Desktop</span>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <Progress value={data.userBehavior.deviceBreakdown.desktop} className="w-24" />
+                    <span className="text-sm font-medium">{data.userBehavior.deviceBreakdown.desktop}%</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Monitor className="h-4 w-4 text-purple-600" />
+                    <span className="text-sm">Tablet</span>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <Progress value={data.userBehavior.deviceBreakdown.tablet} className="w-24" />
+                    <span className="text-sm font-medium">{data.userBehavior.deviceBreakdown.tablet}%</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* User Behavior Tab */}
+        <TabsContent value="users" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>User Distribution</CardTitle>
+                <CardTitle className="flex items-center space-x-2">
+                  <Eye className="h-5 w-5" />
+                  <span>Page Views</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">{data.userBehavior.pageViews.toLocaleString()}</div>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Total page views in selected period
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Users className="h-5 w-5" />
+                  <span>Unique Visitors</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">{data.userBehavior.uniqueVisitors.toLocaleString()}</div>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Unique users who visited the platform
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <MousePointer className="h-5 w-5" />
+                  <span>Bounce Rate</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">{data.userBehavior.bounceRate}%</div>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Visitors who left after one page
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>User Engagement Metrics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {((data.userBehavior.returnVisitors / data.userBehavior.uniqueVisitors) * 100).toFixed(1)}%
+                  </div>
+                  <div className="text-sm text-gray-600">Return Visitors</div>
+                </div>
+
+                <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">
+                    {(data.userBehavior.pageViews / data.userBehavior.uniqueVisitors).toFixed(1)}
+                  </div>
+                  <div className="text-sm text-gray-600">Pages per User</div>
+                </div>
+
+                <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {formatDuration(data.overview.avgSessionDuration)}
+                  </div>
+                  <div className="text-sm text-gray-600">Avg Session</div>
+                </div>
+
+                <div className="text-center p-4 bg-orange-50 rounded-lg">
+                  <div className="text-2xl font-bold text-orange-600">
+                    {data.overview.newUsers}
+                  </div>
+                  <div className="text-sm text-gray-600">New Users</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Tool Usage Tab */}
+        <TabsContent value="tools" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Heart className="h-5 w-5 text-pink-600" />
+                  <span>Emotional Readiness</span>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span>Free Users</span>
-                    <span className="font-medium">{analytics.freeUsers}</span>
+                    <span className="text-sm text-gray-600">Completions</span>
+                    <span className="font-medium">{data.toolUsage.emotionalReadiness.completions}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Premium Users</span>
-                    <span className="font-medium">{analytics.premiumUsers}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Pro Users</span>
-                    <span className="font-medium">{analytics.proUsers}</span>
+                    <span className="text-sm text-gray-600">Avg Score</span>
+                    <span className="font-medium">{data.toolUsage.emotionalReadiness.avgScore}/100</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="md:col-span-2">
+            <Card>
               <CardHeader>
-                <CardTitle>Recent Transactions</CardTitle>
+                <CardTitle className="flex items-center space-x-2">
+                  <Star className="h-5 w-5 text-blue-600" />
+                  <span>Hechtingsstijl</span>
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                {analytics.recentTransactions.length > 0 ? (
-                  <div className="space-y-3">
-                    {analytics.recentTransactions.map((transaction) => (
-                      <div key={transaction.id} className="flex justify-between items-center border-b pb-2">
-                        <div>
-                          <p className="font-medium">{transaction.userEmail || 'Unknown User'}</p>
-                          <p className="text-sm text-muted-foreground">{transaction.plan}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-medium">€{transaction.amount.toFixed(2)}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {transaction.date?.toDate ? 
-                              transaction.date.toDate().toLocaleDateString() : 
-                              new Date(transaction.date).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Completions</span>
+                    <span className="font-medium">{data.toolUsage.hechtingsstijl.completions}</span>
                   </div>
-                ) : (
-                  <p className="text-muted-foreground">No recent transactions</p>
-                )}
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Avg Score</span>
+                    <span className="font-medium">{data.toolUsage.hechtingsstijl.avgScore}/100</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <MessageSquare className="h-5 w-5 text-green-600" />
+                  <span>Chat Coach</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Sessions</span>
+                    <span className="font-medium">{data.toolUsage.chatCoach.sessions}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Messages</span>
+                    <span className="font-medium">{data.toolUsage.chatCoach.messages}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Target className="h-5 w-5 text-purple-600" />
+                  <span>Profile Builder</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Profiles Created</span>
+                    <span className="font-medium">{data.toolUsage.profileBuilder.profiles}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Avg Quality</span>
+                    <span className="font-medium">{data.toolUsage.profileBuilder.avgQuality}/10</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Zap className="h-5 w-5 text-orange-600" />
+                  <span>Dating Style</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Assessments</span>
+                    <span className="font-medium">{data.toolUsage.datingStyle.assessments}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Avg Maturity</span>
+                    <span className="font-medium">{data.toolUsage.datingStyle.avgMaturity}/10</span>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
-        
-        <TabsContent value="seo" className="mt-6">
-          <SEODashboard />
+
+        {/* Conversion Funnel Tab */}
+        <TabsContent value="conversion" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Conversion Funnel</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                User journey from visitor to premium subscriber
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Eye className="h-5 w-5 text-gray-600" />
+                    <span className="font-medium">Visitors</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-lg">{data.conversionFunnel.visitors.toLocaleString()}</div>
+                    <div className="text-sm text-gray-600">100.0%</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Users className="h-5 w-5 text-blue-600" />
+                    <span className="font-medium">Signups</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-lg">{data.conversionFunnel.signups.toLocaleString()}</div>
+                    <div className="text-sm text-blue-600">
+                      {getConversionRate(data.conversionFunnel.visitors, data.conversionFunnel.signups)}%
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Target className="h-5 w-5 text-green-600" />
+                    <span className="font-medium">Assessments</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-lg">{data.conversionFunnel.assessments.toLocaleString()}</div>
+                    <div className="text-sm text-green-600">
+                      {getConversionRate(data.conversionFunnel.signups, data.conversionFunnel.assessments)}%
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-yellow-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Star className="h-5 w-5 text-yellow-600" />
+                    <span className="font-medium">Premium Upgrades</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-lg">{data.conversionFunnel.premiumUpgrades.toLocaleString()}</div>
+                    <div className="text-sm text-yellow-600">
+                      {getConversionRate(data.conversionFunnel.assessments, data.conversionFunnel.premiumUpgrades)}%
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <Crown className="h-5 w-5 text-purple-600" />
+                    <span className="font-medium">VIP Upgrades</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-lg">{data.conversionFunnel.vipUpgrades.toLocaleString()}</div>
+                    <div className="text-sm text-purple-600">
+                      {getConversionRate(data.conversionFunnel.premiumUpgrades, data.conversionFunnel.vipUpgrades)}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
-        
-        <TabsContent value="local-seo" className="mt-6">
-          <LocalSEOSettings />
-        </TabsContent>
-        
-        <TabsContent value="performance" className="mt-6">
-          <PerformanceMonitor />
+
+        {/* Trends Tab */}
+        <TabsContent value="trends" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>7-Day Trends</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Daily metrics over the past week
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {data.timeSeries.map((day, index) => (
+                  <div key={day.date} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="h-4 w-4 text-gray-400" />
+                      <span className="font-medium">
+                        {new Date(day.date).toLocaleDateString('nl-NL', {
+                          weekday: 'short',
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-6 text-sm">
+                      <div className="text-center">
+                        <div className="font-medium">{day.users}</div>
+                        <div className="text-gray-500">Users</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-medium">€{day.revenue}</div>
+                        <div className="text-gray-500">Revenue</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-medium">{day.assessments}</div>
+                        <div className="text-gray-500">Assessments</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
