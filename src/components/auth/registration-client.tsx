@@ -439,6 +439,21 @@ export function RegistrationClientComponent() {
       // Continue with post-registration flow
       setTempName(user.name);
 
+      // Check if coming from assessment (PRO CONVERSION FLOW)
+      const fromAssessment = searchParams.get('from');
+      if (fromAssessment === 'assessment') {
+        console.log('🎯 Coming from assessment, redirecting back to results');
+        setIsRedirecting(true);
+        toast({
+          title: "Account geverifieerd! ✅",
+          description: "Je wordt doorgestuurd naar je volledige aanbeveling...",
+        });
+        setTimeout(() => {
+          window.location.href = '/assessment/result';
+        }, 1500);
+        return;
+      }
+
       // If there's an order_id, clear localStorage and redirect to profile setup
       if (orderId) {
         console.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');

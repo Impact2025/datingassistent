@@ -76,7 +76,35 @@ export default function AssessmentResultPage() {
 
         // Check if user is authenticated
         const authRes = await fetch('/api/auth/verify');
-        setIsAuthenticated(authRes.ok);
+        const isAuth = authRes.ok;
+        setIsAuthenticated(isAuth);
+
+        // If authenticated AND we have assessment data, save to database
+        if (isAuth && answers) {
+          console.log('✅ User is authenticated, saving assessment to database...');
+          try {
+            const saveRes = await fetch('/api/assessment/save', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ answers })
+            });
+
+            if (saveRes.ok) {
+              const saveData = await saveRes.json();
+              console.log('✅ Assessment saved to database:', saveData);
+
+              // Clear localStorage after successful save
+              if (saveData.saved) {
+                localStorage.removeItem('assessment_answers');
+                localStorage.removeItem('pending_recommendation');
+                console.log('🧹 Cleaned up localStorage');
+              }
+            }
+          } catch (saveErr) {
+            console.error('⚠️ Failed to save assessment to database:', saveErr);
+            // Continue anyway - user can still see results
+          }
+        }
 
       } catch (err) {
         console.error('Error loading results:', err);
