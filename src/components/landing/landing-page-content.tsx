@@ -24,6 +24,7 @@ import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { CookieConsentBanner } from '@/components/cookie-consent-banner';
 import { ChatWidgetWrapper } from '@/components/live-chat/chat-widget-wrapper';
 import { HeroSection } from '@/components/landing/hero-section';
+import { ProgramCards } from '@/components/landing/program-cards';
 import { useUser } from '@/providers/user-provider';
 
 type Review = {
@@ -495,112 +496,81 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
         </div>
       </section>
 
-      <section id="prijzen" className="py-24 px-4 bg-white">
+      <section id="programmas" className="py-24 px-4 bg-gradient-to-br from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Kies jouw pad naar meer liefde, groei en zelfvertrouwen</h2>
-            <p className="text-lg text-gray-500 max-w-3xl mx-auto">
-              Of je nu zelfstandig wilt leren daten met hulp van AI, of intensief wilt samenwerken met een persoonlijke coach, DatingAssistent helpt je stap voor stap naar meer succes in de liefde.
+            <div className="inline-block mb-4">
+              <Badge className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 text-sm">
+                🎉 Beta Launch - Exclusieve vroegboekkorting!
+              </Badge>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900">
+              Transformeer je dating leven in <span className="bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">90 dagen</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Van "Ik weet niet wat ik verkeerd doe" naar "Ik date met vertrouwen en krijg de dates die ik wil"
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {plans.map((plan, index) => (
-              <Card key={index} className={`card-playful relative ${plan.popular ? 'border-2 border-pink-500 shadow-lg' : 'border border-gray-200'}`}>
-                {plan.popular && (
-                  <div className="bg-pink-500 text-white text-xs font-bold py-1 px-3 rounded-full absolute top-0 -translate-y-1/2 left-4">Meest gekozen</div>
-                )}
+          {/* Program Cards */}
+          <ProgramCards />
 
-                <CardContent className="p-6">
-                  <div className="text-center mb-6">
-                    <h3 className="font-bold text-xl mb-2">{plan.name}</h3>
-                    <p className="text-sm text-gray-600 italic">"{plan.description}"</p>
-                  </div>
+          {/* Benefits Below */}
+          <div className="mt-16 space-y-8">
+            {/* Transformation Over Tools */}
+            <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl p-8 border border-pink-100 max-w-4xl mx-auto">
+              <div className="text-center space-y-4">
+                <Sparkles className="w-12 h-12 mx-auto text-pink-500" />
+                <h3 className="text-2xl font-bold text-gray-900">
+                  Niet gewoon tools, maar een complete transformatie
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  DatingAssistent is meer dan een verzameling AI-tools. Het is een bewezen 3-fase systeem
+                  dat je van onzeker swiper naar zelfverzekerde dater brengt. Met Iris als je persoonlijke
+                  coach die je 24/7 begeleidt door elke stap.
+                </p>
+              </div>
+            </div>
 
-                  <div className="text-center mb-6">
-                    <div className="flex items-baseline justify-center gap-2 mb-2">
-                      <span className="text-3xl font-bold text-gray-900">€{plan.monthlyPrice.toFixed(2)}</span>
-                      <span className="text-sm text-gray-500">/ maand</span>
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {plan.name === 'Premium Plus' ? (
-                        <>
-                          of €{plan.yearlyPrice.toFixed(2)} <span className="font-semibold">éénmalig</span> (geen abonnement)
-                        </>
-                      ) : (
-                        <>
-                          of €{plan.yearlyPrice.toFixed(2)} per jaar <span className="text-green-600 font-semibold">(bespaar {Math.round((1 - plan.yearlyPrice / (plan.monthlyPrice * 12)) * 100)}%)</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
+            {/* Social Proof */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="bg-white rounded-xl p-6 border border-gray-200 text-center">
+                <div className="text-4xl font-bold text-pink-500 mb-2">85%</div>
+                <p className="text-sm text-gray-600">Heeft minimaal 1 date binnen 90 dagen</p>
+              </div>
+              <div className="bg-white rounded-xl p-6 border border-gray-200 text-center">
+                <div className="text-4xl font-bold text-pink-500 mb-2">3x</div>
+                <p className="text-sm text-gray-600">Meer matches na week 3</p>
+              </div>
+              <div className="bg-white rounded-xl p-6 border border-gray-200 text-center">
+                <div className="text-4xl font-bold text-pink-500 mb-2">100%</div>
+                <p className="text-sm text-gray-600">Rapporteert meer zelfvertrouwen</p>
+              </div>
+            </div>
 
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.slice(0, 5).map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start gap-2">
-                        <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-500" />
-                        <span className="text-sm text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                    {plan.features.length > 5 && (
-                      <li className="text-sm text-gray-500 italic">+ {plan.features.length - 5} meer features</li>
-                    )}
-                  </ul>
-
-                  <Button
-                    onClick={() => handleCheckout(plan.name.toLowerCase())}
-                    className={`w-full text-sm font-semibold ${plan.popular || plan.name === 'Premium Plus' ? 'bg-pink-500 text-white hover:bg-pink-600' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
-                  >
-                    {plan.name === 'Core' && 'Start vandaag met Core'}
-                    {plan.name === 'Pro' && 'Upgrade naar Pro'}
-                    {plan.name === 'Premium AI' && 'Plan jouw intake'}
-                    {plan.name === 'Premium Plus' && 'Reserveer jouw Premium Plus traject'}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <>
-            <div className="mt-12 bg-blue-50 border border-blue-200 rounded-2xl p-6 max-w-4xl mx-auto">
+            {/* Money Back Guarantee */}
+            <div className="bg-green-50 border border-green-200 rounded-2xl p-6 max-w-4xl mx-auto">
               <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs">ℹ️</span>
-                </div>
+                <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
                 <div>
-                  <p className="text-sm text-blue-800">
-                    <strong>Flexibel betalen</strong> - Kies tussen maandelijks of jaarlijks.
-                    <br />
-                    <strong>Jaarlijks betalen</strong> bespaart je tot 17% en is het meest gekozen door onze gebruikers.
-                    <br />
-                    <strong>Premium Plus</strong> is een éénmalige investering zonder doorlopend abonnement.
+                  <h4 className="font-semibold text-gray-900 mb-2">30 dagen niet-goed-geld-terug garantie</h4>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We zijn zo overtuigd van onze aanpak dat we je geld terugstorten als je binnen
+                    30 dagen niet tevreden bent. Geen vragen, geen gedoe.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">❤️ Alle plannen bevatten toegang tot al onze AI-tools o.a.:</h3>
-              <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-600">
-                <span className="bg-gray-100 px-3 py-1 rounded-full">Profiel Coach</span>
-                <span className="bg-gray-100 px-3 py-1 rounded-full">Chat Coach</span>
-                <span className="bg-gray-100 px-3 py-1 rounded-full">Date Planner</span>
-                <span className="bg-gray-100 px-3 py-1 rounded-full">Veiligheid Check</span>
-                <span className="bg-gray-100 px-3 py-1 rounded-full">Opener Lab</span>
-                <span className="bg-gray-100 px-3 py-1 rounded-full">Match Analyse</span>
-                <span className="bg-gray-100 px-3 py-1 rounded-full">AI Foto Check</span>
-                <span className="bg-gray-100 px-3 py-1 rounded-full">Voortgang Tracker</span>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center text-sm text-gray-500">
+            {/* Info Notice */}
+            <div className="mt-8 text-center text-sm text-gray-500 max-w-2xl mx-auto">
               <p>
-                Prijzen inclusief btw. Je kunt op elk moment upgraden of downgraden.
+                Alle prijzen zijn inclusief btw. Beta korting is geldig tot einde van het jaar.
                 <br />
-                Alle abonnementen zijn maandelijks opzegbaar zonder extra kosten.
+                Programma's zijn éénmalige betalingen - geen abonnement, geen verborgen kosten.
               </p>
             </div>
-          </>
+          </div>
         </div>
       </section>
 
@@ -762,9 +732,9 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                     Start gratis
                   </Button>
                 </Link>
-                <Link href="#prijzen">
+                <Link href="#programmas">
                   <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto">
-                    Bekijk prijzen
+                    Bekijk programma's
                   </Button>
                 </Link>
               </div>
