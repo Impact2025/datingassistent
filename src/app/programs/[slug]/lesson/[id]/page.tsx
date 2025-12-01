@@ -21,11 +21,13 @@ import {
 import type { LessonResponse, LessonWithProgress, QuizAnswer } from '@/types/content-delivery.types';
 import { formatDuration } from '@/types/content-delivery.types';
 import { QuizComponent } from '@/components/lessons/quiz-component';
+import { useAchievementNotifications } from '@/hooks/use-achievement-notifications';
 
 export default function LessonPlayerPage() {
   const params = useParams();
   const router = useRouter();
   const lessonId = parseInt(params.id as string);
+  const { checkForNewAchievements } = useAchievementNotifications();
 
   const [lessonData, setLessonData] = useState<LessonResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -176,10 +178,10 @@ export default function LessonPlayerPage() {
           };
         });
 
-        // Show achievement notification if unlocked
-        if (data.achievements_unlocked && data.achievements_unlocked.length > 0) {
-          // TODO: Show achievement toast
-          console.log('🏆 Achievements unlocked:', data.achievements_unlocked);
+        // Check for new achievements and show toast notifications
+        const newAchievements = await checkForNewAchievements();
+        if (newAchievements.length > 0) {
+          console.log('🏆 New achievements unlocked:', newAchievements);
         }
       }
     } catch (error) {
@@ -219,8 +221,12 @@ export default function LessonPlayerPage() {
           };
         });
 
-        if (data.achievements_unlocked && data.achievements_unlocked.length > 0) {
-          console.log('🏆 Achievements unlocked:', data.achievements_unlocked);
+        // Check for new achievements and show toast notifications
+        if (passed) {
+          const newAchievements = await checkForNewAchievements();
+          if (newAchievements.length > 0) {
+            console.log('🏆 New achievements unlocked:', newAchievements);
+          }
         }
       }
     } catch (error) {

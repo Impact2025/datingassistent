@@ -12,6 +12,7 @@ import ErrorBoundary from "@/components/error-boundary";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
 import { IrisFloatingButton } from "@/components/iris/IrisFloatingButton";
 import { TutorialEngine } from "@/components/onboarding/tutorial-engine/tutorial-engine";
+import { ToastProvider as AchievementToastProvider } from "@/components/notifications/toast-container";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://datingassistent.nl'),
@@ -145,13 +146,15 @@ export default function RootLayout({
             <WebVitals />
             <ServiceWorkerRegistration />
             <UserProvider>
-              <TutorialEngine>
-                <div id="main-content">
-                  {children}
-                </div>
-                <Toaster />
-                <IrisFloatingButton />
-              </TutorialEngine>
+              <AchievementToastProvider>
+                <TutorialEngine>
+                  <div id="main-content">
+                    {children}
+                  </div>
+                  <Toaster />
+                  <IrisFloatingButton />
+                </TutorialEngine>
+              </AchievementToastProvider>
             </UserProvider>
           </ThemeProvider>
         </ErrorBoundary>
