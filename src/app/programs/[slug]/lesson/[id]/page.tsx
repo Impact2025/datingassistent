@@ -22,6 +22,7 @@ import type { LessonResponse, LessonWithProgress, QuizAnswer } from '@/types/con
 import { formatDuration } from '@/types/content-delivery.types';
 import { QuizComponent } from '@/components/lessons/quiz-component';
 import { useAchievementNotifications } from '@/hooks/use-achievement-notifications';
+import { VimeoPlayer } from '@/components/video/vimeo-player';
 
 export default function LessonPlayerPage() {
   const params = useParams();
@@ -283,6 +284,32 @@ export default function LessonPlayerPage() {
   const { lesson, module, next_lesson, previous_lesson, program } = lessonData;
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
+  // Detect if video URL is a Vimeo URL
+  const isVimeoVideo = (url: string): boolean => {
+    return url.includes('vimeo.com') || url.includes('player.vimeo.com');
+  };
+
+  const handleVimeoProgress = async (seconds: number) => {
+    // Save progress to database every 5 seconds
+    try {
+      await fetch(`/api/lessons/${lessonId}/progress`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          last_position_seconds: Math.floor(seconds),
+          watch_time_seconds: Math.floor(seconds)
+        })
+      });
+    } catch (error) {
+      console.error('Error saving Vimeo progress:', error);
+    }
+  };
+
+  const handleVimeoEnded = async () => {
+    // Mark lesson as complete when video ends
+    await completeLesson();
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -354,45 +381,57 @@ export default function LessonPlayerPage() {
             {lesson.content_type === 'video' && lesson.video_url && (
               <Card>
                 <CardContent className="p-0">
-                  <div className="relative bg-black aspect-video">
-                    <video
-                      ref={videoRef}
-                      className="w-full h-full"
-                      src={lesson.video_url}
-                      poster={lesson.video_thumbnail_url || undefined}
-                      onTimeUpdate={handleTimeUpdate}
-                      onEnded={handleVideoEnded}
-                      onPlay={() => setIsPlaying(true)}
-                      onPause={() => setIsPlaying(false)}
-                    >
-                      Your browser does not support video playback.
-                    </video>
+                  {isVimeoVideo(lesson.video_url) ? (
+                    /* Vimeo Player */
+                    <VimeoPlayer
+                      videoUrl={lesson.video_url}
+                      autoplay={false}
+                      onProgress={handleVimeoProgress}
+                      onEnded={handleVimeoEnded}
+                      initialTime={lesson.user_progress?.last_position_seconds || 0}
+                    />
+                  ) : (
+                    /* Native HTML5 Video Player */
+                    <div className="relative bg-black aspect-video">
+                      <video
+                        ref={videoRef}
+                        className="w-full h-full"
+                        src={lesson.video_url}
+                        poster={lesson.video_thumbnail_url || undefined}
+                        onTimeUpdate={handleTimeUpdate}
+                        onEnded={handleVideoEnded}
+                        onPlay={() => setIsPlaying(true)}
+                        onPause={() => setIsPlaying(false)}
+                      >
+                        Your browser does not support video playback.
+                      </video>
 
-                    {/* Custom Controls Overlay (optional) */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                      <div className="space-y-2">
-                        <Progress value={progressPercentage} className="h-1" />
-                        <div className="flex items-center justify-between text-white text-sm">
-                          <span>
-                            {formatDuration(Math.floor(currentTime)).display} /
-                            {formatDuration(Math.floor(duration)).display}
-                          </span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={handlePlayPause}
-                            className="text-white hover:text-white hover:bg-white/20"
-                          >
-                            {isPlaying ? (
-                              <Pause className="w-5 h-5" />
-                            ) : (
-                              <Play className="w-5 h-5" />
-                            )}
-                          </Button>
+                      {/* Custom Controls Overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                        <div className="space-y-2">
+                          <Progress value={progressPercentage} className="h-1" />
+                          <div className="flex items-center justify-between text-white text-sm">
+                            <span>
+                              {formatDuration(Math.floor(currentTime)).display} /
+                              {formatDuration(Math.floor(duration)).display}
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={handlePlayPause}
+                              className="text-white hover:text-white hover:bg-white/20"
+                            >
+                              {isPlaying ? (
+                                <Pause className="w-5 h-5" />
+                              ) : (
+                                <Play className="w-5 h-5" />
+                              )}
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
             )}
