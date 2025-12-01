@@ -2,7 +2,7 @@
 
 ## 🎯 Wat is er gebouwd?
 
-### 1. **7-Vraag Assessment Flow**
+### 1. **7-Vraag Assessment Flow** ⭐ LEAD MAGNET STRATEGIE
 Een professioneel, multi-step assessment systeem dat gebruikers naar het perfecte programma leidt.
 
 **Route:** `/assessment/1` tot `/assessment/7`
@@ -13,7 +13,8 @@ Een professioneel, multi-step assessment systeem dat gebruikers naar het perfect
 - LocalStorage backup (antwoorden blijven behouden bij refresh)
 - Terug-knop functionaliteit
 - Validatie per vraag
-- Automatische opslag in database
+- **GEEN LOGIN VEREIST** (lead magnet strategie)
+- Automatische opslag in database na registratie
 
 **Vragen:**
 1. Wat is je belangrijkste dating doel?
@@ -24,7 +25,39 @@ Een professioneel, multi-step assessment systeem dat gebruikers naar het perfect
 6. Wat wil je investeren in je dating succes?
 7. Wanneer wil je resultaat zien?
 
-### 2. **Smart Recommendation Engine**
+### 2. **Lead Magnet Conversion Funnel** 🎯
+Professionele conversie-strategie die 2-3x beter converteert dan traditionele "login-first" flows.
+
+**Waarom dit werkt:**
+- **Geen friction:** Gebruikers kunnen direct starten zonder account
+- **Investment effect:** 7 vragen beantwoorden = psychologische commitment
+- **Curiosity gap:** Blur overlay creëert "fear of missing out"
+- **Perfect moment:** Vraag om registratie wanneer gebruiker het antwoord wil zien
+- **Industry standard:** Gebruikt door alle top SaaS bedrijven
+
+**Complete Flow:**
+```
+Assessment starten (geen login)
+  → 7 vragen beantwoorden (localStorage)
+    → Blurred resultaat zien met Lock icon
+      → "Gratis account maken" CTA
+        → Registratie (/register?from=assessment)
+          → Email verificatie
+            → Auto-redirect naar /assessment/result
+              → Assessment auto-save naar database
+                → Volledige unblurred resultaten
+                  → "Start met [programma]" → Checkout
+```
+
+**Technische implementatie:**
+- Assessment answers opgeslagen in localStorage (niet database)
+- Results page berekent aanbeveling client-side
+- Blur overlay voor non-authenticated users
+- Na registratie: auto-redirect terug naar results
+- Auto-save naar database bij terugkomst
+- LocalStorage cleanup na successful save
+
+### 3. **Smart Recommendation Engine**
 Intelligent scoring systeem dat de beste match berekent.
 
 **Route:** `/assessment/result`
@@ -45,7 +78,7 @@ Antwoorden → Scores:
 Aanbeveling: Transformatie (confidence: 67%)
 ```
 
-### 3. **Professional Checkout Page**
+### 4. **Professional Checkout Page**
 Wereldklasse checkout ervaring met MultiSafePay.
 
 **Route:** `/checkout/[programSlug]`
@@ -59,7 +92,7 @@ Wereldklasse checkout ervaring met MultiSafePay.
 - Sticky sidebar met totaal
 - Direct naar MultiSafePay betaling
 
-### 4. **MultiSafePay Integration**
+### 5. **MultiSafePay Integration**
 Volledige betaal-integratie met Nederlandse payment provider.
 
 **API:** `/api/payment/create`
@@ -78,7 +111,7 @@ Volledige betaal-integratie met Nederlandse payment provider.
 5. Webhook update status in database
 6. Auto-enrollment in programma
 
-### 5. **Webhook Handler**
+### 6. **Webhook Handler**
 Automatische verwerking van betalingsupdates.
 
 **API:** `/api/payment/webhook`
@@ -89,7 +122,7 @@ Automatische verwerking van betalingsupdates.
 - `expired` → Update status
 - `declined/void` → Failed status
 
-### 6. **Success Page**
+### 7. **Success Page**
 Viering van succesvolle betaling met confetti! 🎉
 
 **Route:** `/payment/success`
