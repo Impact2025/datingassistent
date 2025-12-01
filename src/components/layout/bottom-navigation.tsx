@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageCircle, Wrench, User, Settings } from 'lucide-react';
+import { MessageCircle, TrendingUp, User, Settings } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
@@ -21,7 +21,7 @@ export function BottomNavigation() {
 
   const navItems = [
     {
-      href: '/',
+      href: '/dashboard',
       icon: null, // Logo image instead of icon
       label: 'Home',
       active: pathname === '/' || pathname?.startsWith('/dashboard') || pathname?.startsWith('/mobile-dashboard'),
@@ -30,27 +30,20 @@ export function BottomNavigation() {
       isLogo: true,
     },
     {
-      href: '/chat',
-      icon: MessageCircle,
-      label: 'Chat',
-      active: pathname?.startsWith('/chat') || pathname?.includes('chat-coach'),
-      color: 'text-gray-600',
-      activeColor: 'text-blue-500',
-    },
-    {
-      href: '/tools',
-      icon: Wrench,
-      label: 'Tools',
-      active: pathname?.startsWith('/tools') ||
-              pathname?.startsWith('/profiel') ||
-              pathname?.startsWith('/foto') ||
-              pathname?.startsWith('/date') ||
-              pathname?.startsWith('/opener') ||
-              pathname?.startsWith('/voice') ||
-              pathname?.startsWith('/match') ||
-              pathname?.startsWith('/veiligheid'),
+      href: '/dashboard?tab=pad',
+      icon: TrendingUp,
+      label: 'Pad',
+      active: pathname?.includes('pad') || pathname?.startsWith('/progress') || pathname?.startsWith('/journey'),
       color: 'text-gray-600',
       activeColor: 'text-purple-500',
+    },
+    {
+      href: '/coach',
+      icon: MessageCircle,
+      label: 'Coach',
+      active: pathname?.startsWith('/coach') || pathname?.startsWith('/chat') || pathname?.includes('chat-coach'),
+      color: 'text-gray-600',
+      activeColor: 'text-blue-500',
     },
     {
       href: '/profiel',
@@ -63,14 +56,15 @@ export function BottomNavigation() {
     {
       href: '/meer',
       icon: Settings,
-      label: 'Account',
+      label: 'Meer',
       active: pathname?.startsWith('/meer') ||
+              pathname?.startsWith('/tools') ||
               pathname?.startsWith('/community') ||
               pathname?.startsWith('/settings') ||
               pathname?.startsWith('/leren') ||
               pathname?.startsWith('/groei') ||
+              pathname?.startsWith('/cursussen') ||
               pathname?.startsWith('/courses') ||
-              pathname?.startsWith('/progress') ||
               pathname?.startsWith('/help') ||
               pathname?.startsWith('/privacy') ||
               pathname?.startsWith('/subscription'),

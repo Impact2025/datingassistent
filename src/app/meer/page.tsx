@@ -26,7 +26,8 @@ import {
   TrendingUp,
   CheckCircle,
   X,
-  GraduationCap
+  GraduationCap,
+  Wrench
 } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 
@@ -119,6 +120,14 @@ export default function MeerPage() {
       type: 'navigation',
     },
     {
+      id: 'tools',
+      icon: <Wrench className="w-5 h-5" />,
+      title: 'Dating Tools',
+      subtitle: 'Profiel, foto\'s, openers en meer',
+      route: '/tools',
+      type: 'navigation',
+    },
+    {
       id: 'community',
       icon: <MessageCircle className="w-5 h-5" />,
       title: 'Community',
@@ -185,7 +194,7 @@ export default function MeerPage() {
 
   const groupedItems = {
     profile: menuItems.filter(item => ['profile', 'subscription'].includes(item.id)),
-    communication: menuItems.filter(item => ['chat', 'cursussen', 'community'].includes(item.id)),
+    features: menuItems.filter(item => ['chat', 'cursussen', 'tools', 'community'].includes(item.id)),
     settings: menuItems.filter(item => ['notifications', 'theme'].includes(item.id)),
     support: menuItems.filter(item => ['help', 'privacy'].includes(item.id)),
     account: menuItems.filter(item => item.id === 'logout'),
@@ -273,7 +282,7 @@ export default function MeerPage() {
             <div key={section}>
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
                 {section === 'profile' && 'Profiel'}
-                {section === 'communication' && 'Communicatie'}
+                {section === 'features' && 'Features'}
                 {section === 'settings' && 'Instellingen'}
                 {section === 'support' && 'Support'}
                 {section === 'account' && 'Account'}
