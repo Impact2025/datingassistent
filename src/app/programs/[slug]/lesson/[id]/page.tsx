@@ -312,25 +312,33 @@ export default function LessonPlayerPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" onClick={handleBackToProgram}>
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                {program.name}
-              </Button>
-              <div className="hidden md:block text-sm text-gray-600">
-                {module.title} → Les {lesson.lesson_number}
-              </div>
+      {/* Header - Mobile Optimized */}
+      <div className="bg-white border-b sticky top-0 z-10 shadow-sm">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-2">
+            {/* Back Button - Touch Friendly */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleBackToProgram}
+              className="min-w-0 px-2 sm:px-4"
+            >
+              <ArrowLeft className="w-4 h-4 sm:mr-2" />
+              <span className="hidden sm:inline">{program.name}</span>
+            </Button>
+
+            {/* Module Info - Hidden on Mobile */}
+            <div className="hidden md:block text-sm text-gray-600 flex-1 min-w-0 truncate">
+              {module.title} → Les {lesson.lesson_number}
             </div>
 
-            <div className="flex items-center gap-3">
+            {/* Complete Button - Compact on Mobile */}
+            <div className="flex items-center gap-2">
               {lesson.is_completed && (
-                <Badge className="bg-green-500 text-white">
+                <Badge className="bg-green-500 text-white text-xs sm:text-sm">
                   <CheckCircle className="w-3 h-3 mr-1" />
-                  Voltooid
+                  <span className="hidden sm:inline">Voltooid</span>
+                  <span className="sm:hidden">✓</span>
                 </Badge>
               )}
               {!lesson.is_completed && (
@@ -339,9 +347,11 @@ export default function LessonPlayerPage() {
                   disabled={completingLesson}
                   variant="outline"
                   size="sm"
+                  className="text-xs sm:text-sm px-2 sm:px-4"
                 >
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  Markeer als voltooid
+                  <CheckCircle className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Markeer voltooid</span>
+                  <span className="sm:hidden">Voltooid</span>
                 </Button>
               )}
             </div>
@@ -349,31 +359,35 @@ export default function LessonPlayerPage() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Main Content - Mobile Optimized */}
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* Left Column - Lesson Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Lesson Title */}
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+            {/* Lesson Title - Mobile Responsive */}
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="outline">Les {lesson.lesson_number}</Badge>
+              <div className="flex flex-wrap items-center gap-2 mb-2 sm:mb-3">
+                <Badge variant="outline" className="text-xs sm:text-sm">
+                  Les {lesson.lesson_number}
+                </Badge>
                 {lesson.difficulty_level && (
-                  <Badge variant="outline" className="capitalize">
+                  <Badge variant="outline" className="capitalize text-xs sm:text-sm">
                     {lesson.difficulty_level}
                   </Badge>
                 )}
                 {lesson.estimated_duration_minutes && (
-                  <span className="text-sm text-gray-600">
+                  <span className="text-xs sm:text-sm text-gray-600">
                     {lesson.estimated_duration_minutes} min
                   </span>
                 )}
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-3">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
                 {lesson.title}
               </h1>
               {lesson.description && (
-                <p className="text-gray-600 text-lg">{lesson.description}</p>
+                <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
+                  {lesson.description}
+                </p>
               )}
             </div>
 
@@ -436,26 +450,32 @@ export default function LessonPlayerPage() {
               </Card>
             )}
 
-            {/* Text Content */}
+            {/* Text Content - Mobile Optimized */}
             {lesson.content_type === 'text' && lesson.text_content && (
               <Card>
-                <CardContent className="prose max-w-none p-8">
-                  <div dangerouslySetInnerHTML={{ __html: lesson.text_content.replace(/\n/g, '<br>') }} />
+                <CardContent className="prose max-w-none p-4 sm:p-6 md:p-8">
+                  <div
+                    className="text-sm sm:text-base leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: lesson.text_content.replace(/\n/g, '<br>') }}
+                  />
                 </CardContent>
               </Card>
             )}
 
-            {/* Exercise */}
+            {/* Exercise - Mobile Optimized */}
             {lesson.content_type === 'exercise' && lesson.text_content && (
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5" />
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
                     Oefening
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="prose max-w-none">
-                  <div dangerouslySetInnerHTML={{ __html: lesson.text_content.replace(/\n/g, '<br>') }} />
+                <CardContent className="prose max-w-none p-4 sm:p-6">
+                  <div
+                    className="text-sm sm:text-base leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: lesson.text_content.replace(/\n/g, '<br>') }}
+                  />
                 </CardContent>
               </Card>
             )}
@@ -472,33 +492,38 @@ export default function LessonPlayerPage() {
               />
             )}
 
-            {/* Download */}
+            {/* Download - Mobile Optimized */}
             {lesson.content_type === 'download' && lesson.download_url && (
               <Card>
-                <CardContent className="p-8 text-center">
-                  <Download className="w-16 h-16 mx-auto text-pink-500 mb-4" />
-                  <h3 className="text-xl font-bold mb-2">{lesson.download_filename}</h3>
-                  <p className="text-gray-600 mb-6">
+                <CardContent className="p-6 sm:p-8 text-center">
+                  <Download className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-pink-500 mb-3 sm:mb-4" />
+                  <h3 className="text-lg sm:text-xl font-bold mb-2 break-words px-2">
+                    {lesson.download_filename}
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-2">
                     Download dit bestand om verder te gaan met de oefening.
                   </p>
-                  <Button asChild className="bg-gradient-to-r from-pink-500 to-purple-600">
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-pink-500 to-purple-600 w-full sm:w-auto"
+                  >
                     <a href={lesson.download_url} download>
                       <Download className="w-4 h-4 mr-2" />
-                      Download {lesson.download_filename}
+                      <span className="truncate">Download {lesson.download_filename}</span>
                     </a>
                   </Button>
                 </CardContent>
               </Card>
             )}
 
-            {/* Transcript (if available) */}
+            {/* Transcript - Mobile Optimized */}
             {lesson.transcript && (
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Transcript</CardTitle>
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="text-base sm:text-lg">Transcript</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 whitespace-pre-wrap">
+                <CardContent className="p-4 sm:p-6">
+                  <p className="text-xs sm:text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">
                     {lesson.transcript}
                   </p>
                 </CardContent>
@@ -506,22 +531,22 @@ export default function LessonPlayerPage() {
             )}
           </div>
 
-          {/* Right Column - Navigation & Info */}
-          <div className="space-y-6">
-            {/* Navigation */}
+          {/* Right Column - Navigation & Info - Mobile Optimized */}
+          <div className="space-y-4 sm:space-y-6">
+            {/* Navigation - Mobile Optimized */}
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Navigatie</CardTitle>
+              <CardHeader className="p-4 sm:p-6">
+                <CardTitle className="text-base sm:text-lg">Navigatie</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 p-4 sm:p-6 pt-0">
                 {previous_lesson && (
                   <Button
                     onClick={handlePrevious}
                     variant="outline"
-                    className="w-full justify-start"
+                    className="w-full justify-start text-sm sm:text-base min-h-[44px]"
                   >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Vorige: {previous_lesson.title}
+                    <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
+                    <span className="truncate">Vorige: {previous_lesson.title}</span>
                   </Button>
                 )}
 
@@ -529,17 +554,19 @@ export default function LessonPlayerPage() {
                   <Button
                     onClick={handleNext}
                     disabled={!next_lesson.is_unlocked}
-                    className="w-full justify-start bg-gradient-to-r from-pink-500 to-purple-600"
+                    className="w-full justify-start bg-gradient-to-r from-pink-500 to-purple-600 text-sm sm:text-base min-h-[44px]"
                   >
                     {next_lesson.is_unlocked ? (
                       <>
-                        Volgende: {next_lesson.title}
-                        <ArrowRight className="w-4 h-4 ml-2" />
+                        <span className="truncate flex-1 text-left">
+                          Volgende: {next_lesson.title}
+                        </span>
+                        <ArrowRight className="w-4 h-4 ml-2 flex-shrink-0" />
                       </>
                     ) : (
                       <>
-                        <Lock className="w-4 h-4 mr-2" />
-                        Voltooi deze les eerst
+                        <Lock className="w-4 h-4 mr-2 flex-shrink-0" />
+                        <span className="truncate">Voltooi deze les eerst</span>
                       </>
                     )}
                   </Button>
@@ -547,8 +574,8 @@ export default function LessonPlayerPage() {
 
                 {!next_lesson && (
                   <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <Award className="w-12 h-12 mx-auto text-green-600 mb-2" />
-                    <p className="text-sm font-medium text-green-900">
+                    <Award className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-green-600 mb-2" />
+                    <p className="text-xs sm:text-sm font-medium text-green-900">
                       Laatste les van deze module!
                     </p>
                   </div>
@@ -556,16 +583,16 @@ export default function LessonPlayerPage() {
               </CardContent>
             </Card>
 
-            {/* Tags */}
+            {/* Tags - Mobile Optimized */}
             {lesson.tags && lesson.tags.length > 0 && (
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Tags</CardTitle>
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="text-base sm:text-lg">Tags</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 sm:p-6 pt-0">
                   <div className="flex flex-wrap gap-2">
                     {lesson.tags.map((tag, index) => (
-                      <Badge key={index} variant="outline">
+                      <Badge key={index} variant="outline" className="text-xs sm:text-sm">
                         {tag}
                       </Badge>
                     ))}
