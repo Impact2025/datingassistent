@@ -1,28 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cmd /c \"dir /b src\\components 2>nul\")",
-      "Bash(cmd /c \"if exist .next rmdir /s /q .next && echo Cache cleared\")",
-      "Bash(cmd /c \"dir /s /b src\\components 2>nul | findstr /i \"\"enhanced-pad-tab.tsx pad-tab.tsx profile-suite.tsx emotionele-readiness-flow.tsx\"\"\")",
-      "Bash(cmd /c \"dir /s /b src\\lib\\iris*.* 2>nul\")",
-      "Bash(findstr:*)",
-      "Bash(npm run build:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push)",
-      "Bash(cmd /c \"dir /s /b C:\\Users\\v_mun\\.claude\\projects\\Datingassistent\\Datingassistentapp\\src\\app 2>nul | findstr /i page.tsx\")",
-      "Bash(powershell -Command:*)",
-      "Bash(npm run dev:*)",
-      "Bash(timeout /t 20 /nobreak)",
-      "Bash(curl:*)",
-      "Bash(cmd /c \"dir /s /b C:\\Users\\v_mun\\.claude\\projects\\Datingassistent\\Datingassistentapp\\cursussen\\cursussen\\dating-fundament-pro\\*les.json 2>nul | head -10\")",
-      "Bash(timeout /t 10 /nobreak)",
-      "Bash(cmd /c \"dir /s /b C:\\Users\\v_mun\\.claude\\projects\\Datingassistent\\Datingassistentapp\\src\\components\\journey 2>nul\")",
-      "Bash(cmd /c \"dir /b cursussen 2>nul\")",
-      "Bash(dir:*)",
-      "Bash(node:*)",
-      "Bash(cmd /c \"dir /s /b C:\\Users\\v_mun\\.claude\\projects\\Datingassistent\\Datingassistentapp\\cursussen\\cursussen\\dating-fundament-pro\\*les*.json 2>nul | head -10\")",
-      "Bash(cmd /c \"dir /s /b src\\components\\dashboard 2>nul | findstr /i \"home-tab.tsx smart-home-tab.tsx \")"
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

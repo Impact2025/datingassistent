@@ -25,7 +25,8 @@ import {
   Star,
   TrendingUp,
   CheckCircle,
-  X
+  X,
+  GraduationCap
 } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 
@@ -110,6 +111,14 @@ export default function MeerPage() {
       type: 'navigation',
     },
     {
+      id: 'cursussen',
+      icon: <GraduationCap className="w-5 h-5" />,
+      title: 'Cursussen',
+      subtitle: 'Leer dating vaardigheden',
+      route: '/cursussen',
+      type: 'navigation',
+    },
+    {
       id: 'community',
       icon: <MessageCircle className="w-5 h-5" />,
       title: 'Community',
@@ -176,7 +185,7 @@ export default function MeerPage() {
 
   const groupedItems = {
     profile: menuItems.filter(item => ['profile', 'subscription'].includes(item.id)),
-    communication: menuItems.filter(item => ['chat', 'community'].includes(item.id)),
+    communication: menuItems.filter(item => ['chat', 'cursussen', 'community'].includes(item.id)),
     settings: menuItems.filter(item => ['notifications', 'theme'].includes(item.id)),
     support: menuItems.filter(item => ['help', 'privacy'].includes(item.id)),
     account: menuItems.filter(item => item.id === 'logout'),
