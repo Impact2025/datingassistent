@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
 
-export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
+const MULTISAFEPAY_API_KEY = process.env.MULTISAFEPAY_API_KEY || '';
+const MULTISAFEPAY_ENVIRONMENT = process.env.MULTISAFEPAY_ENVIRONMENT || 'test';
 
 /**
  * Payment Status Types for typed responses
@@ -34,6 +37,51 @@ const STATUS_MESSAGES: Record<string, string> = {
   failed: 'Je betaling is mislukt. Probeer het opnieuw.',
   expired: 'Je betaling is verlopen. Start een nieuwe betaling.'
 };
+
+/**
+ * Check payment status directly from MultiSafePay API
+ * This is a fallback when webhook hasn't arrived yet
+ */
+async function checkMultiSafePayStatus(orderId: string): Promise<{ status: string; success: boolean } | null> {
+  if (!MULTISAFEPAY_API_KEY) {
+    console.log('⚠️ No MultiSafePay API key configured');
+    return null;
+  }
+
+  const baseUrl = MULTISAFEPAY_ENVIRONMENT === 'live'
+    ? 'https://api.multisafepay.com/v1/json'
+    : 'https://testapi.multisafepay.com/v1/json';
+
+  try {
+    const response = await fetch(`${baseUrl}/orders/${orderId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': MULTISAFEPAY_API_KEY
+      }
+    });
+
+    if (!response.ok) {
+      console.error('❌ MultiSafePay API error:', response.status);
+      return null;
+    }
+
+    const data = await response.json();
+    console.log('📞 MultiSafePay status check:', { orderId, status: data.data?.status });
+
+    if (data.success && data.data) {
+      return {
+        status: data.data.status,
+        success: data.data.status === 'completed'
+      };
+    }
+
+    return null;
+  } catch (error) {
+    console.error('❌ Failed to check MultiSafePay status:', error);
+    return null;
+  }
+}
 
 /**
  * GET /api/payment/verify?orderId=xxx
@@ -90,34 +138,84 @@ export async function GET(request: NextRequest) {
 
       let tx = txResult.rows[0];
 
-      // In development mode with test orders, auto-complete after a few seconds
-      const isDevelopment = process.env.NODE_ENV === 'development';
-      const isTestOrder = tx.order_id?.startsWith('ORDER-');
+      // If status is pending, check MultiSafePay API directly as fallback
+      if (tx.status === 'pending' || tx.status === 'initialized') {
+        console.log('🔍 Status is pending, checking MultiSafePay API directly...');
+        const mspStatus = await checkMultiSafePayStatus(orderId);
 
-      if (isDevelopment && isTestOrder && tx.status === 'pending') {
-        // Auto-complete test payments in development after creation
-        const createdAt = new Date(tx.created_at);
-        const now = new Date();
-        const secondsSinceCreation = (now.getTime() - createdAt.getTime()) / 1000;
+        if (mspStatus?.success && mspStatus.status === 'completed') {
+          console.log('✅ MultiSafePay reports completed, updating database...');
 
-        // Auto-complete after 5 seconds in development
-        if (secondsSinceCreation > 5) {
+          // Update payment transaction
           await sql`
             UPDATE payment_transactions
-            SET status = 'completed', paid_at = NOW(), updated_at = NOW()
+            SET status = 'completed', paid_at = NOW(), updated_at = NOW(),
+                multisafepay_status = 'completed'
             WHERE order_id = ${orderId}
           `;
 
-          // Create program enrollment
+          // Create program enrollment if not exists
           await sql`
             INSERT INTO program_enrollments (user_id, program_id, order_id, status, enrolled_at)
             VALUES (${tx.user_id}, ${tx.program_id}, ${orderId}, 'active', NOW())
             ON CONFLICT (user_id, program_id, order_id) DO NOTHING
           `;
 
-          console.log('✅ Test payment auto-completed:', orderId);
+          // Initialize program progress
+          const statsResult = await sql`
+            SELECT
+              COUNT(DISTINCT pm.id) as total_modules,
+              COUNT(DISTINCT l.id) as total_lessons
+            FROM program_modules pm
+            LEFT JOIN lessons l ON l.module_id = pm.id AND l.is_published = true
+            WHERE pm.program_id = ${tx.program_id}
+              AND pm.is_published = true
+          `;
+
+          const { total_modules, total_lessons } = statsResult.rows[0];
+
+          const firstLessonResult = await sql`
+            SELECT l.id
+            FROM lessons l
+            JOIN program_modules pm ON l.module_id = pm.id
+            WHERE pm.program_id = ${tx.program_id}
+              AND pm.is_published = true
+              AND l.is_published = true
+            ORDER BY pm.display_order, l.display_order
+            LIMIT 1
+          `;
+
+          const currentLessonId = firstLessonResult.rows[0]?.id || null;
+
+          await sql`
+            INSERT INTO user_program_progress (
+              user_id, program_id,
+              started_at, total_modules, total_lessons,
+              overall_progress_percentage,
+              current_lesson_id
+            ) VALUES (
+              ${tx.user_id},
+              ${tx.program_id},
+              NOW(),
+              ${total_modules},
+              ${total_lessons},
+              0,
+              ${currentLessonId}
+            )
+            ON CONFLICT (user_id, program_id) DO NOTHING
+          `;
+
+          console.log('✅ Payment completed via API check, enrollment and progress initialized');
           tx.status = 'completed';
-          tx.paid_at = now;
+          tx.paid_at = new Date();
+        } else if (mspStatus && mspStatus.status !== 'initialized') {
+          // Update status from MSP if it's different (cancelled, failed, etc.)
+          console.log(`📞 MultiSafePay status: ${mspStatus.status}`);
+          await sql`
+            UPDATE payment_transactions
+            SET multisafepay_status = ${mspStatus.status}, updated_at = NOW()
+            WHERE order_id = ${orderId}
+          `;
         }
       }
 

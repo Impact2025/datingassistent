@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const user = userResult.rows[0];
+    const dbUser = userResult.rows[0];
     const body = await request.json();
     const { programId, programSlug, amount, couponCode } = body;
 
@@ -70,9 +70,9 @@ export async function POST(request: NextRequest) {
       },
       customer: {
         locale: 'nl_NL',
-        email: user.email,
-        firstname: user.name?.split(' ')[0] || '',
-        lastname: user.name?.split(' ').slice(1).join(' ') || '',
+        email: dbUser.email,
+        firstname: dbUser.name?.split(' ')[0] || '',
+        lastname: dbUser.name?.split(' ').slice(1).join(' ') || '',
         country: 'NL'
       },
       custom_info: {
