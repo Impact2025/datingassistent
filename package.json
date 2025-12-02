@@ -25,7 +25,10 @@
     "sync:courses": "tsx scripts/sync-courses-from-data.ts",
     "check-env": "tsx scripts/check-env.ts",
     "check-env:prod": "NODE_ENV=production tsx scripts/check-env:prod",
-    "prebuild:prod": "npm run check-env:prod"
+    "prebuild:prod": "npm run check-env:prod",
+    "migrate:onboarding": "tsx src/scripts/migrate-onboarding-tables.ts",
+    "migrate:coupon-code": "tsx src/scripts/migrate-add-coupon-code.ts",
+    "migrate:kickstart-21": "tsx src/scripts/migrate-kickstart-21-days.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.65.0",
