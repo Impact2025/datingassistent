@@ -9,6 +9,7 @@ import { Sparkles, TrendingUp, Target, Calendar, GraduationCap, BarChart3 } from
 import { PersonalizedWelcome } from './personalized-welcome';
 import { MijnCursussenWidget } from './mijn-cursussen-widget';
 import { MyProgramsWidget } from './my-programs-widget';
+import { RecommendedContent } from '../recommendations/recommended-content';
 import { Button } from '../ui/button';
 
 interface HomeTabProps {
@@ -125,6 +126,9 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
 
         {/* Mijn Programma's Widget - NIEUW Sprint 4! */}
         <MyProgramsWidget />
+
+        {/* AI-Powered Recommendations - NIEUW Sprint 5.2! */}
+        <RecommendedContent limit={6} showInsights={true} />
 
         {/* Vandaag Focus */}
         <motion.div

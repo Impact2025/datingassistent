@@ -1,80 +1,56 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateRecommendations } from '@/lib/recommendation-engine';
-import { sql } from '@vercel/postgres';
-import { requireUserAccess } from '@/lib/auth';
+import { verifyAuth } from '@/lib/auth';
+import { generateRecommendations, getLearningInsights } from '@/lib/recommendations/recommendation-engine';
 
+export const dynamic = 'force-dynamic';
+
+/**
+ * GET /api/recommendations
+ * Get AI-powered content recommendations for the authenticated user
+ *
+ * Query params:
+ * - limit: Number of recommendations to return (default: 10)
+ * - include_insights: Include learning insights (default: true)
+ */
 export async function GET(request: NextRequest) {
   try {
-    const userIdStr = request.nextUrl.searchParams.get('userId');
-
-    if (!userIdStr) {
+    // Authenticate user
+    const user = await verifyAuth(request);
+    if (!user) {
       return NextResponse.json(
-        { error: 'userId is required' },
-        { status: 400 }
+        { error: 'Authentication required' },
+        { status: 401 }
       );
     }
 
-    // 🔒 SECURITY: Validate userId format
-    if (!/^\d+$/.test(userIdStr)) {
-      return NextResponse.json(
-        { error: 'Invalid userId format' },
-        { status: 400 }
-      );
-    }
-
-    const userId = parseInt(userIdStr, 10);
-
-    // 🔒 SECURITY: Verify user is authenticated and authorized to access this data
-    const authenticatedUser = await requireUserAccess(request, userId);
-
-    // Get user profile
-    const result = await sql`
-      SELECT profile FROM users WHERE id = ${userId}
-    `;
-
-    if (result.rows.length === 0) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
-    }
-
-    const profile = result.rows[0].profile;
-    if (!profile) {
-      return NextResponse.json(
-        { error: 'User profile not found' },
-        { status: 404 }
-      );
-    }
+    const userId = user.id;
+    const { searchParams } = new URL(request.url);
+    const limit = parseInt(searchParams.get('limit') || '10');
+    const includeInsights = searchParams.get('include_insights') !== 'false';
 
     // Generate recommendations
-    const recommendations = await generateRecommendations(profile, parseInt(userId));
+    const recommendations = await generateRecommendations(userId, limit);
 
-    return NextResponse.json({
-      recommendations
-    }, { status: 200 });
-
-  } catch (error) {
-    console.error('Get recommendations error:', error);
-
-    // 🔒 SECURITY: Handle authentication errors
-    if (error instanceof Error) {
-      if (error.message === 'Unauthorized') {
-        return NextResponse.json(
-          { error: 'Unauthorized: Please login' },
-          { status: 401 }
-        );
-      }
-      if (error.message.includes('Forbidden')) {
-        return NextResponse.json(
-          { error: 'Forbidden: You can only view your own recommendations' },
-          { status: 403 }
-        );
-      }
+    // Get learning insights if requested
+    let insights = null;
+    if (includeInsights) {
+      insights = await getLearningInsights(userId);
     }
 
+    return NextResponse.json({
+      recommendations,
+      insights,
+      generated_at: new Date().toISOString(),
+      user_id: userId
+    });
+
+  } catch (error) {
+    console.error('Error generating recommendations:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      {
+        error: 'Failed to generate recommendations',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
