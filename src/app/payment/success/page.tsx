@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
@@ -21,7 +21,7 @@ interface VerificationResult {
   };
 }
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get('order_id');
@@ -371,5 +371,33 @@ export default function PaymentSuccessPage() {
         </Card>
       </motion.div>
     </div>
+  );
+}
+
+// Loading fallback for Suspense
+function PaymentLoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+      <Card className="border-2 border-blue-200 shadow-xl max-w-md w-full">
+        <CardContent className="p-8 text-center space-y-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mx-auto">
+            <Loader2 className="w-10 h-10 text-white animate-spin" />
+          </div>
+          <div className="space-y-2">
+            <h1 className="text-2xl font-bold text-gray-900">Laden...</h1>
+            <p className="text-gray-600">Even geduld alsjeblieft.</p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// Main exported component with Suspense boundary
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense fallback={<PaymentLoadingFallback />}>
+      <PaymentSuccessContent />
+    </Suspense>
   );
 }
