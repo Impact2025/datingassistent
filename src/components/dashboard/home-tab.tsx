@@ -5,7 +5,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Sparkles, TrendingUp, Target, Calendar, GraduationCap } from 'lucide-react';
+import { Sparkles, TrendingUp, Target, Calendar, GraduationCap, BarChart3 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { MijnCursussenWidget } from './mijn-cursussen-widget';
 import { MyProgramsWidget } from './my-programs-widget';
@@ -100,6 +100,24 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
               Stel je dating doelen en track ze
             </p>
           </button>
+
+          {/* Analytics - NEW! */}
+          <a
+            href="/analytics"
+            className="bg-white p-6 rounded-xl shadow-sm border border-gray-200
+                     hover:shadow-md hover:border-pink-300 transition-all group"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm
+                            group-hover:shadow-md transition-all">
+                <BarChart3 className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="font-semibold text-gray-900">Analytics</h3>
+            </div>
+            <p className="text-sm text-gray-600">
+              Bekijk je leerstatistieken en voortgang
+            </p>
+          </a>
         </motion.div>
 
         {/* Mijn Cursussen Widget */}
