@@ -72,7 +72,9 @@ export function RegistrationClientComponent() {
     process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
   );
 
+  // Support both subscription packages (plan) and program purchases (program)
   const plan = searchParams.get('plan');
+  const programSlug = searchParams.get('program'); // For program purchases like kickstart
   const planKey = plan && Object.prototype.hasOwnProperty.call(PACKAGES, plan)
     ? (plan as PackageType)
     : null;
@@ -83,17 +85,22 @@ export function RegistrationClientComponent() {
   const planLabel = planKey ? PACKAGES[planKey].name : plan ?? null;
   const planPriceCents = planKey ? getPackagePrice(planKey, billingParam) : null;
 
+  // Check if this is a program purchase (not a subscription)
+  const isProgramPurchase = !!programSlug;
+
   // Debug logging
   useEffect(() => {
     console.log('🔍 RegistrationClient - Current state:', {
       hasUser: !!user,
       plan,
+      programSlug,
+      isProgramPurchase,
       billing,
       redirectAfterPayment,
       isLoggingOut,
       hasLoggedOutRef: hasLoggedOut.current
     });
-  }, [user, plan, billing, redirectAfterPayment, isLoggingOut]);
+  }, [user, plan, programSlug, isProgramPurchase, billing, redirectAfterPayment, isLoggingOut]);
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -454,6 +461,20 @@ export function RegistrationClientComponent() {
         return;
       }
 
+      // Check if this is a PROGRAM PURCHASE (e.g., kickstart-programma)
+      if (isProgramPurchase && programSlug) {
+        console.log('🛒 Program purchase detected, redirecting to checkout:', programSlug);
+        setIsRedirecting(true);
+        toast({
+          title: "Account geverifieerd! ✅",
+          description: "Je wordt doorgestuurd naar de betaalpagina...",
+        });
+        setTimeout(() => {
+          window.location.href = `/checkout/${programSlug}`;
+        }, 1500);
+        return;
+      }
+
       // If there's an order_id, clear localStorage and redirect to profile setup
       if (orderId) {
         console.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');
@@ -701,8 +722,19 @@ export function RegistrationClientComponent() {
           </Alert>
         )}
 
+        {/* Program Purchase Info */}
+        {isProgramPurchase && programSlug && !orderId && (
+          <Alert className="border-purple-200 bg-purple-50">
+            <AlertCircle className="h-4 w-4 text-purple-600" />
+            <AlertDescription className="text-purple-800">
+              <strong>Stap 1 van 2</strong> – Je hebt het <span className="font-semibold">{programSlug.replace(/-/g, ' ')}</span> geselecteerd.
+              Maak eerst je account aan, daarna ga je naar de betaalpagina.
+            </AlertDescription>
+          </Alert>
+        )}
+
         {/* Plan Selection Info */}
-        {plan && billing && !orderId && (
+        {plan && billing && !orderId && !isProgramPurchase && (
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>

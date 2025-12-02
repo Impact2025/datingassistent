@@ -99,6 +99,11 @@ export function VerificationCodeInput({
       const data = await response.json();
 
       if (response.ok && data.success) {
+        // Save the token to localStorage for authentication persistence
+        if (data.token) {
+          localStorage.setItem('datespark_auth_token', data.token);
+          console.log('✅ Token saved to localStorage after email verification');
+        }
         onSuccess(data.user);
       } else {
         setError(data.error || 'Verificatie mislukt');

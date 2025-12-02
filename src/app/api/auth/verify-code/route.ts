@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
       token: jwtToken, // Also return token for immediate use
     });
 
-    response.cookies.set('auth-token', jwtToken, {
+    response.cookies.set('datespark_auth_token', jwtToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

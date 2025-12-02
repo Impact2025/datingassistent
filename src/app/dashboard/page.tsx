@@ -428,16 +428,16 @@ export default function DashboardPage() {
               )}
               <div className="mt-6">
                 {/* Show onboarding content if needed */}
-                {showOnboarding && (
+                {showOnboarding ? (
                   <OnboardingFlow
                     journeyState={journeyState}
                     userName={user?.name}
                     handlers={handlers}
                   />
+                ) : (
+                  /* Show regular dashboard content only when not onboarding */
+                  renderTabContent()
                 )}
-
-                {/* Show regular dashboard content */}
-                {renderTabContent()}
               </div>
             </main>
 

@@ -47,6 +47,25 @@ export function useJourneyState({ userId, userProfile, enabled = true }: UseJour
 
     const loadJourneyData = async () => {
       try {
+        // First, check if the NEW onboarding flow has been completed
+        // If so, skip the old journey onboarding entirely
+        try {
+          const newOnboardingResponse = await fetch(`/api/onboarding/status?userId=${userId}`);
+          if (newOnboardingResponse.ok) {
+            const newOnboardingData = await newOnboardingResponse.json();
+            // Check both nested onboarding.completedAt and top-level completedAt
+            const completedAt = newOnboardingData.onboarding?.completedAt || newOnboardingData.completedAt;
+            if (completedAt) {
+              console.log('✅ New onboarding flow completed - skipping old journey onboarding');
+              setShowOnboarding(false);
+              setJourneyCheckComplete(true);
+              return;
+            }
+          }
+        } catch (newOnboardingError) {
+          console.log('ℹ️ New onboarding status not available, checking old journey...');
+        }
+
         const response = await fetch(`/api/journey/status?userId=${userId}`);
         if (response.ok) {
           const data = await response.json();

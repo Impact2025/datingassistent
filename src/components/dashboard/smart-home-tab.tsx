@@ -4,12 +4,12 @@
  * Smart Home Tab - Gepersonaliseerde dashboard met AI-driven suggesties
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
   Sparkles, TrendingUp, Target, Calendar, ArrowRight,
   Heart, Camera, MessageCircle, FileText, CheckCircle2,
-  Zap, Crown, User, Lightbulb
+  Zap, Crown, User, Lightbulb, Play, Pause, Volume2, VolumeX
 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { Button } from '../ui/button';
@@ -83,9 +83,48 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
   const [phaseActions, setPhaseActions] = useState<any[]>([]);
   const [nextAction, setNextAction] = useState<Suggestion | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showWelcomeVideo, setShowWelcomeVideo] = useState(false);
+
+  // Video state
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [videoError, setVideoError] = useState(false);
 
   // Gamification hook - auto track login
   const { trackLogin } = useGamification(userId);
+
+  // Video controls
+  const handlePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleMuteToggle = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const dismissWelcomeVideo = () => {
+    setShowWelcomeVideo(false);
+    localStorage.setItem('dashboard_welcome_video_dismissed', 'true');
+  };
+
+  useEffect(() => {
+    // Check if we should show welcome video (only once after onboarding)
+    const dismissed = localStorage.getItem('dashboard_welcome_video_dismissed');
+    if (!dismissed) {
+      setShowWelcomeVideo(true);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchUserContext = async () => {
@@ -173,8 +212,95 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto space-y-6">
+        {/* Iris Welkom Video - eenmalig na onboarding */}
+        {showWelcomeVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Card className="p-0 rounded-2xl shadow-sm overflow-hidden">
+              <div className="relative aspect-video bg-gradient-to-br from-pink-100 to-purple-100">
+                {!videoError ? (
+                  <>
+                    <video
+                      ref={videoRef}
+                      src="/videos/onboarding/iris-dashboard-intro.mp4"
+                      className="absolute inset-0 w-full h-full object-cover"
+                      muted={isMuted}
+                      playsInline
+                      onPlay={() => setIsPlaying(true)}
+                      onPause={() => setIsPlaying(false)}
+                      onError={() => setVideoError(true)}
+                      poster="/images/iris-poster.jpg"
+                    />
+
+                    {/* Play Button Overlay */}
+                    {!isPlaying && (
+                      <button
+                        onClick={handlePlayPause}
+                        className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors"
+                      >
+                        <div className="w-16 h-16 rounded-full bg-white/95 flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+                          <Play className="w-7 h-7 text-pink-500 ml-1" />
+                        </div>
+                      </button>
+                    )}
+
+                    {/* Video Controls */}
+                    <div className="absolute bottom-3 right-3 flex gap-2">
+                      {isPlaying && (
+                        <button
+                          onClick={handlePlayPause}
+                          className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center hover:bg-black/70 transition-colors"
+                        >
+                          <Pause className="w-4 h-4 text-white" />
+                        </button>
+                      )}
+                      <button
+                        onClick={handleMuteToggle}
+                        className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center hover:bg-black/70 transition-colors"
+                      >
+                        {isMuted ? (
+                          <VolumeX className="w-4 h-4 text-white" />
+                        ) : (
+                          <Volume2 className="w-4 h-4 text-white" />
+                        )}
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  /* Fallback als video niet laadt */
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center p-6">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center mx-auto mb-3">
+                        <span className="text-2xl font-bold text-white">I</span>
+                      </div>
+                      <p className="text-gray-600 text-sm">Iris, je persoonlijke coach</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Video Caption with dismiss button */}
+              <div className="p-4 bg-white flex items-start justify-between gap-4">
+                <p className="text-gray-600 text-sm leading-relaxed flex-1">
+                  Welkom op je dashboard! Dit is je startpunt voor alles wat je nodig hebt om succesvol te daten. Laat me je rondleiden!
+                </p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={dismissWelcomeVideo}
+                  className="text-gray-400 hover:text-gray-600 flex-shrink-0"
+                >
+                  Begrepen
+                </Button>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+
         {/* Welkom Sectie */}
-        <PersonalizedWelcome />
+        {!showWelcomeVideo && <PersonalizedWelcome />}
 
         {/* Quick Wins Today - Direct actie-items */}
         <QuickWinsToday userId={userId} onTabChange={onTabChange} />

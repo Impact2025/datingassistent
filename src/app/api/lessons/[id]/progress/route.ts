@@ -35,7 +35,7 @@ export async function POST(
 
     // Authenticate user
     const cookieStore = await cookies();
-    const token = cookieStore.get('auth_token')?.value;
+    const token = cookieStore.get('datespark_auth_token')?.value;
 
     if (!token) {
       return NextResponse.json(
@@ -298,7 +298,7 @@ export async function GET(
 
     // Authenticate user
     const cookieStore = await cookies();
-    const token = cookieStore.get('auth_token')?.value;
+    const token = cookieStore.get('datespark_auth_token')?.value;
 
     if (!token) {
       return NextResponse.json(

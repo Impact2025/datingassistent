@@ -10,14 +10,10 @@ const MULTISAFEPAY_API_KEY = process.env.MULTISAFEPAY_API_KEY || '';
 const MULTISAFEPAY_ENVIRONMENT = process.env.MULTISAFEPAY_ENVIRONMENT || 'test';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:9000';
 
-/**
- * POST /api/payment/create
- * Create a MultiSafePay payment transaction
- */
 export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get('auth_token')?.value;
+    const token = cookieStore.get('datespark_auth_token')?.value;
 
     if (!token) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
@@ -31,14 +27,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const userResult = await sql\`SELECT id, email, name FROM users WHERE id = \${userId} LIMIT 1\`;
+    const userResult = await sql`
+      SELECT id, email, name FROM users WHERE id = ${userId} LIMIT 1
+    `;
+
     if (userResult.rows.length === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     const user = userResult.rows[0];
     const body = await request.json();
-    const { programId, programSlug, amount } = body;
+    const { programId, programSlug, amount, couponCode } = body;
 
     if (!programId || !programSlug || !amount) {
       return NextResponse.json(
@@ -47,13 +46,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const programResult = await sql\`SELECT * FROM programs WHERE id = \${programId} LIMIT 1\`;
+    const normalizedCouponCode = couponCode?.trim()?.toUpperCase() || null;
+
+    const programResult = await sql`
+      SELECT * FROM programs WHERE id = ${programId} LIMIT 1
+    `;
+
     if (programResult.rows.length === 0) {
       return NextResponse.json({ error: 'Program not found' }, { status: 404 });
     }
 
     const program = programResult.rows[0];
-    const orderId = \`ORDER-\${Date.now()}-\${userId}-\${programId}\`;
+    const timestamp = Date.now();
+    const orderId = 'ORDER-' + timestamp + '-' + userId + '-' + programId;
 
     const multiSafePayUrl = MULTISAFEPAY_ENVIRONMENT === 'live'
       ? 'https://api.multisafepay.com/v1/json/orders'
@@ -64,11 +69,11 @@ export async function POST(request: NextRequest) {
       order_id: orderId,
       currency: 'EUR',
       amount: Math.round(amount * 100),
-      description: \`DatingAssistent - \${program.name}\`,
+      description: 'DatingAssistent - ' + program.name,
       payment_options: {
-        notification_url: \`\${BASE_URL}/api/payment/webhook\`,
-        redirect_url: \`\${BASE_URL}/payment/success?order_id=\${orderId}\`,
-        cancel_url: \`\${BASE_URL}/payment/cancelled?order_id=\${orderId}\`,
+        notification_url: BASE_URL + '/api/payment/webhook',
+        redirect_url: BASE_URL + '/payment/success?order_id=' + orderId,
+        cancel_url: BASE_URL + '/payment/cancelled?order_id=' + orderId,
         close_window: false
       },
       customer: {
@@ -85,7 +90,7 @@ export async function POST(request: NextRequest) {
       }
     };
 
-    console.log('🔐 Creating MultiSafePay order:', orderId);
+    console.log('Creating MultiSafePay order:', orderId);
 
     const response = await fetch(multiSafePayUrl, {
       method: 'POST',
@@ -98,7 +103,7 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('❌ MultiSafePay error:', errorText);
+      console.error('MultiSafePay error:', errorText);
       throw new Error('MultiSafePay API error');
     }
 
@@ -110,17 +115,17 @@ export async function POST(request: NextRequest) {
 
     const paymentUrl = data.data.payment_url;
 
-    await sql\`
+    await sql`
       INSERT INTO payment_transactions (
         order_id, user_id, program_id, amount, currency,
-        status, payment_method, created_at
+        status, payment_method, coupon_code, created_at
       ) VALUES (
-        \${orderId}, \${userId}, \${programId}, \${amount}, 'EUR',
-        'pending', 'multisafepay', NOW()
+        ${orderId}, ${userId}, ${programId}, ${amount}, 'EUR',
+        'pending', 'multisafepay', ${normalizedCouponCode}, NOW()
       )
-    \`;
+    `;
 
-    console.log('✅ Payment created:', orderId);
+    console.log('Payment created:', orderId);
 
     return NextResponse.json({
       success: true,
@@ -129,7 +134,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('💥 Payment error:', error);
+    console.error('Payment error:', error);
     return NextResponse.json(
       { error: 'Failed to create payment' },
       { status: 500 }

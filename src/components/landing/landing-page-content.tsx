@@ -497,80 +497,26 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
         </div>
       </section>
 
-      <section id="programmas" className="py-24 px-4 bg-gradient-to-br from-gray-50 to-white">
+      <section id="programmas" className="py-32 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 space-y-4">
-            <div className="inline-block mb-4">
-              <Badge className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 text-sm">
-                🎉 Beta Launch - Exclusieve vroegboekkorting!
-              </Badge>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900">
-              Transformeer je dating leven in <span className="bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">90 dagen</span>
+          <div className="text-center mb-20 space-y-6">
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900">
+              Kies jouw programma
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Van "Ik weet niet wat ik verkeerd doe" naar "Ik date met vertrouwen en krijg de dates die ik wil"
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Transformeer je dating leven met persoonlijke AI-coaching
             </p>
           </div>
 
           {/* Program Cards */}
           <ProgramCards />
 
-          {/* Benefits Below */}
-          <div className="mt-16 space-y-8">
-            {/* Transformation Over Tools */}
-            <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl p-8 border border-pink-100 max-w-4xl mx-auto">
-              <div className="text-center space-y-4">
-                <Sparkles className="w-12 h-12 mx-auto text-pink-500" />
-                <h3 className="text-2xl font-bold text-gray-900">
-                  Niet gewoon tools, maar een complete transformatie
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  DatingAssistent is meer dan een verzameling AI-tools. Het is een bewezen 3-fase systeem
-                  dat je van onzeker swiper naar zelfverzekerde dater brengt. Met Iris als je persoonlijke
-                  coach die je 24/7 begeleidt door elke stap.
-                </p>
-              </div>
-            </div>
-
-            {/* Social Proof */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="bg-white rounded-xl p-6 border border-gray-200 text-center">
-                <div className="text-4xl font-bold text-pink-500 mb-2">85%</div>
-                <p className="text-sm text-gray-600">Heeft minimaal 1 date binnen 90 dagen</p>
-              </div>
-              <div className="bg-white rounded-xl p-6 border border-gray-200 text-center">
-                <div className="text-4xl font-bold text-pink-500 mb-2">3x</div>
-                <p className="text-sm text-gray-600">Meer matches na week 3</p>
-              </div>
-              <div className="bg-white rounded-xl p-6 border border-gray-200 text-center">
-                <div className="text-4xl font-bold text-pink-500 mb-2">100%</div>
-                <p className="text-sm text-gray-600">Rapporteert meer zelfvertrouwen</p>
-              </div>
-            </div>
-
-            {/* Money Back Guarantee */}
-            <div className="bg-green-50 border border-green-200 rounded-2xl p-6 max-w-4xl mx-auto">
-              <div className="flex items-start gap-3">
-                <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">30 dagen niet-goed-geld-terug garantie</h4>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    We zijn zo overtuigd van onze aanpak dat we je geld terugstorten als je binnen
-                    30 dagen niet tevreden bent. Geen vragen, geen gedoe.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Info Notice */}
-            <div className="mt-8 text-center text-sm text-gray-500 max-w-2xl mx-auto">
-              <p>
-                Alle prijzen zijn inclusief btw. Beta korting is geldig tot einde van het jaar.
-                <br />
-                Programma's zijn éénmalige betalingen - geen abonnement, geen verborgen kosten.
-              </p>
-            </div>
+          {/* Simple guarantee */}
+          <div className="mt-16 text-center">
+            <p className="text-gray-600 flex items-center justify-center gap-2">
+              <span className="text-2xl">💰</span>
+              <span className="font-medium">30 dagen geld-terug garantie</span>
+            </p>
           </div>
         </div>
       </section>

@@ -119,23 +119,6 @@ export default function LogoutPage() {
         >
           <Card className="border-2 border-pink-200 shadow-xl">
             <CardContent className="p-8 text-center space-y-6">
-              {/* Icon */}
-              <div className={`w-20 h-20 mx-auto rounded-full bg-gradient-to-br ${randomMessage.color} flex items-center justify-center shadow-lg`}>
-                <IconComponent className="w-10 h-10 text-white" />
-              </div>
-
-              {/* Success Check */}
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
-                className="flex justify-center"
-              >
-                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                  <CheckCircle2 className="w-8 h-8 text-green-600" />
-                </div>
-              </motion.div>
-
               {/* Message */}
               <div className="space-y-3">
                 <h1 className="text-3xl font-bold text-gray-900">

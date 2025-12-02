@@ -57,6 +57,7 @@ export function LoginForm() {
   const plan = searchParams.get('plan');
   const billing = searchParams.get('billing');
   const orderId = searchParams.get('order_id');
+  const returnUrl = searchParams.get('returnUrl');
   const registerUrl = plan && billing ? `/register?plan=${plan}&billing=${billing}` : '/register';
 
   // Handle order_id after payment - this will be handled by an API route
@@ -109,8 +110,17 @@ export function LoginForm() {
   // Auto-redirect after successful login
   useEffect(() => {
     if (user && pathname === '/login' && !hasRedirectedRef.current) {
-      console.log('✅ Login successful, redirecting to dashboard...');
+      console.log('✅ Login successful, checking redirect destination...');
       hasRedirectedRef.current = true;
+
+      // Check if there's a returnUrl to redirect back to
+      if (returnUrl) {
+        console.log('📍 Redirecting to returnUrl:', returnUrl);
+        setTimeout(() => {
+          window.location.href = returnUrl;
+        }, 500);
+        return;
+      }
 
       // Determine correct dashboard based on device
       const dashboardUrl = isMobile ? '/mobile-dashboard' : '/dashboard';
@@ -121,15 +131,17 @@ export function LoginForm() {
         window.location.href = dashboardUrl;
       }, 500);
     }
-  }, [user, pathname, isMobile]);
+  }, [user, pathname, isMobile, returnUrl]);
 
   // Show success message while redirecting
   if (user && pathname === '/login') {
-    const dashboardName = isMobile ? 'mobiele dashboard' : 'dashboard';
+    const destinationName = returnUrl
+      ? (returnUrl.includes('onboarding') ? 'onboarding' : 'pagina')
+      : (isMobile ? 'mobiele dashboard' : 'dashboard');
     return (
       <Card className="w-full max-w-md bg-card/50 shadow-2xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl">✅ Login Succesvol!</CardTitle>
+          <CardTitle className="text-3xl">Login Succesvol!</CardTitle>
           <CardDescription>
             Welkom terug, {user.email}
           </CardDescription>
@@ -137,7 +149,7 @@ export function LoginForm() {
         <CardContent className="space-y-4 text-center">
           <LoadingSpinner />
           <p className="text-sm text-muted-foreground">
-            Je wordt doorgestuurd naar je {dashboardName}...
+            Je wordt doorgestuurd naar je {destinationName}...
           </p>
         </CardContent>
       </Card>

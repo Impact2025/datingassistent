@@ -105,7 +105,7 @@ export function ProgramCards() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
       {programs.map((program, index) => {
         const Icon = tierIcons[program.tier] || Target;
         const gradientColor = tierColors[program.tier] || 'from-pink-500 to-purple-600';
@@ -120,101 +120,53 @@ export function ProgramCards() {
             transition={{ delay: index * 0.1 }}
           >
             <Card
-              className={`relative transition-all hover:shadow-xl ${
+              className={`relative transition-all hover:shadow-2xl border-2 ${
                 isFeatured
-                  ? 'border-2 border-pink-500 shadow-lg scale-105'
-                  : 'border border-gray-200 hover:border-pink-300'
+                  ? 'border-pink-500 shadow-lg transform scale-105'
+                  : 'border-gray-100 hover:border-pink-200'
               }`}
             >
               {isFeatured && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-1 shadow-md">
-                    ⭐ Meest Gekozen
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <Badge className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-3 py-1">
+                    ⭐ Populair
                   </Badge>
                 </div>
               )}
 
-              <CardContent className="p-6 space-y-6">
-                {/* Icon & Title */}
-                <div className="text-center space-y-3">
-                  <div className={`w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br ${gradientColor} flex items-center justify-center shadow-lg`}>
-                    <Icon className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900">{program.name}</h3>
-                    <p className="text-sm text-gray-600 mt-1 italic">"{program.tagline}"</p>
-                  </div>
+              <CardContent className="p-8 space-y-6">
+                {/* Title */}
+                <div className="text-center space-y-2">
+                  <h3 className="text-2xl font-bold text-gray-900">{program.name}</h3>
+                  <p className="text-gray-600">{program.tagline}</p>
                 </div>
 
                 {/* Pricing */}
-                <div className="text-center py-4 bg-gray-50 rounded-xl">
-                  {showBetaPrice && (
-                    <div className="mb-2">
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                        🎉 Beta Launch Aanbieding
-                      </Badge>
-                    </div>
-                  )}
-                  <div className="flex items-baseline justify-center gap-2">
+                <div className="text-center py-6">
+                  <div className="flex items-baseline justify-center gap-2 mb-2">
                     {showBetaPrice && (
-                      <span className="text-lg text-gray-400 line-through">
+                      <span className="text-xl text-gray-400 line-through">
                         €{program.price_regular}
                       </span>
                     )}
-                    <span className="text-4xl font-bold text-gray-900">
+                    <span className="text-5xl font-bold text-gray-900">
                       €{showBetaPrice ? program.price_beta : program.price_regular}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">
-                    {program.duration_days} dagen programma
+                  <p className="text-gray-600">
+                    {program.duration_days} dagen
                   </p>
                 </div>
 
-                {/* Transformation Promise */}
-                <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-4 border border-pink-100">
-                  <p className="text-sm font-semibold text-gray-900 text-center">
-                    {program.transformation_promise}
-                  </p>
-                </div>
-
-                {/* Tangible Proof */}
-                <div className="flex items-center gap-2 justify-center text-sm text-green-700 bg-green-50 rounded-lg p-3">
-                  <CheckCircle className="w-4 h-4 flex-shrink-0" />
-                  <span className="font-medium">{program.tangible_proof}</span>
-                </div>
-
-                {/* Outcomes */}
-                <div className="space-y-2">
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Wat je bereikt:
-                  </p>
-                  <ul className="space-y-2">
-                    {program.outcomes.slice(0, 3).map((outcome, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                        <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-500" />
-                        <span>{outcome}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Features */}
-                <div className="space-y-2">
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Inclusief:
-                  </p>
-                  <ul className="space-y-2">
-                    {program.features.slice(0, 4).map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                        <div className="w-1.5 h-1.5 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+                {/* Features - Simplified */}
+                <div className="space-y-3 pt-4 border-t border-gray-100">
+                  <ul className="space-y-3">
+                    {program.features.slice(0, 5).map((feature, i) => (
+                      <li key={i} className="flex items-start gap-3 text-gray-700">
+                        <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-pink-500" />
                         <span>{feature.text}</span>
                       </li>
                     ))}
-                    {program.features.length > 4 && (
-                      <li className="text-xs text-gray-500 italic pl-4">
-                        + {program.features.length - 4} meer features
-                      </li>
-                    )}
                   </ul>
                 </div>
 
@@ -223,17 +175,17 @@ export function ProgramCards() {
                   onClick={() => handleSelectProgram(program)}
                   className={`w-full ${
                     isFeatured
-                      ? 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700'
+                      ? 'bg-pink-500 hover:bg-pink-600'
                       : 'bg-gray-900 hover:bg-gray-800'
-                  } text-white shadow-lg hover:shadow-xl transition-all group`}
+                  } text-white transition-all group`}
                 >
                   {isFeatured ? 'Start je transformatie' : 'Kies dit programma'}
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
 
-                {/* Target Audience */}
-                <p className="text-xs text-gray-500 text-center italic">
-                  Perfect voor: {program.target_audience}
+                {/* Description */}
+                <p className="text-sm text-gray-500 text-center pt-2">
+                  {program.transformation_promise}
                 </p>
               </CardContent>
             </Card>

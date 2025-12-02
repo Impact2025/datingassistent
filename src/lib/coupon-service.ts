@@ -94,17 +94,20 @@ export async function getAllCoupons(): Promise<Coupon[]> {
 }
 
 /**
- * Get coupon by code
+ * Get coupon by code (case-insensitive)
  */
 export async function getCouponByCode(code: string): Promise<Coupon | null> {
   try {
+    // Normalize code to uppercase for case-insensitive matching
+    const normalizedCode = code.trim().toUpperCase();
+
     const result = await sql`
-      SELECT 
+      SELECT
         id, code, package_type, discount_type, discount_value,
         max_uses, used_count, valid_from, valid_until, is_active,
         created_at, updated_at
-      FROM coupons 
-      WHERE code = ${code} 
+      FROM coupons
+      WHERE UPPER(code) = ${normalizedCode}
       AND is_active = true
       AND valid_from <= NOW()
       AND (valid_until IS NULL OR valid_until >= NOW())

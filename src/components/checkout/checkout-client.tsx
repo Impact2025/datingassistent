@@ -3,56 +3,12 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LoadingSpinner } from "../shared/loading-spinner";
 import { PACKAGES, getPackagePrice } from "@/lib/multisafepay";
 import { PackageType } from "@/lib/subscription";
-
-// Plan features mapping
-const PLAN_FEATURES: Record<PackageType, string[]> = {
-  sociaal: [
-    '50 AI-berichten per week',
-    'Profiel Coach – analyseer en verbeter je bio',
-    'Chat Coach – 24/7 hulp bij gesprekken',
-    'AI Foto Check – feedback op je foto\'s',
-    '1 cursus per maand',
-    'Voortgang Tracker – zie je groei week na week'
-  ],
-  core: [
-    '50 AI-berichten per week',
-    'Profiel Coach – analyseer en verbeter je bio',
-    'Chat Coach – 24/7 hulp bij gesprekken',
-    'AI Foto Check – feedback op je foto\'s',
-    '1 cursus per maand',
-    'Voortgang Tracker – zie je groei week na week'
-  ],
-  pro: [
-    '125 AI-berichten per week',
-    'Alle tools van Core, plus:',
-    'Opener Lab – originele openingszinnen',
-    'Match Analyse – waarom wel/niet matches',
-    'Date Planner – creatieve date-ideeën',
-    '2 cursussen per maand',
-    'Prioriteit Support',
-    'Maandelijkse AI-profielreview'
-  ],
-  premium: [
-    'Alle tools en cursussen direct unlocked',
-    '250 AI-berichten per week',
-    'Persoonlijke intake (45 minuten video)',
-    'Persoonlijk verbeterplan op maat',
-    '3 Coach Check-ins (chat of voice)',
-    'Voortgangsrapporten en AI-feedback',
-    'Exclusieve AI-tools (Personality Match, Voice Chat)'
-  ]
-};
-import { CheckCircle, CreditCard, Shield, Tag, AlertCircle, ArrowLeft } from "lucide-react";
+import { CheckCircle, Lock, ArrowLeft, Tag } from "lucide-react";
 import Link from "next/link";
 
 interface CouponData {
@@ -73,6 +29,7 @@ export function CheckoutClientComponent() {
   const [couponCode, setCouponCode] = useState("");
   const [couponData, setCouponData] = useState<CouponData | null>(null);
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
+  const [showCoupon, setShowCoupon] = useState(false);
 
   // Get plan details from URL
   const plan = searchParams?.get('plan') as PackageType;
@@ -88,7 +45,7 @@ export function CheckoutClientComponent() {
   const discountAmount = couponData?.valid ? (
     couponData.discountType === 'percentage'
       ? Math.round(originalPrice * (couponData.discountValue / 100))
-      : Math.min(couponData.discountValue * 100, originalPrice) // Convert euros to cents
+      : Math.min(couponData.discountValue * 100, originalPrice)
   ) : 0;
   const finalPrice = Math.max(0, originalPrice - discountAmount);
 
@@ -133,7 +90,7 @@ export function CheckoutClientComponent() {
         });
         toast({
           title: "Coupon toegepast",
-          description: data.message || "Korting is toegepast op je bestelling.",
+          description: data.message || "Korting is toegepast.",
         });
       } else {
         setCouponData({
@@ -143,26 +100,9 @@ export function CheckoutClientComponent() {
           valid: false,
           message: data.error || "Ongeldige coupon code."
         });
-        toast({
-          title: "Coupon ongeldig",
-          description: data.error || "Deze coupon code is niet geldig.",
-          variant: "destructive",
-        });
       }
     } catch (error) {
       console.error('Coupon validation error:', error);
-      setCouponData({
-        code: couponCode,
-        discountType: 'fixed',
-        discountValue: 0,
-        valid: false,
-        message: "Fout bij het valideren van coupon."
-      });
-      toast({
-        title: "Fout",
-        description: "Kon coupon niet valideren. Probeer het opnieuw.",
-        variant: "destructive",
-      });
     } finally {
       setIsValidatingCoupon(false);
     }
@@ -170,22 +110,13 @@ export function CheckoutClientComponent() {
 
   // Handle payment
   const handlePayment = async () => {
-    if (!planKey || !billing || !userId) {
-      toast({
-        title: "Fout",
-        description: "Ontbrekende betalingsgegevens.",
-        variant: "destructive",
-      });
-      return;
-    }
+    if (!planKey || !billing || !userId) return;
 
     setIsProcessing(true);
     try {
-      // Get user email - either from logged in user or from database
       let userEmail = user?.email;
 
       if (!userEmail) {
-        // Fetch user email from database if not logged in
         try {
           const userResponse = await fetch(`/api/user/profile?userId=${userId}`);
           if (userResponse.ok) {
@@ -200,7 +131,7 @@ export function CheckoutClientComponent() {
       if (!userEmail) {
         toast({
           title: "Fout",
-          description: "Kon gebruikers email niet ophalen. Probeer opnieuw in te loggen.",
+          description: "Kon gebruikers email niet ophalen.",
           variant: "destructive",
         });
         setIsProcessing(false);
@@ -229,7 +160,6 @@ export function CheckoutClientComponent() {
       const paymentData = await response.json();
 
       if (paymentData.paymentUrl) {
-        // Store order ID for success page
         localStorage.setItem('pending_order_id', paymentData.orderId);
         window.location.href = paymentData.paymentUrl;
       } else {
@@ -239,7 +169,7 @@ export function CheckoutClientComponent() {
       console.error('Payment error:', error);
       toast({
         title: "Betalingsfout",
-        description: error.message || "Er ging iets mis bij het starten van de betaling.",
+        description: error.message || "Er ging iets mis.",
         variant: "destructive",
       });
     } finally {
@@ -250,218 +180,154 @@ export function CheckoutClientComponent() {
   // Don't render if invalid plan
   if (!planKey || !billing || !planData) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <LoadingSpinner />
-        <p className="text-muted-foreground">Checkout laden...</p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-3 border-pink-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
+  const billingLabel = billing === 'monthly' ? 'maand' : 'jaar';
+
   return (
-    <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="text-center space-y-4">
-          <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="w-4 h-4" />
-            Terug naar home
-          </Link>
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold">Afronden van je bestelling</h1>
-            <p className="text-muted-foreground">
-              Bijna klaar! Controleer je bestelling en voltooi de betaling.
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-lg mx-auto px-4 py-12">
+        {/* Back Link */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-8 text-sm"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Terug
+        </Link>
+
+        {/* Main Card */}
+        <Card className="p-8 rounded-2xl shadow-sm">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              {planData.name}
+            </h1>
+            <p className="text-gray-500 text-sm">
+              {planData.description}
             </p>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Order Summary */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  Besteloverzicht
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Plan Details */}
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <h3 className="font-semibold">{planData.name}</h3>
-                    <p className="text-sm text-muted-foreground">{planData.description}</p>
-                    <Badge variant="secondary">
-                      {billing === 'monthly' ? 'Maandelijks' : 'Jaarlijks'}
-                    </Badge>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold">€{(originalPrice / 100).toFixed(2)}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {billing === 'monthly' ? '/maand' : '/jaar'}
-                    </div>
-                  </div>
-                </div>
+          {/* Price Section */}
+          <div className="bg-gray-50 rounded-xl p-6 mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-gray-600">{planData.name} ({billingLabel})</span>
+              <span className={discountAmount > 0 ? "text-gray-400 line-through" : "text-gray-900 font-semibold"}>
+                €{(originalPrice / 100).toFixed(2)}
+              </span>
+            </div>
 
-                {/* Features */}
-                <div className="space-y-2">
-                  <h4 className="font-medium text-sm">Inbegrepen:</h4>
-                  <ul className="space-y-1">
-                    {PLAN_FEATURES[planKey].slice(0, 3).map((feature: string, index: number) => (
-                      <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
-                        <CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                    {PLAN_FEATURES[planKey].length > 3 && (
-                      <li className="text-sm text-muted-foreground">
-                        + {PLAN_FEATURES[planKey].length - 3} extra features
-                      </li>
-                    )}
-                  </ul>
-                </div>
+            {discountAmount > 0 && (
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-green-600 text-sm">Korting ({couponData?.code})</span>
+                <span className="text-green-600 font-medium">-€{(discountAmount / 100).toFixed(2)}</span>
+              </div>
+            )}
 
-                <Separator />
+            <div className="border-t border-gray-200 my-4" />
 
-                {/* Coupon Code */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Tag className="w-4 h-4" />
-                    <span className="font-medium text-sm">Coupon Code</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Voer coupon code in"
-                      value={couponCode}
-                      onChange={(e) => setCouponCode(e.target.value)}
-                      className="flex-1"
-                    />
-                    <Button
-                      variant="outline"
-                      onClick={validateCoupon}
-                      disabled={isValidatingCoupon || !couponCode.trim()}
-                    >
-                      {isValidatingCoupon ? <LoadingSpinner /> : "Toepassen"}
-                    </Button>
-                  </div>
-                  {couponData && (
-                    <Alert className={couponData.valid ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"}>
-                      <AlertCircle className={`h-4 w-4 ${couponData.valid ? 'text-green-600' : 'text-red-600'}`} />
-                      <AlertDescription className={couponData.valid ? 'text-green-800' : 'text-red-800'}>
-                        {couponData.message}
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                </div>
-
-                <Separator />
-
-                {/* Pricing Breakdown */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Subtotaal</span>
-                    <span>€{(originalPrice / 100).toFixed(2)}</span>
-                  </div>
-                  {discountAmount > 0 && (
-                    <div className="flex justify-between text-sm text-green-600">
-                      <span>Korting ({couponData?.code})</span>
-                      <span>-€{(discountAmount / 100).toFixed(2)}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-sm">
-                    <span>BTW (21%)</span>
-                    <span>€{(finalPrice * 0.21 / 100).toFixed(2)}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between font-semibold text-lg">
-                    <span>Totaal</span>
-                    <span>€{(finalPrice / 100).toFixed(2)}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="flex items-center justify-between">
+              <span className="text-gray-900 font-semibold">Totaal</span>
+              <div className="text-right">
+                <span className="text-2xl font-bold text-gray-900">€{(finalPrice / 100).toFixed(2)}</span>
+                <span className="text-gray-500 text-sm">/{billingLabel}</span>
+              </div>
+            </div>
           </div>
 
-          {/* Payment Section */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="w-5 h-5" />
-                  Betalingsgegevens
-                </CardTitle>
-                <CardDescription>
-                  Veilige betaling via MultiSafePay
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Alert>
-                  <Shield className="h-4 w-4" />
-                  <AlertDescription>
-                    <strong>Veilig betalen:</strong> Je betaling wordt verwerkt door MultiSafePay,
-                    een gecertificeerde payment provider. We slaan geen creditcard gegevens op.
-                  </AlertDescription>
-                </Alert>
+          {/* Coupon Section */}
+          {!showCoupon && !couponData?.valid && (
+            <button
+              onClick={() => setShowCoupon(true)}
+              className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-6"
+            >
+              <Tag className="w-4 h-4" />
+              Coupon code?
+            </button>
+          )}
 
-                <div className="space-y-3">
-                  <div className="flex items-center justify-center gap-4 p-4 bg-muted/50 rounded-lg">
-                    <span className="text-sm font-medium">Betalen met:</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm">iDEAL</span>
-                      <span className="text-sm">•</span>
-                      <span className="text-sm">Creditcard</span>
-                      <span className="text-sm">•</span>
-                      <span className="text-sm">PayPal</span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button
-                  onClick={handlePayment}
-                  disabled={isProcessing}
-                  className="w-full"
-                  size="lg"
-                >
-                  {isProcessing ? (
-                    <>
-                      <LoadingSpinner />
-                      Betaling starten...
-                    </>
-                  ) : (
-                    `Betalen €${(finalPrice / 100).toFixed(2)}`
-                  )}
-                </Button>
-              </CardFooter>
-            </Card>
+          {showCoupon && !couponData?.valid && (
+            <div className="flex gap-2 mb-6">
+              <Input
+                placeholder="Coupon code"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                className="flex-1 rounded-lg"
+              />
+              <button
+                onClick={validateCoupon}
+                disabled={isValidatingCoupon || !couponCode.trim()}
+                className="px-4 py-2 text-sm font-medium text-pink-500 hover:text-pink-600 disabled:opacity-50"
+              >
+                {isValidatingCoupon ? "..." : "Toepassen"}
+              </button>
+            </div>
+          )}
 
-            {/* Trust Badges */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center space-y-4">
-                  <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-                    <Shield className="w-4 h-4" />
-                    <span>SSL Beveiligd</span>
-                    <span>•</span>
-                    <span>GDPR Compliant</span>
-                    <span>•</span>
-                    <span>24/7 Support</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Door te betalen ga je akkoord met onze{' '}
-                    <Link href="/terms" className="text-primary hover:underline">
-                      algemene voorwaarden
-                    </Link>
-                    {' '}en{' '}
-                    <Link href="/privacy" className="text-primary hover:underline">
-                      privacy policy
-                    </Link>
-                    .
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+          {couponData?.valid && (
+            <div className="flex items-center gap-2 text-sm text-green-600 mb-6">
+              <CheckCircle className="w-4 h-4" />
+              <span>{couponData.message}</span>
+            </div>
+          )}
+
+          {/* Features */}
+          <div className="space-y-3 mb-8">
+            {['Direct toegang tot alle features', 'Opzeggen wanneer je wilt', 'Geen verborgen kosten'].map((feature, i) => (
+              <div key={i} className="flex items-center gap-3 text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                <span>{feature}</span>
+              </div>
+            ))}
           </div>
+
+          {/* Payment Button */}
+          <button
+            onClick={handlePayment}
+            disabled={isProcessing}
+            className="w-full py-4 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {isProcessing ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Even geduld...</span>
+              </>
+            ) : (
+              <>
+                <Lock className="w-4 h-4" />
+                <span>Betalen €{(finalPrice / 100).toFixed(2)}</span>
+              </>
+            )}
+          </button>
+
+          {/* Trust Text */}
+          <p className="text-center text-xs text-gray-400 mt-4">
+            Veilig betalen via MultiSafePay
+          </p>
+        </Card>
+
+        {/* Payment Methods */}
+        <div className="flex items-center justify-center gap-4 mt-6 text-xs text-gray-400">
+          <span>iDEAL</span>
+          <span>•</span>
+          <span>Visa</span>
+          <span>•</span>
+          <span>Mastercard</span>
+          <span>•</span>
+          <span>PayPal</span>
         </div>
+
+        {/* Terms */}
+        <p className="text-center text-xs text-gray-400 mt-4">
+          Door te betalen ga je akkoord met onze{' '}
+          <Link href="/algemene-voorwaarden" className="underline hover:text-gray-600">
+            voorwaarden
+          </Link>
+        </p>
       </div>
     </div>
   );
