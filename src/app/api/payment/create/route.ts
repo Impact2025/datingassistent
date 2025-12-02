@@ -1,31 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
+import { getCurrentUser } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
 const MULTISAFEPAY_API_KEY = process.env.MULTISAFEPAY_API_KEY || '';
 const MULTISAFEPAY_ENVIRONMENT = process.env.MULTISAFEPAY_ENVIRONMENT || 'test';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:9000';
 
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('datespark_auth_token')?.value;
+    // Use centralized auth function
+    const user = await getCurrentUser();
 
-    if (!token) {
+    if (!user) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    let userId: number;
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
-      userId = decoded.userId;
-    } catch (error) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-    }
+    const userId = user.id;
 
     const userResult = await sql`
       SELECT id, email, name FROM users WHERE id = ${userId} LIMIT 1
@@ -90,7 +82,18 @@ export async function POST(request: NextRequest) {
       }
     };
 
+    // Check if API key is configured
+    if (!MULTISAFEPAY_API_KEY) {
+      console.error('❌ MULTISAFEPAY_API_KEY is not configured');
+      return NextResponse.json(
+        { error: 'Payment system not configured' },
+        { status: 500 }
+      );
+    }
+
     console.log('Creating MultiSafePay order:', orderId);
+    console.log('Environment:', MULTISAFEPAY_ENVIRONMENT);
+    console.log('API URL:', multiSafePayUrl);
 
     const response = await fetch(multiSafePayUrl, {
       method: 'POST',
@@ -101,16 +104,34 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(payload)
     });
 
+    const responseText = await response.text();
+    console.log('MultiSafePay response status:', response.status);
+
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('MultiSafePay error:', errorText);
-      throw new Error('MultiSafePay API error');
+      console.error('MultiSafePay error response:', responseText);
+      return NextResponse.json(
+        { error: 'Payment provider error', details: responseText },
+        { status: 500 }
+      );
     }
 
-    const data = await response.json();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error('Failed to parse MultiSafePay response:', responseText);
+      return NextResponse.json(
+        { error: 'Invalid response from payment provider' },
+        { status: 500 }
+      );
+    }
 
     if (!data.success || !data.data) {
-      throw new Error('MultiSafePay response error');
+      console.error('MultiSafePay unsuccessful:', data);
+      return NextResponse.json(
+        { error: 'Payment creation failed', details: data.error_info || data },
+        { status: 500 }
+      );
     }
 
     const paymentUrl = data.data.payment_url;
