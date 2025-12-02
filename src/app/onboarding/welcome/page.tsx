@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
 import { Card } from "@/components/ui/card";
+import { Logo } from "@/components/shared/logo";
 import { ArrowRight, Play, Pause, Volume2, VolumeX, CheckCircle, Clock, Sparkles } from "lucide-react";
 
 export default function WelcomePage() {
@@ -54,6 +55,11 @@ export default function WelcomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-lg mx-auto px-4 py-8">
+        {/* Logo */}
+        <div className="flex justify-center mb-6">
+          <Logo iconSize={36} textSize="lg" />
+        </div>
+
         {/* Header */}
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-600 text-xs font-medium px-3 py-1 rounded-full mb-3">

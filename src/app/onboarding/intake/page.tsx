@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
+import { Logo } from "@/components/shared/logo";
 import { IntakeChat, type IntakeData } from "@/components/onboarding/IntakeChat";
 import { AchievementPopup } from "@/components/onboarding/AchievementPopup";
 import type { Achievement } from "@/lib/onboarding/achievements";
@@ -52,8 +53,17 @@ export default function IntakePage() {
 
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden h-[calc(100vh-180px)] min-h-[500px]">
-        <IntakeChat onComplete={handleIntakeComplete} />
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-lg mx-auto px-4 py-8">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <Logo iconSize={36} textSize="lg" />
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden h-[calc(100vh-180px)] min-h-[500px]">
+            <IntakeChat onComplete={handleIntakeComplete} />
+          </div>
+        </div>
       </div>
 
       <AchievementPopup
