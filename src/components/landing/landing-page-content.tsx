@@ -691,7 +691,8 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
       </section>
 
       <PublicFooter />
-      <BottomNavigation />
+      {/* Only show BottomNavigation for logged-in users */}
+      {user && <BottomNavigation />}
       <CookieConsentBanner />
 
       {/* Chat Widget - Only show for non-registered members */}
