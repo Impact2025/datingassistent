@@ -6,6 +6,7 @@
  */
 
 import { UserAnalyticsDashboard } from '@/components/analytics/user-analytics-dashboard';
+import { ProgressInsightsDashboard } from '@/components/insights/progress-insights-dashboard';
 import { Card, CardContent } from '@/components/ui/card';
 import { BarChart3 } from 'lucide-react';
 
@@ -32,6 +33,14 @@ export default function AnalyticsPage() {
 
         {/* Analytics Dashboard */}
         <UserAnalyticsDashboard />
+
+        {/* Progress Insights Dashboard - Sprint 5.3 */}
+        <div className="mt-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+            Progress Insights & Voorspellingen
+          </h2>
+          <ProgressInsightsDashboard />
+        </div>
 
         {/* Info Card */}
         <Card className="mt-6 bg-blue-50 border-blue-200">
