@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Logo } from "@/components/shared/logo";
 import { RoadmapTimeline } from "@/components/onboarding/RoadmapTimeline";
 import { AchievementPopup } from "@/components/onboarding/AchievementPopup";
 import { getRoadmapPhases, getToolDetails } from "@/lib/onboarding/getRecommendedPath";
@@ -165,6 +166,11 @@ export default function RoadmapPage() {
     <>
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-lg mx-auto px-4 py-8">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <Logo iconSize={36} textSize="lg" />
+          </div>
+
           {/* Header */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 bg-violet-100 text-violet-600 text-xs font-medium px-3 py-1 rounded-full mb-3">

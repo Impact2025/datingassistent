@@ -29,6 +29,7 @@ interface DashboardStats {
   premiumUsers: number;
   totalAssessments: number;
   completedAssessments: number;
+  usersWithProgress: number;
   averageReadinessScore: number;
   revenue: number;
   conversionRate: number;
@@ -57,51 +58,26 @@ export default function AdminDashboard() {
 
   const fetchDashboardStats = async () => {
     try {
-      // In a real app, this would fetch from actual APIs
-      // For now, we'll simulate the data
-      const mockStats: DashboardStats = {
-        totalUsers: 2847,
-        activeUsers: 1923,
-        premiumUsers: 456,
-        totalAssessments: 8921,
-        completedAssessments: 7563,
-        averageReadinessScore: 72.4,
-        revenue: 12847.50,
-        conversionRate: 16.2,
-        systemHealth: {
-          database: 'healthy',
-          api: 'healthy',
-          ai: 'healthy'
-        },
-        recentActivity: [
-          {
-            id: '1',
-            type: 'assessment',
-            user: 'sarah@example.com',
-            action: 'Completed Emotionele Ready Scan',
-            timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString()
-          },
-          {
-            id: '2',
-            type: 'subscription',
-            user: 'mike@example.com',
-            action: 'Upgraded to Premium',
-            timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString()
-          },
-          {
-            id: '3',
-            type: 'login',
-            user: 'anna@example.com',
-            action: 'First login',
-            timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString()
-          }
-        ]
-      };
+      setLoading(true);
 
-      setStats(mockStats);
-      setLastUpdated(new Date());
+      // Fetch real stats from API
+      const response = await fetch('/api/admin/dashboard');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch dashboard stats');
+      }
+
+      const data = await response.json();
+
+      if (data.success && data.stats) {
+        setStats(data.stats);
+        setLastUpdated(new Date());
+      } else {
+        throw new Error(data.error || 'Invalid response format');
+      }
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
+      setStats(null);
     } finally {
       setLoading(false);
     }
@@ -324,7 +300,8 @@ export default function AdminDashboard() {
                   <div className="flex-shrink-0">
                     {activity.type === 'assessment' && <Target className="h-4 w-4 text-blue-500" />}
                     {activity.type === 'subscription' && <DollarSign className="h-4 w-4 text-green-500" />}
-                    {activity.type === 'login' && <Users className="h-4 w-4 text-purple-500" />}
+                    {activity.type === 'login' && <Activity className="h-4 w-4 text-purple-500" />}
+                    {activity.type === 'signup' && <UserCheck className="h-4 w-4 text-green-600" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate">

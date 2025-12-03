@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,9 +17,11 @@ import {
   X,
   Activity,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  Tag
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/providers/user-provider";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -45,6 +47,12 @@ const adminNavigation = [
     description: "Gedetailleerde gebruikersdata"
   },
   {
+    name: "Coupons",
+    href: "/admin/coupons",
+    icon: Tag,
+    description: "Coupon codes beheren"
+  },
+  {
     name: "Content",
     href: "/admin/content",
     icon: Database,
@@ -66,12 +74,109 @@ const adminNavigation = [
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [checkingAdmin, setCheckingAdmin] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
+  const { user, loading } = useUser();
+
+  // Check if we're on the login page
+  const isLoginPage = pathname === '/admin/login';
+
+  // Prevent hydration mismatches
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Check admin role from API
+  useEffect(() => {
+    async function checkAdminStatus() {
+      if (!user || isLoginPage) {
+        setCheckingAdmin(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/auth/check-admin');
+        const data = await response.json();
+
+        setIsAdmin(data.isAdmin || false);
+
+        // Redirect if not admin
+        if (!data.isAdmin) {
+          console.log('🚫 User is not an admin, redirecting...');
+          router.push('/dashboard');
+        }
+      } catch (error) {
+        console.error('Failed to check admin status:', error);
+        setIsAdmin(false);
+        router.push('/dashboard');
+      } finally {
+        setCheckingAdmin(false);
+      }
+    }
+
+    if (mounted && !loading && !isLoginPage) {
+      checkAdminStatus();
+    } else if (isLoginPage) {
+      setCheckingAdmin(false);
+    }
+  }, [user, mounted, loading, isLoginPage, router]);
+
+  // Check admin authentication (skip for login page)
+  useEffect(() => {
+    if (mounted && !loading && !user && !isLoginPage) {
+      // Not logged in, redirect to admin login
+      router.push('/admin/login');
+    }
+  }, [user, loading, router, mounted, isLoginPage]);
+
+  // If on login page, just render children without the admin layout
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   const handleLogout = () => {
     // Implement logout logic
     router.push('/login');
   };
+
+  // Show loading spinner while checking authentication or admin status
+  if (!mounted || loading || checkingAdmin) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <p className="text-sm text-gray-600">
+            {checkingAdmin ? 'Verifiëren admin toegang...' : 'Laden...'}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // If no user after loading, the useEffect will handle redirect
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  // If user is not admin, show access denied (while redirecting)
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <Shield className="h-16 w-16 text-red-500" />
+          <h2 className="text-xl font-semibold text-gray-900">Toegang geweigerd</h2>
+          <p className="text-gray-600">Je hebt geen admin rechten</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
