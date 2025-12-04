@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     let result;
     try {
       result = await sql`
-        SELECT monday_reminders_enabled, reminder_time, last_reminder_sent, reminder_count
+        SELECT monday_reminders_enabled, reminder_time, last_reminder_sent
         FROM user_notification_preferences
         WHERE user_id = ${user.id}
       `;
@@ -60,7 +60,7 @@ export async function GET(request: Request) {
       mondayRemindersEnabled: prefs.monday_reminders_enabled,
       reminderTime: prefs.reminder_time,
       lastReminderSent: prefs.last_reminder_sent,
-      reminderCount: prefs.reminder_count
+      reminderCount: 0
     });
 
   } catch (error) {
@@ -141,7 +141,7 @@ export async function POST(request: Request) {
         mondayRemindersEnabled: result.rows[0].monday_reminders_enabled,
         reminderTime: result.rows[0].reminder_time,
         lastReminderSent: result.rows[0].last_reminder_sent,
-        reminderCount: result.rows[0].reminder_count
+        reminderCount: 0
       }
     });
 

@@ -16,7 +16,11 @@ import { Clock, BookOpen, TrendingUp, CheckCircle, Lock, Play, Star, Search, Fil
 import { cn } from '@/lib/utils';
 import type { CursusWithProgress } from '@/types/cursus.types';
 
-export function CursussenGallery() {
+interface CursussenGalleryProps {
+  onCursusSelect?: (slug: string) => void;
+}
+
+export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
   const [cursussen, setCursussen] = useState<CursusWithProgress[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -172,15 +176,15 @@ export function CursussenGallery() {
             const isStarted = progress && progress.voltooide_lessen > 0;
             const isCompleted = progress && progress.percentage === 100;
 
-            return (
-              <Link key={cursus.id} href={`/cursussen/${cursus.slug}`}>
-                <Card
-                  className={cn(
-                    "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full",
-                    isCompleted && "border-green-500 border-2",
-                    isStarted && !isCompleted && "border-pink-300"
-                  )}
-                >
+            const CursusCard = (
+              <Card
+                onClick={() => onCursusSelect ? onCursusSelect(cursus.slug) : null}
+                className={cn(
+                  "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full",
+                  isCompleted && "border-green-500 border-2",
+                  isStarted && !isCompleted && "border-pink-300"
+                )}
+              >
                   {/* Header with badges */}
                   <CardHeader>
                     <div className="flex items-start justify-between gap-2 mb-2">
@@ -278,7 +282,18 @@ export function CursussenGallery() {
                     </Button>
                   </CardFooter>
                 </Card>
-              </Link>
+            );
+
+            return (
+              <div key={cursus.id}>
+                {onCursusSelect ? (
+                  CursusCard
+                ) : (
+                  <Link href={`/cursussen/${cursus.slug}`}>
+                    {CursusCard}
+                  </Link>
+                )}
+              </div>
             );
           })}
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useUser } from '@/providers/user-provider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, CheckCircle, User, Key } from 'lucide-react';
+import { trackPurchase, setUserProperties } from '@/lib/analytics/ga4-events';
 
 export function PaymentSuccessClientComponent() {
   const searchParams = useSearchParams();
@@ -17,8 +18,43 @@ export function PaymentSuccessClientComponent() {
   const [statusMessage, setStatusMessage] = useState('Betaling verwerken...');
   const [autoCreatedAccount, setAutoCreatedAccount] = useState<{email: string, tempPassword: string} | null>(null);
   const [showPasswordInfo, setShowPasswordInfo] = useState(false);
+  const hasTrackedPurchase = useRef(false);
   const orderId = searchParams?.get('order_id') || '';
   const transactionId = searchParams?.get('transactionid') || '';
+
+  // Helper to track purchase event
+  const trackPurchaseEvent = async (userId: number | string) => {
+    if (hasTrackedPurchase.current || !orderId) return;
+    hasTrackedPurchase.current = true;
+
+    try {
+      // Fetch order details for accurate tracking
+      const response = await fetch(`/api/payment/verify?orderId=${orderId}`);
+      if (response.ok) {
+        const orderData = await response.json();
+
+        trackPurchase({
+          transaction_id: orderId,
+          plan_id: orderData.packageType || 'unknown',
+          plan_name: orderData.packageName || orderData.packageType || 'Subscription',
+          price: (orderData.amount || 0) / 100,
+          billing_cycle: orderData.billingPeriod,
+          currency: 'EUR',
+          coupon: orderData.couponCode,
+        });
+
+        // Update user properties with subscription tier
+        setUserProperties({
+          user_id: userId.toString(),
+          subscription_tier: orderData.packageType || 'pro',
+        });
+
+        console.log('✅ GA4 Purchase event tracked:', orderId);
+      }
+    } catch (error) {
+      console.error('Failed to track purchase:', error);
+    }
+  };
 
   useEffect(() => {
     const handleRedirect = async () => {
@@ -60,10 +96,13 @@ export function PaymentSuccessClientComponent() {
             localStorage.removeItem('pending_order_id');
             localStorage.removeItem('pending_transaction_id');
 
-            setStatusMessage('Abonnement geactiveerd! Doorsturen naar onboarding...');
-            // Redirect to onboarding after 2 seconds
+            // Track purchase in GA4
+            await trackPurchaseEvent(user.id);
+
+            setStatusMessage('Abonnement geactiveerd! Doorsturen naar dashboard...');
+            // Redirect to dashboard after 2 seconds
             setTimeout(() => {
-              router.push('/onboarding');
+              router.push('/dashboard');
             }, 2000);
             return;
           }
@@ -125,11 +164,14 @@ export function PaymentSuccessClientComponent() {
             localStorage.removeItem('pending_order_id');
             localStorage.removeItem('pending_transaction_id');
 
+            // Track purchase in GA4
+            await trackPurchaseEvent(data.user.id);
+
             setStatusMessage('Welkom bij DatingAssistent! 🎉');
 
-            // Redirect to onboarding
+            // Redirect to dashboard
             setTimeout(() => {
-              router.push('/onboarding');
+              router.push('/dashboard');
             }, 1500);
             return;
           } catch (loginError) {

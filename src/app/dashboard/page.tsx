@@ -54,6 +54,8 @@ import { EnhancedPadTab } from '@/components/dashboard/enhanced-pad-tab';
 import { ProfielTab } from '@/components/dashboard/profiel-tab-new';
 import { CoachTab } from '@/components/dashboard/coach-tab';
 import { IrisInsightsPanel } from '@/components/iris/iris-insights-panel';
+import { ProactiveInvite, useProactiveInvite } from '@/components/live-chat/proactive-invite';
+import { trackDashboardTab, trackToolUsed, setUserProperties } from '@/lib/analytics/ga4-events';
 
 export default function DashboardPage() {
   const { user, userProfile, loading } = useUser();
@@ -69,6 +71,40 @@ export default function DashboardPage() {
   const [journeyDay, setJourneyDay] = useState(1);
   const [datingWeekNotificationOpen, setDatingWeekNotificationOpen] = useState(false);
 
+  // Iris proactive invite for registered members
+  const { shouldShowInvite, dismissInvite } = useProactiveInvite();
+  const [irisInviteVisible, setIrisInviteVisible] = useState(false);
+
+  // Wrapper for setActiveTab that includes GA4 tracking
+  const handleTabChange = (newTab: string) => {
+    // Track tab change in GA4
+    trackDashboardTab({
+      tab_name: newTab,
+      previous_tab: activeTab,
+    });
+
+    // If it's a tool/module tab, also track as tool_used
+    const toolTabs = ['profiel-persoonlijkheid', 'communicatie-matching', 'daten-relaties', 'groei-doelen', 'leren-ontwikkelen'];
+    if (toolTabs.includes(newTab)) {
+      trackToolUsed({
+        tool_name: newTab,
+        tool_category: 'dashboard_module',
+      });
+    }
+
+    setActiveTab(newTab);
+  };
+
+  // Handle URL tab parameter (e.g., ?tab=subscription)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam && ['subscription', 'settings', 'data-management', 'home', 'pad', 'coach', 'profiel'].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, []);
+
   // Use centralized journey state hook
   const {
     showOnboarding,
@@ -82,6 +118,18 @@ export default function DashboardPage() {
     enabled: !loading && !!user
   });
 
+  // Show Iris invite after 30 seconds for logged-in users (not during onboarding)
+  useEffect(() => {
+    if (!user || loading || showOnboarding) return;
+
+    const timer = setTimeout(() => {
+      if (shouldShowInvite) {
+        setIrisInviteVisible(true);
+      }
+    }, 30000); // 30 seconds
+
+    return () => clearTimeout(timer);
+  }, [user, loading, showOnboarding, shouldShowInvite]);
 
   // Check if user is admin (from database role)
   const [isAdminUser, setIsAdminUser] = useState(false);
@@ -134,6 +182,44 @@ export default function DashboardPage() {
     // Users should be able to access their dashboard even without a complete profile
     // They can choose to upgrade via the subscription page if needed
   }, [user, userProfile, loading, isAdminUser, router]);
+
+  // Check if user has Kickstart enrollment (allows dashboard access without profile)
+  const [hasKickstartEnrollment, setHasKickstartEnrollment] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkKickstartEnrollment = async () => {
+      if (!user?.id || loading) return;
+
+      // If they already have a profile, no need to check
+      if (userProfile) {
+        setHasKickstartEnrollment(false); // Profile exists, not Kickstart-only user
+        return;
+      }
+
+      try {
+        console.log('🔍 Checking for Kickstart enrollment for user:', user.id);
+        const response = await fetch('/api/kickstart/check-enrollment', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('✅ Kickstart enrollment check result:', data);
+          setHasKickstartEnrollment(data.hasEnrollment === true);
+        } else {
+          console.warn('⚠️ Failed to check Kickstart enrollment:', response.status);
+          setHasKickstartEnrollment(false);
+        }
+      } catch (error) {
+        console.error('❌ Error checking Kickstart enrollment:', error);
+        setHasKickstartEnrollment(false);
+      }
+    };
+
+    checkKickstartEnrollment();
+  }, [user?.id, loading, userProfile]);
 
   // Check for Monday dating week notifications
   useEffect(() => {
@@ -249,8 +335,20 @@ export default function DashboardPage() {
   };
 
 
-  // If no profile, show a message but don't redirect
-  if (!userProfile) {
+  // Allow dashboard access for Kickstart users even without user_profile
+  // This is the "wereldklasse" solution: full integration without requiring profile
+  if (!userProfile && !hasKickstartEnrollment) {
+    // Still checking enrollment status
+    if (hasKickstartEnrollment === null) {
+      return (
+        <div className="flex min-h-screen flex-col items-center justify-center gap-4">
+          <LoadingSpinner />
+          <p className="text-muted-foreground">Dashboard laden...</p>
+        </div>
+      );
+    }
+
+    // No profile and no Kickstart enrollment - show error
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
         <div className="text-center space-y-4">
@@ -270,41 +368,41 @@ export default function DashboardPage() {
     switch (activeTab) {
       // NIEUWE 4-TAB NAVIGATIE (Masterplan)
       case 'home':
-        return <SmartHomeTab onTabChange={setActiveTab} userId={user?.id} />;
+        return <SmartHomeTab onTabChange={handleTabChange} userId={user?.id} />;
 
       case 'pad':
-        return <EnhancedPadTab onTabChange={setActiveTab} userId={user?.id} />;
+        return <EnhancedPadTab onTabChange={handleTabChange} userId={user?.id} />;
 
       case 'coach':
-        return <CoachTab onTabChange={setActiveTab} userId={user?.id} />;
+        return <CoachTab onTabChange={handleTabChange} userId={user?.id} />;
 
       case 'profiel':
-        return <ProfielTab onTabChange={setActiveTab} />;
+        return <ProfielTab onTabChange={handleTabChange} />;
 
       // NIEUWE 5-MODULE STRUCTUUR (legacy support)
       case 'profiel-persoonlijkheid':
-        return <ProfileSuite onTabChange={setActiveTab} />;
+        return <ProfileSuite onTabChange={handleTabChange} />;
 
       case 'communicatie-matching':
-        return <CommunicationHub onTabChange={setActiveTab} />;
+        return <CommunicationHub onTabChange={handleTabChange} />;
 
       case 'daten-relaties':
-        return <DatenRelatiesModule onTabChange={setActiveTab} />;
+        return <DatenRelatiesModule onTabChange={handleTabChange} />;
         // Navigation handled by useEffect above
-        return <DashboardTab onTabChange={setActiveTab} />;
+        return <DashboardTab onTabChange={handleTabChange} />;
 
       case 'groei-doelen':
-        return <GroeiDoelenModule onTabChange={setActiveTab} userId={user?.id} />;
+        return <GroeiDoelenModule onTabChange={handleTabChange} userId={user?.id} />;
 
       case 'leren-ontwikkelen':
-        return <LerenOntwikkelenModule onTabChange={setActiveTab} />;
+        return <LerenOntwikkelenModule onTabChange={handleTabChange} />;
 
       case 'cursus':
         // Navigate to the main cursus page
         if (typeof window !== 'undefined') {
           window.location.href = '/cursus';
         }
-        return <DashboardTab onTabChange={setActiveTab} />;
+        return <DashboardTab onTabChange={handleTabChange} />;
 
       case 'settings':
         return <SettingsTab />;
@@ -317,7 +415,7 @@ export default function DashboardPage() {
 
       // LEGACY TABS (voorlopig behouden)
       case 'dashboard':
-        return <DashboardTab onTabChange={setActiveTab} />;
+        return <DashboardTab onTabChange={handleTabChange} />;
       case 'daily':
         return (
           <>
@@ -357,9 +455,9 @@ export default function DashboardPage() {
         return <DatingActivityLogger userId={user?.id || 0} />;
       case 'select-package':
         // Navigation handled by useEffect above
-        return <DashboardTab onTabChange={setActiveTab} />;
+        return <DashboardTab onTabChange={handleTabChange} />;
       default:
-        return <DashboardTab onTabChange={setActiveTab} />;
+        return <DashboardTab onTabChange={handleTabChange} />;
     }
   };
 
@@ -412,8 +510,8 @@ export default function DashboardPage() {
           <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
             <div className="space-y-6">
               <Header
-                onSettingsClick={() => setActiveTab('settings')}
-                onSubscriptionClick={() => setActiveTab('subscription')}
+                onSettingsClick={() => handleTabChange('settings')}
+                onSubscriptionClick={() => handleTabChange('subscription')}
               />
 
               {/* Trial Progress Banner - Only show for trial users */}
@@ -423,8 +521,8 @@ export default function DashboardPage() {
               {/* Hide navigation during onboarding */}
               {!showOnboarding && (
                 useNewNav
-                  ? <MainNavNew activeTab={activeTab} onTabChange={setActiveTab} />
-                  : <MainNav activeTab={activeTab} onTabChange={setActiveTab} />
+                  ? <MainNavNew activeTab={activeTab} onTabChange={handleTabChange} />
+                  : <MainNav activeTab={activeTab} onTabChange={handleTabChange} />
               )}
               <div className="mt-6">
                 {/* Show onboarding content if needed */}
@@ -465,7 +563,7 @@ export default function DashboardPage() {
                   <p>
                     Jouw data is veilig en AVG-proof.{' '}
                     <button
-                      onClick={() => setActiveTab('data-management')}
+                      onClick={() => handleTabChange('data-management')}
                       className="underline hover:text-primary bg-transparent border-none p-0 cursor-pointer"
                     >
                       Beheer je data
@@ -481,7 +579,27 @@ export default function DashboardPage() {
             <IrisInsightsPanel
               currentTab={activeTab}
               userId={user?.id}
-              onTabChange={setActiveTab}
+              onTabChange={handleTabChange}
+            />
+          )}
+
+          {/* Iris Proactive Invite - Only popup for registered members (no floating button) */}
+          {irisInviteVisible && (
+            <ProactiveInvite
+              onAccept={() => {
+                setIrisInviteVisible(false);
+                dismissInvite();
+                handleTabChange('coach'); // Open Coach tab when accepting
+              }}
+              onDismiss={() => {
+                setIrisInviteVisible(false);
+                dismissInvite();
+              }}
+              position="bottom-right"
+              delay={0}
+              companyName="DatingAssistent"
+              message="Hoi! 👋 Ik zie dat je bezig bent. Kan ik je ergens mee helpen vandaag?"
+              agentName="Iris"
             />
           )}
         </div>

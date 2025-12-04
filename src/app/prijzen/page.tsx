@@ -230,17 +230,19 @@ export default function PrijzenPage() {
             {/* All plans include */}
             <div className="mt-8 text-center">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                ❤️ Alle plannen bevatten toegang tot onze 8 AI-tools:
+                ❤️ Alle plannen bevatten toegang tot onze 10 AI-tools:
               </h3>
               <div className="flex flex-wrap justify-center gap-3 text-sm text-gray-600">
                 <span className="bg-gray-100 px-3 py-1 rounded-full">Profiel Coach</span>
                 <span className="bg-gray-100 px-3 py-1 rounded-full">Chat Coach</span>
                 <span className="bg-gray-100 px-3 py-1 rounded-full">Date Planner</span>
-                <span className="bg-gray-100 px-3 py-1 rounded-full">Veiligheid Check</span>
                 <span className="bg-gray-100 px-3 py-1 rounded-full">Opener Lab</span>
                 <span className="bg-gray-100 px-3 py-1 rounded-full">Match Analyse</span>
                 <span className="bg-gray-100 px-3 py-1 rounded-full">AI Foto Check</span>
                 <span className="bg-gray-100 px-3 py-1 rounded-full">Voortgang Tracker</span>
+                <span className="bg-gray-100 px-3 py-1 rounded-full">Veiligheid Check</span>
+                <span className="bg-gray-100 px-3 py-1 rounded-full">Vaardigheden Scan</span>
+                <span className="bg-gray-100 px-3 py-1 rounded-full">Online Cursussen</span>
               </div>
             </div>
 

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, Sparkles, MessageCircle, Lightbulb, TrendingUp, Heart, Target } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { CoachingSuggestion } from '@/lib/iris/proactive-coaching';
+import { trackChatMessageSent, trackToolUsed } from '@/lib/analytics/ga4-events';
 
 interface Bericht {
   id: string;
@@ -39,6 +40,15 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
   const [followUpSuggestions, setFollowUpSuggestions] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // GA4: Track when Iris chat is opened
+  useEffect(() => {
+    trackToolUsed({
+      tool_name: 'iris_chat',
+      tool_category: 'ai_coach',
+      completed: false,
+    });
+  }, []);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [berichten]);
@@ -47,6 +57,12 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
     e.preventDefault();
     const vraag = customMessage || input.trim();
     if (!vraag) return;
+
+    // GA4: Track chat message sent
+    trackChatMessageSent({
+      chat_type: 'iris',
+      message_length: vraag.length,
+    });
 
     setInput('');
 

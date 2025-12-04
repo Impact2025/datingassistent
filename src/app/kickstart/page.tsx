@@ -16,6 +16,31 @@ export default function KickstartPage() {
   useEffect(() => {
     async function fetchData() {
       try {
+        // Check if onboarding is completed first
+        const onboardingResponse = await fetch('/api/kickstart/onboarding');
+        if (onboardingResponse.ok) {
+          const onboardingData = await onboardingResponse.json();
+
+          // If enrolled but onboarding not completed, redirect to onboarding
+          if (!onboardingData.completed) {
+            // Check if user is actually enrolled
+            const enrolledResponse = await fetch('/api/user/enrolled-programs');
+            if (enrolledResponse.ok) {
+              const enrolledData = await enrolledResponse.json();
+              const hasKickstart = enrolledData.programs?.some(
+                (p: any) => p.program_slug === 'kickstart'
+              );
+
+              if (hasKickstart) {
+                // User is enrolled but hasn't done onboarding - redirect
+                router.push('/kickstart/onboarding');
+                return;
+              }
+            }
+          }
+        }
+
+        // Fetch overview data
         const response = await fetch('/api/kickstart');
         if (!response.ok) {
           throw new Error('Kon data niet laden');
@@ -30,7 +55,7 @@ export default function KickstartPage() {
     }
 
     fetchData();
-  }, []);
+  }, [router]);
 
   const handleDaySelect = (dayNumber: number) => {
     router.push(`/kickstart/dag/${dayNumber}`);

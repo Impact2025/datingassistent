@@ -141,7 +141,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('🔍 UserProvider: Starting token verification for pathname:', pathname);
 
       // Skip auth verification for public pages (logout, login, register, etc.)
-      const publicPages = ['/logout', '/login', '/register', '/verify-email', '/reset-password'];
+      const publicPages = ['/logout', '/login', '/register', '/verify-email', '/reset-password', '/admin/login', '/admin-login'];
       if (publicPages.some(page => pathname?.startsWith(page))) {
         console.log('🔓 Skipping auth verification for public page:', pathname);
         setLoading(false);
@@ -424,14 +424,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Update state
         setUserProfile(profile);
 
-        // Only redirect to onboarding for completely new users without any journey progress
+        // Redirect new users to dashboard (old onboarding is disabled)
         // Existing users who update their profile should stay on their current page
-        // Users in dashboard should stay in dashboard (dashboard handles its own onboarding)
         const isNewUser = !userProfile || (!userProfile.name && !userProfile.age);
         const isInDashboard = pathname === '/dashboard';
-        if (isNewUser && pathname !== '/onboarding' && !isInDashboard) {
-          console.log('➡️ Redirecting new user to onboarding after profile creation');
-          router.push('/onboarding');
+        if (isNewUser && pathname !== '/dashboard' && !isInDashboard) {
+          console.log('➡️ Redirecting new user to dashboard after profile creation');
+          router.push('/dashboard');
         } else {
           console.log('📍 Profile updated for existing user or dashboard user, staying on current page');
         }

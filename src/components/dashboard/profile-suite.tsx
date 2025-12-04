@@ -18,6 +18,7 @@ import { ProfileSuiteTutorial } from "@/components/onboarding/tutorials/profile-
 import { ContextualHelpButton } from "@/components/onboarding/contextual-help-button";
 import { AttachmentAssessmentFlow } from "@/components/attachment-assessment/attachment-assessment-flow";
 import { EmotioneleReadinessFlow } from "@/components/emotional-readiness/emotionele-readiness-flow";
+import { DatingStyleFlow } from "@/components/dating-style/dating-style-flow";
 
 interface ProfileSuiteProps {
   onTabChange?: (tab: string) => void;
@@ -50,38 +51,30 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       label: "🪩 Zelfbeeld & Eerste Indruk",
       icon: UserCircle2,
       description: "Camera AI voor profile optimization en eerste indruk maximalisatie",
-      component: <div className="p-6 text-center">
-        <h3 className="text-xl font-bold mb-4">Zelfbeeld & Eerste Indruk PRO</h3>
-        <p className="text-muted-foreground mb-6">
-          AI-gedreven profile enhancement met camera integratie.
-        </p>
-        <Button
-          onClick={() => window.location.href = '/zelfbeeld'}
-          className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
-        >
-          Start Profile Analysis
-        </Button>
+      component: <div className="p-8 text-center">
+        <div className="max-w-xl mx-auto space-y-6">
+          <p className="text-gray-700 leading-relaxed">
+            AI-gedreven profile enhancement met camera integratie voor optimale eerste indruk.
+          </p>
+          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
+            <p className="text-purple-900 font-medium mb-2">
+              Binnenkort beschikbaar
+            </p>
+            <p className="text-sm text-purple-700">
+              Deze PRO tool wordt momenteel ontwikkeld en komt binnenkort beschikbaar.
+            </p>
+          </div>
+        </div>
       </div>,
       badge: "AI-PRO",
       color: "from-purple-500 to-indigo-500"
     },
     {
       id: "dating-archetypes",
-      label: "🎭 Dating Archetypes",
+      label: "🎭 Dating Stijl Scan",
       icon: Users,
-      description: "Ontdek je dominante dating energie archetype",
-      component: <div className="p-6 text-center">
-        <h3 className="text-xl font-bold mb-4">Mini-Persoonlijkheidsprofiel</h3>
-        <p className="text-muted-foreground mb-6">
-          8 professionele dating energie archetypes voor betere matches.
-        </p>
-        <Button
-          onClick={() => window.location.href = '/dating-archetypes'}
-          className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
-        >
-          Start Archetype Scan
-        </Button>
-      </div>,
+      description: "Ontdek je dating stijl en blinde vlekken",
+      component: <DatingStyleFlow />,
       badge: "AI",
       color: "from-orange-500 to-red-500"
     },

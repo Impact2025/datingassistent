@@ -585,6 +585,117 @@ export class AIContextManager {
   }
 
   /**
+   * Load Attachment Style (Hechtingsstijl) data for a user
+   */
+  static async loadAttachmentStyleData(userId: number): Promise<any> {
+    try {
+      // Get most recent completed assessment from hechtingsstijl_results
+      const result = await sql`
+        SELECT
+          stijl_type as primary_style,
+          score,
+          veilig_score,
+          angstig_score,
+          vermijdend_score,
+          angstig_vermijdend_score,
+          key_insights,
+          relationship_patterns,
+          red_flags,
+          golden_flags,
+          practical_tips,
+          completed_at
+        FROM hechtingsstijl_results
+        WHERE user_id = ${userId}
+        ORDER BY completed_at DESC
+        LIMIT 1
+      `;
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const r = result.rows[0];
+
+      // Determine secondary style based on scores
+      const scores = {
+        secure: r.veilig_score || 0,
+        anxious: r.angstig_score || 0,
+        avoidant: r.vermijdend_score || 0,
+        fearful_avoidant: r.angstig_vermijdend_score || 0
+      };
+
+      const sortedStyles = Object.entries(scores)
+        .sort(([,a], [,b]) => b - a);
+
+      const secondaryStyle = sortedStyles[1] ? sortedStyles[1][0] : undefined;
+
+      return {
+        primaryStyle: r.primary_style,
+        secondaryStyle: secondaryStyle,
+        scores: scores,
+        confidence: r.score || 0,
+        completedAt: r.completed_at,
+        keyInsights: r.key_insights ? (typeof r.key_insights === 'string' ? JSON.parse(r.key_insights) : r.key_insights) : [],
+        redFlags: r.red_flags ? (typeof r.red_flags === 'string' ? JSON.parse(r.red_flags) : r.red_flags) : [],
+        goldenFlags: r.golden_flags ? (typeof r.golden_flags === 'string' ? JSON.parse(r.golden_flags) : r.golden_flags) : [],
+        practicalTips: r.practical_tips ? (typeof r.practical_tips === 'string' ? JSON.parse(r.practical_tips) : r.practical_tips) : [],
+        relationshipPatterns: r.relationship_patterns ? (typeof r.relationship_patterns === 'string' ? JSON.parse(r.relationship_patterns) : r.relationship_patterns) : []
+      };
+    } catch (error) {
+      console.log('No Hechtingsstijl data found or table does not exist');
+      return null;
+    }
+  }
+
+  /**
+   * Load Dating Style data for a user
+   */
+  static async loadDatingStyleData(userId: number): Promise<any> {
+    try {
+      // Get most recent completed assessment from dating_style_results
+      const result = await sql`
+        SELECT
+          primary_style,
+          secondary_styles,
+          style_scores,
+          blindspot_index,
+          confidence_score,
+          key_insights,
+          blind_spots,
+          chat_scripts,
+          micro_exercises,
+          completed_at
+        FROM dating_style_results
+        WHERE user_id = ${userId}
+        ORDER BY completed_at DESC
+        LIMIT 1
+      `;
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const r = result.rows[0];
+
+      return {
+        primaryStyle: r.primary_style,
+        secondaryStyles: r.secondary_styles ? (typeof r.secondary_styles === 'string' ? JSON.parse(r.secondary_styles) : r.secondary_styles) : [],
+        scores: r.style_scores ? (typeof r.style_scores === 'string' ? JSON.parse(r.style_scores) : r.style_scores) : {},
+        blindspotIndex: r.blindspot_index || 0,
+        confidence: r.confidence_score || 0,
+        completedAt: r.completed_at,
+        keyInsights: r.key_insights ? (typeof r.key_insights === 'string' ? JSON.parse(r.key_insights) : r.key_insights) : [],
+        blindSpots: r.blind_spots ? (typeof r.blind_spots === 'string' ? JSON.parse(r.blind_spots) : r.blind_spots) : [],
+        chatScripts: r.chat_scripts ? (typeof r.chat_scripts === 'string' ? JSON.parse(r.chat_scripts) : r.chat_scripts) : {},
+        microExercises: r.micro_exercises ? (typeof r.micro_exercises === 'string' ? JSON.parse(r.micro_exercises) : r.micro_exercises) : []
+      };
+    } catch (error) {
+      console.log('No Dating Style data found or table does not exist');
+      return null;
+    }
+  }
+
+  /**
    * Load Waarden Kompas data for a user
    */
   static async loadWaardenKompasData(userId: number): Promise<any> {
@@ -874,17 +985,22 @@ export class AIContextManager {
 
   /**
    * Load all assessment data and enrich AI context
+   * NOW LOADS ALL 7 ASSESSMENTS!
    */
   static async enrichContextWithAssessments(userId: number, context: Partial<UserAIContext>): Promise<Partial<UserAIContext>> {
     try {
-      // Load all assessment data in parallel for performance
+      // Load ALL 7 assessment data in parallel for performance
       const [
+        attachmentStyle,
+        datingStyle,
         waardenKompas,
         emotioneelReadiness,
         levensvisie,
         relatiepatronen,
         zelfbeeld
       ] = await Promise.all([
+        this.loadAttachmentStyleData(userId),
+        this.loadDatingStyleData(userId),
         this.loadWaardenKompasData(userId),
         this.loadEmotioneelReadinessData(userId),
         this.loadLevensvisieData(userId),
@@ -892,7 +1008,15 @@ export class AIContextManager {
         this.loadZelfbeeldData(userId)
       ]);
 
-      // Enrich context with assessment data
+      // Enrich context with ALL 7 assessments
+      if (attachmentStyle) {
+        context.attachmentStyle = attachmentStyle;
+      }
+
+      if (datingStyle) {
+        context.datingStyle = datingStyle;
+      }
+
       if (waardenKompas) {
         context.waardenKompas = waardenKompas;
       }
@@ -913,7 +1037,7 @@ export class AIContextManager {
         context.zelfbeeld = zelfbeeld;
       }
 
-      console.log(`✅ Context enriched with assessments for user ${userId}`);
+      console.log(`✅ Context enriched with ALL 7 assessments for user ${userId}`);
       return context;
     } catch (error) {
       console.error('Error enriching context with assessments:', error);

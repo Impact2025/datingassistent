@@ -13,6 +13,7 @@ import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-regis
 import { IrisFloatingButton } from "@/components/iris/IrisFloatingButton";
 import { TutorialEngine } from "@/components/onboarding/tutorial-engine/tutorial-engine";
 import { ToastProvider as AchievementToastProvider } from "@/components/notifications/toast-container";
+import { MicrosoftClarity } from "@/components/analytics/microsoft-clarity";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://datingassistent.nl'),
@@ -139,6 +140,7 @@ export default function RootLayout({
         <GoogleAnalytics />
       </head>
       <body className="font-body bg-background text-foreground antialiased">
+        <MicrosoftClarity />
         <StructuredData />
         <SkipLinks />
         <ErrorBoundary>

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from 'react';
 import { Settings, LogOut, CreditCard, Sun, Moon } from 'lucide-react';
 import { useUser } from '@/providers/user-provider';
 import { useTheme } from '@/providers/theme-provider';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Logo } from '@/components/shared/logo';
+import { TierBadge } from '@/components/ui/locked-feature';
+import { useAccessControl } from '@/hooks/use-access-control';
 
 interface HeaderProps {
   onSettingsClick?: () => void;
@@ -16,6 +17,7 @@ interface HeaderProps {
 export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {}) {
   const { userProfile, logout } = useUser();
   const { theme, setTheme, actualTheme, mounted } = useTheme();
+  const { userTier, isLoading: tierLoading } = useAccessControl();
   const router = useRouter();
 
   const toggleTheme = () => {
@@ -36,9 +38,14 @@ export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {
           <div className="mb-2">
             <Logo iconSize={40} textSize="lg" />
           </div>
-          <p className="text-sm text-muted-foreground md:text-base">
-            Welkom terug, {userProfile?.name}!
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm text-muted-foreground md:text-base">
+              Welkom terug, {userProfile?.name}!
+            </p>
+            {!tierLoading && userTier !== 'free' && (
+              <TierBadge tier={userTier} size="sm" />
+            )}
+          </div>
         </div>
         <div className="flex items-center space-x-2">
           {mounted && (
@@ -57,7 +64,7 @@ export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {
           <Button
             variant="ghost"
             size="icon"
-            onClick={onSubscriptionClick || (() => router.push('/select-package'))}
+            onClick={onSubscriptionClick || (() => router.push('/dashboard?tab=subscription'))}
             aria-label="Abonnement"
             title="Mijn Abonnement"
             noFocusRing

@@ -159,15 +159,15 @@ export function VerificationCodeInput({
       )}
 
       {/* Code Input Fields */}
-      <div className="space-y-4">
+      <div className="space-y-5">
         <div className="text-center">
-          <h3 className="text-lg font-semibold mb-2">Voer je verificatie code in</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="text-base sm:text-lg font-semibold mb-2">Voer je verificatie code in</h3>
+          <p className="text-xs sm:text-sm text-muted-foreground">
             We hebben een 6-cijferige code gestuurd naar je email
           </p>
         </div>
 
-        <div className="flex justify-center gap-2" onPaste={handlePaste}>
+        <div className="flex justify-center gap-1.5 sm:gap-2" onPaste={handlePaste}>
           {code.map((digit, index) => (
             <Input
               key={index}
@@ -181,19 +181,19 @@ export function VerificationCodeInput({
               value={digit}
               onChange={(e) => handleInputChange(index, e.target.value)}
               onKeyDown={(e) => handleInputKeyDown(index, e)}
-              className="w-12 h-12 text-center border-2 focus:border-pink-500 focus:ring-pink-500"
+              className="w-11 h-12 sm:w-12 sm:h-14 text-center focus:border-pink-500 focus:ring-pink-500 focus:ring-2"
               disabled={isVerifying}
               style={{
-                fontSize: '28px',
-                fontWeight: '900',
+                fontSize: '24px',
+                fontWeight: '700',
                 color: '#000000',
                 backgroundColor: '#ffffff',
-                border: '3px solid #e5e7eb',
-                borderRadius: '8px',
+                border: '2px solid #e5e7eb',
+                borderRadius: '10px',
                 textAlign: 'center',
                 lineHeight: '1',
-                padding: '8px',
-                fontFamily: 'monospace',
+                padding: '6px',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
                 WebkitTextFillColor: '#000000',
                 WebkitAppearance: 'none'
               }}
@@ -202,11 +202,11 @@ export function VerificationCodeInput({
         </div>
 
         {/* Verify Button */}
-        <div className="flex justify-center">
+        <div className="flex justify-center pt-2">
           <Button
             onClick={() => handleVerifyCode(fullCode)}
             disabled={isVerifying || fullCode.length !== 6}
-            className="px-8"
+            className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold rounded-full shadow-lg"
           >
             {isVerifying ? (
               <>
@@ -224,8 +224,8 @@ export function VerificationCodeInput({
       </div>
 
       {/* Resend Code */}
-      <div className="text-center space-y-2">
-        <p className="text-sm text-muted-foreground">
+      <div className="text-center space-y-2 pt-2">
+        <p className="text-xs sm:text-sm text-muted-foreground">
           Geen code ontvangen?
         </p>
         <Button

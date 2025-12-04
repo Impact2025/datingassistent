@@ -1,14 +1,242 @@
 // ============================================================================
-// IRIS CONTEXT BUILDER
+// IRIS CONTEXT BUILDER - MEGA UPGRADE
 //
 // Bouwt de complete context voor Iris AI Coach
-// Verzamelt alle relevante info over de gebruiker voor gepersonaliseerde responses
-// WERELDKLASSE UPGRADE: Integratie met AIContextManager voor alle 7 assessments
+// Verzamelt ALLE relevante info over de gebruiker voor gepersonaliseerde responses
+//
+// ALLE DATA BRONNEN:
+// ✅ iris_user_context - basis profiel
+// ✅ AIContextManager - 7 assessments
+// ✅ kickstart_onboarding - onboarding antwoorden (gender, fears, goals)
+// ✅ user_reflections - dagelijkse reflecties uit Kickstart
+// ✅ weekly_dating_logs - echte dating activiteit
+// ✅ goal_hierarchies - year/month/week doelen
 // ============================================================================
 
 import { sql } from '@vercel/postgres';
 import type { IrisContextForPrompt, IrisUserContext, CursusLes } from '../types/cursus.types';
 import { AIContextManager } from './ai-context-manager';
+
+// ============================================================================
+// EXTENDED TYPES
+// ============================================================================
+
+interface KickstartOnboardingData {
+  preferred_name?: string;
+  gender?: string;
+  looking_for?: string;
+  region?: string;
+  age?: number;
+  dating_status?: string;
+  single_duration?: string;
+  dating_apps?: string[];
+  weekly_matches?: string;
+  biggest_frustration?: string;
+  profile_description?: string;
+  biggest_difficulty?: string;
+  relationship_goal?: string;
+  confidence_level?: number;
+  biggest_fear?: string;
+  ideal_outcome?: string;
+  completed_days?: number;
+  current_day?: number;
+}
+
+interface UserReflection {
+  day_number: number;
+  question_type: 'spiegel' | 'identiteit' | 'actie';
+  question_text: string;
+  answer_text: string;
+  created_at: Date;
+}
+
+interface DatingLogActivity {
+  week_start: Date;
+  total_matches: number;
+  total_conversations: number;
+  total_dates: number;
+  total_ghosting: number;
+  average_match_quality: number;
+  activities: string[];
+}
+
+interface UserGoals {
+  year_goal?: string;
+  month_goals?: string[];
+  week_goals?: string[];
+  challenges?: string[];
+}
+
+// ============================================================================
+// DATA FETCHING FUNCTIONS
+// ============================================================================
+
+/**
+ * Haal Kickstart onboarding data op
+ */
+async function getKickstartOnboardingData(userId: number): Promise<KickstartOnboardingData | null> {
+  try {
+    const result = await sql`
+      SELECT
+        ko.preferred_name,
+        ko.gender,
+        ko.looking_for,
+        ko.region,
+        ko.age,
+        ko.dating_status,
+        ko.single_duration,
+        ko.dating_apps,
+        ko.weekly_matches,
+        ko.biggest_frustration,
+        ko.profile_description,
+        ko.biggest_difficulty,
+        ko.relationship_goal,
+        ko.confidence_level,
+        ko.biggest_fear,
+        ko.ideal_outcome,
+        COALESCE(progress.completed_days, 0) as completed_days,
+        progress.next_day as current_day
+      FROM kickstart_onboarding ko
+      LEFT JOIN (
+        SELECT
+          udp.user_id,
+          COUNT(*) FILTER (WHERE udp.status = 'completed') as completed_days,
+          MIN(pd.dag_nummer) FILTER (WHERE udp.status IN ('available', 'in_progress')) as next_day
+        FROM user_day_progress udp
+        JOIN program_days pd ON pd.id = udp.day_id
+        JOIN programs prog ON prog.id = udp.program_id AND prog.slug = 'kickstart'
+        GROUP BY udp.user_id
+      ) progress ON progress.user_id = ko.user_id
+      WHERE ko.user_id = ${userId}
+    `;
+
+    if (result.rows.length === 0) return null;
+
+    const row = result.rows[0];
+    return {
+      preferred_name: row.preferred_name,
+      gender: row.gender,
+      looking_for: row.looking_for,
+      region: row.region,
+      age: row.age,
+      dating_status: row.dating_status,
+      single_duration: row.single_duration,
+      dating_apps: row.dating_apps,
+      weekly_matches: row.weekly_matches,
+      biggest_frustration: row.biggest_frustration,
+      profile_description: row.profile_description,
+      biggest_difficulty: row.biggest_difficulty,
+      relationship_goal: row.relationship_goal,
+      confidence_level: row.confidence_level,
+      biggest_fear: row.biggest_fear,
+      ideal_outcome: row.ideal_outcome,
+      completed_days: row.completed_days || 0,
+      current_day: row.current_day || 1,
+    };
+  } catch (error) {
+    console.log('No kickstart onboarding data found');
+    return null;
+  }
+}
+
+/**
+ * Haal user reflecties op (laatste 15 voor Iris context)
+ */
+async function getUserReflections(userId: number): Promise<UserReflection[]> {
+  try {
+    const result = await sql`
+      SELECT
+        day_number,
+        question_type,
+        question_text,
+        answer_text,
+        created_at
+      FROM user_reflections
+      WHERE user_id = ${userId}
+        AND program_slug = 'kickstart'
+      ORDER BY day_number DESC, question_type
+      LIMIT 15
+    `;
+
+    return result.rows.map(row => ({
+      day_number: row.day_number,
+      question_type: row.question_type,
+      question_text: row.question_text,
+      answer_text: row.answer_text,
+      created_at: row.created_at,
+    }));
+  } catch (error) {
+    console.log('No user reflections found');
+    return [];
+  }
+}
+
+/**
+ * Haal dating log activiteit op (laatste 4 weken)
+ */
+async function getDatingLogActivity(userId: number): Promise<DatingLogActivity[]> {
+  try {
+    const result = await sql`
+      SELECT
+        week_start,
+        total_matches,
+        total_conversations,
+        total_dates,
+        total_ghosting,
+        average_match_quality,
+        activities
+      FROM weekly_dating_logs
+      WHERE user_id = ${userId}
+      ORDER BY week_start DESC
+      LIMIT 4
+    `;
+
+    return result.rows.map(row => ({
+      week_start: row.week_start,
+      total_matches: row.total_matches || 0,
+      total_conversations: row.total_conversations || 0,
+      total_dates: row.total_dates || 0,
+      total_ghosting: row.total_ghosting || 0,
+      average_match_quality: row.average_match_quality || 0,
+      activities: row.activities || [],
+    }));
+  } catch (error) {
+    console.log('No dating log data found');
+    return [];
+  }
+}
+
+/**
+ * Haal user doelen op
+ */
+async function getUserGoals(userId: number): Promise<UserGoals | null> {
+  try {
+    const result = await sql`
+      SELECT
+        year_goal,
+        month_goals,
+        week_goals,
+        challenges
+      FROM goal_hierarchies
+      WHERE user_id = ${userId}
+      ORDER BY created_at DESC
+      LIMIT 1
+    `;
+
+    if (result.rows.length === 0) return null;
+
+    const row = result.rows[0];
+    return {
+      year_goal: row.year_goal,
+      month_goals: row.month_goals || [],
+      week_goals: row.week_goals || [],
+      challenges: row.challenges || [],
+    };
+  } catch (error) {
+    console.log('No goals data found');
+    return null;
+  }
+}
 
 /**
  * Haalt de complete Iris context op voor een gebruiker
@@ -71,21 +299,49 @@ export async function getIrisContext(userId: number): Promise<IrisContextForProm
   };
 }
 
+// Extended enriched context type
+export interface EnrichedIrisContext extends IrisContextForPrompt {
+  aiContext: any;
+  kickstart?: KickstartOnboardingData | null;
+  reflections?: UserReflection[];
+  datingLog?: DatingLogActivity[];
+  goals?: UserGoals | null;
+}
+
 /**
- * 🚀 WERELDKLASSE: Haalt VERRIJKTE Iris context op met ALLE 7 assessments
- * Gebruikt AIContextManager voor complete persoonlijke context
+ * 🚀 WERELDKLASSE: Haalt VERRIJKTE Iris context op met ALLE data bronnen
+ * - AIContextManager voor 7 assessments
+ * - Kickstart onboarding (gender, fears, goals, etc.)
+ * - User reflections (dagelijkse inzichten)
+ * - Dating log activity (echte dating gedrag)
+ * - User goals (jaar/maand/week doelen)
  */
-export async function getEnrichedIrisContext(userId: number): Promise<IrisContextForPrompt & { aiContext: any }> {
-  // 1. Haal basis Iris context op (voor cursus/les info)
-  const baseContext = await getIrisContext(userId);
+export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIrisContext> {
+  // 🚀 Fetch ALL data sources IN PARALLEL for speed
+  const [
+    baseContext,
+    aiContext,
+    kickstartData,
+    reflections,
+    datingLogData,
+    goalsData
+  ] = await Promise.all([
+    getIrisContext(userId),
+    AIContextManager.getUserContext(userId),
+    getKickstartOnboardingData(userId),
+    getUserReflections(userId),
+    getDatingLogActivity(userId),
+    getUserGoals(userId)
+  ]);
 
-  // 2. Haal AI Context Manager data op (ALLE 7 assessments!)
-  const aiContext = await AIContextManager.getUserContext(userId);
-
-  // 3. Merge en return
+  // Merge en return complete context
   return {
     ...baseContext,
-    aiContext: aiContext || {}, // Voeg complete AI context toe
+    aiContext: aiContext || {},
+    kickstart: kickstartData,
+    reflections: reflections,
+    datingLog: datingLogData,
+    goals: goalsData,
   };
 }
 
@@ -230,9 +486,14 @@ export async function saveIrisConversation(
 }
 
 /**
- * 🚀 WERELDKLASSE: Bouw de system prompt voor Iris met ALLE assessment data
+ * 🚀 WERELDKLASSE: Bouw de system prompt voor Iris met ALLE beschikbare data
+ * - 7 Assessments (hechtingsstijl, waarden, dating style, etc.)
+ * - Kickstart onboarding (gender, fears, goals, etc.)
+ * - User reflections (dagelijkse inzichten)
+ * - Dating log (echte dating activiteit)
+ * - User goals (jaar/maand/week doelen)
  */
-export function buildIrisSystemPrompt(context: IrisContextForPrompt & { aiContext?: any }): string {
+export function buildIrisSystemPrompt(context: EnrichedIrisContext): string {
   const parts: string[] = [];
 
   // Basis instructies
@@ -369,6 +630,145 @@ WAT JE WEET OVER DEZE GEBRUIKER:`);
     }
   }
 
+  // 🚀 KICKSTART ONBOARDING DATA (persoonlijke info)
+  const kickstart = context.kickstart;
+  if (kickstart) {
+    parts.push(`
+👤 PERSOONLIJK PROFIEL (uit onboarding):`);
+    if (kickstart.preferred_name) {
+      parts.push(`- Naam: ${kickstart.preferred_name}`);
+    }
+    if (kickstart.gender) {
+      parts.push(`- Gender: ${kickstart.gender}`);
+    }
+    if (kickstart.age) {
+      parts.push(`- Leeftijd: ${kickstart.age} jaar`);
+    }
+    if (kickstart.looking_for) {
+      parts.push(`- Zoekt naar: ${kickstart.looking_for}`);
+    }
+    if (kickstart.region) {
+      parts.push(`- Regio: ${kickstart.region}`);
+    }
+    if (kickstart.dating_status) {
+      parts.push(`- Dating status: ${kickstart.dating_status}`);
+    }
+    if (kickstart.single_duration) {
+      parts.push(`- Single sinds: ${kickstart.single_duration}`);
+    }
+    if (kickstart.dating_apps?.length) {
+      parts.push(`- Gebruikt apps: ${kickstart.dating_apps.join(', ')}`);
+    }
+    if (kickstart.weekly_matches) {
+      parts.push(`- Matches per week: ${kickstart.weekly_matches}`);
+    }
+
+    // Diepere inzichten
+    parts.push(`
+💭 WAT DEZE PERSOON DEELDE:`);
+    if (kickstart.biggest_frustration) {
+      parts.push(`- Grootste frustratie: "${kickstart.biggest_frustration}"`);
+    }
+    if (kickstart.biggest_difficulty) {
+      parts.push(`- Grootste uitdaging: "${kickstart.biggest_difficulty}"`);
+    }
+    if (kickstart.biggest_fear) {
+      parts.push(`- Grootste angst: "${kickstart.biggest_fear}"`);
+    }
+    if (kickstart.relationship_goal) {
+      parts.push(`- Relatie doel: "${kickstart.relationship_goal}"`);
+    }
+    if (kickstart.ideal_outcome) {
+      parts.push(`- Ideale uitkomst: "${kickstart.ideal_outcome}"`);
+    }
+    if (kickstart.confidence_level) {
+      parts.push(`- Zelfvertrouwen (1-10): ${kickstart.confidence_level}`);
+    }
+    if (kickstart.profile_description) {
+      parts.push(`- Profiel beschrijving: "${kickstart.profile_description.substring(0, 100)}..."`);
+    }
+
+    // Kickstart voortgang
+    if (kickstart.completed_days !== undefined) {
+      parts.push(`- Kickstart voortgang: dag ${kickstart.current_day || 1} van 21 (${kickstart.completed_days} dagen voltooid)`);
+    }
+  }
+
+  // 🚀 USER REFLECTIONS (dagelijkse inzichten)
+  const reflections = context.reflections;
+  if (reflections && reflections.length > 0) {
+    parts.push(`
+📝 RECENTE REFLECTIES (wat deze persoon schreef):`);
+
+    // Group by day for cleaner output
+    const byDay = new Map<number, UserReflection[]>();
+    reflections.forEach(r => {
+      const existing = byDay.get(r.day_number) || [];
+      existing.push(r);
+      byDay.set(r.day_number, existing);
+    });
+
+    // Show last 3 days of reflections
+    const days = Array.from(byDay.keys()).slice(0, 3);
+    days.forEach(day => {
+      const dayReflections = byDay.get(day) || [];
+      parts.push(`  Dag ${day}:`);
+      dayReflections.forEach(r => {
+        const typeLabel = r.question_type === 'spiegel' ? '🪞' :
+                          r.question_type === 'identiteit' ? '🎭' : '🎯';
+        // Truncate long answers
+        const answer = r.answer_text.length > 80
+          ? r.answer_text.substring(0, 80) + '...'
+          : r.answer_text;
+        parts.push(`    ${typeLabel} "${answer}"`);
+      });
+    });
+
+    parts.push(`
+💡 Je mag verwijzen naar deze reflecties! Bijvoorbeeld: "Je schreef op dag X dat..."`);
+  }
+
+  // 🚀 DATING LOG ACTIVITY (echte dating gedrag)
+  const datingLog = context.datingLog;
+  if (datingLog && datingLog.length > 0) {
+    const recentWeek = datingLog[0];
+    parts.push(`
+📊 RECENTE DATING ACTIVITEIT:`);
+    parts.push(`- Afgelopen week: ${recentWeek.total_matches} matches, ${recentWeek.total_conversations} gesprekken, ${recentWeek.total_dates} dates`);
+    if (recentWeek.total_ghosting > 0) {
+      parts.push(`- Ghosted: ${recentWeek.total_ghosting}x (dit kan frustrerend zijn, toon empathie)`);
+    }
+    if (recentWeek.average_match_quality > 0) {
+      parts.push(`- Gem. match kwaliteit: ${recentWeek.average_match_quality}/10`);
+    }
+
+    // Trend over 4 weeks
+    if (datingLog.length > 1) {
+      const totalMatches = datingLog.reduce((sum, w) => sum + w.total_matches, 0);
+      const totalDates = datingLog.reduce((sum, w) => sum + w.total_dates, 0);
+      parts.push(`- Laatste 4 weken totaal: ${totalMatches} matches, ${totalDates} dates`);
+    }
+  }
+
+  // 🚀 USER GOALS (persoonlijke doelen)
+  const goals = context.goals;
+  if (goals) {
+    parts.push(`
+🎯 PERSOONLIJKE DOELEN:`);
+    if (goals.year_goal) {
+      parts.push(`- Jaardoel: "${goals.year_goal}"`);
+    }
+    if (goals.month_goals?.length) {
+      parts.push(`- Maanddoelen: ${goals.month_goals.slice(0, 2).join('; ')}`);
+    }
+    if (goals.week_goals?.length) {
+      parts.push(`- Weekdoelen: ${goals.week_goals.slice(0, 2).join('; ')}`);
+    }
+    if (goals.challenges?.length) {
+      parts.push(`- Uitdagingen: ${goals.challenges.slice(0, 2).join('; ')}`);
+    }
+  }
+
   // Cursus context
   if (context.cursus.les_context) {
     parts.push(`
@@ -400,16 +800,22 @@ ${context.recente_gesprekken.slice(0, 3).map(g =>
   }
 
   // 🚀 WERELDKLASSE COACHING INSTRUCTIES
-  if (aiContext) {
+  parts.push(`
+💡 HOE JE ALLE DATA GEBRUIKT:
+- PERSONALISEER: Gebruik hun naam, gender, en leeftijd
+- EMPATHIE: Refereer aan hun angsten en frustraties met begrip
+- REFLECTIES: Verwijs naar wat ze schreven ("Je zei op dag X dat...")
+- HECHTINGSSTIJL: Pas advies aan op hun attachment style
+- WAARDEN: Check of matches passen bij hun core values
+- REBOUND: Wees extra voorzichtig als rebound risico hoog is
+- DATING GEDRAG: Gebruik hun werkelijke matches/dates statistieken
+- DOELEN: Koppel advies aan hun persoonlijke jaar/week doelen
+- BLINDE VLEKKEN: Help ze patronen te doorbreken
+- PROGRESS: Moedig aan bij Kickstart voortgang`);
+
+  if (kickstart?.biggest_fear) {
     parts.push(`
-💡 HOE JE DEZE DATA GEBRUIKT:
-- Gebruik hechtingsstijl om relatie adviezen te personaliseren
-- Verwijs naar core waarden bij match/date beslissingen
-- Wees voorzichtig als rebound risico hoog is
-- Gebruik blinde vlekken om blinde vlekken te helpen zien
-- Match advies aan hun levensvisie doelen
-- Herken triggers en geef preventieve tips
-- Bouw op hun profile strengths bij profiel advies`);
+⚠️ LET OP: Deze persoon heeft als angst "${kickstart.biggest_fear}" - wees hier sensitief voor.`);
   }
 
   // Afsluitende instructies

@@ -33,105 +33,25 @@ interface UseJourneyStateOptions {
 
 export function useJourneyState({ userId, userProfile, enabled = true }: UseJourneyStateOptions) {
   const router = useRouter();
+  // DISABLED: Old journey onboarding is no longer used
+  // Users now go directly to the dashboard or use Kickstart onboarding
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [journeyState, setJourneyState] = useState<JourneyState>({
-    currentStep: 'loading',
+    currentStep: 'complete', // Default to complete - no old onboarding
     completedSteps: [],
   });
   const [isInitializingOnboarding, setIsInitializingOnboarding] = useState(false);
-  const [journeyCheckComplete, setJourneyCheckComplete] = useState(false);
+  const [journeyCheckComplete, setJourneyCheckComplete] = useState(true); // Default to true - skip check
 
-  // Load journey data and check if onboarding is needed
+  // DISABLED: Old journey onboarding check
+  // The old "Je DatingAssistent Journey" flow is no longer used
+  // Users with Kickstart enrollment will see the Kickstart dashboard
+  // Users without Kickstart will see the regular dashboard
   useEffect(() => {
-    if (!enabled || !userId) return;
-
-    const loadJourneyData = async () => {
-      try {
-        // First, check if the NEW onboarding flow has been completed
-        // If so, skip the old journey onboarding entirely
-        try {
-          const newOnboardingResponse = await fetch(`/api/onboarding/status?userId=${userId}`);
-          if (newOnboardingResponse.ok) {
-            const newOnboardingData = await newOnboardingResponse.json();
-            // Check both nested onboarding.completedAt and top-level completedAt
-            const completedAt = newOnboardingData.onboarding?.completedAt || newOnboardingData.completedAt;
-            if (completedAt) {
-              console.log('✅ New onboarding flow completed - skipping old journey onboarding');
-              setShowOnboarding(false);
-              setJourneyCheckComplete(true);
-              return;
-            }
-          }
-        } catch (newOnboardingError) {
-          console.log('ℹ️ New onboarding status not available, checking old journey...');
-        }
-
-        const response = await fetch(`/api/journey/status?userId=${userId}`);
-        if (response.ok) {
-          const data = await response.json();
-          console.log('🧭 Journey status loaded:', data);
-
-          // Check if user needs onboarding
-          if (data.status !== 'completed') {
-            console.log('🎯 User needs onboarding, initializing...');
-            setIsInitializingOnboarding(true);
-
-            // Check if user has profile
-            const hasProfile = userProfile && userProfile.name && userProfile.age;
-
-            // Set initial onboarding step
-            let initialStep: JourneyStep = 'welcome';
-            if (!hasProfile) {
-              initialStep = 'profile';
-            } else if (data.currentStep) {
-              initialStep = data.currentStep as JourneyStep;
-            } else if (data.completedSteps?.includes('coach-advice') && !data.completedSteps?.includes('welcome-video')) {
-              console.log('🎯 User completed coach advice but not welcome video, setting to welcome-video');
-              initialStep = 'welcome-video';
-            } else if (data.completedSteps?.includes('welcome-video') && !data.completedSteps?.includes('welcome-questions')) {
-              console.log('🎯 User completed welcome video but not questions, setting to welcome-questions');
-              initialStep = 'welcome-questions';
-            } else if (data.completedSteps?.includes('coach-advice')) {
-              console.log('⚠️ User completed coach advice but journey marked as complete, forcing welcome-video');
-              initialStep = 'welcome-video';
-            }
-
-            setJourneyState({
-              currentStep: initialStep,
-              completedSteps: data.completedSteps || [],
-              scanData: data.scanData,
-              coachAdvice: data.coachAdvice,
-            });
-
-            setShowOnboarding(true);
-          } else {
-            // Journey is completed - no onboarding needed
-            console.log('✅ Journey completed - no onboarding needed');
-            setShowOnboarding(false);
-          }
-        } else {
-          console.log('ℹ️ Journey data not available, checking if onboarding needed...');
-
-          // If no journey data, assume onboarding is needed
-          const hasProfile = userProfile && userProfile.name && userProfile.age;
-          if (!hasProfile) {
-            setJourneyState({
-              currentStep: 'profile',
-              completedSteps: [],
-            });
-            setShowOnboarding(true);
-            setIsInitializingOnboarding(true);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load journey data:', error);
-      } finally {
-        setJourneyCheckComplete(true);
-        setIsInitializingOnboarding(false);
-      }
-    };
-
-    loadJourneyData();
+    // Always skip old onboarding - mark check as complete immediately
+    console.log('ℹ️ Old journey onboarding disabled - users go directly to dashboard');
+    setShowOnboarding(false);
+    setJourneyCheckComplete(true);
   }, [userId, userProfile, enabled]);
 
   // Save progress to backend

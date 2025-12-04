@@ -68,15 +68,6 @@ export function PublicHeader() {
             <Link href="/features" className="transition-colors text-sm text-foreground/80 hover:text-primary">
               Features
             </Link>
-            <Link href="/cursussen" className="transition-colors text-sm text-foreground/80 hover:text-primary">
-              Cursussen
-            </Link>
-            <Link href="/prijzen" className="transition-colors text-sm text-foreground/80 hover:text-primary">
-              Prijzen
-            </Link>
-            <Link href="/reviews" className="transition-colors text-sm text-foreground/80 hover:text-primary">
-              Reviews
-            </Link>
             <Link href="/over-ons" className="transition-colors text-sm text-foreground/80 hover:text-primary">
               Over Ons
             </Link>
@@ -108,27 +99,6 @@ export function PublicHeader() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Features
-              </Link>
-              <Link
-                href="/cursussen"
-                className="transition-colors text-foreground/80 hover:text-primary py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Cursussen
-              </Link>
-              <Link
-                href="/prijzen"
-                className="transition-colors text-foreground/80 hover:text-primary py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Prijzen
-              </Link>
-              <Link
-                href="/reviews"
-                className="transition-colors text-foreground/80 hover:text-primary py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Reviews
               </Link>
               <Link
                 href="/over-ons"

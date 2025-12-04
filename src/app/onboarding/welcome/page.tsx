@@ -6,6 +6,7 @@ import { useUser } from "@/providers/user-provider";
 import { Card } from "@/components/ui/card";
 import { Logo } from "@/components/shared/logo";
 import { ArrowRight, Play, Pause, Volume2, VolumeX, CheckCircle, Clock, Sparkles } from "lucide-react";
+import { trackTutorialBegin, trackOnboardingStep } from "@/lib/analytics/ga4-events";
 
 export default function WelcomePage() {
   const { user } = useUser();
@@ -21,6 +22,19 @@ export default function WelcomePage() {
   useEffect(() => {
     // Start onboarding in the background
     if (user?.id) {
+      // Track tutorial begin in GA4
+      trackTutorialBegin({
+        tutorial_name: 'main_onboarding',
+        user_id: user.id.toString(),
+      });
+
+      // Track welcome step
+      trackOnboardingStep({
+        step_number: 1,
+        step_name: 'welcome',
+        completed: false,
+      });
+
       fetch("/api/onboarding/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

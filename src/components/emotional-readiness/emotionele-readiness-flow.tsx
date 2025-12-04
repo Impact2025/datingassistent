@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Heart, Sparkles } from 'lucide-react';
 import { EmotionalReadinessQuestionnaire } from './emotional-readiness-questionnaire';
@@ -57,20 +58,20 @@ export function EmotioneleReadinessFlow() {
   return (
     <div className="space-y-6">
       {/* Header Card */}
-      <Card className="bg-white border-gray-200 shadow-sm">
-        <CardContent className="p-6">
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-8">
           <div className="text-center">
-            <div className="w-14 h-14 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <Heart className="w-7 h-7 text-pink-500" />
+            <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-8 h-8 text-pink-500" />
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">{getStepTitle()}</h2>
-            <p className="text-gray-600 mb-4">{getStepSubtitle()}</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-3">{getStepTitle()}</h1>
+            <p className="text-gray-600 mb-6">{getStepSubtitle()}</p>
 
             {/* Progress Bar */}
             <div className="max-w-md mx-auto">
-              <Progress value={getStepProgress()} className="h-2 mb-2" />
-              <div className="flex justify-between text-xs text-gray-500">
+              <Progress value={getStepProgress()} className="h-2 mb-3" />
+              <div className="flex justify-between text-sm text-gray-500">
                 <span>Start</span>
                 <span>Vragen</span>
                 <span>Resultaat</span>
@@ -80,30 +81,34 @@ export function EmotioneleReadinessFlow() {
         </CardContent>
       </Card>
 
-      {/* Main Content */}
-      {currentStep === 'intro' && (
-        <IntroCard onStart={handleStartAssessment} />
-      )}
+      {/* Main Content Card */}
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-0">
+          {currentStep === 'intro' && (
+            <IntroCard onStart={handleStartAssessment} />
+          )}
 
-      {currentStep === 'questionnaire' && (
-        <EmotionalReadinessQuestionnaire
-          onComplete={handleAssessmentComplete}
-          onBack={() => setCurrentStep('intro')}
-        />
-      )}
+          {currentStep === 'questionnaire' && (
+            <EmotionalReadinessQuestionnaire
+              onComplete={handleAssessmentComplete}
+              onBack={() => setCurrentStep('intro')}
+            />
+          )}
 
-      {currentStep === 'results' && assessmentData && (
-        <EmotionalReadinessResults
-          data={assessmentData}
-          onRestart={handleRestart}
-        />
-      )}
+          {currentStep === 'results' && assessmentData && (
+            <EmotionalReadinessResults
+              data={assessmentData}
+              onRestart={handleRestart}
+            />
+          )}
+        </CardContent>
+      </Card>
 
       {/* Footer Card */}
-      <Card className="bg-white border-gray-200 shadow-sm">
-        <CardContent className="p-4">
-          <div className="text-center text-xs text-gray-600">
-            <p className="mb-1">Deze scan is geen medische diagnose maar geeft praktische inzichten voor betere dating.</p>
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-6">
+          <div className="text-center text-sm text-gray-600">
+            <p className="mb-2">Deze scan is geen medische diagnose maar geeft praktische inzichten voor betere dating.</p>
             <p>Alle data wordt AVG-proof opgeslagen en blijft privé.</p>
           </div>
         </CardContent>
@@ -119,121 +124,56 @@ interface IntroCardProps {
 
 function IntroCard({ onStart }: IntroCardProps) {
   return (
-    <>
-      {/* Two Column Grid */}
-      <div className="grid md:grid-cols-2 gap-4">
-        {/* What it does Card */}
-        <Card className="bg-white border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-2 bg-pink-50 rounded-lg">
-                <Sparkles className="w-5 h-5 text-pink-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900">Wat deze scan doet</h3>
-            </div>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="text-pink-500 mt-0.5">•</span>
-                <span className="text-gray-700">Meet je emotionele draagkracht voor dating</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-pink-500 mt-0.5">•</span>
-                <span className="text-gray-700">Detecteert rebound risico na een relatie</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-pink-500 mt-0.5">•</span>
-                <span className="text-gray-700">Analyseert je healing proces stadium</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-pink-500 mt-0.5">•</span>
-                <span className="text-gray-700">Geeft concrete timing adviezen</span>
-              </li>
-            </ul>
-          </CardContent>
-        </Card>
-
-        {/* What you get Card */}
-        <Card className="bg-white border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-2 bg-pink-50 rounded-lg">
-                <Heart className="w-5 h-5 text-pink-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900">Wat je krijgt</h3>
-            </div>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="text-pink-500 mt-0.5">•</span>
-                <div>
-                  <p className="font-medium text-gray-900">Readiness Score (1-10)</p>
-                  <p className="text-xs text-gray-600">Met uitleg wat het betekent</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-pink-500 mt-0.5">•</span>
-                <div>
-                  <p className="font-medium text-gray-900">Rebound Risico %</p>
-                  <p className="text-xs text-gray-600">Hoe groot is de kans?</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-pink-500 mt-0.5">•</span>
-                <div>
-                  <p className="font-medium text-gray-900">Groei Plan</p>
-                  <p className="text-xs text-gray-600">Concrete stappen</p>
-                </div>
-              </li>
-            </ul>
-          </CardContent>
-        </Card>
+    <div className="p-8 space-y-6">
+      {/* Clean description */}
+      <div className="text-center space-y-4">
+        <p className="text-gray-700 leading-relaxed max-w-2xl mx-auto">
+          Ontdek of je écht klaar bent om te daten. Deze scan meet je emotionele draagkracht, detecteert rebound risico's, en geeft concrete timing adviezen.
+        </p>
       </div>
 
-      {/* Why this matters Card */}
-      <Card className="bg-white border-gray-200 rounded-xl shadow-sm">
-        <CardContent className="p-5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-pink-50 rounded-lg">
-              <Heart className="w-5 h-5 text-pink-600" />
-            </div>
-            <h3 className="font-semibold text-gray-900">Waarom dit belangrijk is</h3>
-          </div>
-          <div className="space-y-3 text-sm text-gray-700">
-            <p>
-              <strong className="text-gray-900">Te vroeg daten na een breakup?</strong> Dan loop je het risico op rebound relaties die eindigen in déjà vu. Je trekt dezelfde types aan, herhaalt patronen, of bouwt iets op dat niet duurzaam is.
-            </p>
-            <p>
-              <strong className="text-gray-900">Dating terwijl je nog heelt?</strong> Zorgt voor onbewuste sabotage. Je date vanuit angst (voor alleen zijn), niet vanuit hoop (voor echte connectie).
-            </p>
-            <div className="bg-pink-50 border-l-4 border-pink-500 p-3 rounded-r-lg">
-              <p className="text-pink-900">
-                <strong>Deze scan helpt je eerlijk te zijn met jezelf</strong>, zodat je dating start <em>wanneer het klopt</em>—niet wanneer je denkt dat het moet.
-              </p>
+      {/* What you get - Simple list */}
+      <div className="max-w-xl mx-auto">
+        <h3 className="text-sm font-semibold text-gray-900 mb-4 text-center">Wat je krijgt</h3>
+        <div className="space-y-3">
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+            <div>
+              <p className="font-medium text-gray-900">Readiness Score</p>
+              <p className="text-sm text-gray-600">Van 1-10, met uitleg wat het betekent</p>
             </div>
           </div>
-        </CardContent>
-      </Card>
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+            <div>
+              <p className="font-medium text-gray-900">Rebound Risico %</p>
+              <p className="text-sm text-gray-600">Hoe groot is de kans op rebound dating?</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+            <div>
+              <p className="font-medium text-gray-900">Groei Plan</p>
+              <p className="text-sm text-gray-600">Concrete stappen naar dating readiness</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      {/* CTA Card */}
-      <Card className="bg-gradient-to-br from-pink-500 to-purple-600 border-0 rounded-xl shadow-lg">
-        <CardContent className="p-6 text-center">
-          <h3 className="text-xl font-bold text-white mb-3">
-            Klaar om jezelf eerlijk te scannen?
-          </h3>
-          <p className="text-pink-50 mb-4 text-sm">
-            In 3-4 minuten weet je of je klaar bent, of dat je jezelf nog even tijd moet geven.
-          </p>
-          <button
-            onClick={onStart}
-            className="bg-white text-pink-600 hover:bg-gray-50 px-6 py-3 text-base rounded-full font-semibold shadow-lg hover:shadow-xl transition-all inline-flex items-center gap-2"
-          >
-            <Heart className="w-5 h-5" />
-            Start Emotionele Ready Scan
-          </button>
-          <p className="text-pink-100 text-xs mt-3">
-            ✓ Anoniem ✓ Wetenschappelijk ✓ Direct resultaat
-          </p>
-        </CardContent>
-      </Card>
-    </>
+      {/* CTA Button */}
+      <div className="text-center pt-4">
+        <Button
+          onClick={onStart}
+          size="lg"
+          className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"
+        >
+          Start Scan
+          <Sparkles className="w-5 h-5 ml-2" />
+        </Button>
+        <p className="text-sm text-gray-500 mt-4">
+          3-4 minuten · AVG-proof · Direct resultaat
+        </p>
+      </div>
+    </div>
   );
 }

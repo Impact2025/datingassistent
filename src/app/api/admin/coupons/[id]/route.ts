@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { updateCouponStatus } from '@/lib/coupon-service';
+import { updateCouponStatus, deleteCoupon } from '@/lib/coupon-service';
 import { checkAdminAuth } from '@/lib/admin-auth';
 
 export const dynamic = 'force-dynamic';
@@ -42,5 +42,45 @@ export async function PUT(
   } catch (error) {
     console.error('Error updating coupon:', error);
     return NextResponse.json({ error: 'Failed to update coupon: ' + (error as Error).message }, { status: 500 });
+  }
+}
+
+// DELETE /api/admin/coupons/[id] - Delete coupon
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    // Await params in Next.js 15
+    const params = await context.params;
+    console.log('DELETE /api/admin/coupons/[id] called with id:', params.id);
+
+    // Verify admin authentication
+    const authResult = await checkAdminAuth();
+    console.log('Auth result:', authResult);
+
+    if (!authResult.isAdmin) {
+      return NextResponse.json({ error: 'Not authorized' }, { status: 401 });
+    }
+
+    const id = parseInt(params.id);
+
+    if (isNaN(id)) {
+      return NextResponse.json({ error: 'Invalid coupon ID' }, { status: 400 });
+    }
+
+    console.log('Deleting coupon:', { id });
+
+    const success = await deleteCoupon(id);
+
+    if (!success) {
+      return NextResponse.json({ error: 'Coupon not found or failed to delete' }, { status: 404 });
+    }
+
+    console.log('Coupon deleted successfully');
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting coupon:', error);
+    return NextResponse.json({ error: 'Failed to delete coupon: ' + (error as Error).message }, { status: 500 });
   }
 }

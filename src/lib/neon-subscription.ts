@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 
-export type PackageType = 'sociaal' | 'core' | 'pro' | 'premium';
+export type PackageType = 'sociaal' | 'core' | 'pro' | 'premium' | 'kickstart' | 'transformatie' | 'vip';
 
 export interface SubscriptionFeatures {
   // WEEKLY LIMITS (reset elke maandag 00:00)

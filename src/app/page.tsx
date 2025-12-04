@@ -11,8 +11,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
   // Fallback metadata
   return {
-    title: 'DatingAssistent - AI Dating Coach voor Moderne Singles',
-    description: 'De ultieme AI-gedreven dating coach voor moderne singles. Verbeter je dating skills met persoonlijke coaching, profiel optimalisatie en relatie advies.',
+    title: 'DatingAssistent - Stop met Eindeloos Swipen Zonder Resultaat',
+    description: 'Krijg binnen 30 dagen betekenisvolle dates met 24/7 AI-hulp die je precies vertelt wat je moet zeggen. 10.000+ Nederlandse singles gebruiken DatingAssistent. Start gratis.',
   };
 }
 

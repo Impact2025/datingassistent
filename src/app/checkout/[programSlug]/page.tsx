@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useUser } from '@/providers/user-provider';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { CheckCircle, Lock, ArrowLeft, Tag, Clock, Target, Shield, Sparkles } from 'lucide-react';
@@ -33,6 +34,7 @@ export default function CheckoutPage() {
   const params = useParams();
   const router = useRouter();
   const programSlug = params.programSlug as string;
+  const { user, loading: userLoading } = useUser();
 
   const [program, setProgram] = useState<ProgramData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,6 +46,14 @@ export default function CheckoutPage() {
   const [couponCode, setCouponCode] = useState('');
   const [couponData, setCouponData] = useState<CouponData | null>(null);
   const [validatingCoupon, setValidatingCoupon] = useState(false);
+
+  // Check authentication
+  useEffect(() => {
+    if (!userLoading && !user) {
+      // Redirect to register with program slug
+      router.push(`/register?program=${programSlug}`);
+    }
+  }, [user, userLoading, programSlug, router]);
 
   useEffect(() => {
     const fetchProgram = async () => {
@@ -62,8 +72,11 @@ export default function CheckoutPage() {
       }
     };
 
-    fetchProgram();
-  }, [programSlug]);
+    // Only fetch program if user is loaded
+    if (!userLoading && user) {
+      fetchProgram();
+    }
+  }, [programSlug, user, userLoading]);
 
   // Validate coupon code
   const validateCoupon = async () => {
@@ -71,12 +84,13 @@ export default function CheckoutPage() {
 
     setValidatingCoupon(true);
     try {
-      const response = await fetch('/api/coupon/validate', {
+      const response = await fetch('/api/coupons/validate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           code: couponCode.trim(),
-          programId: program.id,
+          packageType: program.slug, // Use program slug as package type
+          amount: basePrice, // Send the base price for validation
         }),
       });
 
@@ -85,10 +99,12 @@ export default function CheckoutPage() {
       if (response.ok && data.valid) {
         setCouponData({
           code: couponCode.toUpperCase(),
-          discountType: data.discountType,
-          discountValue: data.discountValue,
+          discountType: data.coupon.discount_type,
+          discountValue: data.coupon.discount_value,
           valid: true,
-          message: data.message || 'Coupon toegepast!'
+          message: data.coupon.discount_type === 'percentage'
+            ? `${data.coupon.discount_value}% korting toegepast!`
+            : `€${(data.discountAmount / 100).toFixed(2)} korting toegepast!`
         });
       } else {
         setCouponData({
@@ -129,6 +145,13 @@ export default function CheckoutPage() {
     setError(null);
 
     try {
+      console.log('Creating payment with:', {
+        programId: program.id,
+        programSlug: program.slug,
+        amount: finalPrice,
+        couponCode: couponData?.valid ? couponData.code : null
+      });
+
       const response = await fetch('/api/payment/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -137,15 +160,20 @@ export default function CheckoutPage() {
           programSlug: program.slug,
           amount: finalPrice,
           couponCode: couponData?.valid ? couponData.code : null
-        })
+        }),
+        credentials: 'include' // Ensure cookies are sent
       });
+
+      console.log('Payment response status:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('Payment error response:', errorData);
         throw new Error(errorData.error || 'Payment creation failed');
       }
 
       const { payment_url } = await response.json();
+      console.log('Redirecting to:', payment_url);
       window.location.href = payment_url;
 
     } catch (err) {
@@ -155,12 +183,17 @@ export default function CheckoutPage() {
     }
   };
 
-  if (loading) {
+  if (loading || userLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="w-8 h-8 border-3 border-pink-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
+  }
+
+  // If not authenticated, show nothing (redirect is happening)
+  if (!user) {
+    return null;
   }
 
   if (error && !program) {

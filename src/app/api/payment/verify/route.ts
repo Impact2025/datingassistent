@@ -4,6 +4,54 @@ import { createOrUpdateSubscription } from '@/lib/neon-subscription';
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * Helper: Initialize Kickstart day-based progress for a user
+ * This creates user_day_progress records for all 21 days
+ */
+async function initializeKickstartProgress(userId: number, programId: number): Promise<void> {
+  try {
+    // Check if program_days table exists and has data
+    const daysResult = await sql`
+      SELECT id, dag_nummer FROM program_days
+      WHERE program_id = ${programId}
+      ORDER BY dag_nummer
+    `;
+
+    if (daysResult.rows.length === 0) {
+      console.log('⚠️ No Kickstart days found, skipping progress initialization');
+      return;
+    }
+
+    // Check if user already has progress records
+    const existingProgress = await sql`
+      SELECT COUNT(*) as count FROM user_day_progress
+      WHERE user_id = ${userId} AND program_id = ${programId}
+    `;
+
+    if (parseInt(existingProgress.rows[0].count) > 0) {
+      console.log(`ℹ️ User ${userId} already has Kickstart progress, skipping initialization`);
+      return;
+    }
+
+    // Initialize progress for each day
+    for (const day of daysResult.rows) {
+      // Day 1 is available, rest are locked
+      const status = day.dag_nummer === 1 ? 'available' : 'locked';
+
+      await sql`
+        INSERT INTO user_day_progress (user_id, program_id, day_id, status)
+        VALUES (${userId}, ${programId}, ${day.id}, ${status})
+        ON CONFLICT (user_id, day_id) DO NOTHING
+      `;
+    }
+
+    console.log(`✅ Initialized Kickstart progress for user ${userId} (${daysResult.rows.length} days)`);
+  } catch (error) {
+    // Don't fail the payment if progress init fails - we can retry later
+    console.error('⚠️ Error initializing Kickstart progress (non-fatal):', error);
+  }
+}
+
 const MULTISAFEPAY_API_KEY = process.env.MULTISAFEPAY_API_KEY || '';
 const MULTISAFEPAY_ENVIRONMENT = process.env.MULTISAFEPAY_ENVIRONMENT || 'test';
 
@@ -20,9 +68,11 @@ export interface PaymentVerifyResponse {
   details?: {
     packageType?: string;
     programName?: string;
+    programSlug?: string;
     amount?: number;
     paidAt?: string;
     enrolled?: boolean;
+    nextAction?: string;
   };
   error?: string;
   errorCode?: string;
@@ -119,7 +169,8 @@ export async function GET(request: NextRequest) {
       const txResult = await sql`
         SELECT
           pt.*,
-          p.name as program_name
+          p.name as program_name,
+          p.slug as program_slug
         FROM payment_transactions pt
         LEFT JOIN programs p ON pt.program_id = p.id
         WHERE pt.order_id = ${orderId}
@@ -161,51 +212,62 @@ export async function GET(request: NextRequest) {
             ON CONFLICT (user_id, program_id, order_id) DO NOTHING
           `;
 
-          // Initialize program progress
-          const statsResult = await sql`
-            SELECT
-              COUNT(DISTINCT pm.id) as total_modules,
-              COUNT(DISTINCT l.id) as total_lessons
-            FROM program_modules pm
-            LEFT JOIN lessons l ON l.module_id = pm.id AND l.is_published = true
-            WHERE pm.program_id = ${tx.program_id}
-              AND pm.is_published = true
-          `;
+          // Initialize Kickstart progress if this is a Kickstart purchase
+          if (tx.program_slug === 'kickstart') {
+            await initializeKickstartProgress(tx.user_id, tx.program_id);
+          }
 
-          const { total_modules, total_lessons } = statsResult.rows[0];
+          // Initialize standard program progress (only for non-Kickstart programs)
+          if (tx.program_slug !== 'kickstart') {
+            try {
+              const statsResult = await sql`
+                SELECT
+                  COUNT(DISTINCT pm.id) as total_modules,
+                  COUNT(DISTINCT l.id) as total_lessons
+                FROM program_modules pm
+                LEFT JOIN lessons l ON l.module_id = pm.id AND l.is_published = true
+                WHERE pm.program_id = ${tx.program_id}
+                  AND pm.is_published = true
+              `;
 
-          const firstLessonResult = await sql`
-            SELECT l.id
-            FROM lessons l
-            JOIN program_modules pm ON l.module_id = pm.id
-            WHERE pm.program_id = ${tx.program_id}
-              AND pm.is_published = true
-              AND l.is_published = true
-            ORDER BY pm.display_order, l.display_order
-            LIMIT 1
-          `;
+              const { total_modules, total_lessons } = statsResult.rows[0];
 
-          const currentLessonId = firstLessonResult.rows[0]?.id || null;
+              const firstLessonResult = await sql`
+                SELECT l.id
+                FROM lessons l
+                JOIN program_modules pm ON l.module_id = pm.id
+                WHERE pm.program_id = ${tx.program_id}
+                  AND pm.is_published = true
+                  AND l.is_published = true
+                ORDER BY pm.display_order, l.display_order
+                LIMIT 1
+              `;
 
-          await sql`
-            INSERT INTO user_program_progress (
-              user_id, program_id,
-              started_at, total_modules, total_lessons,
-              overall_progress_percentage,
-              current_lesson_id
-            ) VALUES (
-              ${tx.user_id},
-              ${tx.program_id},
-              NOW(),
-              ${total_modules},
-              ${total_lessons},
-              0,
-              ${currentLessonId}
-            )
-            ON CONFLICT (user_id, program_id) DO NOTHING
-          `;
+              const currentLessonId = firstLessonResult.rows[0]?.id || null;
 
-          console.log('✅ Payment completed via API check, enrollment and progress initialized');
+              await sql`
+                INSERT INTO user_program_progress (
+                  user_id, program_id,
+                  started_at, total_modules, total_lessons,
+                  overall_progress_percentage,
+                  current_lesson_id
+                ) VALUES (
+                  ${tx.user_id},
+                  ${tx.program_id},
+                  NOW(),
+                  ${total_modules},
+                  ${total_lessons},
+                  0,
+                  ${currentLessonId}
+                )
+                ON CONFLICT (user_id, program_id) DO NOTHING
+              `;
+            } catch (progressError) {
+              console.warn('⚠️ Could not initialize standard program progress (non-fatal):', progressError);
+            }
+          }
+
+          console.log('✅ Payment completed via API check, enrollment initialized');
           tx.status = 'completed';
           tx.paid_at = new Date();
         } else if (mspStatus && mspStatus.status !== 'initialized') {
@@ -221,6 +283,34 @@ export async function GET(request: NextRequest) {
 
       const isComplete = tx.status === 'completed';
 
+      // Determine next action based on program type
+      let nextAction = '/dashboard';
+      if (isComplete && tx.program_slug) {
+        // Special handling for Kickstart: check if onboarding is completed
+        if (tx.program_slug === 'kickstart') {
+          // Check if user completed Kickstart onboarding
+          const onboardingCheck = await sql`
+            SELECT kickstart_onboarding_completed
+            FROM program_enrollments
+            WHERE user_id = ${tx.user_id} AND program_id = ${tx.program_id}
+            LIMIT 1
+          `;
+
+          const onboardingCompleted = onboardingCheck.rows[0]?.kickstart_onboarding_completed;
+
+          if (!onboardingCompleted) {
+            // Redirect to onboarding first
+            nextAction = '/kickstart/onboarding';
+          } else {
+            // Onboarding done, go to Kickstart
+            nextAction = '/kickstart';
+          }
+        } else {
+          // For other programs, go directly to the program
+          nextAction = `/${tx.program_slug}`;
+        }
+      }
+
       return NextResponse.json<PaymentVerifyResponse>({
         success: isComplete,
         status: tx.status as PaymentStatus,
@@ -228,9 +318,11 @@ export async function GET(request: NextRequest) {
         message: STATUS_MESSAGES[tx.status] || 'Onbekende status',
         details: {
           programName: tx.program_name,
+          programSlug: tx.program_slug,
           amount: tx.amount,
           paidAt: tx.paid_at?.toISOString(),
-          enrolled: isComplete
+          enrolled: isComplete,
+          nextAction: nextAction
         }
       });
     }

@@ -17,7 +17,10 @@ import {
   Crown,
   Star,
   Zap,
-  Users
+  Users,
+  Calendar,
+  BookOpen,
+  ExternalLink
 } from 'lucide-react';
 import { PACKAGES, getPackagePrice, calculateDiscountedPrice } from '@/lib/multisafepay';
 import { PackageType } from '@/lib/subscription';
@@ -36,11 +39,12 @@ export function SubscriptionTab() {
   const [processingMessage, setProcessingMessage] = useState('');
   const [orderError, setOrderError] = useState('');
   const [currentSubscription, setCurrentSubscription] = useState<any>(null);
+  const [enrolledPrograms, setEnrolledPrograms] = useState<any[]>([]);
   const [loadingSubscription, setLoadingSubscription] = useState(true);
   const [usageStats, setUsageStats] = useState<any>(null);
   const [loadingUsage, setLoadingUsage] = useState(false);
 
-  // Load current subscription and usage stats
+  // Load current subscription, enrolled programs, and usage stats
   useEffect(() => {
     const loadCurrentSubscription = async () => {
       if (!user?.id) {
@@ -49,15 +53,29 @@ export function SubscriptionTab() {
       }
 
       try {
-        const response = await fetch(`/api/user/subscription?userId=${user.id}`);
-        if (response.ok) {
-          const data = await response.json();
+        // Load subscription and enrolled programs in parallel
+        const [subResponse, programsResponse] = await Promise.all([
+          fetch(`/api/user/subscription?userId=${user.id}`),
+          fetch('/api/user/enrolled-programs', {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
+            }
+          })
+        ]);
+
+        if (subResponse.ok) {
+          const data = await subResponse.json();
           setCurrentSubscription(data.subscription);
 
           // Load usage stats if subscription is active
           if (data.subscription?.status === 'active') {
             loadUsageStats();
           }
+        }
+
+        if (programsResponse.ok) {
+          const programsData = await programsResponse.json();
+          setEnrolledPrograms(programsData.programs || []);
         }
       } catch (error) {
         console.error('Error loading subscription:', error);
@@ -449,6 +467,74 @@ export function SubscriptionTab() {
     );
   };
 
+  const renderEnrolledPrograms = () => {
+    if (enrolledPrograms.length === 0) {
+      return null;
+    }
+
+    return (
+      <Card className="border-blue-200 bg-blue-50/50">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <BookOpen className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <CardTitle className="text-blue-900">Mijn Programma&apos;s</CardTitle>
+              <CardDescription className="text-blue-700">
+                Je hebt toegang tot de volgende programma&apos;s
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {enrolledPrograms.map((program) => (
+            <div
+              key={program.program_id}
+              className="flex items-center justify-between p-4 bg-white rounded-lg border"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">{program.program_name || 'Kickstart 21-Dagen'}</h3>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Badge variant={program.status === 'active' ? 'default' : 'secondary'} className="text-xs">
+                      {program.status === 'active' ? 'Actief' : program.status}
+                    </Badge>
+                    {program.enrolled_at && (
+                      <span>Gestart {new Date(program.enrolled_at).toLocaleDateString('nl-NL')}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                {program.program_type === 'kickstart' && (
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-blue-600">
+                      Dag {program.next_day || 1}/21
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {program.completed_days || 0} dagen voltooid
+                    </div>
+                  </div>
+                )}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => router.push(program.program_slug === 'kickstart' ? '/kickstart' : `/cursus/${program.program_slug}`)}
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    );
+  };
+
   const renderPackageCard = (pkg: PackageType, options?: { featured?: boolean }) => {
     const pkgInfo = PACKAGES[pkg];
     const originalPrice = getPackagePrice(pkg, billingPeriod);
@@ -560,18 +646,29 @@ export function SubscriptionTab() {
     );
   }
 
-  // Show current subscription if user has an active one
-  if (currentSubscription && currentSubscription.status === 'active') {
+  // Show current subscription/programs if user has any
+  const hasActiveSubscription = currentSubscription && currentSubscription.status === 'active';
+  const hasEnrolledPrograms = enrolledPrograms.length > 0;
+
+  if (hasActiveSubscription || hasEnrolledPrograms) {
     return (
       <div className="space-y-6">
-        {renderCurrentSubscription()}
+        {/* Show enrolled programs first (like Kickstart) */}
+        {renderEnrolledPrograms()}
+
+        {/* Show traditional subscription if active */}
+        {hasActiveSubscription && renderCurrentSubscription()}
 
         {/* Upgrade Options */}
         <Card>
           <CardHeader>
-            <CardTitle>Upgrade je abonnement</CardTitle>
+            <CardTitle>
+              {hasActiveSubscription ? 'Upgrade je abonnement' : 'Voeg een abonnement toe'}
+            </CardTitle>
             <CardDescription>
-              Meer features en hogere limieten voor nog betere resultaten
+              {hasActiveSubscription
+                ? 'Meer features en hogere limieten voor nog betere resultaten'
+                : 'Krijg toegang tot AI coaching, profiel analyse en meer'}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -580,7 +677,7 @@ export function SubscriptionTab() {
               variant="outline"
               className="w-full"
             >
-              Bekijk Upgrade Opties
+              {hasActiveSubscription ? 'Bekijk Upgrade Opties' : 'Bekijk Abonnementen'}
             </Button>
           </CardContent>
         </Card>

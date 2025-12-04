@@ -2,6 +2,7 @@
 
 /**
  * Enhanced Pad Tab - Interactieve 5-fase journey met visuele progress tracking
+ * Nu met geïntegreerde Kickstart support!
  */
 
 import { useState, useEffect } from 'react';
@@ -9,7 +10,7 @@ import { motion } from 'framer-motion';
 import {
   User, Heart, MessageCircle, Calendar, TrendingUp,
   CheckCircle2, Circle, Lock, ArrowRight, Sparkles,
-  Target, Award, Zap, Trophy
+  Target, Award, Zap, Trophy, BookOpen, Rocket, Loader2
 } from 'lucide-react';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
@@ -18,6 +19,18 @@ import { Progress } from '../ui/progress';
 import { cn } from '@/lib/utils';
 import { JourneyTimeline } from '../journey/journey-timeline';
 import { AchievementShowcase } from '../achievements/achievement-showcase';
+import { KickstartDashboard } from '../kickstart/KickstartDashboard';
+
+interface EnrolledProgram {
+  program_id: number;
+  program_slug: string;
+  program_name: string;
+  program_type: 'kickstart' | 'standard';
+  overall_progress_percentage: number;
+  completed_days?: number;
+  total_days?: number;
+  next_day?: number;
+}
 
 interface EnhancedPadTabProps {
   onTabChange?: (tab: string) => void;
@@ -44,11 +57,48 @@ interface JourneyPhase {
   estimatedTime: string;
 }
 
+type ViewMode = 'programs' | 'kickstart' | 'journey';
+
 export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [overallProgress, setOverallProgress] = useState(15);
   const [loading, setLoading] = useState(true);
+  const [enrolledPrograms, setEnrolledPrograms] = useState<EnrolledProgram[]>([]);
+  const [viewMode, setViewMode] = useState<ViewMode>('programs');
+  const [hasKickstart, setHasKickstart] = useState(false);
 
+  // Fetch enrolled programs
+  useEffect(() => {
+    const fetchEnrolledPrograms = async () => {
+      try {
+        const response = await fetch('/api/user/enrolled-programs');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.programs) {
+            setEnrolledPrograms(data.programs);
+
+            // Check if user has Kickstart
+            const kickstart = data.programs.find(
+              (p: EnrolledProgram) => p.program_slug === 'kickstart'
+            );
+            if (kickstart) {
+              setHasKickstart(true);
+              // Auto-show Kickstart if user has it
+              setViewMode('kickstart');
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching enrolled programs:', error);
+      }
+    };
+
+    if (userId) {
+      fetchEnrolledPrograms();
+    }
+  }, [userId]);
+
+  // Fetch journey status
   useEffect(() => {
     const fetchJourneyStatus = async () => {
       if (!userId) {
@@ -190,15 +240,20 @@ export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Je reis laden...</p>
+          <Loader2 className="w-12 h-12 text-pink-500 animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Je programma's laden...</p>
         </div>
       </div>
     );
   }
 
+  // Show Kickstart when in kickstart mode - clean minimalist design within dashboard
+  if (viewMode === 'kickstart' && hasKickstart && userId) {
+    return <KickstartDashboard onBack={() => setViewMode('journey')} />;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-4 lg:p-8">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <motion.div
@@ -213,6 +268,21 @@ export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
           <p className="text-gray-600 max-w-2xl mx-auto">
             Volg je voortgang door 5 fases: van zelfkennis tot betekenisvolle relaties
           </p>
+
+          {/* View Switcher when user has Kickstart */}
+          {hasKickstart && (
+            <div className="flex justify-center gap-2">
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => setViewMode('kickstart')}
+                className="bg-gradient-to-r from-pink-500 to-purple-600"
+              >
+                <Rocket className="w-4 h-4 mr-2" />
+                Ga naar Kickstart
+              </Button>
+            </div>
+          )}
 
           {/* Overall Progress */}
           <div className="max-w-md mx-auto space-y-2">

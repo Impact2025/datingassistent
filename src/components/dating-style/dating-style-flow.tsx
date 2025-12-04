@@ -239,76 +239,74 @@ export function DatingStyleFlow() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Header Card */}
-        <Card className="bg-white border-0 shadow-sm mb-8">
-          <CardContent className="p-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                <Sparkles className="w-8 h-8 text-pink-500" />
-              </div>
+    <div className="space-y-6">
+      {/* Header Card */}
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-8">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-8 h-8 text-pink-500" />
+            </div>
 
-              <h1 className="text-3xl font-bold text-gray-900 mb-3">{getStepTitle()}</h1>
-              <p className="text-gray-600 mb-6">{getStepSubtitle()}</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-3">{getStepTitle()}</h1>
+            <p className="text-gray-600 mb-6">{getStepSubtitle()}</p>
 
-              {/* Progress Bar */}
-              <div className="max-w-md mx-auto">
-                <Progress value={getStepProgress()} className="h-2 mb-3" />
-                <div className="flex justify-between text-sm text-gray-500">
-                  <span>Start</span>
-                  <span>Vragen</span>
-                  <span>Resultaat</span>
-                </div>
+            {/* Progress Bar */}
+            <div className="max-w-md mx-auto">
+              <Progress value={getStepProgress()} className="h-2 mb-3" />
+              <div className="flex justify-between text-sm text-gray-500">
+                <span>Start</span>
+                <span>Vragen</span>
+                <span>Resultaat</span>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Main Content Card */}
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-0">
-            {currentStep === 'intro' && (
-              <DatingStyleIntro
-                onStart={handleStartAssessment}
-                loading={loading}
-                hasPreviousAssessment={progressData?.hasAssessment || false}
-                canRetake={progressData?.canRetake || true}
-                totalAssessments={progressData?.totalAssessments || 0}
-                nextRetakeDate={progressData?.nextRetakeDate}
-              />
-            )}
+      {/* Main Content Card */}
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-0">
+          {currentStep === 'intro' && (
+            <DatingStyleIntro
+              onStart={handleStartAssessment}
+              loading={loading}
+              hasPreviousAssessment={progressData?.hasAssessment || false}
+              canRetake={progressData?.canRetake || true}
+              totalAssessments={progressData?.totalAssessments || 0}
+              nextRetakeDate={progressData?.nextRetakeDate}
+            />
+          )}
 
-            {currentStep === 'questionnaire' && assessmentData && (
-              <DatingStyleQuestionnaire
-                assessmentId={assessmentData.assessmentId}
-                onComplete={handleQuestionnaireComplete}
-                onBack={handleBackToIntro}
-                loading={loading}
-              />
-            )}
+          {currentStep === 'questionnaire' && assessmentData && (
+            <DatingStyleQuestionnaire
+              assessmentId={assessmentData.assessmentId}
+              onComplete={handleQuestionnaireComplete}
+              onBack={handleBackToIntro}
+              loading={loading}
+            />
+          )}
 
-            {currentStep === 'results' && assessmentData && (
-              <DatingStyleResults
-                data={assessmentData}
-                onRestart={handleBackToIntro}
-                styleIcon={getStyleIcon}
-                styleColor={getStyleColor}
-              />
-            )}
-          </CardContent>
-        </Card>
+          {currentStep === 'results' && assessmentData && (
+            <DatingStyleResults
+              data={assessmentData}
+              onRestart={handleBackToIntro}
+              styleIcon={getStyleIcon}
+              styleColor={getStyleColor}
+            />
+          )}
+        </CardContent>
+      </Card>
 
-        {/* Footer Card */}
-        <Card className="bg-white border-0 shadow-sm mt-8">
-          <CardContent className="p-6">
-            <div className="text-center text-sm text-gray-600">
-              <p className="mb-2">Deze scan geeft praktische inzichten voor betere dating, geen medische diagnose.</p>
-              <p>Alle data wordt AVG-proof opgeslagen en blijft privé.</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Footer Card */}
+      <Card className="bg-white border-0 shadow-sm">
+        <CardContent className="p-6">
+          <div className="text-center text-sm text-gray-600">
+            <p className="mb-2">Deze scan geeft praktische inzichten voor betere dating, geen medische diagnose.</p>
+            <p>Alle data wordt AVG-proof opgeslagen en blijft privé.</p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -204,16 +204,33 @@ export async function applyCoupon(
 }
 
 /**
+ * Delete coupon by ID
+ */
+export async function deleteCoupon(id: number): Promise<boolean> {
+  try {
+    const result = await sql`
+      DELETE FROM coupons
+      WHERE id = ${id}
+    `;
+
+    return (result.rowCount ?? 0) > 0;
+  } catch (error) {
+    console.error('Error deleting coupon:', error);
+    return false;
+  }
+}
+
+/**
  * Increment coupon usage count
  */
 export async function incrementCouponUsage(couponId: number): Promise<boolean> {
   try {
     await sql`
-      UPDATE coupons 
+      UPDATE coupons
       SET used_count = used_count + 1, updated_at = NOW()
       WHERE id = ${couponId}
     `;
-    
+
     return true;
   } catch (error) {
     console.error('Error incrementing coupon usage:', error);

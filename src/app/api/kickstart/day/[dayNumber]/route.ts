@@ -29,9 +29,15 @@ export async function GET(
       );
     }
 
-    // Get current user
+    // Get current user - authentication required for full content
     const user = await getCurrentUser();
-    const userId = user?.id;
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Authenticatie vereist', requiresAuth: true },
+        { status: 401 }
+      );
+    }
+    const userId = user.id;
 
     // Get Kickstart program ID
     const programResult = await sql`
@@ -115,17 +121,15 @@ export async function GET(
 
     // Get user progress for this day
     let progress: DayProgress | null = null;
-    if (userId) {
-      const progressResult = await sql`
-        SELECT *
-        FROM user_day_progress
-        WHERE user_id = ${userId} AND day_id = ${day.id}
-        LIMIT 1
-      `;
+    const progressResult = await sql`
+      SELECT *
+      FROM user_day_progress
+      WHERE user_id = ${userId} AND day_id = ${day.id}
+      LIMIT 1
+    `;
 
-      if (progressResult.rows.length > 0) {
-        progress = progressResult.rows[0] as DayProgress;
-      }
+    if (progressResult.rows.length > 0) {
+      progress = progressResult.rows[0] as DayProgress;
     }
 
     // Get navigation (previous and next day)
@@ -151,8 +155,8 @@ export async function GET(
     let hasAccess = day.is_preview;
     if (userId && !hasAccess) {
       const enrollmentResult = await sql`
-        SELECT id FROM user_programs
-        WHERE user_id = ${userId} AND program_id = ${programId} AND is_active = true
+        SELECT id FROM program_enrollments
+        WHERE user_id = ${userId} AND program_id = ${programId} AND status = 'active'
         LIMIT 1
       `;
       hasAccess = enrollmentResult.rows.length > 0;
@@ -161,6 +165,7 @@ export async function GET(
     // If no access, return limited data
     if (!hasAccess) {
       return NextResponse.json({
+        success: true,
         day: {
           ...day,
           video_script: null,
@@ -183,7 +188,7 @@ export async function GET(
       navigation,
     };
 
-    return NextResponse.json({ ...response, hasAccess: true });
+    return NextResponse.json({ success: true, ...response, hasAccess: true });
   } catch (error) {
     console.error('Kickstart day error:', error);
     return NextResponse.json(

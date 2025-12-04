@@ -169,6 +169,8 @@ function BlogContent() {
         />
       </Head>
 
+      <PublicHeader />
+
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
         {/* Hero Section */}
         <div className="relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 text-white">
@@ -369,6 +371,8 @@ function BlogContent() {
           )}
         </div>
       </div>
+
+      <PublicFooter />
     </>
   );
 }

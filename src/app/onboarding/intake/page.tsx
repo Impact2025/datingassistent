@@ -1,24 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
 import { Logo } from "@/components/shared/logo";
 import { IntakeChat, type IntakeData } from "@/components/onboarding/IntakeChat";
 import { AchievementPopup } from "@/components/onboarding/AchievementPopup";
 import type { Achievement } from "@/lib/onboarding/achievements";
+import { trackAssessmentStart, trackAssessmentComplete } from "@/lib/analytics/ga4-events";
 
 export default function IntakePage() {
   const { user } = useUser();
   const router = useRouter();
   const [earnedAchievement, setEarnedAchievement] = useState<Achievement | null>(null);
   const [showAchievement, setShowAchievement] = useState(false);
+  const startTimeRef = useRef<number>(Date.now());
+
+  // GA4: Track assessment start on mount
+  useEffect(() => {
+    trackAssessmentStart({
+      assessment_type: 'onboarding',
+      assessment_name: 'intake_questionnaire',
+    });
+  }, []);
 
   const handleIntakeComplete = async (data: IntakeData) => {
     if (!user?.id) {
       router.push("/login");
       return;
     }
+
+    // GA4: Track assessment complete
+    const durationSeconds = Math.round((Date.now() - startTimeRef.current) / 1000);
+    trackAssessmentComplete({
+      assessment_type: 'onboarding',
+      assessment_name: 'intake_questionnaire',
+      duration_seconds: durationSeconds,
+      result: 'completed',
+    });
 
     try {
       const response = await fetch("/api/onboarding/intake", {

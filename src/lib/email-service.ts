@@ -511,10 +511,152 @@ export async function sendTextEmail(
     console.log('---');
     return true; // Return true to indicate "success" for testing purposes
   }
-  
+
   return sendEmail({
     to,
     subject,
     text
+  });
+}
+
+/**
+ * Send program enrollment confirmation email
+ */
+export async function sendProgramEnrollmentEmail(
+  userEmail: string,
+  userName: string,
+  programName: string,
+  programSlug: string,
+  dayOneUrl: string
+): Promise<boolean> {
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Welkom bij ${programName}!</title>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #374151; margin: 0; padding: 0; background: linear-gradient(135deg, #fef7f7 0%, #fef3f3 100%); }
+        .container { max-width: 600px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .header { background: linear-gradient(135deg, #ec4899 0%, #f97316 100%); padding: 40px 30px; text-align: center; }
+        .logo { width: 60px; height: 60px; margin-bottom: 20px; }
+        .tagline { color: rgba(255, 255, 255, 0.9); font-size: 14px; font-weight: 500; margin-bottom: 10px; }
+        .title { color: white; font-size: 28px; font-weight: 700; margin: 0; }
+        .content { padding: 40px 30px; }
+        .greeting { font-size: 24px; font-weight: 600; color: #ec4899; margin-bottom: 20px; }
+        .message { font-size: 16px; color: #6b7280; margin-bottom: 30px; line-height: 1.7; }
+        .cta-button { display: inline-block; background: linear-gradient(135deg, #ec4899 0%, #f97316 100%); color: white; padding: 16px 32px; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 16px; box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.3); margin: 30px 0; transition: all 0.3s; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 15px 20px -3px rgba(236, 72, 153, 0.4); }
+        .highlight-box { background: linear-gradient(135deg, #fef3f3 0%, #fef7f7 100%); border-left: 4px solid #ec4899; border-radius: 8px; padding: 20px; margin: 30px 0; }
+        .highlight-title { color: #ec4899; font-weight: 600; font-size: 18px; margin-bottom: 10px; }
+        .steps { list-style: none; padding: 0; margin: 20px 0; }
+        .step-item { display: flex; align-items: start; gap: 12px; margin-bottom: 16px; }
+        .step-number { background: linear-gradient(135deg, #ec4899 0%, #f97316 100%); color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; flex-shrink: 0; }
+        .step-text { color: #6b7280; font-size: 15px; line-height: 1.6; }
+        .footer { background: #f9fafb; padding: 30px; text-align: center; border-top: 1px solid #e5e7eb; }
+        .footer-text { color: #6b7280; font-size: 14px; margin-bottom: 10px; }
+        .footer-link { color: #ec4899; text-decoration: none; font-weight: 500; }
+        .footer-link:hover { text-decoration: underline; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <!-- Header -->
+        <div class="header">
+          <img src="https://datingassistent.nl/images/LogoDatingAssistent.png" alt="DatingAssistent Logo" class="logo">
+          <div class="tagline">🚀 Laten we beginnen!</div>
+          <h1 class="title">Welkom bij ${programName}</h1>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+          <h2 class="greeting">Hallo ${userName}! 🎉</h2>
+
+          <p class="message">
+            Gefeliciteerd! Je hebt zojuist ${programName} geactiveerd. Je staat op het punt om een geweldige transformatie door te maken.
+          </p>
+
+          <div class="highlight-box">
+            <div class="highlight-title">✅ Je bent klaar om te starten!</div>
+            <p style="color: #6b7280; margin: 0; font-size: 15px;">
+              Je account is geactiveerd en dag 1 staat voor je klaar. Het enige wat je nog hoeft te doen is op de knop hieronder klikken.
+            </p>
+          </div>
+
+          <!-- CTA Button -->
+          <div style="text-align: center; margin: 40px 0;">
+            <a href="${dayOneUrl}" class="cta-button">
+              🚀 Start met Dag 1
+            </a>
+          </div>
+
+          <div class="highlight-box">
+            <div class="highlight-title">📋 Wat kun je verwachten?</div>
+            <ul class="steps">
+              <li class="step-item">
+                <span class="step-number">1</span>
+                <span class="step-text">Elke dag nieuwe content en praktische oefeningen</span>
+              </li>
+              <li class="step-item">
+                <span class="step-number">2</span>
+                <span class="step-text">Directe feedback en persoonlijke begeleiding</span>
+              </li>
+              <li class="step-item">
+                <span class="step-number">3</span>
+                <span class="step-text">Meetbare resultaten en voortgang tracking</span>
+              </li>
+            </ul>
+          </div>
+
+          <p class="message">
+            <strong>💡 Pro tip:</strong> Zet een dagelijkse reminder in je agenda om elke dag 15-20 minuten aan je transformatie te werken. Consistentie is de sleutel tot succes!
+          </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+          <p class="footer-text">
+            Vragen? We staan voor je klaar!<br>
+            Mail ons op <a href="mailto:support@datingassistent.nl" class="footer-link">support@datingassistent.nl</a>
+          </p>
+          <p class="footer-text" style="margin-top: 20px; color: #9ca3af; font-size: 12px;">
+            © 2024 DatingAssistent. Alle rechten voorbehouden.
+          </p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const textContent = `
+Welkom bij ${programName}!
+
+Hallo ${userName}!
+
+Gefeliciteerd! Je hebt zojuist ${programName} geactiveerd.
+
+Je bent klaar om te starten! Je account is geactiveerd en dag 1 staat voor je klaar.
+
+Start nu met Dag 1: ${dayOneUrl}
+
+Wat kun je verwachten?
+1. Elke dag nieuwe content en praktische oefeningen
+2. Directe feedback en persoonlijke begeleiding
+3. Meetbare resultaten en voortgang tracking
+
+Pro tip: Zet een dagelijkse reminder in je agenda om elke dag 15-20 minuten aan je transformatie te werken. Consistentie is de sleutel tot succes!
+
+Vragen? Mail ons op support@datingassistent.nl
+
+© 2024 DatingAssistent
+  `;
+
+  return sendEmail({
+    to: userEmail,
+    subject: `🚀 Welkom bij ${programName} - Start vandaag nog!`,
+    html: htmlContent,
+    text: textContent
   });
 }

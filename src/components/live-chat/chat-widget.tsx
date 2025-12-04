@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
   MessageCircle,
@@ -12,8 +12,38 @@ import {
   Minimize2,
   X,
   User,
-  Bot
+  Bot,
+  Sparkles
 } from 'lucide-react';
+import { trackLeadEngagement, LeadEngagementLevel } from '@/lib/analytics/lead-scoring';
+
+/**
+ * XSS Prevention - Sanitize HTML content
+ * Removes potentially dangerous HTML tags and attributes
+ */
+function sanitizeMessage(content: string): string {
+  // Remove HTML tags that could execute scripts
+  const sanitized = content
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed[^>]*>/gi, '')
+    .replace(/<link[^>]*>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    // Remove event handlers
+    .replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '')
+    .replace(/\s*on\w+\s*=\s*[^\s>]*/gi, '')
+    // Remove javascript: URLs
+    .replace(/javascript:/gi, '')
+    // Escape HTML entities for display
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+
+  return sanitized;
+}
 
 interface Message {
   id: string;
@@ -32,12 +62,17 @@ interface ChatWidgetProps {
   welcomeMessage?: string;
 }
 
+// Iris welcome message with personality
+const IRIS_WELCOME = `Hoi! 👋 Ik ben Iris, jouw dating coach.
+
+Stel me gerust je vraag over dating, profielen of gesprekstechnieken. Ik help je graag!`;
+
 export function ChatWidget({
   apiUrl = '/api/chatbot',
   position = 'bottom-right',
   primaryColor = '#E14874',
   companyName = 'DatingAssistent',
-  welcomeMessage = 'Hallo! Ik ben je AI-assistent voor dating advies. Ik kan je helpen met vragen over daten, relaties en persoonlijke ontwikkeling. Stel je vraag gerust!'
+  welcomeMessage = IRIS_WELCOME
 }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -64,13 +99,20 @@ export function ChatWidget({
     }
   }, [isOpen, sessionId]);
 
+  // Track chat opened for lead scoring
+  useEffect(() => {
+    if (isOpen) {
+      trackLeadEngagement('chat_opened');
+    }
+  }, [isOpen]);
+
   const initializeChat = async () => {
     try {
       // Generate session ID
       const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       setSessionId(newSessionId);
 
-      // Add welcome message
+      // Add welcome message from Iris
       setMessages([{
         id: `welcome_${Date.now()}`,
         content: welcomeMessage,
@@ -97,7 +139,10 @@ export function ChatWidget({
     const messageContent = newMessage.trim();
     setNewMessage('');
 
-    // Add user message to UI immediately
+    // Track message sent for lead scoring (with high-intent detection)
+    trackLeadEngagement('message_sent', { message: messageContent });
+
+    // Add user message to UI immediately (sanitized for display)
     const userMessage: Message = {
       id: `user_${Date.now()}`,
       content: messageContent,
@@ -177,10 +222,13 @@ export function ChatWidget({
       <div className={`fixed ${position === 'bottom-right' ? 'bottom-10 right-4' : 'bottom-10 left-4'} z-50`}>
         <Button
           onClick={() => setIsOpen(true)}
-          className="rounded-full w-14 h-14 sm:w-16 sm:h-16 shadow-lg hover:shadow-xl transition-shadow"
-          style={{ backgroundColor: primaryColor }}
+          className="rounded-full w-14 h-14 sm:w-16 sm:h-16 shadow-lg hover:shadow-xl transition-all hover:scale-105 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 border-2 border-white/30"
         >
-          <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
+          <div className="relative">
+            <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
+            {/* Sparkle animation */}
+            <Sparkles className="w-3 h-3 absolute -top-1 -right-1 text-yellow-300 animate-pulse" />
+          </div>
         </Button>
       </div>
     );
@@ -189,21 +237,34 @@ export function ChatWidget({
   return (
     <div className={`fixed ${position === 'bottom-right' ? 'bottom-10 right-4' : 'bottom-10 left-4'} z-50`}>
       <Card className={`w-96 sm:w-96 ${isMinimized ? 'h-14' : 'h-[28rem]'} shadow-2xl border-2 transition-all duration-300 max-w-[calc(100vw-2rem)] flex flex-col`}>
-        {/* Header */}
-        <CardHeader className="pb-2 cursor-pointer flex-shrink-0" onClick={() => setIsMinimized(!isMinimized)}>
+        {/* Header - Iris branded */}
+        <CardHeader className="pb-2 cursor-pointer flex-shrink-0 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-t-lg" onClick={() => setIsMinimized(!isMinimized)}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: isConnected ? '#10b981' : '#ef4444' }}
-              />
-              <CardTitle className="text-sm">{companyName}</CardTitle>
+              <Avatar className="w-8 h-8 border-2 border-white/30">
+                <AvatarImage src="/images/iris-avatar.png" alt="Iris" />
+                <AvatarFallback className="bg-white/20 text-white text-xs">
+                  <Sparkles className="w-4 h-4" />
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <CardTitle className="text-sm font-semibold text-white">Chat met Iris</CardTitle>
+                <div className="flex items-center gap-1">
+                  <div
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: isConnected ? '#4ade80' : '#ef4444' }}
+                  />
+                  <span className="text-xs text-white/80">
+                    {isConnected ? 'Online' : 'Offline'}
+                  </span>
+                </div>
+              </div>
             </div>
             <div className="flex items-center gap-1">
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 w-6 p-0"
+                className="h-6 w-6 p-0 text-white/80 hover:text-white hover:bg-white/20"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsMinimized(!isMinimized);
@@ -215,7 +276,7 @@ export function ChatWidget({
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 w-6 p-0"
+                className="h-6 w-6 p-0 text-white/80 hover:text-white hover:bg-white/20"
                 onClick={() => setIsOpen(false)}
                 title="Sluiten"
               >
@@ -236,26 +297,34 @@ export function ChatWidget({
                     className={`flex ${message.senderType === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div className={`flex gap-2 max-w-[80%] ${message.senderType === 'user' ? 'flex-row-reverse' : ''}`}>
-                      <Avatar className="w-6 h-6">
-                        <AvatarFallback className="text-xs">
-                          {message.senderType === 'user' ? <User className="w-3 h-3" /> :
-                           message.senderType === 'agent' ? <User className="w-3 h-3" /> :
-                           <Bot className="w-3 h-3" />}
-                        </AvatarFallback>
+                      <Avatar className="w-7 h-7 flex-shrink-0">
+                        {message.senderType === 'agent' ? (
+                          <>
+                            <AvatarImage src="/images/iris-avatar.png" alt="Iris" />
+                            <AvatarFallback className="bg-gradient-to-br from-pink-400 to-pink-600 text-white text-xs">
+                              <Sparkles className="w-3 h-3" />
+                            </AvatarFallback>
+                          </>
+                        ) : (
+                          <AvatarFallback className="text-xs bg-blue-500 text-white">
+                            <User className="w-3 h-3" />
+                          </AvatarFallback>
+                        )}
                       </Avatar>
                       <div
-                        className={`px-3 py-2 rounded-lg text-sm ${
+                        className={`px-3 py-2 rounded-lg text-sm whitespace-pre-wrap ${
                           message.senderType === 'user'
-                            ? 'bg-blue-500 text-white'
+                            ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white'
                             : 'bg-gray-100 text-gray-900'
                         }`}
                       >
-                        {message.senderName && (
-                          <div className="font-medium text-xs mb-1 opacity-75">
+                        {message.senderName && message.senderType === 'agent' && (
+                          <div className="font-medium text-xs mb-1 text-pink-600">
                             {message.senderName}
                           </div>
                         )}
-                        {message.content}
+                        {/* XSS-safe content rendering */}
+                        {sanitizeMessage(message.content)}
                         <div className="text-xs opacity-60 mt-1">
                           {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </div>
@@ -268,20 +337,21 @@ export function ChatWidget({
                 {isTyping && (
                   <div className="flex justify-start">
                     <div className="flex gap-2 max-w-[80%]">
-                      <Avatar className="w-6 h-6">
-                        <AvatarFallback className="text-xs">
-                          <Bot className="w-3 h-3" />
+                      <Avatar className="w-7 h-7 flex-shrink-0">
+                        <AvatarImage src="/images/iris-avatar.png" alt="Iris" />
+                        <AvatarFallback className="bg-gradient-to-br from-pink-400 to-pink-600 text-white text-xs">
+                          <Sparkles className="w-3 h-3" />
                         </AvatarFallback>
                       </Avatar>
                       <div className="px-3 py-2 rounded-lg text-sm bg-gray-100 text-gray-900">
                         <div className="flex items-center gap-1">
-                          <span className="text-xs opacity-75">Iris</span>
+                          <span className="text-xs font-medium text-pink-600">Iris</span>
                         </div>
                         <div className="flex items-center gap-1 mt-1">
                           <div className="flex gap-1">
-                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                            <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                            <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                            <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                           </div>
                         </div>
                       </div>

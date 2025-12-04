@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { KickstartProgramCard } from '@/components/dashboard/kickstart-program-card';
 import {
   Play,
   CheckCircle,
@@ -21,17 +22,23 @@ interface EnrolledProgram {
   program_slug: string;
   program_name: string;
   program_tier: string;
+  program_type?: 'kickstart' | 'standard';
   enrolled_at: string;
   status: string;
   overall_progress_percentage: number;
-  completed_lessons: number;
-  total_lessons: number;
-  completed_modules: number;
-  total_modules: number;
+  completed_lessons?: number;
+  total_lessons?: number;
+  completed_modules?: number;
+  total_modules?: number;
   current_lesson_title?: string;
   current_lesson_id?: number;
   next_lesson_id?: number;
   last_accessed_at: string;
+  // Kickstart-specific fields
+  completed_days?: number;
+  total_days?: number;
+  next_day?: number;
+  last_completed_day?: number;
 }
 
 export function MyProgramsWidget() {
@@ -156,6 +163,18 @@ export function MyProgramsWidget() {
       </CardHeader>
       <CardContent className="space-y-4">
         {programs.map((program, index) => {
+          // Render Kickstart programs with dedicated card
+          if (program.program_type === 'kickstart') {
+            return (
+              <KickstartProgramCard
+                key={program.program_id}
+                program={program as any}
+                index={index}
+              />
+            );
+          }
+
+          // Render standard programs
           const tierColor = tierColors[program.program_tier as keyof typeof tierColors] || tierColors.kickstart;
           const tierIcon = tierIcons[program.program_tier as keyof typeof tierIcons] || '📚';
           const progress = program.overall_progress_percentage || 0;

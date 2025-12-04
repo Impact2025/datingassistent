@@ -52,8 +52,8 @@ export async function POST(request: NextRequest) {
 
     // Check if user is enrolled
     const enrollmentResult = await sql`
-      SELECT id FROM user_programs
-      WHERE user_id = ${userId} AND program_id = ${programId} AND is_active = true
+      SELECT id FROM program_enrollments
+      WHERE user_id = ${userId} AND program_id = ${programId} AND status = 'active'
       LIMIT 1
     `;
 
@@ -217,11 +217,8 @@ export async function POST(request: NextRequest) {
       const completedCount = parseInt(completedDaysResult.rows[0].count);
       const progressPercentage = Math.round((completedCount / 21) * 100);
 
-      await sql`
-        UPDATE user_programs
-        SET progress_percentage = ${progressPercentage}
-        WHERE user_id = ${userId} AND program_id = ${programId}
-      `;
+      // Note: program_enrollments table doesn't have progress_percentage column
+      // Progress is calculated dynamically from user_day_progress table
     }
 
     return NextResponse.json({
@@ -250,6 +247,7 @@ function calculateQuizScore(answers: any[]): number {
 /**
  * GET /api/kickstart/progress
  * Haal alle progress op voor huidige user
+ * Returns day summaries for sidebar navigation
  */
 export async function GET(request: NextRequest) {
   try {
@@ -269,35 +267,81 @@ export async function GET(request: NextRequest) {
     `;
 
     if (programResult.rows.length === 0) {
-      return NextResponse.json({ progress: [], enrollment: null });
+      return NextResponse.json({
+        success: false,
+        error: 'Kickstart program not found',
+        days: [],
+        progress: [],
+        enrollment: null,
+      });
     }
 
     const programId = programResult.rows[0].id;
 
     // Get enrollment
     const enrollmentResult = await sql`
-      SELECT * FROM user_programs
+      SELECT * FROM program_enrollments
       WHERE user_id = ${userId} AND program_id = ${programId}
       LIMIT 1
     `;
 
-    // Get all progress
-    const progressResult = await sql`
-      SELECT udp.*, pd.dag_nummer, pd.titel
-      FROM user_day_progress udp
-      JOIN program_days pd ON udp.day_id = pd.id
-      WHERE udp.user_id = ${userId} AND udp.program_id = ${programId}
+    // Get all days with user progress
+    const daysResult = await sql`
+      SELECT
+        pd.id,
+        pd.dag_nummer,
+        pd.titel,
+        pd.dag_type,
+        pd.emoji,
+        pd.ai_tool,
+        COALESCE(udp.status, 'locked') as status,
+        udp.video_completed,
+        udp.quiz_completed,
+        udp.reflectie_completed,
+        udp.werkboek_completed
+      FROM program_days pd
+      LEFT JOIN user_day_progress udp ON pd.id = udp.day_id AND udp.user_id = ${userId}
+      WHERE pd.program_id = ${programId}
       ORDER BY pd.dag_nummer
     `;
 
+    // Calculate overall stats
+    const completedDays = daysResult.rows.filter((d: any) => d.status === 'completed').length;
+    const totalDays = daysResult.rows.length;
+    const progressPercentage = Math.round((completedDays / totalDays) * 100);
+
+    // Find next available day
+    const nextDay = daysResult.rows.find(
+      (d: any) => d.status === 'available' || d.status === 'in_progress'
+    ) || daysResult.rows[0];
+
     return NextResponse.json({
-      progress: progressResult.rows,
+      success: true,
+      days: daysResult.rows.map((day: any) => ({
+        dag_nummer: day.dag_nummer,
+        titel: day.titel,
+        dag_type: day.dag_type,
+        status: day.status,
+        emoji: day.emoji,
+        ai_tool: day.ai_tool,
+      })),
+      progress: daysResult.rows, // Full progress data for detailed views
       enrollment: enrollmentResult.rows[0] || null,
+      stats: {
+        completedDays,
+        totalDays,
+        progressPercentage,
+        nextDay: nextDay?.dag_nummer || 1,
+      },
     });
   } catch (error) {
     console.error('Get progress error:', error);
     return NextResponse.json(
-      { error: 'Fout bij ophalen progress' },
+      {
+        success: false,
+        error: 'Fout bij ophalen progress',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }

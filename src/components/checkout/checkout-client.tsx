@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { PACKAGES, getPackagePrice } from "@/lib/multisafepay";
 import { PackageType } from "@/lib/subscription";
 import { CheckCircle, Lock, ArrowLeft, Tag } from "lucide-react";
 import Link from "next/link";
+import { trackBeginCheckout, trackViewItem } from "@/lib/analytics/ga4-events";
 
 interface CouponData {
   code: string;
@@ -30,6 +31,7 @@ export function CheckoutClientComponent() {
   const [couponData, setCouponData] = useState<CouponData | null>(null);
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
   const [showCoupon, setShowCoupon] = useState(false);
+  const hasTrackedViewItem = useRef(false);
 
   // Get plan details from URL
   const plan = searchParams?.get('plan') as PackageType;
@@ -49,7 +51,7 @@ export function CheckoutClientComponent() {
   ) : 0;
   const finalPrice = Math.max(0, originalPrice - discountAmount);
 
-  // Redirect if no valid plan
+  // Redirect if no valid plan, track view_item on valid checkout
   useEffect(() => {
     if (!planKey || !billing || !userId) {
       toast({
@@ -60,7 +62,18 @@ export function CheckoutClientComponent() {
       router.push('/');
       return;
     }
-  }, [planKey, billing, userId, router, toast]);
+
+    // Track view_item when checkout page loads (only once)
+    if (planData && !hasTrackedViewItem.current) {
+      hasTrackedViewItem.current = true;
+      trackViewItem({
+        item_id: planKey,
+        item_name: planData.name,
+        price: originalPrice / 100,
+        currency: 'EUR',
+      });
+    }
+  }, [planKey, billing, userId, router, toast, planData, originalPrice]);
 
   // Validate coupon
   const validateCoupon = async () => {
@@ -110,7 +123,17 @@ export function CheckoutClientComponent() {
 
   // Handle payment
   const handlePayment = async () => {
-    if (!planKey || !billing || !userId) return;
+    if (!planKey || !billing || !userId || !planData) return;
+
+    // Track begin_checkout in GA4
+    trackBeginCheckout({
+      plan_id: planKey,
+      plan_name: planData.name,
+      price: finalPrice / 100,
+      billing_cycle: billing,
+      currency: 'EUR',
+      coupon: couponData?.valid ? couponCode : undefined,
+    });
 
     setIsProcessing(true);
     try {

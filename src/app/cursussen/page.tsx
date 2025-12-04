@@ -3,6 +3,8 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { GraduationCap, Sparkles, TrendingUp, Award } from 'lucide-react';
 import { CursussenGallery } from '@/components/dashboard/cursussen-gallery';
+import { PublicHeader } from '@/components/layout/public-header';
+import { PublicFooter } from '@/components/layout/public-footer';
 
 /**
  * Cursussen Overzicht Pagina
@@ -10,7 +12,8 @@ import { CursussenGallery } from '@/components/dashboard/cursussen-gallery';
  */
 export default function CursussenPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <PublicHeader />
       {/* Header Section - Clean & Minimal */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
@@ -106,6 +109,8 @@ export default function CursussenPage() {
           </CardContent>
         </Card>
       </div>
+
+      <PublicFooter />
     </div>
   );
 }

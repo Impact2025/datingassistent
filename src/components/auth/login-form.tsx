@@ -23,6 +23,7 @@ import { LoadingSpinner } from "../shared/loading-spinner";
 import { useSearchParams, usePathname } from "next/navigation";
 import { useRecaptchaV3 } from "../shared/recaptcha";
 import { useDeviceDetection } from "@/hooks/use-device-detection";
+import { trackLogin, setUserProperties } from "@/lib/analytics/ga4-events";
 
 const loginSchema = z.object({
   email: z.string().email("Ongeldig e-mailadres."),
@@ -211,6 +212,20 @@ export function LoginForm() {
       console.log('🔐 Attempting login with email:', data.email);
       const result = await login(data.email, data.password);
       console.log('✅ Login successful, result:', result);
+
+      // Track login in GA4
+      trackLogin({
+        method: 'email',
+        user_id: result?.user?.id?.toString(),
+      });
+
+      // Set user properties
+      if (result?.user) {
+        setUserProperties({
+          user_id: result.user.id?.toString(),
+        });
+      }
+
       // If we have an orderId, the useEffect will handle subscription activation
       // The auth provider will handle redirection on success.
       // We don't need to set isLoggingIn to false here because the component will unmount.

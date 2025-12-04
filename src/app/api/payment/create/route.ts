@@ -31,7 +31,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { programId, programSlug, amount, couponCode } = body;
 
-    if (!programId || !programSlug || !amount) {
+    // Validate required fields (amount can be 0 for free/fully discounted orders)
+    if (!programId || !programSlug || amount === undefined || amount === null) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -51,6 +52,91 @@ export async function POST(request: NextRequest) {
     const program = programResult.rows[0];
     const timestamp = Date.now();
     const orderId = 'ORDER-' + timestamp + '-' + userId + '-' + programId;
+
+    // Handle free orders (100% discount or free program)
+    if (amount === 0) {
+      console.log('🎁 Free order detected, creating direct enrollment');
+
+      // Check if user already has an enrollment for this program
+      const existingEnrollment = await sql`
+        SELECT id, order_id, status FROM program_enrollments
+        WHERE user_id = ${userId} AND program_id = ${programId}
+        LIMIT 1
+      `;
+
+      if (existingEnrollment.rows.length > 0) {
+        const enrollment = existingEnrollment.rows[0];
+        console.log('ℹ️ User already enrolled in this program:', enrollment);
+
+        // Return success with existing enrollment
+        return NextResponse.json({
+          success: true,
+          order_id: enrollment.order_id,
+          payment_url: `${BASE_URL}/payment/success?order_id=${enrollment.order_id}`,
+          message: 'Je bent al ingeschreven voor dit programma'
+        });
+      }
+
+      // Create payment transaction with completed status
+      await sql`
+        INSERT INTO payment_transactions (
+          order_id, user_id, program_id, amount, currency,
+          status, payment_method, coupon_code, created_at, paid_at
+        ) VALUES (
+          ${orderId}, ${userId}, ${programId}, ${amount}, 'EUR',
+          'completed', 'free', ${normalizedCouponCode}, NOW(), NOW()
+        )
+      `;
+
+      // Create program enrollment
+      await sql`
+        INSERT INTO program_enrollments (
+          user_id, program_id, order_id, status, enrolled_at
+        ) VALUES (
+          ${userId}, ${programId}, ${orderId}, 'active', NOW()
+        )
+      `;
+
+      // Increment coupon usage if coupon was used
+      if (normalizedCouponCode) {
+        try {
+          await sql`
+            UPDATE coupons
+            SET used_count = used_count + 1, updated_at = NOW()
+            WHERE UPPER(code) = ${normalizedCouponCode}
+            AND (used_count < max_uses OR max_uses IS NULL)
+          `;
+          console.log('✅ Coupon usage incremented:', normalizedCouponCode);
+        } catch (couponError) {
+          console.error('⚠️ Failed to increment coupon usage:', couponError);
+        }
+      }
+
+      // Send enrollment email
+      try {
+        const { sendProgramEnrollmentEmail } = await import('@/lib/email-service');
+        const dayOneUrl = `${BASE_URL}/${programSlug}/dag/1`;
+        await sendProgramEnrollmentEmail(
+          dbUser.email,
+          dbUser.name,
+          program.name,
+          programSlug,
+          dayOneUrl
+        );
+        console.log('✅ Free enrollment email sent');
+      } catch (emailError) {
+        console.error('⚠️ Failed to send enrollment email:', emailError);
+      }
+
+      console.log('✅ Free order completed:', orderId);
+
+      // Redirect directly to success page
+      return NextResponse.json({
+        success: true,
+        order_id: orderId,
+        payment_url: `${BASE_URL}/payment/success?order_id=${orderId}`
+      });
+    }
 
     const multiSafePayUrl = MULTISAFEPAY_ENVIRONMENT === 'live'
       ? 'https://api.multisafepay.com/v1/json/orders'
@@ -155,9 +241,16 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Payment error:', error);
+    console.error('💥 Payment creation error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create payment';
+
     return NextResponse.json(
-      { error: 'Failed to create payment' },
+      {
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? String(error) : undefined
+      },
       { status: 500 }
     );
   }

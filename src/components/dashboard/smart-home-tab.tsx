@@ -27,6 +27,7 @@ import { GamificationWidget } from '../gamification/gamification-widget';
 import { useGamification } from '@/hooks/use-gamification';
 import { QuickWinsToday } from './quick-wins-today';
 import { MijnCursussenWidget } from './mijn-cursussen-widget';
+import { MyProgramsWidget } from './my-programs-widget';
 
 interface SmartHomeTabProps {
   onTabChange?: (tab: string) => void;
@@ -231,6 +232,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                       onPlay={() => setIsPlaying(true)}
                       onPause={() => setIsPlaying(false)}
                       onError={() => setVideoError(true)}
+                      onEnded={dismissWelcomeVideo}
                       poster="/images/iris-poster.jpg"
                     />
 
@@ -448,6 +450,9 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* Mijn Programma's Widget - Shows Kickstart and other programs */}
+        <MyProgramsWidget />
 
         {/* Mijn Cursussen Widget - Professional Integration */}
         <MijnCursussenWidget />

@@ -34,7 +34,7 @@ function PaymentSuccessContent() {
   const [retryCount, setRetryCount] = useState(0);
 
   const MAX_POLLS = 30; // 30 polls * 2 seconds = 60 seconds max wait
-  const POLL_INTERVAL = 2000; // 2 seconds
+  const POLL_INTERVAL = 1500; // 1.5 seconds (faster polling for better UX)
 
   // Verify payment status
   const verifyPayment = useCallback(async () => {
@@ -115,8 +115,13 @@ function PaymentSuccessContent() {
   }, [pollCount, paymentStatus]);
 
   const handleContinue = () => {
-    // Redirect to onboarding for new users, dashboard for existing
-    router.push('/onboarding/welcome');
+    // If we have a program enrollment, go directly to the program
+    if (verificationResult?.details?.nextAction) {
+      router.push(verificationResult.details.nextAction);
+    } else {
+      // Fallback to dashboard (old onboarding is disabled)
+      router.push('/dashboard');
+    }
   };
 
   const handleRetry = () => {
@@ -291,8 +296,8 @@ function PaymentSuccessContent() {
               </motion.p>
             </div>
 
-            {/* Package Info */}
-            {verificationResult?.details?.packageType && (
+            {/* Program/Package Info */}
+            {(verificationResult?.details?.programName || verificationResult?.details?.packageType) && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -300,7 +305,10 @@ function PaymentSuccessContent() {
                 className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium"
               >
                 <Sparkles className="w-4 h-4" />
-                {verificationResult.details.packageType.charAt(0).toUpperCase() + verificationResult.details.packageType.slice(1)} pakket geactiveerd
+                {verificationResult.details.programName
+                  ? `${verificationResult.details.programName} geactiveerd`
+                  : `${verificationResult.details.packageType!.charAt(0).toUpperCase() + verificationResult.details.packageType!.slice(1)} pakket geactiveerd`
+                }
               </motion.div>
             )}
 
@@ -333,7 +341,12 @@ function PaymentSuccessContent() {
                   <ul className="space-y-2 text-sm text-gray-700">
                     <li className="flex items-start gap-2">
                       <span className="text-green-500">✓</span>
-                      <span>Je account is geactiveerd en klaar voor gebruik</span>
+                      <span>
+                        {verificationResult?.details?.programName
+                          ? `${verificationResult.details.programName} is klaar om te starten`
+                          : 'Je account is geactiveerd en klaar voor gebruik'
+                        }
+                      </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-green-500">✓</span>
@@ -341,7 +354,12 @@ function PaymentSuccessContent() {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-green-500">✓</span>
-                      <span>Iris, je persoonlijke coach, staat klaar om je te begeleiden!</span>
+                      <span>
+                        {verificationResult?.details?.programName
+                          ? 'Start direct met dag 1 van je transformatie!'
+                          : 'Iris, je persoonlijke coach, staat klaar om je te begeleiden!'
+                        }
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -358,7 +376,10 @@ function PaymentSuccessContent() {
                 onClick={handleContinue}
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white py-6 text-lg shadow-lg hover:shadow-xl transition-all"
               >
-                Start je dating journey
+                {verificationResult?.details?.programName
+                  ? `Start met ${verificationResult.details.programName}`
+                  : 'Ga naar je dashboard'
+                }
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </motion.div>

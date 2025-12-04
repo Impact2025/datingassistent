@@ -41,11 +41,8 @@ async function getUserProfile(userId: number): Promise<UserProfile> {
   const result = await sql`
     SELECT
       id,
-      naam as name,
+      name,
       email,
-      leeftijd as age,
-      geslacht as gender,
-      zoekt_naar as looking_for,
       subscription_type
     FROM users
     WHERE id = ${userId}
@@ -57,9 +54,9 @@ async function getUserProfile(userId: number): Promise<UserProfile> {
     id: user.id,
     name: user.name || user.email,
     email: user.email,
-    age: user.age,
-    gender: user.gender,
-    lookingFor: user.looking_for,
+    age: undefined,
+    gender: undefined,
+    lookingFor: undefined,
     subscriptionType: user.subscription_type || 'free'
   };
 }

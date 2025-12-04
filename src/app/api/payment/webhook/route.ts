@@ -205,6 +205,40 @@ export async function POST(request: NextRequest) {
 
         console.log('✅ Payment completed, enrollment created, and progress initialized');
         console.log(`📊 Program stats: ${total_modules} modules, ${total_lessons} lessons`);
+
+        // Send enrollment confirmation email
+        try {
+          // Fetch user and program details for email
+          const userResult = await sql`
+            SELECT name, email FROM users WHERE id = ${transaction.user_id} LIMIT 1
+          `;
+          const programResult = await sql`
+            SELECT name, slug FROM programs WHERE id = ${transaction.program_id} LIMIT 1
+          `;
+
+          if (userResult.rows.length > 0 && programResult.rows.length > 0) {
+            const user = userResult.rows[0];
+            const program = programResult.rows[0];
+
+            // Construct day one URL
+            const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL || 'http://localhost:9000';
+            const dayOneUrl = `${baseUrl}/${program.slug}/dag/1`;
+
+            // Import and send enrollment email
+            const { sendProgramEnrollmentEmail } = await import('@/lib/email-service');
+            await sendProgramEnrollmentEmail(
+              user.email,
+              user.name,
+              program.name,
+              program.slug,
+              dayOneUrl
+            );
+            console.log('✅ Enrollment confirmation email sent to:', user.email);
+          }
+        } catch (emailError) {
+          console.error('⚠️ Failed to send enrollment email:', emailError);
+          // Don't fail the webhook for email errors
+        }
         break;
 
       case 'cancelled':

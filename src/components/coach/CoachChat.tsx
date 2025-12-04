@@ -6,6 +6,7 @@ import { CoachInput } from './CoachInput';
 import { CoachTyping } from './CoachTyping';
 import { CoachSuggestions, Suggestion } from './CoachSuggestions';
 import { CoachToolCard, ToolSuggestion } from './CoachToolCard';
+import { trackChatMessageSent, trackToolUsed } from '@/lib/analytics/ga4-events';
 
 interface Message {
   id: string;
@@ -32,6 +33,15 @@ export function CoachChat({ userId, initialContext }: CoachChatProps) {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [toolSuggestions, setToolSuggestions] = useState<ToolSuggestion[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // GA4: Track when coach chat is opened
+  useEffect(() => {
+    trackToolUsed({
+      tool_name: 'coach_chat',
+      tool_category: 'ai_coach',
+      completed: false,
+    });
+  }, []);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -65,6 +75,12 @@ export function CoachChat({ userId, initialContext }: CoachChatProps) {
   };
 
   const handleSendMessage = async (content: string) => {
+    // GA4: Track chat message sent
+    trackChatMessageSent({
+      chat_type: 'coach',
+      message_length: content.length,
+    });
+
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),

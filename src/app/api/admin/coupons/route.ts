@@ -69,14 +69,23 @@ export async function POST(request: Request) {
       valid_until: body.valid_until,
       is_active: body.is_active !== undefined ? body.is_active : true
     });
-    
+
     if (!coupon) {
       return NextResponse.json({ error: 'Failed to create coupon' }, { status: 500 });
     }
-    
+
     return NextResponse.json(coupon);
   } catch (error) {
     console.error('Error creating coupon:', error);
-    return NextResponse.json({ error: 'Failed to create coupon: ' + (error as Error).message }, { status: 500 });
+
+    // Check for duplicate key constraint violation
+    const errorMessage = (error as Error).message;
+    if (errorMessage.includes('duplicate key value violates unique constraint "coupons_code_key"')) {
+      return NextResponse.json({
+        error: 'Deze coupon code bestaat al. Kies een unieke code.'
+      }, { status: 409 });
+    }
+
+    return NextResponse.json({ error: 'Failed to create coupon: ' + errorMessage }, { status: 500 });
   }
 }

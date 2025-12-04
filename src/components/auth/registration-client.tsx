@@ -27,6 +27,7 @@ import { PACKAGES, getPackagePrice } from "@/lib/multisafepay";
 import { PackageType } from "@/lib/subscription";
 import { useRecaptchaV3 } from "../shared/recaptcha";
 import { VerificationCodeInput } from "./verification-code-input";
+import { trackSignUp, setUserProperties } from "@/lib/analytics/ga4-events";
 
 const signupSchema = z.object({
   firstName: z.string().min(2, "Voornaam moet minimaal 2 karakters lang zijn."),
@@ -66,6 +67,7 @@ export function RegistrationClientComponent() {
   const [registeredUserId, setRegisteredUserId] = useState<number | null>(null);
   const [registeredUserEmail, setRegisteredUserEmail] = useState<string | null>(null);
   const [verificationError, setVerificationError] = useState<string | null>(null);
+  const [registrationError, setRegistrationError] = useState<string | null>(null);
 
   // reCAPTCHA v3 hook
   const { execute: executeRecaptcha, isLoaded: isRecaptchaLoaded } = useRecaptchaV3(
@@ -198,6 +200,7 @@ export function RegistrationClientComponent() {
   async function onSubmit(data: SignupFormValues) {
     if (isSigningUp) return;
     setIsSigningUp(true);
+    setRegistrationError(null); // Clear previous errors
     console.log('🔵 Starting registration...', { orderId });
 
     // Skip reCAPTCHA in development mode
@@ -395,19 +398,16 @@ export function RegistrationClientComponent() {
       }, 3000);
     } catch (error: any) {
       console.error("Registratie error:", error);
-      let description = error.message || "Er is een onbekende fout opgetreden. Probeer het opnieuw.";
 
+      // Set error message for display in form
       if (error.message.includes('Dit emailadres is al bij ons bekend')) {
-        description = "Dit emailadres is al bij ons bekend. Vraag hier een wachtwoord aan.";
+        setRegistrationError("existing_email");
       } else if (error.message.includes('Password must be at least 6 characters')) {
-        description = "Wachtwoord moet minimaal 6 karakters bevatten.";
+        setRegistrationError("password_too_short");
+      } else {
+        setRegistrationError(error.message || "Er is een onbekende fout opgetreden. Probeer het opnieuw.");
       }
 
-      toast({
-        title: "Registratie Mislukt",
-        description,
-        variant: "destructive",
-      });
       setIsSigningUp(false); // Reset on error
     }
   }
@@ -436,6 +436,20 @@ export function RegistrationClientComponent() {
   if (showCodeVerification && registeredUserId && registeredUserEmail) {
     const handleVerificationSuccess = (user: any) => {
       console.log('✅ Email verified successfully:', user);
+
+      // Track successful sign up in GA4
+      trackSignUp({
+        method: 'email',
+        user_id: user.id?.toString(),
+        plan: planKey || programSlug || 'free',
+      });
+
+      // Set user properties for future tracking
+      setUserProperties({
+        user_id: user.id?.toString(),
+        subscription_tier: 'free',
+        account_created_at: new Date().toISOString(),
+      });
 
       // Clear verification states
       setShowCodeVerification(false);
@@ -468,6 +482,7 @@ export function RegistrationClientComponent() {
         toast({
           title: "Account geverifieerd! ✅",
           description: "Je wordt doorgestuurd naar de betaalpagina...",
+          duration: 1500,
         });
         setTimeout(() => {
           window.location.href = `/checkout/${programSlug}`;
@@ -534,23 +549,23 @@ export function RegistrationClientComponent() {
     };
 
     return (
-      <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
-        <Card className="rounded-2xl bg-card shadow-2xl">
-          <CardHeader className="text-center pb-6">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+        <Card className="w-full max-w-md rounded-2xl bg-card shadow-2xl">
+          <CardHeader className="text-center pb-4 pt-6">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                <Mail className="w-4 h-4 text-primary" />
+              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <Mail className="w-5 h-5 text-primary" />
               </div>
               <span className="text-muted-foreground font-medium">Verificatie</span>
             </div>
-            <CardTitle className="text-2xl font-bold">
+            <CardTitle className="text-xl sm:text-2xl font-bold">
               Verificeer je emailadres
             </CardTitle>
-            <CardDescription className="text-base">
-              We hebben een verificatie code gestuurd naar <strong>{registeredUserEmail}</strong>
+            <CardDescription className="text-sm sm:text-base">
+              We hebben een verificatie code gestuurd naar <strong className="break-all">{registeredUserEmail}</strong>
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6">
             <VerificationCodeInput
               userId={registeredUserId}
               onSuccess={handleVerificationSuccess}
@@ -558,7 +573,7 @@ export function RegistrationClientComponent() {
               onResendCode={handleResendCode}
             />
           </CardContent>
-          <CardFooter className="flex-col gap-4">
+          <CardFooter className="flex-col gap-4 pb-6">
             <Button
               onClick={() => {
                 setShowCodeVerification(false);
@@ -804,7 +819,16 @@ export function RegistrationClientComponent() {
                       <FormItem suppressHydrationWarning>
                         <FormLabel suppressHydrationWarning>E-mailadres</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="jouw@email.com" {...field} suppressHydrationWarning />
+                          <Input
+                            type="email"
+                            placeholder="jouw@email.com"
+                            autoComplete="email"
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            inputMode="email"
+                            {...field}
+                            suppressHydrationWarning
+                          />
                         </FormControl>
                         <FormMessage suppressHydrationWarning />
                       </FormItem>
@@ -867,6 +891,34 @@ export function RegistrationClientComponent() {
                     )}
                   />
                 </div>
+
+                {/* Registration Error Alert */}
+                {registrationError && (
+                  <Alert className="border-red-200 bg-red-50">
+                    <AlertCircle className="h-4 w-4 text-red-600" />
+                    <AlertDescription className="text-red-800">
+                      {registrationError === "existing_email" ? (
+                        <div className="space-y-2">
+                          <p>
+                            <strong>Dit emailadres is al bij ons bekend.</strong>
+                          </p>
+                          <p className="text-sm">
+                            Heb je al een account? <Link href={loginUrl} className="font-semibold underline hover:text-red-900">Log hier in</Link> of{' '}
+                            <Link href="/auth/reset-password" className="font-semibold underline hover:text-red-900">vraag een nieuw wachtwoord aan</Link>.
+                          </p>
+                        </div>
+                      ) : registrationError === "password_too_short" ? (
+                        <p>
+                          <strong>Wachtwoord te kort:</strong> Je wachtwoord moet minimaal 6 karakters bevatten.
+                        </p>
+                      ) : (
+                        <p>
+                          <strong>Fout:</strong> {registrationError}
+                        </p>
+                      )}
+                    </AlertDescription>
+                  </Alert>
+                )}
 
                 {/* Security Note */}
                 <Alert className="border-pink-200 bg-pink-50">

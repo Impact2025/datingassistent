@@ -26,52 +26,57 @@ export function HeroSection() {
 
           {/* Tagline */}
           <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-pink-100 text-pink-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-            💕 Durf te daten, durf jezelf te zijn
+            💕 Nederlandse AI Dating Coach • 10+ jaar expertise
           </div>
 
           {/* Main Title */}
           <div className="space-y-2 sm:space-y-4 mb-4 sm:mb-6">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight px-2">
-              Dé dating coach die altijd beschikbaar is
-              <span className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-gray-600 mt-2">
-                voor iedereen
+              Stop met eindeloos swipen
+              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mt-2">
+                zonder resultaat
               </span>
             </h1>
           </div>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto px-2">
-            24/7 AI hulp • 8 cursussen • Nederlandse app
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 sm:mb-8 max-w-3xl mx-auto px-2 leading-relaxed">
+            Krijg binnen 30 dagen betekenisvolle dates met 24/7 AI-hulp die je precies vertelt wat je moet zeggen
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-2">
-            <Link href="/register?plan=pro&billing=yearly" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 text-base shadow-lg hover:shadow-xl transition-all">
-                Start 3 dagen gratis →
-              </Button>
-            </Link>
+          <div className="flex flex-col items-center gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+              <Link href="/register" className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 text-base font-semibold shadow-lg hover:shadow-xl transition-all rounded-full">
+                  Start gratis →
+                </Button>
+              </Link>
 
-            <Link href="/features" className="w-full sm:w-auto">
-              <Button variant="outline" className="w-full sm:w-auto border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-6 py-2.5 text-base">
-                Bekijk hier al onze tools →
-              </Button>
-            </Link>
+              <Link href="/features" className="w-full sm:w-auto">
+                <Button variant="outline" className="w-full sm:w-auto border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-3 text-base font-semibold rounded-full">
+                  Bekijk alle tools
+                </Button>
+              </Link>
+            </div>
+            <p className="text-sm text-gray-600">
+              ✓ Geen creditcard nodig • Altijd opzegbaar
+            </p>
           </div>
 
           {/* Trust Bullets */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 px-2">
-            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700">
               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-              <span className="text-xs sm:text-sm">Gebaseerd op 10 jaar expertise en passie</span>
+              <span className="text-xs sm:text-sm font-medium">10.000+ Nederlandse singles gebruiken DatingAssistent</span>
             </div>
-            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700">
               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-              <span className="text-xs sm:text-sm">Nieuw: bewezen methode, nu 24/7 beschikbaar</span>
+              <span className="text-xs sm:text-sm font-medium">Gemiddeld 3x meer matches binnen 14 dagen</span>
             </div>
-            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700">
               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-              <span className="text-xs sm:text-sm">100% Nederlandse ontwikkeling en begeleiding</span>
+              <span className="text-xs sm:text-sm font-medium">4.8/5 sterren • 30 dagen geld-terug garantie</span>
             </div>
           </div>
 
