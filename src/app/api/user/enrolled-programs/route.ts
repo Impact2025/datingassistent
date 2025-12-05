@@ -200,9 +200,17 @@ async function getStandardProgramProgress(userId: number, programId: number) {
  */
 export async function GET(request: NextRequest) {
   try {
-    // Authenticate user
+    // Authenticate user - check both cookie and Authorization header
     const cookieStore = await cookies();
-    const token = cookieStore.get('datespark_auth_token')?.value;
+    let token = cookieStore.get('datespark_auth_token')?.value;
+
+    // Fallback to Authorization header if cookie not found
+    if (!token) {
+      const authHeader = request.headers.get('authorization');
+      if (authHeader?.startsWith('Bearer ')) {
+        token = authHeader.substring(7);
+      }
+    }
 
     if (!token) {
       return NextResponse.json(
@@ -213,14 +221,17 @@ export async function GET(request: NextRequest) {
 
     let userId: number;
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
-      userId = decoded.userId;
+      const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; id?: number };
+      // Support both userId and id in token payload
+      userId = decoded.userId || decoded.id!;
     } catch {
       return NextResponse.json(
         { error: 'Invalid authentication token' },
         { status: 401 }
       );
     }
+
+    console.log('🔍 Fetching enrolled programs for user:', userId);
 
     // Get all enrolled programs (this table should always exist)
     const result = await sql`
@@ -237,6 +248,8 @@ export async function GET(request: NextRequest) {
         AND pe.status = 'active'
       ORDER BY pe.enrolled_at DESC
     `;
+
+    console.log('📋 Found enrolled programs:', result.rows.length, 'for user:', userId);
 
     // For each program, get progress data based on program type
     const programsWithProgress = await Promise.all(
