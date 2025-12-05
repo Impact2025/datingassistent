@@ -59,7 +59,7 @@ import { PadTab } from '@/components/dashboard/pad-tab';
 import { EnhancedPadTab } from '@/components/dashboard/enhanced-pad-tab';
 import { ProfielTab } from '@/components/dashboard/profiel-tab-new';
 import { CoachTab } from '@/components/dashboard/coach-tab';
-import { IrisInsightsPanel } from '@/components/iris/iris-insights-panel';
+// IrisInsightsPanel removed - using only ProactiveInvite to avoid duplicate Iris panels
 import { ProactiveInvite, useProactiveInvite } from '@/components/live-chat/proactive-invite';
 import { trackDashboardTab, trackToolUsed, setUserProperties } from '@/lib/analytics/ga4-events';
 
@@ -726,15 +726,6 @@ export default function DashboardPage() {
               </footer>
             </div>
           </div>
-
-          {/* Iris Insights Panel - Floating assistant */}
-          {useNewNav && !showOnboarding && !showKickstartOnboarding && (
-            <IrisInsightsPanel
-              currentTab={activeTab}
-              userId={user?.id}
-              onTabChange={handleTabChange}
-            />
-          )}
 
           {/* Iris Proactive Invite - Only popup for registered members (no floating button) */}
           {irisInviteVisible && !showKickstartOnboarding && (
