@@ -18,10 +18,13 @@ import {
   Activity,
   AlertTriangle,
   CheckCircle,
-  Tag
+  Tag,
+  MessageSquare,
+  BookOpen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/providers/user-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -53,16 +56,22 @@ const adminNavigation = [
     description: "Coupon codes beheren"
   },
   {
-    name: "Content",
-    href: "/admin/content",
-    icon: Database,
-    description: "Content en assessment beheer"
+    name: "Cursussen",
+    href: "/admin/courses",
+    icon: BookOpen,
+    description: "Cursus en content beheer"
+  },
+  {
+    name: "Live Chat",
+    href: "/admin/live-chat",
+    icon: MessageSquare,
+    description: "Chat support beheer"
   },
   {
     name: "Security",
     href: "/admin/security",
     icon: Shield,
-    description: "Beveiliging en monitoring"
+    description: "Beveiliging en audit logs"
   },
   {
     name: "Settings",
@@ -315,6 +324,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           {children}
         </main>
       </div>
+
+      {/* Toast notifications */}
+      <Toaster />
     </div>
   );
 }

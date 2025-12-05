@@ -1,301 +1,131 @@
+/**
+ * Profile Optimization Reminder - Sent 24h after registration if profile incomplete
+ */
+
 import * as React from 'react';
-import { NotificationEmailTemplate } from '@/components/emails';
+import { Section, Text, Row, Column } from '@react-email/components';
+import {
+  BaseEmail,
+  HeroHeader,
+  Greeting,
+  CTAButton,
+  ProgressBar,
+  InfoBox,
+  FeatureCard,
+  EmailFooter,
+  styles,
+  colors,
+} from './components/email-base';
 
 interface ProfileOptimizationEmailProps {
   firstName: string;
   completionPercentage: number;
   missingFields: string[];
-  dashboardUrl: string;
+  dashboardUrl?: string;
 }
 
-export const ProfileOptimizationEmail = ({
-  firstName = 'Dating Expert',
+export default function ProfileOptimizationEmail({
+  firstName,
   completionPercentage = 30,
   missingFields = ['Profielfoto', 'Bio tekst', 'Dating voorkeuren'],
   dashboardUrl = 'https://datingassistent.nl/dashboard',
-}: ProfileOptimizationEmailProps) => {
-  const missingFieldsText = missingFields.join(', ');
+}: ProfileOptimizationEmailProps) {
+  const profileUrl = `${dashboardUrl}?tab=profile`;
+  const preferencesUrl = `${dashboardUrl}/settings/email-preferences`;
 
   return (
-    <NotificationEmailTemplate
-      userName={firstName}
-      type="warning"
-      title="Je profiel is nog niet compleet"
-      message={`Je profiel is nu ${completionPercentage}% compleet. Een compleet profiel geeft 89% meer matches! Laten we de ontbrekende informatie toevoegen: ${missingFieldsText}.`}
-      action={{
-        primary: {
-          text: 'Maak Profiel Compleet',
-          url: dashboardUrl,
-        },
-      }}
-      details={[
-        { label: 'Huidig compleet', value: `${completionPercentage}%` },
-        { label: 'Ontbrekende velden', value: missingFields.length.toString() },
-        { label: 'Geschatte tijd', value: '2-3 minuten' },
-        { label: 'Potentiële verbetering', value: '+89% matches' },
-      ]}
-      tips={[
-        'Voeg een duidelijke profielfoto toe voor betere eerste indruk',
-        'Schrijf een authentieke bio die je persoonlijkheid laat zien',
-        'Stel je dating voorkeuren in voor relevantere matches',
-        'Een compleet profiel wordt vaker getoond door dating apps',
-      ]}
-    />
+    <BaseEmail preview={`${firstName}, je profiel is ${completionPercentage}% compleet - nog even door!`}>
+      <HeroHeader
+        title="Je profiel is bijna klaar!"
+        subtitle="Nog een paar stappen naar betere resultaten"
+      />
+
+      <Section style={styles.content}>
+        <Greeting name={firstName} />
+
+        <Text style={styles.paragraph}>
+          Je bent goed op weg! Je profiel is nu <strong>{completionPercentage}%</strong> compleet.
+          Met een volledig profiel krijgt de AI Coach een veel beter beeld van jou.
+        </Text>
+
+        <Section style={{
+          backgroundColor: colors.lightGray,
+          borderRadius: '16px',
+          padding: '24px',
+          margin: '24px 0',
+        }}>
+          <Row>
+            <Column style={{ width: '80px', textAlign: 'center', verticalAlign: 'middle' }}>
+              <Text style={{
+                fontSize: '36px',
+                fontWeight: '700',
+                color: colors.primary,
+                margin: '0',
+              }}>
+                {completionPercentage}%
+              </Text>
+            </Column>
+            <Column style={{ paddingLeft: '16px' }}>
+              <Text style={{ ...styles.paragraph, fontWeight: '600', marginBottom: '8px', color: colors.dark }}>
+                Profiel voortgang
+              </Text>
+              <ProgressBar progress={completionPercentage} />
+            </Column>
+          </Row>
+        </Section>
+
+        <Text style={{ ...styles.heading2, marginTop: '24px' }}>
+          Dit mist nog:
+        </Text>
+
+        <Section style={{ margin: '16px 0' }}>
+          {missingFields.map((field, index) => (
+            <Row key={index} style={{ marginBottom: '12px' }}>
+              <Column style={{ width: '32px' }}>
+                <Text style={{ fontSize: '18px', margin: '0' }}>⭕</Text>
+              </Column>
+              <Column>
+                <Text style={{ ...styles.paragraph, margin: '0' }}>{field}</Text>
+              </Column>
+            </Row>
+          ))}
+        </Section>
+
+        <CTAButton href={profileUrl}>
+          Profiel Afronden
+        </CTAButton>
+
+        <InfoBox type="tip" title="Wist je dat?">
+          Gebruikers met een volledig profiel krijgen <strong>40% betere</strong> AI
+          suggesties en halen gemiddeld <strong>2x meer</strong> uit hun abonnement.
+        </InfoBox>
+
+        <Text style={{ ...styles.heading2, marginTop: '32px' }}>
+          Waarom dit belangrijk is:
+        </Text>
+
+        <FeatureCard
+          icon="🎯"
+          title="Persoonlijker advies"
+          description="De AI begrijpt jouw unieke situatie en geeft relevantere tips."
+        />
+        <FeatureCard
+          icon="💬"
+          title="Betere openingszinnen"
+          description="Genereer berichten die echt bij jouw persoonlijkheid passen."
+        />
+        <FeatureCard
+          icon="📊"
+          title="Slimmere analyses"
+          description="Krijg diepere inzichten gebaseerd op jouw dating doelen."
+        />
+
+        <Text style={{ ...styles.paragraph, marginTop: '24px' }}>
+          Duurt maar 2 minuten! 🚀
+        </Text>
+      </Section>
+
+      <EmailFooter preferencesUrl={preferencesUrl} />
+    </BaseEmail>
   );
-};
-
-export default ProfileOptimizationEmail;
-
-// Styles
-const main = {
-  backgroundColor: '#f6f9fc',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
-};
-
-const container = {
-  backgroundColor: '#ffffff',
-  margin: '0 auto',
-  marginBottom: '64px',
-  maxWidth: '600px',
-  borderRadius: '8px',
-  overflow: 'hidden',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-};
-
-const header = {
-  background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-  padding: '40px 24px',
-  textAlign: 'center' as const,
-};
-
-const h1 = {
-  color: '#ffffff',
-  fontSize: '28px',
-  fontWeight: 'bold',
-  margin: '0 0 8px 0',
-  lineHeight: '1.2',
-};
-
-const headerSubtext = {
-  color: '#ffffff',
-  fontSize: '16px',
-  margin: '0',
-  opacity: 0.9,
-};
-
-const content = {
-  padding: '40px 24px',
-};
-
-const text = {
-  color: '#374151',
-  fontSize: '16px',
-  lineHeight: '24px',
-  margin: '16px 0',
-};
-
-const h3 = {
-  color: '#111827',
-  fontSize: '20px',
-  fontWeight: 'bold',
-  margin: '24px 0 16px 0',
-};
-
-const progressSection = {
-  backgroundColor: '#f9fafb',
-  borderRadius: '12px',
-  padding: '24px',
-  margin: '24px 0',
-  textAlign: 'center' as const,
-};
-
-const progressTitle = {
-  fontSize: '18px',
-  fontWeight: 'bold',
-  color: '#111827',
-  margin: '0 0 16px 0',
-};
-
-const progressBar = {
-  backgroundColor: '#e5e7eb',
-  height: '12px',
-  borderRadius: '6px',
-  overflow: 'hidden',
-  margin: '0 0 12px 0',
-};
-
-const progressFill = {
-  backgroundColor: '#8b5cf6',
-  height: '100%',
-  borderRadius: '6px',
-  transition: 'width 0.3s ease',
-};
-
-const progressSubtext = {
-  fontSize: '14px',
-  color: '#6b7280',
-  margin: '0',
-};
-
-const whySection = {
-  margin: '32px 0',
-};
-
-const benefitsList = {
-  margin: '16px 0',
-};
-
-const benefitItem = {
-  display: 'flex',
-  alignItems: 'flex-start',
-  gap: '16px',
-  marginBottom: '16px',
-};
-
-const benefitIcon = {
-  fontSize: '32px',
-  flexShrink: 0,
-};
-
-const benefitTitle = {
-  fontSize: '16px',
-  fontWeight: 'bold',
-  color: '#111827',
-  margin: '0 0 4px 0',
-};
-
-const benefitText = {
-  fontSize: '14px',
-  color: '#6b7280',
-  margin: '0',
-};
-
-const checklistSection = {
-  backgroundColor: '#fef3c7',
-  borderLeft: '4px solid #f59e0b',
-  borderRadius: '8px',
-  padding: '24px',
-  margin: '24px 0',
-};
-
-const checklist = {
-  margin: '16px 0',
-};
-
-const checklistItem = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  marginBottom: '12px',
-};
-
-const checklistIcon = {
-  fontSize: '20px',
-  color: '#f59e0b',
-  fontWeight: 'bold',
-};
-
-const checklistText = {
-  fontSize: '16px',
-  color: '#111827',
-  margin: '0',
-  fontWeight: '500',
-};
-
-const checklistFooter = {
-  fontSize: '14px',
-  color: '#92400e',
-  margin: '16px 0 0 0',
-  fontStyle: 'italic',
-};
-
-const ctaSection = {
-  textAlign: 'center' as const,
-  margin: '32px 0',
-};
-
-const button = {
-  backgroundColor: '#8b5cf6',
-  borderRadius: '8px',
-  color: '#ffffff',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  textDecoration: 'none',
-  textAlign: 'center' as const,
-  display: 'inline-block',
-  padding: '14px 32px',
-};
-
-const ctaSubtext = {
-  fontSize: '14px',
-  color: '#6b7280',
-  margin: '12px 0 0 0',
-};
-
-const testimonialSection = {
-  margin: '32px 0',
-};
-
-const testimonial = {
-  backgroundColor: '#f0fdf4',
-  borderLeft: '4px solid #10b981',
-  borderRadius: '8px',
-  padding: '20px',
-};
-
-const testimonialQuote = {
-  fontSize: '16px',
-  fontStyle: 'italic',
-  color: '#065f46',
-  margin: '0 0 8px 0',
-};
-
-const testimonialAuthor = {
-  fontSize: '14px',
-  color: '#047857',
-  margin: '0',
-  fontWeight: '600',
-};
-
-const hr = {
-  borderColor: '#e5e7eb',
-  margin: '32px 0',
-};
-
-const signature = {
-  color: '#374151',
-  fontSize: '16px',
-  lineHeight: '24px',
-  margin: '24px 0',
-};
-
-const footer = {
-  backgroundColor: '#f9fafb',
-  padding: '24px',
-  textAlign: 'center' as const,
-  borderTop: '1px solid #e5e7eb',
-};
-
-const footerText = {
-  color: '#6b7280',
-  fontSize: '12px',
-  margin: '0 0 12px 0',
-};
-
-const footerLinks = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '8px',
-};
-
-const footerLink = {
-  color: '#8b5cf6',
-  fontSize: '12px',
-  textDecoration: 'none',
-};
-
-const footerSeparator = {
-  color: '#d1d5db',
-  fontSize: '12px',
-};
+}

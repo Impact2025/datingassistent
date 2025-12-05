@@ -2,6 +2,7 @@
 
 import { ReactNode, useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -18,6 +19,7 @@ import {
   Play,
   ArrowRight,
   AlertCircle,
+  Target,
 } from 'lucide-react';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
@@ -59,6 +61,7 @@ type LandingPageContentProps = {
 };
 
 export function LandingPageContent({ hero }: LandingPageContentProps) {
+  const router = useRouter();
   const { user } = useUser();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -143,10 +146,22 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
       try {
         const response = await fetch('/api/reviews?limit=6&published=true');
         if (response.ok) {
-          const data = await response.json();
-          setReviews(data);
-        } else {
-          setReviews([
+          // Safe JSON parsing - handle empty or malformed responses
+          const text = await response.text();
+          if (text && text.trim() !== '') {
+            try {
+              const data = JSON.parse(text);
+              if (Array.isArray(data) && data.length > 0) {
+                setReviews(data);
+                return;
+              }
+            } catch (parseError) {
+              console.error('Error parsing reviews JSON:', parseError);
+            }
+          }
+        }
+        // Fallback to default reviews if API fails or returns empty
+        setReviews([
             {
               id: 1,
               name: 'Marieke van den Berg',
@@ -196,7 +211,6 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
               avatar: 'https://placehold.co/100x100/ef4444/fff?text=E',
             },
           ]);
-        }
       } catch (error) {
         console.error('Error fetching reviews:', error);
       }
@@ -207,19 +221,29 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
         const response = await fetch('/api/blogs?type=latest&limit=3');
 
         if (response.ok) {
-          const posts = await response.json();
-          const mappedBlogs = posts.map((post: any, index: number) => ({
-            id: index + 1,
-            title: post.title,
-            excerpt: post.excerpt,
-            slug: post.slug,
-            featured_image: post.featured_image,
-          }));
-          setBlogs(mappedBlogs);
-          setBlogsError(null);
-        } else {
-          setBlogsError('Kan blogs momenteel niet laden. Probeer het later opnieuw.');
+          // Safe JSON parsing - handle empty or malformed responses
+          const text = await response.text();
+          if (text && text.trim() !== '') {
+            try {
+              const posts = JSON.parse(text);
+              if (Array.isArray(posts)) {
+                const mappedBlogs = posts.map((post: any, index: number) => ({
+                  id: index + 1,
+                  title: post.title,
+                  excerpt: post.excerpt,
+                  slug: post.slug,
+                  featured_image: post.featured_image,
+                }));
+                setBlogs(mappedBlogs);
+                setBlogsError(null);
+                return;
+              }
+            } catch (parseError) {
+              console.error('Error parsing blogs JSON:', parseError);
+            }
+          }
         }
+        setBlogsError('Kan blogs momenteel niet laden. Probeer het later opnieuw.');
       } catch (error) {
         setBlogsError('Er trad een fout op tijdens het laden van blogs.');
       }
@@ -240,9 +264,9 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
     const packageType = planMapping[planName] || planName.toLowerCase();
 
     if (packageType !== 'free' && packageType !== 'gratis') {
-      window.location.href = `/register?plan=${packageType}&billing=yearly&redirect_after_payment=true`;
+      router.push(`/register?plan=${packageType}&billing=yearly&redirect_after_payment=true`);
     } else {
-      window.location.href = `/register`;
+      router.push('/register');
     }
   };
 
@@ -382,14 +406,6 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
               </div>
             </div>
           </div>
-
-          <div className="text-center mt-12">
-            <Link href="/features">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all font-semibold">
-                Bekijk alle tools in actie →
-              </Button>
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -494,6 +510,69 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
               ✓ Geen creditcard nodig • ✓ Direct toegang • ✓ 30 dagen geld-terug garantie
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Quiz Section - Professional & Minimal */}
+      <section className="py-24 px-4 bg-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <Card className="border-2 border-gray-200 shadow-xl bg-white">
+            <CardContent className="p-12 text-center space-y-8">
+              {/* Subtle Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-50 border border-pink-200">
+                <div className="w-2 h-2 rounded-full bg-pink-500"></div>
+                <span className="text-sm text-gray-700">1.247 mensen deze week</span>
+              </div>
+
+              {/* Title */}
+              <div className="space-y-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                  Ontdek je Dating Stijl in 2 minuten
+                </h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  AI-analyse van je gedrag met direct persoonlijk actieplan
+                </p>
+              </div>
+
+              {/* Clean Benefits */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+                <div className="space-y-3">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
+                    <TrendingUp className="w-6 h-6 text-gray-700" />
+                  </div>
+                  <div className="font-semibold text-gray-900">Persoonlijkheidsanalyse</div>
+                  <div className="text-sm text-gray-600">Je unieke dating stijl</div>
+                </div>
+                <div className="space-y-3">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
+                    <Target className="w-6 h-6 text-gray-700" />
+                  </div>
+                  <div className="font-semibold text-gray-900">Valkuilen identificeren</div>
+                  <div className="text-sm text-gray-600">Wat houdt je tegen</div>
+                </div>
+                <div className="space-y-3">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
+                    <CheckCircle className="w-6 h-6 text-gray-700" />
+                  </div>
+                  <div className="font-semibold text-gray-900">Concreet actieplan</div>
+                  <div className="text-sm text-gray-600">Direct toepasbaar</div>
+                </div>
+              </div>
+
+              {/* Clean CTA */}
+              <div className="pt-6 space-y-4">
+                <Link href="/quiz">
+                  <Button className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold">
+                    Start Gratis Analyse
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+                <p className="text-xs text-gray-500">
+                  2 minuten • 100% gratis • Direct resultaat
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -830,69 +909,74 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-pink-500 via-pink-600 to-purple-600 rounded-3xl p-12 shadow-2xl text-white text-center space-y-6">
-              <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-6 py-2 text-sm font-semibold mb-4">
-                ⏰ Geen "perfect moment", begin vandaag
-              </div>
+            <Card className="border-2 border-gray-200 shadow-xl bg-white">
+              <CardContent className="p-12 text-center space-y-8">
+                {/* Clean Badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200">
+                  <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                  <span className="text-sm text-gray-700">Start vandaag</span>
+                </div>
 
-              <h3 className="text-3xl md:text-4xl font-bold">
-                Stop met wachten. Start met groeien.
-              </h3>
+                <div className="space-y-4">
+                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
+                    Stop met wachten. Start met groeien.
+                  </h3>
 
-              <p className="text-lg text-pink-50 max-w-2xl mx-auto leading-relaxed">
-                De gemiddelde gebruiker denkt: "Laat ik dit proberen, kan toch gratis". Twee weken later: "Waarom heb ik dit niet eerder gedaan?"
-              </p>
+                  <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                    De gemiddelde gebruiker denkt: "Laat ik dit proberen, kan toch gratis". Twee weken later: "Waarom heb ik dit niet eerder gedaan?"
+                  </p>
+                </div>
 
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto">
-                <p className="text-white font-medium mb-4">Je krijgt vandaag toegang tot:</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-left">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-                    <span>Gratis Profiel Coach scan</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-                    <span>24/7 Chat Coach hulp</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-                    <span>AI Foto Check</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-                    <span>Opener Lab</span>
+                {/* Clean Grid - No backdrop blur */}
+                <div className="bg-gray-50 rounded-2xl p-6 max-w-2xl mx-auto border border-gray-200">
+                  <p className="text-gray-900 font-semibold mb-4">Je krijgt vandaag toegang tot:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-left">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      <span className="text-gray-700">Gratis Profiel Coach scan</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      <span className="text-gray-700">24/7 Chat Coach hulp</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      <span className="text-gray-700">AI Foto Check</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      <span className="text-gray-700">Opener Lab</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-                <Link href="/register" className="w-full sm:w-auto">
-                  <Button className="bg-white hover:bg-gray-50 text-pink-600 px-10 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto font-bold text-lg">
-                    Start gratis (60 seconden) →
-                  </Button>
-                </Link>
-                <Link href="#programmas" className="w-full sm:w-auto">
-                  <Button variant="outline" className="border-2 border-white/50 text-white hover:bg-white/10 px-10 py-4 rounded-full transition-all w-full sm:w-auto font-semibold">
-                    Bekijk programma's
-                  </Button>
-                </Link>
-              </div>
+                {/* Single CTA */}
+                <div className="pt-4">
+                  <Link href="/register">
+                    <Button className="bg-gray-900 hover:bg-gray-800 text-white px-10 py-4 rounded-lg font-semibold text-lg">
+                      Start gratis (60 seconden)
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-pink-50 pt-4">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>Geen creditcard nodig</span>
+                {/* Simple trust indicators */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-600 pt-4">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-gray-400" />
+                    <span>Geen creditcard nodig</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-gray-400" />
+                    <span>Direct toegang</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-gray-400" />
+                    <span>30 dagen geld-terug</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>Direct toegang</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>30 dagen geld-terug</span>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>

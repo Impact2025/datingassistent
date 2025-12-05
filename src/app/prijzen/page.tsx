@@ -318,7 +318,7 @@ export default function PrijzenPage() {
                 Start gratis proefperiode
               </Button>
             </Link>
-            <Link href="/features">
+            <Link href="/#tools">
               <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-6 text-lg rounded-full">
                 Bekijk alle features
               </Button>

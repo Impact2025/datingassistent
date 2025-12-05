@@ -9,7 +9,7 @@ import { GraduationCap, Sparkles, Award, BookOpen, Lightbulb, CheckCircle2, Play
 import { cn } from "@/lib/utils";
 
 // Import existing components
-import { CursussenGallery } from "./cursussen-gallery";
+import { CursussenTab } from "./cursussen-tab";
 import { PersonalRecommendations } from "./personal-recommendations";
 import { SkillsAssessmentTab } from "./skills-assessment-tab";
 import { WaardenKompasTool } from "../waarden-kompas/WaardenKompasTool";
@@ -30,7 +30,7 @@ export function LerenOntwikkelenModule({ onTabChange }: LerenOntwikkelenModulePr
       label: "Online Cursussen",
       icon: GraduationCap,
       description: "Gestructureerde leerpaden voor dating skills",
-      component: <CursussenGallery />,
+      component: <CursussenTab />,
       badge: "Vernieuwd"
     },
     {

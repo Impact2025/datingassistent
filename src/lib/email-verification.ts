@@ -71,189 +71,61 @@ export async function verifyEmailWithToken(token: string): Promise<{ success: bo
 }
 
 /**
- * Send email verification email
+ * Send email verification email using React Email template
  */
 export async function sendEmailVerificationEmail(
   userEmail: string,
   userName: string,
   verificationUrl: string
 ): Promise<boolean> {
-  // Dynamic import to avoid client-side issues
+  // Dynamic imports to avoid client-side issues
   const { sendEmail } = await import('./email-service');
+  const { render } = await import('@react-email/components');
+  const { default: VerificationEmail } = await import('@/emails/verification-email');
 
-  const subject = 'Verifieer je emailadres - DatingAssistent';
-  const htmlContent = `
-    <!DOCTYPE html>
-    <html lang="nl">
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Email Verificatie - DatingAssistent</title>
-      <style>
-        @media only screen and (max-width: 600px) {
-          .container { width: 100% !important; padding: 10px !important; }
-          .content { padding: 20px !important; }
-          .button { padding: 12px 24px !important; font-size: 14px !important; }
-        }
-      </style>
-    </head>
-    <body style="font-family: 'PT Sans', Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f9fa;">
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f8f9fa">
-        <tr>
-          <td align="center" style="padding: 40px 20px;">
-            <!-- Main Container -->
-            <table class="container" width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden;">
-              <!-- Header -->
-              <tr>
-                <td style="padding: 40px 40px 20px 40px; text-align: center; border-bottom: 1px solid #e5e7eb;">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td align="center">
-                        <!-- Logo -->
-                        <img src="https://datingassistent.nl/images/LogoDatingAssistent.png" alt="DatingAssistent Logo" width="48" height="48" style="vertical-align: middle; margin-right: 12px;">
-                        <span style="font-size: 28px; font-weight: 700; color: #E14874;">Dating</span>
-                        <span style="font-size: 28px; font-weight: 700; color: #1f2937;">Assistent</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center" style="padding-top: 8px;">
-                        <span style="font-size: 16px; color: #6b7280; font-weight: 400;">datingassistent.nl</span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
+  try {
+    const html = await render(
+      VerificationEmail({
+        firstName: userName,
+        verificationCode: '', // Not used for link-based verification
+        verificationUrl,
+        expiresIn: '24 uur',
+      }),
+      { pretty: true }
+    );
 
-              <!-- Content -->
-              <tr>
-                <td style="padding: 40px;">
-                  <!-- Welcome Message -->
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td align="center" style="padding-bottom: 30px;">
-                        <h1 style="margin: 0; font-size: 32px; font-weight: 700; color: #1f2937; text-align: center;">
-                          Welkom bij DatingAssistent!
-                        </h1>
-                        <p style="margin: 10px 0 0 0; font-size: 18px; color: #6b7280; text-align: center;">
-                          Verificeer je emailadres om te beginnen
-                        </p>
-                      </td>
-                    </tr>
+    const textContent = `
+Verificeer je emailadres - DatingAssistent
 
-                    <!-- Personal Greeting -->
-                    <tr>
-                      <td style="padding-bottom: 30px;">
-                        <h2 style="margin: 0 0 16px 0; font-size: 24px; font-weight: 600; color: #1f2937;">
-                          Hallo ${userName}!
-                        </h2>
-                        <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4b5563;">
-                          Bedankt voor je registratie! Om je account te activeren en te zorgen voor een veilige dating community, klik op de onderstaande knop om je emailadres te verifiëren.
-                        </p>
-                      </td>
-                    </tr>
+Hallo ${userName}!
 
-                    <!-- CTA Button -->
-                    <tr>
-                      <td align="center" style="padding: 30px 0;">
-                        <table border="0" cellspacing="0" cellpadding="0">
-                          <tr>
-                            <td align="center" style="border-radius: 8px; background: linear-gradient(135deg, #ec4899 0%, #f97316 100%); box-shadow: 0 4px 14px 0 rgba(236, 72, 153, 0.39);">
-                              <a href="${verificationUrl}" style="display: inline-block; padding: 16px 32px; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 8px;">
-                                ✅ Verificeer Emailadres
-                              </a>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
+Bedankt voor je registratie! Om je account te activeren, klik op deze link:
+${verificationUrl}
 
-                    <!-- Instructions -->
-                    <tr>
-                      <td style="padding-bottom: 30px;">
-                        <div style="background-color: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                              <td align="center">
-                                <p style="margin: 0; font-size: 16px; font-weight: 600; color: #92400e;">
-                                  ⏰ Deze verificatie link verloopt over 24 uur
-                                </p>
-                                <p style="margin: 8px 0 0 0; font-size: 14px; color: #92400e;">
-                                  Klik op de bovenstaande knop om je account direct te activeren. Als je geen account hebt aangemaakt bij DatingAssistent, negeer dan deze email.
-                                </p>
-                              </td>
-                            </tr>
-                          </table>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
+Deze link verloopt over 24 uur.
 
-              <!-- Footer -->
-              <tr>
-                <td style="padding: 30px 40px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td align="center" style="padding-bottom: 20px;">
-                        <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">
-                          Vragen of hulp nodig?
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center" style="padding-bottom: 20px;">
-                        <a href="mailto:support@datingassistent.nl" style="color: #E14874; text-decoration: none; font-weight: 500;">support@datingassistent.nl</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center" style="border-top: 1px solid #e5e7eb; padding-top: 20px;">
-                        <p style="margin: 0; font-size: 12px; color: #9ca3af; text-align: center; line-height: 1.4;">
-                          Je ontvangt deze email omdat je je hebt geregistreerd bij DatingAssistent.<br>
-                          <a href="https://datingassistent.nl/privacy" style="color: #9ca3af; text-decoration: underline;">Privacy Policy</a> |
-                          <a href="https://datingassistent.nl/algemene-voorwaarden" style="color: #9ca3af; text-decoration: underline;">Algemene Voorwaarden</a>
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </body>
-    </html>
-  `;
+Als je geen account hebt aangemaakt bij DatingAssistent, negeer dan deze email.
 
-  const textContent = `
-    Welkom bij DatingAssistent!
+Met vriendelijke groet,
+Het DatingAssistent Team
 
-    Hallo ${userName}!
+---
+Vragen? support@datingassistent.nl
+Privacy: https://datingassistent.nl/privacy
+Voorwaarden: https://datingassistent.nl/algemene-voorwaarden
+    `.trim();
 
-    Bedankt voor je registratie! Om je account te activeren, klik op deze link:
-    ${verificationUrl}
-
-    Deze link verloopt over 24 uur.
-
-    Als je geen account hebt aangemaakt bij DatingAssistent, negeer dan deze email.
-
-    Met vriendelijke groet,
-    Het DatingAssistent Team
-
-    ---
-    Vragen? support@datingassistent.nl
-    Privacy: https://datingassistent.nl/privacy
-    Voorwaarden: https://datingassistent.nl/algemene-voorwaarden
-  `;
-
-  return sendEmail({
-    to: userEmail,
-    from: 'noreply@datingassistent.nl',
-    subject,
-    html: htmlContent,
-    text: textContent
-  });
+    return sendEmail({
+      to: userEmail,
+      from: 'noreply@datingassistent.nl',
+      subject: 'Verifieer je emailadres - DatingAssistent',
+      html,
+      text: textContent
+    });
+  } catch (error) {
+    console.error('Error rendering verification email:', error);
+    return false;
+  }
 }
 
 /**
@@ -500,204 +372,58 @@ export async function verifyEmailWithCode(userId: number, code: string): Promise
 }
 
 /**
- * Send verification code email
+ * Send verification code email using React Email template
  */
 export async function sendVerificationCodeEmail(
   userEmail: string,
   userName: string,
   verificationCode: string
 ): Promise<boolean> {
-  // Dynamic import to avoid client-side issues
+  // Dynamic imports to avoid client-side issues
   const { sendEmail } = await import('./email-service');
+  const { render } = await import('@react-email/components');
+  const { default: VerificationEmail } = await import('@/emails/verification-email');
 
-  const subject = 'Je verificatie code - DatingAssistent';
-  const htmlContent = `
-    <!DOCTYPE html>
-    <html lang="nl">
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Verificatie Code - DatingAssistent</title>
-      <style>
-        @media only screen and (max-width: 600px) {
-          .container { width: 100% !important; padding: 10px !important; }
-          .content { padding: 20px !important; }
-          .code-box { font-size: 28px !important; padding: 20px 24px !important; letter-spacing: 4px !important; }
-        }
-      </style>
-    </head>
-    <body style="font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #1a1a1a; margin: 0; padding: 20px 0; background-color: #F2F2F2;">
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F2F2F2">
-        <tr>
-          <td align="center" style="padding: 20px;">
-            <!-- Main Container -->
-            <table class="container" width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" style="border-radius: 8px; overflow: hidden; border: 1px solid #E5E5E5;">
-              <!-- Header -->
-              <tr>
-                <td style="padding: 30px; text-align: center; border-bottom: 1px solid #E5E5E5;">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td align="center" style="padding-bottom: 20px;">
-                        <!-- Logo -->
-                        <table border="0" cellspacing="0" cellpadding="0">
-                          <tr>
-                            <td style="vertical-align: middle; padding-right: 12px;">
-                              <svg width="40" height="40" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M100 180C100 180 20 120 20 70C20 50 30 30 50 30C70 30 85 45 100 60C115 45 130 30 150 30C170 30 180 50 180 70C180 120 100 180 100 180Z" fill="#E14874" stroke="#E14874" strokeWidth="8" strokeLinejoin="round"/>
-                                <g transform="translate(60, 60) rotate(-45 50 50)">
-                                  <line x1="30" y1="50" x2="120" y2="50" stroke="#E14874" strokeWidth="12" strokeLinecap="round"/>
-                                  <path d="M115 35 L135 50 L115 65" fill="none" stroke="#E14874" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round"/>
-                                  <path d="M35 40 L25 50 L35 60" fill="none" stroke="#E14874" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round"/>
-                                </g>
-                              </svg>
-                            </td>
-                            <td style="vertical-align: middle;">
-                              <span style="font-size: 24px; font-weight: 700; color: #E14874;">Dating</span>
-                              <span style="font-size: 24px; font-weight: 700; color: #1a1a1a;">Assistent</span>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center" style="padding-bottom: 16px;">
-                        <span style="font-size: 16px; color: #6b7280;">Verificatie Code</span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
+  try {
+    const html = await render(
+      VerificationEmail({
+        firstName: userName,
+        verificationCode,
+        expiresIn: '60 minuten',
+      }),
+      { pretty: true }
+    );
 
-              <!-- Content -->
-              <tr>
-                <td style="padding: 30px;">
-                  <!-- Greeting -->
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td style="padding-bottom: 16px;">
-                        <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #1a1a1a; line-height: 1.4;">
-                          Hallo ${userName}!
-                        </h2>
-                      </td>
-                    </tr>
+    const textContent = `
+Verificatie Code - DatingAssistent
 
-                    <!-- Message -->
-                    <tr>
-                      <td style="padding-bottom: 32px;">
-                        <p style="margin: 0; font-size: 16px; line-height: 24px; color: #374151;">
-                          Welkom bij DatingAssistent! Om je account te activeren en te zorgen voor een veilige community, voer deze verificatie code in:
-                        </p>
-                      </td>
-                    </tr>
+Hallo ${userName}!
 
-                    <!-- Code Container -->
-                    <tr>
-                      <td align="center" style="padding: 40px 0;">
-                        <table border="0" cellspacing="0" cellpadding="0" bgcolor="#FAFAFA" style="border-radius: 12px; border: 1px solid #F3F4F6;">
-                          <tr>
-                            <td style="padding: 32px;">
-                              <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr>
-                                  <td align="center" style="padding-bottom: 24px;">
-                                    <span style="font-size: 16px; color: #6b7280; font-weight: 500;">Je verificatie code is:</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td align="center">
-                                    <div style="display: inline-block; background-color: #ef4444; color: #ffffff; padding: 24px 32px; border-radius: 12px; font-size: 36px; font-weight: 700; letter-spacing: 8px; box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);">
-                                      ${verificationCode}
-                                    </div>
-                                  </td>
-                                </tr>
-                              </table>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
+Welkom bij DatingAssistent! Om je account te activeren, voer deze verificatie code in:
 
-                    <!-- Warning -->
-                    <tr>
-                      <td style="padding: 32px 0;">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FEF2F2" style="border-radius: 12px; border: 1px solid #ef4444;">
-                          <tr>
-                            <td style="padding: 20px;">
-                              <span style="color: #dc2626; font-size: 14px; font-weight: 500; line-height: 1.5;">
-                                ⏰ Deze code verloopt over 60 minuten. Deel deze code niet met anderen.
-                              </span>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
+Je verificatie code is: ${verificationCode}
 
-              <!-- Footer -->
-              <tr>
-                <td style="padding: 20px 30px; background-color: #F9FAFB; border-top: 1px solid #F3F4F6; text-align: center;">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td style="padding-bottom: 10px;">
-                        <span style="font-size: 12px; color: #6b7280; line-height: 1.4;">
-                          Niet aangevraagd? Negeer deze email.
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding-bottom: 10px;">
-                        <a href="mailto:support@datingassistent.nl" style="color: #ef4444; text-decoration: none; font-weight: 500;">
-                          support@datingassistent.nl
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding-top: 10px; border-top: 1px solid #F3F4F6;">
-                      <span style="font-size: 12px; color: #9ca3af;">
-                        © 2025 DatingAssistent. Alle rechten voorbehouden.
-                      </span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </body>
-    </html>
-  `;
+Deze code verloopt over 60 minuten. Deel deze code niet met anderen.
 
-  const textContent = `
-    Verificatie Code - DatingAssistent
+Niet aangevraagd? Negeer deze email.
 
-    Hallo ${userName}!
+Heb je vragen? support@datingassistent.nl
 
-    Welkom bij DatingAssistent! Om je account te activeren, voer deze verificatie code in:
+---
+DatingAssistent - De dating coach die altijd beschikbaar is
+    `.trim();
 
-    Je verificatie code is: ${verificationCode}
-
-    Deze code verloopt over 60 minuten. Deel deze code niet met anderen.
-
-    Niet aangevraagd? Negeer deze email.
-
-    Heb je vragen? support@datingassistent.nl
-
-    ---
-    DatingAssistent - Dé dating coach die altijd beschikbaar is
-    Dashboard: https://datingassistent.nl/dashboard
-    Privacy: https://datingassistent.nl/privacy
-  `;
-
-  return sendEmail({
-    to: userEmail,
-    from: 'noreply@datingassistent.nl',
-    subject,
-    html: htmlContent,
-    text: textContent
-  });
+    return sendEmail({
+      to: userEmail,
+      from: 'noreply@datingassistent.nl',
+      subject: `Je verificatie code: ${verificationCode}`,
+      html,
+      text: textContent
+    });
+  } catch (error) {
+    console.error('Error rendering verification email:', error);
+    return false;
+  }
 }
 
 /**

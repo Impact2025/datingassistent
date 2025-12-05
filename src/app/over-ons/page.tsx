@@ -86,7 +86,7 @@ export default function OverOnsPage() {
       {/* Mission Section */}
       <section id="missie" className="py-20 px-4 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md-text-4xl font-bold text-gray-900 mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
             Onze missie: Daten toegankelijker maken
           </h2>
           <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl p-8 border border-pink-200 max-w-3xl mx-auto mb-8">
@@ -104,7 +104,7 @@ export default function OverOnsPage() {
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md-text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Waar we voor staan
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -150,7 +150,7 @@ export default function OverOnsPage() {
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md-text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Resultaten die tellen
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -242,7 +242,7 @@ export default function OverOnsPage() {
       <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md-text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Onze reis: Van traditioneel naar digitaal
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">

@@ -6,7 +6,6 @@
  */
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -39,7 +38,11 @@ interface CursusProgress {
   };
 }
 
-export function MijnCursussenWidget() {
+interface MijnCursussenWidgetProps {
+  onTabChange?: (tab: string) => void;
+}
+
+export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
   const [activeCursussen, setActiveCursussen] = useState<CursusProgress[]>([]);
   const [aanbevolenCursussen, setAanbevolenCursussen] = useState<CursusProgress[]>([]);
   const [stats, setStats] = useState({
@@ -124,15 +127,14 @@ export function MijnCursussenWidget() {
                 <p className="text-sm text-gray-600">Je leertraject naar dating succes</p>
               </div>
             </div>
-            <Link href="/cursussen">
-              <Button
-                variant="ghost"
-                className="text-pink-500 hover:text-pink-600 hover:bg-pink-50"
-              >
-                Alles bekijken
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
+            <Button
+              variant="ghost"
+              className="text-pink-500 hover:text-pink-600 hover:bg-pink-50"
+              onClick={() => onTabChange?.('cursussen')}
+            >
+              Alles bekijken
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
 
           {/* Quick Stats */}
@@ -181,7 +183,11 @@ export function MijnCursussenWidget() {
 
             <div className="space-y-3">
               {activeCursussen.map((cursus) => (
-                <Link key={cursus.id} href={`/cursussen/${cursus.slug}`}>
+                <div
+                  key={cursus.id}
+                  onClick={() => onTabChange?.('cursussen')}
+                  className="cursor-pointer"
+                >
                   <div className="p-4 rounded-lg border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50/30 transition-all group">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex-1">
@@ -213,7 +219,7 @@ export function MijnCursussenWidget() {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </CardContent>
@@ -231,7 +237,11 @@ export function MijnCursussenWidget() {
 
             <div className="grid md:grid-cols-3 gap-4">
               {aanbevolenCursussen.map((cursus) => (
-                <Link key={cursus.id} href={`/cursussen/${cursus.slug}`}>
+                <div
+                  key={cursus.id}
+                  onClick={() => onTabChange?.('cursussen')}
+                  className="cursor-pointer"
+                >
                   <div className="p-4 rounded-lg border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50/30 transition-all group h-full">
                     <div className="flex items-start gap-3 mb-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
@@ -255,7 +265,7 @@ export function MijnCursussenWidget() {
                       <ArrowRight className="w-3 h-3" />
                     </div>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </CardContent>
@@ -273,12 +283,13 @@ export function MijnCursussenWidget() {
             <p className="text-sm text-gray-600 mb-4">
               Begin met een van onze cursussen om je dating vaardigheden te verbeteren
             </p>
-            <Link href="/cursussen">
-              <Button className="bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white">
-                Bekijk alle cursussen
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
+            <Button
+              className="bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white"
+              onClick={() => onTabChange?.('cursussen')}
+            >
+              Bekijk alle cursussen
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </CardContent>
         </Card>
       )}

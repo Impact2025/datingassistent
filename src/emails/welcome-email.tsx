@@ -1,396 +1,155 @@
+/**
+ * Welcome Email - Sent after email verification
+ * DatingAssistent World-Class Email System
+ */
+
 import * as React from 'react';
-import { WelcomeEmailTemplate } from '@/components/emails/templates/welcome-template';
+import { Section, Text, Hr } from '@react-email/components';
+import {
+  BaseEmail,
+  HeroHeader,
+  Greeting,
+  CTAButton,
+  FeatureCard,
+  StepsList,
+  InfoBox,
+  EmailFooter,
+  styles,
+  colors,
+} from './components/email-base';
 
 interface WelcomeEmailProps {
   firstName: string;
-  subscriptionType: string;
-  dashboardUrl: string;
+  subscriptionType: 'sociaal' | 'core' | 'pro' | 'premium';
+  dashboardUrl?: string;
 }
 
-export const WelcomeEmail = ({
-  firstName = 'Dating Expert',
+const tierFeatures = {
+  sociaal: {
+    name: 'Sociaal',
+    features: ['AI Dating Coach', 'Basis tools', 'Community toegang'],
+    aiMessages: 15,
+  },
+  core: {
+    name: 'Core',
+    features: ['Onbeperkt AI Coach', 'Alle tools', '8+ cursussen', 'Foto analyse'],
+    aiMessages: 50,
+  },
+  pro: {
+    name: 'Pro',
+    features: ['Alles van Core', 'Priority support', 'Geavanceerde analytics', 'Exclusieve content'],
+    aiMessages: 100,
+  },
+  premium: {
+    name: 'Premium',
+    features: ['Alles onbeperkt', '1-op-1 coaching', 'VIP community', 'Eerste toegang nieuwe features'],
+    aiMessages: 'Onbeperkt',
+  },
+};
+
+export default function WelcomeEmail({
+  firstName,
   subscriptionType = 'core',
   dashboardUrl = 'https://datingassistent.nl/dashboard',
-}: WelcomeEmailProps) => {
+}: WelcomeEmailProps) {
+  const tier = tierFeatures[subscriptionType] || tierFeatures.core;
+  const preferencesUrl = `${dashboardUrl}/settings/email-preferences`;
+
   return (
-    <WelcomeEmailTemplate
-      firstName={firstName}
-      dashboardUrl={dashboardUrl}
-      trialDays={7}
-    />
+    <BaseEmail preview={`Welkom ${firstName}! Je dating journey begint nu`}>
+      <HeroHeader
+        title="Welkom bij DatingAssistent!"
+        subtitle="Je eerste stap naar succesvol daten"
+      />
+
+      <Section style={styles.content}>
+        <Greeting name={firstName} />
+
+        <Text style={styles.paragraph}>
+          Wat geweldig dat je er bent! Je hebt zojuist de eerste stap gezet naar
+          succesvol en zelfverzekerd daten. Met je <strong>{tier.name}</strong> pakket
+          heb je toegang tot alles wat je nodig hebt.
+        </Text>
+
+        <InfoBox type="success" title="Je pakket is actief">
+          Je {tier.name} abonnement is nu actief met {typeof tier.aiMessages === 'number' ? `${tier.aiMessages} AI berichten per week` : 'onbeperkte AI berichten'}.
+        </InfoBox>
+
+        <Text style={{ ...styles.heading2, marginTop: '32px' }}>
+          Je eerste 3 stappen:
+        </Text>
+
+        <StepsList
+          steps={[
+            {
+              title: 'Profiel completeren (30 sec)',
+              description: 'Vul je profiel aan zodat de AI je beter kan helpen met persoonlijk advies.',
+            },
+            {
+              title: 'Eerste AI chat starten',
+              description: 'Stel je eerste vraag aan de Chat Coach en krijg direct advies.',
+            },
+            {
+              title: 'Ontdek de tools',
+              description: 'Probeer de profielanalyzer of openingszinnen generator.',
+            },
+          ]}
+        />
+
+        <CTAButton href={dashboardUrl}>
+          Start je dating avontuur
+        </CTAButton>
+
+        <Hr style={styles.divider} />
+
+        <Text style={{ ...styles.heading2, marginTop: '24px' }}>
+          Wat je kunt verwachten:
+        </Text>
+
+        <FeatureCard
+          icon="🤖"
+          title="24/7 AI Dating Coach"
+          description="Stel al je dating vragen, dag en nacht. Van profiel tips tot gesprekstechnieken."
+        />
+        <FeatureCard
+          icon="📚"
+          title="8+ Expert Cursussen"
+          description="Van profieloptimalisatie tot eerste date tips. Leer van dating experts."
+        />
+        <FeatureCard
+          icon="🛠️"
+          title="20+ Slimme Tools"
+          description="Profiel analyzer, openingszinnen generator, foto check, en meer."
+        />
+        <FeatureCard
+          icon="📈"
+          title="89% Meer Matches"
+          description="Onze gebruikers zien gemiddeld 89% meer matches na 2 weken."
+        />
+
+        <InfoBox type="tip" title="Pro tip">
+          Begin met de Chat Coach - vertel over je dating situatie en krijg
+          direct persoonlijk advies. Je kunt letterlijk alles vragen!
+        </InfoBox>
+
+        <Text style={{ ...styles.paragraph, marginTop: '24px' }}>
+          Heb je vragen? Reply gewoon op deze email of mail naar{' '}
+          <a href="mailto:support@datingassistent.nl" style={styles.link}>
+            support@datingassistent.nl
+          </a>
+          . We helpen je graag!
+        </Text>
+
+        <Text style={styles.paragraph}>
+          Succes met je dating journey!
+        </Text>
+
+        <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark }}>
+          Vincent & het DatingAssistent team
+        </Text>
+      </Section>
+
+      <EmailFooter preferencesUrl={preferencesUrl} />
+    </BaseEmail>
   );
-};
-
-export default WelcomeEmail;
-
-// Modern Card-Based Email Styles
-const contentCard = {
-  backgroundColor: '#ffffff',
-  borderRadius: '16px',
-  padding: '24px',
-  marginBottom: '24px',
-  border: '1px solid #f3f4f6',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-};
-
-const greetingContainer = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  marginBottom: '16px',
-};
-
-const greetingIcon = {
-  flexShrink: 0,
-};
-
-const greeting = {
-  color: '#1a1a1a',
-  fontSize: '24px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  fontWeight: '700',
-  margin: '0 0 16px 0',
-  lineHeight: '1.3',
-  letterSpacing: '-0.02em',
-};
-
-const paragraph = {
-  color: '#374151',
-  fontSize: '16px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  lineHeight: '24px',
-  margin: '0 0 16px 0',
-  fontWeight: '400',
-};
-
-const cardTitleContainer = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '8px',
-  marginBottom: '20px',
-};
-
-const cardTitleIcon = {
-  flexShrink: 0,
-};
-
-const cardTitle = {
-  color: '#E14874',
-  fontSize: '20px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  fontWeight: '600',
-  margin: '0',
-  lineHeight: '1.4',
-  textAlign: 'center' as const,
-};
-
-const statusCard = {
-  backgroundColor: '#fef7ff',
-  borderRadius: '16px',
-  padding: '24px',
-  marginBottom: '24px',
-  border: '1px solid #e9d5ff',
-};
-
-const statusHeader = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  marginBottom: '12px',
-};
-
-const statusIcon = {
-  fontSize: '24px',
-};
-
-const statusTitle = {
-  color: '#E14874',
-  fontSize: '18px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  fontWeight: '600',
-  margin: '0',
-  lineHeight: '1.4',
-};
-
-const statusText = {
-  color: '#6b7280',
-  fontSize: '14px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  margin: '0',
-  lineHeight: '1.5',
-};
-
-const stepsCard = {
-  backgroundColor: '#ffffff',
-  borderRadius: '16px',
-  padding: '24px',
-  marginBottom: '24px',
-  border: '1px solid #f3f4f6',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-};
-
-
-const stepsGrid = {
-  display: 'grid',
-  gap: '16px',
-};
-
-const stepCard = {
-  backgroundColor: '#fafafa',
-  borderRadius: '12px',
-  padding: '16px',
-  border: '1px solid #f3f4f6',
-};
-
-const stepHeader = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  marginBottom: '8px',
-};
-
-const stepNumberCard = {
-  backgroundColor: 'transparent',
-  color: '#E14874',
-  width: '32px',
-  height: '32px',
-  borderRadius: '50%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontWeight: '600',
-  fontSize: '14px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  flexShrink: 0,
-};
-
-const stepTitleCard = {
-  color: '#E14874',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: '"Inter", Arial, sans-serif',
-  margin: '0',
-  lineHeight: '1.4',
-};
-
-const stepDescCard = {
-  color: '#6b7280',
-  fontSize: '14px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  margin: '0',
-  lineHeight: '1.5',
-};
-
-const ctaSection = {
-  textAlign: 'center' as const,
-  margin: '32px 0',
-};
-
-const buttonContent = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '8px',
-};
-
-const buttonIcon = {
-  flexShrink: 0,
-};
-
-const primaryButton = {
-  backgroundColor: 'transparent',
-  borderRadius: '12px',
-  color: '#E14874',
-  fontSize: '16px',
-  fontWeight: '600',
-  fontFamily: '"Inter", Arial, sans-serif',
-  textDecoration: 'none',
-  textAlign: 'center' as const,
-  display: 'inline-block',
-  padding: '16px 32px',
-  border: 'none',
-  marginBottom: '12px',
-};
-
-const ctaText = {
-  color: '#6b7280',
-  fontSize: '14px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  margin: '0',
-  lineHeight: '1.5',
-};
-
-const benefitsCard = {
-  backgroundColor: '#f8fffe',
-  borderRadius: '16px',
-  padding: '24px',
-  marginBottom: '24px',
-  border: '1px solid #b8f5e8',
-};
-
-const benefitsTitleContainer = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '8px',
-  marginBottom: '20px',
-};
-
-const benefitsTitleIcon = {
-  flexShrink: 0,
-};
-
-const benefitsTitle = {
-  color: '#E14874',
-  fontSize: '18px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  fontWeight: '600',
-  margin: '0',
-  lineHeight: '1.4',
-  textAlign: 'center' as const,
-};
-
-
-const benefitsGrid = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '16px',
-};
-
-const benefitItem = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  padding: '12px',
-  backgroundColor: '#ffffff',
-  borderRadius: '8px',
-  border: '1px solid #f0fdf9',
-};
-
-const benefitIcon = {
-  fontSize: '20px',
-};
-
-const benefitText = {
-  color: '#374151',
-  fontSize: '14px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  margin: '0',
-  fontWeight: '500',
-  lineHeight: '1.4',
-};
-
-const supportCard = {
-  backgroundColor: '#fffbeb',
-  borderRadius: '12px',
-  padding: '16px',
-  marginBottom: '24px',
-  border: '1px solid #fed7aa',
-};
-
-const supportContent = {
-  display: 'flex',
-  alignItems: 'flex-start',
-  gap: '12px',
-};
-
-const supportIcon = {
-  flexShrink: 0,
-  marginTop: '2px',
-};
-
-const supportText = {
-  color: '#92400e',
-  fontSize: '14px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  margin: '0',
-  lineHeight: '1.5',
-  textAlign: 'center' as const,
-};
-
-const signatureSection = {
-  textAlign: 'center' as const,
-  marginTop: '24px',
-};
-
-const signature = {
-  color: '#374151',
-  fontSize: '16px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  lineHeight: '24px',
-  margin: '0',
-  fontWeight: '500',
-};
-
-// Feature Block Styles
-const featureBlockCard = {
-  backgroundColor: '#ffffff',
-  borderRadius: '16px',
-  padding: '24px',
-  marginBottom: '24px',
-  border: '1px solid #f3f4f6',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-};
-
-const featureBlockTitleContainer = {
-  textAlign: 'center' as const,
-  marginBottom: '20px',
-};
-
-const featureBlockTitle = {
-  color: '#E14874',
-  fontSize: '18px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  fontWeight: '600',
-  margin: '0',
-  lineHeight: '1.4',
-};
-
-const featureGrid = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '16px',
-};
-
-const featureItem = {
-  display: 'flex',
-  flexDirection: 'column' as const,
-  alignItems: 'center',
-  gap: '8px',
-  padding: '16px',
-  backgroundColor: '#fafafa',
-  borderRadius: '12px',
-  border: '1px solid #f3f4f6',
-};
-
-const featureIconBackground = {
-  width: '48px',
-  height: '48px',
-  borderRadius: '12px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-};
-
-const featureIconCircle = {
-  width: '32px',
-  height: '32px',
-  borderRadius: '50%',
-  backgroundColor: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-};
-
-const featureText = {
-  color: '#374151',
-  fontSize: '14px',
-  fontFamily: '"Inter", Arial, sans-serif',
-  fontWeight: '500',
-  margin: '0',
-  lineHeight: '1.4',
-  textAlign: 'center' as const,
-};
-
+}

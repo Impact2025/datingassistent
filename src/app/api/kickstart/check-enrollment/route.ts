@@ -31,15 +31,19 @@ export async function GET(req: NextRequest) {
     `;
 
     const hasEnrollment = enrollments.length > 0;
+    const hasOnboardingData = hasEnrollment && enrollments[0]?.kickstart_onboarding_completed === true;
 
     console.log('✅ Kickstart enrollment check:', {
       userId: currentUser.id,
       hasEnrollment,
+      hasOnboardingData,
+      onboardingCompleted: enrollments[0]?.kickstart_onboarding_completed,
       enrollment: enrollments[0] || null
     });
 
     return NextResponse.json({
       hasEnrollment,
+      hasOnboardingData,
       enrollment: hasEnrollment ? enrollments[0] : null
     });
 

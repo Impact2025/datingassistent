@@ -288,7 +288,9 @@ export async function GET(request: NextRequest) {
       if (isComplete && tx.program_slug) {
         // Special handling for Kickstart: check if onboarding is completed
         if (tx.program_slug === 'kickstart') {
-          // Check if user completed Kickstart onboarding
+          // Kickstart onboarding is now integrated in the dashboard
+          // The dashboard automatically detects if onboarding is needed
+          // and shows the KickstartIntakeChat component
           const onboardingCheck = await sql`
             SELECT kickstart_onboarding_completed
             FROM program_enrollments
@@ -298,13 +300,10 @@ export async function GET(request: NextRequest) {
 
           const onboardingCompleted = onboardingCheck.rows[0]?.kickstart_onboarding_completed;
 
-          if (!onboardingCompleted) {
-            // Redirect to onboarding first
-            nextAction = '/kickstart/onboarding';
-          } else {
-            // Onboarding done, go to Kickstart
-            nextAction = '/kickstart';
-          }
+          // Always go to dashboard - it handles onboarding detection automatically
+          // If onboarding not done: dashboard shows KickstartIntakeChat
+          // If onboarding done: dashboard shows normal content with Kickstart access
+          nextAction = '/dashboard';
         } else {
           // For other programs, go directly to the program
           nextAction = `/${tx.program_slug}`;

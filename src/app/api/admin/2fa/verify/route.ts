@@ -6,7 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
-import { verifyTOTPToken, isValidTOTPToken } from '@/lib/2fa';
+import { verifyTOTPToken, isValidTOTPToken, generateBackupCodes, hashBackupCode } from '@/lib/2fa';
 import { sql } from '@vercel/postgres';
 import { verifyCSRF } from '@/lib/csrf-edge';
 
@@ -83,18 +83,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Enable 2FA for the user
+    // Generate backup codes
+    const backupCodes = generateBackupCodes(10);
+    const hashedBackupCodes = await Promise.all(backupCodes.map(code => hashBackupCode(code)));
+
+    // Enable 2FA for the user and store backup codes
     await sql`
       UPDATE users
       SET two_factor_enabled = true,
           two_factor_verified_at = CURRENT_TIMESTAMP,
+          backup_codes = ${JSON.stringify(hashedBackupCodes)},
+          backup_codes_generated_at = CURRENT_TIMESTAMP,
           updated_at = CURRENT_TIMESTAMP
       WHERE id = ${userId}
     `;
 
     return NextResponse.json({
       success: true,
-      message: '2FA has been successfully enabled for your admin account'
+      message: '2FA has been successfully enabled for your admin account',
+      backupCodes, // Return plain codes - user sees them only once!
+      backupCodesWarning: 'Bewaar deze codes veilig! Je ziet ze maar één keer.'
     });
 
   } catch (error) {

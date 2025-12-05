@@ -46,6 +46,11 @@ import { SettingsTab } from '@/components/dashboard/settings-tab';
 import { useJourneyState } from '@/hooks/use-journey-state';
 import { OnboardingFlow } from '@/components/dashboard/onboarding-flow';
 
+// Import Kickstart onboarding - World-class integrated flow
+import { KickstartOnboardingFlow } from '@/components/kickstart/KickstartOnboardingFlow';
+import type { KickstartIntakeData } from '@/types/kickstart-onboarding.types';
+import { Loader2 } from 'lucide-react';
+
 // NIEUWE 4-TAB NAVIGATIE SYSTEEM (Masterplan)
 import { MainNavNew } from '@/components/layout/main-nav-new';
 import { HomeTab } from '@/components/dashboard/home-tab';
@@ -75,6 +80,21 @@ export default function DashboardPage() {
   // Iris proactive invite for registered members
   const { shouldShowInvite, dismissInvite } = useProactiveInvite();
   const [irisInviteVisible, setIrisInviteVisible] = useState(false);
+
+  // Wereldklasse loading management voor Kickstart enrollment check
+  // IMPORTANT: Must be declared before any useEffect that uses it
+  const [kickstartState, setKickstartState] = useState<{
+    isChecking: boolean;
+    hasEnrollment: boolean | null;
+    needsOnboarding: boolean;
+    checkComplete: boolean;
+  }>({
+    isChecking: false,
+    hasEnrollment: null,
+    needsOnboarding: false,
+    checkComplete: false,
+  });
+  const [kickstartOnboardingSaving, setKickstartOnboardingSaving] = useState(false);
 
   // Wrapper for setActiveTab that includes GA4 tracking
   const handleTabChange = (newTab: string) => {
@@ -119,9 +139,9 @@ export default function DashboardPage() {
     enabled: !loading && !!user
   });
 
-  // Show Iris invite after 30 seconds for logged-in users (not during onboarding)
+  // Show Iris invite after 30 seconds for logged-in users (not during any onboarding)
   useEffect(() => {
-    if (!user || loading || showOnboarding) return;
+    if (!user || loading || showOnboarding || kickstartState.needsOnboarding) return;
 
     const timer = setTimeout(() => {
       if (shouldShowInvite) {
@@ -130,7 +150,7 @@ export default function DashboardPage() {
     }, 30000); // 30 seconds
 
     return () => clearTimeout(timer);
-  }, [user, loading, showOnboarding, shouldShowInvite]);
+  }, [user, loading, showOnboarding, kickstartState.needsOnboarding, shouldShowInvite]);
 
   // Check if user is admin (from database role)
   const [isAdminUser, setIsAdminUser] = useState(false);
@@ -184,21 +204,25 @@ export default function DashboardPage() {
     // They can choose to upgrade via the subscription page if needed
   }, [user, userProfile, loading, isAdminUser, router]);
 
-  // Check if user has Kickstart enrollment (allows dashboard access without profile)
-  const [hasKickstartEnrollment, setHasKickstartEnrollment] = useState<boolean | null>(null);
-
+  // Kickstart enrollment check effect
   useEffect(() => {
     const checkKickstartEnrollment = async () => {
-      if (!user?.id || loading) return;
-
-      // If they already have a profile, no need to check
-      if (userProfile) {
-        setHasKickstartEnrollment(false); // Profile exists, not Kickstart-only user
+      // Wait until user is loaded
+      if (!user?.id || loading) {
         return;
       }
 
+      // Prevent double-checking
+      if (kickstartState.checkComplete) {
+        return;
+      }
+
+      console.log('🔍 Starting Kickstart enrollment check for user:', user.id);
+
+      // Set checking state IMMEDIATELY before any async work
+      setKickstartState(prev => ({ ...prev, isChecking: true }));
+
       try {
-        console.log('🔍 Checking for Kickstart enrollment for user:', user.id);
         const response = await fetch('/api/kickstart/check-enrollment', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
@@ -208,24 +232,52 @@ export default function DashboardPage() {
         if (response.ok) {
           const data = await response.json();
           console.log('✅ Kickstart enrollment check result:', data);
-          setHasKickstartEnrollment(data.hasEnrollment === true);
+
+          const hasEnrollment = data.hasEnrollment === true;
+          const needsOnboarding = hasEnrollment && !data.hasOnboardingData;
+
+          if (needsOnboarding) {
+            console.log('🎯 User needs Kickstart onboarding - will show onboarding flow');
+          } else if (hasEnrollment) {
+            console.log('✅ User has Kickstart enrollment with completed onboarding');
+          } else {
+            console.log('ℹ️ User does not have Kickstart enrollment');
+          }
+
+          // Update all state in one atomic operation
+          setKickstartState({
+            isChecking: false,
+            hasEnrollment,
+            needsOnboarding,
+            checkComplete: true,
+          });
         } else {
           console.warn('⚠️ Failed to check Kickstart enrollment:', response.status);
-          setHasKickstartEnrollment(false);
+          setKickstartState({
+            isChecking: false,
+            hasEnrollment: false,
+            needsOnboarding: false,
+            checkComplete: true,
+          });
         }
       } catch (error) {
         console.error('❌ Error checking Kickstart enrollment:', error);
-        setHasKickstartEnrollment(false);
+        setKickstartState({
+          isChecking: false,
+          hasEnrollment: false,
+          needsOnboarding: false,
+          checkComplete: true,
+        });
       }
     };
 
     checkKickstartEnrollment();
-  }, [user?.id, loading, userProfile]);
+  }, [user?.id, loading, kickstartState.checkComplete]);
 
   // Check for Monday dating week notifications
   useEffect(() => {
     const checkForNotifications = async () => {
-      if (!user?.id || loading) return;
+      if (!user?.id || loading || kickstartState.needsOnboarding) return;
 
       try {
         // Check for test mode (any day testing) - this should work immediately
@@ -271,7 +323,7 @@ export default function DashboardPage() {
     const interval = setInterval(checkForNotifications, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
-  }, [user?.id, loading, journeyCheckComplete]);
+  }, [user?.id, loading, journeyCheckComplete, kickstartState.needsOnboarding]);
 
   // Journey data is now loaded by the useJourneyState hook
 
@@ -317,13 +369,30 @@ export default function DashboardPage() {
     }
   }, [activeTab, router]);
 
-  // While loading user data, show a loading state
-  // The UserProvider handles redirection if there's no user.
-  if (isLoading) {
+  // While loading user data or checking Kickstart enrollment, show a loading state
+  // This prevents the flash where dashboard is shown before onboarding
+  if (isLoading || kickstartState.isChecking || !kickstartState.checkComplete) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <LoadingSpinner />
-        <p className="text-muted-foreground">Dashboard laden...</p>
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          {/* Logo */}
+          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-2xl mx-auto mb-8 animate-pulse">
+            <span className="text-white font-bold text-3xl">D</span>
+          </div>
+
+          {/* Loading spinner */}
+          <LoadingSpinner />
+
+          {/* Loading text with dynamic message */}
+          <div className="mt-6 space-y-2">
+            <p className="text-lg font-semibold text-gray-900">
+              {isLoading ? 'Dashboard laden...' : 'Je ervaring voorbereiden...'}
+            </p>
+            <p className="text-sm text-gray-500">
+              Even geduld, we controleren je toegang
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -335,20 +404,52 @@ export default function DashboardPage() {
     // Reload dashboard data if needed
   };
 
+  // Handle Kickstart onboarding completion
+  const handleKickstartOnboardingComplete = async (data: KickstartIntakeData) => {
+    if (!user?.id) return;
+
+    setKickstartOnboardingSaving(true);
+
+    try {
+      console.log('💾 Saving Kickstart onboarding data:', data);
+
+      const response = await fetch("/api/kickstart/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save onboarding");
+      }
+
+      const result = await response.json();
+      console.log("✅ Kickstart onboarding saved successfully:", result);
+
+      // Update kickstart state to reflect completed onboarding
+      setKickstartState(prev => ({
+        ...prev,
+        needsOnboarding: false,
+      }));
+      setKickstartOnboardingSaving(false);
+
+      // Optional: redirect to Kickstart day 1 or show success message
+      // router.push(result.nextUrl || "/kickstart/dag/1");
+
+    } catch (err) {
+      console.error("❌ Error saving onboarding:", err);
+      setKickstartOnboardingSaving(false);
+      // Could show error toast here
+    }
+  };
+
 
   // Allow dashboard access for Kickstart users even without user_profile
   // This is the "wereldklasse" solution: full integration without requiring profile
-  if (!userProfile && !hasKickstartEnrollment) {
-    // Still checking enrollment status
-    if (hasKickstartEnrollment === null) {
-      return (
-        <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-          <LoadingSpinner />
-          <p className="text-muted-foreground">Dashboard laden...</p>
-        </div>
-      );
-    }
-
+  // Note: kickstartState.isChecking is already handled above in the main loading check
+  if (!userProfile && !kickstartState.hasEnrollment) {
     // No profile and no Kickstart enrollment - show error
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
@@ -473,6 +574,15 @@ export default function DashboardPage() {
   // Check if mobile device
   const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
 
+  // Show Kickstart onboarding if needed - integrated within dashboard
+  // Uses the new world-class KickstartOnboardingFlow component
+  // This check happens AFTER all loading states are complete, preventing any flash
+  const showKickstartOnboarding = kickstartState.needsOnboarding;
+
+  if (showKickstartOnboarding) {
+    console.log('🎨 Rendering Kickstart onboarding flow within dashboard');
+  }
+
   return (
     <>
       {isMobileTabAccess || isMobileDevice ? (
@@ -519,7 +629,14 @@ export default function DashboardPage() {
 
           {/* Mobile Content */}
           <div className="p-4">
-            {showOnboarding ? (
+            {showKickstartOnboarding ? (
+              <div className="min-h-[600px]">
+                <KickstartOnboardingFlow
+                  userName={user?.name?.split(' ')[0]}
+                  onComplete={handleKickstartOnboardingComplete}
+                />
+              </div>
+            ) : showOnboarding ? (
               <OnboardingFlow
                 journeyState={journeyState}
                 userName={user?.name}
@@ -542,19 +659,27 @@ export default function DashboardPage() {
                 onSubscriptionClick={() => handleTabChange('subscription')}
               />
 
-              {/* Trial Progress Banner - Only show for trial users */}
-              {user?.id && <TrialProgress userId={user.id} />}
+              {/* Trial Progress Banner - Only show for trial users and not during onboarding */}
+              {user?.id && !showKickstartOnboarding && !showOnboarding && <TrialProgress userId={user.id} />}
 
               <main className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20">
-              {/* Hide navigation during onboarding */}
-              {!showOnboarding && (
+              {/* Hide navigation during any onboarding */}
+              {!showOnboarding && !showKickstartOnboarding && (
                 useNewNav
                   ? <MainNavNew activeTab={activeTab} onTabChange={handleTabChange} />
                   : <MainNav activeTab={activeTab} onTabChange={handleTabChange} />
               )}
               <div className="mt-6">
-                {/* Show onboarding content if needed */}
-                {showOnboarding ? (
+                {/* Show Kickstart onboarding if needed - takes priority */}
+                {showKickstartOnboarding ? (
+                  <div className="min-h-[600px]">
+                    <KickstartOnboardingFlow
+                      userName={user?.name?.split(' ')[0]}
+                      onComplete={handleKickstartOnboardingComplete}
+                    />
+                  </div>
+                ) : showOnboarding ? (
+                  /* Show regular onboarding if needed */
                   <OnboardingFlow
                     journeyState={journeyState}
                     userName={user?.name}
@@ -603,7 +728,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Iris Insights Panel - Floating assistant */}
-          {useNewNav && !showOnboarding && (
+          {useNewNav && !showOnboarding && !showKickstartOnboarding && (
             <IrisInsightsPanel
               currentTab={activeTab}
               userId={user?.id}
@@ -612,7 +737,7 @@ export default function DashboardPage() {
           )}
 
           {/* Iris Proactive Invite - Only popup for registered members (no floating button) */}
-          {irisInviteVisible && (
+          {irisInviteVisible && !showKickstartOnboarding && (
             <ProactiveInvite
               onAccept={() => {
                 setIrisInviteVisible(false);

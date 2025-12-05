@@ -3,6 +3,12 @@
 /**
  * KickstartDashboard - Clean, minimalist Kickstart view within dashboard
  * Inspired by the professional logout page design
+ *
+ * @deprecated This component uses inline fetching. For new features,
+ * prefer using the SWR hooks from '@/hooks/use-kickstart':
+ * - useKickstartProgress() - for overall progress
+ * - useKickstartDay(dayNumber) - for specific day content with caching
+ * - useKickstartReflections() - for user reflections
  */
 
 import { useState, useEffect } from 'react';

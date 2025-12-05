@@ -549,7 +549,7 @@ export function RegistrationClientComponent() {
     };
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4 sm:p-6 lg:p-8">
         <Card className="w-full max-w-md rounded-2xl bg-card shadow-2xl">
           <CardHeader className="text-center pb-4 pt-6">
             <div className="flex items-center justify-center gap-3 mb-4">

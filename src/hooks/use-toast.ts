@@ -171,6 +171,39 @@ function toast({ ...props }: Toast) {
   }
 }
 
+// Helper functies voor veelgebruikte toast types
+toast.success = (title: string, description?: string) => {
+  return toast({
+    title,
+    description,
+    className: "bg-green-50 border-green-200 text-green-800",
+  })
+}
+
+toast.error = (title: string, description?: string) => {
+  return toast({
+    title,
+    description,
+    variant: "destructive",
+  })
+}
+
+toast.warning = (title: string, description?: string) => {
+  return toast({
+    title,
+    description,
+    className: "bg-yellow-50 border-yellow-200 text-yellow-800",
+  })
+}
+
+toast.info = (title: string, description?: string) => {
+  return toast({
+    title,
+    description,
+    className: "bg-blue-50 border-blue-200 text-blue-800",
+  })
+}
+
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState)
 

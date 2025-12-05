@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggleSimple } from '@/components/ui/theme-toggle';
 import { Logo } from '@/components/shared/logo';
 import { useState, useEffect } from 'react';
+import { useUser } from '@/providers/user-provider';
 
 export function PublicHeader() {
+  const { user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -65,9 +67,6 @@ export function PublicHeader() {
           
           {/* Desktop menu */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            <Link href="/features" className="transition-colors text-sm text-foreground/80 hover:text-primary">
-              Features
-            </Link>
             <Link href="/over-ons" className="transition-colors text-sm text-foreground/80 hover:text-primary">
               Over Ons
             </Link>
@@ -78,14 +77,24 @@ export function PublicHeader() {
           
           <div className="hidden md:flex items-center space-x-3 lg:space-x-4" suppressHydrationWarning>
             <ThemeToggleSimple />
-            <Link href="/login" className="text-sm transition-colors text-foreground/80 hover:text-primary">
-              Inloggen
-            </Link>
-            <Link href="/register">
-              <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm px-3 py-2">
-                Start Nu
-              </Button>
-            </Link>
+            {user ? (
+              <Link href="/dashboard">
+                <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm px-3 py-2">
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="text-sm transition-colors text-foreground/80 hover:text-primary">
+                  Inloggen
+                </Link>
+                <Link href="/register">
+                  <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm px-3 py-2">
+                    Start Nu
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </nav>
         
@@ -93,13 +102,6 @@ export function PublicHeader() {
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-border pt-4">
             <div className="flex flex-col space-y-4">
-              <Link
-                href="/features"
-                className="transition-colors text-foreground/80 hover:text-primary py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Features
-              </Link>
               <Link
                 href="/over-ons"
                 className="transition-colors text-foreground/80 hover:text-primary py-2"
@@ -115,18 +117,28 @@ export function PublicHeader() {
                 Blog & Tips
               </Link>
               <div className="flex items-center space-x-4 pt-4 border-t border-border">
-                <Link 
-                  href="/login" 
-                  className="text-foreground/80 hover:text-foreground py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Inloggen
-                </Link>
-                <Link href="/register" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                    Start Nu
-                  </Button>
-                </Link>
+                {user ? (
+                  <Link href="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                      Dashboard
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="text-foreground/80 hover:text-foreground py-2"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Inloggen
+                    </Link>
+                    <Link href="/register" onClick={() => setIsMenuOpen(false)}>
+                      <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                        Start Nu
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>

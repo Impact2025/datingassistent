@@ -4,7 +4,7 @@ import { sendSubscriptionCancelledEmail } from '@/lib/email-service';
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await request.json();
+    const { userId, endDate, subscriptionType, stats } = await request.json();
 
     if (!userId) {
       return NextResponse.json(
@@ -22,10 +22,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Calculate end date if not provided (default to 30 days from now)
+    const calculatedEndDate = endDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('nl-NL', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
     // Send subscription cancelled email
     const emailSent = await sendSubscriptionCancelledEmail(
       user.email,
-      user.display_name || user.name || 'User'
+      user.display_name || user.name || 'User',
+      calculatedEndDate,
+      subscriptionType || user.subscription_type || 'Core',
+      stats
     );
 
     if (!emailSent) {

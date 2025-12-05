@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
 
 export function HeroSection() {
   return (
@@ -47,20 +47,24 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col items-center gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-2">
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-              <Link href="/register" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 text-base font-semibold shadow-lg hover:shadow-xl transition-all rounded-full">
-                  Start gratis →
+              {/* Primary CTA - Quiz */}
+              <Link href="/quiz" className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-8 py-3 text-base font-semibold shadow-lg hover:shadow-xl transition-all rounded-full flex items-center justify-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  Doe de Gratis Dating Scan
+                  <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
 
-              <Link href="/features" className="w-full sm:w-auto">
+              {/* Secondary CTA - Register */}
+              <Link href="/register" className="w-full sm:w-auto">
                 <Button variant="outline" className="w-full sm:w-auto border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-3 text-base font-semibold rounded-full">
-                  Bekijk alle tools
+                  Of start direct gratis
                 </Button>
               </Link>
             </div>
             <p className="text-sm text-gray-600">
-              ✓ Geen creditcard nodig • Altijd opzegbaar
+              ✓ Resultaat in 2 minuten • 100% gratis • Persoonlijk advies
             </p>
           </div>
 

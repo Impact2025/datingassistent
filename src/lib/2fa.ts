@@ -59,3 +59,66 @@ export async function generateQRCodeDataURL(secret: string, email: string, servi
 export function isValidTOTPToken(token: string): boolean {
   return /^\d{6}$/.test(token);
 }
+
+// =============================================================================
+// BACKUP CODES
+// =============================================================================
+
+/**
+ * Generate 10 backup codes for account recovery
+ * Format: XXXX-XXXX (8 chars, easy to read/type)
+ */
+export function generateBackupCodes(count: number = 10): string[] {
+  const codes: string[] = [];
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // No I, O, 0, 1 to avoid confusion
+
+  for (let i = 0; i < count; i++) {
+    let code = '';
+    for (let j = 0; j < 8; j++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      code += chars[randomIndex];
+      if (j === 3) code += '-'; // Add dash in middle
+    }
+    codes.push(code);
+  }
+
+  return codes;
+}
+
+/**
+ * Hash a backup code for secure storage
+ */
+export async function hashBackupCode(code: string): Promise<string> {
+  const normalizedCode = code.toUpperCase().replace(/-/g, '');
+  const encoder = new TextEncoder();
+  const data = encoder.encode(normalizedCode);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Verify a backup code against stored hashes
+ */
+export async function verifyBackupCode(
+  inputCode: string,
+  hashedCodes: string[]
+): Promise<{ valid: boolean; usedIndex: number }> {
+  const inputHash = await hashBackupCode(inputCode);
+
+  for (let i = 0; i < hashedCodes.length; i++) {
+    if (hashedCodes[i] === inputHash) {
+      return { valid: true, usedIndex: i };
+    }
+  }
+
+  return { valid: false, usedIndex: -1 };
+}
+
+/**
+ * Validate backup code format (XXXX-XXXX or XXXXXXXX)
+ */
+export function isValidBackupCode(code: string): boolean {
+  const normalized = code.toUpperCase().replace(/-/g, '');
+  return /^[A-Z2-9]{8}$/.test(normalized);
+}
