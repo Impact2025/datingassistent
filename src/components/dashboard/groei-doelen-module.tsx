@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ interface GroeiDoelenModuleProps {
 }
 
 export function GroeiDoelenModule({ onTabChange, userId }: GroeiDoelenModuleProps) {
+  const router = useRouter();
   const [activeSubTab, setActiveSubTab] = useState("doelen");
 
   const subModules = [
@@ -36,7 +38,7 @@ export function GroeiDoelenModule({ onTabChange, userId }: GroeiDoelenModuleProp
           Geïntegreerde inzichten uit al je tools met personalized coaching plannen en progress tracking.
         </p>
         <Button
-          onClick={() => window.location.href = '/ai-relationship-coach'}
+          onClick={() => router.push('/ai-relationship-coach')}
           className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700"
         >
           Start Integrated Coaching
@@ -55,7 +57,7 @@ export function GroeiDoelenModule({ onTabChange, userId }: GroeiDoelenModuleProp
           Advanced analytics, personalized coaching plannen en success tracking voor elite results.
         </p>
         <Button
-          onClick={() => window.location.href = '/premium-coaching'}
+          onClick={() => router.push('/premium-coaching')}
           className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
         >
           Start Premium Coaching

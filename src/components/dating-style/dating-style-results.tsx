@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +31,8 @@ interface DatingStyleResultsProps {
 }
 
 export function DatingStyleResults({ data, onRestart, styleIcon, styleColor }: DatingStyleResultsProps) {
+  const router = useRouter();
+
   const getStyleName = (style: DatingStyle) => {
     switch (style) {
       case 'initiator': return 'De Initiator';
@@ -308,7 +311,7 @@ export function DatingStyleResults({ data, onRestart, styleIcon, styleColor }: D
             <Button
               variant="outline"
               className="h-auto p-4 flex flex-col items-center gap-2 hover:bg-white"
-              onClick={() => window.location.href = '/dashboard?tab=communicatie-matching'}
+              onClick={() => router.push('/dashboard?tab=communicatie-matching')}
             >
               <MessageCircle className="w-6 h-6 text-pink-600" />
               <span className="font-semibold">Chat Coach</span>
@@ -318,7 +321,7 @@ export function DatingStyleResults({ data, onRestart, styleIcon, styleColor }: D
             <Button
               variant="outline"
               className="h-auto p-4 flex flex-col items-center gap-2 hover:bg-white"
-              onClick={() => window.location.href = '/dashboard?tab=profiel-persoonlijkheid'}
+              onClick={() => router.push('/dashboard?tab=profiel-persoonlijkheid')}
             >
               <User className="w-6 h-6 text-pink-600" />
               <span className="font-semibold">Profiel Coach</span>
@@ -328,7 +331,7 @@ export function DatingStyleResults({ data, onRestart, styleIcon, styleColor }: D
             <Button
               variant="outline"
               className="h-auto p-4 flex flex-col items-center gap-2 hover:bg-white"
-              onClick={() => window.location.href = '/dashboard?tab=leren-ontwikkelen'}
+              onClick={() => router.push('/dashboard?tab=leren-ontwikkelen')}
             >
               <Target className="w-6 h-6 text-pink-600" />
               <span className="font-semibold">Cursus</span>

@@ -3,9 +3,10 @@
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Loader2, ArrowLeft, Home, Sparkles } from 'lucide-react';
+import { Loader2, ArrowLeft, Home, Sparkles, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DayViewer } from '@/components/kickstart/DayViewer';
+import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import type {
   DayDetailResponse,
   UpdateDayProgressInput,
@@ -119,20 +120,20 @@ export default function KickstartDayPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      {/* Professional Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-10">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 pb-24 md:pb-0">
+      {/* Professional Header - Mobile Optimized */}
+      <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            {/* Back button */}
+            {/* Back button - Mobile: to overview, Desktop: shows text */}
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => router.push('/dashboard')}
-              className="text-pink-600 hover:text-pink-700 hover:bg-pink-50"
+              onClick={() => router.push('/kickstart')}
+              className="text-pink-600 hover:text-pink-700 hover:bg-pink-50 p-2 md:px-3"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Dashboard
+              <ChevronLeft className="w-5 h-5 md:w-4 md:h-4 md:mr-2" />
+              <span className="hidden md:inline">Overzicht</span>
             </Button>
 
             {/* Center - Program info */}
@@ -141,15 +142,25 @@ export default function KickstartDayPage({ params }: PageProps) {
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <div className="text-center">
-                <p className="text-xs text-pink-600 font-medium">21 Dagen Kickstart</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs text-pink-600 font-medium">Dag {dayNumber}</p>
+                <p className="text-sm text-gray-600 hidden md:block">
                   Week {data.week.week_nummer} · {data.week.titel}
                 </p>
               </div>
             </div>
 
-            {/* Right spacer or additional actions */}
-            <div className="w-24" />
+            {/* Right - Dashboard link for desktop */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push('/dashboard')}
+              className="text-gray-500 hover:text-gray-700 hover:bg-gray-50 hidden md:flex"
+            >
+              <Home className="w-4 h-4 mr-2" />
+              Dashboard
+            </Button>
+            {/* Mobile spacer */}
+            <div className="w-10 md:hidden" />
           </div>
         </div>
       </div>
@@ -158,7 +169,7 @@ export default function KickstartDayPage({ params }: PageProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-5xl mx-auto px-4 py-8"
+        className="max-w-5xl mx-auto px-4 py-4 md:py-8"
       >
         <DayViewer
           day={data.day}
@@ -169,6 +180,9 @@ export default function KickstartDayPage({ params }: PageProps) {
           onProgressUpdate={handleProgressUpdate}
         />
       </motion.div>
+
+      {/* Bottom Navigation for Mobile */}
+      <BottomNavigation />
     </div>
   );
 }

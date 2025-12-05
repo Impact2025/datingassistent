@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Target, HelpCircle, MessageSquare, Sparkles, Zap, Shield } from "lucide-react";
+import { Target, HelpCircle, MessageSquare, Sparkles, Zap, Shield, Heart, CheckCircle2 } from "lucide-react";
 
 // Import existing communication tools
 import { ChatCoachTab } from "./chat-coach-tab";
@@ -22,6 +23,7 @@ interface CommunicationHubProps {
 }
 
 export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("chat");
 
   const communicationTools = [
@@ -36,7 +38,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
           Gedragsgebaseerde analyse van je dating patronen met 8 professionele stijlen.
         </p>
         <Button
-          onClick={() => window.location.href = '/dating-stijl'}
+          onClick={() => router.push('/dating-stijl')}
           className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700"
         >
           Start Stijl Scan
@@ -56,7 +58,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
           Professionele gedragsanalyse met mismatch detectie en concrete interventies.
         </p>
         <Button
-          onClick={() => window.location.href = '/blind-vlekken'}
+          onClick={() => router.push('/blind-vlekken')}
           className="bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700"
         >
           Start Advanced Scan

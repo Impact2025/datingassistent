@@ -37,6 +37,7 @@ import { GroeiDoelenModule } from '@/components/dashboard/groei-doelen-module';
 import { LerenOntwikkelenModule } from '@/components/dashboard/leren-ontwikkelen-module';
 import { DataManagementTab } from '@/components/dashboard/data-management-tab';
 import { SubscriptionTab } from '@/components/dashboard/subscription-tab';
+import { CursussenTab } from '@/components/dashboard/cursussen-tab';
 
 // Import settings component
 import { SettingsTab } from '@/components/dashboard/settings-tab';
@@ -397,6 +398,9 @@ export default function DashboardPage() {
       case 'leren-ontwikkelen':
         return <LerenOntwikkelenModule onTabChange={handleTabChange} />;
 
+      case 'cursussen':
+        return <CursussenTab />;
+
       case 'cursus':
         // Navigate to the main cursus page
         if (typeof window !== 'undefined') {
@@ -466,40 +470,64 @@ export default function DashboardPage() {
   const tab = urlParams?.get('tab');
   const isMobileTabAccess = tab && ['subscription', 'data-management', 'chat-coach'].includes(tab);
 
+  // Check if mobile device
+  const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+
   return (
-    <DeviceGuard requiredDevice="desktop" allowOverride={true} allowMobileTabs={true}>
-      {isMobileTabAccess ? (
-        // Mobile-friendly layout for specific tabs
-        <div className="min-h-screen bg-gray-50 pb-20">
-          {/* Mobile Header */}
-          <div className="bg-white border-b border-gray-200 px-4 py-4">
-            <div className="flex items-center gap-3">
+    <>
+      {isMobileTabAccess || isMobileDevice ? (
+        // Mobile-friendly layout - WERELDKLASSE: Full mobile dashboard!
+        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 pb-24">
+          {/* Mobile Header - Sticky */}
+          <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 px-4 py-3 sticky top-0 z-40">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                {/* Logo */}
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold text-lg">D</span>
+                </div>
+                <div>
+                  <h1 className="text-lg font-bold text-gray-900">
+                    {activeTab === 'home' && 'Dashboard'}
+                    {activeTab === 'pad' && 'Jouw Pad'}
+                    {activeTab === 'coach' && 'Coach'}
+                    {activeTab === 'profiel' && 'Profiel'}
+                    {activeTab === 'subscription' && 'Abonnement'}
+                    {activeTab === 'data-management' && 'Data & Privacy'}
+                    {activeTab === 'settings' && 'Instellingen'}
+                    {!['home', 'pad', 'coach', 'profiel', 'subscription', 'data-management', 'settings'].includes(activeTab) && 'Dashboard'}
+                  </h1>
+                  <p className="text-xs text-gray-500">
+                    {user?.name ? `Welkom, ${user.name.split(' ')[0]}` : 'DatingAssistent'}
+                  </p>
+                </div>
+              </div>
+              {/* Settings button */}
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => router.back()}
-                className="p-2"
+                onClick={() => handleTabChange('settings')}
+                className="p-2 rounded-full hover:bg-pink-50"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
               </Button>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">
-                  {tab === 'subscription' && 'Abonnement'}
-                  {tab === 'data-management' && 'Data & Privacy'}
-                  {tab === 'chat-coach' && 'Chat Coach'}
-                </h1>
-                <p className="text-sm text-gray-600">
-                  {tab === 'subscription' && 'Je abonnement beheren'}
-                  {tab === 'data-management' && 'Gegevens en privacy instellingen'}
-                  {tab === 'chat-coach' && 'AI hulp bij gesprekken'}
-                </p>
-              </div>
             </div>
           </div>
 
           {/* Mobile Content */}
           <div className="p-4">
-            {renderTabContent()}
+            {showOnboarding ? (
+              <OnboardingFlow
+                journeyState={journeyState}
+                userName={user?.name}
+                handlers={handlers}
+              />
+            ) : (
+              renderTabContent()
+            )}
           </div>
 
           <BottomNavigation />
@@ -604,6 +632,6 @@ export default function DashboardPage() {
           )}
         </div>
       )}
-    </DeviceGuard>
+    </>
   );
 }

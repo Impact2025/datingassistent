@@ -287,36 +287,37 @@ export function DayViewer({
 
   return (
     <div className="space-y-6">
-      {/* Day Header Card */}
+      {/* Day Header Card - Mobile Optimized */}
       <Card className="border-pink-100 shadow-sm overflow-hidden">
-        <div className="bg-gradient-to-r from-pink-500 to-rose-500 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <span className="text-3xl">{day.emoji}</span>
+        <div className="bg-gradient-to-r from-pink-500 to-rose-500 px-4 py-3 sm:px-6 sm:py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shrink-0">
+                <span className="text-2xl sm:text-3xl">{day.emoji}</span>
               </div>
-              <div className="text-white">
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge className="bg-white/20 text-white border-0 text-xs">
+              <div className="text-white min-w-0">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+                  <Badge className="bg-white/20 text-white border-0 text-[10px] sm:text-xs">
                     Dag {day.dag_nummer}
                   </Badge>
-                  <Badge className="bg-white/20 text-white border-0 text-xs capitalize">
+                  <Badge className="bg-white/20 text-white border-0 text-[10px] sm:text-xs capitalize hidden sm:flex">
                     {day.dag_type}
                   </Badge>
                   {day.ai_tool && (
-                    <Badge className="bg-white/20 text-white border-0 text-xs">
-                      <Sparkles className="w-3 h-3 mr-1" />
-                      {day.ai_tool}
+                    <Badge className="bg-white/20 text-white border-0 text-[10px] sm:text-xs">
+                      <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5 sm:mr-1" />
+                      <span className="hidden sm:inline">{day.ai_tool}</span>
+                      <span className="sm:hidden">AI</span>
                     </Badge>
                   )}
                 </div>
-                <h1 className="text-2xl font-bold">{day.titel}</h1>
+                <h1 className="text-lg sm:text-2xl font-bold line-clamp-2">{day.titel}</h1>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
-              <Clock className="w-4 h-4" />
-              <span className="font-medium">{day.duur_minuten} min</span>
+            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full self-start sm:self-auto">
+              <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="font-medium text-sm sm:text-base">{day.duur_minuten} min</span>
             </div>
           </div>
         </div>
@@ -781,15 +782,16 @@ export function DayViewer({
         )}
       </Tabs>
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center pt-6 border-t border-pink-100">
+      {/* Navigation - Mobile Optimized */}
+      <div className="flex justify-between items-center pt-4 sm:pt-6 border-t border-pink-100 gap-2">
         {navigation.previous ? (
           <Button
             variant="outline"
+            size="sm"
             onClick={() => onNavigate(navigation.previous!.dag_nummer)}
-            className="border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300"
+            className="border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300 px-3 sm:px-4"
           >
-            <ChevronLeft className="w-4 h-4 mr-2" />
+            <ChevronLeft className="w-4 h-4 sm:mr-2" />
             <span className="hidden sm:inline">Dag {navigation.previous.dag_nummer}</span>
           </Button>
         ) : (
@@ -798,16 +800,21 @@ export function DayViewer({
 
         {navigation.next ? (
           <Button
+            size="sm"
             onClick={() => onNavigate(navigation.next!.dag_nummer)}
-            className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-lg shadow-pink-200"
+            className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-lg shadow-pink-200 px-3 sm:px-4 max-w-[200px] sm:max-w-none"
           >
             <span className="hidden sm:inline">Dag {navigation.next.dag_nummer}:</span>
-            <span className="sm:ml-1 truncate max-w-[150px]">{navigation.next.titel}</span>
-            <ChevronRight className="w-4 h-4 ml-2" />
+            <span className="sm:hidden">Dag {navigation.next.dag_nummer}</span>
+            <span className="hidden sm:inline sm:ml-1 truncate max-w-[150px]">{navigation.next.titel}</span>
+            <ChevronRight className="w-4 h-4 ml-1 sm:ml-2" />
           </Button>
         ) : (
-          <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg">
-            🎉 Programma voltooid!
+          <Button
+            size="sm"
+            className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg"
+          >
+            <span className="text-sm sm:text-base">🎉 Voltooid!</span>
           </Button>
         )}
       </div>

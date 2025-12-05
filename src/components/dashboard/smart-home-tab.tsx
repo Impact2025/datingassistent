@@ -5,6 +5,7 @@
  */
 
 import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   Sparkles, TrendingUp, Target, Calendar, ArrowRight,
@@ -79,6 +80,7 @@ const borderColorMap: Record<string, string> = {
 };
 
 export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
+  const router = useRouter();
   const [userContext, setUserContext] = useState<UserContext | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [phaseActions, setPhaseActions] = useState<any[]>([]);
@@ -185,7 +187,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
 
   const handleSuggestionClick = (suggestion: Suggestion) => {
     if (suggestion.actionHref) {
-      window.location.href = suggestion.actionHref;
+      router.push(suggestion.actionHref);
     } else if (suggestion.actionTab) {
       onTabChange?.(suggestion.actionTab);
     }
@@ -193,7 +195,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
 
   const handleQuickActionClick = (action: any) => {
     if (action.href) {
-      window.location.href = action.href;
+      router.push(action.href);
     } else if (action.tab) {
       onTabChange?.(action.tab);
     }
@@ -455,7 +457,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
         <MyProgramsWidget />
 
         {/* Mijn Cursussen Widget - Professional Integration */}
-        <MijnCursussenWidget />
+        <MijnCursussenWidget onTabChange={onTabChange} />
 
         {/* Progress Overview */}
         <motion.div

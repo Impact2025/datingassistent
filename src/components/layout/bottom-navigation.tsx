@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageCircle, TrendingUp, User, Settings } from 'lucide-react';
+import { MessageCircle, TrendingUp, User, Sparkles, LayoutGrid } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
@@ -24,21 +24,21 @@ export function BottomNavigation() {
       href: '/dashboard',
       icon: null, // Logo image instead of icon
       label: 'Home',
-      active: pathname === '/' || pathname?.startsWith('/dashboard') || pathname?.startsWith('/mobile-dashboard'),
+      active: pathname === '/' || (pathname?.startsWith('/dashboard') && !pathname?.includes('kickstart')),
       color: 'text-gray-600',
       activeColor: 'text-pink-500',
       isLogo: true,
     },
     {
-      href: '/dashboard?tab=pad',
-      icon: TrendingUp,
-      label: 'Pad',
-      active: pathname?.includes('pad') || pathname?.startsWith('/progress') || pathname?.startsWith('/journey'),
+      href: '/kickstart',
+      icon: Sparkles,
+      label: 'Kickstart',
+      active: pathname?.startsWith('/kickstart'),
       color: 'text-gray-600',
-      activeColor: 'text-purple-500',
+      activeColor: 'text-rose-500',
     },
     {
-      href: '/coach',
+      href: '/dashboard?tab=coach',
       icon: MessageCircle,
       label: 'Coach',
       active: pathname?.startsWith('/coach') || pathname?.startsWith('/chat') || pathname?.includes('chat-coach'),
@@ -46,7 +46,7 @@ export function BottomNavigation() {
       activeColor: 'text-blue-500',
     },
     {
-      href: '/profiel',
+      href: '/dashboard?tab=profiel',
       icon: User,
       label: 'Profiel',
       active: pathname?.startsWith('/profiel') || pathname?.startsWith('/profile'),
@@ -55,7 +55,7 @@ export function BottomNavigation() {
     },
     {
       href: '/meer',
-      icon: Settings,
+      icon: LayoutGrid,
       label: 'Meer',
       active: pathname?.startsWith('/meer') ||
               pathname?.startsWith('/tools') ||

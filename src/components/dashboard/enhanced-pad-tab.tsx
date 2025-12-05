@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   User, Heart, MessageCircle, Calendar, TrendingUp,
@@ -60,6 +61,7 @@ interface JourneyPhase {
 type ViewMode = 'programs' | 'kickstart' | 'journey';
 
 export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
+  const router = useRouter();
   const [currentPhase, setCurrentPhase] = useState(1);
   const [overallProgress, setOverallProgress] = useState(15);
   const [loading, setLoading] = useState(true);
@@ -228,7 +230,7 @@ export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
 
   const handleToolClick = (tool: any) => {
     if (tool.href) {
-      window.location.href = tool.href;
+      router.push(tool.href);
     } else if (tool.action) {
       onTabChange?.(tool.action);
     } else if (tool.tab) {

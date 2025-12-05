@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowLeft, Home } from 'lucide-react';
 import { WeekOverview, KickstartStats } from '@/components/kickstart/WeekOverview';
+import { BottomNavigation } from '@/components/layout/bottom-navigation';
+import { Button } from '@/components/ui/button';
 import type { KickstartOverview } from '@/types/kickstart.types';
 
 export default function KickstartPage() {
@@ -92,21 +94,42 @@ export default function KickstartPage() {
     .map((d) => d.dag_nummer);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 pb-24">
+      {/* Header - Mobile Optimized */}
+      <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">De Kickstart</h1>
-              <p className="text-sm text-gray-600">21 dagen naar dating succes</p>
+            <div className="flex items-center gap-3">
+              {/* Back to Dashboard */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push('/dashboard')}
+                className="p-2 rounded-full hover:bg-pink-50 md:hidden"
+              >
+                <ArrowLeft className="w-5 h-5 text-gray-600" />
+              </Button>
+              <div>
+                <h1 className="text-lg md:text-xl font-bold text-gray-900">De Kickstart</h1>
+                <p className="text-xs md:text-sm text-gray-600">21 dagen naar dating succes</p>
+              </div>
             </div>
+            {/* Desktop: Dashboard button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push('/dashboard')}
+              className="hidden md:flex border-pink-200 text-pink-600 hover:bg-pink-50"
+            >
+              <Home className="w-4 h-4 mr-2" />
+              Dashboard
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-6 md:space-y-8">
         {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -140,7 +163,7 @@ export default function KickstartPage() {
             className="bg-white rounded-2xl p-6 border"
           >
             <h2 className="text-xl font-bold text-gray-900 mb-4">Jouw vooruitgang</h2>
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
               <MetricComparison
                 label="Matches per week"
                 before={data.metrics.start.matches_count || 0}
@@ -160,6 +183,9 @@ export default function KickstartPage() {
           </motion.div>
         )}
       </div>
+
+      {/* Bottom Navigation for Mobile */}
+      <BottomNavigation />
     </div>
   );
 }

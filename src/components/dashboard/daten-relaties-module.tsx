@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ interface DatenRelatiesModuleProps {
 }
 
 export function DatenRelatiesModule({ onTabChange }: DatenRelatiesModuleProps) {
+  const router = useRouter();
   const [activeSubTab, setActiveSubTab] = useState("date-planner");
   const [dateAnalysis, setDateAnalysis] = useState({
     partnerName: '',
@@ -100,7 +102,7 @@ export function DatenRelatiesModule({ onTabChange }: DatenRelatiesModuleProps) {
           Wetenschappelijke analyse van jullie toekomst compatibility en gedeelde levensvisie.
         </p>
         <Button
-          onClick={() => window.location.href = '/levensvisie'}
+          onClick={() => router.push('/levensvisie')}
           className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
         >
           Start Toekomst Analyse
