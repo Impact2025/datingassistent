@@ -20,11 +20,11 @@ export async function GET(
       SELECT * FROM cursussen WHERE slug = ${slug} AND status = 'published' LIMIT 1
     `;
 
-    if (cursusResult.length === 0) {
+    if (cursusResult.rows.length === 0) {
       return NextResponse.json({ error: 'Cursus niet gevonden' }, { status: 404 });
     }
 
-    const cursus = cursusResult[0];
+    const cursus = cursusResult.rows[0];
 
     // 2. Haal alle lessen op
     const lessenResult = await sql`
@@ -35,7 +35,7 @@ export async function GET(
 
     // 3. Voor elk les, haal secties en quiz vragen op
     const lessen = await Promise.all(
-      lessenResult.map(async (les: any) => {
+      lessenResult.rows.map(async (les: any) => {
         // Haal secties op
         const sectiesResult = await sql`
           SELECT * FROM cursus_secties
@@ -45,7 +45,7 @@ export async function GET(
 
         // Voor elke sectie van type 'quiz', haal quiz vragen op
         const sectiesMetQuizVragen = await Promise.all(
-          sectiesResult.map(async (sectie: any) => {
+          sectiesResult.rows.map(async (sectie: any) => {
             if (sectie.sectie_type === 'quiz') {
               const quizVragenResult = await sql`
                 SELECT * FROM cursus_quiz_vragen
@@ -54,7 +54,7 @@ export async function GET(
               `;
               return {
                 ...sectie,
-                quiz_vragen: quizVragenResult
+                quiz_vragen: quizVragenResult.rows
               };
             }
             return sectie;
@@ -72,12 +72,12 @@ export async function GET(
           `;
 
           // Bereken les status op basis van voltooide secties
-          const voltooideSecties = sectieProgressResult.filter((p: any) => p.is_completed).map((p: any) => p.sectie_id);
+          const voltooideSecties = sectieProgressResult.rows.filter((p: any) => p.is_completed).map((p: any) => p.sectie_id);
           const totaalSecties = sectiesMetQuizVragen.length;
           const alleSectiesTotalVoltooide = voltooideSecties.length === totaalSecties && totaalSecties > 0;
 
           let lesStatus = 'niet-gestart';
-          if (sectieProgressResult.length > 0) {
+          if (sectieProgressResult.rows.length > 0) {
             lesStatus = alleSectiesTotalVoltooide ? 'afgerond' : 'bezig';
           }
 
@@ -203,7 +203,7 @@ export async function POST(
       `;
     }
 
-    return NextResponse.json({ success: true, voortgang: result[0] });
+    return NextResponse.json({ success: true, voortgang: result.rows[0] });
   } catch (error: any) {
     console.error('Error updating voortgang:', error);
     return NextResponse.json({ error: 'Failed to update voortgang', details: error.message }, { status: 500 });

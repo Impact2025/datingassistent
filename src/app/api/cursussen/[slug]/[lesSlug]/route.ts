@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { neon } from '@neondatabase/serverless';
+import { sql } from '@vercel/postgres';
 import { getServerSession } from 'next-auth';
-
-const sql = neon(process.env.DATABASE_URL!);
 
 /**
  * GET /api/cursussen/[slug]/[lesSlug]
@@ -23,11 +21,11 @@ export async function GET(
       WHERE slug = ${slug} AND status = 'published'
     `;
 
-    if (cursusResult.length === 0) {
+    if (cursusResult.rows.length === 0) {
       return NextResponse.json({ error: 'Cursus niet gevonden' }, { status: 404 });
     }
 
-    const cursus = cursusResult[0];
+    const cursus = cursusResult.rows[0];
 
     // 2. Haal les op
     const lesResult = await sql`
@@ -37,11 +35,11 @@ export async function GET(
         AND status = 'published'
     `;
 
-    if (lesResult.length === 0) {
+    if (lesResult.rows.length === 0) {
       return NextResponse.json({ error: 'Les niet gevonden' }, { status: 404 });
     }
 
-    const les = lesResult[0];
+    const les = lesResult.rows[0];
 
     // 3. Haal alle secties op voor deze les
     const sectiesResult = await sql`
@@ -52,7 +50,7 @@ export async function GET(
 
     // 4. Voor elke quiz sectie, haal de vragen op
     const secties = await Promise.all(
-      sectiesResult.map(async (sectie: any) => {
+      sectiesResult.rows.map(async (sectie: any) => {
         if (sectie.sectie_type === 'quiz') {
           const vragenResult = await sql`
             SELECT * FROM cursus_quiz_vragen
@@ -60,11 +58,11 @@ export async function GET(
             ORDER BY volgorde ASC
           `;
 
-          console.log(`📝 Loaded ${vragenResult.length} quiz vragen for sectie ${sectie.id}`);
+          console.log(`📝 Loaded ${vragenResult.rows.length} quiz vragen for sectie ${sectie.id}`);
 
           return {
             ...sectie,
-            quiz_vragen: vragenResult
+            quiz_vragen: vragenResult.rows
           };
         }
 
@@ -100,23 +98,23 @@ export async function GET(
       SELECT * FROM user_sectie_progress
       WHERE les_id = ${les.id}
         AND user_id = ${userId}
-    ` : [];
+    ` : { rows: [] };
 
     // Bereken les status op basis van voltooide secties
-    const voltooideSecties = progressResult.filter(p => p.is_completed).map(p => p.sectie_id);
+    const voltooideSecties = progressResult.rows.filter((p: any) => p.is_completed).map((p: any) => p.sectie_id);
     const totaalSecties = secties.length;
     const alleSectiesTotalVoltooide = voltooideSecties.length === totaalSecties && totaalSecties > 0;
 
     let lesStatus = 'niet-gestart';
-    if (progressResult.length > 0) {
+    if (progressResult.rows.length > 0) {
       lesStatus = alleSectiesTotalVoltooide ? 'afgerond' : 'bezig';
     }
 
     const userProgress = {
       status: lesStatus,
       voltooide_secties: voltooideSecties,
-      laatste_sectie_id: progressResult.length > 0 ? progressResult[progressResult.length - 1].sectie_id : null,
-      quiz_scores: progressResult.reduce((acc: any, p: any) => {
+      laatste_sectie_id: progressResult.rows.length > 0 ? progressResult.rows[progressResult.rows.length - 1].sectie_id : null,
+      quiz_scores: progressResult.rows.reduce((acc: any, p: any) => {
         if (p.quiz_score) acc[p.sectie_id] = p.quiz_score;
         return acc;
       }, {})
@@ -124,7 +122,7 @@ export async function GET(
 
     // Voeg progress toe aan elke sectie
     const sectiesMetProgress = secties.map((sectie: any) => {
-      const progress = progressResult.find((p: any) => p.sectie_id === sectie.id);
+      const progress = progressResult.rows.find((p: any) => p.sectie_id === sectie.id);
       return {
         ...sectie,
         user_progress: progress || null
@@ -136,8 +134,8 @@ export async function GET(
       secties: sectiesMetProgress,
       user_progress: userProgress,
       navigatie: {
-        vorige: vorige[0] || null,
-        volgende: volgende[0] || null
+        vorige: vorige.rows[0] || null,
+        volgende: volgende.rows[0] || null
       },
       cursus: {
         id: cursus.id,
@@ -223,7 +221,7 @@ export async function POST(
     return NextResponse.json({
       success: true,
       message: 'Voortgang opgeslagen',
-      progress: result[0]
+      progress: result.rows[0]
     });
   } catch (error: any) {
     console.error('Error updating lesson progress:', error);
