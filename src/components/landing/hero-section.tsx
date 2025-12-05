@@ -26,7 +26,7 @@ export function HeroSection() {
 
           {/* Tagline */}
           <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-pink-100 text-pink-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-            💕 Nederlandse AI Dating Coach • 10+ jaar expertise
+            💕 Durf te daten, durf jezelf te zijn.
           </div>
 
           {/* Main Title */}
@@ -64,7 +64,7 @@ export function HeroSection() {
               </Link>
             </div>
             <p className="text-sm text-gray-600">
-              ✓ Resultaat in 2 minuten • 100% gratis • Persoonlijk advies
+              Krijg binnen 2 minuten inzicht in jouw valkuilen + persoonlijk advies.
             </p>
           </div>
 
@@ -72,15 +72,15 @@ export function HeroSection() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 px-2">
             <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700">
               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium">10.000+ Nederlandse singles gebruiken DatingAssistent</span>
+              <span className="text-xs sm:text-sm font-medium">Gebaseerd op 10+ jaar ervaring en passie</span>
             </div>
             <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700">
               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium">Gemiddeld 3x meer matches binnen 14 dagen</span>
+              <span className="text-xs sm:text-sm font-medium">Nieuw: bewezen methode, nu 24/7 beschikbaar</span>
             </div>
             <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700">
               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium">4.8/5 sterren • 30 dagen geld-terug garantie</span>
+              <span className="text-xs sm:text-sm font-medium">100% Nederlandse ontwikkeling en begeleiding</span>
             </div>
           </div>
 

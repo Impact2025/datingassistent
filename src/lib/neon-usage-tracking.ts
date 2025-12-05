@@ -1,4 +1,162 @@
 import { sql } from '@vercel/postgres';
+import {
+  TIER_TOOL_LIMITS,
+  determineTierFromEnrollments,
+  type ProgramTier,
+  type TierToolLimits,
+} from './access-control';
+
+// ============================================
+// TIER-AWARE LIMIT CHECKING (PRO IMPLEMENTATION)
+// ============================================
+
+export interface IrisUsageStatus {
+  allowed: boolean;
+  tier: ProgramTier;
+  current: number;
+  limit: number;
+  remaining: number;
+  isUnlimited: boolean;
+  resetTime: string;
+  resetTimeHuman: string;
+  percentageUsed: number;
+}
+
+/**
+ * Get user's tier based on their active program enrollments
+ */
+export async function getUserTier(userId: number): Promise<ProgramTier> {
+  try {
+    const result = await sql`
+      SELECT p.slug, pe.status
+      FROM program_enrollments pe
+      JOIN programs p ON p.id = pe.program_id
+      WHERE pe.user_id = ${userId}
+        AND pe.status = 'active'
+    `;
+
+    const enrollments = result.rows.map((row) => ({
+      program_slug: row.slug,
+      status: row.status,
+    }));
+
+    return determineTierFromEnrollments(enrollments);
+  } catch (error) {
+    console.error('Error getting user tier:', error);
+    return 'free';
+  }
+}
+
+/**
+ * Get today's Iris message count for a user
+ */
+export async function getTodayIrisCount(userId: number): Promise<number> {
+  try {
+    const dayStart = getDayStart();
+
+    const result = await sql`
+      SELECT COUNT(*) as count
+      FROM usage_tracking
+      WHERE user_id = ${userId}
+        AND feature_type = 'iris_message'
+        AND created_at >= ${dayStart.toISOString()}
+    `;
+
+    return parseInt(result.rows[0]?.count) || 0;
+  } catch (error) {
+    console.error('Error getting today Iris count:', error);
+    return 0;
+  }
+}
+
+/**
+ * Check if user can send an Iris message (tier-aware)
+ * This is the main function to call before allowing an Iris chat message
+ */
+export async function checkIrisLimit(userId: number): Promise<IrisUsageStatus> {
+  try {
+    // Get user's tier
+    const tier = await getUserTier(userId);
+    const limit = TIER_TOOL_LIMITS[tier].irisDaily;
+
+    // Get today's usage
+    const current = await getTodayIrisCount(userId);
+
+    // Calculate reset time (next midnight)
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const resetTimeHuman = formatTimeUntilReset(tomorrow);
+
+    // Unlimited check
+    const isUnlimited = limit === -1;
+
+    // Calculate remaining
+    const remaining = isUnlimited ? 999 : Math.max(0, limit - current);
+
+    // Calculate percentage used
+    const percentageUsed = isUnlimited ? 0 : Math.min(100, Math.round((current / limit) * 100));
+
+    return {
+      allowed: isUnlimited || current < limit,
+      tier,
+      current,
+      limit: isUnlimited ? -1 : limit,
+      remaining,
+      isUnlimited,
+      resetTime: tomorrow.toISOString(),
+      resetTimeHuman,
+      percentageUsed,
+    };
+  } catch (error) {
+    console.error('Error checking Iris limit:', error);
+    // On error, allow the message (fail open)
+    return {
+      allowed: true,
+      tier: 'free',
+      current: 0,
+      limit: 2,
+      remaining: 2,
+      isUnlimited: false,
+      resetTime: new Date().toISOString(),
+      resetTimeHuman: 'onbekend',
+      percentageUsed: 0,
+    };
+  }
+}
+
+/**
+ * Track an Iris message usage
+ */
+export async function trackIrisUsage(userId: number): Promise<void> {
+  try {
+    await sql`
+      INSERT INTO usage_tracking (user_id, feature_type, tokens_used, created_at)
+      VALUES (${userId}, 'iris_message', 1, NOW())
+    `;
+  } catch (error) {
+    console.error('Failed to track Iris usage:', error);
+    // Don't throw - tracking failures shouldn't break the chat
+  }
+}
+
+/**
+ * Format time until reset in human-readable Dutch
+ */
+function formatTimeUntilReset(resetDate: Date): string {
+  const now = new Date();
+  const diff = resetDate.getTime() - now.getTime();
+
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (hours > 0) {
+    return `${hours}u ${minutes}m`;
+  }
+  return `${minutes} minuten`;
+}
 
 export interface UsageStats {
   // Weekly (resets every Monday)

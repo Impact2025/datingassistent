@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, Sparkles, MessageCircle, Lightbulb, TrendingUp, Heart, Target } from 'lucide-react';
+import { Send, Sparkles, MessageCircle, Lightbulb, TrendingUp, Heart, Target, AlertCircle, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { CoachingSuggestion } from '@/lib/iris/proactive-coaching';
 import { trackChatMessageSent, trackToolUsed } from '@/lib/analytics/ga4-events';
+import { useIrisUsage, getTierDisplayName, getUsageBarColor, type IrisUsageStatus } from '@/hooks/use-iris-usage';
 
 interface Bericht {
   id: string;
@@ -38,7 +39,11 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
   const [currentMode, setCurrentMode] = useState<string>('general');
   const [proactiveSuggestions, setProactiveSuggestions] = useState<any[]>([]);
   const [followUpSuggestions, setFollowUpSuggestions] = useState<string[]>([]);
+  const [limitReached, setLimitReached] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // 🔒 Usage limit tracking
+  const { usageStatus, updateFromResponse } = useIrisUsage();
 
   // GA4: Track when Iris chat is opened
   useEffect(() => {
@@ -90,6 +95,21 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
 
       const data = await response.json();
 
+      // 🔒 Handle limit reached error
+      if (response.status === 429 || data.error === 'limit_reached') {
+        setLimitReached(true);
+        if (data.usageStatus) {
+          updateFromResponse(data.usageStatus);
+        }
+        setBerichten(prev => [...prev, {
+          id: (Date.now() + 1).toString(),
+          type: 'iris',
+          tekst: `⏳ ${data.message || 'Je hebt je dagelijkse limiet bereikt. Probeer het morgen weer!'}`,
+          sentiment: 'neutraal',
+        }]);
+        return;
+      }
+
       if (data.error) {
         throw new Error(data.error);
       }
@@ -100,6 +120,15 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
       if (data.mode) setCurrentMode(data.mode);
       if (data.proactiveSuggestions) setProactiveSuggestions(data.proactiveSuggestions);
       if (data.followUpSuggestions) setFollowUpSuggestions(data.followUpSuggestions);
+
+      // 🔒 Update usage status from response
+      if (data.usageStatus) {
+        updateFromResponse(data.usageStatus);
+        // Check if limit is now reached after this message
+        if (!data.usageStatus.allowed) {
+          setLimitReached(true);
+        }
+      }
 
       setBerichten(prev => [...prev, {
         id: (Date.now() + 1).toString(),
@@ -161,6 +190,33 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
                 <span>{getModeLabel(currentMode)}</span>
               </p>
             </div>
+          </div>
+        )}
+
+        {/* Usage Indicator - Only show for limited tiers */}
+        {usageStatus && !usageStatus.isUnlimited && (
+          <div className="mt-3 bg-white/10 backdrop-blur-sm rounded-lg p-2">
+            <div className="flex items-center justify-between text-xs text-white/90 mb-1">
+              <span className="flex items-center gap-1">
+                <MessageCircle className="w-3 h-3" />
+                Berichten vandaag
+              </span>
+              <span className="font-medium">
+                {usageStatus.remaining} over
+              </span>
+            </div>
+            <div className="w-full bg-white/20 rounded-full h-1.5">
+              <div
+                className={`h-1.5 rounded-full transition-all ${getUsageBarColor(usageStatus.percentageUsed)}`}
+                style={{ width: `${usageStatus.percentageUsed}%` }}
+              />
+            </div>
+            {usageStatus.percentageUsed >= 80 && (
+              <p className="text-[10px] text-white/70 mt-1 flex items-center gap-1">
+                <Clock className="w-2.5 h-2.5" />
+                Reset over {usageStatus.resetTimeHuman}
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -287,21 +343,33 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
       </div>
 
       {/* Input - Dashboard Style */}
-      <form onSubmit={handleSubmit} className="p-6 bg-white border-t border-gray-100 flex-shrink-0 rounded-b-2xl">
+      <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-gray-100 flex-shrink-0 rounded-b-2xl">
+        {/* Limit Reached Warning */}
+        {limitReached && usageStatus && (
+          <div className="mb-3 bg-orange-50 border border-orange-200 rounded-lg px-3 py-2 flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-orange-600 flex-shrink-0" />
+            <p className="text-xs text-orange-700">
+              Dagelijkse limiet bereikt. Reset over {usageStatus.resetTimeHuman}
+            </p>
+          </div>
+        )}
+
         <div className="flex gap-3 items-center">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Stel een vraag aan Iris..."
-            className="flex-1 px-6 py-3 bg-gray-50 rounded-full
+            placeholder={limitReached ? "Limiet bereikt - probeer het morgen weer" : "Stel een vraag aan Iris..."}
+            disabled={limitReached}
+            className={`flex-1 px-6 py-3 bg-gray-50 rounded-full
                        border-2 border-gray-200 focus:border-pink-400 focus:bg-white
                        focus:outline-none text-sm text-gray-900
-                       placeholder:text-gray-400 transition-all"
+                       placeholder:text-gray-400 transition-all
+                       ${limitReached ? 'opacity-50 cursor-not-allowed' : ''}`}
           />
           <button
             type="submit"
-            disabled={!input.trim()}
+            disabled={!input.trim() || limitReached}
             className="w-11 h-11 bg-pink-500 hover:bg-pink-600
                        disabled:bg-gray-300 disabled:cursor-not-allowed
                        rounded-full flex items-center justify-center

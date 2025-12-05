@@ -374,7 +374,7 @@ export const TIER_TOOL_LIMITS: Record<ProgramTier, TierToolLimits> = {
     personalCoaching: false,
   },
   kickstart: {
-    irisDaily: -1, // Unlimited for Kickstart - we WANT them using Iris
+    irisDaily: 10, // 10 messages per day for Kickstart
     fotoAnalyse: 2,
     profielCheck: 1,
     gespreksstarter: 3,

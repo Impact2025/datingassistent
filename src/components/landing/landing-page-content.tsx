@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import {
   Star,
   User,
+  Users,
   MessageCircle,
   Calendar,
   Shield,
@@ -20,6 +21,7 @@ import {
   ArrowRight,
   AlertCircle,
   Target,
+  Heart,
 } from 'lucide-react';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
@@ -513,66 +515,92 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
         </div>
       </section>
 
-      {/* Quiz Section - Professional & Minimal */}
-      <section className="py-24 px-4 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <Card className="border-2 border-gray-200 shadow-xl bg-white">
-            <CardContent className="p-12 text-center space-y-8">
-              {/* Subtle Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-50 border border-pink-200">
-                <div className="w-2 h-2 rounded-full bg-pink-500"></div>
-                <span className="text-sm text-gray-700">1.247 mensen deze week</span>
-              </div>
-
+      {/* Quiz Section - Logout Page Style */}
+      <section className="py-24 px-4 bg-gradient-to-br from-pink-50 via-white to-purple-50">
+        <div className="max-w-2xl mx-auto space-y-8">
+          {/* Main Card */}
+          <Card className="border-2 border-pink-200 shadow-xl">
+            <CardContent className="p-8 text-center space-y-6">
               {/* Title */}
-              <div className="space-y-4">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                  Ontdek je Dating Stijl in 2 minuten
+              <div className="space-y-3">
+                <h2 className="text-3xl font-bold text-gray-900">
+                  Ontdek je Dating Stijl
                 </h2>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                <p className="text-lg text-gray-600">
                   AI-analyse van je gedrag met direct persoonlijk actieplan
                 </p>
               </div>
 
-              {/* Clean Benefits */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
-                <div className="space-y-3">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
-                    <TrendingUp className="w-6 h-6 text-gray-700" />
-                  </div>
-                  <div className="font-semibold text-gray-900">Persoonlijkheidsanalyse</div>
-                  <div className="text-sm text-gray-600">Je unieke dating stijl</div>
+              {/* Quick Stats - 3 colored boxes */}
+              <div className="grid grid-cols-3 gap-4 pt-4">
+                <div className="text-center p-3 bg-pink-50 rounded-lg">
+                  <Heart className="w-5 h-5 mx-auto mb-1 text-pink-600" />
+                  <p className="text-xs text-gray-600">Persoonlijkheid</p>
                 </div>
-                <div className="space-y-3">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
-                    <Target className="w-6 h-6 text-gray-700" />
-                  </div>
-                  <div className="font-semibold text-gray-900">Valkuilen identificeren</div>
-                  <div className="text-sm text-gray-600">Wat houdt je tegen</div>
+                <div className="text-center p-3 bg-purple-50 rounded-lg">
+                  <Target className="w-5 h-5 mx-auto mb-1 text-purple-600" />
+                  <p className="text-xs text-gray-600">Valkuilen</p>
                 </div>
-                <div className="space-y-3">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
-                    <CheckCircle className="w-6 h-6 text-gray-700" />
-                  </div>
-                  <div className="font-semibold text-gray-900">Concreet actieplan</div>
-                  <div className="text-sm text-gray-600">Direct toepasbaar</div>
+                <div className="text-center p-3 bg-blue-50 rounded-lg">
+                  <TrendingUp className="w-5 h-5 mx-auto mb-1 text-blue-600" />
+                  <p className="text-xs text-gray-600">Actieplan</p>
                 </div>
-              </div>
-
-              {/* Clean CTA */}
-              <div className="pt-6 space-y-4">
-                <Link href="/quiz">
-                  <Button className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold">
-                    Start Gratis Analyse
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </Link>
-                <p className="text-xs text-gray-500">
-                  2 minuten • 100% gratis • Direct resultaat
-                </p>
               </div>
             </CardContent>
           </Card>
+
+          {/* Action Cards - 2 column grid */}
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Quiz Card */}
+            <Card className="border-2 hover:border-pink-300 transition-all cursor-pointer hover:shadow-lg">
+              <Link href="/quiz">
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-100 flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-pink-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    Start de Quiz
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Ontdek jouw dating stijl in 2 minuten
+                  </p>
+                  <Button className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white">
+                    Gratis Analyse
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </CardContent>
+              </Link>
+            </Card>
+
+            {/* Register Card */}
+            <Card className="border-2 hover:border-purple-300 transition-all cursor-pointer hover:shadow-lg">
+              <Link href="/register">
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-100 flex items-center justify-center">
+                    <Users className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    Direct Beginnen
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Maak gratis een account aan
+                  </p>
+                  <Button variant="outline" className="w-full border-purple-300 hover:bg-purple-50">
+                    Registreren
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </CardContent>
+              </Link>
+            </Card>
+          </div>
+
+          {/* Footer text */}
+          <div className="text-center text-sm text-gray-500">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-pink-100">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+              <span>27 mensen deze week</span>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -17,6 +17,7 @@ import {
 import { detectMode, buildModePrompt, type CoachingMode } from '@/lib/iris/specialized-modes';
 import { analyzeConversationWithAI, generateFollowUpSuggestions } from '@/lib/iris/conversation-memory';
 import { generateProactiveSuggestions } from '@/lib/iris/proactive-coaching';
+import { checkIrisLimit, trackIrisUsage, type IrisUsageStatus } from '@/lib/neon-usage-tracking';
 
 // Lazy initialization to avoid build-time errors when env vars are missing
 const getAnthropicClient = () => {
@@ -37,6 +38,20 @@ export async function POST(request: NextRequest) {
     }
 
     const userId = parseInt(session.user.id);
+
+    // 2. 🔒 Check Iris usage limit (tier-aware)
+    const usageStatus = await checkIrisLimit(userId);
+    if (!usageStatus.allowed) {
+      return NextResponse.json(
+        {
+          error: 'limit_reached',
+          message: `Je hebt je dagelijkse limiet van ${usageStatus.limit} berichten bereikt. Je limiet wordt weer aangevuld over ${usageStatus.resetTimeHuman}.`,
+          usageStatus,
+        },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const {
       message,
@@ -125,12 +140,18 @@ export async function POST(request: NextRequest) {
       sentiment
     );
 
-    // 9. ⚙️ Update stemming in context
+    // 9. 📊 Track Iris usage (for daily limits)
+    await trackIrisUsage(userId);
+
+    // 10. ⚙️ Update stemming in context
     await updateIrisContext(userId, {
       recente_stemming: sentiment as any,
     });
 
-    // 10. 🚀 Return WERELDKLASSE response
+    // 11. 📈 Get updated usage status for frontend
+    const updatedUsageStatus = await checkIrisLimit(userId);
+
+    // 12. 🚀 Return WERELDKLASSE response met usage info
     return NextResponse.json({
       response: irisResponse,
       sentiment,
@@ -139,6 +160,7 @@ export async function POST(request: NextRequest) {
       emotionalTone: conversationAnalysis.emotionalTone,
       proactiveSuggestions: proactiveSuggestions.slice(0, 3),  // Top 3
       followUpSuggestions: followUpSuggestions.slice(0, 3),  // Top 3
+      usageStatus: updatedUsageStatus,  // 🔒 Usage info for UI
     });
 
   } catch (error) {

@@ -31,6 +31,7 @@ import type {
   UpdateDayProgressInput,
 } from '@/types/kickstart.types';
 import { trackLessonStart, trackLessonComplete, trackVideoStart, trackVideoComplete } from '@/lib/analytics/ga4-events';
+import { KickstartCursusRecommendations } from './KickstartCursusRecommendations';
 
 interface DayViewerProps {
   day: ProgramDay;
@@ -781,6 +782,14 @@ export function DayViewer({
           </TabsContent>
         )}
       </Tabs>
+
+      {/* Cursus Aanbevelingen */}
+      <KickstartCursusRecommendations
+        dayNumber={day.dag_nummer}
+        compact={false}
+        showWeekBonus={day.dag_nummer % 7 === 0}
+        className="mt-6"
+      />
 
       {/* Navigation - Mobile Optimized */}
       <div className="flex justify-between items-center pt-4 sm:pt-6 border-t border-pink-100 gap-2">
