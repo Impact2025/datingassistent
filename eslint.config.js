@@ -1,50 +1,37 @@
-import js from "@eslint/js";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 
-export default [
-  js.configs.recommended,
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
-    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
-    languageOptions: {
-      parser: tsParser,
-      ecmaVersion: "latest",
-      sourceType: "module",
-      globals: {
-        console: "readonly",
-        process: "readonly",
-        Buffer: "readonly",
-        __dirname: "readonly",
-        __filename: "readonly",
-        global: "readonly",
-        window: "readonly",
-        document: "readonly",
-        navigator: "readonly",
-        fetch: "readonly",
-        setTimeout: "readonly",
-        clearTimeout: "readonly",
-        setInterval: "readonly",
-        clearInterval: "readonly",
-      },
-    },
-    plugins: {
-      "@typescript-eslint": typescriptEslint,
-    },
     rules: {
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-      "no-console": "off",
+      // 1. Console logs mogen tijdens development/testen, maar geef wel een seintje
+      "no-console": "warn",
+
+      // 2. TypeScript vangt 'undefined' variabelen al af. 
+      // ESLint hoeft hier niet over te zeuren (dit fixt je localStorage/React errors)
+      "no-undef": "off",
+
+      // 3. De PRO regel: Ongebruikte vars zijn verboden, BEHALVE als ze beginnen met een _
+      // Dit dwingt je om na te denken: "Heb ik dit nodig? Nee? Weggooien of _ gebruiken."
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+          "caughtErrorsIgnorePattern": "^_"
+        }
+      ],
     },
-  },
-  {
-    ignores: [
-      "**/node_modules/**",
-      "**/.next/**",
-      "**/out/**",
-      "**/build/**",
-      "**/dist/**",
-      "**/*.config.js",
-      "**/*.config.ts",
-    ],
   },
 ];
+
+export default eslintConfig;
