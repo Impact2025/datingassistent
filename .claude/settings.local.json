@@ -122,7 +122,11 @@
       "Bash(cmd /c:*)",
       "Bash(node:*)",
       "Bash(timeout /t 15 /nobreak)",
-      "Bash(del \"C:\\Users\\v_mun\\.claude\\projects\\Datingassistent\\Datingassistentapp\\src\\components\\landing\\feature-blocks.tsx\")"
+      "Bash(del \"C:\\Users\\v_mun\\.claude\\projects\\Datingassistent\\Datingassistentapp\\src\\components\\landing\\feature-blocks.tsx\")",
+      "Bash(timeout /t 90 /nobreak)",
+      "Bash(npm view:*)",
+      "Bash(git fetch:*)",
+      "Bash(npm audit:*)"
     ],
     "deny": [],
     "ask": []
