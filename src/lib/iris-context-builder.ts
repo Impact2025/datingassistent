@@ -323,3 +323,39 @@ export async function getKickstartProgress(userId: number) {
     };
   }
 }
+
+/**
+ * Get formatted reflections for Iris context building
+ * Returns reflections grouped and formatted for AI consumption
+ */
+export async function getIrisReflectionContext(userId: number, programSlug: string = 'kickstart') {
+  try {
+    const result = await sql`
+      SELECT
+        day_number,
+        question_type,
+        question_text,
+        answer_text,
+        created_at
+      FROM user_reflections
+      WHERE user_id = ${userId}
+        AND program_slug = ${programSlug}
+      ORDER BY day_number DESC, question_type
+      LIMIT 30
+    `;
+
+    // Format for Iris
+    const formatted = result.rows.map(r => ({
+      dag: r.day_number,
+      type: r.question_type,
+      vraag: r.question_text,
+      antwoord: r.answer_text,
+      datum: r.created_at
+    }));
+
+    return formatted;
+  } catch (error) {
+    console.error('Error getting Iris reflection context:', error);
+    return [];
+  }
+}
