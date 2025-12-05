@@ -119,16 +119,49 @@ export function KickstartCursusRecommendations({
 
   const fetchRecommendations = async () => {
     try {
-      const res = await fetch(`/api/kickstart/recommendations?day=${dayNumber}`);
-      if (!res.ok) return;
+      const res = await fetch(`/api/kickstart/recommendations?day=${dayNumber}`, {
+        credentials: 'include',
+      });
 
-      const data = await res.json();
-      setRecommendations(data.dayRecommendations || []);
-      if (showWeekBonus && data.weekRecommendation) {
-        setWeekRecommendation(data.weekRecommendation);
+      if (res.ok) {
+        const data = await res.json();
+        setRecommendations(data.dayRecommendations || []);
+        if (showWeekBonus && data.weekRecommendation) {
+          setWeekRecommendation(data.weekRecommendation);
+        }
+      } else {
+        // API failed - use static fallback from mapping
+        const { getRecommendationsForDay } = await import('@/lib/kickstart-cursus-mapping');
+        const staticRecs = getRecommendationsForDay(dayNumber);
+        // Convert to component format with default userProgress
+        const fallbackRecs: CursusRecommendation[] = staticRecs.map(rec => ({
+          ...rec,
+          userProgress: {
+            hasAccess: !rec.isPremium, // Assume access to free content only
+            isCompleted: false,
+            progressPercentage: 0,
+          },
+        }));
+        setRecommendations(fallbackRecs);
       }
     } catch (error) {
       console.error('Error fetching recommendations:', error);
+      // Fallback to static data on error
+      try {
+        const { getRecommendationsForDay } = await import('@/lib/kickstart-cursus-mapping');
+        const staticRecs = getRecommendationsForDay(dayNumber);
+        const fallbackRecs: CursusRecommendation[] = staticRecs.map(rec => ({
+          ...rec,
+          userProgress: {
+            hasAccess: !rec.isPremium,
+            isCompleted: false,
+            progressPercentage: 0,
+          },
+        }));
+        setRecommendations(fallbackRecs);
+      } catch (e) {
+        console.error('Error loading static recommendations:', e);
+      }
     } finally {
       setLoading(false);
     }
@@ -289,15 +322,26 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
           'group relative overflow-hidden rounded-lg border p-4 transition-all',
           'hover:border-pink-300 hover:shadow-md',
           isCompleted && 'border-emerald-300 bg-emerald-50/50 dark:bg-emerald-950/20',
-          !hasAccess && 'opacity-80'
+          !hasAccess && 'border-amber-200 bg-gradient-to-r from-amber-50/50 to-orange-50/30 dark:from-amber-950/20 dark:to-orange-950/10'
         )}
       >
+        {/* Premium locked overlay indicator */}
+        {!hasAccess && recommendation.isPremium && (
+          <div className="absolute top-0 right-0">
+            <div className="bg-gradient-to-l from-amber-500 to-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-bl-lg flex items-center gap-1.5 shadow-sm">
+              <Lock className="h-3 w-3" />
+              <span>Premium</span>
+            </div>
+          </div>
+        )}
+
         <div className="flex items-start gap-4">
           {/* Icon Badge */}
           <div
             className={cn(
               'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-white shadow-sm',
-              colorClass
+              colorClass,
+              !hasAccess && 'opacity-75'
             )}
           >
             <Icon className="h-5 w-5" />
@@ -308,7 +352,10 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
             <div className="flex items-start justify-between gap-2 mb-1">
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h4 className="font-semibold text-foreground group-hover:text-pink-600 transition-colors">
+                  <h4 className={cn(
+                    "font-semibold transition-colors",
+                    hasAccess ? "text-foreground group-hover:text-pink-600" : "text-amber-900 dark:text-amber-100"
+                  )}>
                     {recommendation.lesData?.titel || recommendation.title}
                   </h4>
                   <Badge variant="secondary" className="text-xs">
@@ -324,17 +371,10 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
                   {recommendation.lesData?.beschrijving || recommendation.description}
                 </p>
               </div>
-
-              {/* Lock/Access indicator */}
-              {!hasAccess && (
-                <div className="shrink-0">
-                  <Lock className="h-4 w-4 text-muted-foreground" />
-                </div>
-              )}
             </div>
 
             {/* Meta row */}
-            <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground flex-wrap">
               {recommendation.lesData?.duur_minuten && (
                 <span className="flex items-center gap-1">
                   <Clock className="h-3.5 w-3.5" />
@@ -348,7 +388,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
                 </span>
               )}
               {recommendation.discount && !hasAccess && (
-                <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-200">
+                <Badge className="bg-gradient-to-r from-pink-500 to-rose-500 text-white text-xs font-semibold animate-pulse">
                   {recommendation.discount}% Kickstart korting
                 </Badge>
               )}
@@ -367,28 +407,47 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
           <ChevronRight className="h-5 w-5 text-muted-foreground shrink-0 group-hover:text-pink-500 group-hover:translate-x-1 transition-all" />
         </div>
 
-        {/* Price display for premium content */}
+        {/* Premium locked state - prominent CTA */}
         {recommendation.isPremium && recommendation.cursusData && !hasAccess && (
-          <div className="mt-3 pt-3 border-t flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {recommendation.cursusData.discountedPrijs ? (
-                <>
-                  <span className="text-lg font-bold text-pink-600">
-                    €{recommendation.cursusData.discountedPrijs}
-                  </span>
-                  <span className="text-sm text-muted-foreground line-through">
-                    €{recommendation.cursusData.prijs}
-                  </span>
-                </>
-              ) : (
-                <span className="text-lg font-bold text-foreground">
-                  €{recommendation.cursusData.prijs}
-                </span>
-              )}
+          <div className="mt-3 pt-3 border-t border-amber-200 dark:border-amber-800">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1.5 text-amber-700 dark:text-amber-300">
+                  <Sparkles className="h-4 w-4" />
+                  <span className="text-sm font-medium">Unlock deze verdieping</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {recommendation.cursusData.discountedPrijs ? (
+                    <>
+                      <span className="text-lg font-bold text-pink-600">
+                        €{recommendation.cursusData.discountedPrijs}
+                      </span>
+                      <span className="text-sm text-muted-foreground line-through">
+                        €{recommendation.cursusData.prijs}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-lg font-bold text-foreground">
+                      €{recommendation.cursusData.prijs}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <Button size="sm" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-md">
+                <Unlock className="h-4 w-4 mr-1.5" />
+                Bekijk
+              </Button>
             </div>
-            <Button size="sm" className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700">
-              Bekijk cursus
-            </Button>
+          </div>
+        )}
+
+        {/* Free content - accessible state */}
+        {!recommendation.isPremium && hasAccess && !isCompleted && (
+          <div className="mt-3 pt-3 border-t border-emerald-200 dark:border-emerald-800">
+            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+              <Play className="h-4 w-4" />
+              <span className="text-sm font-medium">Gratis beschikbaar - Start nu!</span>
+            </div>
           </div>
         )}
       </motion.div>

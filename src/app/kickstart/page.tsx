@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Loader2, ArrowLeft, Home } from 'lucide-react';
 import { WeekOverview, KickstartStats } from '@/components/kickstart/WeekOverview';
+import { PostKickstartJourney } from '@/components/kickstart/PostKickstartJourney';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { Button } from '@/components/ui/button';
 import type { KickstartOverview } from '@/types/kickstart.types';
@@ -182,6 +183,12 @@ export default function KickstartPage() {
             </div>
           </motion.div>
         )}
+
+        {/* Post-Kickstart Journey - shown when all 21 days are completed */}
+        <PostKickstartJourney
+          completedDays={completedDays.length}
+          className="mt-8"
+        />
       </div>
 
       {/* Bottom Navigation for Mobile */}
