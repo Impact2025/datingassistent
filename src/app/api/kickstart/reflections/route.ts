@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
+import { applyRateLimit, RateLimitPresets } from '@/lib/rate-limiter';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,6 +14,27 @@ interface ReflectionData {
 }
 
 /**
+ * Helper function to check if user is enrolled in a program
+ */
+async function checkEnrollment(userId: number, programSlug: string): Promise<boolean> {
+  try {
+    const result = await sql`
+      SELECT pe.id
+      FROM program_enrollments pe
+      JOIN programs p ON p.id = pe.program_id
+      WHERE pe.user_id = ${userId}
+        AND p.slug = ${programSlug}
+        AND pe.status = 'active'
+      LIMIT 1
+    `;
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error('Error checking enrollment:', error);
+    return false;
+  }
+}
+
+/**
  * POST /api/kickstart/reflections
  * Save a user's reflection answer
  *
@@ -21,6 +43,10 @@ interface ReflectionData {
  */
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const rateLimitResponse = await applyRateLimit(request, RateLimitPresets.api);
+    if (rateLimitResponse) return rateLimitResponse;
+
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(
@@ -31,6 +57,16 @@ export async function POST(request: NextRequest) {
 
     const userId = user.id;
     const body: ReflectionData = await request.json();
+
+    // Security: Verify user is enrolled in the program
+    const programSlug = body.programSlug || 'kickstart';
+    const isEnrolled = await checkEnrollment(userId, programSlug);
+    if (!isEnrolled) {
+      return NextResponse.json(
+        { error: 'Je hebt geen toegang tot dit programma', requiresEnrollment: true },
+        { status: 403 }
+      );
+    }
 
     const {
       dayNumber,
@@ -105,6 +141,10 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
+    // Rate limiting
+    const rateLimitResponse = await applyRateLimit(request, RateLimitPresets.api);
+    if (rateLimitResponse) return rateLimitResponse;
+
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(
@@ -118,6 +158,15 @@ export async function GET(request: NextRequest) {
     const dayNumber = searchParams.get('dayNumber');
     const programSlug = searchParams.get('programSlug') || 'kickstart';
     const all = searchParams.get('all') === 'true';
+
+    // Security: Verify user is enrolled in the program
+    const isEnrolled = await checkEnrollment(userId, programSlug);
+    if (!isEnrolled) {
+      return NextResponse.json(
+        { error: 'Je hebt geen toegang tot dit programma', requiresEnrollment: true },
+        { status: 403 }
+      );
+    }
 
     let result;
 

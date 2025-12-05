@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
+import { applyRateLimit, RateLimitPresets } from '@/lib/rate-limiter';
 import type { UpdateDayProgressInput, DayProgress } from '@/types/kickstart.types';
 
 export const dynamic = 'force-dynamic';
@@ -11,6 +12,10 @@ export const dynamic = 'force-dynamic';
  */
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const rateLimitResponse = await applyRateLimit(request, RateLimitPresets.api);
+    if (rateLimitResponse) return rateLimitResponse;
+
     // Get current user
     const user = await getCurrentUser();
     if (!user) {
@@ -251,6 +256,10 @@ function calculateQuizScore(answers: any[]): number {
  */
 export async function GET(request: NextRequest) {
   try {
+    // Rate limiting
+    const rateLimitResponse = await applyRateLimit(request, RateLimitPresets.api);
+    if (rateLimitResponse) return rateLimitResponse;
+
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(

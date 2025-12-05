@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
+import { applyRateLimit, RateLimitPresets } from '@/lib/rate-limiter';
 import type {
   DayDetailResponse,
   ProgramDay,
@@ -19,6 +20,10 @@ export async function GET(
   { params }: { params: Promise<{ dayNumber: string }> }
 ) {
   try {
+    // Rate limiting
+    const rateLimitResponse = await applyRateLimit(request, RateLimitPresets.api);
+    if (rateLimitResponse) return rateLimitResponse;
+
     const { dayNumber } = await params;
     const dagNummer = parseInt(dayNumber, 10);
 
@@ -153,7 +158,7 @@ export async function GET(
 
     // Check if user has access (enrolled or preview)
     let hasAccess = day.is_preview;
-    if (userId && !hasAccess) {
+    if (!hasAccess) {
       const enrollmentResult = await sql`
         SELECT id FROM program_enrollments
         WHERE user_id = ${userId} AND program_id = ${programId} AND status = 'active'

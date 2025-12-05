@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { toast } from 'sonner';
 import {
   Play,
   CheckCircle,
@@ -112,6 +113,12 @@ export function DayViewer({
         day_id: day.id,
         ...data,
       });
+    } catch (error) {
+      console.error('Error saving progress:', error);
+      toast.error('Kon voortgang niet opslaan', {
+        description: 'Probeer het later opnieuw',
+      });
+      throw error;
     } finally {
       setSaving(false);
     }
@@ -127,7 +134,14 @@ export function DayViewer({
       completion_percentage: 100,
     });
 
-    await saveProgress({ video_completed: true });
+    try {
+      await saveProgress({ video_completed: true });
+      toast.success('Video afgerond!', {
+        description: 'Ga door naar de volgende onderdelen',
+      });
+    } catch {
+      setIsVideoComplete(false);
+    }
   };
 
   const handleQuizAnswer = (questionIndex: number, optionIndex: number, isCorrect: boolean) => {
@@ -138,14 +152,36 @@ export function DayViewer({
 
   const handleQuizSubmit = async () => {
     setQuizSubmitted(true);
-    await saveProgress({ quiz_answers: quizAnswers, quiz_completed: true });
+    try {
+      await saveProgress({ quiz_answers: quizAnswers, quiz_completed: true });
+      const correctCount = quizAnswers.filter(a => a.isCorrect).length;
+      const totalQuestions = day.quiz?.vragen.length || 0;
+      if (correctCount === totalQuestions) {
+        toast.success('Perfect! Alle antwoorden correct!', {
+          description: 'Geweldig gedaan!',
+        });
+      } else {
+        toast.success('Quiz voltooid!', {
+          description: `${correctCount}/${totalQuestions} correct`,
+        });
+      }
+    } catch {
+      setQuizSubmitted(false);
+    }
   };
 
   const handleReflectieSave = async () => {
-    await saveProgress({
-      reflectie_antwoord: reflectieAnswer,
-      reflectie_completed: reflectieAnswer.length > 10,
-    });
+    try {
+      await saveProgress({
+        reflectie_antwoord: reflectieAnswer,
+        reflectie_completed: reflectieAnswer.length > 10,
+      });
+      toast.success('Reflectie opgeslagen!', {
+        description: 'Iris onthoudt je antwoorden',
+      });
+    } catch {
+      // Error already handled in saveProgress
+    }
   };
 
   // LAAG 3: Save individual reflection to API for Iris context
@@ -171,10 +207,21 @@ export function DayViewer({
       });
 
       if (!response.ok) {
-        console.error('Failed to save reflection:', await response.text());
+        const errorText = await response.text();
+        console.error('Failed to save reflection:', errorText);
+        toast.error('Kon reflectie niet opslaan', {
+          description: 'Probeer het later opnieuw',
+        });
+      } else {
+        toast.success('Reflectie bewaard!', {
+          description: 'Iris onthoudt dit voor je',
+        });
       }
     } catch (error) {
       console.error('Error saving reflection:', error);
+      toast.error('Kon reflectie niet opslaan', {
+        description: 'Controleer je internetverbinding',
+      });
     } finally {
       setSavingReflection(null);
     }
@@ -202,10 +249,21 @@ export function DayViewer({
     setWerkboekAnswers(newAnswers);
 
     const allCompleted = newAnswers.every((w) => w.completed);
-    await saveProgress({
-      werkboek_antwoorden: newAnswers,
-      werkboek_completed: allCompleted,
-    });
+    try {
+      await saveProgress({
+        werkboek_antwoorden: newAnswers,
+        werkboek_completed: allCompleted,
+      });
+      if (allCompleted) {
+        toast.success('Werkboek voltooid!', {
+          description: 'Alle stappen zijn afgerond',
+        });
+      }
+    } catch {
+      // Revert on error
+      newAnswers[index].completed = !newAnswers[index].completed;
+      setWerkboekAnswers(newAnswers);
+    }
   };
 
   if (!hasAccess) {
