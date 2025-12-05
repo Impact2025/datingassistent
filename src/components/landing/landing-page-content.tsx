@@ -166,51 +166,27 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
         setReviews([
             {
               id: 1,
-              name: 'Marieke van den Berg',
-              role: '34, Amsterdam • Business coach',
-              content: 'VOOR: 3 matches per maand, gesprekken liepen dood. NA: 12 matches in week 3, waarvan 3 echte dates. De Profiel Coach gaf 8 concrete verbeterpunten die ik in 10 minuten kon toepassen. Binnen 48 uur zag ik al verschil.',
+              name: 'Jasmine Vermeer',
+              role: 'Lid sinds september 2025',
+              content: '',
               rating: 5,
-              avatar: 'https://placehold.co/100x100/ec4899/fff?text=M',
+              avatar: 'https://placehold.co/100x100/ec4899/fff?text=JV',
             },
             {
               id: 2,
-              name: 'Thomas Jansen',
-              role: '31, Rotterdam • Product manager',
-              content: 'Had 3 jaar Tinder geprobeerd met "hey hoe gaat ie" als opener. 0% respons rate. Met DatingAssistent\'s Opener Lab: 64% respons. Het verschil? Gepersonaliseerde openers die authentiek aanvoelen maar wél werken.',
+              name: 'Kevin Pieters',
+              role: 'Lid sinds september 2025',
+              content: '',
               rating: 5,
-              avatar: 'https://placehold.co/100x100/3b82f6/fff?text=T',
+              avatar: 'https://placehold.co/100x100/3b82f6/fff?text=KP',
             },
             {
               id: 3,
-              name: 'Sanne Bakker',
-              role: '28, Utrecht • Content creator',
-              content: 'Binnen 2 weken van mijn eerste echte date naar een tweede date met dezelfde persoon. De Chat Coach hielp me om mezelf te blijven terwijl ik interessant overkwam. Geen awkward stiltes meer.',
+              name: 'Lisa Chen',
+              role: 'Lid sinds september 2025',
+              content: '',
               rating: 5,
-              avatar: 'https://placehold.co/100x100/8b5cf6/fff?text=S',
-            },
-            {
-              id: 4,
-              name: 'Jasper de Vries',
-              role: '35, Den Haag • UX designer',
-              content: 'Ik was sceptisch over "AI dating coach" maar de Match Analyse verraste me. Het voorspelde accurate welke matches potentie hadden. Bespaarde me 10+ uur aan gesprekken die nergens toe leiden.',
-              rating: 4,
-              avatar: 'https://placehold.co/100x100/10b981/fff?text=J',
-            },
-            {
-              id: 5,
-              name: 'Noor Ahmed',
-              role: '29, Eindhoven • HR adviseur',
-              content: 'De AI Foto Check gaf feedback waar een vriend nooit eerlijk over zou zijn. "Deze selfie werkt niet, probeer deze hoek" → nieuwe foto, +40% meer matches. Data liegt niet.',
-              rating: 5,
-              avatar: 'https://placehold.co/100x100/f59e0b/fff?text=N',
-            },
-            {
-              id: 6,
-              name: 'Eva Vermeulen',
-              role: '32, Haarlem • Consultant',
-              content: 'Het Premium programma loste mijn grootste probleem op: ik wist niet WAT ik fout deed. Na de intake had ik een concreet plan. Week 4: eerste relatie met potentie in jaren.',
-              rating: 5,
-              avatar: 'https://placehold.co/100x100/ef4444/fff?text=E',
+              avatar: 'https://placehold.co/100x100/8b5cf6/fff?text=LC',
             },
           ]);
       } catch (error) {
@@ -690,49 +666,48 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
       <section className="py-24 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Van The Undateables tot jouw persoonlijke AI coach</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">10 jaar dating expertise, nu voor iedereen toegankelijk</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Van pionier in 2009 tot jouw AI-coach vandaag</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
               <div className="space-y-4">
-                <p className="text-lg text-gray-700 leading-relaxed italic">
-                  "Het begon in 2013 met een simpele vraag: waarom is daten zo moeilijk voor zoveel mensen?"
+                <p className="text-gray-700 leading-relaxed">
+                  Het begon in 2009, toen ik de eerste datingsite lanceerde voor mensen met een beperking. Ik zag hoe groot de behoefte aan goede begeleiding was, wat in 2014 leidde tot de start van DatingAssistent.
                 </p>
               </div>
 
               <div className="space-y-4">
                 <p className="text-gray-700 leading-relaxed">
-                  Als dating coach heb ik 10 jaar lang honderden mensen 1-op-1 geholpen—van het tv-programma <strong>The Undateables</strong> tot professionals die gewoon geen tijd hadden om het zelf uit te vogelen.
+                  Als coach (ook bekend van TV-programma <strong>The Undateables</strong>) heb ik met trots en plezier honderden mensen 1-op-1 geholpen. Het probleem? Ik kon maar 5-10 mensen per maand begeleiden. Bovendien is persoonlijke coaching (€150/uur) simpelweg niet voor iedereen betaalbaar.
                 </p>
               </div>
 
               <div className="space-y-4">
-                <p className="text-gray-700 leading-relaxed">
-                  <strong>Het probleem?</strong> Ik kon maar 5-10 mensen per maand helpen. Dus bouwde ik DatingAssistent:
+                <p className="text-gray-700 leading-relaxed font-medium">
+                  Daarom bouwde ik deze AI-versie van mezelf:
                 </p>
-                <ul className="space-y-2 ml-4">
+                <ul className="space-y-3 ml-4">
                   <li className="flex items-start gap-3 text-gray-700">
-                    <CheckCircle className="w-5 h-5 text-pink-500 flex-shrink-0 mt-0.5" />
-                    <span>Alles wat ik in 10 jaar leerde, nu beschikbaar voor iedereen</span>
+                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span>Al mijn kennis uit 10+ jaar praktijkervaring, direct toepasbaar.</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-700">
-                    <CheckCircle className="w-5 h-5 text-pink-500 flex-shrink-0 mt-0.5" />
-                    <span>24/7 beschikbaar, niet gebonden aan mijn agenda</span>
+                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span>Geen €150 per uur, maar €147 voor 3 maanden onbeperkt advies.</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-700">
-                    <CheckCircle className="w-5 h-5 text-pink-500 flex-shrink-0 mt-0.5" />
-                    <span>Betaalbaar, persoonlijk, effectief</span>
+                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span>24/7 beschikbaar, precies op het moment dat jij het nodig hebt.</span>
                   </li>
                 </ul>
               </div>
 
               <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-6 border border-pink-100">
-                <p className="text-gray-800 leading-relaxed">
-                  <strong>De missie is simpel:</strong> Jouw dating leven makkelijker, duidelijker en succesvoller maken—zonder dat je er je hele leven voor op pauze hoeft te zetten.
+                <p className="text-gray-800 leading-relaxed italic">
+                  "De missie blijft sinds 2014 onveranderd: Jouw datingleven makkelijker en succesvoller maken, zonder dat je er failliet aan gaat."
                 </p>
-                <p className="text-sm text-gray-600 mt-3">
+                <p className="text-sm text-gray-600 mt-3 font-medium">
                   — Vincent van Munster, Oprichter
                 </p>
               </div>
@@ -763,71 +738,37 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                   <div className="text-sm text-gray-600 font-medium">The Undateables</div>
                 </div>
                 <div className="bg-gray-50 rounded-2xl p-6 text-center">
-                  <div className="text-3xl font-bold text-pink-500 mb-2">4.8/5</div>
-                  <div className="text-sm text-gray-600">Gebruikers rating</div>
+                  <div className="text-3xl font-bold text-pink-500 mb-2">2009</div>
+                  <div className="text-sm text-gray-600">Sinds</div>
                 </div>
                 <div className="bg-gray-50 rounded-2xl p-6 text-center">
                   <div className="text-3xl font-bold text-pink-500 mb-2">10+</div>
                   <div className="text-sm text-gray-600">Jaar expertise</div>
                 </div>
                 <div className="bg-gray-50 rounded-2xl p-6 text-center">
-                  <div className="text-3xl font-bold text-pink-500 mb-2">10K+</div>
-                  <div className="text-sm text-gray-600">Actieve gebruikers</div>
+                  <div className="text-3xl font-bold text-pink-500 mb-2">24/7</div>
+                  <div className="text-sm text-gray-600">Beschikbaar</div>
                 </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
-                <blockquote className="text-lg font-medium leading-relaxed">
-                  "Wat Vincent mij in één sessie leerde, had ik in 3 jaar dating niet geleerd"
-                </blockquote>
-                <p className="text-sm text-pink-100 mt-3">
-                  — Sarah, 29, Amsterdam
-                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-24 px-4 bg-gray-50">
+      <section className="py-24 px-4 bg-gradient-to-br from-pink-50 via-white to-purple-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Echte verhalen, echte resultaten</h2>
-            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Van "geen idee wat ik fout doe" naar eerste date binnen 2 weken
-            </p>
-            <div className="flex items-center justify-center gap-2 mt-4">
-              <div className="flex text-yellow-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-current" />
-                ))}
-              </div>
-              <span className="text-gray-700 font-medium">4.8/5 sterren • 200+ reviews</span>
-            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Gratis: Ontdek je Dating Stijl</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {reviews.slice(0, 6).map((review) => (
-              <div key={review.id} className="bg-white rounded-2xl p-6 border-2 border-gray-100 hover:border-pink-300 hover:shadow-xl transition-all space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex text-yellow-400">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current" />
-                    ))}
-                  </div>
-                  <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                    ✓ Geverifieerd
-                  </span>
-                </div>
-
-                <p className="text-gray-700 leading-relaxed text-sm">{review.content}</p>
-
-                <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
-                  <Image className="w-12 h-12 rounded-full ring-2 ring-pink-100" src={review.avatar} alt={`${review.name} - Verified user`} width={48} height={48} loading="lazy" />
-                  <div>
-                    <p className="font-semibold text-gray-900 text-sm">{review.name}</p>
-                    <p className="text-xs text-gray-500">{review.role}</p>
-                  </div>
+          {/* Simple member display */}
+          <div className="flex flex-wrap justify-center gap-6 mb-16">
+            {reviews.slice(0, 3).map((review) => (
+              <div key={review.id} className="flex items-center gap-3 bg-white rounded-full px-6 py-3 border-2 border-pink-200 shadow-sm">
+                <Image className="w-10 h-10 rounded-full ring-2 ring-pink-100" src={review.avatar} alt={review.name} width={40} height={40} loading="lazy" />
+                <div>
+                  <p className="font-semibold text-gray-900 text-sm">{review.name}</p>
+                  <p className="text-xs text-gray-500">{review.role}</p>
                 </div>
               </div>
             ))}
@@ -936,75 +877,79 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             </div>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <Card className="border-2 border-gray-200 shadow-xl bg-white">
-              <CardContent className="p-12 text-center space-y-8">
-                {/* Clean Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200">
-                  <div className="w-2 h-2 rounded-full bg-gray-400"></div>
-                  <span className="text-sm text-gray-700">Start vandaag</span>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
+          {/* Start vandaag - Logout page style */}
+          <div className="max-w-2xl mx-auto space-y-8">
+            {/* Main Card */}
+            <Card className="border-2 border-pink-200 shadow-xl">
+              <CardContent className="p-8 text-center space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-3xl font-bold text-gray-900">
                     Stop met wachten. Start met groeien.
                   </h3>
-
-                  <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                    De gemiddelde gebruiker denkt: "Laat ik dit proberen, kan toch gratis". Twee weken later: "Waarom heb ik dit niet eerder gedaan?"
-                  </p>
                 </div>
 
-                {/* Clean Grid - No backdrop blur */}
-                <div className="bg-gray-50 rounded-2xl p-6 max-w-2xl mx-auto border border-gray-200">
-                  <p className="text-gray-900 font-semibold mb-4">Je krijgt vandaag toegang tot:</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-left">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                      <span className="text-gray-700">Gratis Profiel Coach scan</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                      <span className="text-gray-700">24/7 Chat Coach hulp</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                      <span className="text-gray-700">AI Foto Check</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                      <span className="text-gray-700">Opener Lab</span>
-                    </div>
+                {/* Quick Stats - 3 colored boxes */}
+                <div className="grid grid-cols-3 gap-4 pt-4">
+                  <div className="text-center p-3 bg-pink-50 rounded-lg">
+                    <Heart className="w-5 h-5 mx-auto mb-1 text-pink-600" />
+                    <p className="text-xs text-gray-600">Gratis starten</p>
                   </div>
-                </div>
-
-                {/* Single CTA */}
-                <div className="pt-4">
-                  <Link href="/register">
-                    <Button className="bg-gray-900 hover:bg-gray-800 text-white px-10 py-4 rounded-lg font-semibold text-lg">
-                      Start gratis (60 seconden)
-                      <ArrowRight className="w-5 h-5 ml-2" />
-                    </Button>
-                  </Link>
-                </div>
-
-                {/* Simple trust indicators */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-600 pt-4">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-gray-400" />
-                    <span>Geen creditcard nodig</span>
+                  <div className="text-center p-3 bg-purple-50 rounded-lg">
+                    <Sparkles className="w-5 h-5 mx-auto mb-1 text-purple-600" />
+                    <p className="text-xs text-gray-600">Direct toegang</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-gray-400" />
-                    <span>Direct toegang</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-gray-400" />
-                    <span>30 dagen geld-terug</span>
+                  <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <TrendingUp className="w-5 h-5 mx-auto mb-1 text-blue-600" />
+                    <p className="text-xs text-gray-600">30 dagen garantie</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Action Cards - 2 column grid */}
+            <div className="grid md:grid-cols-2 gap-4">
+              {/* Quiz Card */}
+              <Card className="border-2 hover:border-pink-300 transition-all cursor-pointer hover:shadow-lg">
+                <Link href="/quiz">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-100 flex items-center justify-center">
+                      <Sparkles className="w-6 h-6 text-pink-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      Doe de Quiz
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Ontdek je dating stijl
+                    </p>
+                    <Button className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white">
+                      Gratis Starten
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </CardContent>
+                </Link>
+              </Card>
+
+              {/* Register Card */}
+              <Card className="border-2 hover:border-purple-300 transition-all cursor-pointer hover:shadow-lg">
+                <Link href="/register">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-100 flex items-center justify-center">
+                      <Users className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      Direct Beginnen
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Maak gratis een account
+                    </p>
+                    <Button variant="outline" className="w-full border-purple-300 hover:bg-purple-50">
+                      Registreren
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </CardContent>
+                </Link>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
