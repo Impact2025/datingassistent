@@ -1,12 +1,1 @@
-{
-  "crons": [
-    {
-      "path": "/api/cron/email-automation",
-      "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/cron/email-queue-processor",
-      "schedule": "0 9 * * *"
-    }
-  ]
-}
+{}
