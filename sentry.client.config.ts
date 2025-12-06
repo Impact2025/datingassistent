@@ -1,7 +1,9 @@
 /**
  * SENTRY CLIENT CONFIGURATION
  * Browser-side error tracking and performance monitoring
+ * Compatible with @sentry/nextjs v10.x
  * Created: 2025-11-22
+ * Updated: 2025-12-06 - Fixed for Sentry SDK v10 API
  */
 
 import * as Sentry from '@sentry/nextjs';
@@ -29,6 +31,13 @@ if (SENTRY_DSN) {
     replaysSessionSampleRate: IS_PRODUCTION ? 0.05 : 0.5, // 5% in production, 50% in dev
     replaysOnErrorSampleRate: 1.0, // 100% when errors occur
 
+    // Trace propagation targets (moved to top-level in v10)
+    tracePropagationTargets: [
+      'localhost',
+      /^https:\/\/datingassistent\.vercel\.app/,
+      /^https:\/\/.*\.vercel\.app/,
+    ],
+
     // Integrations
     integrations: [
       // Session Replay - helps debug user sessions
@@ -38,15 +47,8 @@ if (SENTRY_DSN) {
         maskAllInputs: true, // Privacy: mask all inputs
       }),
 
-      // Browser Performance Tracing
-      Sentry.browserTracingIntegration({
-        // Trace all page loads and navigations
-        tracePropagationTargets: [
-          'localhost',
-          /^https:\/\/datingassistent\.vercel\.app/,
-          /^https:\/\/.*\.vercel\.app/
-        ],
-      }),
+      // Browser Performance Tracing (v10 API - no options needed)
+      Sentry.browserTracingIntegration(),
 
       // User Feedback Widget
       Sentry.feedbackIntegration({
@@ -68,9 +70,7 @@ if (SENTRY_DSN) {
       }),
 
       // Browser Profiling (production only)
-      ...(IS_PRODUCTION ? [
-        Sentry.browserProfilingIntegration()
-      ] : []),
+      ...(IS_PRODUCTION ? [Sentry.browserProfilingIntegration()] : []),
     ],
 
     // Debug mode in development
@@ -135,24 +135,26 @@ if (SENTRY_DSN) {
             'ssn',
           ];
 
-          const sanitizeObject = (obj: any): any => {
+          const sanitizeObject = (obj: unknown): unknown => {
             if (typeof obj !== 'object' || obj === null) return obj;
 
-            const sanitized = Array.isArray(obj) ? [...obj] : { ...obj };
+            const sanitized = Array.isArray(obj) ? [...obj] : { ...(obj as Record<string, unknown>) };
 
             for (const key in sanitized) {
               const lowerKey = key.toLowerCase();
-              if (sensitiveFields.some(field => lowerKey.includes(field.toLowerCase()))) {
-                sanitized[key] = '[REDACTED]';
-              } else if (typeof sanitized[key] === 'object') {
-                sanitized[key] = sanitizeObject(sanitized[key]);
+              if (sensitiveFields.some((field) => lowerKey.includes(field.toLowerCase()))) {
+                (sanitized as Record<string, unknown>)[key] = '[REDACTED]';
+              } else if (typeof (sanitized as Record<string, unknown>)[key] === 'object') {
+                (sanitized as Record<string, unknown>)[key] = sanitizeObject(
+                  (sanitized as Record<string, unknown>)[key]
+                );
               }
             }
 
             return sanitized;
           };
 
-          event.request.data = sanitizeObject(event.request.data);
+          event.request.data = sanitizeObject(event.request.data) as string;
         }
       }
 
@@ -165,7 +167,7 @@ if (SENTRY_DSN) {
     },
 
     // Add custom breadcrumbs
-    beforeBreadcrumb(breadcrumb, hint) {
+    beforeBreadcrumb(breadcrumb) {
       // Filter out noisy breadcrumbs
       if (breadcrumb.category === 'console' && breadcrumb.level === 'log') {
         return null;
@@ -173,7 +175,7 @@ if (SENTRY_DSN) {
 
       // Sanitize breadcrumb data
       if (breadcrumb.data) {
-        const sanitizeValue = (value: any): any => {
+        const sanitizeValue = (value: unknown): unknown => {
           if (typeof value === 'string') {
             // Redact email addresses
             return value.replace(/[\w.-]+@[\w.-]+\.\w+/g, '[EMAIL]');
@@ -182,10 +184,7 @@ if (SENTRY_DSN) {
         };
 
         breadcrumb.data = Object.fromEntries(
-          Object.entries(breadcrumb.data).map(([key, value]) => [
-            key,
-            sanitizeValue(value),
-          ])
+          Object.entries(breadcrumb.data).map(([key, value]) => [key, sanitizeValue(value)])
         );
       }
 
@@ -202,7 +201,7 @@ if (SENTRY_DSN) {
     },
   });
 
-  console.log('✅ Sentry client initialized');
-} else {
-  console.warn('⚠️ Sentry DSN not configured - error tracking disabled');
+  console.log('[Sentry] Client initialized');
+} else if (IS_DEVELOPMENT) {
+  console.warn('[Sentry] DSN not configured - error tracking disabled');
 }

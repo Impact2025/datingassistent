@@ -2,7 +2,9 @@
  * SENTRY SERVER CONFIGURATION
  * Server-side error tracking and performance monitoring
  * Edge Runtime compatible
+ * Compatible with @sentry/nextjs v10.x
  * Created: 2025-11-22
+ * Updated: 2025-12-06 - Fixed for Sentry SDK v10 API with proper type safety
  */
 
 import * as Sentry from '@sentry/nextjs';
@@ -26,19 +28,13 @@ if (SENTRY_DSN) {
     // Performance Monitoring
     tracesSampleRate: IS_PRODUCTION ? 0.1 : 1.0, // 10% in production, 100% in dev
 
-    // Server-side integrations (Edge-compatible)
+    // Server-side integrations (Edge-compatible, v10 API)
     integrations: [
-      // HTTP integration for tracking API calls
-      ...(IS_PRODUCTION ? [
-        Sentry.httpIntegration({
-          tracing: true,
-        }),
-      ] : []),
+      // HTTP integration for tracking API calls (v10: no tracing option)
+      ...(IS_PRODUCTION ? [Sentry.httpIntegration()] : []),
 
       // Postgres integration for database query tracking
-      ...(IS_PRODUCTION ? [
-        Sentry.postgresIntegration(),
-      ] : []),
+      ...(IS_PRODUCTION ? [Sentry.postgresIntegration()] : []),
     ],
 
     // Debug mode in development
@@ -68,9 +64,9 @@ if (SENTRY_DSN) {
       'Resource not found',
     ],
 
-    // Filter out sensitive data
-    beforeSend(event, hint) {
-      // Remove sensitive data from server-side errors
+    // Filter out sensitive data with proper type guards
+    beforeSend(event) {
+      // Type-safe request sanitization
       if (event.request) {
         // Remove sensitive headers
         if (event.request.headers) {
@@ -80,14 +76,17 @@ if (SENTRY_DSN) {
           delete event.request.headers['x-csrf-token'];
         }
 
-        // Remove sensitive cookies
-        if (event.request.cookies) {
-          const cookieKeys = Object.keys(event.request.cookies);
-          cookieKeys.forEach(key => {
-            if (key.toLowerCase().includes('token') ||
-                key.toLowerCase().includes('session') ||
-                key.toLowerCase().includes('auth')) {
-              event.request.cookies![key] = '[REDACTED]';
+        // Remove sensitive cookies (with type guard)
+        if (event.request.cookies && typeof event.request.cookies === 'object') {
+          const cookies = event.request.cookies as Record<string, string>;
+          Object.keys(cookies).forEach((key) => {
+            const lowerKey = key.toLowerCase();
+            if (
+              lowerKey.includes('token') ||
+              lowerKey.includes('session') ||
+              lowerKey.includes('auth')
+            ) {
+              cookies[key] = '[REDACTED]';
             }
           });
         }
@@ -108,67 +107,81 @@ if (SENTRY_DSN) {
             'cvv',
           ];
 
-          const sanitizeObject = (obj: any): any => {
+          const sanitizeObject = (obj: unknown): unknown => {
             if (typeof obj !== 'object' || obj === null) return obj;
 
-            const sanitized = Array.isArray(obj) ? [...obj] : { ...obj };
+            const sanitized = Array.isArray(obj)
+              ? [...obj]
+              : { ...(obj as Record<string, unknown>) };
 
             for (const key in sanitized) {
               const lowerKey = key.toLowerCase();
-              if (sensitiveFields.some(field => lowerKey.includes(field.toLowerCase()))) {
-                sanitized[key] = '[REDACTED]';
-              } else if (typeof sanitized[key] === 'object') {
-                sanitized[key] = sanitizeObject(sanitized[key]);
+              if (sensitiveFields.some((field) => lowerKey.includes(field.toLowerCase()))) {
+                (sanitized as Record<string, unknown>)[key] = '[REDACTED]';
+              } else if (typeof (sanitized as Record<string, unknown>)[key] === 'object') {
+                (sanitized as Record<string, unknown>)[key] = sanitizeObject(
+                  (sanitized as Record<string, unknown>)[key]
+                );
               }
             }
 
             return sanitized;
           };
 
-          event.request.data = sanitizeObject(event.request.data);
+          event.request.data = sanitizeObject(event.request.data) as string;
         }
 
-        // Sanitize URL query params
+        // Sanitize URL query params (with type guard for string)
         if (event.request.query_string) {
-          // Remove tokens from query strings
-          event.request.query_string = event.request.query_string
-            .replace(/([?&])(token|key|secret|password)=[^&]*/gi, '$1$2=[REDACTED]');
+          const queryString = event.request.query_string;
+          if (typeof queryString === 'string') {
+            event.request.query_string = queryString.replace(
+              /([?&])(token|key|secret|password)=[^&]*/gi,
+              '$1$2=[REDACTED]'
+            );
+          }
         }
       }
 
-      // Remove environment variables that might contain secrets
-      if (event.contexts?.runtime?.env) {
-        const envKeys = Object.keys(event.contexts.runtime.env);
-        envKeys.forEach(key => {
-          const lowerKey = key.toLowerCase();
-          if (lowerKey.includes('secret') ||
+      // Remove environment variables that might contain secrets (with proper type guards)
+      if (event.contexts?.runtime) {
+        const runtime = event.contexts.runtime as Record<string, unknown>;
+        if (runtime.env && typeof runtime.env === 'object') {
+          const env = runtime.env as Record<string, string>;
+          Object.keys(env).forEach((key) => {
+            const lowerKey = key.toLowerCase();
+            if (
+              lowerKey.includes('secret') ||
               lowerKey.includes('key') ||
               lowerKey.includes('password') ||
               lowerKey.includes('token') ||
-              lowerKey.includes('dsn')) {
-            event.contexts.runtime.env[key] = '[REDACTED]';
-          }
-        });
+              lowerKey.includes('dsn')
+            ) {
+              env[key] = '[REDACTED]';
+            }
+          });
+        }
       }
 
       // Add server context
-      if (event.contexts) {
-        event.contexts.server = {
-          runtime: process.env.VERCEL ? 'edge' : 'node',
-          region: process.env.VERCEL_REGION || 'unknown',
-        };
+      if (!event.contexts) {
+        event.contexts = {};
       }
+      event.contexts.server = {
+        runtime: process.env.VERCEL ? 'edge' : 'node',
+        region: process.env.VERCEL_REGION || 'unknown',
+      };
 
       // Log errors in development
       if (IS_DEVELOPMENT) {
-        console.error('[Sentry Server] Capturing error:', event, hint);
+        console.error('[Sentry Server] Capturing error:', event);
       }
 
       return event;
     },
 
     // Add custom breadcrumbs
-    beforeBreadcrumb(breadcrumb, hint) {
+    beforeBreadcrumb(breadcrumb) {
       // Filter out noisy breadcrumbs
       if (breadcrumb.category === 'console' && breadcrumb.level === 'debug') {
         return null;
@@ -176,10 +189,12 @@ if (SENTRY_DSN) {
 
       // Sanitize SQL queries
       if (breadcrumb.category === 'query' && breadcrumb.data?.query) {
-        // Remove sensitive data from SQL queries
-        breadcrumb.data.query = breadcrumb.data.query
-          .replace(/password\s*=\s*'[^']*'/gi, "password='[REDACTED]'")
-          .replace(/token\s*=\s*'[^']*'/gi, "token='[REDACTED]'");
+        const query = breadcrumb.data.query;
+        if (typeof query === 'string') {
+          breadcrumb.data.query = query
+            .replace(/password\s*=\s*'[^']*'/gi, "password='[REDACTED]'")
+            .replace(/token\s*=\s*'[^']*'/gi, "token='[REDACTED]'");
+        }
       }
 
       return breadcrumb;
@@ -196,7 +211,7 @@ if (SENTRY_DSN) {
     },
   });
 
-  console.log('✅ Sentry server initialized');
-} else {
-  console.warn('⚠️ Sentry DSN not configured - server error tracking disabled');
+  console.log('[Sentry] Server initialized');
+} else if (IS_DEVELOPMENT) {
+  console.warn('[Sentry] DSN not configured - server error tracking disabled');
 }
