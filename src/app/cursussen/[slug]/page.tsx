@@ -23,7 +23,7 @@ export default function CursusDetailPage() {
     if (slug) {
       fetchCursusDetail();
     }
-  }, [slug]);
+  }, [slug, router]);
 
   const fetchCursusDetail = async () => {
     try {
@@ -35,6 +35,14 @@ export default function CursusDetailPage() {
       }
 
       const data = await response.json();
+
+      // Check if user has access
+      if (data.cursus.hasAccess === false) {
+        // Redirect to pricing page if no access
+        router.push('/prijzen');
+        return;
+      }
+
       setCursus(data.cursus);
     } catch (err: any) {
       setError(err.message);
