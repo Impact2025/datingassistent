@@ -7,14 +7,6 @@
     {
       "path": "/api/cron/email-queue-processor",
       "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/cron/weekly-emails",
-      "schedule": "0 8 * * 1"
-    },
-    {
-      "path": "/api/cron/monthly-emails",
-      "schedule": "0 20 28 * *"
     }
   ]
 }
