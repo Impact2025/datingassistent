@@ -116,34 +116,68 @@
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    /* Enhanced Dark Mode - DatingAssistent wereldklasse design */
 
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
+    /* Main backgrounds - Diepere, rijkere tinten */
+    --background: 222 47% 8%;        /* Rijk donkerblauw-grijs */
+    --foreground: 210 40% 98%;       /* Bijna wit voor perfecte leesbaarheid */
 
-    --accent: 216 34% 17%;
+    /* Muted/Secondary backgrounds */
+    --muted: 217 33% 14%;            /* Subtiel lichter dan achtergrond */
+    --muted-foreground: 215 20% 65%; /* Medium grijs voor secundaire tekst */
+
+    /* Accent colors */
+    --accent: 217 33% 17%;           /* Voor hover states */
     --accent-foreground: 210 40% 98%;
 
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
+    /* Popover/Dropdown backgrounds */
+    --popover: 222 47% 11%;          /* Iets lichter dan main background */
+    --popover-foreground: 210 40% 98%;
 
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
+    /* Borders - Subtiel maar zichtbaar */
+    --border: 217 33% 20%;           /* Duidelijke maar niet opdringerige borders */
+    --input: 217 33% 17%;            /* Input field achtergronden */
 
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
+    /* Cards - Perfect contrast */
+    --card: 222 47% 11%;             /* Card backgrounds met subtiel contrast */
+    --card-foreground: 210 40% 98%;
 
-    --primary: 347 77% 50%; /* #E14874 */
+    /* Primary - Pink blijft levendig in dark mode */
+    --primary: 340 82% 62%;          /* Levendiger pink voor dark mode (#ED5F8F) */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 222.2 47.4% 11.2%;
+    /* Secondary */
+    --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
 
-    --destructive: 0 63% 31%;
+    /* Destructive */
+    --destructive: 0 63% 50%;        /* Helderder rood voor dark mode */
     --destructive-foreground: 210 40% 98%;
 
-    --ring: 216 34% 17%;
+    /* Focus ring */
+    --ring: 340 82% 62%;
+
+    /* DatingAssistent Custom Variables voor Dark Mode */
+    --gray-50: #1a1d29;    /* Darkest */
+    --gray-100: #22262f;   /* Very dark */
+    --gray-200: #2d323e;   /* Dark borders */
+    --gray-300: #3d4452;   /* Borders */
+    --gray-400: #6b7280;   /* Medium */
+    --gray-500: #9ca3af;   /* Light text */
+    --gray-600: #d1d5db;   /* Lighter text */
+    --gray-700: #e5e7eb;   /* Very light text */
+    --gray-800: #f3f4f6;   /* Almost white */
+    --gray-900: #f9fafb;   /* White text */
+
+    /* Gradients voor dark mode */
+    --gradient-primary: linear-gradient(135deg, #ED5F8F 0%, #A855F7 100%);
+    --gradient-soft: linear-gradient(135deg, #2d1f30 0%, #2d2440 100%);
+
+    /* Shadows voor dark mode - Subtiele glows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4);
 
     --radius: 0.5rem;
   }
@@ -182,13 +216,13 @@
     @apply transform translate-y-0;
   }
 
-  /* Card with generous rounded corners */
+  /* Card with generous rounded corners - Dark mode aware */
   .card-playful {
-    @apply bg-white rounded-3xl p-6 shadow-sm border border-gray-100 transition-all duration-300;
+    @apply bg-card rounded-3xl p-6 shadow-sm border border-border transition-all duration-300;
   }
 
   .card-playful:hover {
-    @apply shadow-md border-gray-200 transform -translate-y-1;
+    @apply shadow-md border-border/80 transform -translate-y-1;
   }
 
   /* Gradient backgrounds - Removed for cleaner look */

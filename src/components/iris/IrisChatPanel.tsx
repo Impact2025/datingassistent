@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, Sparkles, MessageCircle, Lightbulb, TrendingUp, Heart, Target, AlertCircle, Clock } from 'lucide-react';
+import { Send, Sparkles, MessageCircle, Lightbulb, TrendingUp, Heart, Target, AlertCircle, Clock, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { CoachingSuggestion } from '@/lib/iris/proactive-coaching';
 import { trackChatMessageSent, trackToolUsed } from '@/lib/analytics/ga4-events';
@@ -159,26 +159,40 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20, scale: 0.95 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 20, scale: 0.95 }}
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-50 mr-16
-                 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl
-                 border border-gray-100 flex flex-col"
-      style={{ height: '600px', maxHeight: '80vh' }}
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 20, scale: 0.95 }}
+      className="fixed z-50 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col
+                 inset-x-3 bottom-20 top-auto max-h-[70vh]
+                 sm:inset-x-auto sm:right-4 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 sm:max-h-[80vh]
+                 sm:w-96 sm:max-w-[calc(100vw-2rem)]
+                 lg:right-6 lg:mr-16"
+      style={{
+        minHeight: '350px',
+      }}
     >
       {/* Header with Mode Indicator - Dashboard Style */}
-      <div className="bg-pink-500 p-4 flex-shrink-0 rounded-t-2xl">
+      <div className="bg-pink-500 p-3 sm:p-4 flex-shrink-0 rounded-t-2xl">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-pink-500" />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-full flex items-center justify-center">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
             </div>
             <div>
-              <h3 className="font-semibold text-white">Iris</h3>
-              <p className="text-xs text-white/90">Je persoonlijke dating coach</p>
+              <h3 className="font-semibold text-white text-sm sm:text-base">Iris</h3>
+              <p className="text-[10px] sm:text-xs text-white/90">Je persoonlijke dating coach</p>
             </div>
           </div>
+          {/* Close button */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="w-8 h-8 sm:w-9 sm:h-9 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+              aria-label="Sluit chat"
+            >
+              <X className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            </button>
+          )}
         </div>
 
         {/* Mode Badge */}
@@ -343,25 +357,25 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
       </div>
 
       {/* Input - Dashboard Style */}
-      <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-gray-100 flex-shrink-0 rounded-b-2xl">
+      <form onSubmit={handleSubmit} className="p-3 sm:p-4 bg-white border-t border-gray-100 flex-shrink-0 rounded-b-2xl safe-area-bottom">
         {/* Limit Reached Warning */}
         {limitReached && usageStatus && (
-          <div className="mb-3 bg-orange-50 border border-orange-200 rounded-lg px-3 py-2 flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-orange-600 flex-shrink-0" />
-            <p className="text-xs text-orange-700">
+          <div className="mb-2 sm:mb-3 bg-orange-50 border border-orange-200 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-2">
+            <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-600 flex-shrink-0" />
+            <p className="text-[11px] sm:text-xs text-orange-700">
               Dagelijkse limiet bereikt. Reset over {usageStatus.resetTimeHuman}
             </p>
           </div>
         )}
 
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-2 sm:gap-3 items-center">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={limitReached ? "Limiet bereikt - probeer het morgen weer" : "Stel een vraag aan Iris..."}
+            placeholder={limitReached ? "Limiet bereikt" : "Stel een vraag..."}
             disabled={limitReached}
-            className={`flex-1 px-6 py-3 bg-gray-50 rounded-full
+            className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-50 rounded-full
                        border-2 border-gray-200 focus:border-pink-400 focus:bg-white
                        focus:outline-none text-sm text-gray-900
                        placeholder:text-gray-400 transition-all
@@ -370,12 +384,12 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
           <button
             type="submit"
             disabled={!input.trim() || limitReached}
-            className="w-11 h-11 bg-pink-500 hover:bg-pink-600
+            className="w-10 h-10 sm:w-11 sm:h-11 bg-pink-500 hover:bg-pink-600
                        disabled:bg-gray-300 disabled:cursor-not-allowed
-                       rounded-full flex items-center justify-center
-                       transition-all shadow-md hover:shadow-lg"
+                       rounded-full flex items-center justify-center flex-shrink-0
+                       transition-all shadow-md hover:shadow-lg active:scale-95"
           >
-            <Send className="w-5 h-5 text-white" />
+            <Send className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
         </div>
       </form>
