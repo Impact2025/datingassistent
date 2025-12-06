@@ -233,7 +233,10 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
                 <Card
                   key={action.action}
                   className="cursor-pointer transition-all duration-200 border-0 shadow-sm hover:shadow-md bg-white"
-                  onClick={() => onTabChange?.(action.action)}
+                  onClick={() => {
+                    console.log('🔘 Quick action clicked:', action.action);
+                    onTabChange?.(action.action);
+                  }}
                 >
                   <CardContent className="p-6">
                     <div className="text-center space-y-4">

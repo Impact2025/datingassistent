@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { getServerSession } from 'next-auth';
+import { cookies } from 'next/headers';
+import { jwtVerify } from 'jose';
 
 /**
  * GET /api/cursussen/[slug]
@@ -12,8 +13,42 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
-    const session = await getServerSession();
-    const userId = session?.user?.id;
+
+    // Try to get user from JWT token
+    let userId: number | null = null;
+    let userSubscription: string | null = null;
+    let purchasedCursusIds: number[] = [];
+
+    try {
+      const cookieStore = await cookies();
+      const token = cookieStore.get('auth_token')?.value;
+
+      if (token) {
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret');
+        const { payload } = await jwtVerify(token, secret);
+        userId = payload.userId as number;
+
+        // Get user's subscription type
+        const userResult = await sql`
+          SELECT subscription_type FROM users WHERE id = ${userId}
+        `;
+        if (userResult.rows.length > 0) {
+          userSubscription = userResult.rows[0].subscription_type;
+        }
+
+        // Get user's purchased courses (via payment_transactions)
+        const purchasedResult = await sql`
+          SELECT DISTINCT c.id
+          FROM cursussen c
+          JOIN payment_transactions pt ON pt.cursus_id = c.id
+          WHERE pt.user_id = ${userId}
+            AND pt.status = 'completed'
+        `;
+        purchasedCursusIds = purchasedResult.rows.map((r: any) => r.id);
+      }
+    } catch (authError) {
+      console.log('No authenticated user for cursus detail request');
+    }
 
     // 1. Haal cursus metadata op
     const cursusResult = await sql`
@@ -112,11 +147,18 @@ export async function GET(
       };
     }
 
+    // Determine access
+    const isGratis = cursus.cursus_type === 'gratis';
+    const isVip = userSubscription === 'vip' || userSubscription === 'expert' || userSubscription === 'groeier';
+    const isPurchased = purchasedCursusIds.includes(cursus.id);
+    const hasAccess = isGratis || isVip || isPurchased;
+
     return NextResponse.json({
       cursus: {
         ...cursus,
         lessen,
-        user_progress: userProgress
+        user_progress: userProgress,
+        hasAccess
       }
     });
   } catch (error: any) {
@@ -134,16 +176,28 @@ export async function POST(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const session = await getServerSession();
-    if (!session?.user?.id) {
+    // Authenticate user
+    let userId: number | null = null;
+    try {
+      const cookieStore = await cookies();
+      const token = cookieStore.get('auth_token')?.value;
+
+      if (token) {
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret');
+        const { payload } = await jwtVerify(token, secret);
+        userId = payload.userId as number;
+      }
+    } catch (authError) {
+      console.log('Auth error in POST cursussen:', authError);
+    }
+
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { slug } = await params;
     const body = await request.json();
     const { les_slug, status, completed_exercises, total_exercises } = body;
-
-    const userId = session.user.id;
 
     // Bereken completion percentage
     const completionPercentage = total_exercises > 0

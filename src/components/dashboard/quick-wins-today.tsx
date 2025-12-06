@@ -181,12 +181,12 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
       transition={{ duration: 0.3 }}
     >
       <Card className="shadow-sm border-2 border-pink-100">
-        <CardContent className="p-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-5">
+        <CardContent className="p-4 sm:p-6">
+          {/* Header - Responsive: Stack on mobile */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-5">
             <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-pink-500" />
-              <h2 className="text-lg font-semibold text-gray-900">Quick Wins Vandaag</h2>
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900">Quick Wins Vandaag</h2>
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="secondary" className="text-xs">
@@ -215,7 +215,7 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
           )}
 
           {/* Wins List */}
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {wins.map((win, index) => {
               const IconComponent = win.icon;
               return (
@@ -225,7 +225,7 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                   className={cn(
-                    "flex items-center gap-3 p-3 rounded-lg border-2 transition-all",
+                    "flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg border-2 transition-all",
                     win.completed
                       ? "bg-green-50 border-green-200 opacity-75"
                       : "bg-white border-gray-200 hover:border-pink-300 hover:shadow-sm cursor-pointer"
@@ -240,34 +240,34 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
                   {/* Checkbox */}
                   <div className="flex-shrink-0">
                     {win.completed ? (
-                      <CheckCircle2 className="w-6 h-6 text-green-600" />
+                      <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                     ) : (
-                      <Circle className="w-6 h-6 text-gray-400" />
+                      <Circle className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
                     )}
                   </div>
 
-                  {/* Icon */}
+                  {/* Icon - Compact on mobile */}
                   <div className={cn(
-                    "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
+                    "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0",
                     win.completed ? "bg-green-100 text-green-600" : colorMap[win.color]
                   )}>
-                    <IconComponent className="w-5 h-5" />
+                    <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <p className={cn(
-                      "text-sm font-medium",
+                      "text-xs sm:text-sm font-medium truncate",
                       win.completed ? "text-gray-600 line-through" : "text-gray-900"
                     )}>
                       {win.title}
                     </p>
-                    <p className="text-xs text-gray-500">{win.description}</p>
+                    <p className="text-xs text-gray-500 hidden sm:block">{win.description}</p>
                   </div>
 
                   {/* Points */}
                   {!win.completed && (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="outline" className="text-xs flex-shrink-0">
                       +{win.points}
                     </Badge>
                   )}
@@ -281,13 +281,13 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-4 p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg border border-pink-200 text-center"
+              className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg border border-pink-200 text-center"
             >
-              <Sparkles className="w-6 h-6 text-pink-500 mx-auto mb-2" />
-              <p className="text-sm font-semibold text-gray-900">
-                Geweldig! Je hebt alle Quick Wins voltooid! 🎉
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-pink-500 mx-auto mb-1.5 sm:mb-2" />
+              <p className="text-xs sm:text-sm font-semibold text-gray-900">
+                Geweldig! Alle Quick Wins voltooid!
               </p>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-xs text-gray-600 mt-0.5 sm:mt-1">
                 Kom morgen terug voor nieuwe uitdagingen
               </p>
             </motion.div>

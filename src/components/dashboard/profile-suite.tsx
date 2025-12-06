@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,13 +19,27 @@ import { ContextualHelpButton } from "@/components/onboarding/contextual-help-bu
 import { AttachmentAssessmentFlow } from "@/components/attachment-assessment/attachment-assessment-flow";
 import { EmotioneleReadinessFlow } from "@/components/emotional-readiness/emotionele-readiness-flow";
 import { DatingStyleFlow } from "@/components/dating-style/dating-style-flow";
+import { ToolModal, ToolModalHeader } from "@/components/tools";
 
 interface ProfileSuiteProps {
   onTabChange?: (tab: string) => void;
 }
 
 export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
-  const [activeTab, setActiveTab] = useState("profile-builder");
+  // Modal state for tools
+  const [activeModal, setActiveModal] = useState<{
+    isOpen: boolean;
+    toolId: string | null;
+    title: string;
+    subtitle: string;
+    component: React.ReactNode | null;
+  }>({
+    isOpen: false,
+    toolId: null,
+    title: '',
+    subtitle: '',
+    component: null,
+  });
 
   const profileTools = [
     {
@@ -125,7 +139,28 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     }
   ];
 
-  const activeTool = profileTools.find(tool => tool.id === activeTab);
+  const openToolModal = (toolId: string) => {
+    const tool = profileTools.find(t => t.id === toolId);
+    if (tool) {
+      setActiveModal({
+        isOpen: true,
+        toolId: tool.id,
+        title: tool.label,
+        subtitle: tool.description,
+        component: tool.component,
+      });
+    }
+  };
+
+  const closeModal = () => {
+    setActiveModal({
+      isOpen: false,
+      toolId: null,
+      title: '',
+      subtitle: '',
+      component: null,
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -162,10 +197,10 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
           <p className="text-sm text-muted-foreground">Van tekst tot foto's tot platform keuze</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {profileTools.map((tool) => {
             const Icon = tool.icon;
-            const isActive = activeTab === tool.id;
+            const isActive = activeModal.toolId === tool.id;
 
             return (
               <Card
@@ -175,30 +210,30 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
                   "cursor-pointer transition-all duration-200 border-0 shadow-sm hover:shadow-md bg-white",
                   isActive && "ring-2 ring-pink-200 shadow-lg"
                 )}
-                onClick={() => setActiveTab(tool.id)}
+                onClick={() => openToolModal(tool.id)}
               >
-                <CardContent className="p-6">
-                  <div className="text-center space-y-4">
-                    <div className={`w-12 h-12 mx-auto rounded-full bg-gradient-to-br ${tool.color} flex items-center justify-center shadow-lg`}>
-                      <Icon className="h-6 w-6 text-white" />
+                <CardContent className="p-4">
+                  <div className="text-center space-y-2">
+                    <div className={`w-10 h-10 mx-auto rounded-full bg-gradient-to-br ${tool.color} flex items-center justify-center shadow-lg`}>
+                      <Icon className="h-5 w-5 text-white" />
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-center gap-2">
-                        <h3 className="font-semibold text-sm text-gray-900">
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-center gap-1 flex-wrap">
+                        <h3 className="font-semibold text-xs text-gray-900 leading-tight">
                           {tool.label}
                         </h3>
                         {tool.badge && (
                           <Badge
                             variant="secondary"
-                            className="text-xs"
+                            className="text-[10px] px-1 py-0"
                           >
                             {tool.badge}
                           </Badge>
                         )}
                       </div>
 
-                      <p className="text-sm text-gray-600 leading-tight">
+                      <p className="text-[11px] text-gray-600 leading-tight line-clamp-2">
                         {tool.description}
                       </p>
                     </div>
@@ -208,19 +243,6 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
             );
           })}
         </div>
-
-        {/* Active Tool Content */}
-        <Card className="border-t-4 border-t-primary">
-          <CardContent className="p-4">
-            {activeTool && (
-              <div className="space-y-4">
-                <div className="border-t pt-4">
-                  {activeTool.component}
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
       </div>
 
       {/* Profile Tips */}
@@ -267,7 +289,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
             <Button
               variant="outline"
               className="h-auto p-4 flex flex-col gap-2"
-              onClick={() => setActiveTab("profile-builder")}
+              onClick={() => openToolModal("profile-builder")}
             >
               <UserCircle2 className="w-5 h-5" />
               <span className="font-medium">Profiel Maken</span>
@@ -277,7 +299,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
             <Button
               variant="outline"
               className="h-auto p-4 flex flex-col gap-2"
-              onClick={() => setActiveTab("photo-analysis")}
+              onClick={() => openToolModal("photo-analysis")}
             >
               <Camera className="w-5 h-5" />
               <span className="font-medium">Foto's Checken</span>
@@ -287,7 +309,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
             <Button
               variant="outline"
               className="h-auto p-4 flex flex-col gap-2"
-              onClick={() => setActiveTab("platform-match")}
+              onClick={() => openToolModal("platform-match")}
             >
               <Users className="w-5 h-5" />
               <span className="font-medium">Platform Kiezen</span>
@@ -299,6 +321,34 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
 
       {/* Profile Suite Tutorial */}
       <ProfileSuiteTutorial />
+
+      {/* Tool Modal */}
+      <ToolModal isOpen={activeModal.isOpen} onClose={closeModal}>
+        <ToolModalHeader
+          title={activeModal.title}
+          subtitle={activeModal.subtitle}
+          onBack={closeModal}
+          onClose={closeModal}
+        />
+
+        {/* Tool Content with Suspense for lazy loading */}
+        <div className="flex-1 overflow-y-auto p-4">
+          {activeModal.component && (
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center min-h-[400px]">
+                  <div className="text-center space-y-4">
+                    <div className="w-12 h-12 border-3 border-gray-300 border-t-pink-500 rounded-full animate-spin mx-auto" />
+                    <p className="text-sm text-gray-600">Tool laden...</p>
+                  </div>
+                </div>
+              }
+            >
+              {activeModal.component}
+            </Suspense>
+          )}
+        </div>
+      </ToolModal>
     </div>
   );
 }

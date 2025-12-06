@@ -46,8 +46,8 @@ export function generateDailySuggestions(context: UserContext): Suggestion[] {
         description: 'De basis van hoe jij liefhebt en verbindt. 5 min scan.',
         actionText: 'Start Hechtingsstijl Scan',
         actionHref: '/hechtingsstijl',
-        icon: 'Heart',
-        color: 'pink',
+        icon: 'Brain',
+        color: 'purple-pink',
         category: 'profiel'
       });
     }
@@ -271,8 +271,8 @@ export function getPhaseQuickActions(phase: number = 1): Array<{
         title: 'Hechtingsstijl Scan',
         description: 'Ontdek hoe jij liefhebt',
         href: '/hechtingsstijl',
-        icon: 'Heart',
-        color: 'pink'
+        icon: 'Brain',
+        color: 'purple-pink'
       },
       {
         title: 'Emotionele Ready Check',

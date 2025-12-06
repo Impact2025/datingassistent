@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import {
   Sparkles, TrendingUp, Target, Calendar, ArrowRight,
   Heart, Camera, MessageCircle, FileText, CheckCircle2,
-  Zap, Crown, User, Lightbulb, Play, Pause, Volume2, VolumeX
+  Zap, Crown, User, Lightbulb, Play, Pause, Volume2, VolumeX, Brain
 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { Button } from '../ui/button';
@@ -49,7 +49,8 @@ const iconMap: Record<string, any> = {
   'Lightbulb': Lightbulb,
   'Crown': Crown,
   'Zap': Zap,
-  'CheckCircle2': CheckCircle2
+  'CheckCircle2': CheckCircle2,
+  'Brain': Brain
 };
 
 // Color mapping
@@ -63,7 +64,8 @@ const colorMap: Record<string, string> = {
   'orange': 'bg-orange-100 text-orange-600',
   'rose': 'bg-rose-100 text-rose-600',
   'yellow': 'bg-yellow-100 text-yellow-600',
-  'gold': 'bg-yellow-100 text-yellow-600'
+  'gold': 'bg-yellow-100 text-yellow-600',
+  'purple-pink': 'bg-gradient-to-br from-purple-500 to-pink-500 text-white'
 };
 
 const borderColorMap: Record<string, string> = {
@@ -76,7 +78,8 @@ const borderColorMap: Record<string, string> = {
   'orange': 'border-orange-200 hover:border-orange-300',
   'rose': 'border-rose-200 hover:border-rose-300',
   'yellow': 'border-yellow-200 hover:border-yellow-300',
-  'gold': 'border-yellow-200 hover:border-yellow-300'
+  'gold': 'border-yellow-200 hover:border-yellow-300',
+  'purple-pink': 'border-purple-300 hover:border-pink-400'
 };
 
 export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
@@ -213,8 +216,8 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
         {/* Iris Welkom Video - eenmalig na onboarding */}
         {showWelcomeVideo && (
           <motion.div
@@ -320,30 +323,41 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
               "border-2 shadow-lg overflow-hidden",
               borderColorMap[nextAction.color] || 'border-pink-200'
             )}>
-              <div className="absolute top-0 right-0 p-3">
-                <Badge className="bg-pink-500 text-white">Aanbevolen</Badge>
+              {/* Badge - Responsive positioning */}
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
+                <Badge className="bg-pink-500 text-white text-xs">Aanbevolen</Badge>
               </div>
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className={cn(
-                    "w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0",
-                    colorMap[nextAction.color] || 'bg-pink-100 text-pink-600'
-                  )}>
-                    {(() => {
-                      const IconComponent = iconMap[nextAction.icon];
-                      return IconComponent ? <IconComponent className="w-7 h-7" /> : <Sparkles className="w-7 h-7" />;
-                    })()}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+              <CardContent className="p-4 sm:p-6 pt-10 sm:pt-6">
+                {/* Mobile: Icon + Title inline, Desktop: Side by side layout */}
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  {/* Icon + Title row on mobile */}
+                  <div className="flex items-center gap-3 sm:block">
+                    <div className={cn(
+                      "w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center flex-shrink-0",
+                      colorMap[nextAction.color] || 'bg-pink-100 text-pink-600'
+                    )}>
+                      {(() => {
+                        const IconComponent = iconMap[nextAction.icon];
+                        return IconComponent ? <IconComponent className="w-5 h-5 sm:w-7 sm:h-7" /> : <Sparkles className="w-5 h-5 sm:w-7 sm:h-7" />;
+                      })()}
+                    </div>
+                    {/* Title visible on mobile next to icon */}
+                    <h3 className="sm:hidden text-lg font-bold text-gray-900">
                       {nextAction.title}
                     </h3>
-                    <p className="text-gray-600 mb-4">
+                  </div>
+                  <div className="flex-1">
+                    {/* Title hidden on mobile (shown above) */}
+                    <h3 className="hidden sm:block text-xl font-bold text-gray-900 mb-2">
+                      {nextAction.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">
                       {nextAction.description}
                     </p>
                     <Button
                       onClick={() => handleSuggestionClick(nextAction)}
-                      className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+                      className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+                      size="default"
                     >
                       {nextAction.actionText}
                       <ArrowRight className="w-4 h-4 ml-2" />
@@ -361,22 +375,22 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3 sm:mb-4">
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900">
               Fase {userContext?.journeyPhase || 1} Quick Actions
             </h2>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onTabChange?.('pad')}
-              className="text-pink-600 hover:text-pink-700"
+              className="text-pink-600 hover:text-pink-700 self-start sm:self-auto"
             >
               Bekijk je Pad
               <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
             {phaseActions.map((action, index) => {
               const IconComponent = iconMap[action.icon] || Sparkles;
               return (
@@ -390,17 +404,20 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                     className="hover:shadow-md transition-all cursor-pointer border-2 hover:border-pink-200"
                     onClick={() => handleQuickActionClick(action)}
                   >
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-3 mb-3">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex items-center gap-3 sm:mb-3">
                         <div className={cn(
-                          "w-10 h-10 rounded-full flex items-center justify-center",
+                          "w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0",
                           colorMap[action.color] || 'bg-pink-100 text-pink-600'
                         )}>
-                          <IconComponent className="w-5 h-5" />
+                          <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                         </div>
-                        <h3 className="font-semibold text-gray-900">{action.title}</h3>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-sm sm:text-base text-gray-900">{action.title}</h3>
+                          <p className="text-xs sm:text-sm text-gray-600 sm:hidden">{action.description}</p>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-600">{action.description}</p>
+                      <p className="hidden sm:block text-sm text-gray-600">{action.description}</p>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -416,13 +433,13 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
           transition={{ delay: 0.2 }}
         >
           <Card className="shadow-sm">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Zap className="w-5 h-5 text-pink-500" />
-                <h2 className="text-lg font-semibold text-gray-900">Vandaag voor jou</h2>
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900">Vandaag voor jou</h2>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {suggestions.slice(1, 4).map((suggestion, index) => {
                   const IconComponent = iconMap[suggestion.icon] || Sparkles;
                   return (
@@ -431,20 +448,20 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.2 + index * 0.05 }}
-                      className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                      className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                       onClick={() => handleSuggestionClick(suggestion)}
                     >
                       <div className={cn(
-                        "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
+                        "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0",
                         colorMap[suggestion.color] || 'bg-pink-100 text-pink-600'
                       )}>
-                        <IconComponent className="w-5 h-5" />
+                        <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">{suggestion.title}</p>
-                        <p className="text-xs text-gray-600">{suggestion.description}</p>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">{suggestion.title}</p>
+                        <p className="text-xs text-gray-600 hidden sm:block">{suggestion.description}</p>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-gray-400" />
+                      <ArrowRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
                     </motion.div>
                   );
                 })}
@@ -464,23 +481,23 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
         >
           {/* Je Reis */}
           <Card className="shadow-sm">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="w-5 h-5 text-purple-500" />
-                <h3 className="font-semibold text-gray-900">Je Reis</h3>
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
+                <h3 className="font-semibold text-sm sm:text-base text-gray-900">Je Reis</h3>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Huidige fase</span>
-                  <Badge variant="secondary">Fase {userContext?.journeyPhase || 1}/5</Badge>
+                  <span className="text-xs sm:text-sm text-gray-600">Huidige fase</span>
+                  <Badge variant="secondary" className="text-xs">Fase {userContext?.journeyPhase || 1}/5</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Voltooide assessments</span>
-                  <span className="text-sm font-medium text-gray-900">
+                  <span className="text-xs sm:text-sm text-gray-600">Voltooide assessments</span>
+                  <span className="text-xs sm:text-sm font-medium text-gray-900">
                     {userContext?.completedAssessments?.length || 0}
                   </span>
                 </div>
@@ -488,7 +505,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => onTabChange?.('pad')}
-                  className="w-full mt-2"
+                  className="w-full mt-2 text-xs sm:text-sm"
                 >
                   Bekijk voortgang
                 </Button>
@@ -498,13 +515,13 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
 
           {/* Recente Activiteit */}
           <Card className="shadow-sm">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <CheckCircle2 className="w-5 h-5 text-green-500" />
-                <h3 className="font-semibold text-gray-900">Recente Activiteit</h3>
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                <h3 className="font-semibold text-sm sm:text-base text-gray-900">Recente Activiteit</h3>
               </div>
-              <div className="space-y-3 text-sm text-gray-600">
-                <p>Je bent actief bezig met je dating journey! 🎉</p>
+              <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-600">
+                <p>Je bent actief bezig met je dating journey!</p>
                 <p className="text-xs text-gray-500">
                   Laatste activiteit: vandaag
                 </p>

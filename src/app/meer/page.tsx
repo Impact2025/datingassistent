@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useUser } from '@/providers/user-provider';
 import { useTheme } from '@/providers/theme-provider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -236,10 +237,14 @@ export default function MeerPage() {
         <Card className="border-0 bg-gradient-to-r from-pink-50 to-purple-50 shadow-sm">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
-                <span className="text-2xl text-white font-bold">
-                  {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                </span>
+              <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
+                <Image
+                  src="/images/LogoDatingAssistent.png"
+                  alt="DatingAssistent Logo"
+                  width={64}
+                  height={64}
+                  className="object-contain"
+                />
               </div>
               <div className="flex-1">
                 <h2 className="font-semibold text-gray-900 text-lg">

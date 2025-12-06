@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useUser } from '@/providers/user-provider';
 import { DeviceGuard } from '@/components/guards/device-guard';
 import { Header } from '@/components/layout/header';
@@ -337,7 +338,8 @@ export default function DashboardPage() {
       router.push('/select-package');
       // Reset to dashboard after navigation
       setActiveTab('dashboard');
-    } else if (activeTab === 'hechtingsstijl-redirect') {
+    } else if (activeTab === 'hechtingsstijl-redirect' || activeTab === 'hechtingsstijl') {
+      console.log('🧠 Navigating to /hechtingsstijl...');
       router.push('/hechtingsstijl');
       // Reset to dashboard after navigation
       setActiveTab('dashboard');
@@ -348,6 +350,7 @@ export default function DashboardPage() {
     }
 
     // REDIRECT LEGACY DUPLICATE TABS TO CONSOLIDATED MODULES
+    // Note: 'hechtingsstijl' is handled directly above with router.push, NOT in this map
     const redirectMap: Record<string, string> = {
       'online-cursus': 'cursus',
       'profiel-coach': 'profiel-persoonlijkheid',
@@ -359,8 +362,7 @@ export default function DashboardPage() {
       'foto-advies': 'profiel-persoonlijkheid',
       'gesprek-starter': 'communicatie-matching',
       'chat-coach': 'communicatie-matching',
-      'recommendations': 'leren-ontwikkelen',
-      'hechtingsstijl': 'hechtingsstijl-redirect'
+      'recommendations': 'leren-ontwikkelen'
     };
 
     if (redirectMap[activeTab]) {
@@ -376,8 +378,15 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
           {/* Logo */}
-          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-2xl mx-auto mb-8 animate-pulse">
-            <span className="text-white font-bold text-3xl">D</span>
+          <div className="mx-auto mb-8 animate-pulse">
+            <Image
+              src="/images/LogoDatingAssistent.png"
+              alt="DatingAssistent Logo"
+              width={80}
+              height={80}
+              className="object-contain"
+              priority
+            />
           </div>
 
           {/* Loading spinner */}
@@ -593,8 +602,14 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 {/* Logo */}
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-lg">D</span>
+                <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
+                  <Image
+                    src="/images/LogoDatingAssistent.png"
+                    alt="DatingAssistent Logo"
+                    width={40}
+                    height={40}
+                    className="object-contain"
+                  />
                 </div>
                 <div>
                   <h1 className="text-lg font-bold text-gray-900">

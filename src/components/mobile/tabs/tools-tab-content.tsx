@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -20,6 +20,9 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ToolModal } from '@/components/tools/tool-modal';
+import { ToolModalHeader } from '@/components/tools/tool-modal-header';
+import { getToolMetadata, hasModalComponent } from '@/components/tools/tool-registry';
 
 // ============================================================================
 // TOOLS TAB - Clean, Minimalist Grid Design
@@ -134,6 +137,21 @@ function CategorySection({ category, onToolClick }: {
 export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Modal state for tools
+  const [activeModal, setActiveModal] = useState<{
+    isOpen: boolean;
+    route: string | null;
+    title: string;
+    subtitle: string;
+    component: React.ComponentType<any> | null;
+  }>({
+    isOpen: false,
+    route: null,
+    title: '',
+    subtitle: '',
+    component: null,
+  });
 
   const toolCategories: ToolCategory[] = [
     {
@@ -261,7 +279,32 @@ export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
   ];
 
   const handleToolClick = (route: string) => {
-    router.push(route);
+    // Check if tool has modal component
+    if (hasModalComponent(route)) {
+      const metadata = getToolMetadata(route);
+      if (metadata) {
+        setActiveModal({
+          isOpen: true,
+          route,
+          title: metadata.title,
+          subtitle: metadata.subtitle,
+          component: metadata.component,
+        });
+      }
+    } else {
+      // Fallback to page navigation for tools without modal
+      router.push(route);
+    }
+  };
+
+  const closeModal = () => {
+    setActiveModal({
+      isOpen: false,
+      route: null,
+      title: '',
+      subtitle: '',
+      component: null,
+    });
   };
 
   // Filter tools based on search
@@ -322,6 +365,34 @@ export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
           </Card>
         )}
       </div>
+
+      {/* Tool Modal */}
+      <ToolModal isOpen={activeModal.isOpen} onClose={closeModal}>
+        <ToolModalHeader
+          title={activeModal.title}
+          subtitle={activeModal.subtitle}
+          onBack={closeModal}
+          onClose={closeModal}
+        />
+
+        {/* Tool Content with Suspense for lazy loading */}
+        <div className="flex-1 overflow-y-auto">
+          {activeModal.component && (
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center min-h-[400px]">
+                  <div className="text-center space-y-4">
+                    <div className="w-12 h-12 border-3 border-gray-300 border-t-pink-500 rounded-full animate-spin mx-auto" />
+                    <p className="text-sm text-gray-600">Tool laden...</p>
+                  </div>
+                </div>
+              }
+            >
+              <activeModal.component onClose={closeModal} />
+            </Suspense>
+          )}
+        </div>
+      </ToolModal>
     </div>
   );
 }

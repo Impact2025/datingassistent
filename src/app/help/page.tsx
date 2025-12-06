@@ -16,7 +16,6 @@ import {
   HelpCircle,
   BookOpen,
   ArrowRight,
-  Sparkles,
   Clock,
   CheckCircle,
   ChevronDown,
@@ -31,10 +30,11 @@ import {
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Logo } from '@/components/shared/logo';
 import { IrisSupportChat } from '@/components/support/iris-support-chat';
 import { KB_ARTICLES, FAQ_CATEGORIES } from '@/lib/support/knowledge-base';
 import type { UserSegment } from '@/lib/support/types';
+import { PublicHeader } from '@/components/layout/public-header';
+import { PublicFooter } from '@/components/layout/public-footer';
 
 // Popular FAQ items
 const POPULAR_FAQ = KB_ARTICLES.slice(0, 8);
@@ -118,41 +118,19 @@ function HelpPageContent() {
     : POPULAR_FAQ;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      {/* Header */}
-      <header className="border-b border-pink-100 bg-white/80 backdrop-blur-sm sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Logo iconSize={40} textSize="lg" />
-            <Button
-              onClick={() => router.push('/dashboard')}
-              variant="ghost"
-              className="text-gray-600 hover:text-pink-600"
-            >
-              Terug naar Dashboard
-            </Button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gray-50">
+      <PublicHeader />
 
       {/* Hero Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-100 rounded-full text-pink-700 text-sm font-medium">
-              <Sparkles className="w-4 h-4" />
-              24/7 AI-Powered Support
-            </div>
-
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-              Hoe kunnen we je{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">
-                helpen?
-              </span>
+              Hoe kunnen we je helpen?
             </h1>
 
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -168,7 +146,7 @@ function HelpPageContent() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Zoek in veelgestelde vragen..."
-                  className="w-full pl-14 pr-14 py-4 text-lg border-2 border-pink-200 rounded-2xl focus:border-pink-500 focus:ring-4 focus:ring-pink-500/20 transition-all text-gray-900 placeholder:text-gray-400 shadow-lg"
+                  className="w-full pl-14 pr-14 py-4 text-lg border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-2 focus:ring-gray-200 transition-all text-gray-900 placeholder:text-gray-400"
                 />
                 {searchQuery && (
                   <button
@@ -182,17 +160,17 @@ function HelpPageContent() {
             </div>
 
             {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-6 mt-8">
+            <div className="flex flex-wrap justify-center gap-6 mt-8 text-sm">
               <div className="flex items-center gap-2 text-gray-600">
-                <Clock className="w-5 h-5 text-pink-500" />
+                <Clock className="w-4 h-4 text-gray-500" />
                 <span>24/7 Beschikbaar</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <Zap className="w-5 h-5 text-purple-500" />
+                <Zap className="w-4 h-4 text-gray-500" />
                 <span>&lt; 30 sec reactietijd</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <CheckCircle className="w-5 h-5 text-green-500" />
+                <CheckCircle className="w-4 h-4 text-gray-500" />
                 <span>95% direct opgelost</span>
               </div>
             </div>
@@ -201,7 +179,7 @@ function HelpPageContent() {
       </section>
 
       {/* Main Content */}
-      <section className="pb-16 px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           {/* Support Channel Cards */}
           <motion.div
@@ -212,52 +190,52 @@ function HelpPageContent() {
           >
             {/* Chat with Iris */}
             <Card
-              className="border-2 border-pink-200 hover:border-pink-400 transition-all cursor-pointer hover:shadow-xl group"
+              className="border border-gray-200 hover:border-gray-300 transition-all cursor-pointer hover:shadow-md group bg-white"
               onClick={() => setIsChatOpen(true)}
             >
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <MessageCircle className="w-7 h-7 text-white" />
+                  <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-6 h-6 text-gray-700" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-bold text-gray-900 text-lg mb-1">
+                    <h3 className="font-semibold text-gray-900 text-base mb-1">
                       Chat met Iris
                     </h3>
                     <p className="text-gray-600 text-sm mb-3">
                       Direct antwoord van onze AI-assistent
                     </p>
                     <div className="flex items-center gap-2 text-green-600 text-sm">
-                      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                      <span className="w-2 h-2 bg-green-500 rounded-full" />
                       Online - Geen wachttijd
                     </div>
                   </div>
                 </div>
                 <Button
-                  className="w-full mt-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+                  className="w-full mt-4 bg-gray-900 hover:bg-gray-800 text-white"
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsChatOpen(true);
                   }}
                 >
                   Start Chat
-                  <Sparkles className="w-4 h-4 ml-2" />
+                  <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </CardContent>
             </Card>
 
             {/* Email Support */}
             <Card
-              className="border-2 border-purple-200 hover:border-purple-400 transition-all cursor-pointer hover:shadow-xl group"
+              className="border border-gray-200 hover:border-gray-300 transition-all cursor-pointer hover:shadow-md group bg-white"
               onClick={() => router.push('/contact')}
             >
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <Mail className="w-7 h-7 text-purple-600" />
+                  <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-6 h-6 text-gray-700" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-bold text-gray-900 text-lg mb-1">
+                    <h3 className="font-semibold text-gray-900 text-base mb-1">
                       E-mail Support
                     </h3>
                     <p className="text-gray-600 text-sm mb-3">
@@ -271,7 +249,7 @@ function HelpPageContent() {
                 </div>
                 <Button
                   variant="outline"
-                  className="w-full mt-4 border-purple-300 hover:bg-purple-50 text-purple-700"
+                  className="w-full mt-4 border-gray-300 hover:bg-gray-50 text-gray-900"
                   onClick={(e) => {
                     e.stopPropagation();
                     router.push('/contact');
@@ -285,16 +263,16 @@ function HelpPageContent() {
 
             {/* Phone Support */}
             <Card
-              className="border-2 border-green-200 hover:border-green-400 transition-all cursor-pointer hover:shadow-xl group"
+              className="border border-gray-200 hover:border-gray-300 transition-all cursor-pointer hover:shadow-md group bg-white"
               onClick={() => (window.location.href = 'tel:+31201234567')}
             >
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <Phone className="w-7 h-7 text-green-600" />
+                  <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-gray-700" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-bold text-gray-900 text-lg mb-1">
+                    <h3 className="font-semibold text-gray-900 text-base mb-1">
                       Bel Ons
                     </h3>
                     <p className="text-gray-600 text-sm mb-3">
@@ -308,7 +286,7 @@ function HelpPageContent() {
                 </div>
                 <Button
                   variant="outline"
-                  className="w-full mt-4 border-green-300 hover:bg-green-50 text-green-700"
+                  className="w-full mt-4 border-gray-300 hover:bg-gray-50 text-gray-900"
                   onClick={(e) => {
                     e.stopPropagation();
                     window.location.href = 'tel:+31201234567';
@@ -330,30 +308,30 @@ function HelpPageContent() {
               transition={{ delay: 0.2 }}
               className="lg:col-span-1"
             >
-              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-pink-500" />
+              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-gray-700" />
                 Help Categorieën
               </h2>
               <div className="space-y-3">
                 {SUPPORT_CATEGORIES.map((category, index) => (
                   <Card
                     key={index}
-                    className="border hover:border-pink-300 transition-all cursor-pointer hover:shadow-md group"
+                    className="border border-gray-200 hover:border-gray-300 transition-all cursor-pointer hover:shadow-sm group bg-white"
                     onClick={() => router.push('/faq')}
                   >
                     <CardContent className="p-4 flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-xl ${category.bgColor} flex items-center justify-center flex-shrink-0`}>
-                        <category.icon className={`w-5 h-5 ${category.color.replace('bg-', 'text-')}`} />
+                      <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                        <category.icon className="w-4 h-4 text-gray-700" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900 text-sm group-hover:text-pink-600 transition-colors">
+                        <h3 className="font-medium text-gray-900 text-sm">
                           {category.title}
                         </h3>
                         <p className="text-xs text-gray-500 truncate">
                           {category.description}
                         </p>
                       </div>
-                      <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
+                      <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">
                         {category.articles}
                       </span>
                     </CardContent>
@@ -364,7 +342,7 @@ function HelpPageContent() {
               {/* All FAQ Link */}
               <Button
                 variant="outline"
-                className="w-full mt-4 border-pink-200 hover:bg-pink-50"
+                className="w-full mt-4 border-gray-300 hover:bg-gray-50"
                 onClick={() => router.push('/faq')}
               >
                 Bekijk alle artikelen
@@ -379,12 +357,12 @@ function HelpPageContent() {
               transition={{ delay: 0.3 }}
               className="lg:col-span-2"
             >
-              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <HelpCircle className="w-5 h-5 text-pink-500" />
+              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <HelpCircle className="w-5 h-5 text-gray-700" />
                 {searchQuery ? 'Zoekresultaten' : 'Veelgestelde Vragen'}
               </h2>
 
-              <Card className="border-2 border-gray-100">
+              <Card className="border border-gray-200 bg-white">
                 <CardContent className="p-0 divide-y divide-gray-100">
                   {filteredFaq.map((item) => (
                     <div key={item.id} className="overflow-hidden">
@@ -398,7 +376,7 @@ function HelpPageContent() {
                           {item.title}
                         </span>
                         {expandedFaq === item.id ? (
-                          <ChevronUp className="w-5 h-5 text-pink-500 flex-shrink-0" />
+                          <ChevronUp className="w-5 h-5 text-gray-600 flex-shrink-0" />
                         ) : (
                           <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
                         )}
@@ -417,7 +395,7 @@ function HelpPageContent() {
                                 {item.tags.slice(0, 3).map((tag) => (
                                   <span
                                     key={tag}
-                                    className="px-2 py-1 bg-pink-50 text-pink-600 text-xs rounded-full"
+                                    className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded"
                                   >
                                     #{tag}
                                   </span>
@@ -425,7 +403,7 @@ function HelpPageContent() {
                               </div>
                               <a
                                 href={`/help/artikel/${item.slug}`}
-                                className="inline-flex items-center gap-1 mt-4 text-pink-600 hover:text-pink-700 font-medium text-sm"
+                                className="inline-flex items-center gap-1 mt-4 text-gray-900 hover:text-gray-700 font-medium text-sm"
                               >
                                 Lees meer
                                 <ArrowRight className="w-4 h-4" />
@@ -443,7 +421,7 @@ function HelpPageContent() {
                       <p className="text-gray-500 mb-2">Geen resultaten gevonden</p>
                       <button
                         onClick={() => setIsChatOpen(true)}
-                        className="text-pink-600 hover:text-pink-700 font-medium"
+                        className="text-gray-900 hover:text-gray-700 font-medium"
                       >
                         Vraag het aan Iris →
                       </button>
@@ -456,28 +434,6 @@ function HelpPageContent() {
         </div>
       </section>
 
-      {/* Footer CTA */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-pink-500 to-purple-600">
-        <div className="max-w-4xl mx-auto text-center text-white">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">
-            Nog steeds vragen?
-          </h2>
-          <p className="text-pink-100 mb-6">
-            Ons team staat voor je klaar. Mail naar{' '}
-            <a href="mailto:support@datingassistent.nl" className="underline hover:no-underline">
-              support@datingassistent.nl
-            </a>
-          </p>
-          <Button
-            onClick={() => setIsChatOpen(true)}
-            className="bg-white text-pink-600 hover:bg-pink-50"
-          >
-            <MessageCircle className="w-5 h-5 mr-2" />
-            Chat met Iris
-          </Button>
-        </div>
-      </section>
-
       {/* Floating Chat Button (mobile) */}
       <AnimatePresence>
         {!isChatOpen && (
@@ -486,13 +442,15 @@ function HelpPageContent() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={() => setIsChatOpen(true)}
-            className="fixed bottom-6 right-6 z-40 w-16 h-16 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 shadow-lg hover:shadow-xl flex items-center justify-center md:hidden"
+            className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gray-900 hover:bg-gray-800 shadow-lg hover:shadow-xl flex items-center justify-center md:hidden transition-all"
           >
-            <MessageCircle className="w-7 h-7 text-white" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
+            <MessageCircle className="w-6 h-6 text-white" />
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
           </motion.button>
         )}
       </AnimatePresence>
+
+      <PublicFooter />
 
       {/* Iris Support Chat */}
       <AnimatePresence>
@@ -511,9 +469,9 @@ function HelpPageContent() {
 // Loading fallback
 function HelpPageLoading() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center space-y-4">
-        <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <div className="w-12 h-12 border-3 border-gray-300 border-t-gray-900 rounded-full animate-spin mx-auto"></div>
         <p className="text-gray-600">Help center laden...</p>
       </div>
     </div>

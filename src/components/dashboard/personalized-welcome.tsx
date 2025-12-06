@@ -233,58 +233,82 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
 
   return (
     <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                {recommendation.icon}
-              </div>
+      <CardContent className="p-4 sm:p-6">
+        {/* Mobile: Stack layout, Desktop: Side-by-side */}
+        <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+          {/* Icon - smaller on mobile */}
+          <div className="flex-shrink-0 flex items-center gap-3 sm:block">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              {recommendation.icon}
             </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-lg text-pink-600">{recommendation.title}</h3>
+            {/* Title on same line as icon on mobile */}
+            <div className="sm:hidden flex-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="font-semibold text-base text-pink-600">{recommendation.title}</h3>
                 {recommendation.urgency === 'high' && (
-                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
                     Urgent
                   </span>
                 )}
                 {recommendation.urgency === 'medium' && (
-                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
                     Aanbevolen
                   </span>
                 )}
                 {recommendation.urgency === 'low' && (
-                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
                     Tip
                   </span>
                 )}
               </div>
+            </div>
+          </div>
 
-              <p className="text-muted-foreground mb-2">{recommendation.description}</p>
-              <p className="text-sm text-primary/80 italic">"{recommendation.reason}"</p>
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            {/* Title - hidden on mobile (shown above) */}
+            <div className="hidden sm:flex items-center gap-2 mb-2 flex-wrap">
+              <h3 className="font-semibold text-lg text-pink-600">{recommendation.title}</h3>
+              {recommendation.urgency === 'high' && (
+                <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                  Urgent
+                </span>
+              )}
+              {recommendation.urgency === 'medium' && (
+                <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                  Aanbevolen
+                </span>
+              )}
+              {recommendation.urgency === 'low' && (
+                <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                  Tip
+                </span>
+              )}
+            </div>
 
-              <div className="flex items-center gap-3 mt-4">
-                <Button
-                  onClick={() => handleAction(recommendation.tool)}
-                  size="sm"
-                  className="gap-2 px-3 py-1.5 bg-pink-500 hover:bg-pink-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
-                >
-                  {recommendation.actionLabel}
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
+            <p className="text-sm sm:text-base text-muted-foreground mb-2">{recommendation.description}</p>
+            <p className="text-xs sm:text-sm text-primary/80 italic">"{recommendation.reason}"</p>
 
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleDismiss}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <X className="w-4 h-4 mr-1" />
-                  Vandaag overslaan
-                </Button>
-              </div>
+            {/* Buttons - stack on mobile */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mt-4">
+              <Button
+                onClick={() => handleAction(recommendation.tool)}
+                size="sm"
+                className="gap-2 px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
+              >
+                {recommendation.actionLabel}
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDismiss}
+                className="text-muted-foreground hover:text-foreground text-xs sm:text-sm"
+              >
+                <X className="w-4 h-4 mr-1" />
+                Vandaag overslaan
+              </Button>
             </div>
           </div>
         </div>

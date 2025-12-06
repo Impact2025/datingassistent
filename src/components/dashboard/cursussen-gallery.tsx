@@ -180,7 +180,6 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
 
             const CursusCard = (
               <Card
-                onClick={onCursusSelect ? () => onCursusSelect(cursus.slug) : undefined}
                 className={cn(
                   "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full relative",
                   isCompleted && "border-green-500 border-2",

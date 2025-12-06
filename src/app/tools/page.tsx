@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { GuidedFlow } from '@/components/dashboard/guided-flow';
+import { ToolModal, ToolModalHeader, getToolMetadata, hasModalComponent } from '@/components/tools';
 
 interface Tool {
   id: string;
@@ -38,6 +39,21 @@ function ToolsPageContent() {
   const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showGuidedFlow, setShowGuidedFlow] = useState(false);
+
+  // Modal state for tools
+  const [activeModal, setActiveModal] = useState<{
+    isOpen: boolean;
+    route: string | null;
+    title: string;
+    subtitle: string;
+    component: React.ComponentType<any> | null;
+  }>({
+    isOpen: false,
+    route: null,
+    title: '',
+    subtitle: '',
+    component: null,
+  });
 
   // Handle URL parameters for direct tool access
   useEffect(() => {
@@ -184,6 +200,35 @@ function ToolsPageContent() {
     ? tools
     : tools.filter(tool => tool.category === selectedCategory);
 
+  const handleToolClick = (route: string, title: string, description: string) => {
+    // Check if tool has modal component
+    if (hasModalComponent(route)) {
+      const metadata = getToolMetadata(route);
+      if (metadata) {
+        setActiveModal({
+          isOpen: true,
+          route,
+          title: metadata.title,
+          subtitle: metadata.subtitle,
+          component: metadata.component,
+        });
+      }
+    } else {
+      // Fallback to page navigation for tools without modal
+      router.push(route);
+    }
+  };
+
+  const closeModal = () => {
+    setActiveModal({
+      isOpen: false,
+      route: null,
+      title: '',
+      subtitle: '',
+      component: null,
+    });
+  };
+
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'profile': return 'bg-blue-100 text-blue-700';
@@ -249,7 +294,7 @@ function ToolsPageContent() {
             <Card
               key={tool.id}
               className="cursor-pointer hover:shadow-md transition-shadow border-0 bg-white"
-              onClick={() => router.push(tool.route)}
+              onClick={() => handleToolClick(tool.route, tool.title, tool.description)}
             >
               <CardContent className="p-4">
                 <div className="flex flex-col items-center text-center space-y-3">
@@ -309,6 +354,34 @@ function ToolsPageContent() {
       )}
 
       <BottomNavigation />
+
+      {/* Tool Modal */}
+      <ToolModal isOpen={activeModal.isOpen} onClose={closeModal}>
+        <ToolModalHeader
+          title={activeModal.title}
+          subtitle={activeModal.subtitle}
+          onBack={closeModal}
+          onClose={closeModal}
+        />
+
+        {/* Tool Content with Suspense for lazy loading */}
+        <div className="flex-1 overflow-y-auto p-4">
+          {activeModal.component && (
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center min-h-[400px]">
+                  <div className="text-center space-y-4">
+                    <div className="w-12 h-12 border-3 border-gray-300 border-t-pink-500 rounded-full animate-spin mx-auto" />
+                    <p className="text-sm text-gray-600">Tool laden...</p>
+                  </div>
+                </div>
+              }
+            >
+              <activeModal.component onClose={closeModal} />
+            </Suspense>
+          )}
+        </div>
+      </ToolModal>
     </div>
   );
 }
