@@ -39,7 +39,7 @@ export async function generateConversationStarters(
   return generateConversationStartersFlow(input);
 }
 
-const conversationStartersPrompt = ai.definePrompt({
+const _conversationStartersPrompt = ai.definePrompt({
   name: 'conversationStartersPrompt',
   input: {schema: GenerateConversationStartersInputSchema},
   output: {schema: GenerateConversationStartersOutputSchema},

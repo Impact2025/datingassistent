@@ -33,9 +33,6 @@ import {
   Users,
   Calendar,
   Plus,
-  Search,
-  Download,
-  Filter,
   Trash2
 } from 'lucide-react';
 

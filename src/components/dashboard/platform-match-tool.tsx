@@ -148,7 +148,7 @@ export function PlatformMatchTool() {
 
     try {
       // Enhance preferences with Waarden Kompas data if available
-      let enhancedPreferences = { ...preferences };
+      const enhancedPreferences = { ...preferences };
       let waardenKompasInsights = '';
 
       if (waardenKompasCompleted && waardenKompasData) {

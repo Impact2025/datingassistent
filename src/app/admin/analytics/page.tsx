@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -15,10 +14,7 @@ import {
 } from "@/components/ui/select";
 import {
   BarChart3,
-  TrendingUp,
-  TrendingDown,
   Users,
-  Activity,
   Target,
   DollarSign,
   Clock,
@@ -616,7 +612,7 @@ export default function AdminAnalytics() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {data.timeSeries.map((day, index) => (
+                {data.timeSeries.map((day, _index) => (
                   <div key={day.date} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <Calendar className="h-4 w-4 text-gray-400" />

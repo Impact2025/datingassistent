@@ -56,7 +56,7 @@ export default function ProfielPage() {
 
   const calculateProfileCompleteness = (profile: any) => {
     let score = 0;
-    let total = 4; // bio, photos, interests, demographics
+    const total = 4; // bio, photos, interests, demographics
 
     if (profile.bio && profile.bio.trim().length > 10) {
       score += 1;

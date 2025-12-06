@@ -132,7 +132,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Cannot delete admin users' }, { status: 403 });
     }
 
-    await sql`DELETE FROM users WHERE id = $1`, [delUserId];
+    await sql`DELETE FROM users WHERE id = ${delUserId}`;
     return NextResponse.json({ message: 'User deleted successfully' });
 
   } catch (error) {

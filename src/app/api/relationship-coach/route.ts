@@ -280,7 +280,7 @@ async function fetchAllUserAssessments(userId: string) {
 }
 
 function calculateReadinessScores(assessments: any) {
-  let scores = {
+  const scores = {
     attachment: 0,
     emotionalReadiness: 0,
     datingStyle: 0,

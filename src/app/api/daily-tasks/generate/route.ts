@@ -233,7 +233,7 @@ function buildAIContext({
   userContext
 }: any) {
 
-  let context = `USER CONTEXT:
+  const context = `USER CONTEXT:
 - Journey dag: ${journeyDay}
 - Leeftijd: ${userProfile?.age || 'onbekend'}
 - Geslacht: ${userProfile?.gender || 'onbekend'}

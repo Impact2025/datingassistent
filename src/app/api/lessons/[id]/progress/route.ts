@@ -90,7 +90,7 @@ export async function POST(
     }
 
     // Get or create progress record
-    let progressResult = await sql`
+    const progressResult = await sql`
       SELECT * FROM user_lesson_progress
       WHERE user_id = ${userId}
         AND lesson_id = ${lessonId}

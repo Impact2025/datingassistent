@@ -11,6 +11,7 @@ let Sentry: typeof import('@sentry/nextjs') | null = null;
 
 if (isBrowser) {
   // Dynamic import only in browser environment
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   Sentry = require('@sentry/nextjs');
 }
 

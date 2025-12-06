@@ -102,7 +102,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<Recommenda
     // 3. Haal cursus data voor alle aanbevelingen
     const cursussSlugs = [...new Set(dayMappings.map(m => m.cursusSlug))];
 
-    let cursussenData: Record<string, any> = {};
+    const cursussenData: Record<string, any> = {};
     if (cursussSlugs.length > 0) {
       const cursussenResult = await sql`
         SELECT
@@ -128,7 +128,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<Recommenda
 
     // 4. Haal les data indien nodig
     const lesQueries = dayMappings.filter(m => m.lesSlug);
-    let lessenData: Record<string, any> = {};
+    const lessenData: Record<string, any> = {};
 
     for (const mapping of lesQueries) {
       if (mapping.lesSlug && cursussenData[mapping.cursusSlug]) {

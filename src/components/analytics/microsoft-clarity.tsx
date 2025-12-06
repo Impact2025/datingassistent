@@ -44,8 +44,8 @@ export function MicrosoftClarity({ projectId }: ClarityProps) {
 
     // Clarity initialization script
     (function(c: any, l: any, a: any, r: any, i: any, t?: any, y?: any) {
-      c[a] = c[a] || function() {
-        (c[a].q = c[a].q || []).push(arguments);
+      c[a] = c[a] || function(...args: any[]) {
+        (c[a].q = c[a].q || []).push(args);
       };
       t = l.createElement(r);
       t.async = 1;

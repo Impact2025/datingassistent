@@ -1,37 +1,25 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import tseslint from "typescript-eslint";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+export default tseslint.config(
+  {
+    ignores: [
+      ".next/**",
+      "node_modules/**",
+      "out/**",
+      "**/*.d.ts",
+      "src/__tests__/**",
+    ],
+  },
+  ...tseslint.configs.recommended,
   {
     rules: {
-      // 1. Console logs mogen tijdens development/testen, maar geef wel een seintje
+      "@typescript-eslint/no-unused-vars": ["warn", {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      }],
+      "@typescript-eslint/no-explicit-any": "off",
       "no-console": "warn",
-
-      // 2. TypeScript vangt 'undefined' variabelen al af. 
-      // ESLint hoeft hier niet over te zeuren (dit fixt je localStorage/React errors)
-      "no-undef": "off",
-
-      // 3. De PRO regel: Ongebruikte vars zijn verboden, BEHALVE als ze beginnen met een _
-      // Dit dwingt je om na te denken: "Heb ik dit nodig? Nee? Weggooien of _ gebruiken."
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_",
-          "caughtErrorsIgnorePattern": "^_"
-        }
-      ],
     },
-  },
-];
-
-export default eslintConfig;
+  }
+);

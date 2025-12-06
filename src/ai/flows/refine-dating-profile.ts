@@ -37,7 +37,7 @@ export async function refineDatingProfile(input: RefineDatingProfileInput): Prom
   return refineDatingProfileFlow(input);
 }
 
-const refineDatingProfilePrompt = ai.definePrompt({
+const _refineDatingProfilePrompt = ai.definePrompt({
   name: 'refineDatingProfilePrompt',
   input: {schema: RefineDatingProfileInputSchema},
   output: {schema: RefineDatingProfileOutputSchema},

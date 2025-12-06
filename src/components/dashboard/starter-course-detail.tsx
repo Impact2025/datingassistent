@@ -64,7 +64,7 @@ function convertMarkdownToHTML(markdown: string): string {
 
   console.log('Processing as markdown...');
 
-  let html = cleanMarkdown;
+  const html = cleanMarkdown;
 
   // Convert paragraphs line by line first
   const lines = html.split('\n');

@@ -31,7 +31,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { AlertCircle, CheckCircle, Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { AlertCircle, CheckCircle, Plus, Edit, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 
 interface Course {

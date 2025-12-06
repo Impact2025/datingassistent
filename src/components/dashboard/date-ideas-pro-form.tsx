@@ -164,7 +164,7 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
         let title = `Date Idee ${index + 1}`;
         let description = '';
         let whatsappLine = '';
-        let score = 85 - (index * 5); // Decreasing scores
+        const score = 85 - (index * 5); // Decreasing scores
 
         // Try to extract title from **Idee:** line
         const ideeMatch = ideaText.match(/\*\*Idee:\*\*\s*(.+?)(?:\n|$)/);

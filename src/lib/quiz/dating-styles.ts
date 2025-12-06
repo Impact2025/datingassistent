@@ -190,7 +190,7 @@ export function calculateDatingStyle(answers: Record<string, string>): string {
   const timeAvailable = answers['6'];
 
   // Scoring logic
-  let scores = {
+  const scores = {
     architect: 0,
     vuurwerk: 0,
     goudzoeker: 0,

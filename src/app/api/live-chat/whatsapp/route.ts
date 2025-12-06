@@ -116,7 +116,7 @@ async function processWhatsAppMessages(value: any) {
 
     try {
       // Check if there's an existing conversation for this customer
-      let conversation = await sql`
+      const conversation = await sql`
         SELECT id, status, assigned_agent_id
         FROM chat_conversations
         WHERE customer_phone = ${customerPhone}

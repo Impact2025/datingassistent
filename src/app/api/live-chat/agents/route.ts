@@ -11,8 +11,8 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
     const department = searchParams.get('department');
 
-    let whereConditions = [];
-    let params: any[] = [];
+    const whereConditions = [];
+    const params: any[] = [];
     let paramIndex = 1;
 
     if (status) {

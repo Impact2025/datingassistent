@@ -102,8 +102,8 @@ export async function GET(
 
     // 5. Get User Progress (if authenticated and includeProgress)
     let userProgramProgress = null;
-    let userModuleProgressMap = new Map();
-    let userLessonProgressMap = new Map();
+    const userModuleProgressMap = new Map();
+    const userLessonProgressMap = new Map();
 
     if (isAuthenticated && includeProgress) {
       // Get overall program progress

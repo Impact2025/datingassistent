@@ -720,7 +720,7 @@ function formatMarkdownToHtml(text: string): string {
   if (!text) return '';
 
   // Split into paragraphs by double newlines or **Section Headers**
-  let formatted = text
+  const formatted = text
     // Convert **bold** to <strong>
     .replace(/\*\*(.*?)\*\*/g, '<strong class="text-purple-700 font-semibold">$1</strong>')
     // Convert *italic* to <em>

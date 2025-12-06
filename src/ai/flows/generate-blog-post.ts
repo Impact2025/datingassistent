@@ -49,7 +49,7 @@ export const generateBlogPostFlow = ai.defineFlow(
     inputSchema: BlogPostInputSchema,
     outputSchema: BlogPostOutputSchema,
   },
-  async (input) => {
+  async (_input) => {
     // Instead of using ai.generate with a Gemini model, we'll throw an error
     // directing users to use the OpenRouter-based service
     throw new Error('This flow has been deprecated. Please use the OpenRouter-based service in src/lib/ai-service.ts instead.');

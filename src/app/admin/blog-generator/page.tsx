@@ -23,7 +23,7 @@ export default function BlogGenerator() {
 
   const [topic, setTopic] = useState('');
   const [primaryKeyword, setPrimaryKeyword] = useState('');
-  const [year, setYear] = useState('2025');
+  const [year, _setYear] = useState('2025');
   const [targetAudience, setTargetAudience] = useState('');
   const [category, setCategory] = useState('');
   const [extraKeywords, setExtraKeywords] = useState('');

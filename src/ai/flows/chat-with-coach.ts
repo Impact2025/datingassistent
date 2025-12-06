@@ -35,7 +35,7 @@ export async function chatWithCoach(input: ChatWithCoachInput): Promise<ChatWith
 }
 
 // Define the prompt that takes the history and new message
-const chatPrompt = ai.definePrompt({
+const _chatPrompt = ai.definePrompt({
   name: 'chatWithCoachPrompt',
   input: {schema: ChatWithCoachInputSchema},
   output: {schema: ChatWithCoachOutputSchema},

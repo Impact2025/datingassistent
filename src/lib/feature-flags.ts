@@ -75,7 +75,7 @@ const DEFAULT_FEATURE_FLAGS: FeatureFlag[] = [
 ];
 
 // Feature flags store (in production, this would come from a database or external service)
-let featureFlags: FeatureFlag[] = [...DEFAULT_FEATURE_FLAGS];
+const featureFlags: FeatureFlag[] = [...DEFAULT_FEATURE_FLAGS];
 
 /**
  * Check if a feature is enabled for the current context

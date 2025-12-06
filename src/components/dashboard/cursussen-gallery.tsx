@@ -175,14 +175,17 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
             const progress = cursus.user_progress;
             const isStarted = progress && progress.voltooide_lessen > 0;
             const isCompleted = progress && progress.percentage === 100;
+            const hasAccess = cursus.hasAccess !== false; // Default to true for backwards compat
+            const isLocked = !hasAccess && cursus.cursus_type !== 'gratis';
 
             const CursusCard = (
               <Card
                 onClick={onCursusSelect ? () => onCursusSelect(cursus.slug) : undefined}
                 className={cn(
-                  "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full",
+                  "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full relative",
                   isCompleted && "border-green-500 border-2",
-                  isStarted && !isCompleted && "border-pink-300"
+                  isStarted && !isCompleted && "border-pink-300",
+                  isLocked && "opacity-90"
                 )}
               >
                   {/* Header with badges */}
@@ -264,9 +267,19 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
 
                   <CardFooter className="pt-0">
                     <Button
-                      className="w-full rounded-full shadow-lg hover:shadow-xl transition-all bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white"
+                      className={cn(
+                        "w-full rounded-full shadow-lg hover:shadow-xl transition-all",
+                        isLocked
+                          ? "bg-gradient-to-br from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white"
+                          : "bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white"
+                      )}
                     >
-                      {isCompleted ? (
+                      {isLocked ? (
+                        <>
+                          <Lock className="w-4 h-4 mr-2" />
+                          Kopen
+                        </>
+                      ) : isCompleted ? (
                         <>
                           <Star className="w-4 h-4 mr-2" />
                           Bekijk opnieuw
@@ -284,12 +297,22 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
                 </Card>
             );
 
+            // Determine the correct href based on access
+            const cursusHref = isLocked ? '/prijzen' : `/cursussen/${cursus.slug}`;
+
             return (
               <div key={cursus.id}>
                 {onCursusSelect ? (
-                  CursusCard
+                  // When using callback, only call for non-locked courses
+                  <div onClick={isLocked ? undefined : () => onCursusSelect(cursus.slug)}>
+                    {isLocked ? (
+                      <Link href="/prijzen">{CursusCard}</Link>
+                    ) : (
+                      CursusCard
+                    )}
+                  </div>
                 ) : (
-                  <Link href={`/cursussen/${cursus.slug}`}>
+                  <Link href={cursusHref}>
                     {CursusCard}
                   </Link>
                 )}

@@ -187,7 +187,7 @@ export async function GET(request: NextRequest) {
         }, { status: 404 });
       }
 
-      let tx = txResult.rows[0];
+      const tx = txResult.rows[0];
 
       // If status is pending, check MultiSafePay API directly as fallback
       if (tx.status === 'pending' || tx.status === 'initialized') {

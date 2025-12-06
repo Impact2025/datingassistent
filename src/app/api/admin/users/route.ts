@@ -21,8 +21,8 @@ export async function GET(request: NextRequest) {
     const offset = (page - 1) * limit;
 
     // Build where conditions
-    let whereConditions = [];
-    let params: any[] = [];
+    const whereConditions = [];
+    const params: any[] = [];
     let paramIndex = 1;
 
     if (search) {

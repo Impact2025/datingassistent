@@ -32,7 +32,7 @@ export async function analyzeProfilePhoto(
   return analyzeProfilePhotoFlow(input);
 }
 
-const prompt = ai.definePrompt({
+const _prompt = ai.definePrompt({
   name: 'analyzeProfilePhotoPrompt',
   input: {schema: AnalyzeProfilePhotoInputSchema},
   output: {schema: AnalyzeProfilePhotoOutputSchema},

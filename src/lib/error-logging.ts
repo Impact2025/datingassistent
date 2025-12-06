@@ -36,6 +36,7 @@ let Sentry: typeof import('@sentry/nextjs') | null = null;
 function getSentry() {
   if (!Sentry && isBrowser) {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       Sentry = require('@sentry/nextjs');
     } catch (error) {
       console.warn('Sentry not available:', error);

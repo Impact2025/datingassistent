@@ -21,8 +21,8 @@ export async function GET(request: NextRequest) {
     const eventType = searchParams.get('eventType');
 
     // Build query
-    let whereConditions = ['se.created_at >= NOW() - INTERVAL \'7 days\''];
-    let params: any[] = [];
+    const whereConditions = ['se.created_at >= NOW() - INTERVAL \'7 days\''];
+    const params: any[] = [];
     let paramIndex = 1;
 
     if (severity && severity !== 'all') {

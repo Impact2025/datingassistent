@@ -14,8 +14,8 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') || '0');
 
     // Build where conditions
-    let whereConditions = ['c.closed_at IS NULL']; // Only active conversations
-    let params: any[] = [];
+    const whereConditions = ['c.closed_at IS NULL']; // Only active conversations
+    const params: any[] = [];
     let paramIndex = 1;
 
     if (status) {

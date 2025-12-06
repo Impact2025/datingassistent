@@ -283,7 +283,7 @@ export class AdvancedConversationIntelligence {
     // Advanced emotional analysis combining multiple signals
 
     const words = message.toLowerCase().split(/\s+/);
-    let emotionScores: Record<EmotionalState['primary'], number> = {
+    const emotionScores: Record<EmotionalState['primary'], number> = {
       joy: 0, sadness: 0, anger: 0, fear: 0, surprise: 0, disgust: 0, trust: 0, anticipation: 0, neutral: 0.1
     };
 
