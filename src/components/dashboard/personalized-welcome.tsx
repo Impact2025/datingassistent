@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +9,7 @@ import { Sparkles, Target, MessageSquare, UserCircle2, Camera, Heart, ArrowRight
 import { useAIContext } from '@/hooks/use-ai-context';
 import { useUser } from '@/providers/user-provider';
 import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
+import { ToolModal, ToolModalHeader, getToolMetadata, hasModalComponent } from '@/components/tools';
 
 interface PersonalizedRecommendation {
   tool: string;
@@ -24,11 +26,27 @@ interface PersonalizedWelcomeProps {
 }
 
 export function PersonalizedWelcome({ onTabChange }: PersonalizedWelcomeProps) {
+  const router = useRouter();
   const { user } = useUser();
   const { context, getContextSummary } = useAIContext();
   const [recommendation, setRecommendation] = useState<PersonalizedRecommendation | null>(null);
   const [loading, setLoading] = useState(true);
   const [dismissed, setDismissed] = useState(false);
+
+  // Modal state for tools
+  const [activeModal, setActiveModal] = useState<{
+    isOpen: boolean;
+    route: string | null;
+    title: string;
+    subtitle: string;
+    component: React.ComponentType<any> | null;
+  }>({
+    isOpen: false,
+    route: null,
+    title: '',
+    subtitle: '',
+    component: null,
+  });
 
   // Check if user has seen this today
   useEffect(() => {
@@ -214,6 +232,28 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
     // Track that user engaged with recommendation
     // This would update the AI context to learn from user behavior
 
+    // Tools that should open in modal
+    const modalRoutes: Record<string, string> = {
+      'hechtingsstijl': '/hechtingsstijl',
+      'datingstijl': '/dating-style',
+    };
+
+    // Check if tool has a modal route
+    const route = modalRoutes[tool];
+    if (route && hasModalComponent(route)) {
+      const metadata = getToolMetadata(route);
+      if (metadata) {
+        setActiveModal({
+          isOpen: true,
+          route,
+          title: metadata.title,
+          subtitle: metadata.subtitle,
+          component: metadata.component,
+        });
+        return;
+      }
+    }
+
     // Navigate to the recommended tool using the provided callback
     if (onTabChange) {
       onTabChange(tool);
@@ -221,6 +261,16 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
       // Fallback to hash navigation if no callback provided
       window.location.hash = tool;
     }
+  };
+
+  const closeModal = () => {
+    setActiveModal({
+      isOpen: false,
+      route: null,
+      title: '',
+      subtitle: '',
+      component: null,
+    });
   };
 
   const handleDismiss = () => {
@@ -231,8 +281,11 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
 
   if (dismissed || loading || !recommendation) return null;
 
+  const ModalComponent = activeModal.component;
+
   return (
-    <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
+    <>
+      <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
       <CardContent className="p-4 sm:p-6">
         {/* Mobile: Stack layout, Desktop: Side-by-side */}
         <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
@@ -247,7 +300,7 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
                 <h3 className="font-semibold text-base text-pink-600">{recommendation.title}</h3>
                 {recommendation.urgency === 'high' && (
                   <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
-                    Urgent
+                    Tip
                   </span>
                 )}
                 {recommendation.urgency === 'medium' && (
@@ -271,7 +324,7 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
               <h3 className="font-semibold text-lg text-pink-600">{recommendation.title}</h3>
               {recommendation.urgency === 'high' && (
                 <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
-                  Urgent
+                  Tip
                 </span>
               )}
               {recommendation.urgency === 'medium' && (
@@ -314,5 +367,18 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
         </div>
       </CardContent>
     </Card>
+
+      {/* Tool Modal */}
+      {ModalComponent && (
+        <ToolModal isOpen={activeModal.isOpen} onClose={closeModal}>
+          <ToolModalHeader
+            title={activeModal.title}
+            subtitle={activeModal.subtitle}
+            onClose={closeModal}
+          />
+          <ModalComponent onClose={closeModal} />
+        </ToolModal>
+      )}
+    </>
   );
 }
