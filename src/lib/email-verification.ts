@@ -115,9 +115,12 @@ Privacy: https://datingassistent.nl/privacy
 Voorwaarden: https://datingassistent.nl/algemene-voorwaarden
     `.trim();
 
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@datingassistent.nl';
+    console.log(`📧 Sending verification link email to ${userEmail} from ${fromEmail}`);
+
     return sendEmail({
       to: userEmail,
-      from: 'noreply@datingassistent.nl',
+      from: fromEmail,
       subject: 'Verifieer je emailadres - DatingAssistent',
       html,
       text: textContent
@@ -413,9 +416,12 @@ Heb je vragen? support@datingassistent.nl
 DatingAssistent - De dating coach die altijd beschikbaar is
     `.trim();
 
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@datingassistent.nl';
+    console.log(`📧 Sending verification email to ${userEmail} from ${fromEmail}`);
+
     return sendEmail({
       to: userEmail,
-      from: 'noreply@datingassistent.nl',
+      from: fromEmail,
       subject: `Je verificatie code: ${verificationCode}`,
       html,
       text: textContent
