@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/cron/email-automation",
-      "schedule": "0 */4 * * *"
+      "schedule": "0 8 * * *"
     },
     {
       "path": "/api/cron/email-queue-processor",
-      "schedule": "*/10 * * * *"
+      "schedule": "0 9 * * *"
     },
     {
       "path": "/api/cron/weekly-emails",
@@ -14,7 +14,7 @@
     },
     {
       "path": "/api/cron/monthly-emails",
-      "schedule": "0 20 28-31 * *"
+      "schedule": "0 20 28 * *"
     }
   ]
 }
