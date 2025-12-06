@@ -120,19 +120,36 @@ export function RegistrationClientComponent() {
   useEffect(() => {
     const orderIdParam = searchParams.get('order_id');
     const pendingOrderId = localStorage.getItem('pending_order_id');
+    const orderIdTimestamp = localStorage.getItem('pending_order_id_timestamp');
 
     if (orderIdParam) {
       console.log('📦 Got order_id from URL:', orderIdParam);
       setOrderId(orderIdParam);
-      // Save to localStorage as backup
+      // Save to localStorage as backup with timestamp
       localStorage.setItem('pending_order_id', orderIdParam);
+      localStorage.setItem('pending_order_id_timestamp', Date.now().toString());
       // Validate payment status
       validatePaymentStatus(orderIdParam);
-    } else if (pendingOrderId) {
-      console.log('📦 Got order_id from localStorage:', pendingOrderId);
-      setOrderId(pendingOrderId);
-      // Validate payment status
-      validatePaymentStatus(pendingOrderId);
+    } else if (pendingOrderId && orderIdTimestamp) {
+      // Check if order_id is recent (within last 15 minutes)
+      const timestamp = parseInt(orderIdTimestamp, 10);
+      const fifteenMinutesInMs = 15 * 60 * 1000;
+      const isRecent = (Date.now() - timestamp) < fifteenMinutesInMs;
+
+      if (isRecent) {
+        console.log('📦 Got recent order_id from localStorage:', pendingOrderId);
+        setOrderId(pendingOrderId);
+        // Validate payment status
+        validatePaymentStatus(pendingOrderId);
+      } else {
+        console.log('🗑️ Clearing expired order_id from localStorage');
+        localStorage.removeItem('pending_order_id');
+        localStorage.removeItem('pending_order_id_timestamp');
+      }
+    } else if (pendingOrderId && !orderIdTimestamp) {
+      // Old localStorage data without timestamp, clear it
+      console.log('🗑️ Clearing old order_id from localStorage (no timestamp)');
+      localStorage.removeItem('pending_order_id');
     }
   }, [searchParams]);
 
@@ -153,6 +170,7 @@ export function RegistrationClientComponent() {
         // Clear invalid order ID
         setOrderId(null);
         localStorage.removeItem('pending_order_id');
+        localStorage.removeItem('pending_order_id_timestamp');
         // Show error message
         toast({
           title: "Betaling niet gevonden",
@@ -165,6 +183,7 @@ export function RegistrationClientComponent() {
       setPaymentValidated(false);
       setOrderId(null);
       localStorage.removeItem('pending_order_id');
+      localStorage.removeItem('pending_order_id_timestamp');
     } finally {
       setValidatingPayment(false);
     }
@@ -353,6 +372,7 @@ export function RegistrationClientComponent() {
       if (orderId) {
         console.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');
         localStorage.removeItem('pending_order_id');
+        localStorage.removeItem('pending_order_id_timestamp');
         localStorage.removeItem('pending_transaction_id');
         setIsRedirecting(true);
         setTimeout(() => {
@@ -494,6 +514,7 @@ export function RegistrationClientComponent() {
       if (orderId) {
         console.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');
         localStorage.removeItem('pending_order_id');
+        localStorage.removeItem('pending_order_id_timestamp');
         localStorage.removeItem('pending_transaction_id');
         setIsRedirecting(true);
         setTimeout(() => {
