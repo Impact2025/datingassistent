@@ -357,7 +357,7 @@ export function DayViewer({
           <p className="text-gray-600 mb-6 max-w-md mx-auto">
             Koop het Kickstart programma voor toegang tot alle 21 dagen content.
           </p>
-          <Button size="lg" className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-lg shadow-pink-200">
+          <Button size="lg" className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md">
             Koop Kickstart - €47
           </Button>
         </CardContent>
@@ -369,7 +369,7 @@ export function DayViewer({
     <div className="space-y-6">
       {/* Day Header Card - Mobile Optimized */}
       <Card className="border-pink-100 shadow-sm overflow-hidden">
-        <div className="bg-gradient-to-r from-pink-500 to-rose-500 px-4 py-3 sm:px-6 sm:py-4">
+        <div className="bg-pink-600 px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shrink-0">
@@ -517,7 +517,7 @@ export function DayViewer({
         <TabsList className="grid w-full grid-cols-4 bg-white border border-pink-100 p-1 rounded-xl">
           <TabsTrigger
             value="video"
-            className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-rose-500 data-[state=active]:text-white rounded-lg"
+            className="flex items-center gap-2 data-[state=active]:bg-pink-600 data-[state=active]:text-white rounded-lg"
           >
             <Play className="w-4 h-4" />
             <span className="hidden sm:inline">Video</span>
@@ -526,7 +526,7 @@ export function DayViewer({
           {day.quiz && (
             <TabsTrigger
               value="quiz"
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-rose-500 data-[state=active]:text-white rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-pink-600 data-[state=active]:text-white rounded-lg"
             >
               <MessageSquare className="w-4 h-4" />
               <span className="hidden sm:inline">Quiz</span>
@@ -536,7 +536,7 @@ export function DayViewer({
           {day.reflectie && (
             <TabsTrigger
               value="reflectie"
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-rose-500 data-[state=active]:text-white rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-pink-600 data-[state=active]:text-white rounded-lg"
             >
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Reflectie</span>
@@ -546,7 +546,7 @@ export function DayViewer({
           {day.werkboek && (
             <TabsTrigger
               value="werkboek"
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-rose-500 data-[state=active]:text-white rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-pink-600 data-[state=active]:text-white rounded-lg"
             >
               <ClipboardList className="w-4 h-4" />
               <span className="hidden sm:inline">Werkboek</span>
@@ -576,7 +576,7 @@ export function DayViewer({
               ) : day.video_script ? (
                 <div className="space-y-6">
                   {/* Hook */}
-                  <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-6 rounded-xl border border-pink-100">
+                  <div className="bg-pink-50 p-6 rounded-xl border border-pink-100">
                     <p className="text-lg font-medium text-gray-900 italic">
                       "{day.video_script.hook}"
                     </p>
@@ -594,7 +594,7 @@ export function DayViewer({
                   ))}
 
                   {/* Opdracht */}
-                  <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-6 rounded-xl border border-pink-200">
+                  <div className="bg-pink-50 p-6 rounded-xl border border-pink-200">
                     <h3 className="font-semibold text-pink-900 mb-2 flex items-center gap-2">
                       <span>📝</span> Opdracht van vandaag
                     </h3>
@@ -618,7 +618,7 @@ export function DayViewer({
               {!isVideoComplete && (
                 <Button
                   onClick={handleVideoComplete}
-                  className="w-full mt-6 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg shadow-pink-200"
+                  className="w-full mt-6 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-md"
                   disabled={saving}
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
@@ -703,7 +703,7 @@ export function DayViewer({
                 {!quizSubmitted && quizAnswers.length === day.quiz.vragen.length && (
                   <Button
                     onClick={handleQuizSubmit}
-                    className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-lg shadow-pink-200"
+                    className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md"
                     disabled={saving}
                   >
                     Controleer antwoorden
@@ -876,7 +876,7 @@ export function DayViewer({
                             setSaving(false);
                           }
                         }}
-                        className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-lg shadow-pink-200"
+                        className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md"
                         disabled={saving || Object.values(reflectionAnswers).filter((a) => a && a.length >= 5).length === 0}
                       >
                         {saving ? 'Opslaan...' : 'Alle antwoorden opslaan'}
@@ -889,7 +889,7 @@ export function DayViewer({
                 ) : (
                   // Old format - single question (backwards compatible)
                   <div className="space-y-6">
-                    <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-6 rounded-xl border border-pink-200">
+                    <div className="bg-pink-50 p-6 rounded-xl border border-pink-200">
                       <p className="font-semibold text-pink-900 mb-2">{day.reflectie.vraag}</p>
                       <p className="text-sm text-pink-700">Doel: {day.reflectie.doel}</p>
                     </div>
@@ -903,7 +903,7 @@ export function DayViewer({
 
                     <Button
                       onClick={handleReflectieSave}
-                      className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-lg shadow-pink-200"
+                      className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md"
                       disabled={saving || reflectieAnswer.length < 10}
                     >
                       {saving ? 'Opslaan...' : 'Opslaan'}
@@ -998,7 +998,7 @@ export function DayViewer({
           <Button
             size="sm"
             onClick={() => onNavigate(navigation.next!.dag_nummer)}
-            className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-lg shadow-pink-200 px-3 sm:px-4 max-w-[200px] sm:max-w-none"
+            className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md px-3 sm:px-4 max-w-[200px] sm:max-w-none"
           >
             <span className="hidden sm:inline">Dag {navigation.next.dag_nummer}:</span>
             <span className="sm:hidden">Dag {navigation.next.dag_nummer}</span>
