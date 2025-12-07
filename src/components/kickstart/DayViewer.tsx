@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
+import { useDebounce } from '@/hooks/useDebounce';
 import {
   Play,
   CheckCircle,
@@ -62,6 +63,10 @@ export function DayViewer({
   // LAAG 3: Individual reflection answers per question type for Iris context
   const [reflectionAnswers, setReflectionAnswers] = useState<Record<string, string>>({});
   const [savingReflection, setSavingReflection] = useState<string | null>(null);
+  const [lastAutosaved, setLastAutosaved] = useState<Record<string, Date>>({});
+
+  // Debounced reflection answers for autosave (2 seconds delay)
+  const debouncedReflectionAnswers = useDebounce(reflectionAnswers, 2000);
   const [werkboekAnswers, setWerkboekAnswers] = useState<WerkboekAnswer[]>(
     progress?.werkboek_antwoorden ||
       day.werkboek?.stappen.map((stap) => ({ stap, antwoord: '', completed: false })) ||
@@ -226,11 +231,12 @@ export function DayViewer({
   const saveIndividualReflection = async (
     questionType: 'spiegel' | 'identiteit' | 'actie',
     questionText: string,
-    answerText: string
+    answerText: string,
+    silent = false // For autosave - don't show success toast
   ) => {
     if (!answerText || answerText.length < 5) return;
 
-    setSavingReflection(questionType);
+    if (!silent) setSavingReflection(questionType);
     try {
       const response = await fetch('/api/kickstart/reflections', {
         method: 'POST',
@@ -247,21 +253,27 @@ export function DayViewer({
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Failed to save reflection:', errorText);
-        toast.error('Kon reflectie niet opslaan', {
-          description: 'Probeer het later opnieuw',
-        });
+        if (!silent) {
+          toast.error('Kon reflectie niet opslaan', {
+            description: 'Probeer het later opnieuw',
+          });
+        }
       } else {
-        toast.success('Reflectie bewaard!', {
-          description: 'Iris onthoudt dit voor je',
-        });
+        if (!silent) {
+          toast.success('Reflectie bewaard!', {
+            description: 'Iris onthoudt dit voor je',
+          });
+        }
       }
     } catch (error) {
       console.error('Error saving reflection:', error);
-      toast.error('Kon reflectie niet opslaan', {
-        description: 'Controleer je internetverbinding',
-      });
+      if (!silent) {
+        toast.error('Kon reflectie niet opslaan', {
+          description: 'Controleer je internetverbinding',
+        });
+      }
     } finally {
-      setSavingReflection(null);
+      if (!silent) setSavingReflection(null);
     }
   };
 
@@ -280,6 +292,36 @@ export function DayViewer({
       .join('\n\n');
     setReflectieAnswer(combined);
   };
+
+  // Autosave reflections after 2 seconds of no typing
+  useEffect(() => {
+    // Don't autosave on initial mount or if no questions exist
+    if (!day.reflectie?.vragen) return;
+
+    // Get the questions to find the question text
+    const questions = day.reflectie.vragen as Array<{ type: string; vraag: string; doel: string }>;
+
+    // Save each reflection that has sufficient content
+    Object.entries(debouncedReflectionAnswers).forEach(async ([questionType, answerText]) => {
+      if (answerText && answerText.length >= 5) {
+        const question = questions.find((q) => q.type === questionType);
+        if (question) {
+          // Silent autosave - no toast notification
+          await saveIndividualReflection(
+            questionType as 'spiegel' | 'identiteit' | 'actie',
+            question.vraag,
+            answerText,
+            true // silent mode
+          );
+          // Update last autosaved timestamp
+          setLastAutosaved((prev) => ({
+            ...prev,
+            [questionType]: new Date(),
+          }));
+        }
+      }
+    });
+  }, [debouncedReflectionAnswers]);
 
   const handleWerkboekToggle = async (index: number) => {
     const newAnswers = [...werkboekAnswers];
@@ -768,11 +810,19 @@ export function DayViewer({
                               )}
                             />
                             <div className="flex items-center justify-between">
-                              <p className="text-xs text-gray-500">
-                                {currentAnswer.length < 5
-                                  ? 'Minimaal 5 tekens'
-                                  : `${currentAnswer.length} tekens`}
-                              </p>
+                              <div className="flex flex-col gap-0.5">
+                                <p className="text-xs text-gray-500">
+                                  {currentAnswer.length < 5
+                                    ? 'Minimaal 5 tekens'
+                                    : `${currentAnswer.length} tekens`}
+                                </p>
+                                {lastAutosaved[questionType] && (
+                                  <p className="text-xs text-green-600 flex items-center gap-1">
+                                    <CheckCircle className="w-3 h-3" />
+                                    Automatisch opgeslagen
+                                  </p>
+                                )}
+                              </div>
                               <Button
                                 size="sm"
                                 variant="outline"
