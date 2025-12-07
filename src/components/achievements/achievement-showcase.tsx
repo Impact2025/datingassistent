@@ -299,7 +299,7 @@ export function AchievementShowcase({ userId, compact = false }: AchievementShow
 
                       <Button
                         onClick={() => setSelectedAchievement(null)}
-                        className="w-full bg-gradient-to-r from-pink-500 to-purple-600"
+                        className="w-full bg-gradient-to-r from-pink-500 to-pink-600"
                       >
                         Sluiten
                       </Button>

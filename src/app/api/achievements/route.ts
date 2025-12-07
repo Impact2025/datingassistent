@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Pool } from 'pg';
 import {
   ACHIEVEMENTS,
+  getAchievementBySlug,
   type Achievement,
+  type UserAchievement,
+  type AchievementProgress,
+  type AchievementStats,
 } from '@/types/achievement.types';
 
 const pool = new Pool({
@@ -10,11 +14,10 @@ const pool = new Pool({
 });
 
 /**
- * POST /api/achievements/check
- * Check and unlock eligible achievements for the current user
- * Returns newly unlocked achievements
+ * GET /api/achievements
+ * Get all achievements with user's progress
  */
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader) {
@@ -32,53 +35,81 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get current progress data
-    const progressData = await getUserProgressData(userId);
-
-    // Get already unlocked achievements
-    const unlockedResult = await pool.query<{ achievement_slug: string }>(
-      'SELECT achievement_slug FROM user_achievements WHERE user_id = $1',
+    // Get user's unlocked achievements
+    const unlockedResult = await pool.query<{
+      achievement_slug: string;
+      unlocked_at: Date;
+      progress: number;
+      notified: boolean;
+    }>(
+      'SELECT achievement_slug, unlocked_at, progress, notified FROM user_achievements WHERE user_id = $1',
       [userId]
     );
-    const unlockedSlugs = new Set(unlockedResult.rows.map((r) => r.achievement_slug));
 
-    // Check all achievements
-    const newlyUnlocked: Achievement[] = [];
-    let totalPoints = 0;
+    const unlockedMap = new Map(
+      unlockedResult.rows.map((row) => [row.achievement_slug, row])
+    );
 
-    for (const achievement of ACHIEVEMENTS) {
-      // Skip if already unlocked
-      if (unlockedSlugs.has(achievement.slug)) {
-        continue;
-      }
+    // Get current progress data for incremental achievements
+    const progressData = await getUserProgressData(userId);
 
-      // Calculate current progress
-      const currentProgress = calculateCurrentProgress(achievement, progressData);
+    // Build achievement progress list
+    const achievements: AchievementProgress[] = ACHIEVEMENTS.map((achievement) => {
+      const unlocked = unlockedMap.get(achievement.slug);
+      const current = calculateCurrentProgress(achievement, progressData);
+      const target = achievement.requirement.target;
 
-      // Check if requirement is met
-      if (currentProgress >= achievement.requirement.target) {
-        // Unlock the achievement
-        const result = await pool.query(
-          \`SELECT * FROM check_and_unlock_achievement($1, $2, $3)\`,
-          [userId, achievement.slug, currentProgress]
-        );
+      return {
+        achievement,
+        unlocked: !!unlocked,
+        unlocked_at: unlocked?.unlocked_at,
+        current_progress: current,
+        target_progress: target,
+        percentage: Math.min(100, Math.round((current / target) * 100)),
+      };
+    });
 
-        const unlockResult = result.rows[0];
-        if (unlockResult.newly_unlocked) {
-          newlyUnlocked.push(achievement);
-          totalPoints += achievement.points;
-        }
-      }
-    }
+    // Calculate stats
+    const stats: AchievementStats = {
+      total_unlocked: unlockedResult.rows.length,
+      total_points: achievements
+        .filter((a) => a.unlocked)
+        .reduce((sum, a) => sum + a.achievement.points, 0),
+      total_available: ACHIEVEMENTS.length,
+      by_category: {
+        milestone: achievements.filter(
+          (a) => a.achievement.category === 'milestone' && a.unlocked
+        ).length,
+        streak: achievements.filter(
+          (a) => a.achievement.category === 'streak' && a.unlocked
+        ).length,
+        engagement: achievements.filter(
+          (a) => a.achievement.category === 'engagement' && a.unlocked
+        ).length,
+        mastery: achievements.filter(
+          (a) => a.achievement.category === 'mastery' && a.unlocked
+        ).length,
+      },
+      recent_unlocks: unlockedResult.rows
+        .sort((a, b) => new Date(b.unlocked_at).getTime() - new Date(a.unlocked_at).getTime())
+        .slice(0, 5)
+        .map((row) => ({
+          id: 0, // Not needed for recent list
+          user_id: userId,
+          achievement_slug: row.achievement_slug,
+          unlocked_at: row.unlocked_at,
+          progress: row.progress,
+          notified: row.notified,
+        })),
+    };
 
     return NextResponse.json({
       success: true,
-      newly_unlocked: newlyUnlocked,
-      total_points: totalPoints,
-      checked_count: ACHIEVEMENTS.length,
+      achievements,
+      stats,
     });
   } catch (error) {
-    console.error('Error checking achievements:', error);
+    console.error('Error fetching achievements:', error);
     return NextResponse.json(
       {
         success: false,
@@ -96,28 +127,28 @@ async function getUserProgressData(userId: number) {
   const [streakResult, dayProgressResult, reflectionResult] = await Promise.all([
     // Streak data
     pool.query<{ current_streak: number; longest_streak: number; total_days_completed: number }>(
-      \`SELECT current_streak, longest_streak, total_days_completed
+      `SELECT current_streak, longest_streak, total_days_completed
        FROM user_streaks
-       WHERE user_id = $1 AND program_slug = 'kickstart'\`,
+       WHERE user_id = $1 AND program_slug = 'kickstart'`,
       [userId]
     ),
 
     // Day completion data
     pool.query<{ total_days: number; completed_days: number; weeks_completed: number }>(
-      \`SELECT
+      `SELECT
         COUNT(DISTINCT day_id) as total_days,
         COUNT(DISTINCT CASE WHEN status = 'completed' THEN day_id END) as completed_days,
         COUNT(DISTINCT CASE WHEN status = 'completed' THEN week_number END) as weeks_completed
        FROM kickstart_progress
-       WHERE user_id = $1\`,
+       WHERE user_id = $1`,
       [userId]
     ),
 
     // Reflection count
     pool.query<{ reflection_count: number }>(
-      \`SELECT COUNT(*) as reflection_count
+      `SELECT COUNT(*) as reflection_count
        FROM kickstart_reflections
-       WHERE user_id = $1\`,
+       WHERE user_id = $1`,
       [userId]
     ),
   ]);
@@ -165,7 +196,7 @@ async function getUserIdFromAuth(authHeader: string): Promise<number | null> {
     const token = authHeader.replace('Bearer ', '');
 
     const result = await pool.query<{ user_id: number }>(
-      \`SELECT user_id FROM user_sessions WHERE token = $1 AND expires_at > NOW()\`,
+      `SELECT user_id FROM user_sessions WHERE token = $1 AND expires_at > NOW()`,
       [token]
     );
 

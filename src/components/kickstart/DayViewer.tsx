@@ -34,6 +34,8 @@ import type {
 } from '@/types/kickstart.types';
 import { trackLessonStart, trackLessonComplete, trackVideoStart, trackVideoComplete } from '@/lib/analytics/ga4-events';
 import { KickstartCursusRecommendations } from './KickstartCursusRecommendations';
+import { UnlockCelebration } from '@/components/achievements/UnlockCelebration';
+import type { Achievement } from '@/types/achievement.types';
 
 interface DayViewerProps {
   day: ProgramDay;
@@ -73,6 +75,12 @@ export function DayViewer({
       []
   );
   const [saving, setSaving] = useState(false);
+
+  // Achievement celebration
+  const [celebrationAchievements, setCelebrationAchievements] = useState<{
+    achievements: Achievement[];
+    totalPoints: number;
+  } | null>(null);
 
   // GA4: Track lesson start when component mounts
   useEffect(() => {
@@ -158,6 +166,14 @@ export function DayViewer({
               description: `Je bent nu op ${data.streak.currentStreak} dagen!`,
               duration: 5000,
             });
+
+            // Check for newly unlocked achievements
+            if (data.achievements?.newly_unlocked?.length > 0) {
+              setCelebrationAchievements({
+                achievements: data.achievements.newly_unlocked,
+                totalPoints: data.achievements.total_points,
+              });
+            }
           }
         }
       } catch (error) {
@@ -1014,6 +1030,15 @@ export function DayViewer({
           </Button>
         )}
       </div>
+
+      {/* Achievement Celebration Modal */}
+      {celebrationAchievements && (
+        <UnlockCelebration
+          achievements={celebrationAchievements.achievements}
+          totalPoints={celebrationAchievements.totalPoints}
+          onClose={() => setCelebrationAchievements(null)}
+        />
+      )}
     </div>
   );
 }
