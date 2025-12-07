@@ -115,7 +115,10 @@ export function DatingStyleFlow() {
   };
 
   const handleStartAssessment = async () => {
-    if (!user?.id) return;
+    if (!user?.id) {
+      alert('Je moet ingelogd zijn om de scan te starten.');
+      return;
+    }
 
     setLoading(true);
     try {
@@ -131,8 +134,15 @@ export function DatingStyleFlow() {
         })
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('API error:', data);
+        alert(`Fout bij starten van de scan: ${data.message || data.error || 'Onbekende fout'}`);
+        return;
+      }
+
+      if (data.assessment?.id) {
         setAssessmentData({
           assessmentId: data.assessment.id,
           responses: [],
@@ -157,9 +167,12 @@ export function DatingStyleFlow() {
           }
         });
         setCurrentStep('questionnaire');
+      } else {
+        alert('Geen assessment ID ontvangen van de server.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error starting assessment:', error);
+      alert(`Fout bij starten van de scan: ${error.message || 'Netwerkfout'}`);
     } finally {
       setLoading(false);
     }
@@ -185,8 +198,16 @@ export function DatingStyleFlow() {
         })
       });
 
-      if (resultsResponse.ok) {
-        const resultsData = await resultsResponse.json();
+      const resultsData = await resultsResponse.json();
+
+      if (!resultsResponse.ok) {
+        console.error('Error submitting assessment:', resultsData);
+        alert(`Fout bij verwerken van je antwoorden: ${resultsData.message || resultsData.error || 'Onbekende fout'}`);
+        setCurrentStep('questionnaire');
+        return;
+      }
+
+      if (resultsData.result) {
         setAssessmentData(prev => prev ? {
           ...prev,
           responses,
@@ -206,9 +227,13 @@ export function DatingStyleFlow() {
           confidence: resultsData.confidence,
           aiInsights: resultsData.aiInsights
         } : null);
+      } else {
+        alert('Geen resultaten ontvangen van de server.');
+        setCurrentStep('questionnaire');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error completing assessment:', error);
+      alert(`Fout bij verwerken van je antwoorden: ${error.message || 'Netwerkfout'}`);
       setCurrentStep('questionnaire');
     } finally {
       setLoading(false);

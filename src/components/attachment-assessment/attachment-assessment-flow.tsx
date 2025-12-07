@@ -69,7 +69,10 @@ export function AttachmentAssessmentFlow() {
   };
 
   const handleStartAssessment = async () => {
-    if (!user?.id) return;
+    if (!user?.id) {
+      alert('Je moet ingelogd zijn om de QuickScan te starten.');
+      return;
+    }
 
     setLoading(true);
     try {
@@ -92,8 +95,15 @@ export function AttachmentAssessmentFlow() {
         })
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('API error:', data);
+        alert(`Fout bij starten van de QuickScan: ${data.message || data.error || 'Onbekende fout'}`);
+        return;
+      }
+
+      if (data.success && data.assessmentId) {
         setAssessmentData({
           assessmentId: data.assessmentId,
           userId: user.id,
@@ -113,9 +123,12 @@ export function AttachmentAssessmentFlow() {
           }
         });
         setCurrentStep('questionnaire');
+      } else {
+        alert('Geen assessment ID ontvangen van de server.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error starting assessment:', error);
+      alert(`Fout bij starten van de QuickScan: ${error.message || 'Netwerkfout'}`);
     } finally {
       setLoading(false);
     }
@@ -142,24 +155,32 @@ export function AttachmentAssessmentFlow() {
         })
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Assessment results:', data);
+      const data = await response.json();
 
-        // Helper function to safely parse arrays
-        const safeParseArray = (data: any, fallback: any[] = []) => {
-          if (!data) return fallback;
-          if (Array.isArray(data)) return data;
-          if (typeof data === 'string') {
-            try {
-              return JSON.parse(data);
-            } catch {
-              return fallback;
-            }
+      if (!response.ok) {
+        console.error('Error submitting assessment:', data);
+        alert(`Fout bij verwerken van je antwoorden: ${data.message || data.error || 'Onbekende fout'}`);
+        setCurrentStep('questionnaire');
+        return;
+      }
+
+      console.log('Assessment results:', data);
+
+      // Helper function to safely parse arrays
+      const safeParseArray = (data: any, fallback: any[] = []) => {
+        if (!data) return fallback;
+        if (Array.isArray(data)) return data;
+        if (typeof data === 'string') {
+          try {
+            return JSON.parse(data);
+          } catch {
+            return fallback;
           }
-          return fallback;
-        };
+        }
+        return fallback;
+      };
 
+      if (data.success && data.result) {
         setAssessmentData(prev => prev ? {
           ...prev,
           responses: responses as any, // Type assertion for now
@@ -182,9 +203,13 @@ export function AttachmentAssessmentFlow() {
             recommendedTools: safeParseArray(data.result.recommended_tools, [])
           }
         } : null);
+      } else {
+        alert('Geen resultaten ontvangen van de server.');
+        setCurrentStep('questionnaire');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error completing assessment:', error);
+      alert(`Fout bij verwerken van je antwoorden: ${error.message || 'Netwerkfout'}`);
       // If there's an error, go back to questionnaire
       setCurrentStep('questionnaire');
     } finally {
