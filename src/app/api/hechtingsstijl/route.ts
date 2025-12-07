@@ -9,6 +9,14 @@ export async function POST(request: NextRequest) {
     const { action, userId, responses, microIntake } = body;
 
     if (action === 'start') {
+      // Validate userId
+      if (!userId) {
+        return NextResponse.json(
+          { error: 'User ID is required' },
+          { status: 400 }
+        );
+      }
+
       // Start new assessment
       const assessment = await sql`
         INSERT INTO hechtingsstijl_assessments (
@@ -19,9 +27,18 @@ export async function POST(request: NextRequest) {
         RETURNING id
       `;
 
+      // Check if insert was successful
+      if (!assessment.rows || assessment.rows.length === 0 || !assessment.rows[0]?.id) {
+        console.error('Failed to create assessment:', assessment);
+        return NextResponse.json(
+          { error: 'Failed to create assessment - no ID returned' },
+          { status: 500 }
+        );
+      }
+
       return NextResponse.json({
         success: true,
-        assessmentId: (assessment as any)[0].id
+        assessmentId: assessment.rows[0].id
       });
 
     } else if (action === 'submit' && responses) {
@@ -79,7 +96,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        result: (result as any)[0],
+        result: result.rows[0],
         scores,
         aiAnalysis
       });
@@ -108,13 +125,13 @@ export async function GET(request: NextRequest) {
         SELECT * FROM hechtingsstijl_results WHERE assessment_id = ${assessmentId}
       `;
 
-      if ((result as any).length === 0) {
+      if (result.rows.length === 0) {
         return NextResponse.json({ error: 'Assessment not found' }, { status: 404 });
       }
 
       return NextResponse.json({
         success: true,
-        result: (result as any)[0]
+        result: result.rows[0]
       });
     }
 
@@ -131,7 +148,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        assessment: (assessment as any)[0]
+        assessment: assessment.rows[0]
       });
     }
 
