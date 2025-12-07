@@ -64,29 +64,29 @@ async function buildIrisContext(userId: number, dayNumber: number): Promise<Iris
   const [streakResult, progressResult, achievementsResult] = await Promise.all([
     // Streak data
     pool.query<{ current_streak: number; longest_streak: number; total_days_completed: number }>(
-      \`SELECT current_streak, longest_streak, total_days_completed
+      `SELECT current_streak, longest_streak, total_days_completed
        FROM user_streaks
-       WHERE user_id = $1 AND program_slug = 'kickstart'\`,
+       WHERE user_id = $1 AND program_slug = 'kickstart'`,
       [userId]
     ),
 
     // Progress data
     pool.query<{ last_completed_day: number; total_completed: number }>(
-      \`SELECT
+      `SELECT
         MAX(day_id) as last_completed_day,
         COUNT(DISTINCT CASE WHEN status = 'completed' THEN day_id END) as total_completed
        FROM kickstart_progress
-       WHERE user_id = $1\`,
+       WHERE user_id = $1`,
       [userId]
     ),
 
     // Recent achievements
     pool.query<{ achievement_slug: string }>(
-      \`SELECT achievement_slug
+      `SELECT achievement_slug
        FROM user_achievements
        WHERE user_id = $1
        ORDER BY unlocked_at DESC
-       LIMIT 3\`,
+       LIMIT 3`,
       [userId]
     ),
   ]);
@@ -131,7 +131,7 @@ async function getUserIdFromAuth(authHeader: string): Promise<number | null> {
     const token = authHeader.replace('Bearer ', '');
 
     const result = await pool.query<{ user_id: number }>(
-      \`SELECT user_id FROM user_sessions WHERE token = $1 AND expires_at > NOW()\`,
+      `SELECT user_id FROM user_sessions WHERE token = $1 AND expires_at > NOW()`,
       [token]
     );
 

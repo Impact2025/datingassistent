@@ -33,9 +33,9 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
         ...(dayTopic && { dayTopic }),
       });
 
-      const response = await fetch(\`/api/iris/message?\${params}\`, {
+      const response = await fetch(`/api/iris/message?${params}`, {
         headers: {
-          'Authorization': \`Bearer \${token}\`,
+          'Authorization': `Bearer ${token}`,
         },
       });
 
