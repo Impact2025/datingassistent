@@ -7,6 +7,7 @@ import { Loader2, ArrowLeft, Home, Sparkles, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DayViewer } from '@/components/kickstart/DayViewer';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
+import { StreakDisplay } from '@/components/kickstart/StreakDisplay';
 import type {
   DayDetailResponse,
   UpdateDayProgressInput,
@@ -169,8 +170,11 @@ export default function KickstartDayPage({ params }: PageProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-5xl mx-auto px-4 py-4 md:py-8"
+        className="max-w-5xl mx-auto px-4 py-4 md:py-8 space-y-6"
       >
+        {/* Streak - Compact view at top */}
+        <StreakDisplay variant="compact" />
+
         <DayViewer
           day={data.day}
           progress={data.progress}

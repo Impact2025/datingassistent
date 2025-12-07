@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import {
   Play,
   CheckCircle,
+  Circle,
   ChevronLeft,
   ChevronRight,
   BookOpen,
@@ -114,6 +115,9 @@ export function DayViewer({
         day_id: day.id,
         ...data,
       });
+
+      // Check if day is now complete and update streak
+      await checkAndUpdateStreak();
     } catch (error) {
       console.error('Error saving progress:', error);
       toast.error('Kon voortgang niet opslaan', {
@@ -122,6 +126,39 @@ export function DayViewer({
       throw error;
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Check if day is complete and update streak
+  const checkAndUpdateStreak = async () => {
+    const dayComplete = isVideoComplete &&
+      (!day.quiz || quizSubmitted);
+
+    if (dayComplete) {
+      try {
+        const token = localStorage.getItem('datespark_auth_token');
+        const response = await fetch('/api/kickstart/streak', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.streak.extended) {
+            // Show streak celebration
+            toast.success(data.message, {
+              description: `Je bent nu op ${data.streak.currentStreak} dagen!`,
+              duration: 5000,
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error updating streak:', error);
+        // Don't show error to user, streak update is background task
+      }
     }
   };
 
@@ -330,6 +367,106 @@ export function DayViewer({
             <span className="text-sm font-semibold text-pink-600">{completionPercent}%</span>
           </div>
           <Progress value={completionPercent} className="h-2" />
+
+          {/* Clear Unlock Criteria */}
+          <div className="mt-4 space-y-2">
+            <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
+              Voortgang checklist:
+            </p>
+
+            <div className="space-y-1.5">
+              {/* Video */}
+              <div className={cn(
+                "flex items-center gap-2 text-sm",
+                isVideoComplete ? "text-green-600" : "text-gray-500"
+              )}>
+                {isVideoComplete ? (
+                  <CheckCircle className="w-4 h-4" />
+                ) : (
+                  <Circle className="w-4 h-4" />
+                )}
+                <span>Video bekeken</span>
+                {!isVideoComplete && (
+                  <span className="text-xs text-pink-600 ml-auto">Vereist</span>
+                )}
+              </div>
+
+              {/* Quiz */}
+              {day.quiz && (
+                <div className={cn(
+                  "flex items-center gap-2 text-sm",
+                  quizSubmitted ? "text-green-600" : "text-gray-500"
+                )}>
+                  {quizSubmitted ? (
+                    <CheckCircle className="w-4 h-4" />
+                  ) : (
+                    <Circle className="w-4 h-4" />
+                  )}
+                  <span>
+                    Quiz voltooid
+                    {quizSubmitted && ` (${quizAnswers.filter(a => a.isCorrect).length}/${day.quiz.vragen.length} correct)`}
+                  </span>
+                  {!quizSubmitted && (
+                    <span className="text-xs text-pink-600 ml-auto">Vereist</span>
+                  )}
+                </div>
+              )}
+
+              {/* Reflectie */}
+              {day.reflectie && (
+                <div className={cn(
+                  "flex items-center gap-2 text-sm",
+                  (reflectieAnswer.length > 10 || Object.values(reflectionAnswers).some(a => a && a.length >= 5))
+                    ? "text-green-600"
+                    : "text-gray-500"
+                )}>
+                  {(reflectieAnswer.length > 10 || Object.values(reflectionAnswers).some(a => a && a.length >= 5)) ? (
+                    <CheckCircle className="w-4 h-4" />
+                  ) : (
+                    <Circle className="w-4 h-4" />
+                  )}
+                  <span>Reflectie ingevuld</span>
+                  {!(reflectieAnswer.length > 10 || Object.values(reflectionAnswers).some(a => a && a.length >= 5)) && (
+                    <span className="text-xs text-orange-600 ml-auto">Aanbevolen</span>
+                  )}
+                </div>
+              )}
+
+              {/* Werkboek */}
+              {day.werkboek && (
+                <div className={cn(
+                  "flex items-center gap-2 text-sm",
+                  werkboekAnswers.every(w => w.completed) ? "text-green-600" : "text-gray-500"
+                )}>
+                  {werkboekAnswers.every(w => w.completed) ? (
+                    <CheckCircle className="w-4 h-4" />
+                  ) : (
+                    <Circle className="w-4 h-4" />
+                  )}
+                  <span>
+                    Werkboek ({werkboekAnswers.filter(w => w.completed).length}/{werkboekAnswers.length} stappen)
+                  </span>
+                  {!werkboekAnswers.every(w => w.completed) && (
+                    <span className="text-xs text-orange-600 ml-auto">Aanbevolen</span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Unlock message */}
+            {completionPercent === 100 ? (
+              <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg border border-green-200 mt-3">
+                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <p className="text-sm font-medium text-green-700">
+                  Perfect! Dag {day.dag_nummer + 1} is nu unlocked 🎉
+                </p>
+              </div>
+            ) : (
+              <p className="text-xs text-gray-500 mt-3">
+                Complete alle <span className="text-pink-600 font-medium">vereiste</span> onderdelen om dag {day.dag_nummer + 1} te unlocken
+              </p>
+            )}
+          </div>
         </CardContent>
       </Card>
 

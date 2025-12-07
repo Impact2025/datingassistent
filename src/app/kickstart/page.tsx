@@ -8,6 +8,7 @@ import { WeekOverview, KickstartStats } from '@/components/kickstart/WeekOvervie
 import { PostKickstartJourney } from '@/components/kickstart/PostKickstartJourney';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { Button } from '@/components/ui/button';
+import { StreakDisplay } from '@/components/kickstart/StreakDisplay';
 import type { KickstartOverview } from '@/types/kickstart.types';
 
 export default function KickstartPage() {
@@ -131,10 +132,20 @@ export default function KickstartPage() {
 
       {/* Content */}
       <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-6 md:space-y-8">
+        {/* Streak Display - Prominent */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <StreakDisplay variant="full" />
+        </motion.div>
+
         {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
         >
           <KickstartStats
             totalDays={data.progress.total_days}
