@@ -72,7 +72,7 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
         transition={{ type: 'spring', duration: 0.6, bounce: 0.3 }}
         className="mb-6"
       >
-        <Card className="relative overflow-hidden border-2 border-purple-200 bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 shadow-lg">
+        <Card className="relative overflow-hidden border-2 border-purple-200 bg-gradient-to-br from-purple-50 via-pink-50 to-pink-100 shadow-lg">
           {/* Animated Background Effect */}
           <div className="absolute inset-0 opacity-30">
             <motion.div

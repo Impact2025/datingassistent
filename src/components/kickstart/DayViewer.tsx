@@ -36,6 +36,7 @@ import { trackLessonStart, trackLessonComplete, trackVideoStart, trackVideoCompl
 import { KickstartCursusRecommendations } from './KickstartCursusRecommendations';
 import { UnlockCelebration } from '@/components/achievements/UnlockCelebration';
 import type { Achievement } from '@/types/achievement.types';
+import { IrisIntro } from '@/components/iris/IrisIntro';
 
 interface DayViewerProps {
   day: ProgramDay;
@@ -383,6 +384,9 @@ export function DayViewer({
 
   return (
     <div className="space-y-6">
+      {/* Iris Personalized Intro */}
+      <IrisIntro dayNumber={day.dag_nummer} dayTopic={day.titel} />
+
       {/* Day Header Card - Mobile Optimized */}
       <Card className="border-pink-100 shadow-sm overflow-hidden">
         <div className="bg-pink-600 px-4 py-3 sm:px-6 sm:py-4">
