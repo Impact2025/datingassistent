@@ -7,6 +7,7 @@ import { scheduleWelcomeEmail, scheduleProfileOptimizationReminder, scheduleWeek
 import { getClientIdentifier, rateLimitAuthEndpoint, createRateLimitHeaders } from '@/lib/rate-limit';
 import { generateVerificationCode, storeVerificationCode, sendVerificationCodeEmail } from '@/lib/email-verification';
 import { startProgressiveTrial } from '@/lib/trial-management';
+import { notifyAdminNewLead } from '@/lib/admin-notifications';
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'dev-only-jwt-secret-change-in-production-2024'
@@ -92,6 +93,18 @@ export async function POST(request: NextRequest) {
     }
 
     console.log(`✅ User ${user.id} created, verification email sent to ${user.email}`);
+
+    // Send admin notification (non-blocking)
+    notifyAdminNewLead({
+      userId: user.id,
+      name: user.name,
+      email: user.email,
+      registrationSource: 'legacy',
+      photoScore: null,
+      intakeData: null,
+      otoShown: false,
+      otoAccepted: false,
+    }).catch(err => console.error('Failed to notify admin:', err));
 
     // Return user data WITHOUT token - email verification required first
     return NextResponse.json({
