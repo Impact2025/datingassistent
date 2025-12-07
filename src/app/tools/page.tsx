@@ -278,7 +278,7 @@ function ToolsPageContent() {
 
           <Button
             onClick={() => setShowGuidedFlow(true)}
-            className="ml-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white shadow-lg"
+            className="ml-4 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white shadow-lg"
             size="sm"
           >
             <Sparkles className="w-4 h-4 mr-2" />

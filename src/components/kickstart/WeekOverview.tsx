@@ -45,7 +45,7 @@ export function WeekOverview({
           transition={{ delay: weekIndex * 0.1 }}
         >
           <Card className="overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-pink-50 to-purple-50 border-b px-3 py-3 sm:px-6 sm:py-4">
+            <CardHeader className="bg-gradient-to-r from-pink-50 to-pink-100 border-b px-3 py-3 sm:px-6 sm:py-4">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <span className="text-2xl sm:text-3xl">{week.emoji}</span>
@@ -205,7 +205,7 @@ export function KickstartStats({
   const percentage = Math.round((completedDays / totalDays) * 100);
 
   return (
-    <Card className="bg-gradient-to-r from-pink-500 to-purple-600 text-white">
+    <Card className="bg-gradient-to-r from-pink-500 to-pink-600 text-white">
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">

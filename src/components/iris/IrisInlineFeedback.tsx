@@ -15,11 +15,11 @@ export function IrisInlineFeedback({ feedback, isLoading }: IrisInlineFeedbackPr
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-4 bg-gradient-to-r from-pink-50 to-purple-50
+      className="mt-4 bg-gradient-to-r from-pink-50 to-pink-100
                  rounded-xl p-4 border border-pink-100"
     >
       <div className="flex gap-3">
-        <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500
+        <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-pink-600
                         rounded-full flex items-center justify-center flex-shrink-0">
           <Sparkles className="w-4 h-4 text-white" />
         </div>

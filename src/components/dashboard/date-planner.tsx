@@ -712,7 +712,7 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white">
       <div className="max-w-4xl mx-auto p-6 space-y-6">
         {/* Success Header */}
-        <Card className="bg-gradient-to-r from-pink-100 to-purple-100 border-pink-200 shadow-lg">
+        <Card className="bg-gradient-to-r from-pink-100 to-pink-200 border-pink-200 shadow-lg">
           <CardContent className="p-8 text-center">
             <div className="flex justify-center mb-4">
               <div className="p-4 bg-white rounded-full shadow-lg">

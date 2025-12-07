@@ -687,7 +687,7 @@ function InteractiveProfileCoachInner() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Professional Header */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-pink-50 to-purple-50 p-6 rounded-xl border border-pink-100">
+      <div className="flex items-center justify-between bg-gradient-to-r from-pink-50 to-pink-100 p-6 rounded-xl border border-pink-100">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-pink-100 rounded-full">
             <UserCircle2 className="w-8 h-8 text-pink-600" />
@@ -2006,7 +2006,7 @@ function InteractiveProfileCoachInner() {
                 <Button
                   onClick={handleNext}
                   disabled={!canProceed()}
-                  className="gap-2 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+                  className="gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
                 >
                   <Target className="w-4 h-4" />
                   Genereer Profielen

@@ -113,7 +113,7 @@ export default function CoursesContent() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 px-4 overflow-hidden bg-gradient-to-br from-pink-50 to-purple-50">
+      <section className="relative py-20 md:py-32 px-4 overflow-hidden bg-gradient-to-br from-pink-50 to-pink-100">
         <div className="max-w-6xl mx-auto text-center">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 border border-pink-200">
@@ -199,7 +199,7 @@ export default function CoursesContent() {
               {courses.map((course) => (
                 <Card key={course.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
                   <div className="relative">
-                    <div className="aspect-video bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
+                    <div className="aspect-video bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
                       {course.thumbnail_url ? (
                         <img
                           src={course.thumbnail_url}
@@ -328,7 +328,7 @@ export default function CoursesContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 bg-gradient-to-r from-pink-500 to-purple-600">
+      <section className="py-24 px-4 bg-gradient-to-r from-pink-500 to-pink-600">
         <div className="max-w-4xl mx-auto text-center">
           <div className="space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold text-white">

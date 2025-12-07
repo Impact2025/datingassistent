@@ -187,7 +187,7 @@ export default function RoadmapPage() {
 
           {/* Iris Video Card */}
           <Card className="p-0 rounded-2xl shadow-sm overflow-hidden mb-6">
-            <div className="relative aspect-video bg-gradient-to-br from-pink-100 to-purple-100">
+            <div className="relative aspect-video bg-gradient-to-br from-pink-100 to-pink-200">
               {!videoError ? (
                 <>
                   <video
@@ -240,7 +240,7 @@ export default function RoadmapPage() {
                 /* Fallback als video niet laadt */
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center p-6">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center mx-auto mb-3">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center mx-auto mb-3">
                       <span className="text-2xl font-bold text-white">I</span>
                     </div>
                     <p className="text-gray-600 text-sm">Iris, je persoonlijke coach</p>

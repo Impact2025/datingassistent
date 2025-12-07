@@ -152,7 +152,7 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
 
         {/* Tip / Formule */}
         {(content.tip || content.formule) && (
-          <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-purple-100 border-l-4 border-pink-500 mb-6">
+          <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 border-l-4 border-pink-500 mb-6">
             <p className="text-sm font-semibold text-pink-900 mb-2">💡 Tip:</p>
             <p className="text-gray-900 leading-relaxed">{content.tip || content.formule}</p>
           </div>

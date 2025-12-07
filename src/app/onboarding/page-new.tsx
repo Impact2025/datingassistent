@@ -254,7 +254,7 @@ export default function NewOnboardingPage() {
   // Loading state
   if (isInitializing) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-purple-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-pink-25 to-white">
         <div className="text-center space-y-4">
           <LoadingSpinner />
           <p className="text-gray-600">Je Dating Startpunt voorbereiden...</p>
@@ -268,7 +268,7 @@ export default function NewOnboardingPage() {
   const progress = ((currentStepIndex + 1) / steps.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white">
       {/* Progress Bar */}
       {state.currentStep !== 'complete' && state.currentStep !== 'loading' && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b shadow-sm">
@@ -297,7 +297,7 @@ export default function NewOnboardingPage() {
             <div className="space-y-8">
               <Card className="border-2 border-pink-200 shadow-lg">
                 <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Sparkles className="w-8 h-8 text-white" />
                   </div>
                   <h1 className="text-3xl font-bold mb-3">Welkom bij DatingAssistent</h1>
@@ -318,7 +318,7 @@ export default function NewOnboardingPage() {
           {state.currentStep === 'welcome' && (
             <Card className="border-2 border-pink-200 shadow-lg">
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle className="text-3xl">
@@ -357,7 +357,7 @@ export default function NewOnboardingPage() {
                   <Button
                     onClick={handleWelcomeComplete}
                     size="lg"
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 px-8"
+                    className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 px-8"
                   >
                     Start Jouw Dating Startpunt
                   </Button>

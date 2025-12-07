@@ -164,7 +164,7 @@ export function TutorialModal({
 
                 <Button
                   onClick={handlePrimaryAction}
-                  className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white flex items-center space-x-2"
+                  className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white flex items-center space-x-2"
                 >
                   <span>{isLast ? 'Voltooien' : 'Volgende'}</span>
                   <ArrowRight className="w-4 h-4" />

@@ -135,7 +135,7 @@ export function KickstartOnboardingFlow({
               {/* CTA Button */}
               <Button
                 onClick={() => setCurrentStep('chat')}
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
+                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
               >
                 Start intake gesprek
                 <ChevronRight className="w-5 h-5 ml-2" />
@@ -189,7 +189,7 @@ export function KickstartOnboardingFlow({
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center mx-auto mb-6"
+                className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center mx-auto mb-6"
               >
                 <Sparkles className="w-8 h-8 text-pink-600" />
               </motion.div>
@@ -258,7 +258,7 @@ export function KickstartOnboardingFlow({
               {/* CTA Button */}
               <Button
                 onClick={handleStartProgram}
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
+                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
               >
                 Start met Dag 1
                 <Rocket className="w-5 h-5 ml-2" />

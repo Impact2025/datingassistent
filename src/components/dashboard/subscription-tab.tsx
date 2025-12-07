@@ -553,7 +553,7 @@ export function SubscriptionTab() {
       >
         {isFeatured && (
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-            <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-3 py-1">
+            <Badge className="bg-gradient-to-r from-pink-500 to-pink-600 text-white px-3 py-1">
               Meest Populair
             </Badge>
           </div>
@@ -689,7 +689,7 @@ export function SubscriptionTab() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center space-y-4">
-        <div className="mx-auto w-12 h-12 bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center">
+        <div className="mx-auto w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center">
           <CreditCard className="w-6 h-6 text-pink-600 dark:text-pink-400" />
         </div>
         <div>

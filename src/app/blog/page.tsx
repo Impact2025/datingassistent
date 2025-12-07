@@ -171,9 +171,9 @@ function BlogContent() {
 
       <PublicHeader />
 
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white">
         {/* Hero Section */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 text-white">
+        <div className="relative overflow-hidden bg-gradient-to-r from-pink-500 via-pink-250 to-indigo-600 text-white">
           <div className="absolute inset-0 bg-black/30"></div>
           <div
             className="absolute inset-0 bg-cover bg-center opacity-25"
@@ -229,7 +229,7 @@ function BlogContent() {
           {/* Tags Filter */}
           <div className="mb-12">
             <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="p-2 bg-gradient-to-r from-pink-100 to-purple-100 rounded-full">
+              <div className="p-2 bg-gradient-to-r from-pink-100 to-pink-200 rounded-full">
                 <Tag className="h-6 w-6 text-purple-600" />
               </div>
               <h2 className="text-2xl font-bold text-gray-800">Ontdek Onderwerpen</h2>
@@ -274,7 +274,7 @@ function BlogContent() {
           {filteredBlogs.length === 0 ? (
             <div className="text-center py-20">
               <div className="max-w-md mx-auto">
-                <div className="w-24 h-24 bg-gradient-to-r from-pink-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-24 h-24 bg-gradient-to-r from-pink-100 to-pink-200 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Search className="h-12 w-12 text-purple-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">Geen artikelen gevonden</h3>
@@ -286,7 +286,7 @@ function BlogContent() {
                     setSearchQuery('');
                     setSelectedTag(null);
                   }}
-                  className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+                  className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
                 >
                   Alles tonen
                 </Button>
@@ -309,7 +309,7 @@ function BlogContent() {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-pink-400 via-purple-500 to-indigo-600 flex items-center justify-center relative">
+                        <div className="w-full h-full bg-gradient-to-br from-pink-400 via-pink-250 to-indigo-600 flex items-center justify-center relative">
                           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
                           <span className="text-5xl font-bold text-white relative z-10">
                             {blog.placeholder_text || blog.title.split(' ')[0] || 'DA'}
@@ -345,7 +345,7 @@ function BlogContent() {
                         <Badge
                           key={idx}
                           variant="secondary"
-                          className="text-xs bg-gradient-to-r from-pink-50 to-purple-50 text-purple-700 border-purple-200"
+                          className="text-xs bg-gradient-to-r from-pink-50 to-pink-100 text-purple-700 border-purple-200"
                         >
                           {keyword}
                         </Badge>

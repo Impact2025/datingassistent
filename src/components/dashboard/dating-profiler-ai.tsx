@@ -604,7 +604,7 @@ export function DatingProfilerAI() {
     return (
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
-        <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+        <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-pink-900">
               <Sparkles className="w-6 h-6" />
@@ -716,7 +716,7 @@ export function DatingProfilerAI() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+      <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-pink-900">
             <Sparkles className="w-6 h-6" />

@@ -15,7 +15,7 @@ export default function ProfileAnalysisPage() {
       <PublicHeader />
 
       {/* Hero Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-pink-50 to-purple-50">
+      <section className="py-20 px-4 bg-gradient-to-br from-pink-50 to-pink-100">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Profiel Analyse met AI
@@ -108,7 +108,7 @@ export default function ProfileAnalysisPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white">
+      <section className="py-16 px-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Klaar voor meer matches?

@@ -88,7 +88,7 @@ export default function LogoutPage() {
 
   if (isLoggingOut) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600">Uitloggen...</p>
@@ -98,7 +98,7 @@ export default function LogoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
       <div className="max-w-2xl w-full space-y-8">
         {/* Logo */}
         <motion.div

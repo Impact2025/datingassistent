@@ -131,7 +131,7 @@ export function PaymentSuccessClientComponent() {
       <main className="min-h-screen bg-gradient-to-b from-pink-50 via-white to-white flex items-center justify-center p-4">
         <Card className="w-full max-w-md border-2 border-pink-100 shadow-xl">
           <CardContent className="pt-8 pb-8 text-center space-y-6">
-            <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
+            <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
               <LoadingSpinner />
             </div>
             <div>
@@ -189,7 +189,7 @@ export function PaymentSuccessClientComponent() {
               )}
 
               {/* What's Next */}
-              <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-5 border border-pink-100">
+              <div className="bg-gradient-to-r from-pink-50 to-pink-100 rounded-xl p-5 border border-pink-100">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
                     <Rocket className="w-4 h-4 text-pink-600" />

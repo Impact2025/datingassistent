@@ -247,7 +247,7 @@ export default function CheckoutPage() {
 
           {/* Transformation Promise */}
           {program.transformation_promise && (
-            <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-4 mb-6 border border-pink-100">
+            <div className="bg-gradient-to-r from-pink-50 to-pink-100 rounded-xl p-4 mb-6 border border-pink-100">
               <div className="flex items-start gap-3">
                 <Target className="w-5 h-5 text-pink-500 flex-shrink-0 mt-0.5" />
                 <div>

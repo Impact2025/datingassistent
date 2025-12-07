@@ -230,7 +230,7 @@ function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
       {/* Sliding Indicator */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gray-100">
         <div
-          className="h-full bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-300 ease-out"
+          className="h-full bg-gradient-to-r from-pink-500 to-pink-600 transition-all duration-300 ease-out"
           style={{
             width: `${100 / TABS.length}%`,
             transform: `translateX(${activeIndex * 100}%)`,
@@ -365,7 +365,7 @@ function AccessDeniedScreen({ onLogin, onRegister }: { onLogin: () => void; onRe
       <Card className="max-w-md w-full shadow-xl border-0 bg-white/80 backdrop-blur-sm">
         <CardContent className="p-8">
           <div className="text-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
+            <div className="w-20 h-20 bg-gradient-to-br from-pink-100 to-pink-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
               <Shield className="w-10 h-10 text-pink-500" />
             </div>
 
@@ -380,7 +380,7 @@ function AccessDeniedScreen({ onLogin, onRegister }: { onLogin: () => void; onRe
             <div className="space-y-3">
               <Button
                 onClick={onLogin}
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
                 size="lg"
               >
                 <LogIn className="w-5 h-5 mr-2" />

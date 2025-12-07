@@ -41,7 +41,7 @@ const programIcons: Record<string, any> = {
 
 const programColors: Record<string, string> = {
   kickstart: 'from-blue-500 to-blue-600',
-  transformatie: 'from-pink-500 to-purple-600',
+  transformatie: 'from-pink-500 to-pink-600',
   'vip-reis': 'from-purple-500 to-indigo-600'
 };
 
@@ -161,7 +161,7 @@ export default function AssessmentResultPage() {
   }
 
   const Icon = programIcons[program.tier] || Sparkles;
-  const gradientColor = programColors[program.tier] || 'from-pink-500 to-purple-600';
+  const gradientColor = programColors[program.tier] || 'from-pink-500 to-pink-600';
   const showBetaPrice = program.price_beta && program.price_beta < program.price_regular;
 
   return (
@@ -214,7 +214,7 @@ export default function AssessmentResultPage() {
                   <div className="space-y-3">
                     <Button
                       onClick={handleRegister}
-                      className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white py-6 text-lg shadow-lg"
+                      className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-lg shadow-lg"
                     >
                       <UserPlus className="w-5 h-5 mr-2" />
                       Gratis account maken
@@ -229,7 +229,7 @@ export default function AssessmentResultPage() {
 
             <CardHeader className="text-center pb-4">
               <div className="inline-flex items-center justify-center mx-auto mb-4">
-                <Badge className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2">
+                <Badge className="bg-gradient-to-r from-pink-500 to-pink-600 text-white px-4 py-2">
                   ⭐ Aanbevolen voor jou
                 </Badge>
               </div>
@@ -275,7 +275,7 @@ export default function AssessmentResultPage() {
               </div>
 
               {/* Transformation Promise */}
-              <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-6 border border-pink-100">
+              <div className="bg-gradient-to-r from-pink-50 to-pink-100 rounded-xl p-6 border border-pink-100">
                 <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-pink-500" />
                   Jouw transformatie:

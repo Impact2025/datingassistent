@@ -13,16 +13,8 @@ interface AttachmentIntroProps {
 export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
   return (
     <div className="p-8">
-      {/* Hero Section */}
+      {/* Quick Stats */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
-          <Sparkles className="w-8 h-8 text-pink-500" />
-        </div>
-
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Ontdek Je Hechtingsstijl
-        </h2>
-
         <p className="text-gray-600 mb-6 max-w-2xl mx-auto leading-relaxed">
           In slechts 3-5 minuten krijg je praktische inzichten in hoe je relaties aangaat.
           Geen therapie, wel nuttige kennis voor betere dating beslissingen.

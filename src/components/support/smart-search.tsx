@@ -379,7 +379,7 @@ export function SmartSearch({
                 </div>
 
                 {/* AI suggestion */}
-                <div className="p-3 bg-gradient-to-r from-pink-50 to-purple-50">
+                <div className="p-3 bg-gradient-to-r from-pink-50 to-pink-100">
                   <button className="w-full flex items-center gap-3 p-3 bg-white rounded-xl hover:shadow-md transition-all border border-pink-200">
                     <div className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
                       <MessageCircle className="h-5 w-5 text-white" />

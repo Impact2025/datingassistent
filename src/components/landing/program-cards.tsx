@@ -106,10 +106,10 @@ export function ProgramCards() {
           <div key={i} className="animate-pulse">
             <Card className="border-2">
               <CardContent className="p-6">
-                <div className="h-8 bg-gray-200 rounded mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded mb-4"></div>
-                <div className="h-12 bg-gray-200 rounded"></div>
+                <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
               </CardContent>
             </Card>
           </div>
@@ -120,8 +120,8 @@ export function ProgramCards() {
 
   if (error || programs.length === 0) {
     return (
-      <div className="text-center p-8 bg-white rounded-2xl border border-gray-200 max-w-2xl mx-auto">
-        <p className="text-gray-500">
+      <div className="text-center p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 max-w-2xl mx-auto">
+        <p className="text-gray-500 dark:text-gray-400">
           {error || 'Geen programma\'s beschikbaar op dit moment.'}
         </p>
       </div>
@@ -147,14 +147,14 @@ export function ProgramCards() {
             <Card
               className={`relative border-2 h-full flex flex-col transition-all hover:shadow-lg ${
                 isTarget
-                  ? 'border-gray-900 shadow-md'
-                  : 'border-gray-200'
+                  ? 'border-gray-900 dark:border-pink-500 shadow-md'
+                  : 'border-gray-200 dark:border-gray-700'
               }`}
             >
               {/* Clean Top Badge */}
               {isTarget && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge variant="outline" className="bg-white border-gray-900 text-gray-900 px-3 py-1">
+                  <Badge variant="outline" className="bg-white dark:bg-gray-900 border-gray-900 dark:border-pink-500 text-gray-900 dark:text-pink-400 px-3 py-1">
                     Populair
                   </Badge>
                 </div>
@@ -163,39 +163,39 @@ export function ProgramCards() {
               {/* Subtle availability indicator */}
               {availability?.limited && (
                 <div className="absolute top-4 right-4">
-                  <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                  <div className="w-2 h-2 rounded-full bg-orange-400 dark:bg-orange-500"></div>
                 </div>
               )}
 
               <CardContent className="p-8 space-y-6 flex flex-col flex-grow">
                 {/* Icon & Title */}
                 <div className="text-center space-y-4">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-gray-100 flex items-center justify-center">
-                    <Icon className="w-7 h-7 text-gray-700" />
+                  <div className="w-14 h-14 mx-auto rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                    <Icon className="w-7 h-7 text-gray-700 dark:text-gray-300" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{program.name}</h3>
-                    <p className="text-sm text-gray-600">{program.tagline}</p>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-2">{program.name}</h3>
+                    <p className="text-sm text-gray-700 dark:text-gray-400">{program.tagline}</p>
                   </div>
                 </div>
 
                 {/* Clean Pricing */}
-                <div className="text-center py-4 border-y border-gray-100">
+                <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
                   <div className="flex items-baseline justify-center gap-2 mb-1">
                     {showBetaPrice && (
-                      <span className="text-lg text-gray-400 line-through">
+                      <span className="text-lg text-gray-500 dark:text-gray-500 line-through">
                         €{program.price_regular}
                       </span>
                     )}
-                    <span className="text-5xl font-bold text-gray-900">
+                    <span className="text-5xl font-bold text-gray-900 dark:text-gray-50">
                       €{showBetaPrice ? program.price_beta : program.price_regular}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">
+                  <p className="text-sm text-gray-700 dark:text-gray-400 mt-2">
                     {program.duration_days} dagen toegang
                   </p>
                   {showBetaPrice && (
-                    <Badge variant="outline" className="mt-2 text-xs border-green-200 text-green-700 bg-green-50">
+                    <Badge variant="outline" className="mt-2 text-xs border-green-200 dark:border-green-700 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30">
                       Bespaar €{program.price_regular - (program.price_beta || 0)}
                     </Badge>
                   )}
@@ -205,8 +205,8 @@ export function ProgramCards() {
                 <div className="space-y-3 flex-grow">
                   <ul className="space-y-2.5">
                     {program.features.slice(0, 5).map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-sm text-gray-700">
-                        <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
+                      <li key={i} className="flex items-start gap-2.5 text-sm text-gray-700 dark:text-gray-300">
+                        <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400 dark:text-gray-500" />
                         <span>{feature.text}</span>
                       </li>
                     ))}
@@ -219,8 +219,8 @@ export function ProgramCards() {
                   variant={isTarget ? "default" : "outline"}
                   className={`w-full ${
                     isTarget
-                      ? 'bg-gray-900 hover:bg-gray-800 text-white'
-                      : 'border-2 border-gray-200 hover:border-gray-900 text-gray-900'
+                      ? 'bg-gray-900 dark:bg-pink-600 hover:bg-gray-800 dark:hover:bg-pink-700 text-white'
+                      : 'border-2 border-gray-200 dark:border-gray-600 hover:border-gray-900 dark:hover:border-pink-500 text-gray-900 dark:text-gray-100'
                   }`}
                 >
                   {isTarget ? 'Kies dit programma' : 'Meer informatie'}
@@ -229,7 +229,7 @@ export function ProgramCards() {
 
                 {/* Subtle availability message */}
                 {availability?.limited && (
-                  <p className="text-xs text-center text-gray-500">
+                  <p className="text-xs text-center text-gray-700 dark:text-gray-400">
                     Beperkte beschikbaarheid
                   </p>
                 )}

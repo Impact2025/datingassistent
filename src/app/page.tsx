@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // Fallback metadata
   return {
     title: 'DatingAssistent - Stop met Eindeloos Swipen Zonder Resultaat',
-    description: 'Krijg binnen 30 dagen betekenisvolle dates met 24/7 AI-hulp die je precies vertelt wat je moet zeggen. 10.000+ Nederlandse singles gebruiken DatingAssistent. Start gratis.',
+    description: 'Van eindeloos swipen naar dates met impact. Krijg 24/7 persoonlijke begeleiding om je liefdesleven vlot te trekken. 10.000+ Nederlandse singles gebruiken DatingAssistent. Start gratis.',
   };
 }
 

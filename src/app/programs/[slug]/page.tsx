@@ -90,7 +90,7 @@ export default function ProgramDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600 font-medium">Programma laden...</p>
@@ -101,7 +101,7 @@ export default function ProgramDashboardPage() {
 
   if (error || !programData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center space-y-4">
             <div className="text-red-500 text-5xl">⚠️</div>
@@ -122,7 +122,7 @@ export default function ProgramDashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white">
+      <div className="bg-gradient-to-r from-pink-500 to-pink-600 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -297,7 +297,7 @@ export default function ProgramDashboardPage() {
                               </div>
                               <div className="w-full bg-gray-200 rounded-full h-2">
                                 <div
-                                  className="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full transition-all"
+                                  className="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full transition-all"
                                   style={{ width: `${moduleProgress}%` }}
                                 />
                               </div>
@@ -340,7 +340,7 @@ export default function ProgramDashboardPage() {
                               }`}
                             >
                               <div className="flex items-center gap-4 flex-1">
-                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 text-white">
                                   {lesson.is_completed ? (
                                     <CheckCircle className="w-5 h-5" />
                                   ) : (

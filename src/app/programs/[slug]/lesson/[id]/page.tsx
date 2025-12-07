@@ -255,7 +255,7 @@ export default function LessonPlayerPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-blue-50 flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600 font-medium">Lesson laden...</p>
@@ -266,7 +266,7 @@ export default function LessonPlayerPage() {
 
   if (error || !lessonData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-blue-50 flex items-center justify-center p-4">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center space-y-4">
             <Lock className="w-16 h-16 mx-auto text-red-500" />
@@ -505,7 +505,7 @@ export default function LessonPlayerPage() {
                   </p>
                   <Button
                     asChild
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 w-full sm:w-auto"
+                    className="bg-gradient-to-r from-pink-500 to-pink-600 w-full sm:w-auto"
                   >
                     <a href={lesson.download_url} download>
                       <Download className="w-4 h-4 mr-2" />
@@ -554,7 +554,7 @@ export default function LessonPlayerPage() {
                   <Button
                     onClick={handleNext}
                     disabled={!next_lesson.is_unlocked}
-                    className="w-full justify-start bg-gradient-to-r from-pink-500 to-purple-600 text-sm sm:text-base min-h-[44px]"
+                    className="w-full justify-start bg-gradient-to-r from-pink-500 to-pink-600 text-sm sm:text-base min-h-[44px]"
                   >
                     {next_lesson.is_unlocked ? (
                       <>

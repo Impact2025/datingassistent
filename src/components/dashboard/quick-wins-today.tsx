@@ -205,7 +205,7 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
             <div className="mb-4">
               <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-pink-500 to-purple-500"
+                  className="h-full bg-gradient-to-r from-pink-500 to-pink-600"
                   initial={{ width: 0 }}
                   animate={{ width: `${(completedCount / 3) * 100}%` }}
                   transition={{ duration: 0.5 }}
@@ -281,7 +281,7 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg border border-pink-200 text-center"
+              className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gradient-to-r from-pink-50 to-pink-100 rounded-lg border border-pink-200 text-center"
             >
               <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-pink-500 mx-auto mb-1.5 sm:mb-2" />
               <p className="text-xs sm:text-sm font-semibold text-gray-900">

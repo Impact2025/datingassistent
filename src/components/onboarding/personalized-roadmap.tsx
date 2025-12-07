@@ -374,7 +374,7 @@ export function PersonalizedRoadmap({ userType, userName, onContinue }: Personal
             <Button
               onClick={onContinue}
               size="lg"
-              className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+              className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
             >
               Ga naar Dashboard
               <ArrowRight className="w-5 h-5 ml-2" />

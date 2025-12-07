@@ -60,7 +60,7 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
   const currentStepData = ANALYSIS_STEPS[currentStep];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
       <div className="max-w-2xl w-full space-y-8">
         {/* Main Animation */}
         <motion.div
@@ -103,7 +103,7 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
             </motion.div>
 
             {/* Center icon */}
-            <div className="relative w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-2xl">
+            <div className="relative w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center shadow-2xl">
               <AnimatePresence mode="wait">
                 {currentStepData && (
                   <motion.div
@@ -152,7 +152,7 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
             </div>
             <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-pink-500 to-purple-600"
+                className="h-full bg-gradient-to-r from-pink-500 to-pink-600"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.3 }}

@@ -81,7 +81,7 @@ export default function KickstartDayPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-purple-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-pink-25 to-white">
         <div className="text-center">
           <Loader2 className="w-10 h-10 animate-spin text-pink-500 mx-auto mb-4" />
           <p className="text-gray-600 font-medium">Dag {dayNumber} laden...</p>
@@ -92,7 +92,7 @@ export default function KickstartDayPage({ params }: PageProps) {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-purple-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-pink-25 to-white">
         <div className="text-center bg-white rounded-2xl shadow-lg p-8 max-w-md">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl">😕</span>
@@ -121,7 +121,7 @@ export default function KickstartDayPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 pb-24 md:pb-0">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white pb-24 md:pb-0">
       {/* Professional Header - Mobile Optimized */}
       <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-3">

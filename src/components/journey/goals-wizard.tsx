@@ -276,7 +276,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
         </Button>
         <Button
           onClick={handleYearGoalSubmit}
-          className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+          className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
         >
           Genereer Maand Doelen
           <ArrowRight className="w-4 h-4" />
@@ -595,7 +595,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-pink-25 to-white p-4">
       <div className="max-w-2xl mx-auto py-8">
 
         {/* Progress Indicator */}

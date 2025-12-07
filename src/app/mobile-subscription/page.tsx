@@ -87,10 +87,10 @@ export default function MobileSubscriptionPage() {
       <div className="p-4 space-y-6">
         {currentSubscription && currentSubscription.status === 'active' ? (
           // Current Subscription Display
-          <Card className="border-0 bg-gradient-to-r from-pink-50 to-purple-50 shadow-sm">
+          <Card className="border-0 bg-gradient-to-r from-pink-50 to-pink-100 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center">
                   <CheckIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -148,7 +148,7 @@ export default function MobileSubscriptionPage() {
 
               <Button
                 onClick={() => router.push('/select-package')}
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
+                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white"
                 size="lg"
               >
                 <Crown className="w-5 h-5 mr-2" />

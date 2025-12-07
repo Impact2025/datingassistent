@@ -80,7 +80,7 @@ export function ThreePillarsFramework({ onContinue }: ThreePillarsFrameworkProps
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-4"
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-100 to-purple-100 rounded-full">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-100 to-pink-200 rounded-full">
           <Sparkles className="w-4 h-4 text-pink-600" />
           <span className="text-sm font-semibold text-gray-700">Het Framework</span>
         </div>
@@ -138,7 +138,7 @@ export function ThreePillarsFramework({ onContinue }: ThreePillarsFrameworkProps
                   <div className="space-y-2 pt-2">
                     {pillar.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
-                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-pink-500 to-purple-500" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-pink-500 to-pink-600" />
                         <span>{feature}</span>
                       </div>
                     ))}
@@ -214,7 +214,7 @@ export function ThreePillarsFramework({ onContinue }: ThreePillarsFrameworkProps
         <Button
           onClick={onContinue}
           size="lg"
-          className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 px-8"
+          className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 px-8"
         >
           Ontdek Jouw Startpunt
           <ArrowRight className="w-5 h-5 ml-2" />

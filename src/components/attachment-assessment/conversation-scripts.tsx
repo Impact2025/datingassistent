@@ -240,7 +240,7 @@ export function ConversationScripts({ scripts, onScriptUsed }: ConversationScrip
         })}
       </div>
 
-      <div className="bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-pink-50 to-pink-100 border border-pink-200 rounded-lg p-6">
         <div className="flex items-start gap-4">
           <Heart className="w-6 h-6 text-pink-600 mt-1 flex-shrink-0" />
           <div>

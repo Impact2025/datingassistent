@@ -17,30 +17,30 @@ export function HeroSection() {
         sizes="100vw"
       />
 
-      {/* Dark overlay for better contrast - stronger on mobile */}
-      <div className="absolute inset-0 bg-black/50 sm:bg-black/40" />
+      {/* Dark overlay for better contrast - stronger on mobile, adaptive for dark mode */}
+      <div className="absolute inset-0 bg-black/50 sm:bg-black/40 dark:bg-black/70" />
 
       <div className="relative z-10 w-full max-w-6xl mx-auto text-center">
-        {/* Semi-transparent white background behind text - better mobile padding */}
-        <div className="inline-block bg-white/80 sm:bg-white/75 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl max-w-4xl mx-auto w-full">
+        {/* Semi-transparent background - adapts to theme */}
+        <div className="inline-block bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl max-w-4xl mx-auto w-full border border-white/20 dark:border-gray-700/50">
 
           {/* Tagline */}
-          <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-pink-100 text-pink-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+          <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 text-xs sm:text-sm font-medium mb-4 sm:mb-6 border border-pink-200 dark:border-pink-800/50">
             💕 Durf te daten, durf jezelf te zijn.
           </div>
 
           {/* Main Title */}
           <div className="space-y-2 sm:space-y-4 mb-4 sm:mb-6">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight px-2">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-50 leading-tight px-2">
               Stop met eindeloos swipen
-              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mt-2">
+              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-50 mt-2">
                 zonder resultaat
               </span>
             </h1>
           </div>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 sm:mb-8 max-w-3xl mx-auto px-2 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto px-2 leading-relaxed">
             Krijg binnen 30 dagen betekenisvolle dates met 24/7 AI-hulp die je precies vertelt wat je moet zeggen
           </p>
 
@@ -58,28 +58,28 @@ export function HeroSection() {
 
               {/* Secondary CTA - Register */}
               <Link href="/register" className="w-full sm:w-auto">
-                <Button variant="outline" className="w-full sm:w-auto border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-3 text-base font-semibold rounded-full">
+                <Button variant="outline" className="w-full sm:w-auto border-2 border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:border-pink-500 dark:hover:border-pink-400 hover:text-pink-600 dark:hover:text-pink-400 bg-white/80 dark:bg-gray-800/50 px-8 py-3 text-base font-semibold rounded-full">
                   Of start direct gratis
                 </Button>
               </Link>
             </div>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-700 dark:text-gray-400">
               Krijg binnen 2 minuten inzicht in jouw valkuilen + persoonlijk advies.
             </p>
           </div>
 
           {/* Trust Bullets */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 px-2">
-            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700">
-              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300">
+              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
               <span className="text-xs sm:text-sm font-medium">Gebaseerd op 10+ jaar ervaring en passie</span>
             </div>
-            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700">
-              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300">
+              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
               <span className="text-xs sm:text-sm font-medium">Nieuw: bewezen methode, nu 24/7 beschikbaar</span>
             </div>
-            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700">
-              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+            <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300">
+              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
               <span className="text-xs sm:text-sm font-medium">100% Nederlandse ontwikkeling en begeleiding</span>
             </div>
           </div>

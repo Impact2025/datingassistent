@@ -51,7 +51,7 @@ export function JourneyTimeline({ phases, currentPhase }: JourneyTimelineProps) 
 
       {/* Active Progress Line */}
       <motion.div
-        className="absolute left-8 top-10 w-0.5 bg-gradient-to-b from-pink-500 to-purple-500"
+        className="absolute left-8 top-10 w-0.5 bg-gradient-to-b from-pink-500 to-pink-600"
         initial={{ height: 0 }}
         animate={{ height: `${(currentPhase / 5) * 100}%` }}
         transition={{ duration: 1, ease: 'easeOut' }}

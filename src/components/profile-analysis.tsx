@@ -531,7 +531,7 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
       {results && (
         <div className="space-y-6">
           {/* Overall Score */}
-          <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+          <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
             <CardContent className="p-8 text-center">
               <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-lg">
                 <div className="text-center">

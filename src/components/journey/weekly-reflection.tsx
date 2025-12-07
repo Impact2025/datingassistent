@@ -452,7 +452,7 @@ export function WeeklyReflection({ userId, weekStart, onComplete, onSkip }: Week
           transition={{ delay: 0.5 }}
           className="mt-8"
         >
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white">
+          <Card className="border-0 shadow-lg bg-gradient-to-r from-pink-500 to-pink-600 text-white">
             <CardContent className="p-6 text-center">
               <h3 className="text-lg font-bold mb-2">Deze Week</h3>
               <div className="flex justify-center gap-6 text-sm">

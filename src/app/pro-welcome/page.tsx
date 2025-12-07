@@ -195,7 +195,7 @@ export default function ProWelcomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Progress Bar */}
       {currentStep !== 'video' && currentStep !== 'complete' && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
@@ -251,7 +251,7 @@ export default function ProWelcomePage() {
                   </Button>
                   <Button
                     onClick={handleVideoComplete}
-                    className="gap-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
+                    className="gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
                   >
                     <Play className="w-4 h-4" />
                     Verder naar vragen
@@ -326,7 +326,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleNext}
                     disabled={!canProceed()}
-                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
                   >
                     Volgende
                     <ArrowRight className="w-4 h-4" />
@@ -387,7 +387,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleNext}
                     disabled={!canProceed()}
-                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
                   >
                     Volgende
                     <ArrowRight className="w-4 h-4" />
@@ -444,7 +444,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleNext}
                     disabled={!canProceed()}
-                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
                   >
                     Volgende
                     <ArrowRight className="w-4 h-4" />
@@ -503,7 +503,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleComplete}
                     disabled={!canProceed() || isLoading}
-                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
                   >
                     {isLoading ? (
                       <>
@@ -544,7 +544,7 @@ export default function ProWelcomePage() {
 
                 <Button
                   onClick={() => router.push('/dashboard')}
-                  className="gap-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
+                  className="gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
                 >
                   Direct naar Dashboard
                   <ArrowRight className="w-4 h-4" />

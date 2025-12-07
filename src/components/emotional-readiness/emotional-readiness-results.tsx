@@ -61,7 +61,7 @@ export function EmotionalReadinessResults({ data, onRestart }: EmotionalReadines
   const ReadinessIcon = readinessInfo.icon;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <Tabs defaultValue="overview" className="w-full">
@@ -73,7 +73,7 @@ export function EmotionalReadinessResults({ data, onRestart }: EmotionalReadines
 
             <TabsContent value="overview" className="space-y-6">
               {/* Main Result Card */}
-              <Card className="border-2 border-pink-200 bg-gradient-to-br from-pink-50 to-purple-50">
+              <Card className="border-2 border-pink-200 bg-gradient-to-br from-pink-50 to-pink-100">
                 <CardContent className="p-8">
                   <div className="text-center">
                     <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${readinessInfo.color.split(' ')[1]}`}>
@@ -184,7 +184,7 @@ export function EmotionalReadinessResults({ data, onRestart }: EmotionalReadines
               </Card>
 
               {/* Tool Integrations */}
-              <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+              <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <MessageCircle className="w-5 h-5 text-pink-600" />
@@ -287,7 +287,7 @@ export function EmotionalReadinessResults({ data, onRestart }: EmotionalReadines
             </Button>
 
             <Button
-              className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white flex items-center gap-2"
+              className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white flex items-center gap-2"
               onClick={() => {
                 if (navigator.share) {
                   navigator.share({

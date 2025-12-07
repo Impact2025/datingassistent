@@ -693,7 +693,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <motion.div
-              className="h-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-600"
+              className="h-2 rounded-full bg-gradient-to-r from-pink-500 to-pink-600"
               initial={{ width: 0 }}
               animate={{ width: `${progressPercentage}%` }}
               transition={{ duration: 0.5 }}

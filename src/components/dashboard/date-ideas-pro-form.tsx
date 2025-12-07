@@ -717,7 +717,7 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
           <Button
             onClick={generateIdeas}
             disabled={isGenerating}
-            className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 px-8"
+            className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 px-8"
           >
             {isGenerating ? (
               <>

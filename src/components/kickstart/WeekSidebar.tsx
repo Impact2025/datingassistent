@@ -144,7 +144,7 @@ export function WeekSidebar({ days, currentDay, onSelectDay, className }: WeekSi
       )}
     >
       {/* Header */}
-      <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-pink-50 to-purple-50">
+      <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-pink-50 to-pink-100">
         <div className="flex items-center gap-2 mb-1">
           <Sparkles className="w-5 h-5 text-pink-500" />
           <h2 className="font-bold text-gray-900">21 Dagen Kickstart</h2>

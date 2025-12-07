@@ -81,7 +81,7 @@ export function LocationDistanceSlider({
         />
 
         {/* Custom styling overlay */}
-        <div className="absolute top-0 left-0 h-2 bg-gradient-to-r from-pink-400 to-purple-500 rounded-lg pointer-events-none"
+        <div className="absolute top-0 left-0 h-2 bg-gradient-to-r from-pink-400 to-pink-500 rounded-lg pointer-events-none"
              style={{ width: `${percentage}%` }}>
         </div>
 

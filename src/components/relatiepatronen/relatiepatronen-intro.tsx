@@ -64,7 +64,7 @@ export function RelatiepatronenIntro({
       </div>
 
       {/* What you'll discover */}
-      <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200 mb-8">
+      <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200 mb-8">
         <CardContent className="p-6">
           <h3 className="font-semibold text-lg text-gray-900 mb-4 text-center">
             Wat je gaat ontdekken

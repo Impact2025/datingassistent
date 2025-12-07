@@ -145,7 +145,16 @@
       "Bash(gh run view:*)",
       "Bash(git ls-tree:*)",
       "Bash(SKIP_ENV_VALIDATION=true npm run build:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(set SKIP_ENV_VALIDATION=true)",
+      "Bash(npx next build --no-lint)",
+      "Bash(timeout /t 20 /nobreak)",
+      "Bash(cmd //c \"if exist .next rd /s /q .next\")",
+      "Bash(del create-achievements-overview.js)",
+      "Bash(del create-iris-api.js)",
+      "Bash(while read file)",
+      "Bash(do if grep -q \"to-purple\" \"$file\")",
+      "Bash(then sed -i 's/to-purple-600/to-pink-600/g' \"$file\" sed -i 's/to-purple-700/to-pink-700/g' \"$file\" sed -i 's/to-purple-500/to-pink-500/g' \"$file\" sed -i 's/to-purple-50/to-pink-100/g' \"$file\" sed -i 's/dark:to-purple-900\\/30/dark:to-pink-800\\/30/g' \"$file\" sed -i 's/to-purple-/to-pink-/g' \"$file\" sed -i 's/via-purple-50/via-pink-25/g' \"$file\" fi done)"
     ],
     "deny": [],
     "ask": []

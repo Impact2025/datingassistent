@@ -87,8 +87,8 @@ const CHANNEL_ICONS = {
 // Color schemes
 const CHANNEL_COLORS = {
   live_chat: {
-    bg: 'bg-gradient-to-br from-pink-500 to-purple-600',
-    bgHover: 'hover:from-pink-600 hover:to-purple-700',
+    bg: 'bg-gradient-to-br from-pink-500 to-pink-600',
+    bgHover: 'hover:from-pink-600 hover:to-pink-700',
     light: 'bg-pink-50',
     border: 'border-pink-200 hover:border-pink-400',
     text: 'text-pink-600',

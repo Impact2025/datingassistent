@@ -185,7 +185,7 @@ export function AttachmentQuestionnaire({
           <Card className="border-0 shadow-sm bg-gradient-to-br from-white to-gray-50">
             <CardContent className="p-8">
               <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-pink-100 to-pink-200 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl font-bold text-pink-600">
                     {currentQuestionIndex + 1}
                   </span>

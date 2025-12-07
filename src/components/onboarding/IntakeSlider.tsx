@@ -47,7 +47,7 @@ export function IntakeSlider({
           key={localValue}
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 text-white text-2xl font-bold shadow-lg"
+          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 text-white text-2xl font-bold shadow-lg"
         >
           {localValue}
         </motion.div>
@@ -59,7 +59,7 @@ export function IntakeSlider({
         <div className="h-2 bg-gray-200 rounded-full">
           {/* Track Fill */}
           <motion.div
-            className="h-2 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full"
+            className="h-2 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full"
             style={{ width: `${percentage}%` }}
             animate={{ width: `${percentage}%` }}
             transition={{ duration: 0.2, ease: "easeOut" }}

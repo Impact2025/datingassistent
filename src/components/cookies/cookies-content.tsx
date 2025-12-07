@@ -87,10 +87,10 @@ export default function CookiesContent() {
   return (
     <main className="flex-grow">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-pink-50 via-purple-50 to-white">
+      <section className="py-16 bg-gradient-to-br from-pink-50 via-pink-25 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 text-sm font-medium mb-6 border border-pink-200">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-pink-100 to-pink-200 text-pink-700 text-sm font-medium mb-6 border border-pink-200">
               <Cookie className="w-4 h-4 mr-2" />
               Cookiebeleid
             </div>
@@ -105,7 +105,7 @@ export default function CookiesContent() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="px-8 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700">
+              <Button size="lg" className="px-8 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700">
                 <Settings className="mr-2 w-5 h-5" />
                 Cookie Voorkeuren
               </Button>
@@ -410,7 +410,7 @@ export default function CookiesContent() {
                       </div>
                     </div>
                   </div>
-                  <div className="mt-4 p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg border border-pink-100">
+                  <div className="mt-4 p-4 bg-gradient-to-r from-pink-50 to-pink-100 rounded-lg border border-pink-100">
                     <p className="text-sm text-pink-800">
                       <strong>Functionaris Gegevensbescherming:</strong> Voor complexe privacy vragen kunt u contact opnemen met onze Functionaris Gegevensbescherming via bovenstaande contactgegevens.
                     </p>

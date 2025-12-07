@@ -38,7 +38,7 @@ function ResultContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600">Je resultaten laden...</p>
@@ -49,7 +49,7 @@ function ResultContent() {
 
   if (!datingStyle) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center space-y-4">
             <AlertCircle className="w-16 h-16 mx-auto text-gray-400" />
@@ -67,7 +67,7 @@ function ResultContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <ResultReveal datingStyle={datingStyle} />
       </div>
@@ -78,7 +78,7 @@ function ResultContent() {
 export default function QuizResultPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600">Laden...</p>

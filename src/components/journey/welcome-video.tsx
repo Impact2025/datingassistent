@@ -109,7 +109,7 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
           <div className="relative aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-inner max-w-2xl mx-auto">
             {videoError ? (
               // Error fallback UI
-              <div className="w-full h-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
+              <div className="w-full h-full bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
                 <div className="text-center p-8 max-w-md">
                   <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
                     <span className="text-2xl">⚠️</span>

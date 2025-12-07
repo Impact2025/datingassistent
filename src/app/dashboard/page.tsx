@@ -375,7 +375,7 @@ export default function DashboardPage() {
   // This prevents the flash where dashboard is shown before onboarding
   if (isLoading || kickstartState.isChecking || !kickstartState.checkComplete) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
         <div className="text-center">
           {/* Logo */}
           <div className="mx-auto mb-8 animate-pulse">
@@ -596,7 +596,7 @@ export default function DashboardPage() {
     <>
       {isMobileTabAccess || isMobileDevice ? (
         // Mobile-friendly layout - WERELDKLASSE: Full mobile dashboard!
-        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 pb-24">
+        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white pb-24">
           {/* Mobile Header - Sticky */}
           <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 px-4 py-3 sticky top-0 z-40">
             <div className="flex items-center justify-between">
@@ -666,7 +666,7 @@ export default function DashboardPage() {
         </div>
       ) : (
         // Desktop layout
-        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
+        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white">
           <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
             <div className="space-y-6">
               <Header

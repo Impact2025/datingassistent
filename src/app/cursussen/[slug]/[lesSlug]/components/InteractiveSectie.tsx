@@ -145,7 +145,7 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
         {showResult && (
           <div className="space-y-4 mb-6">
             {/* Score */}
-            <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-purple-100 border-2 border-pink-300">
+            <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 border-2 border-pink-300">
               <p className="text-sm text-gray-700 mb-2">Je score:</p>
               <p className="text-3xl font-bold text-pink-600 mb-1">
                 {yesCount} / {vragen.length}

@@ -159,7 +159,7 @@ export function ChatWidget({
     <div className={`fixed ${positionClasses[position]} z-50`}>
       <Card className={`w-80 shadow-2xl border-0 ${isMinimized ? 'h-14' : 'h-96'} transition-all duration-200`}>
         {/* Header */}
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-t-lg">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-t-lg">
           <CardTitle className="text-sm font-medium flex items-center gap-2">
             <Bot className="w-4 h-4" />
             DatingAssistent
@@ -198,7 +198,7 @@ export function ChatWidget({
                       <div
                         className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
                           message.sender === 'user'
-                            ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white'
+                            ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white'
                             : 'bg-gray-100 text-gray-800'
                         }`}
                       >

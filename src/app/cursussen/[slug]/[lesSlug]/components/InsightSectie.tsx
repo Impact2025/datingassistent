@@ -58,7 +58,7 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
               <Lightbulb className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
@@ -76,7 +76,7 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
             {content.fases && Array.isArray(content.fases) && (
               <div className="space-y-4 mb-6">
                 {content.fases.map((fase: any, idx: number) => (
-                  <div key={idx} className="p-5 rounded-lg border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50">
+                  <div key={idx} className="p-5 rounded-lg border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-pink-100">
                     <div className="flex items-start gap-3 mb-2">
                       <div className="w-8 h-8 rounded-full bg-pink-500 text-white flex items-center justify-center text-sm font-bold shrink-0">
                         {fase.nummer || idx + 1}
@@ -98,7 +98,7 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
             )}
 
             {content.conclusie && (
-              <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-purple-100 border-2 border-pink-300 mb-6">
+              <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 border-2 border-pink-300 mb-6">
                 <p className="text-gray-900 font-semibold leading-relaxed">{content.conclusie}</p>
               </div>
             )}
@@ -112,7 +112,7 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
             )}
 
             {content.regel && (
-              <div className="p-5 bg-gradient-to-r from-pink-100 to-purple-100 rounded-lg border-2 border-pink-300 mb-4">
+              <div className="p-5 bg-gradient-to-r from-pink-100 to-pink-200 rounded-lg border-2 border-pink-300 mb-4">
                 <p className="font-bold text-pink-900 text-lg mb-2">📜 De Regel:</p>
                 <p className="text-gray-900">{content.regel}</p>
               </div>
@@ -234,7 +234,7 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
               // Kernpunt block (key takeaway)
               if (block.type === 'kernpunt') {
                 return (
-                  <div key={idx} className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-purple-100 border-l-4 border-pink-500">
+                  <div key={idx} className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 border-l-4 border-pink-500">
                     <p className="text-gray-900 font-bold text-lg mb-2">{block.tekst}</p>
                     {block.toelichting && (
                       <p className="text-gray-700 text-sm leading-relaxed">{block.toelichting}</p>

@@ -348,7 +348,7 @@ export function DatingDNAAssessment({ onComplete }: DatingDNAAssessmentProps) {
             "w-32 transition-all",
             isLastQuestion
               ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
-              : "bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+              : "bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
           )}
         >
           {isLastQuestion ? "Voltooien" : "Volgende"}

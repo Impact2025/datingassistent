@@ -96,7 +96,7 @@ export default function KickstartPage() {
     .map((d) => d.dag_nummer);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white pb-24">
       {/* Header - Mobile Optimized */}
       <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-3">

@@ -84,7 +84,7 @@ export function ComparisonSectie({ sectie, isCompleted, onComplete }: Comparison
         {hasVanNaar && (
           <div className="space-y-4 mb-6">
             {content.van_naar.map((item: any, idx: number) => (
-              <div key={idx} className="flex items-start gap-4 p-5 rounded-lg border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50">
+              <div key={idx} className="flex items-start gap-4 p-5 rounded-lg border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-pink-100">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="flex-1">
@@ -165,7 +165,7 @@ export function ComparisonSectie({ sectie, isCompleted, onComplete }: Comparison
 
         {/* Conclusie / Kernboodschap */}
         {(content.conclusie || content.kernboodschap) && (
-          <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-purple-100 border-2 border-pink-300 mb-6">
+          <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 border-2 border-pink-300 mb-6">
             <p className="text-gray-900 font-semibold leading-relaxed">
               {content.conclusie || content.kernboodschap}
             </p>

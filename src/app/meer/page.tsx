@@ -234,7 +234,7 @@ export default function MeerPage() {
 
       <div className="p-4 space-y-6">
         {/* User Profile Card */}
-        <Card className="border-0 bg-gradient-to-r from-pink-50 to-purple-50 shadow-sm">
+        <Card className="border-0 bg-gradient-to-r from-pink-50 to-pink-100 shadow-sm">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
@@ -254,7 +254,7 @@ export default function MeerPage() {
                 <div className="flex items-center gap-2">
                   <Badge className={`text-xs px-2 py-1 ${
                     user?.subscriptionType === 'premium'
-                      ? 'bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 border-pink-200'
+                      ? 'bg-gradient-to-r from-pink-100 to-pink-200 text-pink-700 border-pink-200'
                       : 'bg-gray-100 text-gray-700 border-gray-200'
                   }`}>
                     {user?.subscriptionType === 'premium' ? 'Pro Member' : 'Free Account'}
@@ -271,7 +271,7 @@ export default function MeerPage() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-gradient-to-r from-pink-400 to-purple-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-pink-400 to-pink-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${getUserProgress()}%` }}
                     ></div>
                   </div>

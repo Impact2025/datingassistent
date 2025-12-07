@@ -447,7 +447,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                     ) : currentDay.video_script ? (
                       <div className="space-y-6">
                         {/* Hook */}
-                        <div className="bg-gradient-to-r from-pink-50 to-purple-50 p-4 lg:p-6 rounded-xl border border-pink-100">
+                        <div className="bg-gradient-to-r from-pink-50 to-pink-100 p-4 lg:p-6 rounded-xl border border-pink-100">
                           <p className="text-base lg:text-lg font-medium text-gray-900 italic">
                             "{currentDay.video_script.hook}"
                           </p>

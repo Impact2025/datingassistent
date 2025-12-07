@@ -474,7 +474,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
                     className={`flex items-start gap-4 p-4 rounded-lg border ${
                       step.status === 'available'
                         ? step.isUpgrade
-                          ? 'bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200'
+                          ? 'bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200'
                           : 'bg-background border-primary/20'
                         : 'bg-muted/50 border-muted'
                     }`}
@@ -483,7 +483,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
                       <div className="relative">
                         {step.status === 'available' ? (
                           <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white ${
-                            step.isUpgrade ? 'bg-gradient-to-r from-pink-500 to-purple-500' : 'bg-orange-500'
+                            step.isUpgrade ? 'bg-gradient-to-r from-pink-500 to-pink-600' : 'bg-orange-500'
                           }`}>
                             <IconComponent className="w-4 h-4" />
                           </div>
@@ -524,7 +524,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
                         {step.status === 'available' && (
                           <Button
                             size="sm"
-                            className={step.isUpgrade ? 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600' : ''}
+                            className={step.isUpgrade ? 'bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600' : ''}
                             onClick={() => onTabChange?.(step.action)}
                           >
                             {step.actionLabel}

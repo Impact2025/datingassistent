@@ -278,7 +278,7 @@ export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
                 variant="default"
                 size="sm"
                 onClick={() => setViewMode('kickstart')}
-                className="bg-gradient-to-r from-pink-500 to-purple-600"
+                className="bg-gradient-to-r from-pink-500 to-pink-600"
               >
                 <Rocket className="w-4 h-4 mr-2" />
                 Ga naar Kickstart
@@ -447,7 +447,7 @@ export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+          <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
             <CardContent className="p-6 text-center">
               <Sparkles className="w-12 h-12 text-pink-500 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -458,7 +458,7 @@ export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
               </p>
               <Button
                 onClick={() => onTabChange?.('coach')}
-                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+                className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Start Gesprek met Iris

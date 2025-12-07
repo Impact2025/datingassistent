@@ -32,9 +32,9 @@ export default function KickstartOnboardingPage() {
 
   // Show loading while redirecting
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
       <div className="text-center">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-xl mx-auto mb-6">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center shadow-xl mx-auto mb-6">
           <span className="text-white font-bold text-2xl">D</span>
         </div>
         <Loader2 className="w-8 h-8 animate-spin text-pink-500 mx-auto mb-4" />
