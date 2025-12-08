@@ -48,7 +48,7 @@ export function BottomNavigation() {
     {
       href: '/dashboard?tab=profiel',
       icon: User,
-      label: 'Profiel',
+      label: 'Tools',
       active: pathname?.startsWith('/profiel') || pathname?.startsWith('/profile'),
       color: 'text-gray-600',
       activeColor: 'text-green-500',

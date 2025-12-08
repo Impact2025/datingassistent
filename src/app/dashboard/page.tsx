@@ -616,7 +616,7 @@ export default function DashboardPage() {
                     {activeTab === 'home' && 'Dashboard'}
                     {activeTab === 'pad' && 'Jouw Pad'}
                     {activeTab === 'coach' && 'Coach'}
-                    {activeTab === 'profiel' && 'Profiel'}
+                    {activeTab === 'profiel' && 'Tools'}
                     {activeTab === 'subscription' && 'Abonnement'}
                     {activeTab === 'data-management' && 'Data & Privacy'}
                     {activeTab === 'settings' && 'Instellingen'}

@@ -31,7 +31,7 @@ const NEW_TABS = [
   },
   {
     id: "profiel",
-    label: "Profiel",
+    label: "Tools",
     icon: User,
     description: "Instellingen & persoonlijkheid"
   }

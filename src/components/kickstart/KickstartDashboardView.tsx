@@ -40,7 +40,7 @@ import type {
 } from '@/types/kickstart.types';
 
 interface KickstartDashboardViewProps {
-  userId: number;
+  userId?: number;
   onBack?: () => void;
 }
 
