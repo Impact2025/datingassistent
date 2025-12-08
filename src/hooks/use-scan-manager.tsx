@@ -8,6 +8,9 @@ import { SCAN_TYPES, SCAN_URLS, getScanTypeFromUrl, isScanUrl } from '@/lib/cons
 import { AttachmentAssessmentFlow } from '@/components/attachment-assessment/attachment-assessment-flow';
 import { DatingStyleFlow } from '@/components/dating-style/dating-style-flow';
 import { EmotioneleReadinessFlow } from '@/components/emotional-readiness/emotionele-readiness-flow';
+import { LevensvisieFlow } from '@/components/levensvisie/levensvisie-flow';
+import { RelatiepatronenFlow } from '@/components/relatiepatronen/relatiepatronen-flow';
+import { BlindVlekkenFlow } from '@/components/blind-vlekken/blind-vlekken-flow';
 
 export interface ScanStatus {
   scanType: string;
@@ -84,6 +87,15 @@ const SCAN_METADATA: Record<string, ScanMetadata> = {
     icon: 'Repeat',
     href: SCAN_URLS[SCAN_TYPES.RELATIEPATRONEN],
   },
+  [SCAN_TYPES.BLIND_VLEKKEN]: {
+    title: 'Dating Blindvlekken Analyse',
+    description: 'Ontdek onbewuste patronen in je dating gedrag',
+    quote: 'Herken je blinde vlekken en verbeter je dating succes',
+    badgeText: 'Inzicht',
+    color: 'pink',
+    icon: 'Eye',
+    href: SCAN_URLS[SCAN_TYPES.BLIND_VLEKKEN],
+  },
 };
 
 export function useScanManager(userId?: number) {
@@ -140,6 +152,13 @@ export function useScanManager(userId?: number) {
       case SCAN_TYPES.EMOTIONELE_READINESS:
       case 'emotionelereadiness':
         return <EmotioneleReadinessFlow onClose={onClose} />;
+      case SCAN_TYPES.LEVENSVISIE:
+        return <LevensvisieFlow onClose={onClose} />;
+      case SCAN_TYPES.RELATIEPATRONEN:
+        return <RelatiepatronenFlow onClose={onClose} />;
+      case 'blindvlekken':
+      case 'blind-vlekken':
+        return <BlindVlekkenFlow onClose={onClose} />;
       default:
         return null;
     }

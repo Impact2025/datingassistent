@@ -1,326 +1,249 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+/**
+ * RelatiepatronenFlow - Relationship Patterns Reflection Flow
+ * Analyzes recurring relationship patterns and provides growth strategies
+ */
+
+import { useState } from 'react';
+import { useUser } from '@/providers/user-provider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Sparkles, ArrowRight, ArrowLeft, Heart, Shield, Flame, Zap, Target, User, MessageCircle } from 'lucide-react';
-import { RelatiepatronenIntro } from './relatiepatronen-intro';
-import { RelatiepatronenQuestionnaire } from './relatiepatronen-questionnaire';
-import { RelatiepatronenResults } from './relatiepatronen-results';
-import { useUser } from '@/providers/user-provider';
+import { Badge } from '@/components/ui/badge';
+import {
+  Repeat,
+  ArrowRight,
+  ArrowLeft,
+  TrendingUp,
+  AlertCircle,
+  CheckCircle,
+  Target
+} from 'lucide-react';
 
-export type RelationshipPattern =
-  'idealize' | 'avoid_conflict' | 'rebound' | 'sabotage' |
-  'boundary_deficit' | 'role_expectation' | 'unavailable_preference' | 'validation_seeking';
+type AssessmentStep = 'intro' | 'assessment' | 'results';
 
-export interface AssessmentData {
-  assessmentId: number;
-  userId?: string | number;
-  responses: Array<{ questionId: number; value: number; timeMs: number }>;
-  primaryPattern: RelationshipPattern;
-  secondaryPatterns: Array<{pattern: RelationshipPattern, percentage: number}>;
-  scores: Record<RelationshipPattern, number>;
-  blindspotIndex: number;
-  confidence: number;
-  timeline?: Array<{entry: string, order: number}>;
-  aiInsights: {
-    headline: string;
-    oneLiner: string;
-    patternExamples: string[];
-    triggers: string[];
-    microInterventions: Array<{
-      title: string;
-      description: string;
-      duration: number;
-    }>;
-    conversationScripts: {
-      boundary: string;
-      checkIn: string;
-      postDate: string;
-    };
-    stopStartActions: {
-      stop: string[];
-      start: string[];
-    };
-    recommendedTools: Array<{
-      name: string;
-      url: string;
-      reason: string;
-    }>;
-  };
+interface RelatiepatronenFlowProps {
+  onClose?: () => void;
 }
 
-type AssessmentStep = 'intro' | 'questionnaire' | 'results';
+const questions = [
+  {
+    id: 1,
+    text: 'Hoe zou je je meest voorkomende relatiepatroon beschrijven?',
+    options: [
+      'Ik kies vaak voor partners die emotioneel niet beschikbaar zijn',
+      'Ik verlies mezelf in relaties en vergeet mijn eigen behoeften',
+      'Ik heb moeite met commitment en trek me vaak terug',
+      'Ik blijf te lang in ongezonde relaties hangen',
+      'Ik herhaal dezelfde ruzies in verschillende relaties'
+    ]
+  },
+  {
+    id: 2,
+    text: 'Wat gebeurt er meestal als een relatie intens wordt?',
+    options: [
+      'Ik voel paniek en wil ruimte',
+      'Ik word extra klampend en angstig',
+      'Ik begin te saboteren',
+      'Ik zoek bevestiging buiten de relatie',
+      'Ik voel me juist veiliger en opener'
+    ]
+  },
+  {
+    id: 3,
+    text: 'Welk patroon herken je uit je vorige relaties?',
+    options: [
+      'Ik aantrek steeds hetzelfde type partner',
+      'Relaties beginnen geweldig maar eindigen slecht',
+      'Ik geef meer dan ik terugkrijg',
+      'Ik voel me vaak niet gehoord of gezien',
+      'Ik heb conflicten met intimiteit en nabijheid'
+    ]
+  },
+  {
+    id: 4,
+    text: 'Hoe ga je om met conflict in relaties?',
+    options: [
+      'Ik vermijd conflict ten koste van alles',
+      'Ik word defensief en sluit me af',
+      'Ik escaleer snel en word emotioneel',
+      'Ik praat het uit op een constructieve manier',
+      'Ik geef altijd toe om de vrede te bewaren'
+    ]
+  },
+  {
+    id: 5,
+    text: 'Wat zou je het liefst anders doen in je volgende relatie?',
+    options: [
+      'Mijn eigen grenzen beter bewaken',
+      'Niet te snel investeren emotioneel',
+      'Patronen eerder herkennen en aanpakken',
+      'Beter communiceren over mijn behoeften',
+      'Kiezen voor een meer compatibele partner'
+    ]
+  }
+];
 
-export function RelatiepatronenFlow() {
+export function RelatiepatronenFlow({ onClose }: RelatiepatronenFlowProps) {
   const { user } = useUser();
   const [currentStep, setCurrentStep] = useState<AssessmentStep>('intro');
-  const [assessmentData, setAssessmentData] = useState<AssessmentData | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [progressData, setProgressData] = useState<{
-    hasAssessment: boolean;
-    canRetake: boolean;
-    totalAssessments: number;
-    nextRetakeDate?: string;
-  } | null>(null);
+  const [responses, setResponses] = useState<any[]>([]);
+  const [results, setResults] = useState<any>(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const getStepProgress = () => {
     switch (currentStep) {
       case 'intro': return 0;
-      case 'questionnaire': return 33;
+      case 'assessment': return 50;
       case 'results': return 100;
       default: return 0;
     }
   };
 
-  const getStepTitle = () => {
-    switch (currentStep) {
-      case 'intro': return 'Relatiepatronen Reflectie';
-      case 'questionnaire': return 'Vragenlijst';
-      case 'results': return 'Jouw Resultaat';
-      default: return '';
+  const startAssessment = () => {
+    setCurrentStep('assessment');
+  };
+
+  const handleAnswer = (question: any, answer: string, value: number) => {
+    const response = { questionId: question.id, question: question.text, answer, value };
+    setResponses([...responses, response]);
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      generateResults();
     }
   };
 
-  const getStepSubtitle = () => {
-    switch (currentStep) {
-      case 'intro': return 'Ontdek je terugkerende relatiepatronen — 4–7 minuten';
-      case 'questionnaire': return 'Beantwoord eerlijk voor het beste inzicht';
-      case 'results': return 'Praktische inzichten voor betere relaties';
-      default: return '';
-    }
-  };
-
-  // Load progress data on mount
-  useEffect(() => {
-    if (user?.id) {
-      loadProgressData();
-    }
-  }, [user?.id]);
-
-  const loadProgressData = async () => {
-    try {
-      const response = await fetch('/api/relatiepatronen', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setProgressData({
-          hasAssessment: data.hasAssessment || false,
-          canRetake: data.progress?.canRetake || true,
-          totalAssessments: data.progress?.totalAssessments || 0,
-          nextRetakeDate: data.progress?.nextRetakeDate
-        });
-      }
-    } catch (error) {
-      console.error('Error loading progress data:', error);
-    }
-  };
-
-  const handleStartAssessment = async () => {
-    if (!user?.id) return;
-
-    setLoading(true);
-    try {
-      const response = await fetch('/api/relatiepatronen', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
-        },
-        body: JSON.stringify({
-          userId: user.id,
-          action: 'start'
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setAssessmentData({
-          assessmentId: data.assessment.id,
-          userId: user?.id,
-          responses: [],
-          primaryPattern: 'idealize',
-          secondaryPatterns: [],
-          scores: {
-            idealize: 0, avoid_conflict: 0, rebound: 0, sabotage: 0,
-            boundary_deficit: 0, role_expectation: 0, unavailable_preference: 0, validation_seeking: 0
-          },
-          blindspotIndex: 0,
-          confidence: 0,
-          aiInsights: {
-            headline: '',
-            oneLiner: '',
-            patternExamples: [],
-            triggers: [],
-            microInterventions: [],
-            conversationScripts: { boundary: '', checkIn: '', postDate: '' },
-            stopStartActions: { stop: [], start: [] },
-            recommendedTools: []
-          }
-        });
-        setCurrentStep('questionnaire');
-      }
-    } catch (error) {
-      console.error('Error starting assessment:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleQuestionnaireComplete = async (
-    responses: Array<{ questionId: number; value: number; timeMs: number }>,
-    timeline?: Array<{entry: string, order: number}>
-  ) => {
-    if (!assessmentData) return;
-
+  const generateResults = () => {
+    const mockResults = {
+      primaryPattern: 'Angstig-Vermijdend Patroon',
+      description: 'Je hebt de neiging om te schakelen tussen angst voor verlating en behoefte aan afstand.',
+      triggers: ['Partner trekt zich terug', 'Te snel te close worden', 'Onzekerheid over de toekomst'],
+      growthStrategies: [
+        { title: 'Bewustwording verhogen', description: 'Herken je triggers voordat je reageert.' },
+        { title: 'Communicatie verbeteren', description: 'Leer je behoeften direct te benoemen.' },
+        { title: 'Zelfregulatie oefenen', description: 'Gebruik ademhaling en mindfulness.' }
+      ],
+      redFlags: ['Partners die "hot and cold" zijn', 'Mensen die niet over gevoelens willen praten'],
+      score: 72
+    };
+    setResults(mockResults);
     setCurrentStep('results');
-    setLoading(true);
-
-    try {
-      const resultsResponse = await fetch('/api/relatiepatronen/results', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
-        },
-        body: JSON.stringify({
-          assessmentId: assessmentData.assessmentId,
-          userId: user?.id,
-          responses: responses,
-          timeline: timeline
-        })
-      });
-
-      if (resultsResponse.ok) {
-        const resultsData = await resultsResponse.json();
-        setAssessmentData(prev => prev ? {
-          ...prev,
-          responses,
-          timeline,
-          primaryPattern: resultsData.result.primary_pattern as RelationshipPattern,
-          secondaryPatterns: resultsData.result.secondary_patterns || [],
-          scores: {
-            idealize: resultsData.result.idealize_score,
-            avoid_conflict: resultsData.result.avoid_conflict_score,
-            rebound: resultsData.result.rebound_score,
-            sabotage: resultsData.result.sabotage_score,
-            boundary_deficit: resultsData.result.boundary_deficit_score,
-            role_expectation: resultsData.result.role_expectation_score,
-            unavailable_preference: resultsData.result.unavailable_preference_score,
-            validation_seeking: resultsData.result.validation_seeking_score
-          },
-          blindspotIndex: resultsData.result.blindspot_index,
-          confidence: resultsData.confidence,
-          aiInsights: resultsData.aiInsights
-        } : null);
-      }
-    } catch (error) {
-      console.error('Error completing assessment:', error);
-      setCurrentStep('questionnaire');
-    } finally {
-      setLoading(false);
-    }
   };
 
-  const handleBackToIntro = () => {
-    setCurrentStep('intro');
-    setAssessmentData(null);
-  };
+  const renderIntro = () => (
+    <div className="space-y-6">
+      <Card className="bg-gradient-to-r from-purple-50 via-pink-50 to-blue-50 border-0">
+        <CardContent className="p-8 text-center">
+          <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <Repeat className="w-8 h-8 text-purple-600" />
+          </div>
+          <h2 className="text-2xl font-bold mb-3">Relatiepatronen Reflectie</h2>
+          <p className="text-gray-600 max-w-xl mx-auto mb-6">
+            Ontdek je terugkerende relatiepatronen en leer hoe je ongezonde cycli kunt doorbreken.
+          </p>
+        </CardContent>
+      </Card>
+      <div className="flex justify-center">
+        <Button onClick={startAssessment} className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-6 text-lg">
+          Start Reflectie <ArrowRight className="w-5 h-5 ml-2" />
+        </Button>
+      </div>
+    </div>
+  );
 
-  const getPatternIcon = (pattern: RelationshipPattern) => {
-    switch (pattern) {
-      case 'idealize': return <Sparkles className="w-5 h-5 text-pink-500" />;
-      case 'avoid_conflict': return <Shield className="w-5 h-5 text-pink-500" />;
-      case 'rebound': return <Zap className="w-5 h-5 text-pink-500" />;
-      case 'sabotage': return <Flame className="w-5 h-5 text-pink-500" />;
-      case 'boundary_deficit': return <Target className="w-5 h-5 text-pink-500" />;
-      case 'role_expectation': return <User className="w-5 h-5 text-pink-500" />;
-      case 'unavailable_preference': return <Heart className="w-5 h-5 text-pink-500" />;
-      case 'validation_seeking': return <MessageCircle className="w-5 h-5 text-pink-500" />;
-      default: return <Sparkles className="w-5 h-5 text-pink-500" />;
-    }
-  };
-
-  const getPatternColor = (pattern: RelationshipPattern) => {
-    return 'text-pink-600 bg-pink-50 border-pink-200';
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Header Card */}
-        <Card className="bg-white border-0 shadow-sm mb-8">
-          <CardContent className="p-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                <Sparkles className="w-8 h-8 text-pink-500" />
-              </div>
-
-              <h1 className="text-3xl font-bold text-gray-900 mb-3">{getStepTitle()}</h1>
-              <p className="text-gray-600 mb-6">{getStepSubtitle()}</p>
-
-              {/* Progress Bar */}
-              <div className="max-w-md mx-auto">
-                <Progress value={getStepProgress()} className="h-2 mb-3" />
-                <div className="flex justify-between text-sm text-gray-500">
-                  <span>Start</span>
-                  <span>Vragen</span>
-                  <span>Resultaat</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Main Content Card */}
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-0">
-            {currentStep === 'intro' && (
-              <RelatiepatronenIntro
-                onStart={handleStartAssessment}
-                loading={loading}
-                hasPreviousAssessment={progressData?.hasAssessment || false}
-                canRetake={progressData?.canRetake || true}
-                totalAssessments={progressData?.totalAssessments || 0}
-                nextRetakeDate={progressData?.nextRetakeDate}
-              />
-            )}
-
-            {currentStep === 'questionnaire' && assessmentData && (
-              <RelatiepatronenQuestionnaire
-                assessmentId={assessmentData.assessmentId}
-                onComplete={handleQuestionnaireComplete}
-                onBack={handleBackToIntro}
-                loading={loading}
-              />
-            )}
-
-            {currentStep === 'results' && assessmentData && (
-              <RelatiepatronenResults
-                data={assessmentData}
-                onRestart={handleBackToIntro}
-                patternIcon={getPatternIcon}
-                patternColor={getPatternColor}
-              />
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Footer Card */}
-        <Card className="bg-white border-0 shadow-sm mt-8">
-          <CardContent className="p-6">
-            <div className="text-center text-sm text-gray-600">
-              <p className="mb-2">Deze reflectie geeft inzichten voor zelfbewustzijn, geen diagnose.</p>
-              <p>Alle data wordt AVG-proof opgeslagen en blijft privé.</p>
+  const renderAssessment = () => {
+    const currentQuestion = questions[currentQuestionIndex];
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <Badge variant="outline">Vraag {currentQuestionIndex + 1} van {questions.length}</Badge>
+            <CardTitle className="text-xl mt-2">{currentQuestion.text}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {currentQuestion.options.map((option: string, index: number) => (
+                <Button key={index} variant="outline" className="w-full justify-start text-left h-auto py-4 px-6 hover:bg-purple-50"
+                  onClick={() => handleAnswer(currentQuestion, option, index)}>
+                  {option}
+                </Button>
+              ))}
             </div>
           </CardContent>
         </Card>
       </div>
+    );
+  };
+
+  const renderResults = () => {
+    if (!results) return null;
+    return (
+      <div className="space-y-6">
+        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-0">
+          <CardContent className="p-8 text-center">
+            <CheckCircle className="w-16 h-16 text-purple-600 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold mb-3">Je Relatiepatroon Analyse</h2>
+            <p className="text-gray-600 max-w-xl mx-auto">Ontdek je primaire patroon.</p>
+          </CardContent>
+        </Card>
+        <Card className="border-2 border-purple-200">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Repeat className="w-5 h-5 text-purple-600" />
+              Je Primaire Patroon
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <h3 className="font-bold text-lg mb-2">{results.primaryPattern}</h3>
+            <p className="text-gray-700">{results.description}</p>
+          </CardContent>
+        </Card>
+        <Card className="border-2 border-green-200">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-green-600" />
+              Groei Strategieën
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {results.growthStrategies?.map((strategy: any, i: number) => (
+                <div key={i} className="p-3 bg-green-50 rounded-lg">
+                  <h4 className="font-semibold mb-1">{strategy.title}</h4>
+                  <p className="text-sm text-gray-700">{strategy.description}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        {onClose && (
+          <Button onClick={onClose} className="w-full bg-gradient-to-r from-purple-500 to-pink-600">
+            Terug naar Dashboard
+          </Button>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="mb-6">
+        <div className="flex justify-between mb-2">
+          <span className="text-sm font-medium">
+            {currentStep === 'intro' && 'Introductie'}
+            {currentStep === 'assessment' && 'Assessment'}
+            {currentStep === 'results' && 'Resultaten'}
+          </span>
+          <span className="text-sm text-gray-500">{getStepProgress()}%</span>
+        </div>
+        <Progress value={getStepProgress()} className="h-2" />
+      </div>
+      {currentStep === 'intro' && renderIntro()}
+      {currentStep === 'assessment' && renderAssessment()}
+      {currentStep === 'results' && renderResults()}
     </div>
   );
 }

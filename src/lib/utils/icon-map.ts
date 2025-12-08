@@ -5,7 +5,7 @@
 import {
   Heart, Sparkles, User, Camera, FileText, MessageCircle,
   Target, Calendar, TrendingUp, Lightbulb, Crown, Zap,
-  CheckCircle2, Brain, Scan, BarChart3, Compass, Repeat
+  CheckCircle2, Brain, Scan, BarChart3, Compass, Repeat, Eye
 } from 'lucide-react';
 
 export const iconMap: Record<string, any> = {
@@ -27,6 +27,7 @@ export const iconMap: Record<string, any> = {
   'BarChart3': BarChart3,
   'Compass': Compass,
   'Repeat': Repeat,
+  'Eye': Eye,
 };
 
 export const getIcon = (iconName: string, defaultIcon: any = Sparkles) => {
