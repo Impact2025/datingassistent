@@ -47,40 +47,35 @@ export default function ForgotPasswordPage() {
 
     try {
       // Skip reCAPTCHA in development for easier testing
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('🔧 Skipping reCAPTCHA verification in development mode');
+      const shouldUseRecaptcha = process.env.NODE_ENV === 'production' &&
+                                 process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY &&
+                                 process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY !== '';
+
+      if (!shouldUseRecaptcha) {
+        console.log('🔧 Skipping reCAPTCHA verification (not configured or in development)');
       } else {
         // Execute reCAPTCHA v3 in production
-        const recaptchaToken = await executeRecaptcha('forgot-password');
-        if (!recaptchaToken) {
-          toast({
-            title: "Error",
-            description: "reCAPTCHA verification failed. Please try again.",
-            variant: "destructive",
-          });
-          setIsLoading(false);
-          return;
+        try {
+          const recaptchaToken = await executeRecaptcha('forgot-password');
+          if (!recaptchaToken) {
+            console.warn('⚠️ reCAPTCHA token generation failed, proceeding anyway...');
+          } else {
+            // Verify token on server
+            const verifyResponse = await fetch('/api/recaptcha/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token: recaptchaToken, action: 'forgot-password' }),
+            });
+
+            if (verifyResponse.ok) {
+              console.log('✅ reCAPTCHA verification successful');
+            } else {
+              console.warn('⚠️ reCAPTCHA verification failed, proceeding anyway...');
+            }
+          }
+        } catch (recaptchaError) {
+          console.warn('⚠️ reCAPTCHA error:', recaptchaError, '- proceeding anyway...');
         }
-
-        // Verify token on server
-        const verifyResponse = await fetch('/api/recaptcha/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: recaptchaToken, action: 'forgot-password' }),
-        });
-
-        if (!verifyResponse.ok) {
-          const errorData = await verifyResponse.json();
-          toast({
-            title: "Error",
-            description: errorData.error || "reCAPTCHA verification failed.",
-            variant: "destructive",
-          });
-          setIsLoading(false);
-          return;
-        }
-
-        console.log('✅ reCAPTCHA verification successful');
       }
 
       const response = await fetch("/api/auth/reset-password", {
