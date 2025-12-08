@@ -45,19 +45,29 @@ export async function GET(request: NextRequest) {
 
     const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
 
-    // Get users with pagination
+    // Get users with pagination and real data
     const usersQuery = `
       SELECT
         u.id,
         u.email,
         u.name,
         u.role,
-        'active' as status,
+        CASE
+          WHEN u.last_login IS NULL AND u.email_verified = false THEN 'pending_verification'
+          WHEN u.last_login IS NULL AND u.email_verified = true THEN 'verified_not_active'
+          WHEN u.last_login IS NOT NULL THEN 'active'
+          ELSE 'inactive'
+        END as status,
         u.created_at,
         u.last_login,
-        true as email_verified,
+        COALESCE(u.email_verified, false) as email_verified,
         COALESCE(u.subscription_status, 'free') as subscription_status,
-        CASE WHEN u.profile IS NOT NULL THEN true ELSE false END as profile_complete
+        CASE WHEN u.profile IS NOT NULL THEN true ELSE false END as profile_complete,
+        COALESCE(u.lead_onboarding_completed, false) as onboarding_completed,
+        COALESCE(u.lead_oto_shown, false) as oto_shown,
+        u.initial_photo_score,
+        u.verification_code,
+        u.code_expires_at
       FROM users u
       ${whereClause}
       ORDER BY u.created_at DESC
@@ -88,7 +98,12 @@ export async function GET(request: NextRequest) {
       lastLogin: user.last_login,
       emailVerified: user.email_verified,
       subscriptionStatus: user.subscription_status,
-      profileComplete: user.profile_complete
+      profileComplete: user.profile_complete,
+      onboardingCompleted: user.onboarding_completed,
+      otoShown: user.oto_shown,
+      initialPhotoScore: user.initial_photo_score,
+      hasVerificationCode: !!user.verification_code,
+      verificationExpired: user.code_expires_at ? new Date(user.code_expires_at) < new Date() : false
     }));
 
     return NextResponse.json({
