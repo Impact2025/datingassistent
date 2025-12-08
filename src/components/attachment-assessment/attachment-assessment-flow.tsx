@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, ArrowRight, ArrowLeft, Heart, Shield, Flame, Zap, X } from 'lucide-react';
+import { Sparkles, ArrowRight, ArrowLeft, Heart, Shield, Flame, Zap, X, CheckCircle } from 'lucide-react';
 import { AttachmentIntro } from './attachment-intro';
 import { AttachmentQuestionnaire } from './attachment-questionnaire';
 import { AttachmentResults } from './attachment-results';
@@ -141,8 +141,7 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
   const handleQuestionnaireComplete = async (responses: Array<{ questionId: number; type: string; category: string; value: number; timeMs: number }>) => {
     if (!assessmentData) return;
 
-    // Immediately change to results step to avoid showing questionnaire again
-    setCurrentStep('results');
+    // Show loading state while processing
     setLoading(true);
 
     try {
@@ -216,6 +215,9 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
         if (data.validity?.warnings && data.validity.warnings.length > 0) {
           console.warn('Validity warnings:', data.validity.warnings);
         }
+
+        // Only move to results after data is fully processed
+        setCurrentStep('results');
       } else {
         alert('Geen resultaten ontvangen van de server.');
         setCurrentStep('questionnaire');
@@ -296,13 +298,47 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
             />
           )}
 
-          {currentStep === 'questionnaire' && assessmentData && (
+          {currentStep === 'questionnaire' && assessmentData && !loading && (
             <AttachmentQuestionnaire
               assessmentId={assessmentData.assessmentId}
               onComplete={handleQuestionnaireComplete}
               onBack={handleBackToIntro}
               loading={loading}
             />
+          )}
+
+          {/* AI Analysis Loading Screen */}
+          {loading && currentStep === 'questionnaire' && (
+            <div className="p-12 text-center">
+              <div className="mb-8">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full animate-pulse mb-6">
+                  <Sparkles className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  AI analyseert je antwoorden...
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Dit kan 10-15 seconden duren. We maken een persoonlijk profiel voor jou.
+                </p>
+                <div className="max-w-md mx-auto">
+                  <Progress value={66} className="h-2 mb-4" />
+                  <div className="space-y-2 text-sm text-gray-500">
+                    <div className="flex items-center justify-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                      <span>Hechtingsstijl berekenen</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" />
+                      <span>AI insights genereren</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-2 opacity-50">
+                      <div className="w-4 h-4 border-2 border-gray-300 rounded-full" />
+                      <span>Persoonlijke adviezen maken</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
 
           {currentStep === 'results' && assessmentData && (
