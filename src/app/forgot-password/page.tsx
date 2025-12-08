@@ -113,17 +113,17 @@ export default function ForgotPasswordPage() {
       <AuthLayout>
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Check Your Email</CardTitle>
-            <CardDescription>We've sent a password reset link to {email}</CardDescription>
+            <CardTitle className="text-2xl">Check je Email</CardTitle>
+            <CardDescription>Als {email} bij ons bekend is, hebben we een wachtwoord reset link gestuurd</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-center text-sm text-muted-foreground">
-              If you don't see the email, check your spam folder. The link will expire in 1 hour.
+              Zie je de email niet? Check dan je spam folder. De link verloopt over 1 uur.
             </p>
           </CardContent>
           <CardFooter>
             <Button className="w-full" asChild>
-              <Link href="/login">Back to Login</Link>
+              <Link href="/login">Terug naar Inloggen</Link>
             </Button>
           </CardFooter>
         </Card>
@@ -135,33 +135,33 @@ export default function ForgotPasswordPage() {
     <AuthLayout>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Forgot Password?</CardTitle>
-          <CardDescription>Enter your email to receive a password reset link</CardDescription>
+          <CardTitle className="text-2xl">Wachtwoord Vergeten?</CardTitle>
+          <CardDescription>Vul je emailadres in om een reset link te ontvangen</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email">Emailadres</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="Enter your email"
+                placeholder="jouw@email.com"
               />
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-4">
-            <Button 
-              type="submit" 
-              className="w-full" 
+            <Button
+              type="submit"
+              className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? "Sending..." : "Send Reset Link"}
+              {isLoading ? "Verzenden..." : "Verstuur Reset Link"}
             </Button>
             <p className="text-sm text-muted-foreground">
-              Remember your password?{" "}
+              Weet je je wachtwoord weer?{" "}
               <Link href="/login" className="font-semibold text-primary underline-offset-4 hover:underline">
                 Log in
               </Link>

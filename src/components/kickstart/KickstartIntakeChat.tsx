@@ -33,9 +33,12 @@ const DATING_APP_OPTIONS = [
   { value: "happn", label: "Happn", icon: "📍" },
   { value: "once", label: "Once", icon: "⏰" },
   { value: "inner-circle", label: "Inner Circle", icon: "👥" },
+  { value: "geen", label: "Geen", icon: "❌" },
 ];
 
 const DATING_STATUS_OPTIONS = [
+  { value: "never-dated", label: "Ik heb nog nooit gedatet", icon: "🌱" },
+  { value: "want-to-start", label: "Wil beginnen, weet niet hoe", icon: "🤔" },
   { value: "single", label: "Helemaal single, weinig actie", icon: "😔" },
   { value: "matching-no-dates", label: "Ik match, maar geen dates", icon: "💬" },
   { value: "dating-no-click", label: "Ik date, maar geen klik", icon: "🤷" },
@@ -43,6 +46,7 @@ const DATING_STATUS_OPTIONS = [
 ];
 
 const SINGLE_DURATION_OPTIONS = [
+  { value: "never-relationship", label: "Ik heb nog nooit een relatie gehad", icon: "🌱" },
   { value: "less-than-month", label: "Minder dan een maand", icon: "⏰" },
   { value: "1-3-months", label: "1-3 maanden", icon: "📅" },
   { value: "3-6-months", label: "3-6 maanden", icon: "📆" },
@@ -58,6 +62,7 @@ const WEEKLY_MATCHES_OPTIONS = [
 ];
 
 const PROFILE_DESCRIPTION_OPTIONS = [
+  { value: "no-profile", label: "Ik heb nog geen profiel", icon: "❌" },
   { value: "few-photos", label: "Ik heb weinig foto's", icon: "📸" },
   { value: "boring-bio", label: "Mijn bio is saai", icon: "📝" },
   { value: "no-idea", label: "Geen idee wat ik doe", icon: "🤷" },
@@ -65,10 +70,12 @@ const PROFILE_DESCRIPTION_OPTIONS = [
 ];
 
 const BIGGEST_DIFFICULTY_OPTIONS = [
+  { value: "where-to-start", label: "Niet weten waar te beginnen", icon: "🤔" },
+  { value: "confidence", label: "Zelfvertrouwen / angst voor afwijzing", icon: "😰" },
+  { value: "presenting-self", label: "Mezelf presenteren", icon: "🎭" },
   { value: "starting-convos", label: "Gesprekken starten", icon: "💬" },
   { value: "getting-matches", label: "Matches krijgen", icon: "💔" },
   { value: "planning-dates", label: "Dates plannen", icon: "📅" },
-  { value: "presenting-self", label: "Mezelf presenteren", icon: "🎭" },
 ];
 
 const RELATIONSHIP_GOAL_OPTIONS = [
@@ -307,13 +314,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
 
     addUserMessage(selected.label);
     setIntakeData((prev) => ({ ...prev, datingStatus: value as any }));
+
+    const isBeginner = value === "never-dated" || value === "want-to-start";
     setCurrentStep(6);
 
     setTimeout(() => {
       addIrisMessage({
         id: "response-6",
         type: "iris",
-        content: "Oké, dat geeft me al een goed beeld. Thanks voor je eerlijkheid!",
+        content: isBeginner
+          ? "Heel mooi dat je deze stap neemt! Iedereen begint ergens, en ik ga je helpen om met vertrouwen te starten."
+          : "Oké, dat geeft me al een goed beeld. Thanks voor je eerlijkheid!",
       });
     }, 500);
 
@@ -321,7 +332,9 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
       addIrisMessage({
         id: "q7",
         type: "iris",
-        content: "Hoe lang ben je al single?",
+        content: isBeginner
+          ? "Heb je al dating ervaring of relatie-ervaring?"
+          : "Hoe lang ben je al single?",
         inputType: "chips",
         chipOptions: SINGLE_DURATION_OPTIONS,
       });
@@ -335,13 +348,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
 
     addUserMessage(selected.label);
     setIntakeData((prev) => ({ ...prev, singleDuration: value as any }));
+
+    const isFirstTimer = value === "never-relationship";
     setCurrentStep(7);
 
     setTimeout(() => {
       addIrisMessage({
         id: "response-7",
         type: "iris",
-        content: "Got it! Nu een praktische vraag...",
+        content: isFirstTimer
+          ? "Helemaal oké! We gaan samen zorgen dat je eerste dating ervaring geweldig wordt. 💪"
+          : "Got it! Nu een praktische vraag...",
       });
     }, 500);
 
@@ -367,6 +384,8 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
 
     addUserMessage(labels);
     setIntakeData((prev) => ({ ...prev, datingApps: selectedChips }));
+
+    const hasNoApps = selectedChips.includes("geen");
     setSelectedChips([]);
     setCurrentStep(8);
 
@@ -374,19 +393,47 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
       addIrisMessage({
         id: "response-8",
         type: "iris",
-        content: "Nice! Dus je bent al actief aan het swipen.",
+        content: hasNoApps
+          ? "Oké, dus je bent nog niet actief begonnen met daten. Dat gaan we veranderen!"
+          : "Nice! Dus je bent al actief aan het swipen.",
       });
     }, 500);
 
     setTimeout(() => {
-      addIrisMessage({
-        id: "q9",
-        type: "iris",
-        content: "Hoeveel matches krijg je gemiddeld per week?",
-        inputType: "chips",
-        chipOptions: WEEKLY_MATCHES_OPTIONS,
-      });
+      if (hasNoApps) {
+        // Skip matches question for users without apps
+        addIrisMessage({
+          id: "response-8b",
+          type: "iris",
+          content: "We gaan je helpen om een killer profiel te maken en vol vertrouwen te starten!",
+        });
+      } else {
+        addIrisMessage({
+          id: "q9",
+          type: "iris",
+          content: "Hoeveel matches krijg je gemiddeld per week?",
+          inputType: "chips",
+          chipOptions: WEEKLY_MATCHES_OPTIONS,
+        });
+      }
     }, 2500);
+
+    // Auto-advance if no apps
+    if (hasNoApps) {
+      // Set default weekly matches to "0-2" for users without apps
+      setIntakeData((prev) => ({ ...prev, weeklyMatches: "0-2" }));
+      setCurrentStep(9);
+
+      setTimeout(() => {
+        addIrisMessage({
+          id: "q10",
+          type: "iris",
+          content: "Wat is je grootste frustratie in dating op dit moment? Vertel het me in je eigen woorden.",
+          inputType: "text",
+          placeholder: "Bijv. Ik weet niet waar ik moet beginnen, vind het spannend...",
+        });
+      }, 4500);
+    }
   };
 
   // Question 9: Weekly Matches (was Question 6)
@@ -452,13 +499,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
 
     addUserMessage(selected.label);
     setIntakeData((prev) => ({ ...prev, profileDescription: value as any }));
+
+    const hasNoProfile = value === "no-profile";
     setCurrentStep(11);
 
     setTimeout(() => {
       addIrisMessage({
         id: "response-11",
         type: "iris",
-        content: "Helder! Dan weet ik waar we aan kunnen werken met je profiel.",
+        content: hasNoProfile
+          ? "Prima! Ik ga je stap voor stap helpen om een killer profiel te maken."
+          : "Helder! Dan weet ik waar we aan kunnen werken met je profiel.",
       });
     }, 500);
 
@@ -466,7 +517,9 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
       addIrisMessage({
         id: "q12",
         type: "iris",
-        content: "Wat vind je het moeilijkste aan online dating?",
+        content: hasNoProfile
+          ? "Wat vind je het spannendste of moeilijkste aan de stap naar dating?"
+          : "Wat vind je het moeilijkste aan online dating?",
         inputType: "chips",
         chipOptions: BIGGEST_DIFFICULTY_OPTIONS,
       });
