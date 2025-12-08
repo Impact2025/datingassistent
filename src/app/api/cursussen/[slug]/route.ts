@@ -91,6 +91,17 @@ export async function GET(
         // Voor elke sectie van type 'quiz', haal quiz vragen op
         const sectiesMetQuizVragen = await Promise.all(
           sectiesResult.rows.map(async (sectie: any) => {
+            // Parse inhoud if it's a string (JSONB sometimes returns as string)
+            let inhoud = sectie.inhoud;
+            if (typeof inhoud === 'string') {
+              try {
+                inhoud = JSON.parse(inhoud);
+              } catch (e) {
+                console.error(`Failed to parse inhoud for sectie ${sectie.id}:`, e);
+                inhoud = {};
+              }
+            }
+
             if (sectie.sectie_type === 'quiz') {
               const quizVragenResult = await sql`
                 SELECT * FROM cursus_quiz_vragen
@@ -99,10 +110,14 @@ export async function GET(
               `;
               return {
                 ...sectie,
+                inhoud: inhoud || {},
                 quiz_vragen: quizVragenResult.rows
               };
             }
-            return sectie;
+            return {
+              ...sectie,
+              inhoud: inhoud || {}
+            };
           })
         );
 

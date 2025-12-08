@@ -134,8 +134,21 @@ export async function GET(
     // Voeg progress toe aan elke sectie
     const sectiesMetProgress = secties.map((sectie: any) => {
       const progress = progressResult.rows.find((p: any) => p.sectie_id === sectie.id);
+
+      // Parse inhoud if it's a string (JSONB sometimes returns as string)
+      let inhoud = sectie.inhoud;
+      if (typeof inhoud === 'string') {
+        try {
+          inhoud = JSON.parse(inhoud);
+        } catch (e) {
+          console.error(`Failed to parse inhoud for sectie ${sectie.id}:`, e);
+          inhoud = {};
+        }
+      }
+
       return {
         ...sectie,
+        inhoud: inhoud || {},
         user_progress: progress || null
       };
     });
