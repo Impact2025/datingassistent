@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import {
   ArrowLeft, Scan, Heart, Target, Brain,
   CheckCircle2, Clock, TrendingUp, Calendar,
-  BarChart3, Sparkles, RefreshCw
+  BarChart3, Sparkles, RefreshCw, Compass, Repeat
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -69,6 +69,22 @@ const SCAN_METADATA: Record<string, ScanMetadata> = {
     color: 'blue',
     href: '/emotionele-readiness',
     resultLabel: 'Readiness'
+  },
+  'levensvisie': {
+    title: 'Levensvisie & Toekomstkompas',
+    description: 'Ontdek je toekomstvisie en ideale partner profiel',
+    icon: <Compass className="w-6 h-6" />,
+    color: 'green',
+    href: '/levensvisie',
+    resultLabel: 'Levensvisie'
+  },
+  'relatiepatronen': {
+    title: 'Relatiepatronen Analyse',
+    description: 'Herken je terugkerende patronen en groei strategieën',
+    icon: <Repeat className="w-6 h-6" />,
+    color: 'purple',
+    resultLabel: 'Patronen',
+    href: '/relatiepatronen'
   }
 };
 
@@ -232,6 +248,14 @@ function ScanOverviewCard({ scan, metadata, delay }: ScanOverviewCardProps) {
       badge: 'bg-blue-100 text-blue-700',
       button: 'from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800',
       icon: 'text-blue-600'
+    },
+    green: {
+      bg: 'bg-green-50',
+      border: 'border-green-200',
+      text: 'text-green-700',
+      badge: 'bg-green-100 text-green-700',
+      button: 'from-green-600 to-green-700 hover:from-green-700 hover:to-green-800',
+      icon: 'text-green-600'
     }
   };
 

@@ -21,6 +21,7 @@
 import { sql } from '@vercel/postgres';
 import { updateDatingStyleQuestions } from './update-dating-style-universal';
 import { updateHechtingsstijlQuestions } from './update-hechtingsstijl-universal';
+import { updateRelatiepatronenQuestions } from './update-relatiepatronen-universal';
 
 interface MigrationResult {
   scan: string;
@@ -65,13 +66,14 @@ async function migrateAllScans() {
   console.log('═══════════════════════════════════════════════════════════');
   console.log('Strategy: One question that works for EVERYONE');
   console.log('Goal: World-class experience for every user');
+  console.log('Note: Levensvisie already uses universal language! 🎯');
   console.log('═══════════════════════════════════════════════════════════\n');
 
   const results: MigrationResult[] = [];
 
   // 1. Emotionele Readiness (seed new)
   try {
-    console.log('🎯 [1/3] Updating Emotionele Readiness...');
+    console.log('🎯 [1/4] Updating Emotionele Readiness...');
     await seedEmotionalReadiness();
     results.push({
       scan: 'Emotionele Readiness',
@@ -91,7 +93,7 @@ async function migrateAllScans() {
 
   // 2. Dating Style
   try {
-    console.log('🎯 [2/3] Updating Dating Stijl...');
+    console.log('🎯 [2/4] Updating Dating Stijl...');
     await updateDatingStyleQuestions();
     results.push({
       scan: 'Dating Stijl',
@@ -111,7 +113,7 @@ async function migrateAllScans() {
 
   // 3. Hechtingsstijl
   try {
-    console.log('🎯 [3/3] Updating Hechtingsstijl...');
+    console.log('🎯 [3/4] Updating Hechtingsstijl...');
     await updateHechtingsstijlQuestions();
     results.push({
       scan: 'Hechtingsstijl',
@@ -127,6 +129,26 @@ async function migrateAllScans() {
       error: error.message
     });
     console.error('❌ Hechtingsstijl failed:', error.message, '\n');
+  }
+
+  // 4. Relatiepatronen (NEW!)
+  try {
+    console.log('🎯 [4/4] Updating Relatiepatronen...');
+    await updateRelatiepatronenQuestions();
+    results.push({
+      scan: 'Relatiepatronen',
+      success: true,
+      questionsUpdated: 14
+    });
+    console.log('✅ Relatiepatronen complete!\n');
+  } catch (error: any) {
+    results.push({
+      scan: 'Relatiepatronen',
+      success: false,
+      questionsUpdated: 0,
+      error: error.message
+    });
+    console.error('❌ Relatiepatronen failed:', error.message, '\n');
   }
 
   // Print summary
@@ -145,11 +167,12 @@ async function migrateAllScans() {
     }
   });
 
-  console.log(`\n📈 Total: ${totalSuccess}/3 scans successful`);
+  console.log(`\n📈 Total: ${totalSuccess}/4 scans migrated`);
   console.log(`📝 Total questions updated: ${totalQuestions}`);
+  console.log(`✅ Levensvisie: Already universal (18 questions) - no migration needed!`);
 
-  if (totalSuccess === 3) {
-    console.log('\n🎉 SUCCESS! All scans now use universal language!');
+  if (totalSuccess === 4) {
+    console.log('\n🎉 SUCCESS! All 5 scans now use universal language!');
     console.log('\n💡 Benefits:');
     console.log('   ✅ Works for complete beginners');
     console.log('   ✅ Works for experienced daters');

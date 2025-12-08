@@ -85,7 +85,9 @@ export async function GET(request: NextRequest) {
         VALUES
           ('hechtingsstijl'),
           ('dating-style'),
-          ('emotional-readiness')
+          ('emotional-readiness'),
+          ('levensvisie'),
+          ('relatiepatronen')
       ) AS s(scan_type)
       LEFT JOIN LATERAL (
         SELECT * FROM user_scan_history
