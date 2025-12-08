@@ -19,6 +19,7 @@ import { ContextualHelpButton } from "@/components/onboarding/contextual-help-bu
 import { AttachmentAssessmentFlow } from "@/components/attachment-assessment/attachment-assessment-flow";
 import { EmotioneleReadinessFlow } from "@/components/emotional-readiness/emotionele-readiness-flow";
 import { DatingStyleFlow } from "@/components/dating-style/dating-style-flow";
+import { ZelfbeeldFlow } from "@/components/zelfbeeld/zelfbeeld-flow";
 import { ToolModal, ToolModalHeader } from "@/components/tools";
 
 interface ProfileSuiteProps {
@@ -64,22 +65,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       id: "zelfbeeld",
       label: "🪩 Zelfbeeld & Eerste Indruk",
       icon: UserCircle2,
-      description: "Camera AI voor profile optimization en eerste indruk maximalisatie",
-      component: <div className="p-8 text-center">
-        <div className="max-w-xl mx-auto space-y-6">
-          <p className="text-gray-700 leading-relaxed">
-            AI-gedreven profile enhancement met camera integratie voor optimale eerste indruk.
-          </p>
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
-            <p className="text-purple-900 font-medium mb-2">
-              Binnenkort beschikbaar
-            </p>
-            <p className="text-sm text-purple-700">
-              Deze PRO tool wordt momenteel ontwikkeld en komt binnenkort beschikbaar.
-            </p>
-          </div>
-        </div>
-      </div>,
+      description: "AI-gedreven profiel analyse voor optimale eerste indruk en authentieke vibe",
+      component: <ZelfbeeldFlow />,
       badge: "AI-PRO",
       color: "from-purple-500 to-indigo-500"
     },
@@ -108,7 +95,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "AI feedback op je profielfoto's",
       component: <PhotoAnalysisTab />,
       badge: "AI",
-      color: "from-indigo-500 to-purple-500"
+      color: "from-indigo-500 to-pink-500"
     },
     {
       id: "platform-match",
