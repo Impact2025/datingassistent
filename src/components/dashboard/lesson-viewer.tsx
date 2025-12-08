@@ -140,39 +140,61 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
   };
 
   const renderSectie = (sectie: any, index: number) => {
-    const isVoltooid = isSectieVoltooid(sectie.id);
-
-    const sectieProps = {
-      sectie,
-      isVoltooid,
-      onMarkAsComplete: () => markeerSectieAlsVoltooid(sectie.id)
-    };
+    const isCompleted = isSectieVoltooid(sectie.id);
 
     switch (sectie.sectie_type) {
       case 'comparison':
-        return <ComparisonSectie key={sectie.id} {...sectieProps} />;
+        return (
+          <ComparisonSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
       case 'insight':
-        return <InsightSectie key={sectie.id} {...sectieProps} />;
+        return (
+          <InsightSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
       case 'examples':
-        return <ExamplesSectie key={sectie.id} {...sectieProps} />;
+        return (
+          <ExamplesSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
       case 'interactive':
-        return <InteractiveSectie key={sectie.id} {...sectieProps} />;
+        return (
+          <InteractiveSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
       default:
         return (
           <Card key={sectie.id} className="border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start justify-between mb-4">
                 <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
-                {isVoltooid && <CheckCircle className="w-6 h-6 text-pink-500" />}
+                {isCompleted && <CheckCircle className="w-6 h-6 text-pink-500" />}
               </div>
-              <div
-                className="prose prose-pink max-w-none"
-                dangerouslySetInnerHTML={{ __html: sectie.inhoud }}
-              />
-              {!isVoltooid && (
+              <p className="text-gray-500 mb-4">Sectie type: {sectie.sectie_type}</p>
+              {!isCompleted && (
                 <Button
                   onClick={() => markeerSectieAlsVoltooid(sectie.id)}
-                  className="mt-6"
                   variant="outline"
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
