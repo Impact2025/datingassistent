@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { getServerSession } from 'next-auth';
+import { cookies } from 'next/headers';
+import { jwtVerify } from 'jose';
 import { resolveSlug } from '@/lib/cursus-slug-utils';
 
 /**
@@ -100,9 +101,20 @@ export async function GET(
       LIMIT 1
     `;
 
-    // 6. Haal user progress op
-    const session = await getServerSession();
-    const userId = session?.user?.id;
+    // 6. Haal user progress op via JWT token (consistent met andere routes)
+    let userId: number | null = null;
+    try {
+      const cookieStore = await cookies();
+      const token = cookieStore.get('auth_token')?.value;
+
+      if (token) {
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret');
+        const { payload } = await jwtVerify(token, secret);
+        userId = payload.userId as number;
+      }
+    } catch (authError) {
+      console.log('No authenticated user for lesson request');
+    }
 
     // Als geen user ingelogd, geen progress
     const progressResult = userId ? await sql`
