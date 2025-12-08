@@ -164,9 +164,9 @@ export async function POST(request: NextRequest) {
           ${validity.responseVariance},
           ${aiAnalysis.profiel},
           ${aiAnalysis.toekomstgerichteInterpretatie},
-          ${JSON.stringify(aiAnalysis.datingVoorbeelden)},
-          ${JSON.stringify(aiAnalysis.triggers)},
-          ${JSON.stringify(aiAnalysis.herstelStrategieen)},
+          ${aiAnalysis.datingVoorbeelden},
+          ${aiAnalysis.triggers},
+          ${aiAnalysis.herstelStrategieen},
           ${JSON.stringify(aiAnalysis.microInterventies)},
           ${JSON.stringify(aiAnalysis.gesprekScripts)},
           ${JSON.stringify(aiAnalysis.recommendedTools)}
