@@ -8,7 +8,7 @@ export function HeroSection() {
     <section className="relative py-12 sm:py-16 md:py-20 px-4 overflow-hidden min-h-[600px] sm:min-h-[650px] flex items-center">
       {/* Full-width Background Image - Optimized with Next.js Image */}
       <Image
-        src="/images/hero-dating.jpg.png"
+        src="/images/Datingcoach-DatingAssistent.png"
         alt="Dating couple enjoying time together"
         fill
         priority
