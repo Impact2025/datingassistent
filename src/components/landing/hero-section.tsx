@@ -41,46 +41,42 @@ export function HeroSection() {
 
           {/* Subtitle */}
           <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto px-2 leading-relaxed">
-            Krijg binnen 30 dagen betekenisvolle dates met 24/7 AI-hulp die je precies vertelt wat je moet zeggen
+            Van eindeloos swipen naar dates met impact. Krijg 24/7 persoonlijke begeleiding om je liefdesleven vlot te trekken
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col items-center gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-2">
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-              {/* Primary CTA - Quiz */}
-              <Link href="/quiz" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-8 py-3 text-base font-semibold shadow-lg hover:shadow-xl transition-all rounded-full flex items-center justify-center gap-2">
-                  <Sparkles className="w-5 h-5" />
-                  Doe de Gratis Dating Scan
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
+            {/* Primary CTA - Register/Foto Scan */}
+            <Link href="/register" className="w-full sm:w-auto">
+              <Button className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-8 py-3 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl transition-all rounded-full flex items-center justify-center gap-2">
+                Start Gratis & Scan mijn Foto
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
 
-              {/* Secondary CTA - Register */}
-              <Link href="/register" className="w-full sm:w-auto">
-                <Button variant="outline" className="w-full sm:w-auto border-2 border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:border-pink-500 dark:hover:border-pink-400 hover:text-pink-600 dark:hover:text-pink-400 bg-white/80 dark:bg-gray-800/50 px-8 py-3 text-base font-semibold rounded-full">
-                  Of start direct gratis
-                </Button>
-              </Link>
-            </div>
             <p className="text-sm text-gray-700 dark:text-gray-400">
-              Krijg binnen 2 minuten inzicht in jouw valkuilen + persoonlijk advies.
+              ✅ Krijg binnen 2 minuten inzicht + persoonlijk advies
             </p>
+
+            {/* Secondary Link - Quiz */}
+            <Link href="/quiz" className="text-sm text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 underline transition-colors">
+              Of doe eerst de Dating Stijl Quiz
+            </Link>
           </div>
 
           {/* Trust Bullets */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 px-2">
             <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300">
               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium">Gebaseerd op 10+ jaar ervaring en passie</span>
+              <span className="text-xs sm:text-sm font-medium">10+ Jaar ervaring (Bekend van TV)</span>
             </div>
             <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300">
               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium">Nieuw: bewezen methode, nu 24/7 beschikbaar</span>
+              <span className="text-xs sm:text-sm font-medium">Wetenschappelijk onderbouwd</span>
             </div>
             <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300">
               <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium">100% Nederlandse ontwikkeling en begeleiding</span>
+              <span className="text-xs sm:text-sm font-medium">100% Privacy & Veilig</span>
             </div>
           </div>
 

@@ -254,12 +254,63 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
       {hero ?? <HeroSection />}
 
+      {/* Sectie 2: Het Probleem (Agitatie) */}
+      <section className="py-20 px-4 bg-white dark:bg-gray-800">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Herken je dit?</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {/* Pijn Blok 1: De Match-Droogte */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-600 hover:shadow-xl transition-all space-y-4">
+              <div className="w-16 h-16 mx-auto rounded-full bg-red-500 flex items-center justify-center shadow-lg">
+                <AlertCircle className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-50 text-center">De Match-Droogte</h3>
+              <p className="text-gray-700 dark:text-gray-300 text-center leading-relaxed">
+                Je swipet je een ongeluk, maar de leuke matches blijven uit.
+              </p>
+            </div>
+
+            {/* Pijn Blok 2: De Gespreks-Dood */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-600 hover:shadow-xl transition-all space-y-4">
+              <div className="w-16 h-16 mx-auto rounded-full bg-orange-500 flex items-center justify-center shadow-lg">
+                <MessageCircle className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-50 text-center">De Gespreks-Dood</h3>
+              <p className="text-gray-700 dark:text-gray-300 text-center leading-relaxed">
+                Leuke matches veranderen in penfriends of bloeden dood na &apos;Hoi, hoe is het?&apos;
+              </p>
+            </div>
+
+            {/* Pijn Blok 3: De 'Situationship' */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-600 hover:shadow-xl transition-all space-y-4">
+              <div className="w-16 h-16 mx-auto rounded-full bg-purple-600 flex items-center justify-center shadow-lg">
+                <Heart className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-50 text-center">De &apos;Situationship&apos;</h3>
+              <p className="text-gray-700 dark:text-gray-300 text-center leading-relaxed">
+                Je trekt partners aan die zich niet willen binden of ineens verdwijnen (ghosting).
+              </p>
+            </div>
+          </div>
+
+          {/* Conclusie */}
+          <div className="text-center">
+            <p className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-50 max-w-3xl mx-auto">
+              Het ligt niet aan jou. Het ligt aan je strategie. En die gaan we samen fixen.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section id="tools" className="py-20 px-4 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Los elk obstakel op in je dating journey</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Jouw 24/7 Wingman Team</h2>
             <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
-              Van "waarom krijg ik geen matches?" tot "hoe houd ik het gesprek gaande?"—AI die snapt waar je zit
+              Van foto-analyse tot gesprekshulp—AI-tools die je direct verder helpen
             </p>
           </div>
 
@@ -452,7 +503,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             <div className="relative">
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-purple-200 dark:border-purple-700 hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-xl transition-all space-y-6">
                 <div className="flex items-start justify-between">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-lg">
                     <span className="text-2xl font-bold text-white">3</span>
                   </div>
                   <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-3 py-1 rounded-full">Meesterschap</span>
@@ -491,162 +542,14 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
         </div>
       </section>
 
-      {/* Quiz Section - Logout Page Style */}
-      <section className="py-24 px-4 bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="max-w-2xl mx-auto space-y-8">
-          {/* Main Card */}
-          <Card className="border-2 border-pink-200 dark:border-pink-700 shadow-xl">
-            <CardContent className="p-8 text-center space-y-6">
-              {/* Title */}
-              <div className="space-y-3">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-50">
-                  Ontdek je Dating Stijl
-                </h2>
-                <p className="text-lg text-gray-700 dark:text-gray-400">
-                  AI-analyse van je gedrag met direct persoonlijk actieplan
-                </p>
-              </div>
-
-              {/* Quick Stats - 3 colored boxes */}
-              <div className="grid grid-cols-3 gap-4 pt-4">
-                <div className="text-center p-3 bg-pink-50 dark:bg-pink-900/30 rounded-lg">
-                  <Heart className="w-5 h-5 mx-auto mb-1 text-pink-600 dark:text-pink-400" />
-                  <p className="text-xs text-gray-700 dark:text-gray-400">Persoonlijkheid</p>
-                </div>
-                <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/30 rounded-lg">
-                  <Target className="w-5 h-5 mx-auto mb-1 text-purple-600 dark:text-purple-400" />
-                  <p className="text-xs text-gray-700 dark:text-gray-400">Valkuilen</p>
-                </div>
-                <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-                  <TrendingUp className="w-5 h-5 mx-auto mb-1 text-blue-600 dark:text-blue-400" />
-                  <p className="text-xs text-gray-700 dark:text-gray-400">Actieplan</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Action Cards - 2 column grid */}
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Quiz Card */}
-            <Card className="border-2 hover:border-pink-300 dark:hover:border-pink-600 transition-all cursor-pointer hover:shadow-lg">
-              <Link href="/quiz">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-pink-600 dark:text-pink-400" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-50 mb-1">
-                    Start de Quiz
-                  </h3>
-                  <p className="text-sm text-gray-700 dark:text-gray-400 mb-3">
-                    Ontdek jouw dating stijl in 2 minuten
-                  </p>
-                  <Button className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white">
-                    Gratis Analyse
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Link>
-            </Card>
-
-            {/* Register Card */}
-            <Card className="border-2 hover:border-purple-300 dark:hover:border-purple-600 transition-all cursor-pointer hover:shadow-lg">
-              <Link href="/register">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                    <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-50 mb-1">
-                    Direct Beginnen
-                  </h3>
-                  <p className="text-sm text-gray-700 dark:text-gray-400 mb-3">
-                    Maak gratis een account aan
-                  </p>
-                  <Button variant="outline" className="w-full border-purple-300 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/30">
-                    Registreren
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Link>
-            </Card>
-          </div>
-
-          {/* Footer text */}
-          <div className="text-center text-sm text-gray-700 dark:text-gray-400">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-gray-800/80 border border-pink-100 dark:border-pink-700">
-              <div className="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse"></div>
-              <span>27 mensen deze week</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-24 px-4 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Dating tips & advies</h2>
-            <p className="text-lg text-gray-700 dark:text-gray-400 max-w-2xl mx-auto">Ontdek inspirerende verhalen van onze experts</p>
-          </div>
-
-          {blogsError ? (
-            <div className="text-center p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
-              <AlertCircle className="w-10 h-10 mx-auto mb-3 text-gray-400" />
-              <p className="text-gray-700 dark:text-gray-400 text-sm">{blogsError}</p>
-            </div>
-          ) : blogs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {blogs.map((blog) => (
-                <Link key={blog.id} href={`/blog/${blog.slug}`} className="block group">
-                  <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-lg transition-all h-full">
-                    <div className="relative h-48 overflow-hidden">
-                      <Image
-                        src={blog.featured_image || '/images/hero-dating.jpg.png'}
-                        alt={blog.title || 'Dating blog article'}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="p-6 space-y-3">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50 line-clamp-2">{blog.title}</h3>
-                      <p className="text-sm text-gray-700 dark:text-gray-400 line-clamp-3 leading-relaxed">{blog.excerpt}</p>
-                      <div className="flex items-center justify-between pt-2">
-                        <span className="text-xs text-gray-700 dark:text-gray-400">5 min lezen</span>
-                        <span className="text-sm text-pink-500 dark:text-pink-400 group-hover:translate-x-1 transition-transform">Lees meer →</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center p-8">
-              <div className="animate-pulse space-y-4">
-                <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
-              </div>
-            </div>
-          )}
-
-          <div className="mt-12 text-center">
-            <Link href="/blog">
-              <Button variant="outline" className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-pink-500 dark:hover:border-pink-400 hover:text-pink-500 dark:hover:text-pink-400 px-6 py-2.5 rounded-full transition-all shadow-lg hover:shadow-xl">
-                Bekijk alle blogs
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
       <section id="programmas" className="py-32 px-4 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20 space-y-6">
             <h2 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-gray-50">
-              Kies jouw programma
+              Kies jouw route naar succes
             </h2>
             <p className="text-xl text-gray-700 dark:text-gray-400 max-w-2xl mx-auto">
-              Transformeer je dating leven met persoonlijke AI-coaching
+              Van snelle profiel-fix tot complete transformatie met persoonlijke begeleiding
             </p>
           </div>
 
@@ -679,7 +582,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
               <div className="space-y-4">
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  Als coach (ook bekend van TV-programma <strong>The Undateables</strong>) heb ik met trots en plezier honderden mensen 1-op-1 geholpen. Het probleem? Ik kon maar 5-10 mensen per maand begeleiden. Bovendien is persoonlijke coaching (€150/uur) simpelweg niet voor iedereen betaalbaar.
+                  Met de DatingAssistent (ook bekend van TV-programma <strong>The Undateables</strong>) heb ik met trots, passie en plezier veel mensen 1-op-1 geholpen. Het probleem? Ik kon maar 5-10 mensen per maand begeleiden. Bovendien is persoonlijke coaching (€150/uur) simpelweg niet voor iedereen betaalbaar.
                 </p>
               </div>
 
@@ -749,6 +652,68 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                   <div className="text-3xl font-bold text-pink-500 dark:text-pink-400 mb-2">24/7</div>
                   <div className="text-sm text-gray-700 dark:text-gray-400">Beschikbaar</div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sectie 6: Social Proof */}
+      <section className="py-24 px-4 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Resultaten van mensen zoals jij</h2>
+            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
+              Echte verhalen van mensen die hun dating leven transformeerden
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Review 1 */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-pink-200 dark:border-pink-700 hover:shadow-xl transition-all space-y-4">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed italic">
+                &quot;Na 3 weken mijn eerste echte date. De AI Foto Check liet me direct zien wat er mis was met mijn profiel. Binnen 2 dagen had ik 3x meer matches!&quot;
+              </p>
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="font-semibold text-gray-900 dark:text-gray-50">Mark, 29 jaar</p>
+                <p className="text-sm text-gray-700 dark:text-gray-400">Transformatie programma</p>
+              </div>
+            </div>
+
+            {/* Review 2 */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-pink-200 dark:border-pink-700 hover:shadow-xl transition-all space-y-4">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed italic">
+                &quot;Eindelijk snap ik wat ik fout deed. De Chat Coach hielp me uit de &apos;friend zone&apos; en ik weet nu precies hoe ik flirty maar authentiek kan zijn.&quot;
+              </p>
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="font-semibold text-gray-900 dark:text-gray-50">Lisa, 32 jaar</p>
+                <p className="text-sm text-gray-700 dark:text-gray-400">Pro abonnement</p>
+              </div>
+            </div>
+
+            {/* Review 3 */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-pink-200 dark:border-pink-700 hover:shadow-xl transition-all space-y-4">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed italic">
+                &quot;De Kickstart was perfect. Mijn profiel is nu top en ik krijg complimenten over mijn openingszinnen. Dit is echt de beste investering die ik heb gedaan.&quot;
+              </p>
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="font-semibold text-gray-900 dark:text-gray-50">Tom, 27 jaar</p>
+                <p className="text-sm text-gray-700 dark:text-gray-400">Kickstart programma</p>
               </div>
             </div>
           </div>
@@ -909,19 +874,25 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             {/* Action Cards - 2 column grid */}
             <div className="grid md:grid-cols-2 gap-4">
               {/* Quiz Card */}
-              <Card className="border-2 hover:border-pink-300 dark:hover:border-pink-600 transition-all cursor-pointer hover:shadow-lg">
+              <Card className="border-2 border-pink-200 dark:border-pink-700 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 transition-all cursor-pointer hover:shadow-lg relative">
                 <Link href="/quiz">
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
+                    <Badge className="absolute top-3 right-3 bg-pink-500 dark:bg-pink-600 text-white text-xs px-3 py-1 rounded-full shadow-md font-medium">
+                      Tip
+                    </Badge>
+                    <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-100 dark:bg-pink-900/50 flex items-center justify-center">
                       <Sparkles className="w-6 h-6 text-pink-600 dark:text-pink-400" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 dark:text-gray-50 mb-1">
+                    <h3 className="font-semibold text-lg text-pink-600 dark:text-pink-400 mb-2">
                       Doe de Quiz
                     </h3>
-                    <p className="text-sm text-gray-700 dark:text-gray-400 mb-3">
+                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
                       Ontdek je dating stijl
                     </p>
-                    <Button className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white">
+                    <p className="text-xs text-pink-700 dark:text-pink-400 italic mb-4">
+                      "Krijg binnen 2 minuten inzicht in jouw valkuilen"
+                    </p>
+                    <Button className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all">
                       Gratis Starten
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
@@ -950,6 +921,66 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                 </Link>
               </Card>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Dating tips & advies - na FAQ */}
+      <section className="py-24 px-4 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Dating tips & advies</h2>
+            <p className="text-lg text-gray-700 dark:text-gray-400 max-w-2xl mx-auto">Ontdek inspirerende verhalen van onze experts</p>
+          </div>
+
+          {blogsError ? (
+            <div className="text-center p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+              <AlertCircle className="w-10 h-10 mx-auto mb-3 text-gray-400" />
+              <p className="text-gray-700 dark:text-gray-400 text-sm">{blogsError}</p>
+            </div>
+          ) : blogs.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {blogs.map((blog) => (
+                <Link key={blog.id} href={`/blog/${blog.slug}`} className="block group">
+                  <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-lg transition-all h-full">
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
+                        src={blog.featured_image || '/images/hero-dating.jpg.png'}
+                        alt={blog.title || 'Dating blog article'}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="p-6 space-y-3">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50 line-clamp-2">{blog.title}</h3>
+                      <p className="text-sm text-gray-700 dark:text-gray-400 line-clamp-3 leading-relaxed">{blog.excerpt}</p>
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="text-xs text-gray-700 dark:text-gray-400">5 min lezen</span>
+                        <span className="text-sm text-pink-500 dark:text-pink-400 group-hover:translate-x-1 transition-transform">Lees meer →</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center p-8">
+              <div className="animate-pulse space-y-4">
+                <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
+              </div>
+            </div>
+          )}
+
+          <div className="mt-12 text-center">
+            <Link href="/blog">
+              <Button variant="outline" className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-pink-500 dark:hover:border-pink-400 hover:text-pink-500 dark:hover:text-pink-400 px-6 py-2.5 rounded-full transition-all shadow-lg hover:shadow-xl">
+                Bekijk alle blogs
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

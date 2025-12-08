@@ -1,243 +1,239 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Sparkles, Crown, Target, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
-
-interface Program {
-  id: number;
-  slug: string;
-  name: string;
-  tagline: string;
-  transformation_promise: string;
-  price_regular: number;
-  price_beta: number | null;
-  duration_days: number;
-  outcome_category: string | null;
-  target_audience: string;
-  tangible_proof: string;
-  tier: string;
-  outcomes: string[];
-  features: {
-    text: string;
-    type: string;
-  }[];
-}
-
-const tierIcons: Record<string, React.ComponentType<any>> = {
-  kickstart: Target,
-  transformatie: Sparkles,
-  vip: Crown,
-};
-
-// Subtle scarcity (no enrollment numbers, just availability)
-const availabilityData: Record<string, { available: boolean; limited: boolean }> = {
-  kickstart: { available: true, limited: false },
-  transformatie: { available: true, limited: true },
-  vip: { available: true, limited: true },
-};
+import { CheckCircle, Sparkles, Lock, AlertCircle } from 'lucide-react';
 
 export function ProgramCards() {
   const router = useRouter();
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchPrograms = async () => {
-      try {
-        const response = await fetch('/api/programs');
-        if (!response.ok) {
-          throw new Error('Failed to fetch programs');
-        }
+  // Get current month name in Dutch
+  const currentMonth = new Date().toLocaleDateString('nl-NL', { month: 'long' });
 
-        // Safe JSON parsing - handle empty or malformed responses
-        const text = await response.text();
-        if (!text || text.trim() === '') {
-          throw new Error('Empty response from server');
-        }
-
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch {
-          throw new Error('Invalid JSON response');
-        }
-
-        // Handle error responses from API
-        if (data.error) {
-          throw new Error(data.error);
-        }
-
-        // Ensure data is an array
-        if (!Array.isArray(data)) {
-          throw new Error('Unexpected response format');
-        }
-
-        // Filter to only show the 3 main programs (exclude alumni)
-        const mainPrograms = data.filter((p: Program) =>
-          ['kickstart', 'transformatie', 'vip'].includes(p.tier)
-        );
-
-        setPrograms(mainPrograms);
-      } catch (err) {
-        console.error('Error loading programs:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load programs');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPrograms();
-  }, []);
-
-  const handleSelectProgram = (program: Program) => {
-    router.push(`/register?program=${program.slug}`);
+  const handleSelectProgram = (slug: string) => {
+    router.push(`/register?program=${slug}`);
   };
 
-  if (loading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="animate-pulse">
-            <Card className="border-2">
-              <CardContent className="p-6">
-                <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
-                <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  if (error || programs.length === 0) {
-    return (
-      <div className="text-center p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 max-w-2xl mx-auto">
-        <p className="text-gray-500 dark:text-gray-400">
-          {error || 'Geen programma\'s beschikbaar op dit moment.'}
+  return (
+    <div className="space-y-12">
+      {/* Price Anchor */}
+      <div className="text-center max-w-3xl mx-auto">
+        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          Investeer in jezelf. Een traditionele coach kost €150 per uur. Met DatingAssistent krijg je maandenlange begeleiding voor de prijs van één etentje.
         </p>
       </div>
-    );
-  }
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-      {programs.map((program, index) => {
-        const Icon = tierIcons[program.tier] || Target;
-        const isTarget = program.tier === 'transformatie';
-        const isAnchor = program.tier === 'vip';
-        const showBetaPrice = program.price_beta && program.price_beta < program.price_regular;
-        const availability = availabilityData[program.tier];
+      {/* Program Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto items-start">
+        {/* Plan 1: Kickstart */}
+        <Card className="relative border-2 border-gray-200 dark:border-gray-700 h-full flex flex-col transition-all hover:shadow-lg bg-white dark:bg-gray-800">
+          <CardContent className="p-8 space-y-6 flex flex-col flex-grow">
+            {/* Title */}
+            <div className="text-center space-y-3">
+              <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50">Kickstart</h3>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                Snel resultaat in 21 dagen
+              </p>
+            </div>
 
-        return (
-          <motion.div
-            key={program.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <Card
-              className={`relative border-2 h-full flex flex-col transition-all hover:shadow-lg ${
-                isTarget
-                  ? 'border-gray-900 dark:border-pink-500 shadow-md'
-                  : 'border-gray-200 dark:border-gray-700'
-              }`}
+            {/* Pricing */}
+            <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
+              <div className="flex items-baseline justify-center gap-3 mb-2">
+                <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
+                  €97
+                </span>
+                <span className="text-5xl font-bold text-gray-900 dark:text-gray-50">
+                  €47
+                </span>
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="space-y-3 flex-grow">
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>21-Dagen Video Challenge</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>AI Foto Check (Onbeperkt)</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>Bio Builder (AI schrijft je tekst)</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>Kickstart Werkboek & Templates</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* CTA */}
+            <Button
+              onClick={() => handleSelectProgram('kickstart')}
+              variant="outline"
+              className="w-full border-2 border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-400 text-gray-900 dark:text-gray-100"
             >
-              {/* Clean Top Badge */}
-              {isTarget && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge variant="outline" className="bg-white dark:bg-gray-900 border-gray-900 dark:border-pink-500 text-gray-900 dark:text-pink-400 px-3 py-1">
-                    Populair
-                  </Badge>
-                </div>
-              )}
+              Meer informatie
+            </Button>
+          </CardContent>
+        </Card>
 
-              {/* Subtle availability indicator */}
-              {availability?.limited && (
-                <div className="absolute top-4 right-4">
-                  <div className="w-2 h-2 rounded-full bg-orange-400 dark:bg-orange-500"></div>
-                </div>
-              )}
+        {/* Plan 2: Transformatie (HERO) */}
+        <Card className="relative border-4 border-[#E61E63] dark:border-pink-600 h-full flex flex-col transition-all hover:shadow-2xl bg-white dark:bg-gray-800 md:scale-105 shadow-xl">
+          {/* "MEEST GEKOZEN" Badge */}
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+            <Badge className="bg-[#E61E63] dark:bg-pink-600 text-white px-4 py-2 text-sm font-bold shadow-lg">
+              MEEST GEKOZEN
+            </Badge>
+          </div>
 
-              <CardContent className="p-8 space-y-6 flex flex-col flex-grow">
-                {/* Icon & Title */}
-                <div className="text-center space-y-4">
-                  <div className="w-14 h-14 mx-auto rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                    <Icon className="w-7 h-7 text-gray-700 dark:text-gray-300" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-2">{program.name}</h3>
-                    <p className="text-sm text-gray-700 dark:text-gray-400">{program.tagline}</p>
-                  </div>
-                </div>
+          <CardContent className="p-8 space-y-6 flex flex-col flex-grow pt-12">
+            {/* Title */}
+            <div className="text-center space-y-3">
+              <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50">Transformatie</h3>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                De complete opleiding tot succesvol daten
+              </p>
+            </div>
 
-                {/* Clean Pricing */}
-                <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
-                  <div className="flex items-baseline justify-center gap-2 mb-1">
-                    {showBetaPrice && (
-                      <span className="text-lg text-gray-500 dark:text-gray-500 line-through">
-                        €{program.price_regular}
-                      </span>
-                    )}
-                    <span className="text-5xl font-bold text-gray-900 dark:text-gray-50">
-                      €{showBetaPrice ? program.price_beta : program.price_regular}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-700 dark:text-gray-400 mt-2">
-                    {program.duration_days} dagen toegang
-                  </p>
-                  {showBetaPrice && (
-                    <Badge variant="outline" className="mt-2 text-xs border-green-200 dark:border-green-700 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30">
-                      Bespaar €{program.price_regular - (program.price_beta || 0)}
-                    </Badge>
-                  )}
-                </div>
+            {/* Pricing */}
+            <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
+              <div className="flex items-baseline justify-center gap-3 mb-2">
+                <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
+                  €297
+                </span>
+                <span className="text-5xl font-bold text-[#E61E63] dark:text-pink-400">
+                  €147
+                </span>
+              </div>
+            </div>
 
-                {/* Features */}
-                <div className="space-y-3 flex-grow">
-                  <ul className="space-y-2.5">
-                    {program.features.slice(0, 5).map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-sm text-gray-700 dark:text-gray-300">
-                        <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400 dark:text-gray-500" />
-                        <span>{feature.text}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            {/* Features */}
+            <div className="space-y-3 flex-grow">
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <Sparkles className="w-5 h-5 mt-0.5 flex-shrink-0 text-[#E61E63] dark:text-pink-400" />
+                  <span className="font-medium">Alles uit Kickstart, plus:</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>🎓 Complete Video Academy (6 Modules)</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>🤖 Pro AI Suite (90 Dagen onbeperkt)</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>💬 24/7 Chat Coach & Match Analyse</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>👥 3x Live Q&A Sessies</span>
+                </li>
+              </ul>
+            </div>
 
-                {/* CTA */}
-                <Button
-                  onClick={() => handleSelectProgram(program)}
-                  variant={isTarget ? "default" : "outline"}
-                  className={`w-full ${
-                    isTarget
-                      ? 'bg-gray-900 dark:bg-pink-600 hover:bg-gray-800 dark:hover:bg-pink-700 text-white'
-                      : 'border-2 border-gray-200 dark:border-gray-600 hover:border-gray-900 dark:hover:border-pink-500 text-gray-900 dark:text-gray-100'
-                  }`}
-                >
-                  {isTarget ? 'Kies dit programma' : 'Meer informatie'}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+            {/* CTA */}
+            <Button
+              onClick={() => handleSelectProgram('transformatie')}
+              className="w-full bg-[#E61E63] hover:bg-[#c51a56] dark:bg-pink-600 dark:hover:bg-pink-700 text-white font-semibold text-lg py-6 shadow-lg hover:shadow-xl transition-all animate-pulse"
+            >
+              Kies dit programma ✨
+            </Button>
+          </CardContent>
+        </Card>
 
-                {/* Subtle availability message */}
-                {availability?.limited && (
-                  <p className="text-xs text-center text-gray-700 dark:text-gray-400">
-                    Beperkte beschikbaarheid
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
-        );
-      })}
+        {/* Plan 3: VIP Reis */}
+        <Card className="relative border-2 border-gray-200 dark:border-gray-700 h-full flex flex-col transition-all hover:shadow-lg bg-white dark:bg-gray-800">
+          {/* Top Scarcity Label */}
+          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+            <Badge className="bg-orange-500 dark:bg-orange-600 text-white px-3 py-1 text-xs font-bold shadow-md">
+              SLECHTS 5 PLEKKEN/MAAND
+            </Badge>
+          </div>
+
+          <CardContent className="p-8 space-y-6 flex flex-col flex-grow pt-10">
+            {/* Title */}
+            <div className="text-center space-y-3">
+              <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50">VIP Reis</h3>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                Persoonlijke 1-op-1 begeleiding
+              </p>
+            </div>
+
+            {/* Pricing */}
+            <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
+              <div className="flex items-baseline justify-center gap-3 mb-2">
+                <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
+                  €997
+                </span>
+                <span className="text-5xl font-bold text-gray-900 dark:text-gray-50">
+                  €497
+                </span>
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="space-y-3 flex-grow">
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <Sparkles className="w-5 h-5 mt-0.5 flex-shrink-0 text-purple-500 dark:text-purple-400" />
+                  <span className="font-medium">Alles uit Transformatie, plus:</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>🤝 Persoonlijke Intake (60 min video)</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>📞 Maandelijkse 1-op-1 Coaching</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>📱 WhatsApp Support (Directe lijn)</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>⏳ Levenslang Toegang tot alles</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* CTA */}
+            <Button
+              onClick={() => handleSelectProgram('vip')}
+              variant="outline"
+              className="w-full border-2 border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-400 text-gray-900 dark:text-gray-100"
+            >
+              Start VIP Traject
+            </Button>
+
+            {/* Bottom Urgency Text */}
+            <div className="flex items-center justify-center gap-2 pt-2">
+              <AlertCircle className="w-4 h-4 text-red-500 dark:text-red-400" />
+              <p className="text-xs text-red-600 dark:text-red-400 font-medium">
+                Nog 3 plekken beschikbaar voor {currentMonth}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Guarantee Footer */}
+      <div className="text-center max-w-2xl mx-auto pt-8">
+        <div className="flex items-center justify-center gap-3">
+          <Lock className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+          <p className="text-base text-gray-700 dark:text-gray-300 font-medium">
+            Probeer het risicoloos: Op alle plannen geldt een 30 dagen niet-goed-geld-terug garantie.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
