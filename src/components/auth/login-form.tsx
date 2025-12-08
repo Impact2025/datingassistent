@@ -307,6 +307,11 @@ export function LoginForm() {
                   Wachtwoord vergeten?
                 </Link>
               </p>
+              <p className="text-sm text-muted-foreground">
+                <Link href="/resend-verification" className="font-semibold text-blue-600 underline-offset-4 hover:underline">
+                  Email niet geverifieerd?
+                </Link>
+              </p>
             </div>
           </CardFooter>
         </form>
