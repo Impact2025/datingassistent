@@ -37,9 +37,10 @@ export async function GET(request: NextRequest) {
       FROM users
     `;
 
-    // 2. Conversion Funnel
-    const funnelQuery = await sql`
-      SELECT
+    // 2. Conversion Funnel - Use parameterized query
+    const intervalStr = `${days} days`;
+    const funnelQuery = await sql.query(
+      `SELECT
         COUNT(*) as registered,
         COUNT(CASE WHEN email_verified = true THEN 1 END) as verified_email,
         COUNT(CASE WHEN last_login IS NOT NULL THEN 1 END) as first_login,
@@ -47,14 +48,15 @@ export async function GET(request: NextRequest) {
         COUNT(CASE WHEN lead_oto_shown = true THEN 1 END) as saw_oto,
         COUNT(CASE WHEN subscription_status != 'free' THEN 1 END) as converted_paid
       FROM users
-      WHERE created_at >= NOW() - INTERVAL '${days} days'
-    `;
+      WHERE created_at >= NOW() - INTERVAL $1`,
+      [intervalStr]
+    );
 
     // 3. Stuck Users Detection
     let stuckUsers: any[] = [];
     if (includeStuckUsers) {
-      const stuckUsersQuery = await sql`
-        SELECT
+      const stuckUsersQuery = await sql.query(
+        `SELECT
           id,
           name,
           email,
@@ -73,15 +75,16 @@ export async function GET(request: NextRequest) {
           END as stuck_reason
         FROM users
         WHERE
-          created_at >= NOW() - INTERVAL '${days} days'
+          created_at >= NOW() - INTERVAL $1
           AND (
             (email_verified = false) OR
             (email_verified = true AND last_login IS NULL AND created_at < NOW() - INTERVAL '1 hour') OR
             (email_verified = true AND last_login IS NOT NULL AND lead_onboarding_completed = false AND created_at < NOW() - INTERVAL '1 day')
           )
         ORDER BY created_at DESC
-        LIMIT 100
-      `;
+        LIMIT 100`,
+        [intervalStr]
+      );
 
       stuckUsers = stuckUsersQuery.rows.map(user => ({
         id: user.id,
@@ -97,33 +100,35 @@ export async function GET(request: NextRequest) {
     }
 
     // 4. Daily Registration Trend (last N days)
-    const trendQuery = await sql`
-      SELECT
+    const trendQuery = await sql.query(
+      `SELECT
         DATE(created_at) as date,
         COUNT(*) as registrations,
         COUNT(CASE WHEN email_verified = true THEN 1 END) as verifications,
         COUNT(CASE WHEN last_login IS NOT NULL THEN 1 END) as activations
       FROM users
-      WHERE created_at >= NOW() - INTERVAL '${days} days'
+      WHERE created_at >= NOW() - INTERVAL $1
       GROUP BY DATE(created_at)
-      ORDER BY date DESC
-    `;
+      ORDER BY date DESC`,
+      [intervalStr]
+    );
 
     // 5. Drop-off Analysis
-    const dropOffQuery = await sql`
-      SELECT
+    const dropOffQuery = await sql.query(
+      `SELECT
         COUNT(CASE WHEN email_verified = false THEN 1 END) as dropped_at_verification,
         COUNT(CASE WHEN email_verified = true AND last_login IS NULL THEN 1 END) as dropped_after_verification,
         COUNT(CASE WHEN last_login IS NOT NULL AND lead_onboarding_completed = false THEN 1 END) as dropped_during_onboarding,
         COUNT(CASE WHEN lead_onboarding_completed = true AND lead_oto_shown = false THEN 1 END) as dropped_before_oto,
         COUNT(CASE WHEN lead_oto_shown = true AND subscription_status = 'free' THEN 1 END) as dropped_after_oto
       FROM users
-      WHERE created_at >= NOW() - INTERVAL '${days} days'
-    `;
+      WHERE created_at >= NOW() - INTERVAL $1`,
+      [intervalStr]
+    );
 
     // 6. Recent Activity (last 50 users)
-    const recentUsersQuery = await sql`
-      SELECT
+    const recentUsersQuery = await sql.query(
+      `SELECT
         id,
         name,
         email,
@@ -140,10 +145,11 @@ export async function GET(request: NextRequest) {
           ELSE 'unknown'
         END as user_stage
       FROM users
-      WHERE created_at >= NOW() - INTERVAL '${days} days'
+      WHERE created_at >= NOW() - INTERVAL $1
       ORDER BY created_at DESC
-      LIMIT 50
-    `;
+      LIMIT 50`,
+      [intervalStr]
+    );
 
     const metrics = metricsQuery.rows[0];
     const funnel = funnelQuery.rows[0];
@@ -227,7 +233,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('User insights error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch user insights' },
+      { error: 'Failed to fetch user insights', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
