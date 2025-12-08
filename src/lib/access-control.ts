@@ -643,3 +643,332 @@ export function detectTriggerFromMessage(message: string): string | null {
 
   return null;
 }
+
+// ============================================
+// PROFILE SUITE TOOLS ACCESS CONTROL
+// ============================================
+
+export type ToolAccessLevel = 'full' | 'limited' | 'locked';
+
+export interface ProfileSuiteToolAccess {
+  toolId: string;
+  minTier: ProgramTier;
+  // -1 = unlimited, 0 = locked, number = limit
+  kickstartLimit: number;
+  transformatieLimit: number;
+  vipLimit: number;
+  lockedMessage: string;
+  upgradeMessage: string;
+  // For guided tour ordering
+  tourPriority: number;
+  tourDescription: string;
+}
+
+/**
+ * Complete tool access mapping for ProfileSuite
+ * Maps each tool ID to its tier requirements and limits
+ */
+export const PROFILE_SUITE_TOOLS: ProfileSuiteToolAccess[] = [
+  // ============================================
+  // PROFIEL & PERSOONLIJKHEID
+  // ============================================
+  {
+    toolId: 'hechtingsstijl',
+    minTier: 'kickstart',
+    kickstartLimit: -1,  // Unlimited - improves Iris
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Start met Kickstart om je hechtingsstijl te ontdekken',
+    upgradeMessage: 'Dit verbetert je Iris coaching aanzienlijk',
+    tourPriority: 1,
+    tourDescription: 'Ontdek je hechtingsstijl - de basis van hoe je liefhebt'
+  },
+  {
+    toolId: 'emotionele-ready',
+    minTier: 'kickstart',
+    kickstartLimit: 1,   // 1x sample
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Upgrade voor de Emotionele Ready Scan',
+    upgradeMessage: 'Onbeperkt toegang met Transformatie',
+    tourPriority: 5,
+    tourDescription: 'Check of je emotioneel klaar bent voor dating'
+  },
+  {
+    toolId: 'zelfbeeld',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Zelfbeeld & Eerste Indruk is een Transformatie feature',
+    upgradeMessage: 'Diepe zelfinzichten voor betere dates',
+    tourPriority: 0,
+    tourDescription: ''
+  },
+  {
+    toolId: 'dating-stijl',
+    minTier: 'kickstart',
+    kickstartLimit: 1,   // 1x sample
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Upgrade voor onbeperkte Dating Stijl scans',
+    upgradeMessage: 'Ken je dating stijl voor betere matches',
+    tourPriority: 4,
+    tourDescription: 'Ontdek je unieke dating stijl en blinde vlekken'
+  },
+  {
+    toolId: 'profile-builder',
+    minTier: 'kickstart',
+    kickstartLimit: 1,   // 1x
+    transformatieLimit: 5,
+    vipLimit: -1,
+    lockedMessage: 'Upgrade naar Kickstart voor de Profiel Bouwer',
+    upgradeMessage: 'Bouw het perfecte dating profiel',
+    tourPriority: 2,
+    tourDescription: 'Maak je ideale profieltekst met AI hulp'
+  },
+  {
+    toolId: 'photo-analysis',
+    minTier: 'kickstart',
+    kickstartLimit: 2,   // 2x
+    transformatieLimit: 10,
+    vipLimit: -1,
+    lockedMessage: 'Upgrade naar Kickstart voor Foto Analyse',
+    upgradeMessage: 'AI feedback op je profielfoto\'s',
+    tourPriority: 3,
+    tourDescription: 'Krijg AI feedback op je profielfoto\'s'
+  },
+  {
+    toolId: 'platform-match',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Platform Match is een Transformatie feature',
+    upgradeMessage: 'Ontdek welke dating app perfect bij jou past',
+    tourPriority: 0,
+    tourDescription: ''
+  },
+  {
+    toolId: 'skills-scan',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Vaardigheden Scan is een Transformatie feature',
+    upgradeMessage: 'Ontdek je sterke dating punten',
+    tourPriority: 0,
+    tourDescription: ''
+  },
+  {
+    toolId: 'stats',
+    minTier: 'kickstart',
+    kickstartLimit: -1,  // Always available
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Upgrade naar Kickstart voor je Stats',
+    upgradeMessage: 'Zie je volledige voortgang',
+    tourPriority: 6,
+    tourDescription: 'Bekijk je voortgang en statistieken'
+  },
+
+  // ============================================
+  // COMMUNICATIE
+  // ============================================
+  {
+    toolId: 'chat-coach',
+    minTier: 'kickstart',
+    kickstartLimit: 10,  // 10 per day
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Upgrade naar Kickstart voor Chat Coach',
+    upgradeMessage: 'Je 24/7 AI dating coach',
+    tourPriority: 1,
+    tourDescription: 'Stel al je dating vragen aan je AI coach'
+  },
+  {
+    toolId: 'gespreks-assistent',
+    minTier: 'kickstart',
+    kickstartLimit: 1,   // 1x sample
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Upgrade voor onbeperkte Gespreks Analyse',
+    upgradeMessage: 'AI analyse van je dating gesprekken',
+    tourPriority: 5,
+    tourDescription: 'Laat AI je gesprekken analyseren'
+  },
+  {
+    toolId: 'openers',
+    minTier: 'kickstart',
+    kickstartLimit: 3,   // 3x
+    transformatieLimit: 20,
+    vipLimit: -1,
+    lockedMessage: 'Upgrade naar Kickstart voor Openingszinnen',
+    upgradeMessage: 'Genereer perfecte openingsberichten',
+    tourPriority: 3,
+    tourDescription: 'Genereer effectieve openingsberichten'
+  },
+  {
+    toolId: 'icebreakers',
+    minTier: 'kickstart',
+    kickstartLimit: 2,   // 2x
+    transformatieLimit: 15,
+    vipLimit: -1,
+    lockedMessage: 'Upgrade naar Kickstart voor IJsbrekers',
+    upgradeMessage: 'Perfecte gesprekstarters voor elke situatie',
+    tourPriority: 4,
+    tourDescription: 'Krijg perfecte gesprekstarters'
+  },
+  {
+    toolId: 'safety',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Veiligheidscheck is een Transformatie feature',
+    upgradeMessage: 'Analyseer gesprekken op rode vlaggen',
+    tourPriority: 0,
+    tourDescription: ''
+  },
+
+  // ============================================
+  // DATING & RELATIES
+  // ============================================
+  {
+    toolId: 'date-planner',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Date Planner is een Transformatie feature',
+    upgradeMessage: 'Plan geslaagde dates met checklists',
+    tourPriority: 0,
+    tourDescription: ''
+  },
+  {
+    toolId: 'date-ideeen',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Date Ideeën is een Transformatie feature',
+    upgradeMessage: 'Krijg inspiratie voor unieke dates',
+    tourPriority: 0,
+    tourDescription: ''
+  }
+];
+
+/**
+ * Get tool access info by tool ID
+ */
+export function getToolAccessInfo(toolId: string): ProfileSuiteToolAccess | null {
+  return PROFILE_SUITE_TOOLS.find(t => t.toolId === toolId) || null;
+}
+
+/**
+ * Check if user has access to a specific ProfileSuite tool
+ */
+export function checkProfileSuiteToolAccess(
+  toolId: string,
+  userTier: ProgramTier,
+  usedCount: number = 0
+): {
+  accessLevel: ToolAccessLevel;
+  hasAccess: boolean;
+  remaining: number | 'unlimited';
+  limit: number;
+  lockedMessage: string;
+  upgradeMessage: string;
+  upgradeTier: ProgramTier | null;
+} {
+  const toolInfo = getToolAccessInfo(toolId);
+
+  if (!toolInfo) {
+    return {
+      accessLevel: 'locked',
+      hasAccess: false,
+      remaining: 0,
+      limit: 0,
+      lockedMessage: 'Tool niet gevonden',
+      upgradeMessage: '',
+      upgradeTier: null
+    };
+  }
+
+  // Check if user tier meets minimum requirement
+  if (!hasAccess(userTier, toolInfo.minTier)) {
+    return {
+      accessLevel: 'locked',
+      hasAccess: false,
+      remaining: 0,
+      limit: 0,
+      lockedMessage: toolInfo.lockedMessage,
+      upgradeMessage: toolInfo.upgradeMessage,
+      upgradeTier: toolInfo.minTier
+    };
+  }
+
+  // Get limit based on user tier
+  let limit: number;
+  switch (userTier) {
+    case 'vip':
+      limit = toolInfo.vipLimit;
+      break;
+    case 'transformatie':
+      limit = toolInfo.transformatieLimit;
+      break;
+    case 'kickstart':
+      limit = toolInfo.kickstartLimit;
+      break;
+    default:
+      limit = 0;
+  }
+
+  // Unlimited access
+  if (limit === -1) {
+    return {
+      accessLevel: 'full',
+      hasAccess: true,
+      remaining: 'unlimited',
+      limit: -1,
+      lockedMessage: '',
+      upgradeMessage: '',
+      upgradeTier: null
+    };
+  }
+
+  // Limited access
+  const remaining = Math.max(0, limit - usedCount);
+  const nextTier = getUpgradePath(userTier);
+
+  return {
+    accessLevel: remaining > 0 ? 'limited' : 'locked',
+    hasAccess: remaining > 0,
+    remaining,
+    limit,
+    lockedMessage: remaining === 0
+      ? `Je hebt je ${limit}x limiet bereikt`
+      : toolInfo.lockedMessage,
+    upgradeMessage: remaining === 0
+      ? `Upgrade naar ${nextTier ? TIER_CONFIG[nextTier].displayName : 'hoger'} voor meer`
+      : toolInfo.upgradeMessage,
+    upgradeTier: nextTier
+  };
+}
+
+/**
+ * Get tools available for guided tour (Kickstart)
+ * Returns tools sorted by tour priority
+ */
+export function getKickstartTourTools(): ProfileSuiteToolAccess[] {
+  return PROFILE_SUITE_TOOLS
+    .filter(t => t.minTier === 'kickstart' && t.tourPriority > 0)
+    .sort((a, b) => a.tourPriority - b.tourPriority);
+}
+
+/**
+ * Get locked tools for a tier (for showing upgrade prompts)
+ */
+export function getLockedToolsForTier(userTier: ProgramTier): ProfileSuiteToolAccess[] {
+  return PROFILE_SUITE_TOOLS.filter(t => !hasAccess(userTier, t.minTier));
+}
