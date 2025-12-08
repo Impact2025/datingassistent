@@ -6,7 +6,6 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Sparkles, TrendingUp, Target, Calendar, ArrowRight,
@@ -547,7 +546,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                     quote=""
                     actionLabel={status.isCompleted ? (status.canRetake ? 'Opnieuw Doen' : 'Bekijk Resultaat') : 'Start Scan'}
                     onAction={() => {
-                      if (status.isCompleted && !status.canRetake) {
+                      if (status.isCompleted && status.assessmentId) {
                         // Navigate to results page
                         router.push(`/scans/${scanType}/${status.assessmentId}`);
                       } else {
