@@ -82,8 +82,9 @@ export function ZelfbeeldFlow() {
 
   if (currentStep === 'intro') {
     return (
-      <div className="max-w-3xl mx-auto p-6 space-y-6">
-        <div className="text-center space-y-4">
+      <div className="h-full overflow-y-auto">
+        <div className="max-w-3xl mx-auto p-6 space-y-6">
+          <div className="text-center space-y-4">
           <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto">
             <Camera className="w-10 h-10 text-white" />
           </div>
@@ -116,20 +117,22 @@ export function ZelfbeeldFlow() {
           </CardContent>
         </Card>
 
-        <Button
-          onClick={handleStart}
-          className="w-full h-12 text-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
-        >
-          Start Analyse
-          <ArrowRight className="w-5 h-5 ml-2" />
-        </Button>
+          <Button
+            onClick={handleStart}
+            className="w-full h-12 text-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+          >
+            Start Analyse
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
+        </div>
       </div>
     );
   }
 
   if (currentStep === 'input') {
     return (
-      <div className="max-w-3xl mx-auto p-6 space-y-6">
+      <div className="h-full overflow-y-auto">
+        <div className="max-w-3xl mx-auto p-6 space-y-6">
         <div className="space-y-2">
           <h2 className="text-2xl font-bold">Deel je profiel content</h2>
           <p className="text-gray-600">
@@ -190,22 +193,23 @@ export function ZelfbeeldFlow() {
           </CardContent>
         </Card>
 
-        <div className="flex gap-4">
-          <Button
-            variant="outline"
-            onClick={() => setCurrentStep('intro')}
-            className="flex-1"
-          >
-            Terug
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            disabled={!bioText.trim()}
-            className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
-          >
-            Analyseer
-            <Sparkles className="w-5 h-5 ml-2" />
-          </Button>
+          <div className="flex gap-4">
+            <Button
+              variant="outline"
+              onClick={() => setCurrentStep('intro')}
+              className="flex-1"
+            >
+              Terug
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={!bioText.trim()}
+              className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+            >
+              Analyseer
+              <Sparkles className="w-5 h-5 ml-2" />
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -237,7 +241,8 @@ export function ZelfbeeldFlow() {
     const { analysis, vibeMeters } = results;
 
     return (
-      <div className="max-w-5xl mx-auto p-6 space-y-6">
+      <div className="h-full overflow-y-auto">
+        <div className="max-w-5xl mx-auto p-6 space-y-6 pb-12">
         <div className="text-center space-y-2">
           <Badge className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
             Je Zelfbeeld Profiel
@@ -338,19 +343,20 @@ export function ZelfbeeldFlow() {
           </Card>
         )}
 
-        <Button
-          onClick={() => {
-            setBioText('');
-            setChatExample('');
-            setPhotoUrls([]);
-            setResults(null);
-            setCurrentStep('intro');
-          }}
-          variant="outline"
-          className="w-full"
-        >
-          Nieuwe Analyse
-        </Button>
+          <Button
+            onClick={() => {
+              setBioText('');
+              setChatExample('');
+              setPhotoUrls([]);
+              setResults(null);
+              setCurrentStep('intro');
+            }}
+            variant="outline"
+            className="w-full"
+          >
+            Nieuwe Analyse
+          </Button>
+        </div>
       </div>
     );
   }
