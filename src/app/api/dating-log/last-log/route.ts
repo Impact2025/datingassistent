@@ -25,6 +25,20 @@ export async function GET(request: Request) {
       );
     }
 
+    // Get user's registration date to check membership duration
+    const userResult = await sql`
+      SELECT created_at FROM users WHERE id = ${user.id}
+    `;
+    const userCreatedAt = userResult.length > 0 ? new Date(userResult[0].created_at) : null;
+
+    // Calculate days since registration
+    let daysSinceRegistration = 0;
+    if (userCreatedAt) {
+      const now = new Date();
+      const diffTime = Math.abs(now.getTime() - userCreatedAt.getTime());
+      daysSinceRegistration = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
+
     // Get the most recent weekly log for this user - handle missing table
     let lastLogDate = null;
     let hasLoggedCurrentWeek = false;
@@ -96,7 +110,9 @@ export async function GET(request: Request) {
     }
 
     // Should show notification?
-    const shouldShowNotification = isMonday && !hasLoggedCurrentWeek && remindersEnabled;
+    // Only show if user has been a member for at least 3 days
+    const hasBeenMemberLongEnough = daysSinceRegistration >= 3;
+    const shouldShowNotification = isMonday && !hasLoggedCurrentWeek && remindersEnabled && hasBeenMemberLongEnough;
 
     return NextResponse.json({
       lastLogDate,
@@ -104,7 +120,9 @@ export async function GET(request: Request) {
       isMonday,
       hasLoggedCurrentWeek,
       currentWeekStart: currentWeekStartStr,
-      remindersEnabled
+      remindersEnabled,
+      daysSinceRegistration,
+      hasBeenMemberLongEnough
     });
 
   } catch (error) {
