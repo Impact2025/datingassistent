@@ -185,6 +185,66 @@ export async function POST(request: NextRequest) {
         WHERE id = ${assessmentId}
       `;
 
+      // ✅ WRITE TO SCAN HISTORY SYSTEM
+      try {
+        // Insert into user_scan_history
+        await sql`
+          INSERT INTO user_scan_history (
+            user_id, scan_type, assessment_id, completed_at, total_time_seconds,
+            confidence_score, primary_result, scores_json, full_results
+          ) VALUES (
+            ${userId}, 'hechtingsstijl', ${assessmentId}, NOW(), ${totalTimeSeconds},
+            ${validity.confidenceScore}, ${scores.primaryStyle},
+            ${JSON.stringify(scores)}::jsonb,
+            ${JSON.stringify({
+              primaryStyle: scores.primaryStyle,
+              secondaryStyle: scores.secondaryStyle,
+              scores: scores,
+              aiAnalysis: aiAnalysis,
+              confidence: validity.confidenceScore
+            })}::jsonb
+          )
+          ON CONFLICT (scan_type, assessment_id) DO NOTHING
+        `;
+
+        // Update or insert scan_retake_status
+        await sql`
+          INSERT INTO scan_retake_status (
+            user_id, scan_type, total_attempts, last_completed_at,
+            can_retake_after, cooldown_days, max_attempts_per_year
+          ) VALUES (
+            ${userId}, 'hechtingsstijl', 1, NOW(),
+            NOW() + INTERVAL '90 days', 90, 4
+          )
+          ON CONFLICT (user_id, scan_type) DO UPDATE SET
+            total_attempts = scan_retake_status.total_attempts + 1,
+            last_completed_at = NOW(),
+            can_retake_after = NOW() + INTERVAL '90 days',
+            updated_at = NOW()
+        `;
+
+        // Update user_scan_progress
+        await sql`
+          INSERT INTO user_scan_progress (
+            user_id, scans_completed, hechtingsstijl_completed,
+            first_scan_completed_at, last_scan_completed_at
+          ) VALUES (
+            ${userId}, 1, TRUE, NOW(), NOW()
+          )
+          ON CONFLICT (user_id) DO UPDATE SET
+            scans_completed = (
+              SELECT COUNT(DISTINCT scan_type) FROM user_scan_history WHERE user_id = ${userId}
+            ),
+            hechtingsstijl_completed = TRUE,
+            last_scan_completed_at = NOW(),
+            total_retakes = user_scan_progress.total_retakes + 1,
+            updated_at = NOW()
+        `;
+      } catch (historyError: any) {
+        // Log but don't fail the scan completion
+        console.error('Failed to write to scan history:', historyError);
+      }
+
         // Store individual responses
         for (const response of responses) {
           await sql`

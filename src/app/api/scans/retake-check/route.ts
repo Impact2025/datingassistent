@@ -73,13 +73,14 @@ export async function POST(request: NextRequest) {
 
     const policy = RETAKE_POLICIES[scanType];
 
-    // Use database function to check retake eligibility
-    const result = await db.query(
-      `SELECT * FROM can_user_retake_scan($1, $2)`,
-      [userId, scanType]
-    );
+    // Check retake eligibility directly (without PL/pgSQL function)
+    const statusQuery = await db.query`
+      SELECT total_attempts, last_completed_at, can_retake_after
+      FROM scan_retake_status
+      WHERE user_id = ${userId} AND scan_type = ${scanType}
+    `;
 
-    if (result.rows.length === 0) {
+    if (statusQuery.rows.length === 0) {
       // No record - user has never taken this scan
       return NextResponse.json({
         canRetake: true,
@@ -93,22 +94,20 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const check = result.rows[0];
+    const status = statusQuery.rows[0];
+    const now = new Date();
+    const canRetakeAt = status.can_retake_after ? new Date(status.can_retake_after) : null;
 
-    // Get additional context
-    const statusQuery = await db.query(
-      `SELECT total_attempts, last_completed_at, can_retake_after
-       FROM scan_retake_status
-       WHERE user_id = $1 AND scan_type = $2`,
-      [userId, scanType]
-    );
-
-    const status = statusQuery.rows[0] || {};
+    // Determine if user can retake
+    const canRetake = !canRetakeAt || canRetakeAt <= now;
+    const daysRemaining = canRetakeAt && canRetakeAt > now
+      ? Math.ceil((canRetakeAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+      : 0;
 
     // Build response based on eligibility
     const response: any = {
-      canRetake: check.can_retake,
-      reason: check.reason,
+      canRetake: canRetake,
+      reason: canRetake ? 'cooldown_passed' : 'cooldown_active',
       scanType,
       totalAttempts: status.total_attempts || 0,
       lastCompletedAt: status.last_completed_at,
@@ -119,17 +118,17 @@ export async function POST(request: NextRequest) {
       }
     };
 
-    if (!check.can_retake) {
-      response.daysRemaining = check.days_remaining;
-      response.canRetakeAt = check.can_retake_at;
-      response.message = `You can retake the ${policy.name} in ${check.days_remaining} days (${new Date(check.can_retake_at).toLocaleDateString()})`;
+    if (!canRetake) {
+      response.daysRemaining = daysRemaining;
+      response.canRetakeAt = canRetakeAt;
+      response.message = `You can retake the ${policy.name} in ${daysRemaining} days (${canRetakeAt ? new Date(canRetakeAt).toLocaleDateString() : 'N/A'})`;
 
       // Scientific reasoning
-      response.reasoning = check.days_remaining > 60
+      response.reasoning = daysRemaining > 60
         ? `For accurate measurement, we recommend waiting ${policy.cooldownDays} days between scans. This ensures meaningful changes can be detected.`
-        : `Almost there! Wait ${check.days_remaining} more days for the most reliable results.`;
+        : `Almost there! Wait ${daysRemaining} more days for the most reliable results.`;
     } else {
-      response.message = check.reason === 'first_attempt'
+      response.message = response.reason === 'first_attempt'
         ? `Ready to take your first ${policy.name}!`
         : `You're eligible to retake the ${policy.name}!`;
 

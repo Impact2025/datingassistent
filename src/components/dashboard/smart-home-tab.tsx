@@ -100,7 +100,7 @@ const getScanMetadata = (suggestion: Suggestion) => {
   // Map scan type to quote and badge
   const scanData: Record<string, { quote: string; badgeText: string; color: 'pink' | 'purple' | 'blue' | 'green' }> = {
     'hechtingsstijl': {
-      quote: 'Begrijpen hoe jij liefhebt is de basis van betere dates',
+      quote: 'Begrijpen hoe jij liefheeft is de basis van betere dates',
       badgeText: 'Aanbevolen',
       color: 'purple'
     },
@@ -123,6 +123,22 @@ const getScanMetadata = (suggestion: Suggestion) => {
   };
 };
 
+// Helper to convert scan status to ScanCard completion status
+const getCompletionStatus = (scanType: string, scanStatusMap: Record<string, any>) => {
+  const status = scanStatusMap[scanType];
+
+  if (!status) return undefined;
+
+  return {
+    isCompleted: status.isCompleted,
+    completedAt: status.lastCompletedAt,
+    canRetake: status.canRetake,
+    daysUntilRetake: status.daysUntilRetake,
+    latestResult: status.latestResult?.primaryResult,
+    totalAttempts: status.totalAttempts
+  };
+};
+
 export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
   const router = useRouter();
   const [userContext, setUserContext] = useState<UserContext | null>(null);
@@ -131,6 +147,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
   const [nextAction, setNextAction] = useState<Suggestion | null>(null);
   const [loading, setLoading] = useState(true);
   const [showWelcomeVideo, setShowWelcomeVideo] = useState(false);
+  const [scanStatus, setScanStatus] = useState<Record<string, any>>({});
 
   // Video state
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -197,14 +214,25 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
         // Track daily login for streak & points
         trackLogin();
 
-        // Fetch user profile en journey data
-        const [profileRes, journeyRes] = await Promise.all([
+        // Fetch user profile, journey data, and scan status
+        const [profileRes, journeyRes, scanStatusRes] = await Promise.all([
           fetch(`/api/user/profile?userId=${userId}`),
-          fetch(`/api/journey/status?userId=${userId}`)
+          fetch(`/api/journey/status?userId=${userId}`),
+          fetch(`/api/scans/status?userId=${userId}`)
         ]);
 
         const profile = profileRes.ok ? await profileRes.json() : null;
         const journey = journeyRes.ok ? await journeyRes.json() : null;
+        const scanData = scanStatusRes.ok ? await scanStatusRes.json() : null;
+
+        // Map scan status by scan type for easy lookup
+        if (scanData?.scans) {
+          const statusMap: Record<string, any> = {};
+          scanData.scans.forEach((scan: any) => {
+            statusMap[scan.scanType] = scan;
+          });
+          setScanStatus(statusMap);
+        }
 
         // Build user context
         const context: UserContext = {
@@ -433,6 +461,9 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
               (() => {
                 const IconComponent = iconMap[nextAction.icon] || Sparkles;
                 const scanMeta = getScanMetadata(nextAction);
+                const scanType = nextAction.actionHref?.replace('/', '').replace('-', '-');
+                const completionStatus = getCompletionStatus(scanType || '', scanStatus);
+
                 return (
                   <ScanCard
                     icon={<IconComponent />}
@@ -443,6 +474,8 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                     onAction={() => handleSuggestionClick(nextAction)}
                     badgeText={scanMeta.badgeText}
                     color={scanMeta.color}
+                    completionStatus={completionStatus}
+                    onRetake={() => handleSuggestionClick(nextAction)}
                   />
                 );
               })()
@@ -552,6 +585,8 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                   color: 'pink' as const
                 };
 
+                const completionStatus = getCompletionStatus(scanType || '', scanStatus);
+
                 return (
                   <motion.div
                     key={index}
@@ -569,6 +604,8 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                       onAction={() => handleQuickActionClick(action)}
                       badgeText={scanMeta.badgeText}
                       color={scanMeta.color}
+                      completionStatus={completionStatus}
+                      onRetake={() => handleQuickActionClick(action)}
                     />
                   </motion.div>
                 );
@@ -627,6 +664,9 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
             if (isScan) {
               // Render scans with premium ScanCard
               const scanMeta = getScanMetadata(suggestion);
+              const scanType = suggestion.actionHref?.replace('/', '');
+              const completionStatus = getCompletionStatus(scanType || '', scanStatus);
+
               return (
                 <motion.div
                   key={suggestion.id}
@@ -643,6 +683,8 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                     onAction={() => handleSuggestionClick(suggestion)}
                     badgeText={scanMeta.badgeText}
                     color={scanMeta.color}
+                    completionStatus={completionStatus}
+                    onRetake={() => handleSuggestionClick(suggestion)}
                   />
                 </motion.div>
               );

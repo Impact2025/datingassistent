@@ -66,11 +66,35 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Use helper function from migration
-    const result = await db.query(
-      `SELECT * FROM get_user_scan_summary($1)`,
-      [userIdNum]
-    );
+    // Query scan status directly (without PL/pgSQL function)
+    const result = await db.query`
+      SELECT
+        s.scan_type,
+        (h.id IS NOT NULL) as is_completed,
+        h.completed_at as last_completed_at,
+        COALESCE(srs.total_attempts, 0) as total_attempts,
+        (srs.can_retake_after IS NULL OR srs.can_retake_after <= NOW()) as can_retake,
+        CASE
+          WHEN srs.can_retake_after IS NULL OR srs.can_retake_after <= NOW() THEN 0
+          ELSE CEIL(EXTRACT(EPOCH FROM (srs.can_retake_after - NOW())) / 86400)::INTEGER
+        END as days_until_retake,
+        h.primary_result as latest_primary_result,
+        h.confidence_score as latest_confidence_score,
+        h.id as assessment_id
+      FROM (
+        VALUES
+          ('hechtingsstijl'),
+          ('dating-style'),
+          ('emotional-readiness')
+      ) AS s(scan_type)
+      LEFT JOIN LATERAL (
+        SELECT * FROM user_scan_history
+        WHERE user_id = ${userIdNum} AND scan_type = s.scan_type
+        ORDER BY completed_at DESC
+        LIMIT 1
+      ) h ON TRUE
+      LEFT JOIN scan_retake_status srs ON srs.user_id = ${userIdNum} AND srs.scan_type = s.scan_type
+    `;
 
     const scans: ScanStatus[] = result.rows.map(row => ({
       scanType: row.scan_type,
@@ -85,7 +109,7 @@ export async function GET(request: NextRequest) {
       latestResult: {
         primaryResult: row.latest_primary_result,
         confidenceScore: row.latest_confidence_score,
-        assessmentId: null // Will be populated separately if needed
+        assessmentId: row.assessment_id
       }
     }));
 
