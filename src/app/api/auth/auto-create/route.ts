@@ -102,6 +102,21 @@ export async function POST(req: NextRequest) {
         amount: parseFloat(order.amount),
       });
 
+      // Send admin notification for existing user upgrade (non-blocking)
+      // This is important! Existing users who upgrade should trigger notifications too
+      notifyAdminNewLead({
+        userId: existingUser.id,
+        name: existingUser.name,
+        email: existingUser.email,
+        registrationSource: 'api',
+        photoScore: null,
+        intakeData: null,
+        otoShown: true,
+        otoAccepted: true, // They paid, so they converted!
+      }).catch(err => console.error('Failed to notify admin of existing user upgrade:', err));
+
+      console.log(`✅ Existing user ${existingUser.id} upgraded, admin notified`);
+
       return NextResponse.json({
         success: true,
         user: existingUser,
