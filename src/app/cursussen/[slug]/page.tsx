@@ -9,11 +9,23 @@ import { PrimaryButton, SecondaryButton } from '@/components/ui/button-system';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Play, CheckCircle, Lock, Clock, BookOpen } from 'lucide-react';
 import type { CursusMetVoortgang } from '@/types/cursus.types';
+import { getCanonicalSlug } from '@/lib/cursus-slug-utils';
 
 export default function CursusDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const slug = params.slug as string;
+  const rawSlug = params.slug as string;
+
+  // ✨ WERELDKLASSE: Redirect to canonical URL if using alias
+  useEffect(() => {
+    const { canonical, wasAlias } = getCanonicalSlug(rawSlug);
+    if (wasAlias) {
+      console.log(`🔄 Redirecting from alias ${rawSlug} to canonical ${canonical}`);
+      router.replace(`/cursussen/${canonical}`);
+    }
+  }, [rawSlug, router]);
+
+  const slug = rawSlug; // API will handle the alias resolution
 
   const [cursus, setCursus] = useState<CursusMetVoortgang | null>(null);
   const [loading, setLoading] = useState(true);

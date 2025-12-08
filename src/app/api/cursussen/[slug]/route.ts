@@ -2,17 +2,27 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
+import { resolveSlug } from '@/lib/cursus-slug-utils';
 
 /**
  * GET /api/cursussen/[slug]
  * Haal volledige cursus op inclusief lessen, secties en quiz vragen
+ *
+ * ✨ WERELDKLASSE FEATURE: Ondersteunt slug aliases voor backwards compatibility
  */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = await params;
+    const { slug: rawSlug } = await params;
+
+    // Resolve slug to canonical version (supports aliases)
+    const slug = resolveSlug(rawSlug);
+
+    if (rawSlug !== slug) {
+      console.log(`🔄 Slug alias resolved: ${rawSlug} -> ${slug}`);
+    }
 
     // Try to get user from JWT token
     let userId: number | null = null;

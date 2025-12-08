@@ -13,6 +13,7 @@ import { InsightSectie } from './components/InsightSectie';
 import { ExamplesSectie } from './components/ExamplesSectie';
 import { InteractiveSectie } from './components/InteractiveSectie';
 import { useUser } from '@/providers/user-provider';
+import { getCanonicalSlug } from '@/lib/cursus-slug-utils';
 
 interface LesData {
   id: number;
@@ -42,8 +43,19 @@ interface LesData {
 export default function LesViewerPage() {
   const params = useParams();
   const router = useRouter();
-  const { slug, lesSlug } = params as { slug: string; lesSlug: string };
+  const { slug: rawSlug, lesSlug } = params as { slug: string; lesSlug: string };
   const { user } = useUser();
+
+  // ✨ WERELDKLASSE: Redirect to canonical URL if using alias
+  useEffect(() => {
+    const { canonical, wasAlias } = getCanonicalSlug(rawSlug);
+    if (wasAlias) {
+      console.log(`🔄 Redirecting from alias ${rawSlug} to canonical ${canonical}`);
+      router.replace(`/cursussen/${canonical}/${lesSlug}`);
+    }
+  }, [rawSlug, lesSlug, router]);
+
+  const slug = rawSlug; // API will handle the alias resolution
 
   const [les, setLes] = useState<LesData | null>(null);
   const [loading, setLoading] = useState(true);

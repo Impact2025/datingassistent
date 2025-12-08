@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getServerSession } from 'next-auth';
+import { resolveSlug } from '@/lib/cursus-slug-utils';
 
 /**
  * GET /api/cursussen/[slug]/[lesSlug]
  * Haal specifieke les op met alle secties en quiz vragen
+ *
+ * ✨ WERELDKLASSE FEATURE: Ondersteunt slug aliases voor backwards compatibility
  */
 export async function GET(
   request: NextRequest,
@@ -12,7 +15,15 @@ export async function GET(
 ) {
   try {
     // Fixed: Await params as required by Next.js 15
-    const { slug, lesSlug } = await params;
+    const { slug: rawSlug, lesSlug } = await params;
+
+    // Resolve slug to canonical version (supports aliases)
+    const slug = resolveSlug(rawSlug);
+
+    if (rawSlug !== slug) {
+      console.log(`🔄 Slug alias resolved: ${rawSlug} -> ${slug}`);
+    }
+
     console.log(`🚀 Fetching lesson: ${lesSlug} from course: ${slug}`);
 
     // 1. Haal cursus op
@@ -165,7 +176,10 @@ export async function POST(
   { params }: { params: Promise<{ slug: string; lesSlug: string }> }
 ) {
   try {
-    const { slug, lesSlug } = await params;
+    const { slug: rawSlug, lesSlug } = await params;
+
+    // Resolve slug to canonical version (supports aliases)
+    const slug = resolveSlug(rawSlug);
     const body = await request.json();
     const { userId, sectieId, lesId, cursusId, status, quizScore, quizAntwoorden, reflectieAntwoord, opdrachtVoltooide, actieplanVoltooide } = body;
 
