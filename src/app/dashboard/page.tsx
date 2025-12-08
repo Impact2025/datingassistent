@@ -378,7 +378,7 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
         <div className="text-center">
           {/* Logo */}
-          <div className="mx-auto mb-8 animate-pulse">
+          <div className="flex justify-center mb-8 animate-pulse">
             <Image
               src="/images/LogoDatingAssistent.png"
               alt="DatingAssistent Logo"
