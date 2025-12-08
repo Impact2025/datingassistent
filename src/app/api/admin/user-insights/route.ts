@@ -37,8 +37,7 @@ export async function GET(request: NextRequest) {
       FROM users
     `;
 
-    // 2. Conversion Funnel - Use parameterized query
-    const intervalStr = `${days} days`;
+    // 2. Conversion Funnel - Use make_interval for parameterized query
     const funnelQuery = await sql.query(
       `SELECT
         COUNT(*) as registered,
@@ -48,8 +47,8 @@ export async function GET(request: NextRequest) {
         COUNT(CASE WHEN lead_oto_shown = true THEN 1 END) as saw_oto,
         COUNT(CASE WHEN subscription_status != 'free' THEN 1 END) as converted_paid
       FROM users
-      WHERE created_at >= NOW() - INTERVAL $1`,
-      [intervalStr]
+      WHERE created_at >= NOW() - make_interval(days => $1)`,
+      [days]
     );
 
     // 3. Stuck Users Detection
@@ -75,7 +74,7 @@ export async function GET(request: NextRequest) {
           END as stuck_reason
         FROM users
         WHERE
-          created_at >= NOW() - INTERVAL $1
+          created_at >= NOW() - make_interval(days => $1)
           AND (
             (email_verified = false) OR
             (email_verified = true AND last_login IS NULL AND created_at < NOW() - INTERVAL '1 hour') OR
@@ -83,7 +82,7 @@ export async function GET(request: NextRequest) {
           )
         ORDER BY created_at DESC
         LIMIT 100`,
-        [intervalStr]
+        [days]
       );
 
       stuckUsers = stuckUsersQuery.rows.map(user => ({
@@ -107,10 +106,10 @@ export async function GET(request: NextRequest) {
         COUNT(CASE WHEN email_verified = true THEN 1 END) as verifications,
         COUNT(CASE WHEN last_login IS NOT NULL THEN 1 END) as activations
       FROM users
-      WHERE created_at >= NOW() - INTERVAL $1
+      WHERE created_at >= NOW() - make_interval(days => $1)
       GROUP BY DATE(created_at)
       ORDER BY date DESC`,
-      [intervalStr]
+      [days]
     );
 
     // 5. Drop-off Analysis
@@ -122,8 +121,8 @@ export async function GET(request: NextRequest) {
         COUNT(CASE WHEN lead_onboarding_completed = true AND lead_oto_shown = false THEN 1 END) as dropped_before_oto,
         COUNT(CASE WHEN lead_oto_shown = true AND subscription_status = 'free' THEN 1 END) as dropped_after_oto
       FROM users
-      WHERE created_at >= NOW() - INTERVAL $1`,
-      [intervalStr]
+      WHERE created_at >= NOW() - make_interval(days => $1)`,
+      [days]
     );
 
     // 6. Recent Activity (last 50 users)
@@ -145,10 +144,10 @@ export async function GET(request: NextRequest) {
           ELSE 'unknown'
         END as user_stage
       FROM users
-      WHERE created_at >= NOW() - INTERVAL $1
+      WHERE created_at >= NOW() - make_interval(days => $1)
       ORDER BY created_at DESC
       LIMIT 50`,
-      [intervalStr]
+      [days]
     );
 
     const metrics = metricsQuery.rows[0];
