@@ -13,6 +13,7 @@ import {
   Zap, Crown, User, Lightbulb, Play, Pause, Volume2, VolumeX, Brain
 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
+import { ScanCard } from './scan-card';
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -84,6 +85,42 @@ const borderColorMap: Record<string, string> = {
   'yellow': 'border-yellow-200 hover:border-yellow-300',
   'gold': 'border-yellow-200 hover:border-yellow-300',
   'purple-pink': 'border-purple-300 hover:border-pink-400'
+};
+
+// Helper to check if suggestion is a scan
+const isScanSuggestion = (suggestion: Suggestion) => {
+  const scanUrls = ['/hechtingsstijl', '/datingstijl', '/emotionele-readiness'];
+  return suggestion.actionHref && scanUrls.some(url => suggestion.actionHref?.includes(url));
+};
+
+// Helper to get scan metadata for ScanCard
+const getScanMetadata = (suggestion: Suggestion) => {
+  const scanType = suggestion.actionHref?.replace('/', '') || '';
+
+  // Map scan type to quote and badge
+  const scanData: Record<string, { quote: string; badgeText: string; color: 'pink' | 'purple' | 'blue' | 'green' }> = {
+    'hechtingsstijl': {
+      quote: 'Begrijpen hoe jij liefhebt is de basis van betere dates',
+      badgeText: 'Aanbevolen',
+      color: 'purple'
+    },
+    'datingstijl': {
+      quote: 'Ontdek je dating patronen en blinde vlekken',
+      badgeText: 'Populair',
+      color: 'pink'
+    },
+    'emotionele-readiness': {
+      quote: 'Ben je klaar voor dating? Leer het in 3-4 minuten',
+      badgeText: 'Tip',
+      color: 'blue'
+    }
+  };
+
+  return scanData[scanType] || {
+    quote: 'Ontdek meer over jezelf in een paar minuten',
+    badgeText: 'Aanbevolen',
+    color: 'pink' as const
+  };
 };
 
 export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
@@ -391,53 +428,74 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
             animate={{ opacity: 1, y: 0 }}
             className="relative"
           >
-            <Card className={cn(
-              "border-2 shadow-lg overflow-hidden",
-              borderColorMap[nextAction.color] || 'border-pink-200'
-            )}>
-              {/* Badge - Responsive positioning */}
-              <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
-                <Badge className="bg-pink-500 text-white text-xs">Aanbevolen</Badge>
-              </div>
-              <CardContent className="p-4 sm:p-6 pt-10 sm:pt-6">
-                {/* Mobile: Icon + Title inline, Desktop: Side by side layout */}
-                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
-                  {/* Icon + Title row on mobile */}
-                  <div className="flex items-center gap-3 sm:block">
-                    <div className={cn(
-                      "w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center flex-shrink-0",
-                      colorMap[nextAction.color] || 'bg-pink-100 text-pink-600'
-                    )}>
-                      {(() => {
-                        const IconComponent = iconMap[nextAction.icon];
-                        return IconComponent ? <IconComponent className="w-5 h-5 sm:w-7 sm:h-7" /> : <Sparkles className="w-5 h-5 sm:w-7 sm:h-7" />;
-                      })()}
-                    </div>
-                    {/* Title visible on mobile next to icon */}
-                    <h3 className="sm:hidden text-lg font-bold text-gray-900">
-                      {nextAction.title}
-                    </h3>
-                  </div>
-                  <div className="flex-1">
-                    {/* Title hidden on mobile (shown above) */}
-                    <h3 className="hidden sm:block text-xl font-bold text-gray-900 mb-2">
-                      {nextAction.title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">
-                      {nextAction.description}
-                    </p>
-                    <Button
-                      onClick={() => handleSuggestionClick(nextAction)}
-                      className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
-                      size="default"
-                    >
-                      {nextAction.actionText}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </div>
+            {isScanSuggestion(nextAction) ? (
+              // Use premium ScanCard for scans
+              (() => {
+                const IconComponent = iconMap[nextAction.icon] || Sparkles;
+                const scanMeta = getScanMetadata(nextAction);
+                return (
+                  <ScanCard
+                    icon={<IconComponent />}
+                    title={nextAction.title}
+                    subtitle={nextAction.description}
+                    quote={scanMeta.quote}
+                    actionLabel={nextAction.actionText}
+                    onAction={() => handleSuggestionClick(nextAction)}
+                    badgeText={scanMeta.badgeText}
+                    color={scanMeta.color}
+                  />
+                );
+              })()
+            ) : (
+              // Regular card for non-scans
+              <Card className={cn(
+                "border-2 shadow-lg overflow-hidden",
+                borderColorMap[nextAction.color] || 'border-pink-200'
+              )}>
+                {/* Badge - Responsive positioning */}
+                <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
+                  <Badge className="bg-pink-500 text-white text-xs">Aanbevolen</Badge>
                 </div>
-              </CardContent>
-            </Card>
+                <CardContent className="p-4 sm:p-6 pt-10 sm:pt-6">
+                  {/* Mobile: Icon + Title inline, Desktop: Side by side layout */}
+                  <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                    {/* Icon + Title row on mobile */}
+                    <div className="flex items-center gap-3 sm:block">
+                      <div className={cn(
+                        "w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center flex-shrink-0",
+                        colorMap[nextAction.color] || 'bg-pink-100 text-pink-600'
+                      )}>
+                        {(() => {
+                          const IconComponent = iconMap[nextAction.icon];
+                          return IconComponent ? <IconComponent className="w-5 h-5 sm:w-7 sm:h-7" /> : <Sparkles className="w-5 h-5 sm:w-7 sm:h-7" />;
+                        })()}
+                      </div>
+                      {/* Title visible on mobile next to icon */}
+                      <h3 className="sm:hidden text-lg font-bold text-gray-900">
+                        {nextAction.title}
+                      </h3>
+                    </div>
+                    <div className="flex-1">
+                      {/* Title hidden on mobile (shown above) */}
+                      <h3 className="hidden sm:block text-xl font-bold text-gray-900 mb-2">
+                        {nextAction.title}
+                      </h3>
+                      <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">
+                        {nextAction.description}
+                      </p>
+                      <Button
+                        onClick={() => handleSuggestionClick(nextAction)}
+                        className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+                        size="default"
+                      >
+                        {nextAction.actionText}
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </motion.div>
         )}
 
@@ -465,6 +523,58 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
             {phaseActions.map((action, index) => {
               const IconComponent = iconMap[action.icon] || Sparkles;
+              const scanUrls = ['/hechtingsstijl', '/datingstijl', '/emotionele-readiness'];
+              const isActionScan = action.href && scanUrls.some((url: string) => action.href?.includes(url));
+
+              if (isActionScan) {
+                // Render scans with premium ScanCard
+                const scanType = action.href?.replace('/', '') || '';
+                const scanData: Record<string, { quote: string; badgeText: string; color: 'pink' | 'purple' | 'blue' | 'green' }> = {
+                  'hechtingsstijl': {
+                    quote: 'Begrijpen hoe jij liefhebt is de basis van betere dates',
+                    badgeText: 'Fase Actie',
+                    color: 'purple'
+                  },
+                  'datingstijl': {
+                    quote: 'Ontdek je dating patronen en blinde vlekken',
+                    badgeText: 'Fase Actie',
+                    color: 'pink'
+                  },
+                  'emotionele-readiness': {
+                    quote: 'Ben je klaar voor dating? Leer het in 3-4 minuten',
+                    badgeText: 'Fase Actie',
+                    color: 'blue'
+                  }
+                };
+                const scanMeta = scanData[scanType] || {
+                  quote: 'Ontdek meer over jezelf in een paar minuten',
+                  badgeText: 'Fase Actie',
+                  color: 'pink' as const
+                };
+
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
+                    className="sm:col-span-2 md:col-span-3"
+                  >
+                    <ScanCard
+                      icon={<IconComponent />}
+                      title={action.title}
+                      subtitle={action.description}
+                      quote={scanMeta.quote}
+                      actionLabel="Start Scan"
+                      onAction={() => handleQuickActionClick(action)}
+                      badgeText={scanMeta.badgeText}
+                      color={scanMeta.color}
+                    />
+                  </motion.div>
+                );
+              }
+
+              // Regular action cards
               return (
                 <motion.div
                   key={index}
@@ -503,24 +613,53 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
+          className="space-y-4"
         >
-          <Card className="shadow-sm">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
-                <h2 className="text-base sm:text-lg font-semibold text-gray-900">Vandaag voor jou</h2>
-              </div>
+          <div className="flex items-center gap-2">
+            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Vandaag voor jou</h2>
+          </div>
 
-              <div className="space-y-2 sm:space-y-3">
-                {suggestions.slice(1, 4).map((suggestion, index) => {
-                  const IconComponent = iconMap[suggestion.icon] || Sparkles;
-                  return (
-                    <motion.div
-                      key={suggestion.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 + index * 0.05 }}
-                      className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+          {suggestions.slice(1, 4).map((suggestion, index) => {
+            const IconComponent = iconMap[suggestion.icon] || Sparkles;
+            const isScan = isScanSuggestion(suggestion);
+
+            if (isScan) {
+              // Render scans with premium ScanCard
+              const scanMeta = getScanMetadata(suggestion);
+              return (
+                <motion.div
+                  key={suggestion.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + index * 0.05 }}
+                >
+                  <ScanCard
+                    icon={<IconComponent />}
+                    title={suggestion.title}
+                    subtitle={suggestion.description}
+                    quote={scanMeta.quote}
+                    actionLabel={suggestion.actionText}
+                    onAction={() => handleSuggestionClick(suggestion)}
+                    badgeText={scanMeta.badgeText}
+                    color={scanMeta.color}
+                  />
+                </motion.div>
+              );
+            }
+
+            // Render non-scans as compact list items in a card
+            return (
+              <motion.div
+                key={suggestion.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 + index * 0.05 }}
+              >
+                <Card className="shadow-sm">
+                  <CardContent className="p-0">
+                    <div
+                      className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 hover:bg-gray-50 transition-colors cursor-pointer"
                       onClick={() => handleSuggestionClick(suggestion)}
                     >
                       <div className={cn(
@@ -534,12 +673,12 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                         <p className="text-xs text-gray-600 hidden sm:block">{suggestion.description}</p>
                       </div>
                       <ArrowRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         {/* Mijn Programma's Widget - Shows Kickstart and other programs */}
