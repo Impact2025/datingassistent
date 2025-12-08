@@ -6,11 +6,13 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Sparkles, TrendingUp, Target, Calendar, ArrowRight,
   Heart, Camera, MessageCircle, FileText, CheckCircle2,
-  Zap, Crown, User, Lightbulb, Play, Pause, Volume2, VolumeX, Brain
+  Zap, Crown, User, Lightbulb, Play, Pause, Volume2, VolumeX, Brain,
+  Scan, BarChart3
 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { ScanCard } from './scan-card';
@@ -445,6 +447,43 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
 
         {/* Welkom Sectie */}
         {!showWelcomeVideo && <PersonalizedWelcome />}
+
+        {/* Mijn Scans Widget */}
+        {!showWelcomeVideo && Object.keys(scanStatus).length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Link href="/scans">
+              <Card className="border-2 border-purple-200 hover:border-purple-300 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 bg-purple-100 rounded-xl">
+                        <Scan className="w-6 h-6 text-purple-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">
+                          Mijn Scans
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {Object.values(scanStatus).filter((s: any) => s.isCompleted).length} van {Object.keys(scanStatus).length} voltooid
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="text-right hidden sm:block">
+                        <p className="text-sm text-gray-600">Bekijk al je resultaten</p>
+                        <p className="text-xs text-purple-600 font-medium">en track je groei</p>
+                      </div>
+                      <ArrowRight className="w-5 h-5 text-purple-600" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </motion.div>
+        )}
 
         {/* Quick Wins Today - Direct actie-items */}
         <QuickWinsToday userId={userId} onTabChange={onTabChange} />
