@@ -86,6 +86,17 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      // Validate userId
+      if (!userId || typeof userId !== 'number') {
+        return NextResponse.json(
+          {
+            error: 'Invalid user ID',
+            message: 'User ID is required for submitting responses'
+          },
+          { status: 400 }
+        );
+      }
+
       // Validate responses
       if (!Array.isArray(responses) || responses.length === 0) {
         return NextResponse.json(
@@ -132,14 +143,39 @@ export async function POST(request: NextRequest) {
       }
 
       try {
+        // Retrieve assessment to get microIntake data
+        const assessmentQuery = await sql`
+          SELECT dating_fase, laatste_relatie_recent, stress_niveau
+          FROM hechtingsstijl_assessments
+          WHERE id = ${assessmentId} AND user_id = ${userId}
+        `;
+
+        if (assessmentQuery.rows.length === 0) {
+          return NextResponse.json(
+            {
+              error: 'Assessment not found',
+              message: 'Could not find the assessment. Please try again.'
+            },
+            { status: 404 }
+          );
+        }
+
+        // Reconstruct microIntake from database
+        const assessmentData = assessmentQuery.rows[0];
+        const retrievedMicroIntake = {
+          datingFase: assessmentData.dating_fase,
+          laatsteRelatieRecent: assessmentData.laatste_relatie_recent,
+          stressNiveau: assessmentData.stress_niveau
+        };
+
         // Calculate scores based on responses
         const scores = calculateAttachmentScores(responses);
 
         // Calculate validity metrics and confidence
         const validity = calculateValidityMetrics(responses);
 
-        // Generate AI analysis
-        const aiAnalysis = await generateAIAnalysis(scores, microIntake);
+        // Generate AI analysis with retrieved microIntake
+        const aiAnalysis = await generateAIAnalysis(scores, retrievedMicroIntake);
 
         // Calculate total time taken
         const totalTime = responses.reduce((sum, r) => sum + (r.timeMs || 0), 0);

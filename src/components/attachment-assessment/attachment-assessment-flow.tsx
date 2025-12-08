@@ -154,6 +154,7 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
         body: JSON.stringify({
           action: 'submit',
           assessmentId: assessmentData.assessmentId,
+          userId: user?.id,
           responses
         })
       });
@@ -345,6 +346,7 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
             <AttachmentResults
               data={assessmentData}
               onRestart={handleBackToIntro}
+              onClose={onClose}
               styleIcon={getStyleIcon}
               styleColor={getStyleColor}
             />

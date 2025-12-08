@@ -18,7 +18,9 @@ import {
   RefreshCw,
   Download,
   Share2,
-  ArrowRight
+  ArrowRight,
+  Save,
+  X
 } from 'lucide-react';
 import { AssessmentData, AttachmentStyle } from './attachment-assessment-flow';
 import { MicroInterventions } from './micro-interventions';
@@ -28,11 +30,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 interface AttachmentResultsProps {
   data: AssessmentData;
   onRestart: () => void;
+  onClose?: () => void;
   styleIcon: (style: AttachmentStyle) => React.ReactNode;
   styleColor: (style: AttachmentStyle) => string;
 }
 
-export function AttachmentResults({ data, onRestart, styleIcon, styleColor }: AttachmentResultsProps) {
+export function AttachmentResults({ data, onRestart, onClose, styleIcon, styleColor }: AttachmentResultsProps) {
   const getStyleName = (style: AttachmentStyle) => {
     switch (style) {
       case 'veilig': return 'Veilig';
@@ -69,6 +72,36 @@ export function AttachmentResults({ data, onRestart, styleIcon, styleColor }: At
 
   return (
     <div className="space-y-6">
+      {/* Save & Close Card */}
+      {onClose && (
+        <Card className="border-2 border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    Resultaten Automatisch Opgeslagen
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Je resultaten zijn veilig opgeslagen en altijd terug te vinden bij "Mijn Scans"
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={onClose}
+                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 h-auto flex items-center gap-2 shadow-sm"
+              >
+                <Save className="w-4 h-4" />
+                <span className="font-semibold">Bewaar & Sluiten</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">Overzicht</TabsTrigger>

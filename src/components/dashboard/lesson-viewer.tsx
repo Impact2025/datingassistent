@@ -9,6 +9,14 @@ import { ComparisonSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/Co
 import { InsightSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/InsightSectie';
 import { ExamplesSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/ExamplesSectie';
 import { InteractiveSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/InteractiveSectie';
+import { TekstSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/TekstSectie';
+import { KernpuntenSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/KernpuntenSectie';
+import { OpdrachtSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/OpdrachtSectie';
+import { ReflectieSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/ReflectieSectie';
+import { VideoSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/VideoSectie';
+import { QuizSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/QuizSectie';
+import { ToolSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/ToolSectie';
+import { ActieplanSectie } from '@/app/cursussen/[slug]/[lesSlug]/components/ActieplanSectie';
 import { useUser } from '@/providers/user-provider';
 
 interface LessonViewerProps {
@@ -65,6 +73,16 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
       }
 
       const data = await response.json();
+      console.log('🔍 LessonViewer: Fetched lesson data:', data);
+      console.log('🔍 LessonViewer: Secties:', data.les?.secties);
+      data.les?.secties?.forEach((s: any, i: number) => {
+        console.log(`📝 Section ${i + 1}:`, {
+          type: s.sectie_type,
+          titel: s.titel,
+          hasInhoud: !!s.inhoud,
+          inhoud: s.inhoud
+        });
+      });
       setLes(data.les);
     } catch (err: any) {
       setError(err.message);
@@ -183,6 +201,86 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
           />
         );
 
+      case 'tekst':
+        return (
+          <TekstSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
+      case 'kernpunten':
+        return (
+          <KernpuntenSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
+      case 'opdracht':
+        return (
+          <OpdrachtSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
+      case 'reflectie':
+        return (
+          <ReflectieSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
+      case 'video':
+        return (
+          <VideoSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
+      case 'quiz':
+        return (
+          <QuizSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
+      case 'tool':
+        return (
+          <ToolSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
+      case 'actieplan':
+        return (
+          <ActieplanSectie
+            key={sectie.id}
+            sectie={sectie}
+            isCompleted={isCompleted}
+            onComplete={() => markeerSectieAlsVoltooid(sectie.id)}
+          />
+        );
+
       default:
         return (
           <Card key={sectie.id} className="border-0 shadow-sm">
@@ -191,7 +289,7 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
                 <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
                 {isCompleted && <CheckCircle className="w-6 h-6 text-pink-500" />}
               </div>
-              <p className="text-gray-500 mb-4">Sectie type: {sectie.sectie_type}</p>
+              <p className="text-gray-500 mb-4">Onbekend sectie type: {sectie.sectie_type}</p>
               {!isCompleted && (
                 <Button
                   onClick={() => markeerSectieAlsVoltooid(sectie.id)}
