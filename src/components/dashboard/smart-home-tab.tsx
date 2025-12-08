@@ -11,7 +11,7 @@ import {
   Sparkles, TrendingUp, Target, Calendar, ArrowRight,
   Heart, Camera, MessageCircle, FileText, CheckCircle2,
   Zap, Crown, User, Lightbulb, Play, Pause, Volume2, VolumeX, Brain,
-  Scan, BarChart3
+  Scan, BarChart3, Compass, Repeat
 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { ScanCard } from './scan-card';
@@ -538,6 +538,20 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                   icon: Brain,
                   color: 'blue',
                   href: '/emotionele-readiness'
+                },
+                'levensvisie': {
+                  title: 'Levensvisie & Toekomstkompas',
+                  description: 'Ontdek je toekomstvisie en ideale partner profiel',
+                  icon: Compass,
+                  color: 'green',
+                  href: '/levensvisie'
+                },
+                'relatiepatronen': {
+                  title: 'Relatiepatronen Analyse',
+                  description: 'Herken je terugkerende patronen en groei strategieën',
+                  icon: Repeat,
+                  color: 'purple',
+                  href: '/relatiepatronen'
                 }
               }[scanType];
 
