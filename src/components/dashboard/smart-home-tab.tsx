@@ -451,7 +451,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
         {!showWelcomeVideo && <PersonalizedWelcome />}
 
         {/* Mijn Scans Widget */}
-        {!showWelcomeVideo && Object.keys(scanStatus).length > 0 && (
+        {!showWelcomeVideo && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -471,14 +471,16 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                         Mijn Scans
                       </h3>
                       <p className="text-sm text-gray-600">
-                        {Object.values(scanStatus).filter((s: any) => s.isCompleted).length} van {Object.keys(scanStatus).length} voltooid
+                        {Object.keys(scanStatus).length > 0
+                          ? `${Object.values(scanStatus).filter((s: any) => s.isCompleted).length} van ${Object.keys(scanStatus).length} voltooid`
+                          : 'Ontdek je dating patterns'}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-right hidden sm:block">
-                      <p className="text-sm text-gray-600">{showMijnScans ? 'Verberg' : 'Bekijk'} al je resultaten</p>
-                      <p className="text-xs text-purple-600 font-medium">en track je groei</p>
+                      <p className="text-sm text-gray-600">{showMijnScans ? 'Verberg' : 'Bekijk'} {Object.keys(scanStatus).length > 0 ? 'resultaten' : 'scans'}</p>
+                      <p className="text-xs text-purple-600 font-medium">{Object.keys(scanStatus).length > 0 ? 'en track je groei' : 'Start je eerste scan'}</p>
                     </div>
                     <motion.div
                       animate={{ rotate: showMijnScans ? 90 : 0 }}
@@ -494,7 +496,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
         )}
 
         {/* Mijn Scans Expanded Section */}
-        {showMijnScans && Object.keys(scanStatus).length > 0 && (
+        {showMijnScans && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
@@ -502,7 +504,19 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
             transition={{ duration: 0.3 }}
             className="space-y-4"
           >
-            {Object.entries(scanStatus).map(([scanType, status]: [string, any], index) => {
+            {Object.keys(scanStatus).length === 0 ? (
+              <Card className="p-6 text-center">
+                <Sparkles className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Start je eerste scan!</h3>
+                <p className="text-gray-600 mb-4">
+                  Ontdek je hechtingsstijl, dating patterns en blinde vlekken met onze AI-powered scans.
+                </p>
+                <p className="text-sm text-gray-500">
+                  Scans worden automatisch hier getoond zodra je ze voltooit.
+                </p>
+              </Card>
+            ) : (
+              Object.entries(scanStatus).map(([scanType, status]: [string, any], index) => {
               const scanMeta = {
                 'hechtingsstijl': {
                   title: 'Hechtingsstijl QuickScan',
@@ -561,7 +575,7 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
                   />
                 </motion.div>
               );
-            })}
+            }))}
           </motion.div>
         )}
 
