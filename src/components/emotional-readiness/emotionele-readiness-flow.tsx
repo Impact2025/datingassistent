@@ -4,13 +4,17 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Heart, Sparkles } from 'lucide-react';
+import { Heart, Sparkles, X } from 'lucide-react';
 import { EmotionalReadinessQuestionnaire } from './emotional-readiness-questionnaire';
 import { EmotionalReadinessResults } from './emotional-readiness-results';
 
 type AssessmentStep = 'intro' | 'questionnaire' | 'results';
 
-export function EmotioneleReadinessFlow() {
+interface EmotioneleReadinessFlowProps {
+  onClose?: () => void;
+}
+
+export function EmotioneleReadinessFlow({ onClose }: EmotioneleReadinessFlowProps = {}) {
   const [currentStep, setCurrentStep] = useState<AssessmentStep>('intro');
   const [assessmentData, setAssessmentData] = useState<any>(null);
 
@@ -59,7 +63,18 @@ export function EmotioneleReadinessFlow() {
     <div className="space-y-6">
       {/* Header Card */}
       <Card className="bg-white border-0 shadow-sm">
-        <CardContent className="p-8">
+        <CardContent className="p-8 relative">
+          {/* Close button */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors group"
+              aria-label="Sluiten"
+            >
+              <X className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
+            </button>
+          )}
+
           <div className="text-center">
             <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
               <Sparkles className="w-8 h-8 text-pink-500" />

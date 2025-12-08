@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, ArrowRight, ArrowLeft, Heart, Shield, Flame, Zap } from 'lucide-react';
+import { Sparkles, ArrowRight, ArrowLeft, Heart, Shield, Flame, Zap, X } from 'lucide-react';
 import { AttachmentIntro } from './attachment-intro';
 import { AttachmentQuestionnaire } from './attachment-questionnaire';
 import { AttachmentResults } from './attachment-results';
@@ -35,7 +35,11 @@ export interface AssessmentData {
 
 type AssessmentStep = 'intro' | 'questionnaire' | 'results';
 
-export function AttachmentAssessmentFlow() {
+interface AttachmentAssessmentFlowProps {
+  onClose?: () => void;
+}
+
+export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowProps = {}) {
   const { user } = useUser();
   const [currentStep, setCurrentStep] = useState<AssessmentStep>('intro');
   const [assessmentData, setAssessmentData] = useState<AssessmentData | null>(null);
@@ -249,7 +253,18 @@ export function AttachmentAssessmentFlow() {
     <div className="space-y-6">
       {/* Header Card */}
       <Card className="bg-white border-0 shadow-sm">
-        <CardContent className="p-8">
+        <CardContent className="p-8 relative">
+          {/* Close button */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors group"
+              aria-label="Sluiten"
+            >
+              <X className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />
+            </button>
+          )}
+
           <div className="text-center">
             <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
               <Sparkles className="w-8 h-8 text-pink-500" />

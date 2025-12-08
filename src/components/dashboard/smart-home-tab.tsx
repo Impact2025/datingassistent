@@ -211,14 +211,14 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
 
     switch (scanType) {
       case 'hechtingsstijl':
-        component = <AttachmentAssessmentFlow />;
+        component = <AttachmentAssessmentFlow onClose={closeScanModal} />;
         break;
       case 'dating-stijl':
       case 'datingstijl':
-        component = <DatingStyleFlow />;
+        component = <DatingStyleFlow onClose={closeScanModal} />;
         break;
       case 'emotionele-readiness':
-        component = <EmotioneleReadinessFlow />;
+        component = <EmotioneleReadinessFlow onClose={closeScanModal} />;
         break;
       default:
         component = null;
