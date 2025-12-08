@@ -46,37 +46,43 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      // Execute reCAPTCHA v3
-      const recaptchaToken = await executeRecaptcha('forgot-password');
-      if (!recaptchaToken) {
-        toast({
-          title: "Error",
-          description: "reCAPTCHA verification failed. Please try again.",
-          variant: "destructive",
+      // Skip reCAPTCHA in development for easier testing
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('🔧 Skipping reCAPTCHA verification in development mode');
+      } else {
+        // Execute reCAPTCHA v3 in production
+        const recaptchaToken = await executeRecaptcha('forgot-password');
+        if (!recaptchaToken) {
+          toast({
+            title: "Error",
+            description: "reCAPTCHA verification failed. Please try again.",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        // Verify token on server
+        const verifyResponse = await fetch('/api/recaptcha/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: recaptchaToken, action: 'forgot-password' }),
         });
-        setIsLoading(false);
-        return;
+
+        if (!verifyResponse.ok) {
+          const errorData = await verifyResponse.json();
+          toast({
+            title: "Error",
+            description: errorData.error || "reCAPTCHA verification failed.",
+            variant: "destructive",
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        console.log('✅ reCAPTCHA verification successful');
       }
 
-      // Verify token on server
-      const verifyResponse = await fetch('/api/recaptcha/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: recaptchaToken, action: 'forgot-password' }),
-      });
-
-      if (!verifyResponse.ok) {
-        const errorData = await verifyResponse.json();
-        toast({
-          title: "Error",
-          description: errorData.error || "reCAPTCHA verification failed.",
-          variant: "destructive",
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      console.log('✅ reCAPTCHA verification successful');
       const response = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: {
