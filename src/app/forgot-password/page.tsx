@@ -26,8 +26,8 @@ export default function ForgotPasswordPage() {
 
     if (!email) {
       toast({
-        title: "Error",
-        description: "Please enter your email address",
+        title: "Fout",
+        description: "Vul je emailadres in",
         variant: "destructive",
       });
       return;
@@ -36,8 +36,8 @@ export default function ForgotPasswordPage() {
     // Verify reCAPTCHA
     if (!isRecaptchaLoaded) {
       toast({
-        title: "Error",
-        description: "reCAPTCHA is loading. Please try again.",
+        title: "Even geduld",
+        description: "Beveiliging wordt geladen. Probeer het opnieuw.",
         variant: "destructive",
       });
       return;
@@ -92,15 +92,15 @@ export default function ForgotPasswordPage() {
         setIsSubmitted(true);
       } else {
         toast({
-          title: "Error",
-          description: data.error || "Failed to send reset link",
+          title: "Fout",
+          description: data.error || "Kon reset link niet verzenden",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "An unexpected error occurred",
+        title: "Fout",
+        description: "Er ging iets mis. Probeer het opnieuw.",
         variant: "destructive",
       });
     } finally {
