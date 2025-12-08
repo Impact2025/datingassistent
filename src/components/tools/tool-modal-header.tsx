@@ -69,13 +69,13 @@ export function ToolModalHeader({
             </h1>
           </div>
 
-          {/* Close Button (Desktop only) */}
+          {/* Close Button (All devices) */}
           {onClose && (
             <Button
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="hidden md:flex p-2 -mr-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="flex p-2 -mr-2 hover:bg-gray-100 rounded-full transition-colors"
               aria-label="Sluit"
             >
               <X className="w-5 h-5 text-gray-700" />
