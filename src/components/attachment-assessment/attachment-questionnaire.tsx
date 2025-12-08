@@ -208,27 +208,49 @@ export function AttachmentQuestionnaire({
                   {currentQuestion.question_text}
                 </h2>
 
-                {/* Likert Scale */}
-                <div className="space-y-4">
-                  <div className="grid grid-cols-5 gap-3 mb-6">
-                    {[1, 2, 3, 4, 5].map((value) => (
+                {/* Conditional rendering: Scenario vs Likert Scale */}
+                {currentQuestion.question_type === 'scenario' && currentQuestion.scenarios ? (
+                  /* Scenario Options */
+                  <div className="space-y-3">
+                    {currentQuestion.scenarios.map((scenario, index) => (
                       <button
-                        key={value}
-                        onClick={() => handleAnswer(value)}
+                        key={scenario.id}
+                        onClick={() => handleAnswer(index + 1)}
                         disabled={loading}
-                        className="aspect-square rounded-xl border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50 transition-all duration-200 flex items-center justify-center text-lg font-semibold text-gray-700 hover:text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full p-4 text-left rounded-xl border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {value}
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-sm font-semibold text-pink-600">{index + 1}</span>
+                          </div>
+                          <p className="text-gray-700 leading-relaxed">{scenario.option_text}</p>
+                        </div>
                       </button>
                     ))}
                   </div>
+                ) : (
+                  /* Likert Scale for statements */
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-5 gap-3 mb-6">
+                      {[1, 2, 3, 4, 5].map((value) => (
+                        <button
+                          key={value}
+                          onClick={() => handleAnswer(value)}
+                          disabled={loading}
+                          className="aspect-square rounded-xl border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50 transition-all duration-200 flex items-center justify-center text-lg font-semibold text-gray-700 hover:text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {value}
+                        </button>
+                      ))}
+                    </div>
 
-                  <div className="flex justify-between text-sm text-gray-500 px-2">
-                    <span>Helemaal<br />oneens</span>
-                    <span className="text-center">Neutraal</span>
-                    <span className="text-right">Helemaal<br />eens</span>
+                    <div className="flex justify-between text-sm text-gray-500 px-2">
+                      <span>Helemaal<br />oneens</span>
+                      <span className="text-center">Neutraal</span>
+                      <span className="text-right">Helemaal<br />eens</span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </CardContent>
           </Card>
