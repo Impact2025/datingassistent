@@ -143,6 +143,9 @@ export async function POST(request: NextRequest) {
       }
 
       try {
+        console.log('📊 Starting assessment submission...');
+        console.log('Assessment ID:', assessmentId, 'User ID:', userId);
+
         // Retrieve assessment to get microIntake data
         const assessmentQuery = await sql`
           SELECT dating_fase, laatste_relatie_recent, stress_niveau
@@ -151,6 +154,7 @@ export async function POST(request: NextRequest) {
         `;
 
         if (assessmentQuery.rows.length === 0) {
+          console.error('❌ Assessment not found for ID:', assessmentId, 'User:', userId);
           return NextResponse.json(
             {
               error: 'Assessment not found',
@@ -160,6 +164,8 @@ export async function POST(request: NextRequest) {
           );
         }
 
+        console.log('✅ Assessment found:', assessmentQuery.rows[0]);
+
         // Reconstruct microIntake from database
         const assessmentData = assessmentQuery.rows[0];
         const retrievedMicroIntake = {
@@ -168,14 +174,22 @@ export async function POST(request: NextRequest) {
           stressNiveau: assessmentData.stress_niveau
         };
 
+        console.log('📋 MicroIntake:', retrievedMicroIntake);
+
         // Calculate scores based on responses
+        console.log('🧮 Calculating scores...');
         const scores = calculateAttachmentScores(responses);
+        console.log('✅ Scores calculated:', scores);
 
         // Calculate validity metrics and confidence
+        console.log('📈 Calculating validity metrics...');
         const validity = calculateValidityMetrics(responses);
+        console.log('✅ Validity metrics:', validity);
 
         // Generate AI analysis with retrieved microIntake
+        console.log('🤖 Generating AI analysis...');
         const aiAnalysis = await generateAIAnalysis(scores, retrievedMicroIntake);
+        console.log('✅ AI analysis generated');
 
         // Calculate total time taken
         const totalTime = responses.reduce((sum, r) => sum + (r.timeMs || 0), 0);
@@ -305,7 +319,10 @@ export async function POST(request: NextRequest) {
           }
         });
       } catch (submitError: any) {
-        console.error('Error submitting assessment:', submitError);
+        console.error('❌ Error submitting assessment:', submitError);
+        console.error('Error stack:', submitError.stack);
+        console.error('Error name:', submitError.name);
+        console.error('Error message:', submitError.message);
 
         // Try to mark assessment as failed
         try {
@@ -322,7 +339,8 @@ export async function POST(request: NextRequest) {
           {
             error: 'Submission failed',
             message: 'Failed to process your responses. Please try again.',
-            details: process.env.NODE_ENV === 'development' ? submitError.message : undefined
+            details: process.env.NODE_ENV === 'development' ? submitError.message : undefined,
+            errorType: submitError.name
           },
           { status: 500 }
         );
