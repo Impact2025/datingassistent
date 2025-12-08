@@ -29,6 +29,10 @@ import { useGamification } from '@/hooks/use-gamification';
 import { QuickWinsToday } from './quick-wins-today';
 import { MijnCursussenWidget } from './mijn-cursussen-widget';
 import { MyProgramsWidget } from './my-programs-widget';
+import { ToolModal } from '@/components/tools/tool-modal';
+import { AttachmentAssessmentFlow } from '@/components/attachment-assessment/attachment-assessment-flow';
+import { DatingStyleFlow } from '@/components/dating-style/dating-style-flow';
+import { EmotioneleReadinessFlow } from '@/components/emotional-readiness/emotionele-readiness-flow';
 
 interface SmartHomeTabProps {
   onTabChange?: (tab: string) => void;
@@ -96,6 +100,19 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [videoError, setVideoError] = useState(false);
+
+  // Modal state for scans
+  const [scanModal, setScanModal] = useState<{
+    isOpen: boolean;
+    scanType: string | null;
+    title: string;
+    component: React.ReactNode | null;
+  }>({
+    isOpen: false,
+    scanType: null,
+    title: '',
+    component: null,
+  });
 
   // Gamification hook - auto track login
   const { trackLogin } = useGamification(userId);
@@ -188,8 +205,55 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
     fetchUserContext();
   }, [userId]);
 
+  // Open scan in modal
+  const openScanModal = (scanType: string, title: string) => {
+    let component: React.ReactNode | null = null;
+
+    switch (scanType) {
+      case 'hechtingsstijl':
+        component = <AttachmentAssessmentFlow />;
+        break;
+      case 'dating-stijl':
+      case 'datingstijl':
+        component = <DatingStyleFlow />;
+        break;
+      case 'emotionele-readiness':
+        component = <EmotioneleReadinessFlow />;
+        break;
+      default:
+        component = null;
+    }
+
+    if (component) {
+      setScanModal({
+        isOpen: true,
+        scanType,
+        title,
+        component,
+      });
+    }
+  };
+
+  // Close scan modal
+  const closeScanModal = () => {
+    setScanModal({
+      isOpen: false,
+      scanType: null,
+      title: '',
+      component: null,
+    });
+  };
+
   const handleSuggestionClick = (suggestion: Suggestion) => {
-    if (suggestion.actionHref) {
+    // Check if this is a scan that should open in a modal
+    const scanUrls = ['/hechtingsstijl', '/datingstijl', '/emotionele-readiness'];
+    const isScan = suggestion.actionHref && scanUrls.some(url => suggestion.actionHref?.includes(url));
+
+    if (isScan && suggestion.actionHref) {
+      // Extract scan type from URL
+      const scanType = suggestion.actionHref.replace('/', '');
+      openScanModal(scanType, suggestion.title);
+    } else if (suggestion.actionHref) {
       router.push(suggestion.actionHref);
     } else if (suggestion.actionTab) {
       onTabChange?.(suggestion.actionTab);
@@ -197,7 +261,15 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
   };
 
   const handleQuickActionClick = (action: any) => {
-    if (action.href) {
+    // Check if this is a scan that should open in a modal
+    const scanUrls = ['/hechtingsstijl', '/datingstijl', '/emotionele-readiness'];
+    const isScan = action.href && scanUrls.some(url => action.href?.includes(url));
+
+    if (isScan && action.href) {
+      // Extract scan type from URL
+      const scanType = action.href.replace('/', '');
+      openScanModal(scanType, action.title);
+    } else if (action.href) {
       router.push(action.href);
     } else if (action.tab) {
       onTabChange?.(action.tab);
@@ -539,6 +611,14 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
           <GamificationWidget userId={userId} compact />
         </motion.div>
       </div>
+
+      {/* Scan Modal - Opens scans in beautiful modal overlay */}
+      <ToolModal
+        isOpen={scanModal.isOpen}
+        onClose={closeScanModal}
+      >
+        {scanModal.component}
+      </ToolModal>
     </div>
   );
 }
