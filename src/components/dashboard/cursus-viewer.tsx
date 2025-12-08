@@ -11,9 +11,10 @@ import type { CursusMetVoortgang } from '@/types/cursus.types';
 interface CursusViewerProps {
   cursusSlug: string;
   onBack: () => void;
+  onLessonSelect?: (lessonSlug: string) => void;
 }
 
-export function CursusViewer({ cursusSlug, onBack }: CursusViewerProps) {
+export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewerProps) {
   const [cursus, setCursus] = useState<CursusMetVoortgang | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,8 +72,13 @@ export function CursusViewer({ cursusSlug, onBack }: CursusViewerProps) {
   };
 
   const handleLesClick = (lesSlug: string) => {
-    // Open les in nieuwe tab/window voor nu
-    window.open(`/cursussen/${cursusSlug}/${lesSlug}`, '_blank');
+    // Open les within dashboard if onLessonSelect is provided
+    if (onLessonSelect) {
+      onLessonSelect(lesSlug);
+    } else {
+      // Fallback: open in new tab
+      window.open(`/cursussen/${cursusSlug}/${lesSlug}`, '_blank');
+    }
   };
 
   if (loading) {

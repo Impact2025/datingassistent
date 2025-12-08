@@ -170,6 +170,9 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
     component: null,
   });
 
+  // Mijn Scans expanded state
+  const [showMijnScans, setShowMijnScans] = useState(false);
+
   // Gamification hook - auto track login
   const { trackLogin } = useGamification(userId);
 
@@ -454,34 +457,112 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Link href="/scans">
-              <Card className="border-2 border-purple-200 hover:border-purple-300 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-purple-100 rounded-xl">
-                        <Scan className="w-6 h-6 text-purple-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-900 mb-1">
-                          Mijn Scans
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          {Object.values(scanStatus).filter((s: any) => s.isCompleted).length} van {Object.keys(scanStatus).length} voltooid
-                        </p>
-                      </div>
+            <Card
+              className="border-2 border-purple-200 hover:border-purple-300 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50"
+              onClick={() => setShowMijnScans(!showMijnScans)}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-purple-100 rounded-xl">
+                      <Scan className="w-6 h-6 text-purple-600" />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="text-right hidden sm:block">
-                        <p className="text-sm text-gray-600">Bekijk al je resultaten</p>
-                        <p className="text-xs text-purple-600 font-medium">en track je groei</p>
-                      </div>
-                      <ArrowRight className="w-5 h-5 text-purple-600" />
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-1">
+                        Mijn Scans
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {Object.values(scanStatus).filter((s: any) => s.isCompleted).length} van {Object.keys(scanStatus).length} voltooid
+                      </p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </Link>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right hidden sm:block">
+                      <p className="text-sm text-gray-600">{showMijnScans ? 'Verberg' : 'Bekijk'} al je resultaten</p>
+                      <p className="text-xs text-purple-600 font-medium">en track je groei</p>
+                    </div>
+                    <motion.div
+                      animate={{ rotate: showMijnScans ? 90 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ArrowRight className="w-5 h-5 text-purple-600" />
+                    </motion.div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Mijn Scans Expanded Section */}
+        {showMijnScans && Object.keys(scanStatus).length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-4"
+          >
+            {Object.entries(scanStatus).map(([scanType, status]: [string, any], index) => {
+              const scanMeta = {
+                'hechtingsstijl': {
+                  title: 'Hechtingsstijl QuickScan',
+                  description: 'Ontdek hoe jouw hechtingspatroon je relaties beïnvloedt',
+                  icon: Heart,
+                  color: 'pink',
+                  href: '/hechtingsstijl'
+                },
+                'dating-style': {
+                  title: 'Dating Style & Blind Spots',
+                  description: 'Leer je dating patterns en blinde vlekken kennen',
+                  icon: Target,
+                  color: 'purple',
+                  href: '/blind-vlekken'
+                },
+                'emotional-readiness': {
+                  title: 'Emotional Readiness Check',
+                  description: 'Evalueer je emotionele gereedheid voor dating',
+                  icon: Brain,
+                  color: 'blue',
+                  href: '/emotionele-readiness'
+                }
+              }[scanType];
+
+              if (!scanMeta) return null;
+
+              const IconComponent = scanMeta.icon;
+              const completionStatus = getCompletionStatus(scanType, scanStatus);
+
+              return (
+                <motion.div
+                  key={scanType}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <ScanCard
+                    icon={<IconComponent />}
+                    title={scanMeta.title}
+                    subtitle={scanMeta.description}
+                    quote=""
+                    actionLabel={status.isCompleted ? (status.canRetake ? 'Opnieuw Doen' : 'Bekijk Resultaat') : 'Start Scan'}
+                    onAction={() => {
+                      if (status.isCompleted && !status.canRetake) {
+                        // Navigate to results page
+                        router.push(`/scans/${scanType}/${status.assessmentId}`);
+                      } else {
+                        // Start or retake scan
+                        handleSuggestionClick({ actionHref: scanMeta.href } as any);
+                      }
+                    }}
+                    badgeText={status.isCompleted ? '✓ Voltooid' : 'Nieuw'}
+                    color={scanMeta.color}
+                    completionStatus={completionStatus}
+                    onRetake={() => handleSuggestionClick({ actionHref: scanMeta.href } as any)}
+                  />
+                </motion.div>
+              );
+            })}
           </motion.div>
         )}
 
