@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { ScanCard } from './scan-card';
-import { Button } from '../ui/card';
+import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { cn } from '@/lib/utils';
