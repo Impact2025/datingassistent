@@ -21,7 +21,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantClasses = {
       default: 'bg-primary-500 text-white hover:bg-primary-600 active:scale-95',
-      primary: 'bg-gradient-to-r from-primary-500 to-accent-500 text-white hover:shadow-lg hover:scale-105 active:scale-95',
+      primary: 'bg-primary-500 text-white hover:bg-primary-600 hover:shadow-lg hover:scale-105 active:scale-95',
       secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
       destructive: 'bg-red-500 text-white hover:bg-red-600 active:scale-95',
       ghost: 'text-gray-600 hover:text-gray-800 hover:bg-gray-50',
