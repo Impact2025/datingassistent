@@ -36,6 +36,11 @@ import { AttachmentAssessmentFlow } from '@/components/attachment-assessment/att
 import { DatingStyleFlow } from '@/components/dating-style/dating-style-flow';
 import { EmotioneleReadinessFlow } from '@/components/emotional-readiness/emotionele-readiness-flow';
 
+// Access control & locked tools
+import { useAccessControl } from '@/hooks/use-access-control';
+import { checkProfileSuiteToolAccess } from '@/lib/access-control';
+import { LockedToolCard } from '@/components/ui/locked-tool-card';
+
 interface SmartHomeTabProps {
   onTabChange?: (tab: string) => void;
   userId?: number;
@@ -140,8 +145,41 @@ const getCompletionStatus = (scanType: string, scanStatusMap: Record<string, any
   };
 };
 
+// Featured tools for home dashboard
+const FEATURED_TOOLS = [
+  {
+    id: 'hechtingsstijl',
+    label: 'Hechtingsstijl',
+    icon: Heart,
+    description: 'Ontdek je hechtingspatroon',
+    color: 'from-purple-500 to-pink-500'
+  },
+  {
+    id: 'photo-analysis',
+    label: 'Foto Analyse',
+    icon: Camera,
+    description: 'AI feedback op je foto\'s',
+    color: 'from-indigo-500 to-blue-500'
+  },
+  {
+    id: 'chat-coach',
+    label: 'Chat Coach',
+    icon: MessageCircle,
+    description: 'Je 24/7 AI dating coach',
+    color: 'from-blue-500 to-cyan-500'
+  },
+  {
+    id: 'openers',
+    label: 'Openingszinnen',
+    icon: Sparkles,
+    description: 'Genereer perfecte openers',
+    color: 'from-pink-500 to-rose-500'
+  }
+];
+
 export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
   const router = useRouter();
+  const { userTier } = useAccessControl();
   const [userContext, setUserContext] = useState<UserContext | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [phaseActions, setPhaseActions] = useState<any[]>([]);
@@ -450,6 +488,80 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
         {/* Welkom Sectie */}
         {!showWelcomeVideo && <PersonalizedWelcome />}
 
+        {/* 🎯 MIJN PROGRAMMA'S - BOVENAAN voor Kickstart users */}
+        {!showWelcomeVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+          >
+            <MyProgramsWidget />
+          </motion.div>
+        )}
+
+        {/* 🛠️ AANBEVOLEN TOOLS - Met LockedToolCard */}
+        {!showWelcomeVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <Card className="border-0 shadow-sm bg-gradient-to-br from-white to-pink-50/30">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-pink-100 rounded-lg">
+                      <Zap className="w-4 h-4 text-pink-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Jouw Tools</h3>
+                      <p className="text-xs text-gray-500">Alles wat je nodig hebt</p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onTabChange?.('profiel')}
+                    className="text-pink-600 hover:text-pink-700 text-xs"
+                  >
+                    Alle tools
+                    <ArrowRight className="w-3 h-3 ml-1" />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {FEATURED_TOOLS.map((tool) => {
+                    const accessInfo = checkProfileSuiteToolAccess(tool.id, userTier, 0);
+                    return (
+                      <LockedToolCard
+                        key={tool.id}
+                        tool={tool}
+                        accessLevel={accessInfo.accessLevel}
+                        remaining={accessInfo.remaining}
+                        limit={accessInfo.limit}
+                        lockedMessage={accessInfo.lockedMessage}
+                        upgradeMessage={accessInfo.upgradeMessage}
+                        upgradeTier={accessInfo.upgradeTier}
+                        onUnlockedClick={() => {
+                          if (tool.id === 'hechtingsstijl') {
+                            openScanModal('hechtingsstijl', 'Hechtingsstijl QuickScan');
+                          } else if (tool.id === 'chat-coach') {
+                            onTabChange?.('coach');
+                          } else {
+                            onTabChange?.('profiel');
+                          }
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Quick Wins Today - Direct actie-items */}
+        <QuickWinsToday userId={userId} onTabChange={onTabChange} />
+
         {/* Mijn Scans Widget */}
         {!showWelcomeVideo && (
           <motion.div
@@ -592,9 +704,6 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
             }))}
           </motion.div>
         )}
-
-        {/* Quick Wins Today - Direct actie-items */}
-        <QuickWinsToday userId={userId} onTabChange={onTabChange} />
 
         {/* Next Recommended Action - Highlighted */}
         {nextAction && (
@@ -869,9 +978,6 @@ export function SmartHomeTab({ onTabChange, userId }: SmartHomeTabProps) {
             );
           })}
         </motion.div>
-
-        {/* Mijn Programma's Widget - Shows Kickstart and other programs */}
-        <MyProgramsWidget />
 
         {/* Mijn Cursussen Widget - Professional Integration */}
         <MijnCursussenWidget onTabChange={onTabChange} />
