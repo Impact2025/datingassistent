@@ -142,7 +142,7 @@ export function ProgramCards() {
             {/* CTA */}
             <Button
               onClick={() => handleSelectProgram('transformatie')}
-              className="w-full bg-[#E61E63] hover:bg-[#c51a56] dark:bg-pink-600 dark:hover:bg-pink-700 text-white font-semibold text-lg py-6 shadow-lg hover:shadow-xl transition-all animate-pulse"
+              className="w-full bg-[#E61E63] hover:bg-[#c51a56] dark:bg-pink-600 dark:hover:bg-pink-700 text-white font-semibold text-lg py-6 shadow-lg hover:shadow-xl transition-all"
             >
               Kies dit programma ✨
             </Button>
