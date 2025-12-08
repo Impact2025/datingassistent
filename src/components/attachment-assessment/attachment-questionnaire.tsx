@@ -36,7 +36,7 @@ export function AttachmentQuestionnaire({
 }: AttachmentQuestionnaireProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [responses, setResponses] = useState<Record<number, { value: number; timeMs: number }>>({});
+  const [responses, setResponses] = useState<Record<number, { value: number; timeMs: number; type: string; category: string }>>({});
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now());
   const [loadingQuestions, setLoadingQuestions] = useState(true);
 
@@ -74,19 +74,25 @@ export function AttachmentQuestionnaire({
 
     const timeMs = Date.now() - questionStartTime;
 
+    // Store response with full question metadata
     setResponses(prev => ({
       ...prev,
-      [currentQuestion.id]: { value, timeMs }
+      [currentQuestion.id]: {
+        value,
+        timeMs,
+        type: currentQuestion.question_type,
+        category: currentQuestion.category
+      }
     }));
 
     // Auto-advance after a brief delay for better UX
     setTimeout(() => {
       if (isLastQuestion) {
-        // Complete assessment
+        // Complete assessment - use stored metadata from each response
         const finalResponses = Object.entries(responses).map(([questionId, data]) => ({
           questionId: parseInt(questionId),
-          type: currentQuestion.question_type,
-          category: currentQuestion.category,
+          type: data.type,
+          category: data.category,
           value: data.value,
           timeMs: data.timeMs
         }));
@@ -118,16 +124,23 @@ export function AttachmentQuestionnaire({
 
     const timeMs = Date.now() - questionStartTime;
 
+    // Store neutral response with full metadata
     setResponses(prev => ({
       ...prev,
-      [currentQuestion.id]: { value: 3, timeMs } // Neutral answer for skipped
+      [currentQuestion.id]: {
+        value: 3,
+        timeMs,
+        type: currentQuestion.question_type,
+        category: currentQuestion.category
+      }
     }));
 
     if (isLastQuestion) {
+      // Use stored metadata from each response
       const finalResponses = Object.entries(responses).map(([questionId, data]) => ({
         questionId: parseInt(questionId),
-        type: currentQuestion.question_type,
-        category: currentQuestion.category,
+        type: data.type,
+        category: data.category,
         value: data.value,
         timeMs: data.timeMs
       }));
@@ -254,13 +267,39 @@ export function AttachmentQuestionnaire({
         </div>
       </div>
 
-      {/* Loading overlay */}
+      {/* Loading overlay with animated steps */}
       {loading && (
-        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
-            <p className="text-gray-600 font-medium">Resultaten verwerken...</p>
-            <p className="text-sm text-gray-500 mt-1">AI analyse starten</p>
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="text-center max-w-md px-6">
+            <div className="relative mb-6">
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-pink-500 mx-auto"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="animate-pulse text-2xl">💭</div>
+              </div>
+            </div>
+
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Jouw Profiel Wordt Geanalyseerd
+            </h3>
+
+            <div className="space-y-2 text-sm text-gray-600">
+              <p className="flex items-center justify-center gap-2">
+                <span className="inline-block w-2 h-2 bg-pink-500 rounded-full animate-pulse"></span>
+                Antwoorden verwerken
+              </p>
+              <p className="flex items-center justify-center gap-2">
+                <span className="inline-block w-2 h-2 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></span>
+                Hechtingsstijl berekenen
+              </p>
+              <p className="flex items-center justify-center gap-2">
+                <span className="inline-block w-2 h-2 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></span>
+                AI inzichten genereren
+              </p>
+            </div>
+
+            <p className="text-xs text-gray-500 mt-4">
+              Dit kan 10-15 seconden duren...
+            </p>
           </div>
         </div>
       )}

@@ -181,11 +181,15 @@ export function AttachmentAssessmentFlow() {
       };
 
       if (data.success && data.result) {
+        // Get confidence score from validity data or default to 85
+        const confidenceScore = data.validity?.confidenceScore || 85;
+
         setAssessmentData(prev => prev ? {
           ...prev,
           responses: responses as any, // Type assertion for now
           primaryStyle: data.result.primary_style,
           secondaryStyle: data.result.secondary_style,
+          confidence: confidenceScore,
           scores: {
             veilig: data.result.veilig_score,
             angstig: data.result.angstig_score,
@@ -203,6 +207,11 @@ export function AttachmentAssessmentFlow() {
             recommendedTools: safeParseArray(data.result.recommended_tools, [])
           }
         } : null);
+
+        // Show warnings if any
+        if (data.validity?.warnings && data.validity.warnings.length > 0) {
+          console.warn('Validity warnings:', data.validity.warnings);
+        }
       } else {
         alert('Geen resultaten ontvangen van de server.');
         setCurrentStep('questionnaire');

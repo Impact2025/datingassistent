@@ -35,7 +35,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      questions: questions
+      questions: questions.rows
     });
 
   } catch (error: any) {
