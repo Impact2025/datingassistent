@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcryptjs';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
+import { notifyAdminNewLead } from '@/lib/admin-notifications';
 
 // Auto-create account for paid orders
 export async function POST(req: NextRequest) {
@@ -144,6 +145,18 @@ export async function POST(req: NextRequest) {
     });
 
     console.log('✅ Auto-created account for order:', { orderId, userId: newUser.id });
+
+    // Send admin notification about new paid customer (non-blocking)
+    notifyAdminNewLead({
+      userId: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      registrationSource: 'api',
+      photoScore: null,
+      intakeData: null,
+      otoShown: true,
+      otoAccepted: true, // They paid, so they accepted!
+    }).catch(err => console.error('Failed to notify admin:', err));
 
     // Send welcome email with temporary password
     try {
