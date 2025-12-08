@@ -159,7 +159,7 @@ export async function POST(request: NextRequest) {
           ${scores.primaryStyle},
           ${scores.secondaryStyle},
           ${scores.veilig}, ${scores.angstig}, ${scores.vermijdend}, ${scores.angstigVermijdend},
-          ${JSON.stringify(validity.validityWarnings)},
+          ${validity.validityWarnings},
           ${validity.completionRate},
           ${validity.responseVariance},
           ${aiAnalysis.profiel},
