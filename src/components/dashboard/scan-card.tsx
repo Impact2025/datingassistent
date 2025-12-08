@@ -2,8 +2,19 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, X } from 'lucide-react';
+import { ArrowRight, X, Eye } from 'lucide-react';
 import { useState } from 'react';
+import { ScanStatusBadge } from '@/components/scans/scan-status-badge';
+
+interface CompletionStatus {
+  isCompleted: boolean;
+  completedAt?: Date | string;
+  canRetake: boolean;
+  daysUntilRetake?: number;
+  latestResult?: string;
+  improvementSinceLast?: number;
+  totalAttempts?: number;
+}
 
 interface ScanCardProps {
   icon: React.ReactNode;
@@ -15,6 +26,11 @@ interface ScanCardProps {
   onDismiss?: () => void;
   badgeText?: string;
   color?: 'pink' | 'purple' | 'blue' | 'green';
+
+  // New: Completion status
+  completionStatus?: CompletionStatus;
+  onViewResults?: () => void;
+  onRetake?: () => void;
 }
 
 const colorStyles = {
@@ -69,7 +85,10 @@ export function ScanCard({
   onAction,
   onDismiss,
   badgeText = 'Tip',
-  color = 'pink'
+  color = 'pink',
+  completionStatus,
+  onViewResults,
+  onRetake
 }: ScanCardProps) {
   const [dismissed, setDismissed] = useState(false);
   const styles = colorStyles[color];
@@ -79,6 +98,18 @@ export function ScanCard({
   const handleDismiss = () => {
     setDismissed(true);
     onDismiss?.();
+  };
+
+  // Determine scan status for badge
+  const getScanStatus = () => {
+    if (!completionStatus?.isCompleted) return 'not_started';
+    if (completionStatus.canRetake) return 'available_retake';
+
+    const daysSince = completionStatus.completedAt
+      ? Math.floor((Date.now() - new Date(completionStatus.completedAt).getTime()) / (1000 * 60 * 60 * 24))
+      : 0;
+
+    return daysSince < 90 ? 'completed_recent' : 'in_cooldown';
   };
 
   return (
@@ -97,9 +128,11 @@ export function ScanCard({
             <div className="sm:hidden flex-1">
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className={`font-semibold text-base ${styles.titleText}`}>{title}</h3>
-                <span className={`px-3 py-1 ${styles.badge} text-white text-xs rounded-full shadow-md whitespace-nowrap font-medium`}>
-                  {badgeText}
-                </span>
+                {!completionStatus && (
+                  <span className={`px-3 py-1 ${styles.badge} text-white text-xs rounded-full shadow-md whitespace-nowrap font-medium`}>
+                    {badgeText}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -109,35 +142,96 @@ export function ScanCard({
             {/* Title - hidden on mobile (shown above) */}
             <div className="hidden sm:flex items-center gap-2 mb-2 flex-wrap">
               <h3 className={`font-semibold text-lg ${styles.titleText}`}>{title}</h3>
-              <span className={`px-3 py-1 ${styles.badge} text-white text-xs rounded-full shadow-md font-medium`}>
-                {badgeText}
-              </span>
+              {!completionStatus && (
+                <span className={`px-3 py-1 ${styles.badge} text-white text-xs rounded-full shadow-md font-medium`}>
+                  {badgeText}
+                </span>
+              )}
             </div>
+
+            {/* Completion Status Badge */}
+            {completionStatus && (
+              <div className="mb-2">
+                <ScanStatusBadge
+                  status={getScanStatus()}
+                  completedAt={completionStatus.completedAt}
+                  daysUntilRetake={completionStatus.daysUntilRetake}
+                  totalAttempts={completionStatus.totalAttempts}
+                />
+              </div>
+            )}
+
+            {/* Latest Result (if completed) */}
+            {completionStatus?.isCompleted && completionStatus.latestResult && (
+              <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
+                Laatste resultaat: {completionStatus.latestResult}
+              </p>
+            )}
 
             <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">{subtitle}</p>
             <p className={`text-xs sm:text-sm ${styles.quoteText} italic mb-4`}>"{quote}"</p>
 
             {/* Buttons - stack on mobile */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-              <Button
-                onClick={onAction}
-                size="sm"
-                className={`gap-2 px-6 py-2 bg-gradient-to-r ${styles.button} text-white rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center`}
-              >
-                {actionLabel}
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              {/* Primary action button */}
+              {completionStatus?.isCompleted ? (
+                <>
+                  {/* View Results Button */}
+                  {onViewResults && (
+                    <Button
+                      onClick={onViewResults}
+                      variant="outline"
+                      size="sm"
+                      className="gap-2 px-6 py-2 rounded-full w-full sm:w-auto justify-center"
+                    >
+                      <Eye className="w-4 h-4" />
+                      Bekijk Resultaten
+                    </Button>
+                  )}
 
-              {onDismiss && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleDismiss}
-                  className="text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-xs sm:text-sm"
-                >
-                  <X className="w-4 h-4 mr-1" />
-                  Vandaag overslaan
-                </Button>
+                  {/* Retake Button (if available) */}
+                  {completionStatus.canRetake && onRetake && (
+                    <Button
+                      onClick={onRetake}
+                      size="sm"
+                      className={`gap-2 px-6 py-2 bg-gradient-to-r ${styles.button} text-white rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center`}
+                    >
+                      Retake Scan
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  )}
+
+                  {/* Locked message (if in cooldown) */}
+                  {!completionStatus.canRetake && completionStatus.daysUntilRetake && (
+                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center sm:text-left">
+                      Retake beschikbaar over {completionStatus.daysUntilRetake} dagen
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  {/* Start Scan Button */}
+                  <Button
+                    onClick={onAction}
+                    size="sm"
+                    className={`gap-2 px-6 py-2 bg-gradient-to-r ${styles.button} text-white rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center`}
+                  >
+                    {actionLabel}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+
+                  {onDismiss && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleDismiss}
+                      className="text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-xs sm:text-sm"
+                    >
+                      <X className="w-4 h-4 mr-1" />
+                      Vandaag overslaan
+                    </Button>
+                  )}
+                </>
               )}
             </div>
           </div>
