@@ -94,7 +94,7 @@ const SuggestionCard = React.memo(function SuggestionCard({
   );
 });
 
-export const SmartHomeTabOptimized = React.memo(function SmartHomeTabOptimized({
+export const SmartHomeTab = React.memo(function SmartHomeTab({
   onTabChange,
   userId
 }: SmartHomeTabProps) {
