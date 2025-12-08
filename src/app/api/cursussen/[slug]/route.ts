@@ -93,13 +93,16 @@ export async function GET(
           sectiesResult.rows.map(async (sectie: any) => {
             // Parse inhoud if it's a string (JSONB sometimes returns as string)
             let inhoud = sectie.inhoud;
-            if (typeof inhoud === 'string') {
-              try {
+            try {
+              if (typeof inhoud === 'string' && inhoud.trim().startsWith('{')) {
                 inhoud = JSON.parse(inhoud);
-              } catch (e) {
-                console.error(`Failed to parse inhoud for sectie ${sectie.id}:`, e);
+              } else if (!inhoud || typeof inhoud !== 'object') {
+                console.warn(`Sectie ${sectie.id} has invalid inhoud type: ${typeof inhoud}`);
                 inhoud = {};
               }
+            } catch (e) {
+              console.error(`Failed to parse inhoud for sectie ${sectie.id}:`, e, 'Value:', inhoud);
+              inhoud = {};
             }
 
             if (sectie.sectie_type === 'quiz') {
