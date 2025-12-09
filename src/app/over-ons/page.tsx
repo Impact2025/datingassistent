@@ -192,7 +192,7 @@ export default function OverOnsPage() {
                 Na meer dan een decennium in de datingwereld weten we dat écht succes persoonlijke aandacht vereist. Daarom hebben we onze kennis vertaald in kunstmatige intelligentie (AI), gepersonifieerd door onze virtuele coach: Iris.
               </p>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                Iris is 24/7 beschikbaar en analyseert uw unieke situatie om hyper-gepersonaliseerd advies te geven. Van het optimaliseren van uw profielfoto's tot het voeren van boeiende gesprekken—Iris zorgt voor slimme, direct toepasbare strategieën.
+                Iris is 24/7 beschikbaar en analyseert jouw unieke situatie om hyper-gepersonaliseerd advies te geven. Van het optimaliseren van jouw profielfoto's tot het voeren van boeiende gesprekken, Iris zorgt voor slimme, direct toepasbare strategieën.
               </p>
             </div>
 
