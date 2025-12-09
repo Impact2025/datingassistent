@@ -385,7 +385,7 @@ export default function LesViewerPage() {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
-                className="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full transition-all duration-300"
+                className="bg-pink-500 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
@@ -405,8 +405,8 @@ export default function LesViewerPage() {
           <Card className="border-0 shadow-sm bg-white">
             <CardContent className="p-8">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-white text-lg">✨</span>
+                <div className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-sm font-semibold">AI</span>
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Iris Insights</h3>
@@ -414,7 +414,7 @@ export default function LesViewerPage() {
                 </div>
               </div>
               <p className="text-gray-600 mb-6">
-                Heb je vragen over deze les? Stel ze aan Iris! Ze helpt je graag met het begrijpen van de stof en hoe je het kunt toepassen.
+                Heb je vragen over deze les? Stel ze aan Iris.
               </p>
               <IrisChatPanel
                 initialContext={`De gebruiker volgt nu de cursus "${les.cursus.titel}", les: "${les.titel}".
@@ -527,16 +527,15 @@ function VideoSectie({ sectie, isCompleted, onComplete }: any) {
         )}
 
         {!watched && (
-          <PrimaryButton
+          <button
             onClick={() => {
               setWatched(true);
               onComplete();
             }}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
-            <CheckCircle className="w-4 h-4 mr-2" />
             Markeer als bekeken
-          </PrimaryButton>
+          </button>
         )}
       </CardContent>
     </Card>
@@ -706,13 +705,12 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
         )}
 
         {!isCompleted && (
-          <PrimaryButton
+          <button
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
-            <CheckCircle className="w-4 h-4 mr-2" />
-            Markeer als gelezen
-          </PrimaryButton>
+            Gelezen
+          </button>
         )}
       </CardContent>
     </Card>
@@ -756,7 +754,7 @@ function KernpuntenSectie({ sectie, isCompleted, onComplete }: any) {
                     {icon}
                   </div>
                 ) : (
-                  <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 text-white flex items-center justify-center text-sm font-semibold mt-0.5 shadow-sm">
+                  <div className="shrink-0 w-7 h-7 rounded-md bg-pink-500 text-white flex items-center justify-center text-xs font-medium">
                     {idx + 1}
                   </div>
                 )}
@@ -770,13 +768,12 @@ function KernpuntenSectie({ sectie, isCompleted, onComplete }: any) {
         </ul>
 
         {!isCompleted && (
-          <PrimaryButton
+          <button
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
-            <CheckCircle className="w-4 h-4 mr-2" />
-            Bekijk dit getekend
-          </PrimaryButton>
+            Begrepen
+          </button>
         )}
       </CardContent>
     </Card>
@@ -883,13 +880,13 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
 
         {!submitted && (
           <div className="mt-6">
-            <PrimaryButton
+            <button
               onClick={handleSubmit}
               disabled={Object.keys(antwoorden).length !== vragen.length}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Quiz indienen
-            </PrimaryButton>
+            </button>
           </div>
         )}
 
@@ -933,17 +930,16 @@ function ReflectieSectie({ sectie, isCompleted, onComplete }: any) {
 
         {!saved && (
           <div className="mt-4">
-            <PrimaryButton
+            <button
               onClick={() => {
                 setSaved(true);
                 onComplete(antwoord);
               }}
               disabled={antwoord.trim().length === 0}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <CheckCircle className="w-4 h-4 mr-2" />
               Opslaan
-            </PrimaryButton>
+            </button>
           </div>
         )}
       </CardContent>
@@ -998,13 +994,12 @@ function OpdrachtSectie({ sectie, isCompleted, onComplete }: any) {
         </div>
 
         {!isCompleted && allCompleted && (
-          <PrimaryButton
+          <button
             onClick={() => onComplete(voltooide)}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
-            <CheckCircle className="w-4 h-4 mr-2" />
             Opdracht voltooien
-          </PrimaryButton>
+          </button>
         )}
       </CardContent>
     </Card>
@@ -1032,13 +1027,12 @@ function ToolSectie({ sectie, isCompleted, onComplete }: any) {
         </div>
 
         {!isCompleted && (
-          <PrimaryButton
+          <button
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
-            <CheckCircle className="w-4 h-4 mr-2" />
             {sectie.inhoud?.ctaTekst || 'Tool gebruikt'}
-          </PrimaryButton>
+          </button>
         )}
       </CardContent>
     </Card>
@@ -1050,8 +1044,8 @@ function TipSectie({ sectie, isCompleted, onComplete }: any) {
     <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow border-l-4 border-pink-500">
       <CardContent className="p-8">
         <div className="flex items-start gap-4">
-          <div className="shrink-0 w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-lg">
-            💡
+          <div className="shrink-0 w-8 h-8 rounded-md bg-pink-500 text-white flex items-center justify-center text-sm font-medium">
+            TIP
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">{sectie.titel || 'Pro Tip'}</h3>
@@ -1082,15 +1076,7 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
     <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 text-white flex items-center justify-center text-xl shadow-sm">
-              🎯
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">{sectie.titel || 'Actieplan'}</h3>
-              <p className="text-sm text-gray-600">Zet de theorie om in praktijk</p>
-            </div>
-          </div>
+          <h3 className="text-lg font-semibold text-gray-900">{sectie.titel || 'Actieplan'}</h3>
           {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
         </div>
 
@@ -1127,7 +1113,7 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
                     </span>
                     {deadline && (
                       <div className="text-xs text-gray-500 mt-1">
-                        📅 {deadline}
+                        Deadline: {deadline}
                       </div>
                     )}
                   </div>
@@ -1143,13 +1129,12 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
           </div>
 
           {!isCompleted && allCompleted && (
-            <PrimaryButton
+            <button
               onClick={() => onComplete(voltooideActies)}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
             >
-              <CheckCircle className="w-4 h-4 mr-2" />
               Actieplan voltooien
-            </PrimaryButton>
+            </button>
           )}
         </div>
       </CardContent>
