@@ -62,8 +62,13 @@ interface DayDetail {
     }[];
   };
   reflectie?: {
-    vraag: string;
-    doel: string;
+    vraag?: string;  // Keep for backwards compatibility
+    doel?: string;   // Keep for backwards compatibility
+    vragen?: Array<{  // NEW format - transformational questions
+      type: 'spiegel' | 'identiteit' | 'actie';
+      vraag: string;
+      doel: string;
+    }>;
   };
   werkboek?: {
     titel: string;
@@ -89,6 +94,8 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
   const [quizAnswers, setQuizAnswers] = useState<any[]>([]);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [reflectieAnswer, setReflectieAnswer] = useState('');
+  const [reflectionAnswers, setReflectionAnswers] = useState<Record<string, string>>({});
+  const [savingReflection, setSavingReflection] = useState<string | null>(null);
   const [werkboekAnswers, setWerkboekAnswers] = useState<{ stap: string; completed: boolean }[]>([]);
   const [saving, setSaving] = useState(false);
 
@@ -200,6 +207,29 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
   const handleQuizSubmit = async () => {
     setQuizSubmitted(true);
     await saveProgress({ quiz_answers: quizAnswers, quiz_completed: true });
+  };
+
+  const handleReflectionAnswerChange = async (questionType: string, value: string) => {
+    setReflectionAnswers((prev) => ({
+      ...prev,
+      [questionType]: value,
+    }));
+
+    // Also update combined answer for backwards compatibility
+    const allAnswers = { ...reflectionAnswers, [questionType]: value };
+    const combined = Object.entries(allAnswers)
+      .filter(([_, v]) => v && v.length > 0)
+      .map(([type, answer]) => `[${type.toUpperCase()}] ${answer}`)
+      .join('\n\n');
+    setReflectieAnswer(combined);
+
+    // Auto-save after user finishes typing
+    setSavingReflection(questionType);
+    await saveProgress({
+      reflectie_antwoord: combined,
+      reflectie_completed: Object.values({ ...allAnswers, [questionType]: value }).filter(v => v && v.length > 10).length >= 3,
+    });
+    setSavingReflection(null);
   };
 
   const handleReflectieSave = async () => {
@@ -442,26 +472,100 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
                   </Card>
                 )}
 
-                {/* Reflectie section */}
+                {/* Reflectie section - NEW transformational format */}
                 {dayDetail.reflectie && (
                   <Card className="border-gray-100">
                     <CardContent className="p-6 space-y-4">
                       <h4 className="font-medium text-gray-900">Reflectie</h4>
-                      <p className="text-gray-600">{dayDetail.reflectie.vraag}</p>
-                      <Textarea
-                        value={reflectieAnswer}
-                        onChange={(e) => setReflectieAnswer(e.target.value)}
-                        placeholder="Schrijf hier je antwoord..."
-                        className="min-h-[120px]"
-                      />
-                      <Button
-                        onClick={handleReflectieSave}
-                        disabled={saving || reflectieAnswer.length < 10}
-                        variant="outline"
-                        className="w-full"
-                      >
-                        Opslaan
-                      </Button>
+
+                      {/* NEW format - 3 transformational questions */}
+                      {dayDetail.reflectie.vragen ? (
+                        <div className="space-y-4">
+                          {dayDetail.reflectie.vragen.map((vraag, index) => {
+                            const questionType = vraag.type as 'spiegel' | 'identiteit' | 'actie';
+                            const currentAnswer = reflectionAnswers[questionType] || '';
+                            const isSaving = savingReflection === questionType;
+
+                            return (
+                              <div
+                                key={index}
+                                className={cn(
+                                  'p-4 rounded-xl border-2',
+                                  vraag.type === 'spiegel' && 'bg-amber-50/50 border-amber-200',
+                                  vraag.type === 'identiteit' && 'bg-purple-50/50 border-purple-200',
+                                  vraag.type === 'actie' && 'bg-emerald-50/50 border-emerald-200'
+                                )}
+                              >
+                                <div className="flex items-start gap-3 mb-3">
+                                  <div className={cn(
+                                    'w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0',
+                                    vraag.type === 'spiegel' && 'bg-amber-100',
+                                    vraag.type === 'identiteit' && 'bg-purple-100',
+                                    vraag.type === 'actie' && 'bg-emerald-100'
+                                  )}>
+                                    {vraag.type === 'spiegel' && '🪞'}
+                                    {vraag.type === 'identiteit' && '✨'}
+                                    {vraag.type === 'actie' && '🎯'}
+                                  </div>
+                                  <div className="flex-1">
+                                    <h5 className={cn(
+                                      'font-semibold text-sm mb-1',
+                                      vraag.type === 'spiegel' && 'text-amber-900',
+                                      vraag.type === 'identiteit' && 'text-purple-900',
+                                      vraag.type === 'actie' && 'text-emerald-900'
+                                    )}>
+                                      {vraag.type === 'spiegel' && 'Spiegel'}
+                                      {vraag.type === 'identiteit' && 'Identiteit'}
+                                      {vraag.type === 'actie' && 'Actie'}
+                                    </h5>
+                                    <p className="text-sm text-gray-600">{vraag.doel}</p>
+                                  </div>
+                                </div>
+
+                                <p className="text-sm font-medium text-gray-900 mb-2">{vraag.vraag}</p>
+
+                                <Textarea
+                                  value={currentAnswer}
+                                  onChange={(e) => handleReflectionAnswerChange(questionType, e.target.value)}
+                                  placeholder="Schrijf hier je antwoord..."
+                                  className={cn(
+                                    'min-h-[100px] text-sm',
+                                    vraag.type === 'spiegel' && 'border-amber-200 focus:border-amber-400',
+                                    vraag.type === 'identiteit' && 'border-purple-200 focus:border-purple-400',
+                                    vraag.type === 'actie' && 'border-emerald-200 focus:border-emerald-400'
+                                  )}
+                                />
+
+                                {isSaving && (
+                                  <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                                    <Loader2 className="w-3 h-3 animate-spin" />
+                                    Opslaan...
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        // OLD format - backwards compatible single question
+                        <>
+                          <p className="text-gray-600">{dayDetail.reflectie.vraag}</p>
+                          <Textarea
+                            value={reflectieAnswer}
+                            onChange={(e) => setReflectieAnswer(e.target.value)}
+                            placeholder="Schrijf hier je antwoord..."
+                            className="min-h-[120px]"
+                          />
+                          <Button
+                            onClick={handleReflectieSave}
+                            disabled={saving || reflectieAnswer.length < 10}
+                            variant="outline"
+                            className="w-full"
+                          >
+                            Opslaan
+                          </Button>
+                        </>
+                      )}
                     </CardContent>
                   </Card>
                 )}
