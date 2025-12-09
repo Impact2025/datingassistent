@@ -1,13 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Play, Clock, CheckCircle, Calendar } from "lucide-react";
-import { ToolModal } from "@/components/tools/tool-modal";
-import { KickstartDayFlow } from "@/components/kickstart/kickstart-day-flow";
+import { Play, CheckCircle, Calendar } from "lucide-react";
 
 interface KickstartProgram {
   program_id: number;
@@ -31,8 +28,6 @@ interface KickstartProgramCardProps {
 
 export function KickstartProgramCard({ program, index = 0 }: KickstartProgramCardProps) {
   const router = useRouter();
-  const [dayModalOpen, setDayModalOpen] = useState(false);
-  const [currentDayNumber, setCurrentDayNumber] = useState<number>(1);
 
   const progress = program.overall_progress_percentage;
   const currentDay = program.next_day;
@@ -43,21 +38,8 @@ export function KickstartProgramCard({ program, index = 0 }: KickstartProgramCar
   const daysRemaining = 21 - program.completed_days;
 
   const handleContinue = () => {
-    if (isCompleted) {
-      router.push(`/kickstart`);
-    } else {
-      // Open modal instead of navigating to separate page
-      setCurrentDayNumber(currentDay);
-      setDayModalOpen(true);
-    }
-  };
-
-  const handleDayNavigate = (dayNumber: number) => {
-    setCurrentDayNumber(dayNumber);
-  };
-
-  const handleCloseModal = () => {
-    setDayModalOpen(false);
+    // Always navigate to kickstart page with inline two-panel view
+    router.push(`/kickstart`);
   };
 
   return (
@@ -203,39 +185,17 @@ export function KickstartProgramCard({ program, index = 0 }: KickstartProgramCar
         )}
 
         {isCompleted && (
-          <div className="flex gap-2">
-            <Button
-              onClick={() => router.push('/kickstart')}
-              variant="outline"
-              className="flex-1 border-green-500 text-green-600 hover:bg-green-50"
-              size="sm"
-            >
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Bekijk overzicht
-            </Button>
-            <Button
-              onClick={() => {
-                setCurrentDayNumber(1);
-                setDayModalOpen(true);
-              }}
-              variant="outline"
-              className="flex-1"
-              size="sm"
-            >
-              Herbekijk dagen
-            </Button>
-          </div>
+          <Button
+            onClick={() => router.push('/kickstart')}
+            variant="outline"
+            className="w-full border-green-500 text-green-600 hover:bg-green-50"
+            size="sm"
+          >
+            <CheckCircle className="w-4 h-4 mr-2" />
+            Bekijk overzicht
+          </Button>
         )}
       </div>
-
-      {/* Day Modal */}
-      <ToolModal isOpen={dayModalOpen} onClose={handleCloseModal}>
-        <KickstartDayFlow
-          dayNumber={currentDayNumber}
-          onClose={handleCloseModal}
-          onNavigate={handleDayNavigate}
-        />
-      </ToolModal>
     </motion.div>
   );
 }
