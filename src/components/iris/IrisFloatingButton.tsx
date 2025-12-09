@@ -17,9 +17,15 @@ export function IrisFloatingButton() {
     return null;
   }
 
-  // Show on course pages (/cursus and /cursussen)
+  // Show on course overview pages, but NOT on lesson detail pages (which have inline chat)
   const isCursusPage = pathname?.startsWith('/cursus') || pathname?.startsWith('/cursussen');
-  if (!isCursusPage) {
+
+  // Detect lesson detail pages: /cursussen/[slug]/[lesSlug] (3 segments after /cursussen)
+  const pathSegments = pathname?.split('/').filter(Boolean) || [];
+  const isLessonDetailPage = pathSegments[0] === 'cursussen' && pathSegments.length >= 3;
+
+  // Don't show floating button on lesson detail pages (they have inline IrisChatPanel)
+  if (!isCursusPage || isLessonDetailPage) {
     return null;
   }
 
