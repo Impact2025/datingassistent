@@ -1,10 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Play, CheckCircle, Calendar } from "lucide-react";
+import { Play, ArrowRight, Target } from "lucide-react";
 
 interface KickstartProgram {
   program_id: number;
@@ -26,7 +25,7 @@ interface KickstartProgramCardProps {
   index?: number;
 }
 
-export function KickstartProgramCard({ program, index = 0 }: KickstartProgramCardProps) {
+export function KickstartProgramCard({ program }: KickstartProgramCardProps) {
   const router = useRouter();
 
   const progress = program.overall_progress_percentage;
@@ -43,159 +42,107 @@ export function KickstartProgramCard({ program, index = 0 }: KickstartProgramCar
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-    >
-      <div className="border rounded-lg p-4 hover:border-pink-500 transition-colors cursor-pointer group bg-gradient-to-br from-blue-50 to-purple-50">
-        <div onClick={() => router.push('/kickstart')}>
-          {/* Header */}
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <div className="text-3xl">🎯</div>
-              <div>
-                <h3 className="font-semibold text-gray-900 group-hover:text-pink-600 transition-colors">
+    <Card className="border-2 border-blue-200 dark:border-blue-700 bg-gradient-to-r from-blue-50 to-purple-100 dark:from-blue-900/30 dark:to-purple-800/30 shadow-md">
+      <CardContent className="p-4 sm:p-6">
+        {/* Mobile: Stack layout, Desktop: Side-by-side */}
+        <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+          {/* Icon - smaller on mobile */}
+          <div className="flex-shrink-0 flex items-center gap-3 sm:block">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
+              <div className="text-blue-600 dark:text-blue-400">
+                <Target className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+            </div>
+            {/* Title on same line as icon on mobile */}
+            <div className="sm:hidden flex-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="font-semibold text-base text-blue-600 dark:text-blue-400">
                   {program.program_name}
                 </h3>
-                <div className="flex items-center gap-2 mt-1">
-                  {isCompleted && (
-                    <Badge className="bg-green-500 text-white text-xs">
-                      <CheckCircle className="w-3 h-3 mr-1" />
-                      Voltooid!
-                    </Badge>
-                  )}
-                  {!isCompleted && isStarted && (
-                    <Badge className="bg-blue-500 text-white text-xs">
-                      Dag {currentDay}/21
-                    </Badge>
-                  )}
-                  {!isStarted && (
-                    <Badge variant="outline" className="text-xs">
-                      Nieuw
-                    </Badge>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Progress Circle */}
-            <div className="text-center">
-              <div className="relative w-12 h-12">
-                <svg className="w-12 h-12 transform -rotate-90">
-                  <circle
-                    cx="24"
-                    cy="24"
-                    r="20"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    fill="none"
-                    className="text-gray-200"
-                  />
-                  <circle
-                    cx="24"
-                    cy="24"
-                    r="20"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    fill="none"
-                    strokeDasharray={`${2 * Math.PI * 20}`}
-                    strokeDashoffset={`${2 * Math.PI * 20 * (1 - progress / 100)}`}
-                    className="text-blue-500 transition-all duration-500"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold text-gray-900">
-                    {progress}%
+                {isStarted && !isCompleted && (
+                  <span className="px-3 py-1 bg-blue-500 dark:bg-blue-600 text-white text-xs rounded-full shadow-md whitespace-nowrap font-medium">
+                    Dag {currentDay}/21
                   </span>
-                </div>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Stats - Day-based instead of module/lesson */}
-          <div className="grid grid-cols-2 gap-3 mb-3">
-            <div className="text-center p-2 bg-white rounded-lg">
-              <p className="text-xs text-gray-600">Voltooid</p>
-              <p className="text-sm font-bold text-gray-900">
-                {program.completed_days}/{program.total_days} dagen
-              </p>
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            {/* Title - hidden on mobile (shown above) */}
+            <div className="hidden sm:flex items-center gap-2 mb-2 flex-wrap">
+              <h3 className="font-semibold text-lg text-blue-600 dark:text-blue-400">
+                {program.program_name}
+              </h3>
+              {isStarted && !isCompleted && (
+                <span className="px-3 py-1 bg-blue-500 dark:bg-blue-600 text-white text-xs rounded-full shadow-md font-medium">
+                  Dag {currentDay}/21
+                </span>
+              )}
             </div>
-            <div className="text-center p-2 bg-white rounded-lg">
-              <p className="text-xs text-gray-600">Te gaan</p>
-              <p className="text-sm font-bold text-gray-900">
-                {daysRemaining} {daysRemaining === 1 ? 'dag' : 'dagen'}
-              </p>
-            </div>
-          </div>
 
-          {/* Progress Bar */}
-          <div className="mb-3">
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <motion.div
-                className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-600"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 1, ease: 'easeOut' }}
-              />
-            </div>
-          </div>
+            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">
+              {isCompleted
+                ? "Gefeliciteerd! Je hebt alle 21 dagen afgerond! 🎉"
+                : `Jouw 21-dagen transformatie naar dating succes. ${program.completed_days} van 21 dagen voltooid.`
+              }
+            </p>
 
-          {/* Current Day Info */}
-          {!isCompleted && (
-            <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-              <Calendar className="w-4 h-4" />
-              <span className="line-clamp-1">
-                Volgende: Dag {currentDay}
-              </span>
-            </div>
-          )}
+            <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-400 italic mb-4">
+              "Dagelijkse stappen naar meer dating zelfvertrouwen"
+            </p>
 
-          {/* Completed Message */}
-          {isCompleted && (
-            <div className="flex items-center gap-2 text-sm text-green-600 mb-3 font-medium">
-              <CheckCircle className="w-4 h-4" />
-              <span>
-                Gefeliciteerd! Je hebt alle 21 dagen afgerond! 🎉
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Action Button */}
-        {!isCompleted && (
-          <Button
-            onClick={handleContinue}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:opacity-90"
-            size="sm"
-          >
-            {isStarted ? (
-              <>
-                <Play className="w-4 h-4 mr-2" />
-                Ga verder naar Dag {currentDay}
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4 mr-2" />
-                Start met Dag 1
-              </>
+            {/* Progress Stats */}
+            {!isCompleted && (
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                <div className="text-center p-2 bg-white/60 dark:bg-white/10 rounded-lg">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Voltooid</p>
+                  <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                    {program.completed_days}
+                  </p>
+                </div>
+                <div className="text-center p-2 bg-white/60 dark:bg-white/10 rounded-lg">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Te gaan</p>
+                  <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                    {daysRemaining}
+                  </p>
+                </div>
+                <div className="text-center p-2 bg-white/60 dark:bg-white/10 rounded-lg">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Voortgang</p>
+                  <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                    {progress}%
+                  </p>
+                </div>
+              </div>
             )}
-          </Button>
-        )}
 
-        {isCompleted && (
-          <Button
-            onClick={() => router.push('/kickstart')}
-            variant="outline"
-            className="w-full border-green-500 text-green-600 hover:bg-green-50"
-            size="sm"
-          >
-            <CheckCircle className="w-4 h-4 mr-2" />
-            Bekijk overzicht
-          </Button>
-        )}
-      </div>
-    </motion.div>
+            {/* Button */}
+            <Button
+              onClick={handleContinue}
+              size="sm"
+              className="gap-2 px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
+            >
+              {isCompleted ? (
+                <>
+                  Bekijk Overzicht
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              ) : isStarted ? (
+                <>
+                  <Play className="w-4 h-4" />
+                  Ga verder naar Dag {currentDay}
+                </>
+              ) : (
+                <>
+                  <Play className="w-4 h-4" />
+                  Start met Dag 1
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
