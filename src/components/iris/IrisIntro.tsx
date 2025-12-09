@@ -16,7 +16,7 @@ interface IrisIntroProps {
 export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
   const [message, setMessage] = useState<IrisMessage | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false); // Start collapsed in modal
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {

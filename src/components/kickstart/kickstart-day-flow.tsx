@@ -137,15 +137,15 @@ export function KickstartDayFlow({ dayNumber, onClose, onNavigate }: KickstartDa
   }
 
   return (
-    <div className="relative">
+    <div className="relative min-h-full px-4 py-6 md:px-6 pb-16">
       {/* Close button for modal context */}
       {onClose && (
-        <div className="absolute top-0 right-0 z-10">
+        <div className="absolute top-2 right-2 z-20">
           <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="rounded-full"
+            className="rounded-full bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
           >
             <X className="w-4 h-4" />
           </Button>
