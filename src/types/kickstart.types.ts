@@ -47,20 +47,20 @@ export interface QuizAnswer {
 // ============================================
 // REFLECTIE TYPES
 // ============================================
-export interface ReflectieItem {
-  type: string; // 'spiegel', 'identiteit', 'actie'
-  titel: string;
-  beschrijving: string;
+export type ReflectieType = 'spiegel' | 'identiteit' | 'actie';
+
+export interface ReflectieVraag {
+  type: ReflectieType;
+  doel: string;
   vraag: string;
-  emoji?: string;
 }
 
 export interface Reflectie {
-  // Legacy single question format
+  // Multiple questions format (current database structure)
+  vragen?: ReflectieVraag[];
+  // Legacy single question format (backwards compatibility)
   vraag?: string;
   doel?: string;
-  // New multiple questions format
-  items?: ReflectieItem[];
 }
 
 // ============================================

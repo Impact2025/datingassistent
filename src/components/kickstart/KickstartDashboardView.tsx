@@ -201,8 +201,8 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
     const newAnswers = { ...reflectieAnswers, [index]: answer };
     setReflectieAnswers(newAnswers);
 
-    const items = currentDay?.reflectie?.items || [];
-    const allAnswered = items.every((_, i) => (newAnswers[i]?.length || 0) > 10);
+    const vragen = currentDay?.reflectie?.vragen || [];
+    const allAnswered = vragen.every((_, i) => (newAnswers[i]?.length || 0) > 10);
 
     await saveProgress({
       reflectie_antwoorden: newAnswers,
@@ -241,7 +241,15 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
     }
     if (currentDay.reflectie) {
       total++;
-      if (reflectieAnswer.length > 10) completed++;
+      // Check multiple questions (vragen) or single question (vraag)
+      if (currentDay.reflectie.vragen && currentDay.reflectie.vragen.length > 0) {
+        const allAnswered = currentDay.reflectie.vragen.every(
+          (_, i) => (reflectieAnswers[i]?.length || 0) > 10
+        );
+        if (allAnswered) completed++;
+      } else if (reflectieAnswer.length > 10) {
+        completed++;
+      }
     }
     if (currentDay.werkboek) {
       total++;
@@ -430,7 +438,16 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                   <TabsTrigger value="reflectie" className="flex items-center gap-1 text-xs lg:text-sm">
                     <BookOpen className="w-3 h-3 lg:w-4 lg:h-4" />
                     <span className="hidden sm:inline">Reflectie</span>
-                    {reflectieAnswer.length > 10 && <CheckCircle className="w-3 h-3 text-green-500" />}
+                    {(() => {
+                      // Check multiple questions (vragen) or single question (vraag)
+                      if (currentDay.reflectie.vragen && currentDay.reflectie.vragen.length > 0) {
+                        const allAnswered = currentDay.reflectie.vragen.every(
+                          (_, i) => (reflectieAnswers[i]?.length || 0) > 10
+                        );
+                        return allAnswered && <CheckCircle className="w-3 h-3 text-green-500" />;
+                      }
+                      return reflectieAnswer.length > 10 && <CheckCircle className="w-3 h-3 text-green-500" />;
+                    })()}
                   </TabsTrigger>
                 )}
                 {currentDay.werkboek && (
@@ -618,32 +635,47 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                       <CardTitle className="text-lg">Reflectie</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                      {/* Multiple reflection items */}
-                      {currentDay.reflectie.items && currentDay.reflectie.items.length > 0 ? (
-                        currentDay.reflectie.items.map((item: any, index: number) => (
-                          <div key={index} className="space-y-3">
-                            <div className="flex items-start gap-3">
-                              {item.emoji && (
-                                <span className="text-xl">{item.emoji}</span>
-                              )}
-                              <div className="flex-1">
-                                <h4 className="font-semibold text-gray-900">{item.titel}</h4>
-                                <p className="text-sm text-gray-600">{item.beschrijving}</p>
+                      {/* Multiple reflection questions (vragen array) */}
+                      {currentDay.reflectie.vragen && currentDay.reflectie.vragen.length > 0 ? (
+                        currentDay.reflectie.vragen.map((vraagItem: any, index: number) => {
+                          // Map type to display label
+                          const typeLabels: Record<string, string> = {
+                            spiegel: 'Spiegel',
+                            identiteit: 'Identiteit',
+                            actie: 'Actie',
+                          };
+                          const typeLabel = typeLabels[vraagItem.type] || vraagItem.type;
+
+                          return (
+                            <div key={index} className="space-y-3 p-4 rounded-xl border border-gray-200 bg-white">
+                              <div className="flex items-start gap-3">
+                                <Badge className="bg-pink-100 text-pink-700 text-xs border-0 shrink-0">
+                                  {typeLabel}
+                                </Badge>
+                                <div className="flex-1">
+                                  <p className="text-sm text-gray-600">{vraagItem.doel}</p>
+                                </div>
                               </div>
+                              <p className="text-gray-900 font-medium">{vraagItem.vraag}</p>
+                              <Textarea
+                                value={reflectieAnswers[index] || ''}
+                                onChange={(e) => {
+                                  const newAnswers = { ...reflectieAnswers, [index]: e.target.value };
+                                  setReflectieAnswers(newAnswers);
+                                }}
+                                onBlur={() => handleReflectieItemSave(index, reflectieAnswers[index] || '')}
+                                placeholder="Schrijf je antwoord hier..."
+                                className="min-h-[100px]"
+                              />
+                              {(reflectieAnswers[index]?.length || 0) > 10 && (
+                                <div className="flex items-center gap-2 text-green-600 text-sm">
+                                  <CheckCircle className="w-4 h-4" />
+                                  Opgeslagen
+                                </div>
+                              )}
                             </div>
-                            <p className="text-gray-700">{item.vraag}</p>
-                            <Textarea
-                              value={reflectieAnswers[index] || ''}
-                              onChange={(e) => {
-                                const newAnswers = { ...reflectieAnswers, [index]: e.target.value };
-                                setReflectieAnswers(newAnswers);
-                              }}
-                              onBlur={() => handleReflectieItemSave(index, reflectieAnswers[index] || '')}
-                              placeholder="Schrijf je antwoord hier..."
-                              className="min-h-[100px]"
-                            />
-                          </div>
-                        ))
+                          );
+                        })
                       ) : (
                         /* Legacy single question format */
                         <>
