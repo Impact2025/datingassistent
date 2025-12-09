@@ -22,6 +22,8 @@ import {
   User,
   Zap,
   Target,
+  Download,
+  FileText,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
@@ -152,6 +154,29 @@ export function WeekSidebar({ days, currentDay, onSelectDay, className }: WeekSi
         <p className="text-sm text-gray-600">
           Dag {currentDay} van 21 · {days.filter((d) => d.status === 'completed').length} voltooid
         </p>
+      </div>
+
+      {/* Workbook Download - Prominent Button */}
+      <div className="p-4 bg-gradient-to-br from-blue-50 to-purple-50 border-b border-gray-100">
+        <button
+          onClick={() => window.open('/downloads/kickstart/21-dagen-kickstart-werkboek.pdf', '_blank')}
+          className="w-full group relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+        >
+          <div className="relative z-10 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div className="text-left">
+                <p className="font-bold text-sm">Kickstart Werkboek</p>
+                <p className="text-xs text-white/90">Download de PDF</p>
+              </div>
+            </div>
+            <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
+          </div>
+          {/* Shine effect on hover */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+        </button>
       </div>
 
       {/* Weeks */}
