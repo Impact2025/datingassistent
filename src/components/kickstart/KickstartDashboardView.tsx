@@ -354,7 +354,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-100 to-rose-100 flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-xl bg-pink-100 flex items-center justify-center">
                       <span className="text-3xl">{currentDay.emoji}</span>
                     </div>
                     <div>
@@ -447,7 +447,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                     ) : currentDay.video_script ? (
                       <div className="space-y-6">
                         {/* Hook */}
-                        <div className="bg-gradient-to-r from-pink-50 to-pink-100 p-4 lg:p-6 rounded-xl border border-pink-100">
+                        <div className="bg-pink-50 p-4 lg:p-6 rounded-lg border border-pink-200">
                           <p className="text-base lg:text-lg font-medium text-gray-900 italic">
                             "{currentDay.video_script.hook}"
                           </p>
@@ -468,11 +468,11 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
 
                         {/* Opdracht */}
                         {currentDay.video_script.opdracht && (
-                          <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 lg:p-6 rounded-xl border border-pink-200">
-                            <h3 className="font-semibold text-pink-900 mb-2">
-                              📝 Opdracht van vandaag
+                          <div className="bg-pink-50 p-4 lg:p-6 rounded-lg border border-pink-200">
+                            <h3 className="font-semibold text-gray-900 mb-2">
+                              Opdracht van vandaag
                             </h3>
-                            <p className="text-pink-800">{currentDay.video_script.opdracht}</p>
+                            <p className="text-gray-700">{currentDay.video_script.opdracht}</p>
                           </div>
                         )}
 
@@ -490,10 +490,9 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                     {!isVideoComplete && (
                       <Button
                         onClick={handleVideoComplete}
-                        className="w-full mt-6 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg shadow-pink-200"
+                        className="w-full mt-6 bg-pink-500 hover:bg-pink-600 text-white"
                         disabled={saving}
                       >
-                        <CheckCircle className="w-4 h-4 mr-2" />
                         Markeer als bekeken
                       </Button>
                     )}
@@ -575,7 +574,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                       {!quizSubmitted && quizAnswers.length === currentDay.quiz.vragen.length && (
                         <Button
                           onClick={handleQuizSubmit}
-                          className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg shadow-pink-200"
+                          className="w-full bg-pink-500 hover:bg-pink-600 text-white"
                           disabled={saving}
                         >
                           Controleer antwoorden
@@ -603,11 +602,11 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                       <CardTitle className="text-lg">Reflectie</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 rounded-xl border border-pink-100">
-                        <p className="font-medium text-pink-900">
+                      <div className="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                        <p className="font-medium text-gray-900">
                           {currentDay.reflectie.vraag}
                         </p>
-                        <p className="text-sm text-pink-700 mt-2">
+                        <p className="text-sm text-gray-600 mt-2">
                           Doel: {currentDay.reflectie.doel}
                         </p>
                       </div>
@@ -621,7 +620,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
 
                       <Button
                         onClick={handleReflectieSave}
-                        className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg shadow-pink-200"
+                        className="w-full bg-pink-500 hover:bg-pink-600 text-white"
                         disabled={saving || reflectieAnswer.length < 10}
                       >
                         {saving ? 'Opslaan...' : 'Opslaan'}
@@ -709,14 +708,14 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                     daySummaries.find((d) => d.dag_nummer === currentDayNumber + 1)?.status ===
                     'locked'
                   }
-                  className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg shadow-pink-200"
+                  className="bg-pink-500 hover:bg-pink-600 text-white"
                 >
                   <span className="hidden sm:inline">Volgende dag</span>
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               ) : (
-                <Button className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg shadow-pink-200">
-                  🎉 Programma voltooid!
+                <Button className="bg-pink-500 hover:bg-pink-600 text-white">
+                  Programma voltooid
                 </Button>
               )}
             </div>
