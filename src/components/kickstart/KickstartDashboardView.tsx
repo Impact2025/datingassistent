@@ -61,6 +61,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswer[]>([]);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [reflectieAnswer, setReflectieAnswer] = useState('');
+  const [reflectieAnswers, setReflectieAnswers] = useState<Record<number, string>>({});
   const [werkboekAnswers, setWerkboekAnswers] = useState<WerkboekAnswer[]>([]);
   const [saving, setSaving] = useState(false);
 
@@ -109,6 +110,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
         setQuizAnswers(data.progress?.quiz_answers || []);
         setQuizSubmitted(data.progress?.quiz_completed || false);
         setReflectieAnswer(data.progress?.reflectie_antwoord || '');
+        setReflectieAnswers(data.progress?.reflectie_antwoorden || {});
         setWerkboekAnswers(
           data.progress?.werkboek_antwoorden ||
             data.day.werkboek?.stappen.map((stap: string) => ({
@@ -186,11 +188,25 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
     await saveProgress({ quiz_answers: quizAnswers, quiz_completed: true });
   };
 
-  // Reflectie handler
+  // Reflectie handler (single question)
   const handleReflectieSave = async () => {
     await saveProgress({
       reflectie_antwoord: reflectieAnswer,
       reflectie_completed: reflectieAnswer.length > 10,
+    });
+  };
+
+  // Reflectie handler (multiple questions)
+  const handleReflectieItemSave = async (index: number, answer: string) => {
+    const newAnswers = { ...reflectieAnswers, [index]: answer };
+    setReflectieAnswers(newAnswers);
+
+    const items = currentDay?.reflectie?.items || [];
+    const allAnswered = items.every((_, i) => (newAnswers[i]?.length || 0) > 10);
+
+    await saveProgress({
+      reflectie_antwoorden: newAnswers,
+      reflectie_completed: allAnswered,
     });
   };
 
@@ -601,30 +617,61 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                     <CardHeader className="pb-2">
                       <CardTitle className="text-lg">Reflectie</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="bg-pink-50 p-4 rounded-lg border border-pink-200">
-                        <p className="font-medium text-gray-900">
-                          {currentDay.reflectie.vraag}
-                        </p>
-                        <p className="text-sm text-gray-600 mt-2">
-                          Doel: {currentDay.reflectie.doel}
-                        </p>
-                      </div>
-
-                      <Textarea
-                        value={reflectieAnswer}
-                        onChange={(e) => setReflectieAnswer(e.target.value)}
-                        placeholder="Schrijf je antwoord hier..."
-                        className="min-h-[150px]"
-                      />
-
-                      <Button
-                        onClick={handleReflectieSave}
-                        className="w-full bg-pink-500 hover:bg-pink-600 text-white"
-                        disabled={saving || reflectieAnswer.length < 10}
-                      >
-                        {saving ? 'Opslaan...' : 'Opslaan'}
-                      </Button>
+                    <CardContent className="space-y-6">
+                      {/* Multiple reflection items */}
+                      {currentDay.reflectie.items && currentDay.reflectie.items.length > 0 ? (
+                        currentDay.reflectie.items.map((item: any, index: number) => (
+                          <div key={index} className="space-y-3">
+                            <div className="flex items-start gap-3">
+                              {item.emoji && (
+                                <span className="text-xl">{item.emoji}</span>
+                              )}
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-gray-900">{item.titel}</h4>
+                                <p className="text-sm text-gray-600">{item.beschrijving}</p>
+                              </div>
+                            </div>
+                            <p className="text-gray-700">{item.vraag}</p>
+                            <Textarea
+                              value={reflectieAnswers[index] || ''}
+                              onChange={(e) => {
+                                const newAnswers = { ...reflectieAnswers, [index]: e.target.value };
+                                setReflectieAnswers(newAnswers);
+                              }}
+                              onBlur={() => handleReflectieItemSave(index, reflectieAnswers[index] || '')}
+                              placeholder="Schrijf je antwoord hier..."
+                              className="min-h-[100px]"
+                            />
+                          </div>
+                        ))
+                      ) : (
+                        /* Legacy single question format */
+                        <>
+                          <div className="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                            <p className="font-medium text-gray-900">
+                              {currentDay.reflectie.vraag}
+                            </p>
+                            {currentDay.reflectie.doel && (
+                              <p className="text-sm text-gray-600 mt-2">
+                                Doel: {currentDay.reflectie.doel}
+                              </p>
+                            )}
+                          </div>
+                          <Textarea
+                            value={reflectieAnswer}
+                            onChange={(e) => setReflectieAnswer(e.target.value)}
+                            placeholder="Schrijf je antwoord hier..."
+                            className="min-h-[150px]"
+                          />
+                          <Button
+                            onClick={handleReflectieSave}
+                            className="w-full bg-pink-500 hover:bg-pink-600 text-white"
+                            disabled={saving || reflectieAnswer.length < 10}
+                          >
+                            {saving ? 'Opslaan...' : 'Opslaan'}
+                          </Button>
+                        </>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
