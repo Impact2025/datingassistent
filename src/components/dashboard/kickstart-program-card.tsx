@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Play, Clock, CheckCircle, Calendar } from "lucide-react";
+import { ToolModal } from "@/components/tools/tool-modal";
+import { KickstartDayFlow } from "@/components/kickstart/kickstart-day-flow";
 
 interface KickstartProgram {
   program_id: number;
@@ -28,6 +31,9 @@ interface KickstartProgramCardProps {
 
 export function KickstartProgramCard({ program, index = 0 }: KickstartProgramCardProps) {
   const router = useRouter();
+  const [dayModalOpen, setDayModalOpen] = useState(false);
+  const [currentDayNumber, setCurrentDayNumber] = useState<number>(1);
+
   const progress = program.overall_progress_percentage;
   const currentDay = program.next_day;
   const isCompleted = progress === 100;
@@ -40,8 +46,18 @@ export function KickstartProgramCard({ program, index = 0 }: KickstartProgramCar
     if (isCompleted) {
       router.push(`/kickstart`);
     } else {
-      router.push(`/kickstart/dag/${currentDay}`);
+      // Open modal instead of navigating to separate page
+      setCurrentDayNumber(currentDay);
+      setDayModalOpen(true);
     }
+  };
+
+  const handleDayNavigate = (dayNumber: number) => {
+    setCurrentDayNumber(dayNumber);
+  };
+
+  const handleCloseModal = () => {
+    setDayModalOpen(false);
   };
 
   return (
@@ -198,7 +214,10 @@ export function KickstartProgramCard({ program, index = 0 }: KickstartProgramCar
               Bekijk overzicht
             </Button>
             <Button
-              onClick={() => router.push('/kickstart/dag/1')}
+              onClick={() => {
+                setCurrentDayNumber(1);
+                setDayModalOpen(true);
+              }}
               variant="outline"
               className="flex-1"
               size="sm"
@@ -208,6 +227,15 @@ export function KickstartProgramCard({ program, index = 0 }: KickstartProgramCar
           </div>
         )}
       </div>
+
+      {/* Day Modal */}
+      <ToolModal isOpen={dayModalOpen} onClose={handleCloseModal}>
+        <KickstartDayFlow
+          dayNumber={currentDayNumber}
+          onClose={handleCloseModal}
+          onNavigate={handleDayNavigate}
+        />
+      </ToolModal>
     </motion.div>
   );
 }
