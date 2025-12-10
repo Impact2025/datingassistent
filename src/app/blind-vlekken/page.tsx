@@ -55,57 +55,43 @@ export default function BlindVlekkenPage() {
 
   if (loading || loadingData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-red-200 border-t-red-600 rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600">Blindvlekken Analyse laden...</p>
+          <div className="animate-spin w-8 h-8 border-4 border-pink-200 border-t-pink-600 rounded-full mx-auto mb-4"></div>
+          <p className="text-gray-700">Blindvlekken Analyse laden...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-white">
+      <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="mb-12">
             <Button
               variant="ghost"
               onClick={() => router.push('/dashboard')}
-              className="mb-4"
+              className="mb-8 text-gray-700 hover:text-gray-900"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Terug naar Dashboard
             </Button>
 
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-red-200 mb-4">
-              <Eye className="w-5 h-5 text-red-600" />
-              <span className="text-sm font-medium text-gray-700">Self-Awareness Tool</span>
-            </div>
-
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              👁️ Dating Blindvlekken Analyse
-            </h1>
-
-            <p className="text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
-              Ontdek je onbewuste patronen die je dating leven saboteren. Kennis is macht!
-            </p>
-
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <Badge className="px-4 py-2 bg-red-100 text-red-800 border-red-200">
-                <EyeOff className="w-3 h-3 mr-1" />
-                Hidden Patterns
-              </Badge>
-              <Badge className="px-4 py-2 bg-orange-100 text-orange-800 border-orange-200">
-                <Lightbulb className="w-3 h-3 mr-1" />
-                Self-Awareness
-              </Badge>
-              <Badge className="px-4 py-2 bg-yellow-100 text-yellow-800 border-yellow-200">
-                <Target className="w-3 h-3 mr-1" />
-                Actionable
-              </Badge>
-            </div>
+            <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden mb-8">
+              <CardContent className="p-12 text-center">
+                <div className="w-20 h-20 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                  <Eye className="w-10 h-10 text-pink-600" />
+                </div>
+                <CardTitle className="text-3xl font-bold text-gray-900 mb-6">
+                  Dating Blindvlekken Analyse
+                </CardTitle>
+                <p className="text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto">
+                  Ontdek je onbewuste patronen die je dating leven saboteren. Kennis is macht!
+                </p>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Main Content */}
@@ -133,7 +119,7 @@ export default function BlindVlekkenPage() {
                               <p className="text-sm text-red-800 mb-3">{blindspot.description}</p>
 
                               <div className="flex items-center gap-2 mb-3">
-                                <span className="text-xs text-gray-600">Impact niveau:</span>
+                                <span className="text-xs text-gray-700">Impact niveau:</span>
                                 <div className="flex gap-1">
                                   {[1, 2, 3, 4, 5].map((level) => (
                                     <div
@@ -161,7 +147,7 @@ export default function BlindVlekkenPage() {
                       <div className="text-center py-8">
                         <Eye className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold text-gray-900 mb-2">Geen blindvlekken gedetecteerd</h3>
-                        <p className="text-gray-600 mb-4">
+                        <p className="text-gray-700 mb-4">
                           Uitstekend! Er zijn geen significante blindvlekken gevonden in je dating gedrag.
                         </p>
                         <Button
@@ -191,7 +177,7 @@ export default function BlindVlekkenPage() {
                   <div className="text-center">
                     <div className="text-4xl font-bold text-orange-600 mb-2">78%</div>
                     <Progress value={78} className="h-3 mb-3" />
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-700">
                       Goede zelfbewustzijn - je kent jezelf goed, maar er is altijd ruimte voor verbetering.
                     </p>
                   </div>
@@ -237,7 +223,7 @@ export default function BlindVlekkenPage() {
                 <CardContent className="p-6 text-center">
                   <Lightbulb className="w-8 h-8 text-blue-600 mx-auto mb-3" />
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Meer Zelfbewustzijn?</h3>
-                  <p className="text-gray-600 mb-4 text-sm">
+                  <p className="text-gray-700 mb-4 text-sm">
                     Ontdek meer over jezelf met onze andere assessments.
                   </p>
                   <Button

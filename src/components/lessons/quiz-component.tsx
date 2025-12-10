@@ -153,7 +153,7 @@ export function QuizComponent({
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 {passed ? 'Gefeliciteerd! 🎉' : 'Nog niet gelukt'}
               </h2>
-              <p className="text-lg text-gray-600">
+              <p className="text-lg text-gray-700">
                 {passed
                   ? 'Je hebt de quiz succesvol voltooid!'
                   : `Je hebt ${passingScore}% nodig om te slagen.`
@@ -168,7 +168,7 @@ export function QuizComponent({
                   {finalScore}%
                 </span>
               </div>
-              <p className="text-gray-600">
+              <p className="text-gray-700">
                 {answers.filter(a => a.is_correct).length} van {questions.length} correct
               </p>
             </div>
@@ -178,7 +178,7 @@ export function QuizComponent({
               {!passed && allowRetries && (
                 <>
                   {hasMaxAttempts && attemptsRemaining !== null && (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-700">
                       Je hebt nog {attemptsRemaining} {attemptsRemaining === 1 ? 'poging' : 'pogingen'}
                     </p>
                   )}
@@ -221,7 +221,7 @@ export function QuizComponent({
     <div className="space-y-6">
       {/* Progress Bar */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between text-sm text-gray-600">
+        <div className="flex items-center justify-between text-sm text-gray-700">
           <span>Vraag {currentQuestionIndex + 1} van {questions.length}</span>
           <span>{Math.round(progress)}% voltooid</span>
         </div>

@@ -136,7 +136,7 @@ export default function ScansPage() {
                 <Scan className="w-10 h-10 text-purple-600" />
                 Mijn Scans
               </h1>
-              <p className="text-gray-600">Bekijk je resultaten en volg je groei</p>
+              <p className="text-gray-700">Bekijk je resultaten en volg je groei</p>
             </div>
 
             <Card className="px-6 py-4 border-2 border-purple-200 bg-white/50 backdrop-blur-sm">
@@ -144,7 +144,7 @@ export default function ScansPage() {
                 <div className="text-3xl font-bold text-purple-600">
                   {completedScans.length}/{scans.length}
                 </div>
-                <div className="text-sm text-gray-600 mt-1">Scans Voltooid</div>
+                <div className="text-sm text-gray-700 mt-1">Scans Voltooid</div>
               </div>
             </Card>
           </div>
@@ -168,7 +168,7 @@ export default function ScansPage() {
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-            <p className="text-gray-600 mt-4">Scans laden...</p>
+            <p className="text-gray-700 mt-4">Scans laden...</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6">
@@ -200,7 +200,7 @@ export default function ScansPage() {
             <h3 className="text-2xl font-bold text-gray-900 mb-2">
               Start je eerste scan!
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-700 mb-6">
               Ontdek je dating patterns en unlock personalized inzichten
             </p>
             <Link href="/dashboard">
@@ -312,7 +312,7 @@ function ScanOverviewCard({ scan, metadata, delay }: ScanOverviewCardProps) {
                     <CheckCircle2 className={cn("w-5 h-5", colors.icon)} />
                   )}
                 </CardTitle>
-                <p className="text-sm text-gray-600">{metadata.description}</p>
+                <p className="text-sm text-gray-700">{metadata.description}</p>
               </div>
             </div>
 
@@ -330,14 +330,14 @@ function ScanOverviewCard({ scan, metadata, delay }: ScanOverviewCardProps) {
               {/* Latest Result */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="space-y-1">
-                  <div className="text-sm text-gray-500">{metadata.resultLabel}</div>
+                  <div className="text-sm text-gray-700">{metadata.resultLabel}</div>
                   <div className={cn("text-lg font-bold", colors.text)}>
                     {formatResult(scan.latestResult?.primaryResult)}
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <div className="text-sm text-gray-500">Laatst Voltooid</div>
+                  <div className="text-sm text-gray-700">Laatst Voltooid</div>
                   <div className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-gray-400" />
                     {formatDate(scan.lastCompletedAt)}
@@ -346,7 +346,7 @@ function ScanOverviewCard({ scan, metadata, delay }: ScanOverviewCardProps) {
 
                 {scan.latestResult?.confidenceScore && (
                   <div className="space-y-1">
-                    <div className="text-sm text-gray-500">Betrouwbaarheid</div>
+                    <div className="text-sm text-gray-700">Betrouwbaarheid</div>
                     <div className="flex items-center gap-2">
                       <Progress
                         value={scan.latestResult.confidenceScore}
@@ -408,7 +408,7 @@ function ScanOverviewCard({ scan, metadata, delay }: ScanOverviewCardProps) {
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Sparkles className="w-8 h-8 text-gray-400" />
               </div>
-              <p className="text-gray-600 mb-4">Je hebt deze scan nog niet gedaan</p>
+              <p className="text-gray-700 mb-4">Je hebt deze scan nog niet gedaan</p>
               <Button
                 onClick={() => router.push(metadata.href)}
                 className="bg-gradient-to-r from-purple-600 to-pink-600"

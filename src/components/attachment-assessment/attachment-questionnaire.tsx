@@ -244,7 +244,7 @@ export function AttachmentQuestionnaire({
                       ))}
                     </div>
 
-                    <div className="flex justify-between text-sm text-gray-500 px-2">
+                    <div className="flex justify-between text-sm text-gray-700 px-2">
                       <span>Helemaal<br />oneens</span>
                       <span className="text-center">Neutraal</span>
                       <span className="text-right">Helemaal<br />eens</span>
@@ -260,7 +260,7 @@ export function AttachmentQuestionnaire({
             <button
               onClick={handleSkip}
               disabled={loading}
-              className="text-sm text-gray-500 hover:text-gray-700 underline disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-sm text-gray-700 hover:text-gray-900 underline disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Vraag overslaan
             </button>
@@ -281,7 +281,7 @@ export function AttachmentQuestionnaire({
             {isFirstQuestion ? 'Terug naar start' : 'Vorige'}
           </Button>
 
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-gray-700">
             {Object.keys(responses).length + (responses[currentQuestion.id] ? 1 : 0)} van {questions.length} beantwoord
           </div>
 

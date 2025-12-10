@@ -62,7 +62,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Blindvlekken Analyse laden...</p>
+          <p className="text-gray-700">Blindvlekken Analyse laden...</p>
         </div>
       </div>
     );
@@ -73,7 +73,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <p className="text-gray-600 mb-4">{error}</p>
+          <p className="text-gray-700 mb-4">{error}</p>
           <Button onClick={loadBlindspotsData} variant="outline">
             Opnieuw proberen
           </Button>
@@ -93,7 +93,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
           <h2 className="text-2xl font-bold text-gray-900 mb-3">
             Dating Blindvlekken Analyse
           </h2>
-          <p className="text-gray-600 leading-relaxed max-w-xl mx-auto">
+          <p className="text-gray-700 leading-relaxed max-w-xl mx-auto">
             Ontdek je onbewuste patronen die je dating leven saboteren. Kennis is macht!
           </p>
         </CardContent>
@@ -124,7 +124,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
                           <p className="text-sm text-red-800 mb-3">{blindspot.description}</p>
 
                           <div className="flex items-center gap-2 mb-3">
-                            <span className="text-xs text-gray-600">Impact niveau:</span>
+                            <span className="text-xs text-gray-700">Impact niveau:</span>
                             <div className="flex gap-1">
                               {[1, 2, 3, 4, 5].map((level) => (
                                 <div
@@ -152,7 +152,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
                   <div className="text-center py-8">
                     <Eye className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Geen blindvlekken gedetecteerd</h3>
-                    <p className="text-gray-600 mb-4">
+                    <p className="text-gray-700 mb-4">
                       Uitstekend! Er zijn geen significante blindvlekken gevonden in je dating gedrag.
                     </p>
                     <Badge className="bg-green-500">
@@ -180,7 +180,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
               <div className="text-center">
                 <div className="text-4xl font-bold text-orange-600 mb-2">78%</div>
                 <Progress value={78} className="h-3 mb-3" />
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-700">
                   Goede zelfbewustzijn - je kent jezelf goed, maar er is altijd ruimte voor verbetering.
                 </p>
               </div>
@@ -226,7 +226,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
             <CardContent className="p-6 text-center">
               <Sparkles className="w-8 h-8 text-blue-600 mx-auto mb-3" />
               <h3 className="text-lg font-bold text-gray-900 mb-2">Meer Zelfbewustzijn?</h3>
-              <p className="text-gray-600 mb-4 text-sm">
+              <p className="text-gray-700 mb-4 text-sm">
                 Ontdek meer over jezelf met onze andere assessments.
               </p>
               {onClose && (

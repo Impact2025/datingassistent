@@ -232,7 +232,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
                       </div>
                     ))}
                   </RadioGroup>
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className="text-sm text-gray-700 mt-2">
                     1 = Nog veel pijn, 5 = Volledig verwerkt
                   </p>
                 </div>
@@ -253,7 +253,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
                       </div>
                     ))}
                   </RadioGroup>
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className="text-sm text-gray-700 mt-2">
                     1 = Zeer relaxed, 5 = Zeer gestrest
                   </p>
                 </div>

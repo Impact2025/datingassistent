@@ -91,7 +91,7 @@ export const ScansSection = React.memo(function ScansSection({
                   <h3 className="text-lg font-bold text-gray-900 mb-1">
                     Mijn Scans
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-700">
                     {totalCount > 0
                       ? `${completedCount} van ${totalCount} voltooid`
                       : 'Ontdek je dating patterns'}
@@ -100,7 +100,7 @@ export const ScansSection = React.memo(function ScansSection({
               </div>
               <div className="flex items-center gap-3">
                 <div className="text-right hidden sm:block">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-700">
                     {showMijnScans ? 'Verberg' : 'Bekijk'} {totalCount > 0 ? 'resultaten' : 'scans'}
                   </p>
                   <p className="text-xs text-purple-600 font-medium">
@@ -132,10 +132,10 @@ export const ScansSection = React.memo(function ScansSection({
             <Card className="p-6 text-center">
               <Sparkles className="w-12 h-12 text-purple-400 mx-auto mb-4" />
               <h3 className="text-lg font-bold text-gray-900 mb-2">Start je eerste scan!</h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-700 mb-4">
                 Ontdek je hechtingsstijl, dating patterns en blinde vlekken met onze AI-powered scans.
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-700">
                 Scans worden automatisch hier getoond zodra je ze voltooit.
               </p>
             </Card>

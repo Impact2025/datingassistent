@@ -72,12 +72,12 @@ export function MainNavNew({ activeTab, onTabChange }: MainNavNewProps) {
                   "hover:text-pink-600 hover:border-pink-300",
                   isActive
                     ? "border-pink-500 text-pink-600 font-medium"
-                    : "border-transparent text-gray-600"
+                    : "border-transparent text-gray-700"
                 )}
               >
                 <Icon className={cn(
                   "w-5 h-5",
-                  isActive ? "text-pink-500" : "text-gray-400"
+                  isActive ? "text-pink-500" : "text-gray-700"
                 )} />
                 <span>{tab.label}</span>
               </button>

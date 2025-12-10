@@ -22,10 +22,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variantClasses = {
       default: 'bg-primary-500 text-white hover:bg-primary-600 active:scale-95',
       primary: 'bg-primary-500 text-white hover:bg-primary-600 hover:shadow-lg hover:scale-105 active:scale-95',
-      secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+      secondary: 'bg-gray-100 text-gray-800 hover:bg-gray-200 hover:text-gray-900',
       destructive: 'bg-red-500 text-white hover:bg-red-600 active:scale-95',
-      ghost: 'text-gray-600 hover:text-gray-800 hover:bg-gray-50',
-      outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50',
+      ghost: 'text-gray-700 hover:text-gray-900 hover:bg-gray-50',
+      outline: 'border border-gray-300 text-gray-800 hover:bg-gray-50 hover:text-gray-900',
       link: 'text-primary-500 underline-offset-4 hover:underline',
     };
 

@@ -25,7 +25,7 @@ export function BottomNavigation() {
       icon: null, // Logo image instead of icon
       label: 'Home',
       active: pathname === '/' || (pathname?.startsWith('/dashboard') && !pathname?.includes('kickstart')),
-      color: 'text-gray-600',
+      color: 'text-gray-700',
       activeColor: 'text-pink-500',
       isLogo: true,
     },
@@ -34,7 +34,7 @@ export function BottomNavigation() {
       icon: Sparkles,
       label: 'Kickstart',
       active: pathname?.startsWith('/kickstart'),
-      color: 'text-gray-600',
+      color: 'text-gray-700',
       activeColor: 'text-rose-500',
     },
     {
@@ -42,7 +42,7 @@ export function BottomNavigation() {
       icon: MessageCircle,
       label: 'Coach',
       active: pathname?.startsWith('/coach') || pathname?.startsWith('/chat') || pathname?.includes('chat-coach'),
-      color: 'text-gray-600',
+      color: 'text-gray-700',
       activeColor: 'text-blue-500',
     },
     {
@@ -50,7 +50,7 @@ export function BottomNavigation() {
       icon: User,
       label: 'Tools',
       active: pathname?.startsWith('/profiel') || pathname?.startsWith('/profile'),
-      color: 'text-gray-600',
+      color: 'text-gray-700',
       activeColor: 'text-green-500',
     },
     {
@@ -68,7 +68,7 @@ export function BottomNavigation() {
               pathname?.startsWith('/help') ||
               pathname?.startsWith('/privacy') ||
               pathname?.startsWith('/subscription'),
-      color: 'text-gray-600',
+      color: 'text-gray-700',
       activeColor: 'text-orange-500',
     },
   ];

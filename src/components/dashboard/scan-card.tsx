@@ -203,7 +203,7 @@ export function ScanCard({
 
                   {/* Locked message (if in cooldown) */}
                   {!completionStatus.canRetake && completionStatus.daysUntilRetake && (
-                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center sm:text-left">
+                    <div className="text-xs text-gray-700 dark:text-gray-400 text-center sm:text-left">
                       Retake beschikbaar over {completionStatus.daysUntilRetake} dagen
                     </div>
                   )}
