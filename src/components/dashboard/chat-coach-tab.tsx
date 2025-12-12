@@ -33,7 +33,7 @@ type Message = {
 
 export function ChatCoachTab() {
   const { toast } = useToast();
-  const { userProfile } = useUser();
+  const { user, userProfile } = useUser();
   const { trackCustomEvent, isFirstTime, isFromOnboarding } = useCoachingTracker('chat-coach');
   const { showOverlay, setShowOverlay } = useOnboardingOverlay('chat-coach');
   const {
@@ -62,6 +62,67 @@ export function ChatCoachTab() {
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Initialize with welcome message and load from localStorage
+  useEffect(() => {
+    if (!isInitialized) {
+      try {
+        // Load saved conversations from localStorage
+        const savedConversations = localStorage.getItem('chat_coach_conversations');
+        if (savedConversations) {
+          const parsed = JSON.parse(savedConversations);
+          setConversations(parsed.map((c: any) => ({
+            ...c,
+            timestamp: new Date(c.timestamp)
+          })));
+        }
+
+        // Load current conversation from localStorage
+        const savedMessages = localStorage.getItem('chat_coach_current_messages');
+        if (savedMessages) {
+          const parsed = JSON.parse(savedMessages);
+          setMessages(parsed);
+        } else {
+          // Set welcome message if no saved conversation
+          setMessages([{
+            role: "model",
+            content: "👋 **Hallo! Ik ben Coach Iris, je persoonlijke AI dating coach.**\n\nIk help je met:\n• Dating profiel optimalisatie\n• Gesprekstechnieken en flirten\n• Date planning en advies\n• Omgaan met afwijzing\n• Relatie vragen\n\nStel me gerust je vraag! 💕"
+          }]);
+        }
+      } catch (error) {
+        console.error('Failed to load saved conversations:', error);
+        // Set default welcome message on error
+        setMessages([{
+          role: "model",
+          content: "👋 **Hallo! Ik ben Coach Iris.**\n\nWaarmee kan ik je helpen met dating? 💕"
+        }]);
+      }
+      setIsInitialized(true);
+    }
+  }, [isInitialized]);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    if (isInitialized && messages.length > 0) {
+      try {
+        localStorage.setItem('chat_coach_current_messages', JSON.stringify(messages));
+      } catch (error) {
+        console.error('Failed to save messages:', error);
+      }
+    }
+  }, [messages, isInitialized]);
+
+  // Save conversations to localStorage whenever they change
+  useEffect(() => {
+    if (isInitialized && conversations.length > 0) {
+      try {
+        localStorage.setItem('chat_coach_conversations', JSON.stringify(conversations));
+      } catch (error) {
+        console.error('Failed to save conversations:', error);
+      }
+    }
+  }, [conversations, isInitialized]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -98,6 +159,7 @@ export function ChatCoachTab() {
     const newMessage: Message = { role: "user", content: currentMessage };
     const newMessages = [...messages, newMessage];
     setMessages(newMessages);
+    const messageToSend = currentMessage;
     setCurrentMessage("");
 
     // Track tool usage
@@ -105,28 +167,44 @@ export function ChatCoachTab() {
 
     startResponding(async () => {
       try {
-        // Use our new API endpoint instead of the Genkit flow
-        const token = localStorage.getItem('datespark_auth_token');
-        const contextSummary = getContextSummary();
+        // Get user ID from user object
+        const userId = user?.id;
 
-        const response = await fetch('/api/chat-coach', {
+        if (!userId) {
+          throw new Error('Gebruikersprofiel niet gevonden. Log opnieuw in.');
+        }
+
+        // Build conversation history in the format the API expects
+        const conversationHistory = messages.map(msg => ({
+          type: msg.role === 'user' ? 'user' : 'assistant',
+          content: msg.content
+        }));
+
+        const response = await fetch('/api/coach/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({
-            history: messages,
-            message: currentMessage,
-            aiContext: contextSummary, // Include personalized context
+            message: messageToSend,
+            userId: userId,
+            conversationHistory: conversationHistory,
           }),
         });
 
         if (!response.ok) {
-          throw new Error('AI coach failed to respond');
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || `API fout: ${response.status}`);
         }
 
         const data = await response.json();
+
+        // Validate response structure
+        if (!data.response) {
+          console.error('Invalid API response:', data);
+          throw new Error('Onverwachte API response - geen antwoord ontvangen');
+        }
+
         const aiResponse: Message = { role: "model", content: data.response };
         setMessages([...newMessages, aiResponse]);
 
@@ -157,13 +235,40 @@ export function ChatCoachTab() {
           conversationType: 'practice'
         });
       } catch (error) {
-        console.error(error);
+        console.error('Chat coach error:', error);
+
+        // Provide specific error messages based on error type
+        let errorTitle = "Fout";
+        let errorDescription = "De AI-coach kon niet antwoorden. Probeer het opnieuw.";
+
+        if (error instanceof Error) {
+          if (error.message.includes('Gebruikersprofiel')) {
+            errorTitle = "Geen gebruikersprofiel";
+            errorDescription = "Je bent niet ingelogd. Ververs de pagina en log opnieuw in.";
+          } else if (error.message.includes('401') || error.message.includes('403')) {
+            errorTitle = "Authenticatie fout";
+            errorDescription = "Je sessie is verlopen. Log opnieuw in.";
+          } else if (error.message.includes('429')) {
+            errorTitle = "Te veel verzoeken";
+            errorDescription = "Je hebt te veel berichten verstuurd. Wacht even voordat je verder gaat.";
+          } else if (error.message.includes('500') || error.message.includes('502') || error.message.includes('503')) {
+            errorTitle = "Server fout";
+            errorDescription = "Er is een probleem met de server. We werken eraan - probeer het over een minuut opnieuw.";
+          } else if (error.message.includes('network') || error.message.includes('fetch')) {
+            errorTitle = "Netwerkfout";
+            errorDescription = "Controleer je internetverbinding en probeer opnieuw.";
+          } else if (error.message.includes('API fout')) {
+            errorDescription = error.message;
+          }
+        }
+
         toast({
-          title: "Fout",
-          description: "De AI-coach kon niet antwoorden. Probeer het opnieuw.",
+          title: errorTitle,
+          description: errorDescription,
           variant: "destructive",
         });
-        // Optional: remove the user's message if the API call fails
+
+        // Remove the user's message if the API call fails to maintain conversation integrity
         setMessages(messages);
       }
     });
@@ -182,18 +287,37 @@ export function ChatCoachTab() {
   }, [messages]);
 
   const startNewConversation = () => {
+    // Save current conversation if it has meaningful content
     if (messages.length > 1) {
+      // Get first user message for title
+      const firstUserMessage = messages.find(m => m.role === 'user');
+      const title = firstUserMessage
+        ? firstUserMessage.content.slice(0, 50) + (firstUserMessage.content.length > 50 ? "..." : "")
+        : "Nieuwe chat";
+
       const newConversation = {
         id: Date.now().toString(),
-        title: messages[1]?.content.slice(0, 50) + "..." || "Nieuwe chat",
+        title,
         messages: [...messages],
         timestamp: new Date()
       };
       setConversations(prev => [newConversation, ...prev]);
     }
-    setMessages([]);
+
+    // Start fresh with welcome message
+    setMessages([{
+      role: "model",
+      content: "👋 **Hallo! Ik ben Coach Iris.**\n\nWaar kan ik je mee helpen? Stel gerust je vraag over dating! 💕"
+    }]);
     setCurrentConversationId(null);
-    setShowHistory(false); // Close history sidebar when starting new chat
+    setShowHistory(false);
+
+    // Clear localStorage for current messages
+    try {
+      localStorage.removeItem('chat_coach_current_messages');
+    } catch (error) {
+      console.error('Failed to clear current messages:', error);
+    }
   };
 
   const loadConversation = (conversationId: string) => {
@@ -210,9 +334,15 @@ export function ChatCoachTab() {
     if (currentConversationId === conversationId) {
       setMessages([{
         role: "model",
-        content: "👋 **Hallo! Ik ben je persoonlijke dating coach.**\n\nIk help je met al je dating vragen - van profiel optimalisatie tot gesprekstechnieken. Stel me gerust al je vragen!"
+        content: "👋 **Hallo! Ik ben Coach Iris.**\n\nWaar kan ik je mee helpen? Stel gerust je vraag over dating! 💕"
       }]);
       setCurrentConversationId(null);
+      // Clear localStorage
+      try {
+        localStorage.removeItem('chat_coach_current_messages');
+      } catch (error) {
+        console.error('Failed to clear messages:', error);
+      }
     }
   };
 

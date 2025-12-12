@@ -11,7 +11,7 @@
  */
 
 import { useState } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -231,6 +231,9 @@ export function ToolsGuidedTour({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden bg-white dark:bg-gray-900 border-0 shadow-2xl">
+        {/* Hidden title for accessibility */}
+        <DialogTitle className="sr-only">{step.title}</DialogTitle>
+
         {/* Progress bar */}
         <div className="h-1 bg-gray-100 dark:bg-gray-800">
           <div

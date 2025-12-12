@@ -23,14 +23,21 @@ export const WelcomeVideoCard = React.memo(function WelcomeVideoCard({
   const [isMuted, setIsMuted] = useState(true);
   const [videoError, setVideoError] = useState(false);
 
-  const handlePlayPause = () => {
+  const handlePlayPause = async () => {
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
+        setIsPlaying(false);
       } else {
-        videoRef.current.play();
+        try {
+          await videoRef.current.play();
+          setIsPlaying(true);
+        } catch (error) {
+          console.error('Video playback failed:', error);
+          // Reset playing state if play fails
+          setIsPlaying(false);
+        }
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -56,6 +63,7 @@ export const WelcomeVideoCard = React.memo(function WelcomeVideoCard({
                 className="absolute inset-0 w-full h-full object-cover"
                 muted={isMuted}
                 playsInline
+                preload="metadata"
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 onError={() => setVideoError(true)}
