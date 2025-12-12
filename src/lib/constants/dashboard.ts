@@ -163,3 +163,31 @@ export const API_ENDPOINTS = {
   ADMIN_CHECK: '/api/auth/check-admin',
   DATING_LOG_LAST: '/api/dating-log/last-log',
 } as const;
+
+// Debug logger - only logs in development
+const isDev = process.env.NODE_ENV === 'development';
+
+export const debugLog = {
+  info: (message: string, ...args: unknown[]) => {
+    if (isDev) console.log(`ℹ️ ${message}`, ...args);
+  },
+  success: (message: string, ...args: unknown[]) => {
+    if (isDev) console.log(`✅ ${message}`, ...args);
+  },
+  warn: (message: string, ...args: unknown[]) => {
+    if (isDev) console.warn(`⚠️ ${message}`, ...args);
+  },
+  error: (message: string, ...args: unknown[]) => {
+    // Errors always log
+    console.error(`❌ ${message}`, ...args);
+  },
+  action: (message: string, ...args: unknown[]) => {
+    if (isDev) console.log(`🎯 ${message}`, ...args);
+  },
+  navigate: (message: string, ...args: unknown[]) => {
+    if (isDev) console.log(`🔄 ${message}`, ...args);
+  },
+  render: (message: string, ...args: unknown[]) => {
+    if (isDev) console.log(`🎨 ${message}`, ...args);
+  },
+};

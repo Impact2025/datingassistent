@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
-import { jwtVerify } from 'jose';
+import { verifyToken, cookieConfig } from '@/lib/jwt-config';
 import { resolveSlug } from '@/lib/cursus-slug-utils';
 
 /**
@@ -31,30 +31,31 @@ export async function GET(
 
     try {
       const cookieStore = await cookies();
-      const token = cookieStore.get('auth_token')?.value;
+      const token = cookieStore.get(cookieConfig.name)?.value;
 
       if (token) {
-        const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret');
-        const { payload } = await jwtVerify(token, secret);
-        userId = payload.userId as number;
+        const user = await verifyToken(token);
+        if (user) {
+          userId = user.id;
 
-        // Get user's subscription type
-        const userResult = await sql`
-          SELECT subscription_type FROM users WHERE id = ${userId}
-        `;
-        if (userResult.rows.length > 0) {
-          userSubscription = userResult.rows[0].subscription_type;
+          // Get user's subscription type
+          const userResult = await sql`
+            SELECT subscription_type FROM users WHERE id = ${userId}
+          `;
+          if (userResult.rows.length > 0) {
+            userSubscription = userResult.rows[0].subscription_type;
+          }
+
+          // Get user's purchased courses (via payment_transactions)
+          const purchasedResult = await sql`
+            SELECT DISTINCT c.id
+            FROM cursussen c
+            JOIN payment_transactions pt ON pt.cursus_id = c.id
+            WHERE pt.user_id = ${userId}
+              AND pt.status = 'completed'
+          `;
+          purchasedCursusIds = purchasedResult.rows.map((r: any) => r.id);
         }
-
-        // Get user's purchased courses (via payment_transactions)
-        const purchasedResult = await sql`
-          SELECT DISTINCT c.id
-          FROM cursussen c
-          JOIN payment_transactions pt ON pt.cursus_id = c.id
-          WHERE pt.user_id = ${userId}
-            AND pt.status = 'completed'
-        `;
-        purchasedCursusIds = purchasedResult.rows.map((r: any) => r.id);
       }
     } catch (authError) {
       console.log('No authenticated user for cursus detail request');
@@ -208,12 +209,13 @@ export async function POST(
     let userId: number | null = null;
     try {
       const cookieStore = await cookies();
-      const token = cookieStore.get('auth_token')?.value;
+      const token = cookieStore.get(cookieConfig.name)?.value;
 
       if (token) {
-        const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret');
-        const { payload } = await jwtVerify(token, secret);
-        userId = payload.userId as number;
+        const user = await verifyToken(token);
+        if (user) {
+          userId = user.id;
+        }
       }
     } catch (authError) {
       console.log('Auth error in POST cursussen:', authError);

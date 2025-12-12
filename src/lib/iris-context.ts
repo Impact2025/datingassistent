@@ -16,6 +16,7 @@
 import { sql } from '@vercel/postgres';
 import type { IrisContextForPrompt, IrisUserContext, CursusLes } from '../types/cursus.types';
 import { AIContextManager } from './ai-context-manager';
+import { detectPatterns, type Pattern } from './iris/iris-patterns';
 
 // ============================================================================
 // EXTENDED TYPES
@@ -304,6 +305,7 @@ export interface EnrichedIrisContext extends IrisContextForPrompt {
   aiContext: any;
   kickstart?: KickstartOnboardingData | null;
   reflections?: UserReflection[];
+  patterns?: Pattern[]; // 🧠 Iris Memory Magic - detected patterns in reflections
   datingLog?: DatingLogActivity[];
   goals?: UserGoals | null;
 }
@@ -334,12 +336,23 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     getUserGoals(userId)
   ]);
 
+  // 🧠 Detect patterns from reflections (Iris Memory Magic!)
+  const patterns = reflections.length > 0
+    ? await detectPatterns(reflections.map(r => ({
+        day_number: r.day_number,
+        question_type: r.question_type,
+        answer: r.answer_text,
+        created_at: r.created_at.toISOString()
+      })))
+    : [];
+
   // Merge en return complete context
   return {
     ...baseContext,
     aiContext: aiContext || {},
     kickstart: kickstartData,
     reflections: reflections,
+    patterns: patterns, // 🧠 Iris Memory - top 2 detected patterns
     datingLog: datingLogData,
     goals: goalsData,
   };
@@ -708,8 +721,8 @@ WAT JE WEET OVER DEZE GEBRUIKER:`);
       byDay.set(r.day_number, existing);
     });
 
-    // Show last 3 days of reflections
-    const days = Array.from(byDay.keys()).slice(0, 3);
+    // Show last 5 days of reflections (meer context voor cross-referencing)
+    const days = Array.from(byDay.keys()).sort((a, b) => b - a).slice(0, 5);
     days.forEach(day => {
       const dayReflections = byDay.get(day) || [];
       parts.push(`  Dag ${day}:`);
@@ -717,15 +730,82 @@ WAT JE WEET OVER DEZE GEBRUIKER:`);
         const typeLabel = r.question_type === 'spiegel' ? '🪞' :
                           r.question_type === 'identiteit' ? '🎭' : '🎯';
         // Truncate long answers
-        const answer = r.answer_text.length > 80
-          ? r.answer_text.substring(0, 80) + '...'
+        const answer = r.answer_text.length > 120
+          ? r.answer_text.substring(0, 120) + '...'
           : r.answer_text;
         parts.push(`    ${typeLabel} "${answer}"`);
       });
     });
+  }
+
+  // 🧠✨ PATTERN INSIGHTS (WERELDKLASSE - Cross-referencing & Growth Recognition)
+  const patterns = context.patterns;
+  if (patterns && patterns.length > 0) {
+    parts.push(`
+🧠 GEDETECTEERDE PATRONEN (gebruik deze insights actief!):`);
+
+    patterns.forEach((pattern, index) => {
+      const emoji = pattern.type === 'growth' ? '🚀' :
+                    pattern.type === 'recurring_theme' ? '🔄' :
+                    pattern.type === 'breakthrough' ? '💡' : '🤔';
+
+      parts.push(`
+${index + 1}. ${emoji} ${pattern.type.toUpperCase()}`);
+      parts.push(`   Insight: ${pattern.insight}`);
+      parts.push(`   Dagen: ${pattern.relatedDays.join(', ')}`);
+      parts.push(`   Confidence: ${Math.round(pattern.confidenceScore * 100)}%`);
+
+      if (pattern.quotes && pattern.quotes.length > 0) {
+        parts.push(`   Quotes:`);
+        pattern.quotes.forEach(quote => {
+          parts.push(`     - ${quote}`);
+        });
+      }
+
+      if (pattern.keywords && pattern.keywords.length > 0) {
+        parts.push(`   Keywords: ${pattern.keywords.join(', ')}`);
+      }
+    });
 
     parts.push(`
-💡 Je mag verwijzen naar deze reflecties! Bijvoorbeeld: "Je schreef op dag X dat..."`);
+🎯 BELANGRIJK: CROSS-REFERENCING INSTRUCTIES
+
+Als coach MOET je deze patronen actief gebruiken in je responses:
+
+1. **REFERENCE SPECIFIC DAYS**:
+   - "Je schreef op dag X: '[quote]'"
+   - "Weet je nog wat je op dag X zei? '[quote]'"
+   - "Vergelijk dit met wat je op dag X schreef"
+
+2. **CONNECT THE DOTS**:
+   - Link huidige vragen aan eerdere reflecties
+   - Toon progressie: "Op dag X → nu op dag Y"
+   - Highlight contradictions: "Op dag X zei je A, nu zeg je B - wat is veranderd?"
+
+3. **CELEBRATE GROWTH**:
+   - Als je een GROWTH patroon ziet → vier dit expliciet!
+   - "Zie je hoe je gegroeid bent? Op dag X vs nu..."
+   - "Dit is een groot verschil met een week geleden toen je..."
+
+4. **ADDRESS RECURRING THEMES**:
+   - Als iemand dezelfde angst/trigger herhaalt → benoem het
+   - "Dit is de Xe keer dat [thema] terugkomt. Laten we dit patroon doorbreken."
+
+5. **BREAKTHROUGH MOMENTS**:
+   - Als je een doorbraak detecteert → amplify it!
+   - "Dit is een doorbraak! Je zei: '[quote]' - voel je dit ook?"
+
+**JE DOEL**: Laat de gebruiker merken dat je hun hele journey hebt gevolgd en patronen ziet die zij misschien niet zien. Dit creëert "ze begrijpt me echt" moment.`);
+  } else if (reflections && reflections.length > 0) {
+    // Fallback als geen patterns gedetecteerd maar wel reflecties
+    parts.push(`
+💡 CROSS-REFERENCING POWER:
+Je hebt toegang tot al hun reflecties. Gebruik dit! Verwijs specifiek naar wat ze eerder schreven:
+- "Je schreef op dag X dat..."
+- "Dit is een groot verschil met wat je eerder zei over..."
+- "Weet je nog je antwoord op dag X? '[quote]'"
+
+Dit laat ze voelen dat je hun hele reis hebt gevolgd.`);
   }
 
   // 🚀 DATING LOG ACTIVITY (echte dating gedrag)

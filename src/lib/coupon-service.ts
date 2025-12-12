@@ -35,22 +35,30 @@ export async function createCoupon(couponData: {
     if (!couponData.code || !couponData.package_type || !couponData.discount_type) {
       throw new Error('Missing required fields');
     }
-    
+
     if (couponData.discount_value <= 0) {
       throw new Error('Discount value must be greater than 0');
     }
-    
+
+    // Convert empty strings to null for optional fields
+    const validUntil = couponData.valid_until && couponData.valid_until.trim() !== ''
+      ? couponData.valid_until
+      : null;
+    const maxUses = couponData.max_uses !== undefined && couponData.max_uses !== null && couponData.max_uses > 0
+      ? couponData.max_uses
+      : null;
+
     const result = await sql`
       INSERT INTO coupons (
-        code, package_type, discount_type, discount_value, 
+        code, package_type, discount_type, discount_value,
         max_uses, valid_until, is_active
       ) VALUES (
-        ${couponData.code}, 
-        ${couponData.package_type}, 
-        ${couponData.discount_type}, 
+        ${couponData.code},
+        ${couponData.package_type},
+        ${couponData.discount_type},
         ${couponData.discount_value},
-        ${couponData.max_uses},
-        ${couponData.valid_until},
+        ${maxUses},
+        ${validUntil},
         ${couponData.is_active}
       )
       RETURNING *

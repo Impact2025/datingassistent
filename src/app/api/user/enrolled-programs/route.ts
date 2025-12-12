@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
+import { verifyToken, cookieConfig } from '@/lib/jwt-config';
 
 export const dynamic = 'force-dynamic';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
 
 /**
  * Helper: Check if a table exists in the database
@@ -202,7 +200,7 @@ export async function GET(request: NextRequest) {
   try {
     // Authenticate user - check both cookie and Authorization header
     const cookieStore = await cookies();
-    let token = cookieStore.get('datespark_auth_token')?.value;
+    let token = cookieStore.get(cookieConfig.name)?.value;
 
     // Fallback to Authorization header if cookie not found
     if (!token) {
@@ -219,17 +217,16 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    let userId: number;
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; id?: number };
-      // Support both userId and id in token payload
-      userId = decoded.userId || decoded.id!;
-    } catch {
+    // Use centralized JWT verification
+    const user = await verifyToken(token);
+    if (!user) {
       return NextResponse.json(
         { error: 'Invalid authentication token' },
         { status: 401 }
       );
     }
+
+    const userId = user.id;
 
     console.log('🔍 Fetching enrolled programs for user:', userId);
 

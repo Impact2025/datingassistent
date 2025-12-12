@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { jwtVerify } from 'jose';
 import { AIAnalysisService } from '@/lib/ai-analysis-service';
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-);
+import { verifyToken } from '@/lib/jwt-config';
 
 async function verifyAdminAccess(request: NextRequest): Promise<boolean> {
   try {
@@ -14,10 +10,9 @@ async function verifyAdminAccess(request: NextRequest): Promise<boolean> {
     }
 
     const token = authHeader.substring(7);
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const user = await verifyToken(token);
 
-    const userEmail = payload.email as string;
-    return userEmail && ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'].includes(userEmail);
+    return user?.email ? ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'].includes(user.email) : false;
   } catch (error) {
     return false;
   }

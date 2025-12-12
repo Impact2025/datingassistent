@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { jwtVerify } from 'jose';
 import { CoachingProfileService } from '@/lib/coaching-profile-service';
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-);
+import { verifyToken } from '@/lib/jwt-config';
 
 async function getUserIdFromToken(request: NextRequest): Promise<number | null> {
   try {
@@ -14,15 +10,9 @@ async function getUserIdFromToken(request: NextRequest): Promise<number | null> 
     }
 
     const token = authHeader.substring(7);
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const user = await verifyToken(token);
 
-    if (payload.user && typeof payload.user === 'object' && 'id' in payload.user) {
-      return payload.user.id as number;
-    } else if (payload.userId) {
-      return payload.userId as number;
-    }
-
-    return null;
+    return user?.id || null;
   } catch (error) {
     return null;
   }

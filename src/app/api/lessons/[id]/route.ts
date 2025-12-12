@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
+import { verifyToken, cookieConfig } from '@/lib/jwt-config';
 import type { LessonResponse, LessonWithProgress } from '@/types/content-delivery.types';
 
 export const dynamic = 'force-dynamic';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
 
 /**
  * GET /api/lessons/[id]
@@ -21,18 +19,16 @@ export async function GET(
 
     // Authenticate user (optional for preview lessons)
     const cookieStore = await cookies();
-    const token = cookieStore.get('datespark_auth_token')?.value;
+    const token = cookieStore.get(cookieConfig.name)?.value;
 
     let userId: number | null = null;
     let isAuthenticated = false;
 
     if (token) {
-      try {
-        const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
-        userId = decoded.userId;
+      const user = await verifyToken(token);
+      if (user) {
+        userId = user.id;
         isAuthenticated = true;
-      } catch {
-        // Invalid token, continue as guest
       }
     }
 

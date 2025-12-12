@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
-import { jwtVerify } from 'jose';
+import { verifyToken, cookieConfig } from '@/lib/jwt-config';
 import { resolveSlug } from '@/lib/cursus-slug-utils';
 
 /**
@@ -105,12 +105,11 @@ export async function GET(
     let userId: number | null = null;
     try {
       const cookieStore = await cookies();
-      const token = cookieStore.get('auth_token')?.value;
+      const token = cookieStore.get(cookieConfig.name)?.value;
 
       if (token) {
-        const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret');
-        const { payload } = await jwtVerify(token, secret);
-        userId = payload.userId as number;
+        const user = await verifyToken(token);
+        userId = user?.id || null;
       }
     } catch (authError) {
       console.log('No authenticated user for lesson request');
