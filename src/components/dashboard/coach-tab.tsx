@@ -5,7 +5,7 @@
  * Clean, simple interface to Iris AI Coach
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, MessageCircle, Heart } from 'lucide-react';
@@ -17,7 +17,7 @@ interface CoachTabProps {
   userId?: number;
 }
 
-export function CoachTab({ onTabChange, userId }: CoachTabProps) {
+export const CoachTab = memo(function CoachTab({ onTabChange, userId }: CoachTabProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -97,4 +97,4 @@ export function CoachTab({ onTabChange, userId }: CoachTabProps) {
       </div>
     </div>
   );
-}
+});

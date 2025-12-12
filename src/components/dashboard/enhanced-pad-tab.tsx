@@ -5,7 +5,7 @@
  * Nu met geïntegreerde Kickstart support!
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
@@ -60,7 +60,7 @@ interface JourneyPhase {
 
 type ViewMode = 'programs' | 'kickstart' | 'journey';
 
-export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
+export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
   const router = useRouter();
   const [currentPhase, setCurrentPhase] = useState(1);
   const [overallProgress, setOverallProgress] = useState(15);
@@ -469,4 +469,4 @@ export function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
       </div>
     </div>
   );
-}
+});

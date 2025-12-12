@@ -458,6 +458,122 @@ export default function DashboardPage() {
     }
   }, [activeTab, router]);
 
+  // Handle cursus navigation (side effect)
+  useEffect(() => {
+    if (activeTab === 'cursus' && typeof window !== 'undefined') {
+      window.location.href = '/cursus';
+    }
+  }, [activeTab]);
+
+  // Memoized handlers - must be before any early returns (Rules of Hooks)
+  const handleCheckinComplete = useCallback(() => {
+    setCheckinModalOpen(false);
+  }, []);
+
+  const handleKickstartOnboardingComplete = useCallback(async (data: KickstartIntakeData) => {
+    if (!user?.id) return;
+
+    setKickstartOnboardingSaving(true);
+
+    try {
+      debugLog.info('Saving Kickstart onboarding data:', data);
+
+      const response = await fetch("/api/kickstart/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save onboarding");
+      }
+
+      const result = await response.json();
+      debugLog.success('Kickstart onboarding saved successfully:', result);
+
+      setKickstartState(prev => ({
+        ...prev,
+        needsOnboarding: false,
+        showDayZero: true,
+      }));
+      setKickstartOnboardingSaving(false);
+
+    } catch (err) {
+      debugLog.error('Error saving onboarding:', err);
+      setKickstartOnboardingSaving(false);
+    }
+  }, [user?.id]);
+
+  const handleDayZeroComplete = useCallback(() => {
+    debugLog.success('Day Zero completed, redirecting to dag 1');
+    setKickstartState(prev => ({
+      ...prev,
+      showDayZero: false,
+    }));
+    router.push('/kickstart/dag/1');
+  }, [router]);
+
+  // Memoized tab content - must be before any early returns (Rules of Hooks)
+  const tabContent = useMemo(() => {
+    switch (activeTab) {
+      case 'home':
+        return <SmartHomeTab onTabChange={handleTabChange} userId={user?.id} userProfile={userProfile} />;
+      case 'pad':
+        return <EnhancedPadTab onTabChange={handleTabChange} userId={user?.id} />;
+      case 'coach':
+        return <CoachTab onTabChange={handleTabChange} userId={user?.id} />;
+      case 'profiel':
+        return <ProfielTab onTabChange={handleTabChange} />;
+      case 'profiel-persoonlijkheid':
+        return <ProfileSuite onTabChange={handleTabChange} />;
+      case 'communicatie-matching':
+        return <CommunicationHub onTabChange={handleTabChange} />;
+      case 'daten-relaties':
+        return <DatenRelatiesModule onTabChange={handleTabChange} />;
+      case 'groei-doelen':
+        return <GroeiDoelenModule onTabChange={handleTabChange} userId={user?.id} />;
+      case 'leren-ontwikkelen':
+        return <LerenOntwikkelenModule onTabChange={handleTabChange} />;
+      case 'cursussen':
+        return <CursussenTab />;
+      case 'settings':
+        return <SettingsTab />;
+      case 'data-management':
+        return <DataManagementTab />;
+      case 'subscription':
+        return <SubscriptionTab />;
+      case 'dashboard':
+        return <DashboardTab onTabChange={handleTabChange} />;
+      case 'daily':
+        return (
+          <>
+            <DailyDashboard userId={user?.id || 0} onCheckIn={() => setCheckinModalOpen(true)} />
+            <DailyCheckinModal
+              open={checkinModalOpen}
+              onClose={() => setCheckinModalOpen(false)}
+              journeyDay={journeyDay}
+              userId={user?.id || 0}
+              onComplete={handleCheckinComplete}
+            />
+          </>
+        );
+      case 'monthly-report':
+        return <MonthlyReport userId={user?.id || 0} month={new Date().getMonth() + 1} year={new Date().getFullYear()} />;
+      case 'yearly-review':
+        return <YearlyReview userId={user?.id || 0} year={new Date().getFullYear()} />;
+      case 'community':
+        return <CommunityTab />;
+      case 'badges':
+        return <BadgesShowcase userId={user?.id || 0} />;
+      case 'dating-activity':
+        return <DatingActivityLogger userId={user?.id || 0} />;
+      default:
+        return <DashboardTab onTabChange={handleTabChange} />;
+    }
+  }, [activeTab, user?.id, userProfile, handleTabChange, checkinModalOpen, journeyDay, handleCheckinComplete]);
+
   // While loading user data or checking Kickstart enrollment, show a loading state
   // This prevents the flash where dashboard is shown before onboarding
   if (isLoading || kickstartState.isChecking || !kickstartState.checkComplete) {
@@ -493,63 +609,6 @@ export default function DashboardPage() {
     );
   }
 
-  // Onboarding handlers are now provided by the useJourneyState hook
-
-  const handleCheckinComplete = () => {
-    setCheckinModalOpen(false);
-    // Reload dashboard data if needed
-  };
-
-  // Handle Kickstart onboarding completion
-  const handleKickstartOnboardingComplete = async (data: KickstartIntakeData) => {
-    if (!user?.id) return;
-
-    setKickstartOnboardingSaving(true);
-
-    try {
-      debugLog.info('Saving Kickstart onboarding data:', data);
-
-      const response = await fetch("/api/kickstart/onboarding", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data }),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to save onboarding");
-      }
-
-      const result = await response.json();
-      debugLog.success('Kickstart onboarding saved successfully:', result);
-
-      // Update kickstart state to show dag-0 experience
-      setKickstartState(prev => ({
-        ...prev,
-        needsOnboarding: false,
-        showDayZero: true, // Show dag-0 in dashboard
-      }));
-      setKickstartOnboardingSaving(false);
-
-    } catch (err) {
-      debugLog.error('Error saving onboarding:', err);
-      setKickstartOnboardingSaving(false);
-      // Could show error toast here
-    }
-  };
-
-  // Handle Day Zero completion - redirect to dag 1
-  const handleDayZeroComplete = () => {
-    debugLog.success('Day Zero completed, redirecting to dag 1');
-    setKickstartState(prev => ({
-      ...prev,
-      showDayZero: false,
-    }));
-    router.push('/kickstart/dag/1');
-  };
-
-
   // Allow dashboard access for Kickstart users even without user_profile
   // This is the "wereldklasse" solution: full integration without requiring profile
   // Note: kickstartState.isChecking is already handled above in the main loading check
@@ -567,82 +626,6 @@ export default function DashboardPage() {
       </div>
     );
   }
-
-
-
-  // Memoized tab content - prevents unnecessary re-renders when other state changes
-  const tabContent = useMemo(() => {
-    switch (activeTab) {
-      // NIEUWE 4-TAB NAVIGATIE (Masterplan)
-      case 'home':
-        return <SmartHomeTab onTabChange={handleTabChange} userId={user?.id} userProfile={userProfile} />;
-      case 'pad':
-        return <EnhancedPadTab onTabChange={handleTabChange} userId={user?.id} />;
-      case 'coach':
-        return <CoachTab onTabChange={handleTabChange} userId={user?.id} />;
-      case 'profiel':
-        return <ProfielTab onTabChange={handleTabChange} />;
-
-      // MODULES
-      case 'profiel-persoonlijkheid':
-        return <ProfileSuite onTabChange={handleTabChange} />;
-      case 'communicatie-matching':
-        return <CommunicationHub onTabChange={handleTabChange} />;
-      case 'daten-relaties':
-        return <DatenRelatiesModule onTabChange={handleTabChange} />;
-      case 'groei-doelen':
-        return <GroeiDoelenModule onTabChange={handleTabChange} userId={user?.id} />;
-      case 'leren-ontwikkelen':
-        return <LerenOntwikkelenModule onTabChange={handleTabChange} />;
-      case 'cursussen':
-        return <CursussenTab />;
-
-      // SETTINGS
-      case 'settings':
-        return <SettingsTab />;
-      case 'data-management':
-        return <DataManagementTab />;
-      case 'subscription':
-        return <SubscriptionTab />;
-
-      // LEGACY TABS
-      case 'dashboard':
-        return <DashboardTab onTabChange={handleTabChange} />;
-      case 'daily':
-        return (
-          <>
-            <DailyDashboard userId={user?.id || 0} onCheckIn={() => setCheckinModalOpen(true)} />
-            <DailyCheckinModal
-              open={checkinModalOpen}
-              onClose={() => setCheckinModalOpen(false)}
-              journeyDay={journeyDay}
-              userId={user?.id || 0}
-              onComplete={handleCheckinComplete}
-            />
-          </>
-        );
-      case 'monthly-report':
-        return <MonthlyReport userId={user?.id || 0} month={new Date().getMonth() + 1} year={new Date().getFullYear()} />;
-      case 'yearly-review':
-        return <YearlyReview userId={user?.id || 0} year={new Date().getFullYear()} />;
-      case 'community':
-        return <CommunityTab />;
-      case 'badges':
-        return <BadgesShowcase userId={user?.id || 0} />;
-      case 'dating-activity':
-        return <DatingActivityLogger userId={user?.id || 0} />;
-
-      default:
-        return <DashboardTab onTabChange={handleTabChange} />;
-    }
-  }, [activeTab, user?.id, userProfile, handleTabChange, checkinModalOpen, journeyDay]);
-
-  // Handle cursus navigation separately (has side effect)
-  useEffect(() => {
-    if (activeTab === 'cursus' && typeof window !== 'undefined') {
-      window.location.href = '/cursus';
-    }
-  }, [activeTab]);
 
   // Check if this is mobile access to specific tabs
   const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
