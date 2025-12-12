@@ -187,6 +187,35 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                       )}
                     </div>
 
+                    {/* 🧠 Pattern Insights (Iris Memory Magic!) */}
+                    {message.context?.patterns && message.context.patterns.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="mt-3 space-y-2"
+                      >
+                        {message.context.patterns.map((pattern: any, index: number) => (
+                          <div
+                            key={index}
+                            className={cn(
+                              'bg-white/80 backdrop-blur rounded-lg p-3 border-l-4',
+                              pattern.color === 'green' && 'border-green-500',
+                              pattern.color === 'orange' && 'border-orange-500',
+                              pattern.color === 'purple' && 'border-purple-500',
+                              pattern.color === 'gray' && 'border-gray-400'
+                            )}
+                          >
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-xl">{pattern.emoji}</span>
+                              <h5 className="font-bold text-sm text-gray-900">{pattern.title}</h5>
+                            </div>
+                            <p className="text-xs text-gray-700 leading-relaxed">{pattern.message}</p>
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
+
                     {/* Quick Stats (if available) */}
                     {message.context && (
                       <motion.div

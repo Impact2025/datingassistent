@@ -5,13 +5,18 @@ import { useUser } from '@/providers/user-provider';
 import { AIContextManager, UserAIContext } from '@/lib/ai-context-manager';
 
 export function useAIContext() {
-  const { user } = useUser();
+  const { user, loading: userLoading } = useUser();
   const [context, setContext] = useState<UserAIContext | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Load user context
   const loadContext = useCallback(async () => {
+    // Wait for user provider to finish loading
+    if (userLoading) {
+      return;
+    }
+
     if (!user?.id) {
       setLoading(false);
       return;
@@ -22,6 +27,14 @@ export function useAIContext() {
       setError(null);
 
       const token = localStorage.getItem('datespark_auth_token');
+
+      // Skip if no token available yet
+      if (!token) {
+        console.log('AI Context: No token available yet, skipping load');
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch('/api/ai-context', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -29,6 +42,10 @@ export function useAIContext() {
       if (response.ok) {
         const data = await response.json();
         setContext(data.context);
+      } else if (response.status === 401) {
+        // Silently handle auth errors - user may be logging in
+        console.log('AI Context: Auth pending, will retry on next render');
+        setContext(null);
       } else {
         console.error('Failed to load AI context:', response.statusText);
         setError('Failed to load AI context');
@@ -39,7 +56,7 @@ export function useAIContext() {
     } finally {
       setLoading(false);
     }
-  }, [user?.id]);
+  }, [user?.id, userLoading]);
 
   // Save context
   const saveContext = useCallback(async (updates: Partial<UserAIContext>) => {

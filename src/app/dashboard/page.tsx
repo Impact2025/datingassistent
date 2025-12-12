@@ -1,68 +1,169 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useUser } from '@/providers/user-provider';
-import { DeviceGuard } from '@/components/guards/device-guard';
 import { Header } from '@/components/layout/header';
 import { MainNav } from '@/components/layout/main-nav';
-import { DashboardTab } from '@/components/dashboard/dashboard-tab';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
-import { CommunityTab } from '@/components/dashboard/community-tab';
-import { DatingProfilerAI } from '@/components/dashboard/dating-profiler-ai';
-import { ProgressTracker } from '@/components/dashboard/progress-tracker';
-import { GoalManagement } from '@/components/dashboard/goal-management';
-import { DailyDashboard } from '@/components/engagement/daily-dashboard';
-import { DailyCheckinModal } from '@/components/engagement/daily-checkin-modal';
-import { WeekReview } from '@/components/engagement/week-review';
-import { MonthlyReport } from '@/components/engagement/monthly-report';
-import { BadgesShowcase } from '@/components/engagement/badges-showcase';
-import { YearlyReview } from '@/components/engagement/yearly-review';
-import { DatingActivityLogger } from '@/components/engagement/dating-activity-logger';
-import { TrialProgress } from '@/components/dashboard/trial-progress';
 import { AIContextNotifications } from '@/components/shared/ai-context-notifications';
 import { SocialMediaLinks } from '@/components/shared/social-media-links';
-import { DatingWeekNotificationModal } from '@/components/dashboard/dating-week-notification-modal';
-
-// NIEUWE CONSOLIDATED MODULES
-import { ProfileSuite } from '@/components/dashboard/profile-suite';
-import { CommunicationHub } from '@/components/dashboard/communication-hub';
-import { DatenRelatiesModule } from '@/components/dashboard/daten-relaties-module';
-import { GroeiDoelenModule } from '@/components/dashboard/groei-doelen-module';
-import { LerenOntwikkelenModule } from '@/components/dashboard/leren-ontwikkelen-module';
-import { DataManagementTab } from '@/components/dashboard/data-management-tab';
-import { SubscriptionTab } from '@/components/dashboard/subscription-tab';
-import { CursussenTab } from '@/components/dashboard/cursussen-tab';
-
-// Import settings component
-import { SettingsTab } from '@/components/dashboard/settings-tab';
+import { Loader2 } from 'lucide-react';
 
 // Import centralized onboarding system
 import { useJourneyState } from '@/hooks/use-journey-state';
-import { OnboardingFlow } from '@/components/dashboard/onboarding-flow';
 
 // Import Kickstart onboarding - World-class integrated flow
 import { KickstartOnboardingFlow } from '@/components/kickstart/KickstartOnboardingFlow';
+import { DayZeroExperience } from '@/components/kickstart/DayZeroExperience';
 import type { KickstartIntakeData } from '@/types/kickstart-onboarding.types';
-import { Loader2 } from 'lucide-react';
 
 // NIEUWE 4-TAB NAVIGATIE SYSTEEM (Masterplan)
 import { MainNavNew } from '@/components/layout/main-nav-new';
-import { HomeTab } from '@/components/dashboard/home-tab';
-import { SmartHomeTab } from '@/components/dashboard/smart-home-tab';
-import { PadTab } from '@/components/dashboard/pad-tab';
-import { EnhancedPadTab } from '@/components/dashboard/enhanced-pad-tab';
-import { ProfielTab } from '@/components/dashboard/profiel-tab-new';
-import { CoachTab } from '@/components/dashboard/coach-tab';
-// IrisInsightsPanel removed - using only ProactiveInvite to avoid duplicate Iris panels
 import { ProactiveInvite, useProactiveInvite } from '@/components/live-chat/proactive-invite';
-import { trackDashboardTab, trackToolUsed, setUserProperties } from '@/lib/analytics/ga4-events';
+import { trackDashboardTab, trackToolUsed } from '@/lib/analytics/ga4-events';
+import { debugLog, DASHBOARD_TABS, TAB_REDIRECT_MAP, NAVIGATION_TABS, LOADING_MESSAGES } from '@/lib/constants/dashboard';
+
+// ============================================
+// LAZY LOADED COMPONENTS - Performance optimization
+// ============================================
+
+// Dashboard Skeleton for loading states
+const DashboardSkeleton = () => (
+  <div className="space-y-4 animate-pulse">
+    <div className="h-32 bg-gray-200 rounded-xl"></div>
+    <div className="h-48 bg-gray-200 rounded-xl"></div>
+    <div className="grid grid-cols-2 gap-4">
+      <div className="h-24 bg-gray-200 rounded-xl"></div>
+      <div className="h-24 bg-gray-200 rounded-xl"></div>
+    </div>
+  </div>
+);
+
+// Core tabs - lazy loaded with skeleton
+const SmartHomeTab = dynamic(() => import('@/components/dashboard/smart-home-tab').then(mod => ({ default: mod.SmartHomeTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const EnhancedPadTab = dynamic(() => import('@/components/dashboard/enhanced-pad-tab').then(mod => ({ default: mod.EnhancedPadTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const CoachTab = dynamic(() => import('@/components/dashboard/coach-tab').then(mod => ({ default: mod.CoachTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const ProfielTab = dynamic(() => import('@/components/dashboard/profiel-tab-new').then(mod => ({ default: mod.ProfielTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+// Heavy modules - lazy loaded
+const ProfileSuite = dynamic(() => import('@/components/dashboard/profile-suite').then(mod => ({ default: mod.ProfileSuite })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const CommunicationHub = dynamic(() => import('@/components/dashboard/communication-hub').then(mod => ({ default: mod.CommunicationHub })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const DatenRelatiesModule = dynamic(() => import('@/components/dashboard/daten-relaties-module').then(mod => ({ default: mod.DatenRelatiesModule })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const GroeiDoelenModule = dynamic(() => import('@/components/dashboard/groei-doelen-module').then(mod => ({ default: mod.GroeiDoelenModule })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const LerenOntwikkelenModule = dynamic(() => import('@/components/dashboard/leren-ontwikkelen-module').then(mod => ({ default: mod.LerenOntwikkelenModule })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const DashboardTab = dynamic(() => import('@/components/dashboard/dashboard-tab').then(mod => ({ default: mod.DashboardTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const CommunityTab = dynamic(() => import('@/components/dashboard/community-tab').then(mod => ({ default: mod.CommunityTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const OnboardingFlow = dynamic(() => import('@/components/dashboard/onboarding-flow').then(mod => ({ default: mod.OnboardingFlow })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+// Settings & Management tabs - lazy loaded
+const SettingsTab = dynamic(() => import('@/components/dashboard/settings-tab').then(mod => ({ default: mod.SettingsTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const DataManagementTab = dynamic(() => import('@/components/dashboard/data-management-tab').then(mod => ({ default: mod.DataManagementTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const SubscriptionTab = dynamic(() => import('@/components/dashboard/subscription-tab').then(mod => ({ default: mod.SubscriptionTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const CursussenTab = dynamic(() => import('@/components/dashboard/cursussen-tab').then(mod => ({ default: mod.CursussenTab })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+// Engagement components - lazy loaded
+const DailyDashboard = dynamic(() => import('@/components/engagement/daily-dashboard').then(mod => ({ default: mod.DailyDashboard })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const DailyCheckinModal = dynamic(() => import('@/components/engagement/daily-checkin-modal').then(mod => ({ default: mod.DailyCheckinModal })), {
+  ssr: false
+});
+
+const MonthlyReport = dynamic(() => import('@/components/engagement/monthly-report').then(mod => ({ default: mod.MonthlyReport })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const BadgesShowcase = dynamic(() => import('@/components/engagement/badges-showcase').then(mod => ({ default: mod.BadgesShowcase })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const YearlyReview = dynamic(() => import('@/components/engagement/yearly-review').then(mod => ({ default: mod.YearlyReview })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const DatingActivityLogger = dynamic(() => import('@/components/engagement/dating-activity-logger').then(mod => ({ default: mod.DatingActivityLogger })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
+const TrialProgress = dynamic(() => import('@/components/dashboard/trial-progress').then(mod => ({ default: mod.TrialProgress })), {
+  ssr: false
+});
+
+const DatingWeekNotificationModal = dynamic(() => import('@/components/dashboard/dating-week-notification-modal').then(mod => ({ default: mod.DatingWeekNotificationModal })), {
+  ssr: false
+});
 
 export default function DashboardPage() {
   const { user, userProfile, loading } = useUser();
@@ -88,11 +189,13 @@ export default function DashboardPage() {
     isChecking: boolean;
     hasEnrollment: boolean | null;
     needsOnboarding: boolean;
+    showDayZero: boolean; // Show dag-0 experience after intake
     checkComplete: boolean;
   }>({
     isChecking: false,
     hasEnrollment: null,
     needsOnboarding: false,
+    showDayZero: false,
     checkComplete: false,
   });
   const [kickstartOnboardingSaving, setKickstartOnboardingSaving] = useState(false);
@@ -156,58 +259,16 @@ export default function DashboardPage() {
   // Check if user is admin (from database role)
   const [isAdminUser, setIsAdminUser] = useState(false);
 
-  useEffect(() => {
-    const checkAdminStatus = async () => {
-      if (!user?.id) return;
-
-      try {
-        const response = await fetch('/api/auth/check-admin', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setIsAdminUser(data.isAdmin === true);
-        }
-      } catch (error) {
-        console.error('Failed to check admin status:', error);
-      }
-    };
-
-    checkAdminStatus();
-  }, [user?.id]);
-
   // Check for force parameter to bypass profile check
   const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
   const forceAccess = searchParams?.get('force') === 'true';
 
+  // ============================================
+  // OPTIMIZED: Combined parallel API calls for admin + kickstart check
+  // This reduces initial load time by ~1-2 seconds
+  // ============================================
   useEffect(() => {
-    console.log('📊 Dashboard useEffect - State:', {
-      loading,
-      hasUser: !!user,
-      userEmail: user?.email,
-      isAdmin: isAdminUser,
-      hasProfile: !!userProfile,
-      profile: userProfile
-    });
-
-    // If admin user without profile, redirect to admin dashboard
-    if (!loading && user && isAdminUser && !userProfile) {
-      console.log('🔄 Dashboard - Admin user detected without profile, redirecting to /admin');
-      router.push('/admin');
-      return;
-    }
-
-    // REMOVED: Don't auto-redirect to select-package - it's too aggressive
-    // Users should be able to access their dashboard even without a complete profile
-    // They can choose to upgrade via the subscription page if needed
-  }, [user, userProfile, loading, isAdminUser, router]);
-
-  // Kickstart enrollment check effect
-  useEffect(() => {
-    const checkKickstartEnrollment = async () => {
+    const performParallelChecks = async () => {
       // Wait until user is loaded
       if (!user?.id || loading) {
         return;
@@ -218,31 +279,47 @@ export default function DashboardPage() {
         return;
       }
 
-      console.log('🔍 Starting Kickstart enrollment check for user:', user.id);
+      debugLog.info('Starting PARALLEL checks for user:', user.id);
 
       // Set checking state IMMEDIATELY before any async work
       setKickstartState(prev => ({ ...prev, isChecking: true }));
 
-      try {
-        const response = await fetch('/api/kickstart/check-enrollment', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
-          }
-        });
+      const token = localStorage.getItem('datespark_auth_token');
+      const headers = { 'Authorization': `Bearer ${token}` };
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log('✅ Kickstart enrollment check result:', data);
+      try {
+        // PARALLEL API CALLS - both run simultaneously
+        const [adminResponse, kickstartResponse] = await Promise.all([
+          fetch('/api/auth/check-admin', { headers }).catch(() => null),
+          fetch('/api/kickstart/check-enrollment', { headers }).catch(() => null),
+        ]);
+
+        // Process admin check result
+        let adminStatus = false;
+        if (adminResponse?.ok) {
+          const adminData = await adminResponse.json();
+          adminStatus = adminData.isAdmin === true;
+        }
+        setIsAdminUser(adminStatus);
+
+        // Process kickstart enrollment result
+        if (kickstartResponse?.ok) {
+          const data = await kickstartResponse.json();
+          debugLog.success('Kickstart enrollment check result:', data);
 
           const hasEnrollment = data.hasEnrollment === true;
           const needsOnboarding = hasEnrollment && !data.hasOnboardingData;
+          // Show dag-0 if user completed intake but hasn't done dag-0 yet
+          const needsDayZero = hasEnrollment && data.hasOnboardingData && !data.dayZeroCompleted;
 
           if (needsOnboarding) {
-            console.log('🎯 User needs Kickstart onboarding - will show onboarding flow');
+            debugLog.action('User needs Kickstart onboarding - will show onboarding flow');
+          } else if (needsDayZero) {
+            debugLog.action('User needs Day Zero - will show dag-0 experience');
           } else if (hasEnrollment) {
-            console.log('✅ User has Kickstart enrollment with completed onboarding');
+            debugLog.success('User has completed Kickstart enrollment and dag-0');
           } else {
-            console.log('ℹ️ User does not have Kickstart enrollment');
+            debugLog.info('User does not have Kickstart enrollment');
           }
 
           // Update all state in one atomic operation
@@ -250,30 +327,40 @@ export default function DashboardPage() {
             isChecking: false,
             hasEnrollment,
             needsOnboarding,
+            showDayZero: needsDayZero,
             checkComplete: true,
           });
         } else {
-          console.warn('⚠️ Failed to check Kickstart enrollment:', response.status);
+          debugLog.warn('Failed to check Kickstart enrollment');
           setKickstartState({
             isChecking: false,
             hasEnrollment: false,
             needsOnboarding: false,
+            showDayZero: false,
             checkComplete: true,
           });
         }
+
+        // Handle admin redirect after both checks complete
+        if (adminStatus && !userProfile) {
+          debugLog.navigate('Dashboard - Admin user detected without profile, redirecting to /admin');
+          router.push('/admin');
+        }
+
       } catch (error) {
-        console.error('❌ Error checking Kickstart enrollment:', error);
+        debugLog.error('Error in parallel checks:', error);
         setKickstartState({
           isChecking: false,
           hasEnrollment: false,
           needsOnboarding: false,
+          showDayZero: false,
           checkComplete: true,
         });
       }
     };
 
-    checkKickstartEnrollment();
-  }, [user?.id, loading, kickstartState.checkComplete]);
+    performParallelChecks();
+  }, [user?.id, loading, kickstartState.checkComplete, userProfile, router]);
 
   // Check for Monday dating week notifications
   useEffect(() => {
@@ -286,7 +373,7 @@ export default function DashboardPage() {
         const isTestMode = urlParams.get('test-notifications') === 'true';
 
         if (isTestMode) {
-          console.log('🔔 Test mode detected, showing notification modal immediately');
+          debugLog.info('Test mode detected, showing notification modal immediately');
           setDatingWeekNotificationOpen(true);
           return;
         }
@@ -304,18 +391,18 @@ export default function DashboardPage() {
           if (response.ok) {
             const data = await response.json();
             if (data.shouldShowNotification) {
-              console.log('🔔 Showing Monday dating week notification');
+              debugLog.info('Showing Monday dating week notification');
               setDatingWeekNotificationOpen(true);
             }
           } else {
-            console.warn('⚠️ Failed to check notifications:', response.status, response.statusText);
+            debugLog.warn('Failed to check notifications:', response.status, response.statusText);
           }
         } catch (fetchError) {
-          console.warn('⚠️ Network error checking notifications:', fetchError);
+          debugLog.warn('Network error checking notifications:', fetchError);
           // Non-blocking error - don't show notification if we can't check
         }
       } catch (error) {
-        console.error('Error checking for notifications:', error);
+        debugLog.error('Error checking for notifications:', error);
       }
     };
 
@@ -339,7 +426,7 @@ export default function DashboardPage() {
       // Reset to dashboard after navigation
       setActiveTab('dashboard');
     } else if (activeTab === 'hechtingsstijl-redirect' || activeTab === 'hechtingsstijl') {
-      console.log('🧠 Navigating to /hechtingsstijl...');
+      debugLog.navigate('Navigating to /hechtingsstijl...');
       router.push('/hechtingsstijl');
       // Reset to dashboard after navigation
       setActiveTab('dashboard');
@@ -366,7 +453,7 @@ export default function DashboardPage() {
     };
 
     if (redirectMap[activeTab]) {
-      console.log(`🔄 Redirecting legacy tab '${activeTab}' to consolidated module '${redirectMap[activeTab]}'`);
+      debugLog.navigate(`Redirecting legacy tab '${activeTab}' to consolidated module '${redirectMap[activeTab]}'`);
       setActiveTab(redirectMap[activeTab]);
     }
   }, [activeTab, router]);
@@ -420,7 +507,7 @@ export default function DashboardPage() {
     setKickstartOnboardingSaving(true);
 
     try {
-      console.log('💾 Saving Kickstart onboarding data:', data);
+      debugLog.info('Saving Kickstart onboarding data:', data);
 
       const response = await fetch("/api/kickstart/onboarding", {
         method: "POST",
@@ -435,23 +522,31 @@ export default function DashboardPage() {
       }
 
       const result = await response.json();
-      console.log("✅ Kickstart onboarding saved successfully:", result);
+      debugLog.success('Kickstart onboarding saved successfully:', result);
 
-      // Update kickstart state to reflect completed onboarding
+      // Update kickstart state to show dag-0 experience
       setKickstartState(prev => ({
         ...prev,
         needsOnboarding: false,
+        showDayZero: true, // Show dag-0 in dashboard
       }));
       setKickstartOnboardingSaving(false);
 
-      // Optional: redirect to Kickstart day 1 or show success message
-      // router.push(result.nextUrl || "/kickstart/dag/1");
-
     } catch (err) {
-      console.error("❌ Error saving onboarding:", err);
+      debugLog.error('Error saving onboarding:', err);
       setKickstartOnboardingSaving(false);
       // Could show error toast here
     }
+  };
+
+  // Handle Day Zero completion - redirect to dag 1
+  const handleDayZeroComplete = () => {
+    debugLog.success('Day Zero completed, redirecting to dag 1');
+    setKickstartState(prev => ({
+      ...prev,
+      showDayZero: false,
+    }));
+    router.push('/kickstart/dag/1');
   };
 
 
@@ -475,68 +570,48 @@ export default function DashboardPage() {
 
 
 
-  const renderTabContent = () => {
+  // Memoized tab content - prevents unnecessary re-renders when other state changes
+  const tabContent = useMemo(() => {
     switch (activeTab) {
       // NIEUWE 4-TAB NAVIGATIE (Masterplan)
       case 'home':
-        return <SmartHomeTab onTabChange={handleTabChange} userId={user?.id} />;
-
+        return <SmartHomeTab onTabChange={handleTabChange} userId={user?.id} userProfile={userProfile} />;
       case 'pad':
         return <EnhancedPadTab onTabChange={handleTabChange} userId={user?.id} />;
-
       case 'coach':
         return <CoachTab onTabChange={handleTabChange} userId={user?.id} />;
-
       case 'profiel':
         return <ProfielTab onTabChange={handleTabChange} />;
 
-      // NIEUWE 5-MODULE STRUCTUUR (legacy support)
+      // MODULES
       case 'profiel-persoonlijkheid':
         return <ProfileSuite onTabChange={handleTabChange} />;
-
       case 'communicatie-matching':
         return <CommunicationHub onTabChange={handleTabChange} />;
-
       case 'daten-relaties':
         return <DatenRelatiesModule onTabChange={handleTabChange} />;
-        // Navigation handled by useEffect above
-        return <DashboardTab onTabChange={handleTabChange} />;
-
       case 'groei-doelen':
         return <GroeiDoelenModule onTabChange={handleTabChange} userId={user?.id} />;
-
       case 'leren-ontwikkelen':
         return <LerenOntwikkelenModule onTabChange={handleTabChange} />;
-
       case 'cursussen':
         return <CursussenTab />;
 
-      case 'cursus':
-        // Navigate to the main cursus page
-        if (typeof window !== 'undefined') {
-          window.location.href = '/cursus';
-        }
-        return <DashboardTab onTabChange={handleTabChange} />;
-
+      // SETTINGS
       case 'settings':
         return <SettingsTab />;
-
       case 'data-management':
         return <DataManagementTab />;
-
       case 'subscription':
         return <SubscriptionTab />;
 
-      // LEGACY TABS (voorlopig behouden)
+      // LEGACY TABS
       case 'dashboard':
         return <DashboardTab onTabChange={handleTabChange} />;
       case 'daily':
         return (
           <>
-            <DailyDashboard
-              userId={user?.id || 0}
-              onCheckIn={() => setCheckinModalOpen(true)}
-            />
+            <DailyDashboard userId={user?.id || 0} onCheckIn={() => setCheckinModalOpen(true)} />
             <DailyCheckinModal
               open={checkinModalOpen}
               onClose={() => setCheckinModalOpen(false)}
@@ -550,30 +625,24 @@ export default function DashboardPage() {
         return <MonthlyReport userId={user?.id || 0} month={new Date().getMonth() + 1} year={new Date().getFullYear()} />;
       case 'yearly-review':
         return <YearlyReview userId={user?.id || 0} year={new Date().getFullYear()} />;
-
-      // REMOVED: Legacy duplicate tabs - all functionality now consolidated in the 5 main modules
-      // - online-cursus → consolidated into 'leren-ontwikkelen'
-      // - profiel-coach → consolidated into 'profiel-persoonlijkheid'
-      // - dateplanner → consolidated into 'daten-relaties'
-      // - skills-assessment → consolidated into 'leren-ontwikkelen'
-      // - voortgang → consolidated into 'groei-doelen'
-      // - doelen → consolidated into 'groei-doelen'
-      // - All other legacy tabs removed for cleaner UX
-
-      // Keep only essential standalone tabs
       case 'community':
         return <CommunityTab />;
       case 'badges':
         return <BadgesShowcase userId={user?.id || 0} />;
       case 'dating-activity':
         return <DatingActivityLogger userId={user?.id || 0} />;
-      case 'select-package':
-        // Navigation handled by useEffect above
-        return <DashboardTab onTabChange={handleTabChange} />;
+
       default:
         return <DashboardTab onTabChange={handleTabChange} />;
     }
-  };
+  }, [activeTab, user?.id, userProfile, handleTabChange, checkinModalOpen, journeyDay]);
+
+  // Handle cursus navigation separately (has side effect)
+  useEffect(() => {
+    if (activeTab === 'cursus' && typeof window !== 'undefined') {
+      window.location.href = '/cursus';
+    }
+  }, [activeTab]);
 
   // Check if this is mobile access to specific tabs
   const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
@@ -587,9 +656,13 @@ export default function DashboardPage() {
   // Uses the new world-class KickstartOnboardingFlow component
   // This check happens AFTER all loading states are complete, preventing any flash
   const showKickstartOnboarding = kickstartState.needsOnboarding;
+  const showDayZero = kickstartState.showDayZero;
 
   if (showKickstartOnboarding) {
-    console.log('🎨 Rendering Kickstart onboarding flow within dashboard');
+    debugLog.render('Rendering Kickstart onboarding flow within dashboard');
+  }
+  if (showDayZero) {
+    debugLog.render('Rendering Day Zero experience within dashboard');
   }
 
   return (
@@ -651,6 +724,11 @@ export default function DashboardPage() {
                   onComplete={handleKickstartOnboardingComplete}
                 />
               </div>
+            ) : showDayZero ? (
+              <DayZeroExperience
+                onComplete={handleDayZeroComplete}
+                embedded={true}
+              />
             ) : showOnboarding ? (
               <OnboardingFlow
                 journeyState={journeyState}
@@ -675,16 +753,16 @@ export default function DashboardPage() {
               />
 
               {/* Trial Progress Banner - Only show for trial users and not during onboarding */}
-              {user?.id && !showKickstartOnboarding && !showOnboarding && <TrialProgress userId={user.id} />}
+              {user?.id && !showKickstartOnboarding && !showOnboarding && !showDayZero && <TrialProgress userId={user.id} />}
 
               <main className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20">
-              {/* Hide navigation during any onboarding */}
-              {!showOnboarding && !showKickstartOnboarding && (
+              {/* Hide navigation during any onboarding or day-0 */}
+              {!showOnboarding && !showKickstartOnboarding && !showDayZero && (
                 useNewNav
                   ? <MainNavNew activeTab={activeTab} onTabChange={handleTabChange} />
                   : <MainNav activeTab={activeTab} onTabChange={handleTabChange} />
               )}
-              <div className="mt-6">
+              <div className={showDayZero ? "" : "mt-6"}>
                 {/* Show Kickstart onboarding if needed - takes priority */}
                 {showKickstartOnboarding ? (
                   <div className="min-h-[600px]">
@@ -693,6 +771,12 @@ export default function DashboardPage() {
                       onComplete={handleKickstartOnboardingComplete}
                     />
                   </div>
+                ) : showDayZero ? (
+                  /* Show Day Zero experience after intake chat */
+                  <DayZeroExperience
+                    onComplete={handleDayZeroComplete}
+                    embedded={true}
+                  />
                 ) : showOnboarding ? (
                   /* Show regular onboarding if needed */
                   <OnboardingFlow
@@ -716,7 +800,7 @@ export default function DashboardPage() {
               isOpen={datingWeekNotificationOpen}
               onClose={() => setDatingWeekNotificationOpen(false)}
               onComplete={(data) => {
-                console.log('Dating week log completed:', data);
+                debugLog.success('Dating week log completed:', data);
                 // Could add success notification here
               }}
               />

@@ -203,6 +203,23 @@
 
 /* DatingAssistent Playful Design Utilities */
 @layer utilities {
+  /* Safe area utilities for iPhone notch/home indicator */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .pb-safe-offset-4 {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+
+  .min-h-screen-safe {
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+  }
   /* Pill-shaped buttons - Very rounded */
   .btn-pill {
     @apply rounded-full px-6 py-3 font-semibold text-sm transition-all duration-200 shadow-sm;
