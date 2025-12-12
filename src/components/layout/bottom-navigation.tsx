@@ -46,10 +46,10 @@ export function BottomNavigation() {
       activeColor: 'text-blue-500',
     },
     {
-      href: '/dashboard?tab=profiel',
+      href: '/dashboard?tab=tools',
       icon: User,
       label: 'Tools',
-      active: pathname?.startsWith('/profiel') || pathname?.startsWith('/profile'),
+      active: pathname?.includes('tab=tools') || pathname?.startsWith('/tools'),
       color: 'text-gray-700',
       activeColor: 'text-green-500',
     },

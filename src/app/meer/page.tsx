@@ -50,6 +50,37 @@ export default function MeerPage() {
   const { theme, setTheme, actualTheme, mounted } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [userTier, setUserTier] = useState<string>('free');
+
+  // Check user's program enrollment to determine tier
+  useEffect(() => {
+    const checkUserTier = async () => {
+      if (!user?.id) return;
+
+      try {
+        // Check enrolled programs
+        const response = await fetch(`/api/user/enrolled-programs?userId=${user.id}`);
+        if (response.ok) {
+          const data = await response.json();
+
+          // Determine highest tier based on enrollments
+          if (data.programs?.some((p: any) => p.slug === 'vip')) {
+            setUserTier('vip');
+          } else if (data.programs?.some((p: any) => p.slug === 'transformatie')) {
+            setUserTier('transformatie');
+          } else if (data.programs?.some((p: any) => p.slug === 'kickstart')) {
+            setUserTier('kickstart');
+          } else {
+            setUserTier('free');
+          }
+        }
+      } catch (error) {
+        console.error('Failed to check user tier:', error);
+      }
+    };
+
+    checkUserTier();
+  }, [user?.id]);
 
   // Load user preferences on mount
   useEffect(() => {
@@ -253,11 +284,18 @@ export default function MeerPage() {
                 <p className="text-sm text-gray-600 mb-2">{user?.email}</p>
                 <div className="flex items-center gap-2">
                   <Badge className={`text-xs px-2 py-1 ${
-                    user?.subscriptionType === 'premium'
+                    userTier === 'vip'
+                      ? 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 border-purple-200'
+                      : userTier === 'transformatie'
+                      ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-700 border-indigo-200'
+                      : userTier === 'kickstart'
                       ? 'bg-gradient-to-r from-pink-100 to-pink-200 text-pink-700 border-pink-200'
                       : 'bg-gray-100 text-gray-700 border-gray-200'
                   }`}>
-                    {user?.subscriptionType === 'premium' ? 'Pro Member' : 'Free Account'}
+                    {userTier === 'vip' ? 'VIP'
+                      : userTier === 'transformatie' ? 'Transformatie'
+                      : userTier === 'kickstart' ? 'Kickstart'
+                      : 'Free Account'}
                   </Badge>
                   <Badge variant="outline" className="text-xs px-2 py-1 border-gray-300">
                     Level {getUserLevel()}
