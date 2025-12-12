@@ -12,8 +12,8 @@ export const dynamic = 'force-dynamic';
  */
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting
-    const rateLimitResponse = await applyRateLimit(request, RateLimitPresets.api);
+    // Rate limiting - use public preset for higher limits (100 req/min vs 30)
+    const rateLimitResponse = await applyRateLimit(request, RateLimitPresets.public);
     if (rateLimitResponse) return rateLimitResponse;
 
     // Get current user
@@ -256,8 +256,8 @@ function calculateQuizScore(answers: any[]): number {
  */
 export async function GET(request: NextRequest) {
   try {
-    // Rate limiting
-    const rateLimitResponse = await applyRateLimit(request, RateLimitPresets.api);
+    // Rate limiting - use public preset for higher limits (100 req/min vs 30)
+    const rateLimitResponse = await applyRateLimit(request, RateLimitPresets.public);
     if (rateLimitResponse) return rateLimitResponse;
 
     const user = await getCurrentUser();

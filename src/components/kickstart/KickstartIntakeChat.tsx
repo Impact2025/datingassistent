@@ -7,7 +7,7 @@ import { IrisAvatar } from "@/components/onboarding/IrisAvatar";
 import { IntakeChips } from "@/components/onboarding/IntakeChips";
 import { IntakeSlider } from "@/components/onboarding/IntakeSlider";
 import { Button } from "@/components/ui/button";
-import { Send, Loader2, CheckCircle } from "lucide-react";
+import { Send, Loader2, CheckCircle, ChevronRight } from "lucide-react";
 import type { KickstartIntakeData } from "@/types/kickstart-onboarding.types";
 
 interface Message {
@@ -133,36 +133,51 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     scrollToBottom();
   }, [messages]);
 
-  // Start conversation
+  // Start conversation - optimized timing for world-class UX
   useEffect(() => {
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
+    // Show typing indicator immediately
+    setIsTyping(true);
+
+    // First welcome message after brief typing
     setTimeout(() => {
-      addIrisMessage({
+      setIsTyping(false);
+      setMessages((prev) => [...prev, {
         id: "welcome",
         type: "iris",
         content: "Hey! Super dat je de Kickstart hebt gepakt. De komende 21 dagen ga ik je elke dag helpen met concrete dating tips.",
-      });
-    }, 500);
+      }]);
 
+      // Start typing for next message
+      setTimeout(() => setIsTyping(true), 400);
+    }, 1000);
+
+    // Second welcome message
     setTimeout(() => {
-      addIrisMessage({
+      setIsTyping(false);
+      setMessages((prev) => [...prev, {
         id: "welcome-2",
         type: "iris",
         content: "Maar eerst wil ik je écht leren kennen, zodat mijn tips perfect bij jou passen. Oké?",
-      });
-    }, 2500);
+      }]);
 
+      // Start typing for question
+      setTimeout(() => setIsTyping(true), 400);
+    }, 2800);
+
+    // First question - appears in header card
     setTimeout(() => {
-      addIrisMessage({
+      setIsTyping(false);
+      setMessages((prev) => [...prev, {
         id: "q1",
         type: "iris",
         content: "Laten we beginnen! Hoe mag ik je noemen?",
         inputType: "text",
         placeholder: "Bijv. Mark, Lisa, etc.",
-      });
-    }, 4500);
+      }]);
+    }, 4200);
   }, []);
 
   const addIrisMessage = (message: Message) => {
@@ -731,78 +746,129 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
 
   const progressPercentage = Math.round((currentStep / totalSteps) * 100);
 
+  // Get current active question for sticky header
+  const getCurrentQuestion = () => {
+    return [...messages]
+      .reverse()
+      .find((m) => m.type === "iris" && m.inputType);
+  };
+
+  const currentQuestion = getCurrentQuestion();
+
+  // Helper function for milestone messages
+  const getMilestoneMessage = (step: number, total: number) => {
+    const percent = (step / total) * 100;
+    if (percent >= 75) return "Bijna klaar! 🎉";
+    if (percent >= 50) return "Meer dan halverwege! 💪";
+    if (percent >= 25) return "Lekker bezig! ✨";
+    return "Laten we beginnen! 🚀";
+  };
+
+  // Get user answers for display
+  const userAnswers = messages.filter((m) => m.type === 'user');
+
   return (
-    <div className={cn("flex flex-col h-full", className)}>
-      {/* Progress Bar */}
-      {currentStep > 0 && currentStep <= totalSteps && (
-        <div className="px-4 pt-4 pb-2">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-gray-600">
-              Vraag {currentStep}/{totalSteps}
-            </span>
-            <span className="text-xs font-semibold text-pink-600">
-              {progressPercentage}%
-            </span>
+    <div className={cn("flex flex-col h-full bg-gradient-to-b from-pink-50/30 to-white", className)}>
+      {/* Premium Progress Header */}
+      <div className="flex-shrink-0 px-4 py-4 bg-white/80 backdrop-blur-sm border-b border-pink-100/50">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <IrisAvatar size="xs" />
+            <span className="text-sm font-medium text-gray-600">Iris leert je kennen</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <motion.div
-              className="h-2 rounded-full bg-gradient-to-r from-pink-500 to-pink-600"
-              initial={{ width: 0 }}
-              animate={{ width: `${progressPercentage}%` }}
-              transition={{ duration: 0.5 }}
-            />
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-pink-600 bg-pink-50 px-2 py-1 rounded-full">
+              {currentStep}/{totalSteps}
+            </span>
           </div>
         </div>
-      )}
+        <div className="w-full bg-pink-100 rounded-full h-1.5 overflow-hidden">
+          <motion.div
+            className="h-full rounded-full bg-gradient-to-r from-pink-500 to-pink-600"
+            initial={{ width: 0 }}
+            animate={{ width: `${progressPercentage}%` }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          />
+        </div>
+      </div>
 
-      {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-        <AnimatePresence mode="popLayout">
-          {messages.map((message) => (
+      {/* Main Content Area */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Current Question - THE FOCUS */}
+        {currentQuestion && currentStep >= 0 && currentStep <= totalSteps && (
+          <div className="px-4 pt-6 pb-4">
             <motion.div
-              key={message.id}
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-              className={cn(
-                "flex gap-3",
-                message.type === "user" ? "justify-end" : "justify-start"
-              )}
+              key={currentQuestion.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="text-center"
             >
-              {message.type === "iris" && <IrisAvatar size="sm" />}
-              <div
-                className={cn(
-                  "rounded-2xl px-4 py-3 max-w-[80%] shadow-sm",
-                  message.type === "iris"
-                    ? "bg-gray-100 rounded-tl-none text-gray-800"
-                    : "bg-pink-500 text-white rounded-tr-none"
-                )}
+              {/* Question Number Badge */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.1, type: "spring", bounce: 0.5 }}
+                className="inline-flex items-center gap-1.5 bg-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4"
               >
-                <p className="leading-relaxed">{message.content}</p>
-              </div>
+                Vraag {currentStep > 0 ? currentStep : 1}
+              </motion.div>
+
+              {/* The Question - Large & Clear */}
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 leading-relaxed px-2">
+                {currentQuestion.content}
+              </h2>
             </motion.div>
-          ))}
-        </AnimatePresence>
+          </div>
+        )}
+
+        {/* Completed Answers - Compact Pills */}
+        {userAnswers.length > 0 && (
+          <div className="px-4 pb-4">
+            <div className="flex flex-wrap gap-2 justify-center">
+              <AnimatePresence mode="popLayout">
+                {userAnswers.slice(-5).map((answer, index) => (
+                  <motion.div
+                    key={answer.id}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.2 }}
+                    className="bg-pink-100 text-pink-700 text-sm px-3 py-1.5 rounded-full max-w-[200px] truncate"
+                  >
+                    {answer.content}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+        )}
 
         {/* Typing Indicator */}
         {isTyping && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex gap-3 items-center"
+            exit={{ opacity: 0 }}
+            className="flex justify-center py-4"
           >
-            <IrisAvatar size="sm" />
-            <div className="bg-gray-100 rounded-2xl rounded-tl-none px-4 py-3">
-              <div className="flex gap-1">
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                <span
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                  style={{ animationDelay: "0.1s" }}
+            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm">
+              <IrisAvatar size="xs" />
+              <div className="flex items-center gap-1">
+                <motion.span
+                  className="w-2 h-2 bg-pink-400 rounded-full"
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
                 />
-                <span
-                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                  style={{ animationDelay: "0.2s" }}
+                <motion.span
+                  className="w-2 h-2 bg-pink-400 rounded-full"
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ duration: 0.6, repeat: Infinity, delay: 0.15 }}
+                />
+                <motion.span
+                  className="w-2 h-2 bg-pink-400 rounded-full"
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ duration: 0.6, repeat: Infinity, delay: 0.3 }}
                 />
               </div>
             </div>
@@ -812,31 +878,33 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
-      <div className="border-t bg-white p-4">
+      {/* Input Area - Clean, focused design */}
+      <div className="flex-shrink-0 bg-white px-4 pt-4 pb-6 pb-safe-offset-4">
         {/* Text Input (Name, Frustration, Fear, Ideal Outcome) */}
         {getCurrentInputType() === "text" && currentStep < 16 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex gap-2"
+            className="space-y-3"
           >
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  if (currentStep === 0) handleNameSubmit();
-                  else if (currentStep === 9) handleFrustrationSubmit();
-                  else if (currentStep === 14) handleBiggestFearSubmit();
-                  else if (currentStep === 15) handleIdealOutcomeSubmit();
-                }
-              }}
-              placeholder={getCurrentPlaceholder()}
-              className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100"
-              autoFocus
-            />
+            <div className="relative">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    if (currentStep === 0) handleNameSubmit();
+                    else if (currentStep === 9) handleFrustrationSubmit();
+                    else if (currentStep === 14) handleBiggestFearSubmit();
+                    else if (currentStep === 15) handleIdealOutcomeSubmit();
+                  }
+                }}
+                placeholder={getCurrentPlaceholder()}
+                className="w-full px-5 py-4 text-lg rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-100 transition-all bg-pink-50/30"
+                autoFocus
+              />
+            </div>
             <Button
               onClick={() => {
                 if (currentStep === 0) handleNameSubmit();
@@ -845,9 +913,10 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
                 else if (currentStep === 15) handleIdealOutcomeSubmit();
               }}
               disabled={!inputValue.trim()}
-              className="bg-pink-500 hover:bg-pink-600 rounded-xl px-4"
+              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-2xl py-4 text-lg font-semibold shadow-lg shadow-pink-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
             >
-              <Send className="w-5 h-5" />
+              Volgende
+              <ChevronRight className="w-5 h-5 ml-1" />
             </Button>
           </motion.div>
         )}
@@ -857,25 +926,28 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex gap-2"
+            className="space-y-3"
           >
-            <input
-              type="number"
-              value={numberValue}
-              onChange={(e) => setNumberValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAgeSubmit()}
-              placeholder={getCurrentPlaceholder()}
-              min="18"
-              max="99"
-              className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100"
-              autoFocus
-            />
+            <div className="relative">
+              <input
+                type="number"
+                value={numberValue}
+                onChange={(e) => setNumberValue(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleAgeSubmit()}
+                placeholder={getCurrentPlaceholder()}
+                min="18"
+                max="99"
+                className="w-full px-5 py-4 text-lg text-center rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-100 transition-all bg-pink-50/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                autoFocus
+              />
+            </div>
             <Button
               onClick={handleAgeSubmit}
               disabled={!numberValue || parseInt(numberValue) < 18 || parseInt(numberValue) > 99}
-              className="bg-pink-500 hover:bg-pink-600 rounded-xl px-4"
+              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-2xl py-4 text-lg font-semibold shadow-lg shadow-pink-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
             >
-              <Send className="w-5 h-5" />
+              Volgende
+              <ChevronRight className="w-5 h-5 ml-1" />
             </Button>
           </motion.div>
         )}
@@ -905,33 +977,36 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-3"
+            className="space-y-4"
           >
-            <div className="flex flex-wrap gap-2">
-              {getCurrentChipOptions()?.map((option) => (
-                <button
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              {getCurrentChipOptions()?.map((option, index) => (
+                <motion.button
                   key={option.value}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.05 }}
                   onClick={() => handleMultiChipToggle(option.value)}
                   className={cn(
-                    "px-4 py-2 rounded-xl border-2 font-medium transition-all",
-                    "hover:scale-105 active:scale-95",
+                    "min-h-[52px] px-4 py-3 rounded-xl border-2 font-medium transition-all",
+                    "active:scale-[0.97] flex items-center justify-start gap-2",
                     selectedChips.includes(option.value)
-                      ? "border-pink-500 bg-pink-50 text-pink-700"
+                      ? "border-pink-600 bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-lg"
                       : "border-gray-200 bg-white text-gray-700 hover:border-pink-300"
                   )}
                 >
-                  <span className="mr-2">{option.icon}</span>
-                  {option.label}
+                  <span className="text-xl">{option.icon}</span>
+                  <span className="flex-1 text-sm sm:text-base text-left">{option.label}</span>
                   {selectedChips.includes(option.value) && (
-                    <CheckCircle className="inline-block w-4 h-4 ml-2 text-pink-600" />
+                    <CheckCircle className="w-5 h-5 flex-shrink-0" />
                   )}
-                </button>
+                </motion.button>
               ))}
             </div>
             <Button
               onClick={handleDatingAppsConfirm}
               disabled={selectedChips.length === 0}
-              className="w-full bg-pink-500 hover:bg-pink-600 rounded-xl py-3"
+              className="w-full bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl py-3.5 min-h-[52px] text-base font-semibold"
             >
               Bevestig mijn keuze ({selectedChips.length} geselecteerd)
             </Button>
@@ -952,7 +1027,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
             />
             <Button
               onClick={handleConfidenceLevelConfirm}
-              className="w-full bg-pink-500 hover:bg-pink-600 rounded-xl py-3"
+              className="w-full bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl py-3.5 min-h-[52px] text-base font-semibold"
             >
               Bevestig mijn keuze
             </Button>

@@ -22,6 +22,9 @@ import {
   ChevronLeft,
   Loader2,
   BookOpen,
+  Download,
+  FileText,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -36,6 +39,7 @@ interface DaySummary {
   dag_type: string;
   status: 'completed' | 'available' | 'in_progress' | 'locked';
   emoji?: string;
+  ai_tool?: string | null;
 }
 
 interface DayDetail {
@@ -269,12 +273,25 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
             {stats.completedDays} van {stats.totalDays} dagen voltooid
           </p>
         </div>
-        {onBack && (
-          <Button variant="ghost" onClick={onBack} className="text-gray-500">
-            <BookOpen className="w-4 h-4 mr-2" />
-            Dating Reis
+        <div className="flex items-center gap-2">
+          {/* Werkboek Download - Minimalist */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.open('/downloads/kickstart/21-dagen-kickstart-werkboek.pdf', '_blank')}
+            className="text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-gray-300"
+          >
+            <FileText className="w-4 h-4 mr-2" />
+            <span className="hidden sm:inline">Werkboek</span>
+            <Download className="w-3.5 h-3.5 ml-1.5 text-gray-400" />
           </Button>
-        )}
+          {onBack && (
+            <Button variant="ghost" onClick={onBack} className="text-gray-500">
+              <BookOpen className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Dating Reis</span>
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Progress bar - Simple */}
@@ -324,12 +341,21 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
 
                 {/* Day info */}
                 <div className="flex-1 min-w-0">
-                  <p className={cn(
-                    'text-sm font-medium truncate',
-                    isLocked ? 'text-gray-400' : 'text-gray-900'
-                  )}>
-                    {day.titel}
-                  </p>
+                  <div className="flex items-center gap-1.5">
+                    <p className={cn(
+                      'text-sm font-medium truncate',
+                      isLocked ? 'text-gray-400' : 'text-gray-900'
+                    )}>
+                      {day.titel}
+                    </p>
+                    {/* AI Badge - Subtle indicator */}
+                    {day.ai_tool && !isLocked && (
+                      <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-pink-50 text-pink-500 text-[10px] font-medium">
+                        <Sparkles className="w-2.5 h-2.5" />
+                        AI
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-gray-400 capitalize">{day.dag_type}</p>
                 </div>
 

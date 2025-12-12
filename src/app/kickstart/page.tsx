@@ -36,6 +36,27 @@ export default function KickstartPage() {
               }
             }
           }
+
+          // ✨ DAG 0 RITUAL CHECK - Het magische welkom moment
+          // If onboarding is completed, check if Day 0 ritual is completed
+          if (onboardingData.completed) {
+            const token = localStorage.getItem('datespark_auth_token');
+            const dayZeroResponse = await fetch('/api/kickstart/day-zero', {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+              },
+            });
+
+            if (dayZeroResponse.ok) {
+              const dayZeroData = await dayZeroResponse.json();
+
+              // If Day 0 not completed, redirect to the magical welcome experience
+              if (!dayZeroData.completed) {
+                router.push('/kickstart/dag-0');
+                return;
+              }
+            }
+          }
         }
       } catch (err) {
         console.error('Error checking onboarding:', err);

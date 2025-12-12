@@ -387,9 +387,10 @@ export function DayViewer({
       {/* Iris Personalized Intro */}
       <IrisIntro dayNumber={day.dag_nummer} dayTopic={day.titel} />
 
-      {/* Day Header Card - Mobile Optimized */}
+      {/* Enhanced Day Header Card */}
       <Card className="border-pink-100 shadow-sm overflow-hidden">
-        <div className="bg-pink-600 px-4 py-3 sm:px-6 sm:py-4">
+        {/* Top: Title & Time */}
+        <div className="bg-gradient-to-r from-pink-600 to-pink-500 px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shrink-0">
@@ -417,10 +418,109 @@ export function DayViewer({
 
             <div className="flex items-center gap-2 text-white/90 bg-white/10 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full self-start sm:self-auto">
               <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="font-medium text-sm sm:text-base">{day.duur_minuten} min</span>
+              <span className="font-medium text-sm sm:text-base">
+                ~{day.estimated_time_minutes || day.duur_minuten} min
+              </span>
             </div>
           </div>
         </div>
+
+        {/* Focus & Why Section */}
+        {(day.focus_statement || day.why_this_matters) && (
+          <div className="bg-pink-50 border-t border-pink-100 px-4 py-4 sm:px-6 space-y-3">
+            {day.focus_statement && (
+              <div>
+                <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-1">
+                  FOCUS VANDAAG
+                </p>
+                <p className="text-sm sm:text-base font-medium text-gray-900">
+                  {day.focus_statement}
+                </p>
+              </div>
+            )}
+
+            {day.why_this_matters && (
+              <div>
+                <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-1">
+                  WAAROM DIT BELANGRIJK IS
+                </p>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {day.why_this_matters}
+                </p>
+              </div>
+            )}
+
+            {/* Activity Priority Overview */}
+            <div className="pt-2 border-t border-pink-200">
+              <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-2">
+                WAT TE DOEN VANDAAG
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {/* Video */}
+                <div className="flex items-center gap-2">
+                  <Badge className="bg-pink-600 text-white border-0 text-[10px] font-bold px-1.5 py-0.5">
+                    {day.video_priority}
+                  </Badge>
+                  <Play className="w-3.5 h-3.5 text-pink-600" />
+                  <span className="text-xs font-medium text-gray-700">
+                    Video ({day.duur_minuten} min)
+                  </span>
+                  <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-pink-50 text-pink-700 border-pink-300 ml-auto">
+                    VERPLICHT
+                  </Badge>
+                </div>
+
+                {/* Quiz */}
+                {day.quiz && (
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-pink-600 text-white border-0 text-[10px] font-bold px-1.5 py-0.5">
+                      {day.quiz_priority}
+                    </Badge>
+                    <ClipboardList className="w-3.5 h-3.5 text-pink-600" />
+                    <span className="text-xs font-medium text-gray-700">
+                      Quiz (~3 min)
+                    </span>
+                    <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-pink-50 text-pink-700 border-pink-300 ml-auto">
+                      VERPLICHT
+                    </Badge>
+                  </div>
+                )}
+
+                {/* Reflectie */}
+                {day.reflectie && (
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-orange-500 text-white border-0 text-[10px] font-bold px-1.5 py-0.5">
+                      {day.reflectie_priority}
+                    </Badge>
+                    <MessageSquare className="w-3.5 h-3.5 text-orange-600" />
+                    <span className="text-xs font-medium text-gray-700">
+                      Reflectie (~5 min)
+                    </span>
+                    <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-orange-50 text-orange-700 border-orange-300 ml-auto">
+                      AANBEVOLEN
+                    </Badge>
+                  </div>
+                )}
+
+                {/* Werkboek */}
+                {day.werkboek && (
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-gray-400 text-white border-0 text-[10px] font-bold px-1.5 py-0.5">
+                      {day.werkboek_priority}
+                    </Badge>
+                    <BookOpen className="w-3.5 h-3.5 text-gray-600" />
+                    <span className="text-xs font-medium text-gray-700">
+                      Werkboek
+                    </span>
+                    <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-gray-50 text-gray-600 border-gray-300 ml-auto">
+                      BONUS
+                    </Badge>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Progress Bar */}
         <CardContent className="p-4 bg-white">
@@ -579,6 +679,27 @@ export function DayViewer({
 
         {/* Video Tab */}
         <TabsContent value="video" className="mt-6">
+          {/* Context Card */}
+          {day.video_context && (
+            <Card className="border-pink-200 bg-pink-50 shadow-sm mb-4">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-1">
+                      💡 WAAROM DEZE VIDEO?
+                    </p>
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      {day.video_context}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           <Card className="border-pink-100 shadow-sm">
             <CardContent className="p-6">
               {day.video_url ? (
@@ -659,6 +780,27 @@ export function DayViewer({
         {/* Quiz Tab */}
         {day.quiz && (
           <TabsContent value="quiz" className="mt-6">
+            {/* Context Card */}
+            {day.quiz_context && (
+              <Card className="border-pink-200 bg-pink-50 shadow-sm mb-4">
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-1">
+                        💡 WAAROM DEZE QUIZ?
+                      </p>
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        {day.quiz_context}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             <Card className="border-pink-100 shadow-sm">
               <CardHeader className="border-b border-pink-50">
                 <CardTitle className="text-xl text-gray-900">Quiz - Test je kennis</CardTitle>
@@ -745,6 +887,27 @@ export function DayViewer({
         {/* Reflectie Tab - Transformationele Vragen */}
         {day.reflectie && (
           <TabsContent value="reflectie" className="mt-6">
+            {/* Context Card */}
+            {day.reflectie_context && (
+              <Card className="border-orange-200 bg-orange-50 shadow-sm mb-4">
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-orange-700 uppercase tracking-wide mb-1">
+                        💡 WAAROM DEZE REFLECTIE?
+                      </p>
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        {day.reflectie_context}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             <Card className="border-pink-100 shadow-sm">
               <CardHeader className="border-b border-pink-50">
                 <CardTitle className="text-xl text-gray-900 flex items-center gap-2">
@@ -938,6 +1101,27 @@ export function DayViewer({
         {/* Werkboek Tab */}
         {day.werkboek && (
           <TabsContent value="werkboek" className="mt-6">
+            {/* Context Card */}
+            {day.werkboek_context && (
+              <Card className="border-gray-200 bg-gray-50 shadow-sm mb-4">
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-1">
+                        💡 WAAROM DIT WERKBOEK?
+                      </p>
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        {day.werkboek_context}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             <Card className="border-pink-100 shadow-sm">
               <CardHeader className="border-b border-pink-50">
                 <CardTitle className="text-xl text-gray-900">{day.werkboek.titel}</CardTitle>

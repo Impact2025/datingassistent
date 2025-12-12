@@ -101,6 +101,19 @@ export interface ProgramDay {
   dag_type: DayType;
   duur_minuten: number;
 
+  // Enhanced UX fields (wereldklasse onboarding)
+  focus_statement: string | null;
+  why_this_matters: string | null;
+  estimated_time_minutes: number | null;
+  video_context: string | null;
+  quiz_context: string | null;
+  reflectie_context: string | null;
+  werkboek_context: string | null;
+  video_priority: number;
+  quiz_priority: number;
+  reflectie_priority: number;
+  werkboek_priority: number;
+
   // AI Tool
   ai_tool: string | null;
   ai_tool_slug: string | null;
