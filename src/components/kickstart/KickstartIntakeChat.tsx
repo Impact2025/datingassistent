@@ -768,21 +768,23 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
   const userAnswers = messages.filter((m) => m.type === 'user');
 
   return (
-    <div className={cn("flex flex-col h-full bg-gradient-to-b from-pink-50/30 to-white", className)}>
-      {/* Premium Progress Header */}
-      <div className="flex-shrink-0 px-4 py-4 bg-white/80 backdrop-blur-sm border-b border-pink-100/50">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
+    <div className={cn(
+      "flex flex-col bg-gradient-to-b from-pink-50/30 to-white",
+      "h-[100dvh] max-h-[100dvh]", // Use dynamic viewport height for mobile
+      className
+    )}>
+      {/* Compact Progress Header - MOBILE OPTIMIZED */}
+      <div className="flex-shrink-0 px-3 py-2 sm:px-4 sm:py-3 bg-white/95 backdrop-blur-sm border-b border-pink-100/50 safe-area-top">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             <IrisAvatar size="xs" />
-            <span className="text-sm font-medium text-gray-600">Iris leert je kennen</span>
+            <span className="text-xs sm:text-sm font-medium text-gray-600 truncate">Iris leert je kennen</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-pink-600 bg-pink-50 px-2 py-1 rounded-full">
-              {currentStep}/{totalSteps}
-            </span>
-          </div>
+          <span className="flex-shrink-0 text-xs font-bold text-pink-600 bg-pink-100 px-2 py-1 rounded-full">
+            {currentStep}/{totalSteps}
+          </span>
         </div>
-        <div className="w-full bg-pink-100 rounded-full h-1.5 overflow-hidden">
+        <div className="w-full bg-pink-100 rounded-full h-1 mt-2 overflow-hidden">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-pink-500 to-pink-600"
             initial={{ width: 0 }}
@@ -792,83 +794,80 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto">
-        {/* Current Question - THE FOCUS */}
-        {currentQuestion && currentStep >= 0 && currentStep <= totalSteps && (
-          <div className="px-4 pt-6 pb-4">
-            <motion.div
-              key={currentQuestion.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="text-center"
+      {/* STICKY Question Card - ALWAYS VISIBLE ON MOBILE */}
+      {currentQuestion && currentStep >= 0 && currentStep <= totalSteps && (
+        <div className="flex-shrink-0 px-3 py-3 sm:px-4 sm:py-4 bg-gradient-to-b from-white to-pink-50/50">
+          <motion.div
+            key={currentQuestion.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="text-center"
+          >
+            {/* Question Badge - Compact */}
+            <motion.span
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="inline-block bg-pink-500 text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full mb-2"
             >
-              {/* Question Number Badge */}
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.1, type: "spring", bounce: 0.5 }}
-                className="inline-flex items-center gap-1.5 bg-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4"
-              >
-                Vraag {currentStep > 0 ? currentStep : 1}
-              </motion.div>
+              Vraag {currentStep > 0 ? currentStep : 1}
+            </motion.span>
 
-              {/* The Question - Large & Clear */}
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 leading-relaxed px-2">
-                {currentQuestion.content}
-              </h2>
-            </motion.div>
-          </div>
-        )}
+            {/* The Question - LARGE, CLEAR, READABLE */}
+            <h2 className="text-base sm:text-xl md:text-2xl font-bold text-gray-900 leading-snug sm:leading-relaxed">
+              {currentQuestion.content}
+            </h2>
+          </motion.div>
+        </div>
+      )}
 
-        {/* Completed Answers - Compact Pills */}
+      {/* Scrollable Middle Area - Compact */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-3 sm:px-4">
+        {/* Previous Answers - Ultra Compact on Mobile */}
         {userAnswers.length > 0 && (
-          <div className="px-4 pb-4">
-            <div className="flex flex-wrap gap-2 justify-center">
+          <div className="py-2">
+            <div className="flex flex-wrap gap-1.5 justify-center">
               <AnimatePresence mode="popLayout">
-                {userAnswers.slice(-5).map((answer, index) => (
-                  <motion.div
+                {userAnswers.slice(-4).map((answer) => (
+                  <motion.span
                     key={answer.id}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.2 }}
-                    className="bg-pink-100 text-pink-700 text-sm px-3 py-1.5 rounded-full max-w-[200px] truncate"
+                    className="bg-pink-100/80 text-pink-700 text-[11px] sm:text-xs px-2 py-1 rounded-full max-w-[120px] sm:max-w-[150px] truncate"
                   >
                     {answer.content}
-                  </motion.div>
+                  </motion.span>
                 ))}
               </AnimatePresence>
             </div>
           </div>
         )}
 
-        {/* Typing Indicator */}
+        {/* Typing Indicator - Compact */}
         {isTyping && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex justify-center py-4"
+            className="flex justify-center py-3"
           >
-            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm">
+            <div className="flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 shadow-sm border border-pink-100">
               <IrisAvatar size="xs" />
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5">
                 <motion.span
-                  className="w-2 h-2 bg-pink-400 rounded-full"
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
+                  className="w-1.5 h-1.5 bg-pink-400 rounded-full"
+                  animate={{ scale: [1, 1.4, 1] }}
+                  transition={{ duration: 0.5, repeat: Infinity, delay: 0 }}
                 />
                 <motion.span
-                  className="w-2 h-2 bg-pink-400 rounded-full"
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 0.6, repeat: Infinity, delay: 0.15 }}
+                  className="w-1.5 h-1.5 bg-pink-400 rounded-full"
+                  animate={{ scale: [1, 1.4, 1] }}
+                  transition={{ duration: 0.5, repeat: Infinity, delay: 0.1 }}
                 />
                 <motion.span
-                  className="w-2 h-2 bg-pink-400 rounded-full"
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 0.6, repeat: Infinity, delay: 0.3 }}
+                  className="w-1.5 h-1.5 bg-pink-400 rounded-full"
+                  animate={{ scale: [1, 1.4, 1] }}
+                  transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
                 />
               </div>
             </div>
@@ -878,33 +877,31 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area - Clean, focused design */}
-      <div className="flex-shrink-0 bg-white px-4 pt-4 pb-6 pb-safe-offset-4">
-        {/* Text Input (Name, Frustration, Fear, Ideal Outcome) */}
+      {/* Input Area - MOBILE OPTIMIZED with safe area */}
+      <div className="flex-shrink-0 bg-white border-t border-pink-100/50 px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4 safe-area-bottom">
+        {/* Text Input (Name, Frustration, Fear, Ideal Outcome) - MOBILE OPTIMIZED */}
         {getCurrentInputType() === "text" && currentStep < 16 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-3"
+            className="space-y-2 sm:space-y-3"
           >
-            <div className="relative">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    if (currentStep === 0) handleNameSubmit();
-                    else if (currentStep === 9) handleFrustrationSubmit();
-                    else if (currentStep === 14) handleBiggestFearSubmit();
-                    else if (currentStep === 15) handleIdealOutcomeSubmit();
-                  }
-                }}
-                placeholder={getCurrentPlaceholder()}
-                className="w-full px-5 py-4 text-lg rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-100 transition-all bg-pink-50/30"
-                autoFocus
-              />
-            </div>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (currentStep === 0) handleNameSubmit();
+                  else if (currentStep === 9) handleFrustrationSubmit();
+                  else if (currentStep === 14) handleBiggestFearSubmit();
+                  else if (currentStep === 15) handleIdealOutcomeSubmit();
+                }
+              }}
+              placeholder={getCurrentPlaceholder()}
+              className="w-full px-4 py-3 sm:px-5 sm:py-4 text-base sm:text-lg rounded-xl sm:rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-100 transition-all bg-white"
+              autoFocus
+            />
             <Button
               onClick={() => {
                 if (currentStep === 0) handleNameSubmit();
@@ -913,41 +910,41 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
                 else if (currentStep === 15) handleIdealOutcomeSubmit();
               }}
               disabled={!inputValue.trim()}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-2xl py-4 text-lg font-semibold shadow-lg shadow-pink-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
+              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-pink-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
             >
               Volgende
-              <ChevronRight className="w-5 h-5 ml-1" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1" />
             </Button>
           </motion.div>
         )}
 
-        {/* Number Input (Age) */}
+        {/* Number Input (Age) - MOBILE OPTIMIZED */}
         {getCurrentInputType() === "number" && currentStep === 4 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-3"
+            className="space-y-2 sm:space-y-3"
           >
-            <div className="relative">
-              <input
-                type="number"
-                value={numberValue}
-                onChange={(e) => setNumberValue(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleAgeSubmit()}
-                placeholder={getCurrentPlaceholder()}
-                min="18"
-                max="99"
-                className="w-full px-5 py-4 text-lg text-center rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-100 transition-all bg-pink-50/30 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                autoFocus
-              />
-            </div>
+            <input
+              type="number"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={numberValue}
+              onChange={(e) => setNumberValue(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleAgeSubmit()}
+              placeholder={getCurrentPlaceholder()}
+              min="18"
+              max="99"
+              className="w-full px-4 py-3 sm:px-5 sm:py-4 text-xl sm:text-2xl text-center font-bold rounded-xl sm:rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-100 transition-all bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              autoFocus
+            />
             <Button
               onClick={handleAgeSubmit}
               disabled={!numberValue || parseInt(numberValue) < 18 || parseInt(numberValue) > 99}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-2xl py-4 text-lg font-semibold shadow-lg shadow-pink-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
+              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-pink-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
             >
               Volgende
-              <ChevronRight className="w-5 h-5 ml-1" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1" />
             </Button>
           </motion.div>
         )}
@@ -972,33 +969,33 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
           />
         )}
 
-        {/* Multi-Select Chips (Dating Apps) */}
+        {/* Multi-Select Chips (Dating Apps) - MOBILE OPTIMIZED */}
         {getCurrentInputType() === "multi-chips" && currentStep === 7 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-4"
+            className="space-y-2 sm:space-y-3"
           >
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-2 gap-2">
               {getCurrentChipOptions()?.map((option, index) => (
                 <motion.button
                   key={option.value}
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.05 }}
+                  transition={{ delay: index * 0.03 }}
                   onClick={() => handleMultiChipToggle(option.value)}
                   className={cn(
-                    "min-h-[52px] px-4 py-3 rounded-xl border-2 font-medium transition-all",
+                    "min-h-[44px] px-3 py-2.5 rounded-xl border-2 font-medium transition-all",
                     "active:scale-[0.97] flex items-center justify-start gap-2",
                     selectedChips.includes(option.value)
-                      ? "border-pink-600 bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-lg"
-                      : "border-gray-200 bg-white text-gray-700 hover:border-pink-300"
+                      ? "border-pink-600 bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-md"
+                      : "border-gray-200 bg-white text-gray-700 active:border-pink-300"
                   )}
                 >
-                  <span className="text-xl">{option.icon}</span>
-                  <span className="flex-1 text-sm sm:text-base text-left">{option.label}</span>
+                  <span className="text-base sm:text-lg">{option.icon}</span>
+                  <span className="flex-1 text-xs sm:text-sm text-left truncate">{option.label}</span>
                   {selectedChips.includes(option.value) && (
-                    <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                    <CheckCircle className="w-4 h-4 flex-shrink-0" />
                   )}
                 </motion.button>
               ))}
@@ -1006,19 +1003,19 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
             <Button
               onClick={handleDatingAppsConfirm}
               disabled={selectedChips.length === 0}
-              className="w-full bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl py-3.5 min-h-[52px] text-base font-semibold"
+              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl py-3 text-sm sm:text-base font-semibold"
             >
-              Bevestig mijn keuze ({selectedChips.length} geselecteerd)
+              Bevestig ({selectedChips.length})
             </Button>
           </motion.div>
         )}
 
-        {/* Slider (Confidence Level) */}
+        {/* Slider (Confidence Level) - MOBILE OPTIMIZED */}
         {getCurrentInputType() === "slider" && currentStep === 13 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-4"
+            className="space-y-3"
           >
             <IntakeSlider
               value={sliderValue}
@@ -1027,9 +1024,9 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
             />
             <Button
               onClick={handleConfidenceLevelConfirm}
-              className="w-full bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl py-3.5 min-h-[52px] text-base font-semibold"
+              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl py-3 text-sm sm:text-base font-semibold"
             >
-              Bevestig mijn keuze
+              Bevestig
             </Button>
           </motion.div>
         )}
@@ -1039,10 +1036,10 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex items-center justify-center gap-2 text-gray-500 py-4"
+            className="flex items-center justify-center gap-2 text-gray-500 py-3"
           >
-            <Loader2 className="w-5 h-5 animate-spin" />
-            <span>Iris maakt je persoonlijke Kickstart plan...</span>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="text-sm">Iris maakt je plan...</span>
           </motion.div>
         )}
       </div>

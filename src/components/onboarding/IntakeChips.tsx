@@ -51,56 +51,56 @@ export function IntakeChips({
     }
   };
 
-  // Determine grid columns based on number of options
+  // Determine grid columns based on number of options - MOBILE OPTIMIZED
   const gridCols = options.length <= 3
     ? "grid-cols-1"
-    : options.length <= 4
+    : options.length <= 6
     ? "grid-cols-2"
-    : "grid-cols-1 sm:grid-cols-2";
+    : "grid-cols-2 sm:grid-cols-3";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className={cn("w-full max-h-[50vh] overflow-y-auto", className)}
+      transition={{ duration: 0.25 }}
+      className={cn("w-full max-h-[40vh] sm:max-h-[50vh] overflow-y-auto overscroll-contain", className)}
     >
-      {/* Responsive grid with scroll */}
-      <div className={cn("grid gap-2", gridCols)}>
+      {/* Responsive grid with scroll - COMPACT FOR MOBILE */}
+      <div className={cn("grid gap-1.5 sm:gap-2", gridCols)}>
         {options.map((option, index) => (
           <motion.button
             key={option.value}
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: index * 0.03 }}
+            transition={{ delay: index * 0.02 }}
             onClick={() => {
               handleClick(option.value);
               triggerHaptic();
             }}
             className={cn(
-              "relative min-h-[56px] px-4 py-3.5 rounded-xl font-medium transition-all duration-150",
-              "border-2 flex items-center justify-start gap-3",
-              "active:scale-[0.98]",
+              "relative min-h-[44px] sm:min-h-[52px] px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl font-medium transition-all duration-100",
+              "border-2 flex items-center justify-start gap-2 sm:gap-3",
+              "active:scale-[0.97]",
               "text-left",
               isSelected(option.value)
                 ? "bg-gradient-to-br from-pink-500 to-pink-600 text-white border-pink-600 shadow-md"
-                : "bg-white text-gray-900 border-gray-200 hover:border-pink-300 hover:bg-pink-50/50"
+                : "bg-white text-gray-900 border-gray-200 active:border-pink-400 active:bg-pink-50"
             )}
           >
             {option.icon && (
-              <span className="text-xl flex-shrink-0">{option.icon}</span>
+              <span className="text-lg sm:text-xl flex-shrink-0">{option.icon}</span>
             )}
-            <span className="flex-1 text-sm sm:text-base font-medium leading-snug">
+            <span className="flex-1 text-xs sm:text-sm font-medium leading-tight sm:leading-snug line-clamp-2">
               {option.label}
             </span>
             {isSelected(option.value) && (
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                transition={{ type: "spring", stiffness: 500, damping: 25 }}
                 className="flex-shrink-0"
               >
-                <Check className="w-5 h-5" />
+                <Check className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.span>
             )}
           </motion.button>

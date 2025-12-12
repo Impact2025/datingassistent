@@ -220,6 +220,27 @@
     min-height: 100dvh;
     min-height: -webkit-fill-available;
   }
+
+  /* Enhanced safe area for mobile onboarding */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  /* Mobile keyboard-aware height */
+  .h-screen-keyboard {
+    height: 100dvh;
+    height: -webkit-fill-available;
+  }
+
+  /* Prevent iOS bounce/overscroll */
+  .no-bounce {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
   /* Pill-shaped buttons - Very rounded */
   .btn-pill {
     @apply rounded-full px-6 py-3 font-semibold text-sm transition-all duration-200 shadow-sm;
