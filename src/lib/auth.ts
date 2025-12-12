@@ -1,29 +1,18 @@
 import bcrypt from 'bcryptjs';
-import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { sql } from '@vercel/postgres';
+import {
+  signToken,
+  verifyToken as jwtVerifyToken,
+  cookieConfig,
+  type SessionUser,
+} from './jwt-config';
 
-// 🔒 SECURITY: JWT_SECRET must be set in production
-if (!process.env.JWT_SECRET) {
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error('JWT_SECRET environment variable is required in production');
-  } else {
-    console.warn('⚠️  WARNING: Using default JWT_SECRET in development. Set JWT_SECRET environment variable for production security.');
-  }
-}
+// Re-export SessionUser for backwards compatibility
+export type { SessionUser };
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'dev-only-jwt-secret-change-in-production-2024'
-);
-
-const COOKIE_NAME = 'datespark_auth_token'; // ✅ Must match the cookie name used in login route
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
-
-export interface SessionUser {
-  id: number;
-  email: string;
-  displayName: string;
-}
+const COOKIE_NAME = cookieConfig.name;
+const COOKIE_MAX_AGE = cookieConfig.options.maxAge;
 
 // Hash password
 export async function hashPassword(password: string): Promise<string> {
@@ -38,37 +27,14 @@ export async function verifyPassword(
   return bcrypt.compare(password, hashedPassword);
 }
 
-// Create JWT token
+// Create JWT token - delegates to central jwt-config
 export async function createToken(user: SessionUser): Promise<string> {
-  return new SignJWT({ user })
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('7d')
-    .sign(JWT_SECRET);
+  return signToken(user);
 }
 
-// Verify JWT token
+// Verify JWT token - delegates to central jwt-config
 export async function verifyToken(token: string): Promise<SessionUser | null> {
-  try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
-
-    // 🔄 Support both old and new token formats
-    if (payload.user) {
-      // New format: { user: { id, email, displayName } }
-      return payload.user as SessionUser;
-    } else if (payload.userId && payload.email) {
-      // Old format: { userId, email }
-      return {
-        id: payload.userId as number,
-        email: payload.email as string,
-        displayName: (payload.email as string).split('@')[0], // Fallback display name
-      };
-    }
-
-    return null;
-  } catch (error) {
-    return null;
-  }
+  return jwtVerifyToken(token);
 }
 
 // Set auth cookie

@@ -1,14 +1,12 @@
 /**
  * Authentication utilities for DatingAssistent API routes
  * Contains common authentication and user validation functions
+ *
+ * Uses centralized jwt-config for JWT operations
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { jwtVerify } from 'jose';
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-);
+import { verifyToken, type SessionUser } from './jwt-config';
 
 export interface AuthenticatedUser {
   id: number;
@@ -34,37 +32,20 @@ export async function authenticateUser(request: NextRequest): Promise<Authentica
 
     const token = authHeader.substring(7);
 
-    // Verify token using jose
-    let decoded;
-    try {
-      const { payload } = await jwtVerify(token, JWT_SECRET);
-      decoded = payload;
-    } catch (err) {
+    // Verify token using centralized jwt-config
+    const user = await verifyToken(token);
+
+    if (!user) {
       return NextResponse.json(
         { error: 'Invalid or expired token' },
         { status: 401 }
       );
     }
 
-    // Get userId from token - handle both old and new token formats
-    let userId: number;
-    if (decoded.user && typeof decoded.user === 'object' && 'id' in decoded.user) {
-      // New format: { user: { id, email, displayName } }
-      userId = decoded.user.id as number;
-    } else if (decoded.userId) {
-      // Old format: { userId, email }
-      userId = decoded.userId as number;
-    } else {
-      return NextResponse.json(
-        { error: 'Invalid token format' },
-        { status: 401 }
-      );
-    }
-
     return {
-      id: userId,
-      email: (decoded as any).email || (decoded as any).user?.email,
-      displayName: (decoded as any).displayName || (decoded as any).user?.displayName
+      id: user.id,
+      email: user.email,
+      displayName: user.displayName
     };
 
   } catch (error) {

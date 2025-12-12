@@ -2,11 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getRecommendedProgram } from '@/lib/assessment-questions';
 import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
+import { verifyToken, cookieConfig } from '@/lib/jwt-config';
 
 export const dynamic = 'force-dynamic';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
 
 /**
  * POST /api/assessment/save
@@ -57,16 +55,16 @@ export async function POST(request: NextRequest) {
 
     // Check if user is authenticated
     const cookieStore = await cookies();
-    const token = cookieStore.get('datespark_auth_token')?.value;
+    const token = cookieStore.get(cookieConfig.name)?.value;
 
     let userId: number | null = null;
     let savedToDatabase = false;
 
     if (token) {
       // User is logged in - save to database
-      try {
-        const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
-        userId = decoded.userId;
+      const user = await verifyToken(token);
+      if (user) {
+        userId = user.id;
 
         // Save to database
         await sql`
@@ -118,9 +116,6 @@ export async function POST(request: NextRequest) {
 
         savedToDatabase = true;
         console.log('✅ Assessment saved to database for user:', userId);
-      } catch (err) {
-        console.error('Error saving to database:', err);
-        // Continue anyway - we can still return recommendation
       }
     }
 
@@ -155,7 +150,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get('datespark_auth_token')?.value;
+    const token = cookieStore.get(cookieConfig.name)?.value;
 
     if (!token) {
       return NextResponse.json(
@@ -164,17 +159,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Verify JWT and get user ID
-    let userId: number;
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
-      userId = decoded.userId;
-    } catch (error) {
+    // Verify JWT using centralized jwt-config
+    const user = await verifyToken(token);
+    if (!user) {
       return NextResponse.json(
         { error: 'Invalid token' },
         { status: 401 }
       );
     }
+    const userId = user.id;
 
     // Get assessment from database
     const result = await sql`

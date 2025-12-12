@@ -4,15 +4,12 @@
  * Created: 2025-11-23
  *
  * 🔒 Security: Uses database role field instead of hardcoded emails
+ * Uses centralized jwt-config for consistent JWT handling
  */
 
 import { cookies } from 'next/headers';
-import { jwtVerify } from 'jose';
 import { sql } from '@vercel/postgres';
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'dev-only-jwt-secret-change-in-production-2024'
-);
+import { verifyToken, cookieConfig } from './jwt-config';
 
 export interface AuthResult {
   authenticated: boolean;
@@ -29,23 +26,21 @@ export interface AuthResult {
 export async function checkAdminAuth(): Promise<AuthResult> {
   try {
     const cookieStore = await cookies();
-    const tokenCookie = cookieStore.get('datespark_auth_token');
+    const tokenCookie = cookieStore.get(cookieConfig.name);
 
     if (!tokenCookie || !tokenCookie.value) {
       return { authenticated: false, isAdmin: false };
     }
 
-    const { payload } = await jwtVerify(tokenCookie.value, JWT_SECRET);
+    // Use centralized JWT verification
+    const user = await verifyToken(tokenCookie.value);
 
-    // Support both jwt structures:
-    // 1. { user: { id, email } } - new format from auth.ts
-    // 2. { userId, email } - old format (backward compatibility)
-    const userId = (payload.user as any)?.id || (payload.userId as number);
-    const email = (payload.user as any)?.email || (payload.email as string);
-
-    if (!email || !userId) {
+    if (!user || !user.email || !user.id) {
       return { authenticated: false, isAdmin: false };
     }
+
+    const userId = user.id;
+    const email = user.email;
 
     // 🔒 SECURITY: Check admin role from database instead of hardcoded emails
     let isAdmin = false;

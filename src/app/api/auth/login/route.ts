@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { SignJWT } from 'jose';
 import { neon } from '@neondatabase/serverless';
 import { getClientIdentifier, rateLimitAuthEndpoint, createRateLimitHeaders } from '@/lib/rate-limit';
 import { logger } from '@/lib/logger';
+import { signToken, cookieConfig } from '@/lib/jwt-config';
 
 const sql = neon(process.env.DATABASE_URL!);
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-);
-const JWT_EXPIRY = '7d'; // Token expires in 7 days
 
 export async function POST(request: NextRequest) {
   // Apply rate limiting
@@ -92,18 +87,12 @@ export async function POST(request: NextRequest) {
 
     logger.auth('login', { userId: user.id, email });
 
-    // Create JWT token using jose (consistent with verify endpoint)
-    const token = await new SignJWT({
-      user: {
-        id: user.id,
-        email: user.email,
-        displayName: user.name || user.email.split('@')[0]
-      }
-    })
-      .setProtectedHeader({ alg: 'HS256' })
-      .setIssuedAt()
-      .setExpirationTime(JWT_EXPIRY)
-      .sign(JWT_SECRET);
+    // Create JWT token using centralized jwt-config
+    const token = await signToken({
+      id: user.id,
+      email: user.email,
+      displayName: user.name || user.email.split('@')[0]
+    });
 
     // Create response with user data and token
     const response = NextResponse.json({
@@ -118,22 +107,12 @@ export async function POST(request: NextRequest) {
       token,
     }, { status: 200 });
 
-    // Set token in cookie for server-side authentication
-    response.cookies.set('datespark_auth_token', token, {
-      httpOnly: false, // Allow JavaScript access in development for debugging
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
-      path: '/',
-    });
+    // Set token in cookie using centralized config
+    response.cookies.set(cookieConfig.name, token, cookieConfig.options);
 
     console.log('🍪 Cookie set:', {
-      name: 'datespark_auth_token',
-      httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60,
-      path: '/'
+      name: cookieConfig.name,
+      ...cookieConfig.options
     });
 
     return response;

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Pool } from 'pg';
 import { irisMessageGenerator } from '@/lib/iris/message-generator';
 import type { IrisContext } from '@/types/iris.types';
+import { detectPatterns, type Pattern, formatPatternForDisplay } from '@/lib/iris/iris-patterns';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -38,8 +39,19 @@ export async function GET(request: NextRequest) {
     // Build context
     const context = await buildIrisContext(userId, dayNumber);
 
+    // 🧠 Detect patterns from reflections (Iris Memory Magic!)
+    const patterns = await detectPatternsForUser(userId);
+
     // Generate best message
     const message = irisMessageGenerator.selectBestMessage(context, dayTopic);
+
+    // Add patterns to message context
+    if (patterns.length > 0) {
+      message.context = {
+        ...message.context,
+        patterns: patterns.map(formatPatternForDisplay),
+      };
+    }
 
     return NextResponse.json({
       success: true,
@@ -121,6 +133,51 @@ function calculateDaysToNextMilestone(completedDays: number): number {
   const milestones = [7, 14, 21];
   const nextMilestone = milestones.find((m) => m > completedDays);
   return nextMilestone ? nextMilestone - completedDays : 0;
+}
+
+/**
+ * 🧠 Detect patterns from user's reflections
+ */
+async function detectPatternsForUser(userId: number): Promise<Pattern[]> {
+  try {
+    // Fetch user reflections from kickstart_reflections table
+    const result = await pool.query<{
+      day_number: number;
+      question_type: string;
+      answer_text: string;
+      created_at: Date;
+    }>(
+      `SELECT
+        day_number,
+        question_type,
+        answer_text,
+        created_at
+       FROM kickstart_reflections
+       WHERE user_id = $1
+       ORDER BY created_at DESC
+       LIMIT 20`,
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return [];
+    }
+
+    // Map to ReflectionData format
+    const reflections = result.rows.map((row) => ({
+      day_number: row.day_number,
+      question_type: row.question_type,
+      answer: row.answer_text,
+      created_at: row.created_at.toISOString(),
+    }));
+
+    // Detect patterns
+    const patterns = await detectPatterns(reflections);
+    return patterns;
+  } catch (error) {
+    console.error('Error detecting patterns:', error);
+    return [];
+  }
 }
 
 /**

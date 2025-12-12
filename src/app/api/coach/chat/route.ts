@@ -9,27 +9,79 @@ import { detectTools } from '@/lib/coach/routing';
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    // Parse and validate request body
+    let body;
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      return NextResponse.json(
+        { error: 'Invalid JSON in request body' },
+        { status: 400 }
+      );
+    }
+
     const { message, userId, conversationHistory = [] } = body;
 
-    if (!message) {
-      return NextResponse.json({ error: 'Message is required' }, { status: 400 });
+    // Input validation
+    if (!message || typeof message !== 'string') {
+      return NextResponse.json(
+        { error: 'Message is required and must be a string' },
+        { status: 400 }
+      );
+    }
+
+    if (!userId || typeof userId !== 'number') {
+      return NextResponse.json(
+        { error: 'User ID is required and must be a number' },
+        { status: 400 }
+      );
+    }
+
+    if (!Array.isArray(conversationHistory)) {
+      return NextResponse.json(
+        { error: 'Conversation history must be an array' },
+        { status: 400 }
+      );
+    }
+
+    // Message length validation
+    if (message.length > 2000) {
+      return NextResponse.json(
+        { error: 'Message is te lang. Houd het onder 2000 karakters.' },
+        { status: 400 }
+      );
+    }
+
+    if (message.trim().length === 0) {
+      return NextResponse.json(
+        { error: 'Message cannot be empty' },
+        { status: 400 }
+      );
     }
 
     // 1. Build user context voor personalisatie
     let userContext = '';
-    if (userId) {
-      try {
-        const context = await buildCoachContext(userId);
-        userContext = contextToPrompt(context);
-      } catch (error) {
-        console.error('Failed to build context:', error);
-        // Continue zonder context
-      }
+    let contextEnriched = false;
+
+    try {
+      const context = await buildCoachContext(userId);
+      userContext = contextToPrompt(context);
+      contextEnriched = true;
+    } catch (error) {
+      console.error(`Failed to build context for user ${userId}:`, error);
+      // Continue zonder context - graceful degradation
+      userContext = '';
+      contextEnriched = false;
     }
 
     // 2. Detect mogelijke tool suggesties
-    const toolSuggestions = detectTools(message, 3);
+    let toolSuggestions: any[] = [];
+    try {
+      toolSuggestions = detectTools(message, 3);
+    } catch (error) {
+      console.error('Failed to detect tools:', error);
+      // Continue zonder tool suggesties
+    }
 
     // 3. Build AI prompt met context
     const systemPrompt = `Je bent Iris, een empathische en professionele AI dating coach.
@@ -62,46 +114,79 @@ Beantwoord de gebruiker op een persoonlijke, coachende manier.`;
 
     // Build conversation history for AI
     const messages = [
-      { role: 'system', content: systemPrompt },
+      { role: 'system' as const, content: systemPrompt },
       ...conversationHistory.map((msg: any) => ({
-        role: msg.type === 'user' ? 'user' : 'assistant',
+        role: (msg.type === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
         content: msg.content
       })),
-      { role: 'user', content: message }
+      { role: 'user' as const, content: message }
     ];
 
-    // 4. Call AI
-    const client = getOpenRouterClient();
-    const response = await client.createChatCompletion(
-      OPENROUTER_MODELS.CLAUDE_35_SONNET,
-      messages,
-      {
-        temperature: 0.7,
-        max_tokens: 500
-      }
-    );
+    // 4. Call AI with timeout and error handling
+    let aiResponse: string;
 
-    // 5. Log conversation for learning
-    if (userId) {
-      try {
-        // TODO: Store conversation in database for future context
-        console.log(`💬 Coach chat with user ${userId}: "${message}"`);
-      } catch (error) {
-        console.error('Failed to log conversation:', error);
+    try {
+      const client = getOpenRouterClient();
+
+      // Add timeout protection
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error('AI request timeout')), 30000); // 30 second timeout
+      });
+
+      const aiPromise = client.createChatCompletion(
+        OPENROUTER_MODELS.CLAUDE_35_SONNET,
+        messages,
+        {
+          temperature: 0.7,
+          max_tokens: 500
+        }
+      );
+
+      aiResponse = await Promise.race([aiPromise, timeoutPromise]);
+
+    } catch (aiError: any) {
+      console.error('AI API error:', aiError);
+
+      // Provide fallback response based on error type
+      if (aiError.message?.includes('timeout')) {
+        aiResponse = "Sorry, mijn antwoord duurde te lang. Kun je je vraag opnieuw stellen? 🙏";
+      } else if (aiError.message?.includes('rate limit')) {
+        aiResponse = "Ik heb momenteel veel berichten te verwerken. Probeer het over een minuutje opnieuw. 😊";
+      } else if (aiError.message?.includes('insufficient_quota') || aiError.message?.includes('quota')) {
+        aiResponse = "Er is momenteel een technisch probleem. Ons team is op de hoogte. Probeer het later opnieuw. 🔧";
+      } else {
+        // Generic fallback
+        aiResponse = "Hmm, ik heb even een momentje nodig. Kun je je vraag opnieuw stellen? 💭";
       }
+
+      // Log the error for monitoring
+      console.error(`AI fallback triggered for user ${userId}: ${aiError.message}`);
+    }
+
+    // 5. Log conversation for learning and monitoring
+    try {
+      console.log(`💬 Coach chat | User ${userId} | Message length: ${message.length} | Context: ${contextEnriched ? 'enriched' : 'basic'}`);
+    } catch (logError) {
+      // Silent fail on logging
     }
 
     return NextResponse.json({
-      response,
+      response: aiResponse,
       toolSuggestions: toolSuggestions.length > 0 ? toolSuggestions : undefined,
-      context: userContext ? 'enriched' : 'basic'
+      context: contextEnriched ? 'enriched' : 'basic',
+      metadata: {
+        contextEnriched,
+        toolSuggestionsCount: toolSuggestions.length
+      }
     });
 
   } catch (error: any) {
-    console.error('Error in coach chat:', error);
+    console.error('Critical error in coach chat:', error);
+
+    // Return user-friendly error message
     return NextResponse.json({
-      error: 'Chat failed',
-      message: error.message
+      error: 'server_error',
+      message: 'Er ging iets mis bij het verwerken van je bericht. Probeer het opnieuw.'
     }, { status: 500 });
   }
 }

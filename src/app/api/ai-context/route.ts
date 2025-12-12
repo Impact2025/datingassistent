@@ -14,11 +14,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { select, insert, update } from '@/lib/db/query-wrapper';
 import { logDatabaseError } from '@/lib/error-logging';
-import { jwtVerify } from 'jose';
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-);
+import { verifyToken } from '@/lib/jwt-config';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -42,32 +38,16 @@ export async function GET(request: NextRequest) {
 
     const token = authHeader.substring(7);
 
-    // Verify token using jose
-    let decoded;
-    try {
-      const { payload } = await jwtVerify(token, JWT_SECRET);
-      decoded = payload;
-    } catch (err) {
+    // Verify token using centralized jwt-config
+    const user = await verifyToken(token);
+    if (!user) {
       return NextResponse.json(
         { error: 'Invalid or expired token' },
         { status: 401 }
       );
     }
 
-    // Get userId from token - handle both old and new token formats
-    let userId: number;
-    if (decoded.user && typeof decoded.user === 'object' && 'id' in decoded.user) {
-      // New format: { user: { id, email, displayName } }
-      userId = decoded.user.id as number;
-    } else if (decoded.userId) {
-      // Old format: { userId, email }
-      userId = decoded.userId as number;
-    } else {
-      return NextResponse.json(
-        { error: 'Invalid token format' },
-        { status: 401 }
-      );
-    }
+    const userId = user.id;
 
     // Retrieve all AI context for user
     const result = await select(
@@ -100,7 +80,7 @@ export async function GET(request: NextRequest) {
       context[row.content_type][row.content_key] = data;
     });
 
-    console.log(`📖 Retrieved AI context for user ${decoded.userId}: ${result.rows.length} entries`);
+    console.log(`📖 Retrieved AI context for user ${userId}: ${result.rows.length} entries`);
 
     return NextResponse.json({
       success: true,
@@ -138,32 +118,16 @@ export async function POST(request: NextRequest) {
 
     const token = authHeader.substring(7);
 
-    // Verify token using jose
-    let decoded;
-    try {
-      const { payload } = await jwtVerify(token, JWT_SECRET);
-      decoded = payload;
-    } catch (err) {
+    // Verify token using centralized jwt-config
+    const user = await verifyToken(token);
+    if (!user) {
       return NextResponse.json(
         { error: 'Invalid or expired token' },
         { status: 401 }
       );
     }
 
-    // Get userId from token - handle both old and new token formats
-    let userId: number;
-    if (decoded.user && typeof decoded.user === 'object' && 'id' in decoded.user) {
-      // New format: { user: { id, email, displayName } }
-      userId = decoded.user.id as number;
-    } else if (decoded.userId) {
-      // Old format: { userId, email }
-      userId = decoded.userId as number;
-    } else {
-      return NextResponse.json(
-        { error: 'Invalid token format' },
-        { status: 401 }
-      );
-    }
+    const userId = user.id;
 
     const body = await request.json();
     const { action, updates } = body;
@@ -179,7 +143,7 @@ export async function POST(request: NextRequest) {
 
     // Handle save_context action (used by onboarding)
     if (action === 'save_context' && updates) {
-      console.log(`💾 Saving AI context for user ${decoded.userId}`, Object.keys(updates));
+      console.log(`💾 Saving AI context for user ${userId}`, Object.keys(updates));
 
       // Save each field to ai_content_cache
       for (const [key, value] of Object.entries(updates)) {
@@ -245,7 +209,7 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      console.log(`✅ AI context saved for user ${decoded.userId}`);
+      console.log(`✅ AI context saved for user ${userId}`);
 
       return NextResponse.json({
         success: true,
