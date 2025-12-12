@@ -283,7 +283,8 @@ export async function GET(request: NextRequest) {
 
       const isComplete = tx.status === 'completed';
 
-      // Determine next action based on program type
+      // Determine next action - always redirect to dashboard
+      // Dashboard handles program access and onboarding automatically
       let nextAction = '/dashboard';
       if (isComplete && tx.program_slug) {
         // Special handling for Kickstart: check if onboarding is completed
@@ -305,8 +306,9 @@ export async function GET(request: NextRequest) {
           // If onboarding done: dashboard shows normal content with Kickstart access
           nextAction = '/dashboard';
         } else {
-          // For other programs, go directly to the program
-          nextAction = `/${tx.program_slug}`;
+          // For other programs (Transformatie, etc), also go to dashboard
+          // The dashboard provides access to all enrolled programs
+          nextAction = '/dashboard';
         }
       }
 
