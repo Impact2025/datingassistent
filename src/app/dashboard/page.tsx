@@ -200,8 +200,8 @@ export default function DashboardPage() {
   });
   const [kickstartOnboardingSaving, setKickstartOnboardingSaving] = useState(false);
 
-  // Wrapper for setActiveTab that includes GA4 tracking
-  const handleTabChange = (newTab: string) => {
+  // Wrapper for setActiveTab that includes GA4 tracking - memoized for stable reference
+  const handleTabChange = useCallback((newTab: string) => {
     // Track tab change in GA4
     trackDashboardTab({
       tab_name: newTab,
@@ -218,7 +218,7 @@ export default function DashboardPage() {
     }
 
     setActiveTab(newTab);
-  };
+  }, [activeTab]);
 
   // Handle URL tab parameter (e.g., ?tab=subscription)
   useEffect(() => {
@@ -736,7 +736,7 @@ export default function DashboardPage() {
                 handlers={handlers}
               />
             ) : (
-              renderTabContent()
+              tabContent
             )}
           </div>
 
@@ -786,7 +786,7 @@ export default function DashboardPage() {
                   />
                 ) : (
                   /* Show regular dashboard content only when not onboarding */
-                  renderTabContent()
+                  tabContent
                 )}
               </div>
             </main>
