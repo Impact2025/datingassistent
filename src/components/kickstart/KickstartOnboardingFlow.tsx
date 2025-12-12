@@ -148,13 +148,13 @@ export function KickstartOnboardingFlow({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="w-full max-w-lg mx-auto px-4 py-8"
+            className="w-full max-w-lg mx-auto px-4 py-8 pt-16"
           >
-            {/* Premium Card */}
-            <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 overflow-hidden">
-              {/* Video Section */}
-              <div className="relative bg-gradient-to-br from-pink-500 to-pink-600">
-                <div className="aspect-video relative">
+            {/* Premium Card - overflow-visible for avatar to extend above */}
+            <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 overflow-visible relative">
+              {/* Video Section - rounded top, overflow visible for avatar */}
+              <div className="relative bg-gradient-to-br from-pink-500 to-pink-600 rounded-t-3xl overflow-visible">
+                <div className="aspect-video relative overflow-visible">
                   {/* Video - Always loaded, visibility controlled */}
                   <video
                     ref={videoRef}
@@ -164,7 +164,7 @@ export function KickstartOnboardingFlow({
                     controls={false}
                     preload="auto"
                     className={cn(
-                      "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
+                      "absolute inset-0 w-full h-full object-cover transition-opacity duration-300 rounded-t-3xl",
                       videoPlaying ? "opacity-100 z-10" : "opacity-0 z-0"
                     )}
                     onEnded={() => setVideoPlaying(false)}
@@ -173,41 +173,46 @@ export function KickstartOnboardingFlow({
 
                   {/* Thumbnail Overlay - Hidden when playing */}
                   <div className={cn(
-                    "absolute inset-0 bg-gradient-to-br from-pink-500 to-pink-600 flex flex-col items-center justify-center text-white p-6 transition-opacity duration-300",
+                    "absolute inset-0 bg-gradient-to-br from-pink-500 to-pink-600 flex flex-col items-center justify-end text-white px-6 pb-6 pt-16 transition-opacity duration-300 rounded-t-3xl",
                     videoPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
                   )}>
+                    {/* Avatar positioned at top, overlapping the edge - 50% above pink area */}
                     <motion.div
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ delay: 0.2 }}
+                      className="absolute -top-12 left-1/2 -translate-x-1/2 z-20"
                     >
-                      <IrisAvatar size="xl" showGlow className="mb-4 ring-4 ring-white/30" />
+                      <IrisAvatar size="xl" showGlow className="ring-4 ring-white/30 shadow-xl" />
                     </motion.div>
-                    <motion.h2
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.4 }}
-                      className="text-2xl font-bold mb-2"
-                    >
-                      Welkom bij de Kickstart!
-                    </motion.h2>
-                    <motion.p
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.5 }}
-                      className="text-pink-100 text-center mb-6"
-                    >
-                      Iris heeft een persoonlijk bericht voor je
-                    </motion.p>
-                    <motion.button
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.6, type: 'spring', bounce: 0.5 }}
-                      onClick={handlePlayVideo}
-                      className="w-16 h-16 rounded-full bg-white text-pink-600 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-                    >
-                      <Play className="w-7 h-7 ml-1" fill="currentColor" />
-                    </motion.button>
+
+                    <div className="text-center mt-8">
+                      <motion.h2
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-2xl font-bold mb-2"
+                      >
+                        Welkom bij de Kickstart!
+                      </motion.h2>
+                      <motion.p
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                        className="text-pink-100 text-center mb-6"
+                      >
+                        Iris heeft een persoonlijk bericht voor je
+                      </motion.p>
+                      <motion.button
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.6, type: 'spring', bounce: 0.5 }}
+                        onClick={handlePlayVideo}
+                        className="w-16 h-16 rounded-full bg-white text-pink-600 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                      >
+                        <Play className="w-7 h-7 ml-1" fill="currentColor" />
+                      </motion.button>
+                    </div>
                   </div>
 
                   {/* Mute/Unmute Button - Only when playing */}
