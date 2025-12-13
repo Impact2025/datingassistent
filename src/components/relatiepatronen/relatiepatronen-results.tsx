@@ -15,7 +15,8 @@ import {
   CheckCircle,
   AlertCircle,
   ExternalLink,
-  RotateCcw
+  RotateCcw,
+  Save
 } from 'lucide-react';
 import { AssessmentData, RelationshipPattern } from './relatiepatronen-flow';
 import { useUser } from '@/providers/user-provider';
@@ -23,6 +24,7 @@ import { useUser } from '@/providers/user-provider';
 interface RelatiepatronenResultsProps {
   data: AssessmentData;
   onRestart: () => void;
+  onClose?: () => void;
   patternIcon: (pattern: RelationshipPattern) => React.ReactNode;
   patternColor: (pattern: RelationshipPattern) => string;
 }
@@ -30,6 +32,7 @@ interface RelatiepatronenResultsProps {
 export function RelatiepatronenResults({
   data,
   onRestart,
+  onClose,
   patternIcon,
   patternColor
 }: RelatiepatronenResultsProps) {
@@ -63,7 +66,37 @@ export function RelatiepatronenResults({
   const blindspotInfo = getBlindspotLevel(data.blindspotIndex);
 
   return (
-    <div className="p-8">
+    <div className="p-8 space-y-6">
+      {/* Save & Close Card */}
+      {onClose && (
+        <Card className="border-2 border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    Resultaten Automatisch Opgeslagen
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Je resultaten zijn veilig opgeslagen en altijd terug te vinden bij "Mijn Scans"
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={onClose}
+                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 h-auto flex items-center gap-2 shadow-sm"
+              >
+                <Save className="w-4 h-4" />
+                <span className="font-semibold">Bewaar & Sluiten</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Header */}
       <div className="text-center mb-8">
         <div className="w-16 h-16 bg-pink-50 rounded-2xl flex items-center justify-center mx-auto mb-6">

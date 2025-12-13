@@ -26,11 +26,12 @@ import { AssessmentData, DatingStyle } from './dating-style-flow';
 interface DatingStyleResultsProps {
   data: AssessmentData;
   onRestart: () => void;
+  onClose?: () => void;
   styleIcon: (style: DatingStyle) => React.ReactNode;
   styleColor: (style: DatingStyle) => string;
 }
 
-export function DatingStyleResults({ data, onRestart, styleIcon, styleColor }: DatingStyleResultsProps) {
+export function DatingStyleResults({ data, onRestart, onClose, styleIcon, styleColor }: DatingStyleResultsProps) {
   const router = useRouter();
 
   const getStyleName = (style: DatingStyle) => {
@@ -58,6 +59,36 @@ export function DatingStyleResults({ data, onRestart, styleIcon, styleColor }: D
 
   return (
     <div className="space-y-6">
+      {/* Save & Close Card */}
+      {onClose && (
+        <Card className="border-2 border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    Resultaten Automatisch Opgeslagen
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Je resultaten zijn veilig opgeslagen en altijd terug te vinden bij "Mijn Scans"
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={onClose}
+                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 h-auto flex items-center gap-2 shadow-sm"
+              >
+                <Download className="w-4 h-4" />
+                <span className="font-semibold">Bewaar & Sluiten</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Primary Result Card */}
       <Card className="border-2 border-pink-200 bg-gradient-to-br from-pink-50 to-pink-100">
         <CardContent className="p-8">
@@ -361,13 +392,14 @@ export function DatingStyleResults({ data, onRestart, styleIcon, styleColor }: D
 
         <Button
           variant="outline"
-          className="flex-1 flex items-center gap-2"
+          className="flex-1 flex items-center gap-2 border-pink-200 text-pink-600 hover:bg-pink-50"
           onClick={() => {
-            alert('Resultaat opgeslagen in je voortgang!');
+            const url = `/api/dating-style/pdf?assessmentId=${data.assessmentId || 1}&userId=${data.userId || 1}`;
+            window.open(url, '_blank');
           }}
         >
           <Download className="w-4 h-4" />
-          Opslaan
+          Download PDF
         </Button>
 
         <Button

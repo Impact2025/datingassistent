@@ -13,11 +13,11 @@ import Image from 'next/image';
 interface PhotoOptimizationStepProps {
   onComplete: (data: any) => void;
   onBack: () => void;
-  existingPhotos?: any[];
+  existingPhotoCount?: number;
 }
 
-export function PhotoOptimizationStep({ onComplete, onBack, existingPhotos }: PhotoOptimizationStepProps) {
-  const [photos, setPhotos] = useState<any[]>(existingPhotos || []);
+export function PhotoOptimizationStep({ onComplete, onBack, existingPhotoCount }: PhotoOptimizationStepProps) {
+  const [photos, setPhotos] = useState<any[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFileUpload = (files: FileList | null) => {

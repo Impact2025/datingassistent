@@ -163,7 +163,9 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
 
       if (!response.ok) {
         console.error('Error submitting assessment:', data);
-        alert(`Fout bij verwerken van je antwoorden: ${data.message || data.error || 'Onbekende fout'}`);
+        console.error('Full error response:', JSON.stringify(data, null, 2));
+        const errorMessage = data.details || data.message || data.error || 'Onbekende fout';
+        alert(`Fout bij verwerken van je antwoorden:\n\n${errorMessage}\n\n${data.stack ? 'Check console voor details' : ''}`);
         setCurrentStep('questionnaire');
         return;
       }

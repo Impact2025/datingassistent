@@ -217,6 +217,13 @@ export default function DashboardPage() {
       });
     }
 
+    // Update URL with tab parameter
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', newTab);
+      window.history.pushState({}, '', url.toString());
+    }
+
     setActiveTab(newTab);
   }, [activeTab]);
 
@@ -524,8 +531,9 @@ export default function DashboardPage() {
         return <EnhancedPadTab onTabChange={handleTabChange} userId={user?.id} />;
       case 'coach':
         return <CoachTab onTabChange={handleTabChange} userId={user?.id} />;
-      case 'profiel':
       case 'tools':
+        return <ProfileSuite onTabChange={handleTabChange} />;
+      case 'profiel':
         return <ProfielTab onTabChange={handleTabChange} />;
       case 'profiel-persoonlijkheid':
         return <ProfileSuite onTabChange={handleTabChange} />;

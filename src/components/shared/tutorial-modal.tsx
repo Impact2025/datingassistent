@@ -87,21 +87,21 @@ export function TutorialModal({ isOpen, onClose, toolId, toolName, steps, onComp
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-2xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-auto p-4 sm:p-6">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-blue-500" />
-              Tutorial: {toolName}
+          <div className="flex items-center justify-between pr-8">
+            <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 flex-shrink-0" />
+              <span className="break-words">Tutorial: {toolName}</span>
             </DialogTitle>
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <Button variant="ghost" size="sm" onClick={onClose} className="absolute right-2 top-2 sm:right-4 sm:top-4">
               <X className="w-4 h-4" />
             </Button>
           </div>
 
           {/* Progress */}
           <div className="space-y-2">
-            <div className="flex justify-between text-sm text-muted-foreground">
+            <div className="flex justify-between text-xs sm:text-sm text-muted-foreground">
               <span>Stap {currentStep + 1} van {steps.length}</span>
               <span>{Math.round(progress)}% compleet</span>
             </div>
@@ -109,10 +109,10 @@ export function TutorialModal({ isOpen, onClose, toolId, toolName, steps, onComp
           </div>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Step Content */}
           <div className="space-y-4">
-            <div className="flex items-start gap-3">
+            <div className="flex items-start gap-2 sm:gap-3">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                 isCompleted ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'
               }`}>
@@ -122,10 +122,10 @@ export function TutorialModal({ isOpen, onClose, toolId, toolName, steps, onComp
                   <span className="text-sm font-semibold">{currentStep + 1}</span>
                 )}
               </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold mb-2">{currentStepData.title}</h3>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base sm:text-lg font-semibold mb-2 break-words">{currentStepData.title}</h3>
                 <div className="prose prose-sm max-w-none">
-                  <p className="text-muted-foreground leading-relaxed">{currentStepData.content}</p>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed break-words">{currentStepData.content}</p>
                 </div>
               </div>
             </div>
@@ -142,31 +142,31 @@ export function TutorialModal({ isOpen, onClose, toolId, toolName, steps, onComp
             )}
 
             {currentStepData.video && (
-              <div className="bg-muted/30 rounded-lg p-4">
+              <div className="bg-muted/30 rounded-lg p-3 sm:p-4">
                 <div className="aspect-video bg-black rounded-lg flex items-center justify-center">
-                  <Button variant="secondary" className="gap-2">
-                    <Play className="w-4 h-4" />
+                  <Button variant="secondary" className="gap-2 text-xs sm:text-sm">
+                    <Play className="w-3 h-3 sm:w-4 sm:h-4" />
                     Video Afspelen
                   </Button>
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  📹 Video uitleg: {currentStepData.video}
+                <p className="text-xs sm:text-sm text-muted-foreground mt-2 break-words">
+                  Video uitleg: {currentStepData.video}
                 </p>
               </div>
             )}
 
             {/* Tips */}
             {currentStepData.tips && currentStepData.tips.length > 0 && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <Lightbulb className="w-4 h-4 text-blue-600" />
-                  <span className="font-medium text-blue-900">Pro Tips</span>
+                  <Lightbulb className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                  <span className="font-medium text-blue-900 text-sm sm:text-base">Pro Tips</span>
                 </div>
                 <ul className="space-y-2">
                   {currentStepData.tips.map((tip, index) => (
-                    <li key={index} className="flex items-start gap-2 text-sm text-blue-800">
-                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
-                      {tip}
+                    <li key={index} className="flex items-start gap-2 text-xs sm:text-sm text-blue-800">
+                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 sm:mt-2 flex-shrink-0"></span>
+                      <span className="break-words flex-1 min-w-0">{tip}</span>
                     </li>
                   ))}
                 </ul>
@@ -175,15 +175,15 @@ export function TutorialModal({ isOpen, onClose, toolId, toolName, steps, onComp
 
             {/* Action Button */}
             {currentStepData.action && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Target className="w-4 h-4 text-green-600" />
-                  <span className="font-medium text-green-900">Probeer het zelf</span>
+                  <Target className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <span className="font-medium text-green-900 text-sm sm:text-base">Probeer het zelf</span>
                 </div>
-                <p className="text-sm text-green-800 mb-3">{currentStepData.action.text}</p>
+                <p className="text-xs sm:text-sm text-green-800 mb-3 break-words">{currentStepData.action.text}</p>
                 <Button
                   size="sm"
-                  className="bg-green-600 hover:bg-green-700"
+                  className="bg-green-600 hover:bg-green-700 text-xs sm:text-sm"
                   onClick={() => {
                     // Highlight target element
                     const targetElement = document.querySelector(currentStepData.action!.target);
@@ -203,31 +203,39 @@ export function TutorialModal({ isOpen, onClose, toolId, toolName, steps, onComp
           </div>
 
           {/* Navigation */}
-          <div className="flex justify-between pt-4 border-t">
+          <div className="flex flex-col sm:flex-row justify-between gap-3 pt-4 border-t">
             <Button
               variant="outline"
               onClick={handlePrevious}
               disabled={currentStep === 0}
-              className="gap-2"
+              className="gap-2 text-xs sm:text-sm w-full sm:w-auto"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
               Vorige
             </Button>
 
-            <div className="flex gap-2">
-              <Button variant="ghost" onClick={onClose}>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button
+                variant="ghost"
+                onClick={onClose}
+                className="text-xs sm:text-sm flex-1 sm:flex-none"
+              >
                 Overslaan
               </Button>
-              <Button onClick={handleNext} className="gap-2">
+              <Button
+                onClick={handleNext}
+                className="gap-2 text-xs sm:text-sm flex-1 sm:flex-none"
+              >
                 {currentStep === steps.length - 1 ? (
                   <>
-                    <CheckCircle className="w-4 h-4" />
-                    Tutorial Voltooien
+                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="hidden sm:inline">Tutorial Voltooien</span>
+                    <span className="sm:hidden">Voltooien</span>
                   </>
                 ) : (
                   <>
                     Volgende
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
                   </>
                 )}
               </Button>

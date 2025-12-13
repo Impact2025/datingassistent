@@ -29,7 +29,7 @@ const OPTIMIZATION_STEPS = [
       'Optimaliseer volgorde',
       'Platform specifieke tips'
     ],
-    completionKey: 'photos',
+    completionKey: 'photoCount',
     unlockRequirement: null
   },
   {
@@ -47,7 +47,7 @@ const OPTIMIZATION_STEPS = [
       'Platform optimalisatie'
     ],
     completionKey: 'selectedBio',
-    unlockRequirement: 'photos'
+    unlockRequirement: 'photoCount'
   },
   {
     id: 'details',

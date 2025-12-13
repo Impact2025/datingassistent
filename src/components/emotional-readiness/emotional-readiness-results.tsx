@@ -15,15 +15,17 @@ import {
   Download,
   Share2,
   RefreshCw,
-  ArrowRight
+  ArrowRight,
+  Save
 } from 'lucide-react';
 
 interface EmotionalReadinessResultsProps {
   data: any;
   onRestart: () => void;
+  onClose?: () => void;
 }
 
-export function EmotionalReadinessResults({ data, onRestart }: EmotionalReadinessResultsProps) {
+export function EmotionalReadinessResults({ data, onRestart, onClose }: EmotionalReadinessResultsProps) {
   const getReadinessLevelInfo = (level: string) => {
     switch (level) {
       case 'klaar_om_te_daten':
@@ -63,7 +65,37 @@ export function EmotionalReadinessResults({ data, onRestart }: EmotionalReadines
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100">
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* Save & Close Card */}
+          {onClose && (
+            <Card className="border-2 border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        Resultaten Automatisch Opgeslagen
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Je resultaten zijn veilig opgeslagen en altijd terug te vinden bij "Mijn Scans"
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={onClose}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 h-auto flex items-center gap-2 shadow-sm"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span className="font-semibold">Bewaar & Sluiten</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="overview">Overzicht</TabsTrigger>

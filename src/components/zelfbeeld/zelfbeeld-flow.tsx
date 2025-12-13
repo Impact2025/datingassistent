@@ -278,7 +278,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
       <div className="p-6">
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-14 h-14 bg-pink-500 rounded-xl flex items-center justify-center mx-auto mb-3">
+            <div className="w-14 h-14 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
               <Camera className="w-7 h-7 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">Profiel Analyse</h2>
@@ -301,7 +301,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
             ))}
           </div>
 
-          <Card className="border border-gray-200">
+          <Card className="bg-white border-0 shadow-sm">
             <CardContent className="p-5">
               <h3 className="font-semibold text-gray-900 mb-3">Je krijgt:</h3>
               <div className="space-y-2">
@@ -323,7 +323,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
 
           <Button
             onClick={handleStart}
-            className="w-full h-12 bg-pink-500 hover:bg-pink-600"
+            className="w-full h-12 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 shadow-sm"
           >
             Start Analyse
             <ArrowRight className="w-4 h-4 ml-2" />

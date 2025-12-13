@@ -423,42 +423,42 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
         </CardContent>
       </Card>
 
-      {/* Pro Tools Banner - NEW */}
+      {/* Tools Tiers Banner - 3-Tier System */}
       {!searchQuery && activeCategory === "all" && (
-        <Card
-          className="mb-6 cursor-pointer overflow-hidden border-2 border-purple-300 bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 hover:shadow-xl transition-all"
-          onClick={() => window.location.href = '/pro-tools'}
-        >
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div className="flex items-start gap-4 flex-1">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
-                  <Award className="w-7 h-7 text-white" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="text-xl font-bold text-gray-900">Pro Tools</h3>
-                    <Badge className="bg-purple-500 text-white border-0 text-xs">
-                      ⚡ NIEUW
-                    </Badge>
-                  </div>
-                  <p className="text-gray-600 mb-3">
-                    6 premium tools voor maximale dating success: Badges & Achievements, Dating Activity Logger, Conversation AI, Skills Assessment en meer
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline" className="text-xs">🎯 Gamification</Badge>
-                    <Badge variant="outline" className="text-xs">📊 Analytics</Badge>
-                    <Badge variant="outline" className="text-xs">🤖 AI Powered</Badge>
-                    <Badge variant="outline" className="text-xs">🎓 Personalisatie</Badge>
-                  </div>
-                </div>
-              </div>
-              <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 shadow-lg whitespace-nowrap">
-                Ontdek Pro Tools →
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card
+            className="cursor-pointer border-2 border-green-300 bg-gradient-to-br from-green-50 to-emerald-50 hover:shadow-lg transition-all"
+            onClick={() => window.location.href = '/essentials'}
+          >
+            <CardContent className="p-4">
+              <Badge className="bg-green-500 text-white border-0 text-xs mb-2">🆓 GRATIS</Badge>
+              <h3 className="font-bold text-gray-900 mb-1">Essentials</h3>
+              <p className="text-sm text-gray-600">Badges, Activity Logger & meer</p>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="cursor-pointer border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all"
+            onClick={() => window.location.href = '/kickstart-toolkit'}
+          >
+            <CardContent className="p-4">
+              <Badge className="bg-blue-500 text-white border-0 text-xs mb-2">💎 KICKSTART</Badge>
+              <h3 className="font-bold text-gray-900 mb-1">Kickstart Toolkit</h3>
+              <p className="text-sm text-gray-600">AI Tools voor gesprekken & profielen</p>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="cursor-pointer border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-lg transition-all"
+            onClick={() => window.location.href = '/pro-arsenal'}
+          >
+            <CardContent className="p-4">
+              <Badge className="bg-purple-500 text-white border-0 text-xs mb-2">⭐ PREMIUM</Badge>
+              <h3 className="font-bold text-gray-900 mb-1">Pro Arsenal</h3>
+              <p className="text-sm text-gray-600">Skills, Date Planner & Unlimited</p>
+            </CardContent>
+          </Card>
+        </div>
       )}
 
       {/* Featured Tools - Uitgelicht */}

@@ -30,10 +30,10 @@ const NEW_TABS = [
     description: "Iris AI Coach - jouw centrale hulp"
   },
   {
-    id: "profiel",
+    id: "tools",
     label: "Tools",
     icon: User,
-    description: "Instellingen & persoonlijkheid"
+    description: "Alle tools & functies"
   }
 ];
 

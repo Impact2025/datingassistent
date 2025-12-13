@@ -6,7 +6,7 @@
 'use client';
 
 import React from 'react';
-import { ArrowRight, Zap, Heart, Camera, MessageCircle, Sparkles } from 'lucide-react';
+import { ArrowRight, Zap, Heart, Camera, MessageCircle, Sparkles, Target } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LockedToolCard } from '@/components/ui/locked-tool-card';
@@ -22,6 +22,13 @@ interface ToolsGridSectionProps {
 }
 
 const FEATURED_TOOLS = [
+  {
+    id: 'profiel-optimalisatie',
+    label: 'Profiel Optimalisatie',
+    icon: Target,
+    description: 'Bouw een profiel dat werkt',
+    color: 'from-pink-500 to-pink-600',
+  },
   {
     id: FEATURED_TOOL_IDS.HECHTINGSSTIJL,
     label: 'Hechtingsstijl',
@@ -42,13 +49,6 @@ const FEATURED_TOOLS = [
     icon: MessageCircle,
     description: 'Je 24/7 AI dating coach',
     color: 'from-blue-500 to-cyan-500',
-  },
-  {
-    id: FEATURED_TOOL_IDS.OPENERS,
-    label: 'Openingszinnen',
-    icon: Sparkles,
-    description: 'Genereer perfecte openers',
-    color: 'from-pink-500 to-rose-500',
   },
 ];
 

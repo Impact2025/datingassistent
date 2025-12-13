@@ -188,8 +188,22 @@ export async function POST(request: NextRequest) {
 
         // Generate AI analysis with retrieved microIntake
         console.log('🤖 Generating AI analysis...');
-        const aiAnalysis = await generateAIAnalysis(scores, retrievedMicroIntake);
-        console.log('✅ AI analysis generated');
+        let aiAnalysis;
+        try {
+          aiAnalysis = await generateAIAnalysis(scores, retrievedMicroIntake);
+          console.log('✅ AI analysis generated');
+        } catch (aiError: any) {
+          console.error('⚠️ AI analysis failed, using fallback:', aiError.message);
+          // Use fallback analysis if AI fails
+          const styleNames = {
+            veilig: 'Veilig',
+            angstig: 'Angstig',
+            vermijdend: 'Vermijdend',
+            angstig_vermijdend: 'Angstig-Vermijdend'
+          };
+          const primaryStyleName = styleNames[scores.primaryStyle as keyof typeof styleNames] || scores.primaryStyle;
+          aiAnalysis = getFallbackAnalysis(scores.primaryStyle, scores, primaryStyleName);
+        }
 
         // Calculate total time taken
         const totalTime = responses.reduce((sum, r) => sum + (r.timeMs || 0), 0);
@@ -323,6 +337,7 @@ export async function POST(request: NextRequest) {
         console.error('Error stack:', submitError.stack);
         console.error('Error name:', submitError.name);
         console.error('Error message:', submitError.message);
+        console.error('Full error object:', JSON.stringify(submitError, null, 2));
 
         // Try to mark assessment as failed
         try {
@@ -339,8 +354,9 @@ export async function POST(request: NextRequest) {
           {
             error: 'Submission failed',
             message: 'Failed to process your responses. Please try again.',
-            details: process.env.NODE_ENV === 'development' ? submitError.message : undefined,
-            errorType: submitError.name
+            details: submitError.message,
+            errorType: submitError.name,
+            stack: process.env.NODE_ENV === 'development' ? submitError.stack : undefined
           },
           { status: 500 }
         );

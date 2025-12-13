@@ -1,21 +1,27 @@
 'use client';
 
 /**
- * Profiel Tab - Settings & Persoonlijkheid
- * Wrapper around existing ProfileSuite
+ * Profiel Tab - WORLD-CLASS VERSION
+ * Premium profile hub with modern UI, animations, and AI insights
  */
 
 import { memo } from 'react';
-import { ProfileSuite } from './profile-suite';
+import { WorldClassProfileHub } from './world-class-profile-hub';
 
 interface ProfielTabProps {
   onTabChange?: (tab: string) => void;
+  userId?: number;
+  userProfile?: any;
 }
 
-export const ProfielTab = memo(function ProfielTab({ onTabChange }: ProfielTabProps) {
+export const ProfielTab = memo(function ProfielTab({
+  onTabChange,
+  userId,
+  userProfile
+}: ProfielTabProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <ProfileSuite onTabChange={onTabChange} />
+    <div className="min-h-screen">
+      <WorldClassProfileHub embedded={true} />
     </div>
   );
 });

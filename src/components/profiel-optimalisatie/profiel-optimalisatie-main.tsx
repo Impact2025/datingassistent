@@ -136,7 +136,7 @@ export function ProfielOptimalisatieMain() {
   // Calculate completeness
   const calculateCompleteness = () => {
     let score = 0;
-    if (profileData.photos && profileData.photos.length >= 3) score += 40;
+    if (profileData.photoCount && profileData.photoCount >= 3) score += 40;
     if (profileData.selectedBio) score += 40;
     if (profileData.height && profileData.work) score += 20;
     return score;
@@ -189,7 +189,7 @@ export function ProfielOptimalisatieMain() {
           <PhotoOptimizationStep
             onComplete={handleStepComplete}
             onBack={() => setCurrentStep('route')}
-            existingPhotos={profileData.photos}
+            existingPhotoCount={profileData.photoCount}
           />
         );
 
