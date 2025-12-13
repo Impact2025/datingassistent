@@ -9,7 +9,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
-  Sparkles, TrendingUp, CheckCircle2, Zap, ArrowRight, Badge as BadgeIcon, Gift, Rocket, Crown
+  Sparkles, TrendingUp, CheckCircle2, Zap, ArrowRight, Badge as BadgeIcon, Gift, Rocket, Crown, Trophy, BarChart3
 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { ScanCard } from './scan-card';
@@ -321,6 +321,116 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                 </CardContent>
               </Card>
             </div>
+          </motion.div>
+        )}
+
+        {/* Essentials - Gratis Dating Tools */}
+        {!showWelcomeVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: ANIMATION_DELAYS.PROGRAMS + 0.2 }}
+          >
+            <Card className="border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Gift className="w-5 h-5 text-green-600" />
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900">Gratis Dating Tools</h2>
+                  <Badge className="bg-green-500 text-white border-0 text-xs ml-auto">
+                    🆓 100% GRATIS
+                  </Badge>
+                </div>
+                <p className="text-sm text-gray-600 mb-4">
+                  Deze essential tools zijn 100% gratis en altijd beschikbaar. Perfect om te starten met je dating journey!
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Badges & Achievements */}
+                  <Card
+                    className="cursor-pointer hover:shadow-md transition-all border-0 bg-white"
+                    onClick={() => router.push('/essentials?tab=badges')}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0">
+                          <Trophy className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 mb-1">Badges & Achievements</h3>
+                          <p className="text-xs text-gray-600">Verdien badges en unlock achievements</p>
+                          <Button size="sm" variant="ghost" className="mt-2 p-0 h-auto text-green-600 hover:text-green-700">
+                            Open Tool →
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Dating Activity Logger */}
+                  <Card
+                    className="cursor-pointer hover:shadow-md transition-all border-0 bg-white"
+                    onClick={() => router.push('/essentials?tab=activity')}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                          <TrendingUp className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 mb-1">Dating Activity Logger</h3>
+                          <p className="text-xs text-gray-600">Track je matches, gesprekken en dates</p>
+                          <Button size="sm" variant="ghost" className="mt-2 p-0 h-auto text-green-600 hover:text-green-700">
+                            Open Tool →
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Personal Recommendations */}
+                  <Card
+                    className="cursor-pointer hover:shadow-md transition-all border-0 bg-white"
+                    onClick={() => router.push('/essentials?tab=recommendations')}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                          <Sparkles className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 mb-1">Personal Recommendations</h3>
+                          <p className="text-xs text-gray-600">AI-driven aanbevelingen voor jou</p>
+                          <Button size="sm" variant="ghost" className="mt-2 p-0 h-auto text-green-600 hover:text-green-700">
+                            Open Tool →
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Stats & Voortgang */}
+                  <Card
+                    className="cursor-pointer hover:shadow-md transition-all border-0 bg-white"
+                    onClick={() => router.push('/essentials?tab=stats')}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center flex-shrink-0">
+                          <BarChart3 className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 mb-1">Stats & Voortgang</h3>
+                          <p className="text-xs text-gray-600">Overzicht van je complete journey</p>
+                          <Button size="sm" variant="ghost" className="mt-2 p-0 h-auto text-green-600 hover:text-green-700">
+                            Open Tool →
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
         )}
 
