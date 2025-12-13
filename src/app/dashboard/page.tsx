@@ -225,7 +225,7 @@ export default function DashboardPage() {
     if (typeof window === 'undefined') return;
     const urlParams = new URLSearchParams(window.location.search);
     const tabParam = urlParams.get('tab');
-    if (tabParam && ['subscription', 'settings', 'data-management', 'home', 'pad', 'coach', 'profiel'].includes(tabParam)) {
+    if (tabParam && ['subscription', 'settings', 'data-management', 'home', 'pad', 'coach', 'profiel', 'tools'].includes(tabParam)) {
       setActiveTab(tabParam);
     }
   }, []);
@@ -525,6 +525,7 @@ export default function DashboardPage() {
       case 'coach':
         return <CoachTab onTabChange={handleTabChange} userId={user?.id} />;
       case 'profiel':
+      case 'tools':
         return <ProfielTab onTabChange={handleTabChange} />;
       case 'profiel-persoonlijkheid':
         return <ProfileSuite onTabChange={handleTabChange} />;
