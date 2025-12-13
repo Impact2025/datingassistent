@@ -124,52 +124,65 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
   };
 
   return (
-    <div className={embedded ? "w-full" : "min-h-screen bg-white flex items-center justify-center p-4"}>
-      <div className={embedded ? "w-full" : "w-full max-w-3xl"}>
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
-        >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Sparkles className="w-10 h-10 text-pink-600" />
-            <h1 className="text-3xl font-bold text-gray-900">
-              Welkom bij Kickstart
-            </h1>
-          </div>
-          <p className="text-gray-600">
-            Voordat we beginnen, maken we jouw persoonlijke reis compleet
-          </p>
-        </motion.div>
+    <div className={
+      embedded
+        ? "h-full w-full flex flex-col bg-white"
+        : "h-[100dvh] w-full flex flex-col bg-white sm:h-auto sm:min-h-screen sm:items-center sm:justify-center sm:p-4"
+    }>
+      {/* MOBILE: Full-screen scrollable layout */}
+      <div className={
+        embedded
+          ? "flex flex-col h-full w-full"
+          : "flex flex-col h-full w-full sm:h-auto sm:max-w-3xl sm:w-full"
+      }>
+        {/* Sticky Header - ALWAYS VISIBLE */}
+        <div className="flex-shrink-0 bg-white border-b border-gray-100 px-4 py-4 sm:border-0 sm:py-6 safe-area-top">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-4">
+              <Sparkles className="w-7 h-7 sm:w-10 sm:h-10 text-pink-600" />
+              <h1 className="text-xl sm:text-3xl font-bold text-gray-900">
+                Welkom bij Kickstart
+              </h1>
+            </div>
+            <p className="text-sm sm:text-base text-gray-600">
+              Voordat we beginnen, maken we jouw persoonlijke reis compleet
+            </p>
+          </motion.div>
 
-        {/* Progress Indicator */}
-        <div className="flex justify-center gap-2 mb-8">
-          {[1, 2, 3, 4].map((step) => (
-            <div
-              key={step}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                step === currentStep
-                  ? 'w-12 bg-pink-600'
-                  : step < currentStep
-                  ? 'w-8 bg-pink-400'
-                  : 'w-8 bg-gray-300'
-              }`}
-            />
-          ))}
+          {/* Progress Indicator */}
+          <div className="flex justify-center gap-2 mt-4 sm:mt-6">
+            {[1, 2, 3, 4].map((step) => (
+              <div
+                key={step}
+                className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
+                  step === currentStep
+                    ? 'w-10 sm:w-12 bg-pink-600'
+                    : step < currentStep
+                    ? 'w-6 sm:w-8 bg-pink-400'
+                    : 'w-6 sm:w-8 bg-gray-300'
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Step Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Card className="border border-gray-200 shadow-sm">
-              <CardContent className="p-8">
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.25 }}
+              className="px-4 py-4 sm:px-0 sm:py-6"
+            >
+              <Card className="border border-gray-200 shadow-sm sm:shadow-lg">
+                <CardContent className="p-4 sm:p-8">
                 {/* STEP 1: VISION SETTING */}
                 {currentStep === 1 && (
                   <div className="space-y-6">
@@ -491,41 +504,43 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                   </div>
                 )}
 
-                {/* Navigation Buttons */}
-                <div className="flex justify-between pt-6 mt-6 border-t border-gray-200">
-                  <Button
-                    variant="ghost"
-                    onClick={handlePrevious}
-                    disabled={currentStep === 1 || loading}
-                    className="gap-2"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                    Vorige
-                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-                  <Button
-                    onClick={handleNext}
-                    disabled={!isStepValid() || loading}
-                    className="bg-pink-600 hover:bg-pink-700 text-white gap-2"
-                  >
-                    {loading ? (
-                      'Bezig...'
-                    ) : currentStep === 4 ? (
-                      <>
-                        Ik doe mee! 🚀
-                      </>
-                    ) : (
-                      <>
-                        Volgende
-                        <ChevronRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </AnimatePresence>
+        {/* Sticky Navigation Buttons - ALWAYS VISIBLE */}
+        <div className="flex-shrink-0 bg-white border-t border-gray-200 px-4 py-3 sm:py-4 safe-area-bottom">
+          <div className="flex justify-between gap-3 max-w-3xl mx-auto">
+            <Button
+              variant="ghost"
+              onClick={handlePrevious}
+              disabled={currentStep === 1 || loading}
+              className="gap-1 sm:gap-2 text-sm sm:text-base"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Vorige
+            </Button>
+
+            <Button
+              onClick={handleNext}
+              disabled={!isStepValid() || loading}
+              className="bg-pink-600 hover:bg-pink-700 text-white gap-1 sm:gap-2 text-sm sm:text-base flex-1 max-w-[200px] sm:max-w-none sm:flex-none"
+            >
+              {loading ? (
+                'Bezig...'
+              ) : currentStep === 4 ? (
+                'Ik doe mee! 🚀'
+              ) : (
+                <>
+                  Volgende
+                  <ChevronRight className="w-4 h-4" />
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
