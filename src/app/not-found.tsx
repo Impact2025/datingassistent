@@ -39,9 +39,13 @@ const motivationalMessages = [
 
 export default function NotFoundPage() {
   const router = useRouter();
-  const [randomMessage] = useState(() =>
-    motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)]
-  );
+  const [randomMessage, setRandomMessage] = useState(motivationalMessages[0]);
+
+  // Set random message only on client side after hydration to prevent hydration mismatch
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * motivationalMessages.length);
+    setRandomMessage(motivationalMessages[randomIndex]);
+  }, []);
 
   const IconComponent = randomMessage.icon;
 

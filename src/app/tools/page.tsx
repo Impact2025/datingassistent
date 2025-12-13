@@ -287,8 +287,35 @@ function ToolsPageContent() {
         </div>
       </div>
 
-      {/* Tools Grid */}
+      {/* Pro Tools Feature Banner */}
       <div className="p-4">
+        <Card
+          className="mb-6 cursor-pointer overflow-hidden border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-xl transition-all"
+          onClick={() => router.push('/pro-tools')}
+        >
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </div>
+                  <Badge className="bg-purple-500 text-white border-0">
+                    ⚡ NEW
+                  </Badge>
+                </div>
+                <h3 className="font-bold text-gray-900 mb-1">Pro Tools</h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  6 geavanceerde tools: Badges, Activity Logger, Skills Assessment & meer
+                </p>
+                <Button size="sm" className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0">
+                  Ontdek Pro Tools →
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <div className="grid grid-cols-1 gap-4 max-w-md mx-auto">
           {filteredTools.map((tool) => (
             <Card
