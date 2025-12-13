@@ -3,6 +3,7 @@ import { requireAuth } from '@/lib/auth';
 import { hasActiveSubscription } from '@/lib/subscription';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
 import { trackFeatureUsage } from '@/lib/usage-tracking';
+import { sql } from '@vercel/postgres';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,9 +28,23 @@ export async function POST(request: NextRequest) {
     // 🔒 SECURITY: Require authentication
     const user = await requireAuth(request);
 
-    // 🔒 SECURITY: Check if user has active subscription (photo analysis requires subscription)
+    // 🔒 SECURITY: Check if user has active subscription OR program enrollment
+    // Photo analysis is available for Kickstart, Transformatie, and VIP users
     const hasSubscription = await hasActiveSubscription(user.id);
-    if (!hasSubscription) {
+
+    // Also check for program enrollments (Kickstart, Transformatie, VIP)
+    const programCheck = await sql`
+      SELECT COUNT(*) as count
+      FROM user_enrollments ue
+      JOIN programs p ON ue.program_id = p.id
+      WHERE ue.user_id = ${user.id}
+      AND p.slug IN ('kickstart', 'transformatie', 'vip')
+      AND ue.status = 'active'
+    `;
+
+    const hasProgram = parseInt(programCheck.rows[0]?.count || '0') > 0;
+
+    if (!hasSubscription && !hasProgram) {
       return NextResponse.json(
         {
           error: 'Abonnement vereist',
