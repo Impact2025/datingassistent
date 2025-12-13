@@ -51,6 +51,14 @@ export default function MeerPage() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [userTier, setUserTier] = useState<string>('free');
+  const [gamificationStats, setGamificationStats] = useState<{
+    totalPoints: number;
+    currentLevel: number;
+    levelProgress: number;
+    levelTitle: string;
+    pointsToNextLevel: number;
+    nextLevelPoints: number;
+  } | null>(null);
 
   // Check user's program enrollment to determine tier
   useEffect(() => {
@@ -80,6 +88,41 @@ export default function MeerPage() {
     };
 
     checkUserTier();
+  }, [user?.id]);
+
+  // Fetch real gamification stats
+  useEffect(() => {
+    const fetchGamificationStats = async () => {
+      if (!user?.id) return;
+
+      try {
+        const response = await fetch(`/api/gamification/stats?userId=${user.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setGamificationStats({
+            totalPoints: data.totalPoints || 0,
+            currentLevel: data.currentLevel || 1,
+            levelProgress: data.levelProgress || 0,
+            levelTitle: data.levelTitle || 'Nieuweling',
+            pointsToNextLevel: data.pointsToNextLevel || 100,
+            nextLevelPoints: data.nextLevelPoints || 100,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch gamification stats:', error);
+        // Fallback to default values if API fails
+        setGamificationStats({
+          totalPoints: 0,
+          currentLevel: 1,
+          levelProgress: 0,
+          levelTitle: 'Nieuweling',
+          pointsToNextLevel: 100,
+          nextLevelPoints: 100,
+        });
+      }
+    };
+
+    fetchGamificationStats();
   }, [user?.id]);
 
   // Load user preferences on mount
@@ -232,15 +275,29 @@ export default function MeerPage() {
     account: menuItems.filter(item => item.id === 'logout'),
   };
 
-  // Calculate user level/progress (mock data for now)
+  // Get user level from real gamification stats
   const getUserLevel = () => {
-    // This could be calculated based on user activity, tools used, etc.
-    return 12; // Mock level
+    return gamificationStats?.currentLevel || 1;
   };
 
+  // Calculate progress to next level as percentage
   const getUserProgress = () => {
-    // This could be calculated based on completed actions
-    return 75; // Mock progress percentage
+    if (!gamificationStats) return 0;
+
+    const { pointsToNextLevel, nextLevelPoints } = gamificationStats;
+
+    // Calculate progress based on points earned towards next level
+    if (nextLevelPoints > 0) {
+      // pointsToNextLevel = remaining points needed
+      // nextLevelPoints = total points required for next level
+      // So earned points = nextLevelPoints - pointsToNextLevel
+      const earnedPoints = nextLevelPoints - pointsToNextLevel;
+      const progressPercentage = Math.floor((earnedPoints / nextLevelPoints) * 100);
+      return Math.min(100, Math.max(0, progressPercentage));
+    }
+
+    // Fallback if no next level exists (max level reached)
+    return 100;
   };
 
   return (
