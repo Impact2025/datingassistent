@@ -195,7 +195,7 @@ export async function POST(request: NextRequest) {
         const totalTime = responses.reduce((sum, r) => sum + (r.timeMs || 0), 0);
         const totalTimeSeconds = Math.round(totalTime / 1000);
 
-        // Store results
+        // Store results - serialize arrays to JSON for database storage
         const result = await sql`
         INSERT INTO hechtingsstijl_results (
           assessment_id, primary_style, secondary_style,
@@ -209,14 +209,14 @@ export async function POST(request: NextRequest) {
           ${scores.primaryStyle},
           ${scores.secondaryStyle},
           ${scores.veilig}, ${scores.angstig}, ${scores.vermijdend}, ${scores.angstigVermijdend},
-          ${validity.validityWarnings},
+          ${JSON.stringify(validity.validityWarnings)},
           ${validity.completionRate},
           ${validity.responseVariance},
           ${aiAnalysis.profiel},
           ${aiAnalysis.toekomstgerichteInterpretatie},
-          ${aiAnalysis.datingVoorbeelden},
-          ${aiAnalysis.triggers},
-          ${aiAnalysis.herstelStrategieen},
+          ${JSON.stringify(aiAnalysis.datingVoorbeelden)},
+          ${JSON.stringify(aiAnalysis.triggers)},
+          ${JSON.stringify(aiAnalysis.herstelStrategieen)},
           ${JSON.stringify(aiAnalysis.microInterventies)},
           ${JSON.stringify(aiAnalysis.gesprekScripts)},
           ${JSON.stringify(aiAnalysis.recommendedTools)}
