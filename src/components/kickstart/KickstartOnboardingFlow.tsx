@@ -79,10 +79,7 @@ export function KickstartOnboardingFlow({
     await new Promise((resolve) => setTimeout(resolve, 400));
 
     setCurrentStep('success');
-    setShowConfetti(true);
-
-    // Stop confetti after 6 seconds
-    setTimeout(() => setShowConfetti(false), 6000);
+    // Confetti disabled for minimal/professional look
   };
 
   const handleStartProgram = () => {
@@ -382,87 +379,76 @@ export function KickstartOnboardingFlow({
           </motion.div>
         )}
 
-        {/* STEP 4: Success - Celebration */}
+        {/* STEP 4: Success - Minimal & Professional */}
         {currentStep === 'success' && (
           <motion.div
             key="success"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="w-full max-w-lg mx-auto px-4"
+            transition={{ duration: 0.4 }}
+            className="w-full max-w-md mx-auto px-6"
           >
-            <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 p-8 text-center overflow-hidden relative">
-              {/* Background decoration */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-20 -right-20 w-40 h-40 bg-pink-100 rounded-full opacity-50" />
-                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-pink-100 rounded-full opacity-50" />
-              </div>
+            <div className="text-center py-12">
+              {/* Minimal checkmark */}
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="w-16 h-16 rounded-full bg-emerald-500 flex items-center justify-center mx-auto mb-8"
+              >
+                <CheckCircle className="w-8 h-8 text-white" strokeWidth={2.5} />
+              </motion.div>
 
-              <div className="relative">
-                {/* Success Animation */}
-                <motion.div
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ type: 'spring', bounce: 0.5, duration: 0.8 }}
-                  className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-200"
+              {/* Clean typography */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                <h1 className="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">
+                  {completedData?.preferredName ? `${completedData.preferredName}, je bent klaar` : 'Je bent klaar'}
+                </h1>
+                <p className="text-gray-500 mb-10">
+                  Je persoonlijke 21-dagen programma is gereed
+                </p>
+              </motion.div>
+
+              {/* Minimal stats row */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="flex justify-center gap-12 mb-12"
+              >
+                <div className="text-center">
+                  <div className="text-3xl font-semibold text-gray-900">21</div>
+                  <div className="text-sm text-gray-400 mt-1">dagen</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-semibold text-gray-900">63+</div>
+                  <div className="text-sm text-gray-400 mt-1">tips</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-semibold text-gray-900">1</div>
+                  <div className="text-sm text-gray-400 mt-1">coach</div>
+                </div>
+              </motion.div>
+
+              {/* Clean CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+              >
+                <Button
+                  onClick={handleStartProgram}
+                  className="w-full bg-gray-900 hover:bg-gray-800 text-white py-5 text-base font-medium rounded-xl transition-colors"
                 >
-                  <CheckCircle className="w-10 h-10 text-white" />
-                </motion.div>
-
-                {/* Personalized Message */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
-                    {completedData?.preferredName ? `${completedData.preferredName}, je bent klaar!` : 'Je bent klaar!'}
-                  </h1>
-                  <p className="text-gray-600 mb-8 text-lg">
-                    Iris heeft je persoonlijke 21-dagen plan gemaakt
-                  </p>
-                </motion.div>
-
-                {/* Stats */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="grid grid-cols-3 gap-3 mb-8"
-                >
-                  {[
-                    { value: '21', label: 'Dagen', icon: '📅' },
-                    { value: '63+', label: 'Tips', icon: '💡' },
-                    { value: '1', label: 'Coach', icon: '👩‍🏫' },
-                  ].map((stat) => (
-                    <div key={stat.label} className="bg-pink-50 rounded-2xl p-4">
-                      <div className="text-2xl mb-1">{stat.icon}</div>
-                      <div className="text-2xl font-bold text-pink-600">{stat.value}</div>
-                      <div className="text-xs text-gray-500">{stat.label}</div>
-                    </div>
-                  ))}
-                </motion.div>
-
-                {/* CTA Button */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 }}
-                >
-                  <Button
-                    onClick={handleStartProgram}
-                    className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-pink-200/50 hover:shadow-xl transition-all group"
-                  >
-                    <Rocket className="w-5 h-5 mr-2 group-hover:-translate-y-1 transition-transform" />
-                    Start je transformatie
-                  </Button>
-
-                  <p className="mt-4 text-sm text-gray-400">
-                    Dag 1 staat klaar voor je
-                  </p>
-                </motion.div>
-              </div>
+                  Start dag 1
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         )}
