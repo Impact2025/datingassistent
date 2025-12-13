@@ -77,7 +77,7 @@ export function generateDailySuggestions(context: UserContext): Suggestion[] {
         title: 'Ontdek hoe je overkomt',
         description: 'AI-gedreven eerste indruk analyse',
         actionText: 'Start Zelfbeeld Scan',
-        actionHref: '/zelfbeeld',
+        actionHref: '/profiel?tool=zelfbeeld',
         icon: 'User',
         color: 'purple',
         category: 'profiel'
@@ -128,7 +128,7 @@ export function generateDailySuggestions(context: UserContext): Suggestion[] {
         title: 'Ontdek je dating stijl',
         description: 'Krijg inzicht in hoe jij date en wat bij je past',
         actionText: 'Start Dating Stijl Scan',
-        actionHref: '/dating-stijl-scan',
+        actionHref: '/datingstijl',
         icon: 'Heart',
         color: 'rose',
         category: 'profiel'

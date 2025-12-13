@@ -159,6 +159,14 @@ export function DatePlanner() {
   };
 
   const handleNext = () => {
+    // Validate Step 0 - Basic Info
+    if (currentStep === 0) {
+      if (!formData.location || formData.location.trim() === '') {
+        alert('Vul eerst een locatie in voordat je verder gaat.');
+        return;
+      }
+    }
+
     if (currentStep < totalSteps - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
@@ -173,9 +181,9 @@ export function DatePlanner() {
   const generateDatePlan = async () => {
     if (!user?.id) return;
 
-    // Validate required fields
-    if (!formData.dateType || !formData.location) {
-      alert('Vul eerst het date type en locatie in voordat je een plan genereert.');
+    // Validate required fields (backup validation)
+    if (!formData.dateType || !formData.location || formData.location.trim() === '') {
+      alert('Er ontbreekt nog informatie. Ga terug naar stap 1 om de locatie in te vullen.');
       setCurrentStep(0); // Go back to first step
       return;
     }
@@ -446,13 +454,17 @@ function StepBasicInfo({ formData, onChange }: any) {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Locatie</label>
+          <label className="text-sm font-medium text-gray-700">
+            Locatie <span className="text-pink-600">*</span>
+          </label>
           <Input
             value={formData.location || ''}
             onChange={(e) => onChange('location', e.target.value)}
             placeholder="Bijv: Café Central, Amsterdam"
             className="border-pink-200 focus:border-pink-400"
+            required
           />
+          <p className="text-xs text-gray-500">Vul de specifieke locatie in voor betere adviezen</p>
         </div>
 
         <div className="space-y-2">
