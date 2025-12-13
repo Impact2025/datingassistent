@@ -110,11 +110,11 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
 
   // 🎯 ALLE TOOLS GEORGANISEERD IN CATEGORIEËN
   const allTools = [
-    // 🎯 PROFIEL & PERSOONLIJKHEID
+    // PROFIEL & PERSOONLIJKHEID
     {
       id: "hechtingsstijl",
       category: "profile",
-      label: "🏆 Hechtingsstijl QuickScan",
+      label: "Hechtingsstijl QuickScan",
       icon: Heart,
       description: "Ontdek je hechtingsdynamiek - de basis van hoe je liefhebt en verbindt",
       component: <AttachmentAssessmentFlow />,
@@ -125,7 +125,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "emotionele-ready",
       category: "profile",
-      label: "💙 Emotionele Ready Scan",
+      label: "Emotionele Ready Scan",
       icon: Sparkles,
       description: "Ben je klaar voor dating? Ontdek je emotionele beschikbaarheid",
       component: <EmotioneleReadinessFlow />,
@@ -135,7 +135,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "zelfbeeld",
       category: "profile",
-      label: "🪩 Zelfbeeld & Eerste Indruk",
+      label: "Zelfbeeld & Eerste Indruk",
       icon: UserCircle2,
       description: "AI-gedreven profiel analyse voor optimale eerste indruk",
       component: <ZelfbeeldFlow />,
@@ -145,7 +145,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "dating-stijl",
       category: "profile",
-      label: "🎭 Dating Stijl Scan",
+      label: "Dating Stijl Scan",
       icon: Users,
       description: "Ontdek je dating stijl en blinde vlekken",
       component: <DatingStyleFlow />,
@@ -155,7 +155,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "profile-builder",
       category: "profile",
-      label: "📝 Profiel Bouwer",
+      label: "Profiel Bouwer",
       icon: FileText,
       description: "Maak je ideale profieltekst met AI hulp",
       component: <InteractiveProfileCoach />,
@@ -165,7 +165,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "photo-analysis",
       category: "profile",
-      label: "📷 Foto Analyse",
+      label: "Foto Analyse",
       icon: Camera,
       description: "AI feedback op je profielfoto's",
       component: <PhotoAnalysisTab />,
@@ -175,7 +175,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "platform-match",
       category: "profile",
-      label: "🎯 Platform Match",
+      label: "Platform Match",
       icon: Target,
       description: "Welke dating app past bij jou?",
       component: <PlatformMatchTool />,
@@ -185,7 +185,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "skills-scan",
       category: "profile",
-      label: "🏅 Vaardigheden Scan",
+      label: "Vaardigheden Scan",
       icon: Award,
       description: "Ontdek je sterke punten",
       component: <SkillsAssessmentTab />,
@@ -195,7 +195,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "stats",
       category: "profile",
-      label: "📊 Stats",
+      label: "Stats",
       icon: CheckCircle2,
       description: "Overzicht van je voortgang",
       component: <StatsTab />,
@@ -203,11 +203,11 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       color: "from-gray-500 to-slate-500"
     },
 
-    // 💬 COMMUNICATIE
+    // COMMUNICATIE
     {
       id: "chat-coach",
       category: "communication",
-      label: "💬 Chat Coach",
+      label: "Chat Coach",
       icon: MessageCircle,
       description: "Stel vragen aan je AI dating coach",
       component: <ChatCoachTab />,
@@ -218,7 +218,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "gespreks-assistent",
       category: "communication",
-      label: "💭 GespreksAssistent",
+      label: "GespreksAssistent",
       icon: MessageCircle,
       description: "AI analyse van je dating gesprekken",
       component: <GespreksAssistent onTabChange={onTabChange} />,
@@ -228,7 +228,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "openers",
       category: "communication",
-      label: "✨ Openingszinnen",
+      label: "Openingszinnen",
       icon: Sparkles,
       description: "Genereer effectieve openingsberichten",
       component: <OpeningszinnenTool />,
@@ -238,7 +238,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "icebreakers",
       category: "communication",
-      label: "⚡ IJsbrekers",
+      label: "IJsbrekers",
       icon: Zap,
       description: "Perfecte gesprekstarters voor elke situatie",
       component: <IJsbrekerGeneratorTool />,
@@ -248,7 +248,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "safety",
       category: "communication",
-      label: "🛡️ Veiligheidscheck",
+      label: "Veiligheidscheck",
       icon: Shield,
       description: "Analyseer gesprekken op veiligheid en rode vlaggen",
       component: <VeiligheidscheckTool />,
@@ -256,11 +256,11 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       color: "from-emerald-500 to-teal-600"
     },
 
-    // 📅 DATING & RELATIES
+    // DATING & RELATIES
     {
       id: "date-planner",
       category: "dating",
-      label: "📅 Date Planner",
+      label: "Date Planner",
       icon: Calendar,
       description: "Plan geslaagde dates met checklists en ideeën",
       component: <DatePlannerTab />,
@@ -271,7 +271,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
     {
       id: "date-ideeen",
       category: "dating",
-      label: "💡 Date Ideeën",
+      label: "Date Ideeën",
       icon: CalendarHeart,
       description: "Krijg inspiratie voor unieke en leuke dates",
       component: <DateIdeasProForm />,
@@ -313,6 +313,12 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
   };
 
   const openToolModal = (toolId: string) => {
+    // Special handling for chat-coach - navigate to coach tab instead of opening modal
+    if (toolId === 'chat-coach') {
+      onTabChange?.('coach');
+      return;
+    }
+
     const tool = allTools.find(t => t.id === toolId);
     if (tool) {
       setActiveModal({
@@ -471,13 +477,13 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
             Alle ({categoryCounts.all})
           </TabsTrigger>
           <TabsTrigger value="profile" className="text-xs sm:text-sm">
-            🎯 Profiel ({categoryCounts.profile})
+            Profiel ({categoryCounts.profile})
           </TabsTrigger>
           <TabsTrigger value="communication" className="text-xs sm:text-sm">
-            💬 Chat ({categoryCounts.communication})
+            Chat ({categoryCounts.communication})
           </TabsTrigger>
           <TabsTrigger value="dating" className="text-xs sm:text-sm">
-            📅 Dating ({categoryCounts.dating})
+            Dating ({categoryCounts.dating})
           </TabsTrigger>
         </TabsList>
 

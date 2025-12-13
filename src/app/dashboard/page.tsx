@@ -692,18 +692,18 @@ export default function DashboardPage() {
                   </div>
                   <div>
                     <h1 className="text-base font-bold text-gray-900 leading-tight">
-                      {activeTab === 'home' && '🏠 Dashboard'}
-                      {activeTab === 'pad' && '🎯 Jouw Pad'}
-                      {activeTab === 'coach' && '💬 Coach'}
-                      {activeTab === 'profiel' && '🛠️ Tools'}
-                      {activeTab === 'tools' && '🛠️ Tools'}
-                      {activeTab === 'subscription' && '💎 Abonnement'}
-                      {activeTab === 'data-management' && '🔒 Data & Privacy'}
-                      {activeTab === 'settings' && '⚙️ Instellingen'}
-                      {!['home', 'pad', 'coach', 'profiel', 'tools', 'subscription', 'data-management', 'settings'].includes(activeTab) && '🏠 Dashboard'}
+                      {activeTab === 'home' && 'Dashboard'}
+                      {activeTab === 'pad' && 'Jouw Pad'}
+                      {activeTab === 'coach' && 'Coach'}
+                      {activeTab === 'profiel' && 'Tools'}
+                      {activeTab === 'tools' && 'Tools'}
+                      {activeTab === 'subscription' && 'Abonnement'}
+                      {activeTab === 'data-management' && 'Data & Privacy'}
+                      {activeTab === 'settings' && 'Instellingen'}
+                      {!['home', 'pad', 'coach', 'profiel', 'tools', 'subscription', 'data-management', 'settings'].includes(activeTab) && 'Dashboard'}
                     </h1>
                     <p className="text-xs text-gray-500">
-                      {user?.name ? `Hoi ${user.name.split(' ')[0]} 👋` : 'DatingAssistent'}
+                      {user?.name ? `Welkom, ${user.name.split(' ')[0]}` : 'DatingAssistent'}
                     </p>
                   </div>
                 </div>
