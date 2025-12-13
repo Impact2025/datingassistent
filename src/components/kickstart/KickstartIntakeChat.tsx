@@ -121,6 +121,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
   const [selectedChips, setSelectedChips] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [intakeData, setIntakeData] = useState<Partial<KickstartIntakeData>>({});
+  const [irisReaction, setIrisReaction] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
   const totalSteps = 15; // Updated: 12 original + 3 new (gender, lookingFor, region)
@@ -201,20 +202,19 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
   // Question 1: Preferred Name
   const handleNameSubmit = () => {
     if (!inputValue.trim()) return;
-    addUserMessage(inputValue);
-    setIntakeData((prev) => ({ ...prev, preferredName: inputValue }));
+    const name = inputValue;
+    addUserMessage(name);
+    setIntakeData((prev) => ({ ...prev, preferredName: name }));
     setInputValue("");
     setCurrentStep(1);
 
-    setTimeout(() => {
-      addIrisMessage({
-        id: "response-1",
-        type: "iris",
-        content: `Nice to meet you, ${inputValue}! 😊`,
-      });
-    }, 500);
+    // Show Iris reaction immediately
+    setIrisReaction(`Hey ${name}! Leuk je te ontmoeten`);
+    setIsTyping(true);
 
     setTimeout(() => {
+      setIsTyping(false);
+      setIrisReaction(null);
       addIrisMessage({
         id: "q2",
         type: "iris",
@@ -222,7 +222,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         inputType: "chips",
         chipOptions: GENDER_OPTIONS,
       });
-    }, 2000);
+    }, 1200);
   };
 
   // Question 2: Gender (NEW)
@@ -234,7 +234,9 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setIntakeData((prev) => ({ ...prev, gender: value as any }));
     setCurrentStep(2);
 
+    setIrisReaction("Top!");
     setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q3",
         type: "iris",
@@ -242,7 +244,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         inputType: "chips",
         chipOptions: LOOKING_FOR_OPTIONS,
       });
-    }, 1000);
+    }, 800);
   };
 
   // Question 3: Looking For (NEW)
@@ -254,15 +256,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setIntakeData((prev) => ({ ...prev, lookingFor: value as any }));
     setCurrentStep(3);
 
+    setIrisReaction("Got it!");
     setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q4",
         type: "iris",
-        content: "In welke regio woon je? (Helpt me met date tips!)",
+        content: "In welke regio woon je?",
         inputType: "chips",
         chipOptions: REGION_OPTIONS,
       });
-    }, 1000);
+    }, 800);
   };
 
   // Question 4: Region (NEW)
@@ -274,15 +278,9 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setIntakeData((prev) => ({ ...prev, region: value }));
     setCurrentStep(4);
 
+    setIrisReaction("Perfect, nu weet ik waar je zoekt!");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-4",
-        type: "iris",
-        content: "Top! Nu weet ik wie je bent en waar je zoekt. 🎯",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q5",
         type: "iris",
@@ -290,7 +288,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         inputType: "number",
         placeholder: "Bijv. 28",
       });
-    }, 2000);
+    }, 1000);
   };
 
   // Question 5: Age (was Question 2)
@@ -303,15 +301,9 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setNumberValue("");
     setCurrentStep(5);
 
+    setIrisReaction("Nice! Nu over je dating situatie...");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-5",
-        type: "iris",
-        content: "Perfect! Laten we het over je dating situatie hebben.",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q6",
         type: "iris",
@@ -319,7 +311,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         inputType: "chips",
         chipOptions: DATING_STATUS_OPTIONS,
       });
-    }, 2500);
+    }, 1000);
   };
 
   // Question 6: Dating Status (was Question 3)
@@ -333,27 +325,19 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     const isBeginner = value === "never-dated" || value === "want-to-start";
     setCurrentStep(6);
 
+    setIrisReaction(isBeginner ? "Mooi dat je deze stap neemt!" : "Helder, dank je!");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-6",
-        type: "iris",
-        content: isBeginner
-          ? "Heel mooi dat je deze stap neemt! Iedereen begint ergens, en ik ga je helpen om met vertrouwen te starten."
-          : "Oké, dat geeft me al een goed beeld. Thanks voor je eerlijkheid!",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q7",
         type: "iris",
         content: isBeginner
-          ? "Heb je al dating ervaring of relatie-ervaring?"
+          ? "Heb je al dating of relatie-ervaring?"
           : "Hoe lang ben je al single?",
         inputType: "chips",
         chipOptions: SINGLE_DURATION_OPTIONS,
       });
-    }, 2500);
+    }, 1000);
   };
 
   // Question 7: Single Duration (was Question 4)
@@ -367,25 +351,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     const isFirstTimer = value === "never-relationship";
     setCurrentStep(7);
 
+    setIrisReaction(isFirstTimer ? "Oké! We gaan dit samen goed doen" : "Got it!");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-7",
-        type: "iris",
-        content: isFirstTimer
-          ? "Helemaal oké! We gaan samen zorgen dat je eerste dating ervaring geweldig wordt. 💪"
-          : "Got it! Nu een praktische vraag...",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q8",
         type: "iris",
-        content: "Welke dating apps gebruik je? (Je mag er meerdere kiezen)",
+        content: "Welke dating apps gebruik je?",
         inputType: "multi-chips",
         chipOptions: DATING_APP_OPTIONS,
       });
-    }, 2500);
+    }, 1000);
   };
 
   // Question 8: Dating Apps (multi-select) (was Question 5)
@@ -404,50 +380,34 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setSelectedChips([]);
     setCurrentStep(8);
 
-    setTimeout(() => {
-      addIrisMessage({
-        id: "response-8",
-        type: "iris",
-        content: hasNoApps
-          ? "Oké, dus je bent nog niet actief begonnen met daten. Dat gaan we veranderen!"
-          : "Nice! Dus je bent al actief aan het swipen.",
-      });
-    }, 500);
-
-    setTimeout(() => {
-      if (hasNoApps) {
-        // Skip matches question for users without apps
-        addIrisMessage({
-          id: "response-8b",
-          type: "iris",
-          content: "We gaan je helpen om een killer profiel te maken en vol vertrouwen te starten!",
-        });
-      } else {
-        addIrisMessage({
-          id: "q9",
-          type: "iris",
-          content: "Hoeveel matches krijg je gemiddeld per week?",
-          inputType: "chips",
-          chipOptions: WEEKLY_MATCHES_OPTIONS,
-        });
-      }
-    }, 2500);
-
-    // Auto-advance if no apps
     if (hasNoApps) {
-      // Set default weekly matches to "0-2" for users without apps
+      // Skip matches question for users without apps
       setIntakeData((prev) => ({ ...prev, weeklyMatches: "0-2" }));
       setCurrentStep(9);
 
+      setIrisReaction("Oké! We gaan je helpen om te starten");
       setTimeout(() => {
+        setIrisReaction(null);
         addIrisMessage({
           id: "q10",
           type: "iris",
-          content: "Wat is je grootste frustratie in dating op dit moment? Vertel het me in je eigen woorden.",
+          content: "Wat is je grootste frustratie in dating?",
           inputType: "text",
-          placeholder: "Bijv. Ik weet niet waar ik moet beginnen, vind het spannend...",
+          placeholder: "Bijv. Ik weet niet waar ik moet beginnen...",
         });
-      }, 4500);
+      }, 1000);
+    } else {
+      setIrisReaction("Nice! Je bent al actief");
+      setTimeout(() => {
+        setIrisReaction(null);
+        addIrisMessage({
+          id: "q9",
+          type: "iris",
+          content: "Hoeveel matches krijg je per week?",
+          inputType: "chips",
+          chipOptions: WEEKLY_MATCHES_OPTIONS,
+        });
+      }, 1000);
     }
   };
 
@@ -460,23 +420,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setIntakeData((prev) => ({ ...prev, weeklyMatches: value as any }));
     setCurrentStep(9);
 
+    setIrisReaction("Goed om te weten!");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-9",
-        type: "iris",
-        content: "Oké, dat is goed om te weten. Nu wil ik graag dieper ingaan op wat je tegenhoudt...",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q10",
         type: "iris",
-        content: "Wat is je grootste frustratie in dating op dit moment? Vertel het me in je eigen woorden.",
+        content: "Wat is je grootste frustratie in dating?",
         inputType: "text",
-        placeholder: "Bijv. Ik krijg wel matches maar gesprekken lopen altijd dood...",
+        placeholder: "Bijv. Gesprekken lopen altijd dood...",
       });
-    }, 2500);
+    }, 1000);
   };
 
   // Question 10: Biggest Frustration (open text - GOLDMINE!) (was Question 7)
@@ -488,15 +442,9 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setInputValue("");
     setCurrentStep(10);
 
+    setIrisReaction("Snap ik! Daar gaan we aan werken");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-10",
-        type: "iris",
-        content: "Dank je voor het delen. Ik snap dat dat frustrerend is. We gaan hier zeker aan werken!",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q11",
         type: "iris",
@@ -504,7 +452,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         inputType: "chips",
         chipOptions: PROFILE_DESCRIPTION_OPTIONS,
       });
-    }, 2500);
+    }, 1200);
   };
 
   // Question 11: Profile Description (was Question 8)
@@ -518,27 +466,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     const hasNoProfile = value === "no-profile";
     setCurrentStep(11);
 
+    setIrisReaction(hasNoProfile ? "Geen probleem, dat gaan we fixen!" : "Helder!");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-11",
-        type: "iris",
-        content: hasNoProfile
-          ? "Prima! Ik ga je stap voor stap helpen om een killer profiel te maken."
-          : "Helder! Dan weet ik waar we aan kunnen werken met je profiel.",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q12",
         type: "iris",
-        content: hasNoProfile
-          ? "Wat vind je het spannendste of moeilijkste aan de stap naar dating?"
-          : "Wat vind je het moeilijkste aan online dating?",
+        content: "Wat vind je het moeilijkste aan dating?",
         inputType: "chips",
         chipOptions: BIGGEST_DIFFICULTY_OPTIONS,
       });
-    }, 2500);
+    }, 1000);
   };
 
   // Question 12: Biggest Difficulty (was Question 9)
@@ -550,23 +488,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setIntakeData((prev) => ({ ...prev, biggestDifficulty: value as any }));
     setCurrentStep(12);
 
+    setIrisReaction("Daar gaan we aan werken!");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-12",
-        type: "iris",
-        content: "Thanks! Nu wil ik graag weten wat je eigenlijk zoekt...",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q13",
         type: "iris",
-        content: "Wat voor type relatie zoek je?",
+        content: "Wat voor relatie zoek je?",
         inputType: "chips",
         chipOptions: RELATIONSHIP_GOAL_OPTIONS,
       });
-    }, 2500);
+    }, 1000);
   };
 
   // Question 13: Relationship Goal (was Question 10)
@@ -578,64 +510,46 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setIntakeData((prev) => ({ ...prev, relationshipGoal: value as any }));
     setCurrentStep(13);
 
+    setIrisReaction("Mooi! Nu een eerlijke vraag...");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-13",
-        type: "iris",
-        content: "Perfect, dan weet ik wat je zoekt. Nu een eerlijke vraag...",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q14",
         type: "iris",
-        content: "Hoe zelfverzekerd voel je je in dating? (1 = helemaal niet, 10 = super zelfverzekerd)",
+        content: "Hoe zelfverzekerd voel je je in dating? (1-10)",
         inputType: "slider",
         sliderConfig: {
           min: 1,
           max: 10,
-          labels: ["Niet zelfverzekerd", "Neutraal", "Heel zelfverzekerd"],
+          labels: ["Niet", "Neutraal", "Heel"],
         },
       });
-    }, 2500);
+    }, 1000);
   };
 
   // Question 14: Confidence Level (was Question 11)
   const handleConfidenceLevelConfirm = () => {
-    addUserMessage(`Zelfvertrouwen: ${sliderValue}/10`);
+    addUserMessage(`${sliderValue}/10`);
     setIntakeData((prev) => ({ ...prev, confidenceLevel: sliderValue }));
     setCurrentStep(14);
 
-    setTimeout(() => {
-      addIrisMessage({
-        id: "response-14",
-        type: "iris",
-        content: sliderValue <= 4
-          ? "Dank je voor je eerlijkheid. Aan je zelfvertrouwen gaan we zeker werken!"
-          : sliderValue <= 7
-          ? "Dat is een goed uitgangspunt! We kunnen het nog verder opbouwen."
-          : "Wow, dat is mooi! Laten we die energie gebruiken!",
-      });
-    }, 500);
+    const reaction = sliderValue <= 4
+      ? "Dank je! Daar gaan we aan werken"
+      : sliderValue <= 7
+      ? "Goed uitgangspunt!"
+      : "Top! Die energie gebruiken we!";
 
+    setIrisReaction(reaction);
     setTimeout(() => {
-      addIrisMessage({
-        id: "q15-intro",
-        type: "iris",
-        content: "Nog twee laatste vragen, dan zijn we klaar. Deze zijn wat dieper, maar super waardevol voor mij...",
-      });
-    }, 2500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q15",
         type: "iris",
-        content: "Wat is je grootste angst in dating? Wees eerlijk, dit blijft tussen ons.",
+        content: "Wat is je grootste angst in dating?",
         inputType: "text",
-        placeholder: "Bijv. Dat ik niet goed genoeg ben, afgewezen worden, etc.",
+        placeholder: "Bijv. Afgewezen worden, niet goed genoeg zijn...",
       });
-    }, 5000);
+    }, 1000);
   };
 
   // Question 15: Biggest Fear (open text - DEEP!) (was Question 12)
@@ -647,23 +561,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setInputValue("");
     setCurrentStep(15);
 
+    setIrisReaction("Dank je voor je eerlijkheid. Daar gaan we aan werken!");
     setTimeout(() => {
-      addIrisMessage({
-        id: "response-15",
-        type: "iris",
-        content: "Bedankt dat je dit deelt. Dat vraagt moed. We gaan hier samen aan werken.",
-      });
-    }, 500);
-
-    setTimeout(() => {
+      setIrisReaction(null);
       addIrisMessage({
         id: "q16",
         type: "iris",
-        content: "Laatste vraag: Stel je voor... het is over 3 maanden. Wat zou jouw ideale dating leven er dan uitzien?",
+        content: "Laatste vraag: Hoe ziet jouw ideale dating leven er over 3 maanden uit?",
         inputType: "text",
-        placeholder: "Bijv. Ik heb leuke dates, voel me zelfverzekerd, misschien wel een leuke relatie...",
+        placeholder: "Bijv. Ik heb leuke dates, voel me zelfverzekerd...",
       });
-    }, 2500);
+    }, 1200);
   };
 
   // Question 16: Ideal Outcome (final question!) (was Question 13)
@@ -680,34 +588,14 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
     setInputValue("");
     setCurrentStep(16);
 
-    setTimeout(() => {
-      addIrisMessage({
-        id: "final-1",
-        type: "iris",
-        content: "Dat is een mooi doel! En weet je wat? Dat gaat je lukken.",
-      });
-    }, 500);
+    // Show final reaction and complete quickly
+    setIrisReaction("Mooi doel! Dat gaat je lukken. Ik maak nu je persoonlijke plan...");
 
+    // Complete after brief message - no long delays
     setTimeout(() => {
-      addIrisMessage({
-        id: "final-2",
-        type: "iris",
-        content: "Ik heb nu een compleet beeld van jou, je situatie, je uitdagingen en je dromen. Perfect! 🎯",
-      });
-    }, 2500);
-
-    setTimeout(() => {
-      addIrisMessage({
-        id: "final-3",
-        type: "iris",
-        content: "Ik ga je de komende 21 dagen persoonlijk begeleiden naar je ideale dating leven. Let's go! 🚀",
-      });
-    }, 4500);
-
-    // Complete after final message
-    setTimeout(() => {
+      setIrisReaction(null);
       onComplete(finalData);
-    }, 6500);
+    }, 2000);
   };
 
   const getCurrentInputType = () => {
@@ -795,47 +683,47 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         </div>
       </div>
 
-      {/* STICKY Question Card - ALWAYS VISIBLE ON MOBILE */}
-      {currentQuestion && currentStep >= 0 && currentStep <= totalSteps && (
-        <div className="flex-shrink-0 px-3 py-3 sm:px-4 sm:py-4 bg-gradient-to-b from-white to-pink-50/50">
-          <motion.div
-            key={currentQuestion.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="text-center"
-          >
-            {/* Question Badge - Compact */}
-            <motion.span
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="inline-block bg-pink-500 text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full mb-2"
+      {/* QUESTION + INPUT AREA - Grouped together, no separation */}
+      <div className="flex-1 flex flex-col min-h-0">
+        {/* Question Card - ALWAYS VISIBLE */}
+        {currentQuestion && currentStep >= 0 && currentStep <= totalSteps && (
+          <div className="flex-shrink-0 px-4 pt-4 pb-2 sm:px-6 sm:pt-6">
+            <motion.div
+              key={currentQuestion.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="text-center"
             >
-              Vraag {currentStep > 0 ? currentStep : 1}
-            </motion.span>
+              {/* Question Badge */}
+              <motion.span
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="inline-block bg-pink-500 text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full mb-2"
+              >
+                Vraag {currentStep > 0 ? currentStep : 1}
+              </motion.span>
 
-            {/* The Question - LARGE, CLEAR, READABLE */}
-            <h2 className="text-base sm:text-xl md:text-2xl font-bold text-gray-900 leading-snug sm:leading-relaxed">
-              {currentQuestion.content}
-            </h2>
-          </motion.div>
-        </div>
-      )}
+              {/* The Question - LARGE, CLEAR */}
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 leading-snug">
+                {currentQuestion.content}
+              </h2>
+            </motion.div>
+          </div>
+        )}
 
-      {/* Scrollable Middle Area - Compact */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-3 sm:px-4">
-        {/* Previous Answers - Ultra Compact on Mobile */}
-        {userAnswers.length > 0 && (
-          <div className="py-2">
+        {/* Previous Answers - Compact row, only when not typing */}
+        {userAnswers.length > 0 && !isTyping && (
+          <div className="flex-shrink-0 px-4 py-2">
             <div className="flex flex-wrap gap-1.5 justify-center">
               <AnimatePresence mode="popLayout">
-                {userAnswers.slice(-4).map((answer) => (
+                {userAnswers.slice(-3).map((answer) => (
                   <motion.span
                     key={answer.id}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="bg-pink-100/80 text-pink-700 text-[11px] sm:text-xs px-2 py-1 rounded-full max-w-[120px] sm:max-w-[150px] truncate"
+                    className="bg-pink-100/80 text-pink-700 text-[11px] px-2 py-1 rounded-full max-w-[100px] truncate"
                   >
                     {answer.content}
                   </motion.span>
@@ -845,35 +733,52 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
           </div>
         )}
 
-        {/* Typing Indicator - Compact */}
-        {isTyping && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-center py-3"
-          >
-            <div className="flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 shadow-sm border border-pink-100">
-              <IrisAvatar size="xs" />
-              <div className="flex items-center gap-0.5">
-                <motion.span
-                  className="w-1.5 h-1.5 bg-pink-400 rounded-full"
-                  animate={{ scale: [1, 1.4, 1] }}
-                  transition={{ duration: 0.5, repeat: Infinity, delay: 0 }}
-                />
-                <motion.span
-                  className="w-1.5 h-1.5 bg-pink-400 rounded-full"
-                  animate={{ scale: [1, 1.4, 1] }}
-                  transition={{ duration: 0.5, repeat: Infinity, delay: 0.1 }}
-                />
-                <motion.span
-                  className="w-1.5 h-1.5 bg-pink-400 rounded-full"
-                  animate={{ scale: [1, 1.4, 1] }}
-                  transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
-                />
+        {/* Iris Reaction - Shows her response prominently */}
+        {(isTyping || irisReaction) && (
+          <div className="flex-shrink-0 px-4 py-3">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-center"
+            >
+              <div className="flex items-center gap-3 bg-gradient-to-r from-pink-50 to-white rounded-2xl px-4 py-3 shadow-sm border border-pink-100 max-w-[90%]">
+                <IrisAvatar size="sm" />
+                <div className="flex-1">
+                  {irisReaction ? (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-sm font-medium text-gray-800"
+                    >
+                      {irisReaction}
+                    </motion.p>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <motion.span
+                        className="w-2 h-2 bg-pink-400 rounded-full"
+                        animate={{ scale: [1, 1.4, 1] }}
+                        transition={{ duration: 0.5, repeat: Infinity, delay: 0 }}
+                      />
+                      <motion.span
+                        className="w-2 h-2 bg-pink-400 rounded-full"
+                        animate={{ scale: [1, 1.4, 1] }}
+                        transition={{ duration: 0.5, repeat: Infinity, delay: 0.1 }}
+                      />
+                      <motion.span
+                        className="w-2 h-2 bg-pink-400 rounded-full"
+                        animate={{ scale: [1, 1.4, 1] }}
+                        transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         )}
+
+        {/* Spacer to push input to bottom on larger screens, but minimal on mobile */}
+        <div className="flex-1 min-h-[20px] max-h-[80px] sm:max-h-[150px]" />
 
         <div ref={messagesEndRef} />
       </div>
