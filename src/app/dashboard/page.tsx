@@ -648,83 +648,93 @@ export default function DashboardPage() {
     debugLog.render('Rendering Day Zero experience within dashboard');
   }
 
+  // Check if we need full-screen mobile onboarding (no header/nav)
+  const isFullScreenOnboarding = showKickstartOnboarding || showDayZero;
+
   return (
     <>
       {isMobileTabAccess || isMobileDevice ? (
-        // Mobile-friendly layout - WERELDKLASSE: Full mobile dashboard!
-        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white pb-24">
-          {/* Mobile Header - Sticky */}
-          <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 px-4 py-3 sticky top-0 z-40">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                {/* Logo */}
-                <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
-                  <Image
-                    src="/images/LogoDatingAssistent.png"
-                    alt="DatingAssistent Logo"
-                    width={40}
-                    height={40}
-                    className="object-contain"
-                  />
-                </div>
-                <div>
-                  <h1 className="text-lg font-bold text-gray-900">
-                    {activeTab === 'home' && 'Dashboard'}
-                    {activeTab === 'pad' && 'Jouw Pad'}
-                    {activeTab === 'coach' && 'Coach'}
-                    {activeTab === 'profiel' && 'Tools'}
-                    {activeTab === 'subscription' && 'Abonnement'}
-                    {activeTab === 'data-management' && 'Data & Privacy'}
-                    {activeTab === 'settings' && 'Instellingen'}
-                    {!['home', 'pad', 'coach', 'profiel', 'subscription', 'data-management', 'settings'].includes(activeTab) && 'Dashboard'}
-                  </h1>
-                  <p className="text-xs text-gray-500">
-                    {user?.name ? `Welkom, ${user.name.split(' ')[0]}` : 'DatingAssistent'}
-                  </p>
-                </div>
-              </div>
-              {/* Settings button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleTabChange('settings')}
-                className="p-2 rounded-full hover:bg-pink-50"
-              >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </Button>
-            </div>
-          </div>
-
-          {/* Mobile Content */}
-          <div className="p-4">
+        // Mobile layout
+        isFullScreenOnboarding ? (
+          // FULL-SCREEN ONBOARDING MODE - No header, no bottom nav, full viewport
+          <div className="fixed inset-0 bg-gradient-to-br from-pink-50 via-white to-pink-50 z-50">
             {showKickstartOnboarding ? (
-              <div className="min-h-[600px]">
-                <KickstartOnboardingFlow
-                  userName={user?.name?.split(' ')[0]}
-                  onComplete={handleKickstartOnboardingComplete}
-                />
-              </div>
+              <KickstartOnboardingFlow
+                userName={user?.name?.split(' ')[0]}
+                onComplete={handleKickstartOnboardingComplete}
+                className="h-full"
+              />
             ) : showDayZero ? (
               <DayZeroExperience
                 onComplete={handleDayZeroComplete}
-                embedded={true}
+                embedded={false}
               />
-            ) : showOnboarding ? (
-              <OnboardingFlow
-                journeyState={journeyState}
-                userName={user?.name}
-                handlers={handlers}
-              />
-            ) : (
-              tabContent
-            )}
+            ) : null}
           </div>
+        ) : (
+          // NORMAL MOBILE DASHBOARD - With header and bottom nav
+          <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white pb-24">
+            {/* Mobile Header - Sticky */}
+            <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 px-4 py-3 sticky top-0 z-40">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {/* Logo */}
+                  <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
+                    <Image
+                      src="/images/LogoDatingAssistent.png"
+                      alt="DatingAssistent Logo"
+                      width={40}
+                      height={40}
+                      className="object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h1 className="text-lg font-bold text-gray-900">
+                      {activeTab === 'home' && 'Dashboard'}
+                      {activeTab === 'pad' && 'Jouw Pad'}
+                      {activeTab === 'coach' && 'Coach'}
+                      {activeTab === 'profiel' && 'Tools'}
+                      {activeTab === 'subscription' && 'Abonnement'}
+                      {activeTab === 'data-management' && 'Data & Privacy'}
+                      {activeTab === 'settings' && 'Instellingen'}
+                      {!['home', 'pad', 'coach', 'profiel', 'subscription', 'data-management', 'settings'].includes(activeTab) && 'Dashboard'}
+                    </h1>
+                    <p className="text-xs text-gray-500">
+                      {user?.name ? `Welkom, ${user.name.split(' ')[0]}` : 'DatingAssistent'}
+                    </p>
+                  </div>
+                </div>
+                {/* Settings button */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleTabChange('settings')}
+                  className="p-2 rounded-full hover:bg-pink-50"
+                >
+                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </Button>
+              </div>
+            </div>
 
-          <BottomNavigation />
-        </div>
+            {/* Mobile Content */}
+            <div className="p-4">
+              {showOnboarding ? (
+                <OnboardingFlow
+                  journeyState={journeyState}
+                  userName={user?.name}
+                  handlers={handlers}
+                />
+              ) : (
+                tabContent
+              )}
+            </div>
+
+            <BottomNavigation />
+          </div>
+        )
       ) : (
         // Desktop layout
         <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white">

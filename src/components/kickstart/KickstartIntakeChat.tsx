@@ -770,7 +770,8 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
   return (
     <div className={cn(
       "flex flex-col bg-gradient-to-b from-pink-50/30 to-white",
-      "h-[100dvh] max-h-[100dvh]", // Use dynamic viewport height for mobile
+      // Use parent's height if provided via className, otherwise full viewport
+      className?.includes('h-full') ? '' : 'h-[100dvh] max-h-[100dvh]',
       className
     )}>
       {/* Compact Progress Header - MOBILE OPTIMIZED */}

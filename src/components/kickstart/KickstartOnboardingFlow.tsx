@@ -126,7 +126,14 @@ export function KickstartOnboardingFlow({
   ];
 
   return (
-    <div className={cn('min-h-[100dvh] sm:min-h-[600px] flex items-center justify-center bg-gradient-to-b from-pink-50/50 to-white', className)}>
+    <div className={cn(
+      // Full viewport on mobile for chat, centered for other steps
+      currentStep === 'chat'
+        ? 'h-[100dvh] w-full'
+        : 'min-h-[100dvh] sm:min-h-[600px] flex items-center justify-center',
+      'bg-gradient-to-b from-pink-50/50 to-white',
+      className
+    )}>
       {/* Confetti effect */}
       {showConfetti && (
         <Confetti
@@ -280,21 +287,21 @@ export function KickstartOnboardingFlow({
           </motion.div>
         )}
 
-        {/* STEP 2: Chat Onboarding - Immersive */}
+        {/* STEP 2: Chat Onboarding - FULL SCREEN MOBILE */}
         {currentStep === 'chat' && (
           <motion.div
             key="chat"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.3 }}
-            className="w-full max-w-2xl mx-auto h-[100dvh] sm:h-auto sm:px-4 sm:py-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="w-full h-full sm:max-w-2xl sm:mx-auto sm:h-auto sm:px-4 sm:py-6 sm:flex sm:items-center"
           >
-            {/* Chat Container - Full screen mobile, card desktop */}
-            <div className="bg-white sm:rounded-3xl sm:shadow-2xl sm:shadow-pink-200/20 overflow-hidden h-full sm:h-auto sm:border sm:border-pink-100/50">
-              {/* Chat - Full height */}
+            {/* Chat Container - FULL SCREEN mobile, card desktop */}
+            <div className="bg-white h-full w-full sm:h-auto sm:rounded-3xl sm:shadow-2xl sm:shadow-pink-200/20 sm:border sm:border-pink-100/50 sm:overflow-hidden">
+              {/* Chat - FULL HEIGHT on mobile */}
               <div className="h-full sm:h-[min(calc(100vh-150px),700px)] sm:min-h-[550px]">
-                <KickstartIntakeChat onComplete={handleChatComplete} />
+                <KickstartIntakeChat onComplete={handleChatComplete} className="h-full" />
               </div>
             </div>
           </motion.div>
