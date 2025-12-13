@@ -15,17 +15,19 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', loading, asChild, noFocusRing, children, disabled, ...props }, ref) => {
     const baseClasses = cn(
-      'inline-flex items-center justify-center font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed',
+      'inline-flex items-center justify-center font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed',
+      'select-none touch-manipulation',
+      '[&]:[-webkit-tap-highlight-color:transparent]',
       !noFocusRing && 'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
     );
 
     const variantClasses = {
-      default: 'bg-primary-500 text-white hover:bg-primary-600 active:scale-95',
-      primary: 'bg-primary-500 text-white hover:bg-primary-600 hover:shadow-lg hover:scale-105 active:scale-95',
-      secondary: 'bg-gray-100 text-gray-800 hover:bg-gray-200 hover:text-gray-900',
-      destructive: 'bg-red-500 text-white hover:bg-red-600 active:scale-95',
-      ghost: 'text-gray-700 hover:text-gray-900 hover:bg-gray-50',
-      outline: 'border border-gray-300 text-gray-800 hover:bg-gray-50 hover:text-gray-900',
+      default: 'bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700',
+      primary: 'bg-primary-500 text-white hover:bg-primary-600 hover:shadow-lg active:bg-primary-700 active:shadow-md',
+      secondary: 'bg-gray-100 text-gray-800 hover:bg-gray-200 hover:text-gray-900 active:bg-gray-300',
+      destructive: 'bg-red-500 text-white hover:bg-red-600 active:bg-red-700',
+      ghost: 'text-gray-700 hover:text-gray-900 hover:bg-gray-50 active:bg-gray-100',
+      outline: 'border border-gray-300 text-gray-800 hover:bg-gray-50 hover:text-gray-900 active:bg-gray-100',
       link: 'text-primary-500 underline-offset-4 hover:underline',
     };
 
