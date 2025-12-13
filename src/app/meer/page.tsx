@@ -64,11 +64,11 @@ export default function MeerPage() {
           const data = await response.json();
 
           // Determine highest tier based on enrollments
-          if (data.programs?.some((p: any) => p.slug === 'vip')) {
+          if (data.programs?.some((p: any) => p.program_slug === 'vip')) {
             setUserTier('vip');
-          } else if (data.programs?.some((p: any) => p.slug === 'transformatie')) {
+          } else if (data.programs?.some((p: any) => p.program_slug === 'transformatie')) {
             setUserTier('transformatie');
-          } else if (data.programs?.some((p: any) => p.slug === 'kickstart')) {
+          } else if (data.programs?.some((p: any) => p.program_slug === 'kickstart')) {
             setUserTier('kickstart');
           } else {
             setUserTier('free');

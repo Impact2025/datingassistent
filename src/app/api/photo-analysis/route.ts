@@ -35,11 +35,11 @@ export async function POST(request: NextRequest) {
     // Also check for program enrollments (Kickstart, Transformatie, VIP)
     const programCheck = await sql`
       SELECT COUNT(*) as count
-      FROM user_enrollments ue
-      JOIN programs p ON ue.program_id = p.id
-      WHERE ue.user_id = ${user.id}
+      FROM program_enrollments pe
+      JOIN programs p ON pe.program_id = p.id
+      WHERE pe.user_id = ${user.id}
       AND p.slug IN ('kickstart', 'transformatie', 'vip')
-      AND ue.status = 'active'
+      AND pe.status = 'active'
     `;
 
     const hasProgram = parseInt(programCheck.rows[0]?.count || '0') > 0;
