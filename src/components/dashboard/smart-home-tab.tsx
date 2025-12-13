@@ -560,6 +560,47 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
         >
           <GamificationWidget userId={userId} compact />
         </motion.div>
+
+        {/* Upgrade CTA - Klaar voor meer? */}
+        {!showWelcomeVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: ANIMATION_DELAYS.GAMIFICATION + 0.1 }}
+          >
+            <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Klaar voor meer?</h3>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4">
+                      Unlock AI-powered tools en geavanceerde features met Kickstart Toolkit of Premium Pro Arsenal
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button
+                        onClick={() => router.push('/kickstart-toolkit')}
+                        className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white w-full sm:w-auto"
+                        size="default"
+                      >
+                        <Rocket className="w-4 h-4 mr-2" />
+                        Bekijk Kickstart Toolkit
+                      </Button>
+                      <Button
+                        onClick={() => router.push('/pro-arsenal')}
+                        variant="outline"
+                        className="border-purple-300 text-purple-700 hover:bg-purple-50 w-full sm:w-auto"
+                        size="default"
+                      >
+                        <Crown className="w-4 h-4 mr-2" />
+                        Of bekijk Pro Arsenal
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
       </div>
 
       {/* Scan Modal */}
