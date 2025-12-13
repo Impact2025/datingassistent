@@ -350,7 +350,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
             <p className="text-sm text-gray-600">Hoe meer je deelt, hoe beter de analyse</p>
           </div>
 
-          <Card>
+          <Card className="bg-white border-0 shadow-sm">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base">Bio Tekst</CardTitle>
@@ -404,7 +404,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white border-0 shadow-sm">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base">Chat Voorbeeld</CardTitle>
@@ -423,7 +423,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white border-0 shadow-sm">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base">Profiel Foto's</CardTitle>
@@ -452,7 +452,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
             <Button
               onClick={handleSubmit}
               disabled={!bioValid || loading}
-              className="flex-1 bg-pink-500 hover:bg-pink-600"
+              className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 shadow-sm"
             >
               Analyseer
               <Sparkles className="w-4 h-4 ml-2" />
@@ -469,7 +469,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
 
     return (
       <div className="flex items-center justify-center p-12">
-        <Card className="w-full max-w-md border border-gray-200">
+        <Card className="w-full max-w-md bg-white border-0 shadow-sm">
           <CardContent className="p-10 text-center space-y-6">
             <div className="relative mx-auto w-20 h-20">
               <div className="absolute inset-0 animate-spin rounded-full border-4 border-gray-100 border-t-pink-500"></div>
@@ -519,7 +519,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
       <div className="p-6 pb-12">
         <div className="max-w-5xl mx-auto space-y-5">
           <div className="text-center space-y-2">
-            <Badge className="bg-pink-500">Je Analyse</Badge>
+            <Badge className="bg-gradient-to-r from-pink-500 to-pink-600 text-white border-0">Je Analyse</Badge>
             <h2 className="text-2xl font-bold text-gray-900">
               {analysis?.firstImpression?.personaTitle || 'Je Resultaten'}
             </h2>
@@ -529,7 +529,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
           </div>
 
           {vibeMeters && Object.keys(vibeMeters).length > 0 && (
-            <Card>
+            <Card className="bg-white border-0 shadow-sm">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Sparkles className="w-5 h-5 text-pink-500" />
@@ -557,7 +557,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
           )}
 
           {analysis?.firstImpression?.thirtySecond && (
-            <Card className="border-blue-100 bg-blue-50/30">
+            <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-0 shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Eerste 30 Seconden</CardTitle>
                 <p className="text-xs text-gray-600">Dit denken matches direct</p>
@@ -565,8 +565,8 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
               <CardContent className="space-y-2">
                 {analysis.firstImpression.thirtySecond.map((item: string, i: number) => (
                   <div key={i} className="flex items-start gap-2 text-sm">
-                    <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                      <span className="text-xs font-bold text-blue-600">{i + 1}</span>
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <span className="text-xs font-bold text-white">{i + 1}</span>
                     </div>
                     <p className="text-gray-700">{item}</p>
                   </div>
@@ -576,7 +576,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
           )}
 
           {analysis?.selfVsReality && (
-            <Card>
+            <Card className="bg-white border-0 shadow-sm">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-base">Zelfbeeld vs Realiteit</CardTitle>
@@ -612,7 +612,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
           )}
 
           {analysis?.nieuweBioVarianten && analysis.nieuweBioVarianten.length > 0 && (
-            <Card className="border-green-100 bg-green-50/30">
+            <Card className="bg-white border-0 shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Geoptimaliseerde Bio's</CardTitle>
                 <p className="text-xs text-gray-600">Kies de variant die past of combineer elementen</p>
