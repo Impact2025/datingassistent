@@ -74,7 +74,7 @@ export function BottomNavigation() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-gray-200 md:hidden safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-lg border-t border-gray-200 md:hidden safe-area-bottom shadow-lg">
       <div className="flex items-center justify-around px-1 py-2">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -86,12 +86,17 @@ export function BottomNavigation() {
               href={item.href}
               onClick={triggerHapticFeedback}
               className={cn(
-                "flex flex-col items-center justify-center px-3 py-2 rounded-xl transition-all duration-300 ease-out min-w-[60px] active:scale-95",
+                "relative flex flex-col items-center justify-center px-3 py-2 rounded-2xl transition-all duration-300 ease-out min-w-[60px] active:scale-95",
                 isActive
-                  ? "bg-gradient-to-t from-pink-50 to-transparent shadow-sm"
-                  : "hover:bg-gray-50 hover:scale-105"
+                  ? "bg-gradient-to-t from-pink-50 via-pink-25 to-transparent shadow-sm scale-105"
+                  : "hover:bg-gray-50"
               )}
             >
+              {/* Active Indicator Background Glow */}
+              {isActive && (
+                <div className="absolute inset-0 bg-pink-100/30 rounded-2xl blur-sm -z-10" />
+              )}
+
               {item.isLogo ? (
                 <div className="w-6 h-6 mb-1 relative">
                   <Image
@@ -99,27 +104,36 @@ export function BottomNavigation() {
                     alt="DatingAssistent Logo"
                     fill
                     className={cn(
-                      "object-contain transition-opacity duration-200",
-                      isActive ? "opacity-100" : "opacity-70"
+                      "object-contain transition-all duration-200",
+                      isActive ? "opacity-100 scale-110" : "opacity-70"
                     )}
                   />
                 </div>
               ) : Icon ? (
-                <Icon
-                  className={cn(
-                    "w-6 h-6 mb-1 transition-colors duration-200",
-                    isActive ? item.activeColor : item.color
+                <div className="relative">
+                  <Icon
+                    className={cn(
+                      "w-6 h-6 mb-1 transition-all duration-200",
+                      isActive ? `${item.activeColor} scale-110` : item.color
+                    )}
+                  />
+                  {/* Pulse effect for active icon */}
+                  {isActive && (
+                    <div className="absolute inset-0 animate-ping opacity-20">
+                      <Icon className={cn("w-6 h-6", item.activeColor)} />
+                    </div>
                   )}
-                />
+                </div>
               ) : null}
               <span className={cn(
-                "text-xs font-medium transition-colors duration-200",
-                isActive ? item.activeColor : item.color
+                "text-xs font-medium transition-all duration-200",
+                isActive ? `${item.activeColor} font-semibold` : item.color
               )}>
                 {item.label}
               </span>
+              {/* Bottom Active Indicator */}
               {isActive && (
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-pink-500 rounded-full" />
+                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-10 h-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent rounded-full" />
               )}
             </Link>
           );

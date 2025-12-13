@@ -349,39 +349,101 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                       Succes komt van commitment. Hoe committed ben je om deze transformatie te maken?
                     </p>
 
-                    {/* Commitment Slider */}
+                    {/* Commitment Level Selector - World Class UX */}
                     <div className="space-y-4">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Commitment level: {commitmentLevel}/10
-                      </label>
-                      <input
-                        type="range"
-                        min="1"
-                        max="10"
-                        value={commitmentLevel}
-                        onChange={(e) => setCommitmentLevel(parseInt(e.target.value))}
-                        className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-pink-600"
-                      />
-                      <div className="flex justify-between text-xs text-gray-500">
-                        <span>1 - Niet zeker</span>
-                        <span>5 - Neutraal</span>
-                        <span>10 - 100% committed</span>
+                      <div className="flex items-center justify-between">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Kies je commitment level
+                        </label>
+                        <span className={`text-sm font-bold px-3 py-1 rounded-full ${
+                          commitmentLevel >= 7
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-amber-100 text-amber-700'
+                        }`}>
+                          {commitmentLevel}/10
+                        </span>
                       </div>
 
-                      {commitmentLevel < 7 && (
-                        <div className="bg-gray-50 border-l-4 border-pink-600 p-3 rounded">
-                          <p className="text-sm text-gray-900">
-                            💡 Tip: Een commitment van minimaal 7 geeft je de beste kans op succes!
-                          </p>
+                      {/* Visual Number Grid */}
+                      <div className="grid grid-cols-5 gap-2">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                          <button
+                            key={num}
+                            type="button"
+                            onClick={() => setCommitmentLevel(num)}
+                            className={`
+                              aspect-square rounded-xl font-bold text-lg transition-all duration-200
+                              border-2 active:scale-95 relative
+                              ${commitmentLevel === num
+                                ? 'border-pink-500 bg-pink-500 text-white shadow-lg scale-105'
+                                : num >= 7
+                                  ? 'border-green-200 bg-green-50 text-green-700 hover:border-green-400 hover:bg-green-100'
+                                  : 'border-gray-200 bg-white text-gray-400 hover:border-gray-300'
+                              }
+                            `}
+                          >
+                            {num}
+                            {num === 7 && commitmentLevel < 7 && (
+                              <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Clear requirement message */}
+                      <div className={`p-4 rounded-xl border-2 transition-all ${
+                        commitmentLevel >= 7
+                          ? 'bg-green-50 border-green-200'
+                          : 'bg-amber-50 border-amber-200'
+                      }`}>
+                        <div className="flex items-start gap-3">
+                          {commitmentLevel >= 7 ? (
+                            <>
+                              <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                              <div>
+                                <p className="font-medium text-green-800">
+                                  Commitment level {commitmentLevel} - Je bent klaar!
+                                </p>
+                                <p className="text-sm text-green-700 mt-1">
+                                  Met dit commitment ga je echte resultaten zien.
+                                </p>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <span className="text-xl">👆</span>
+                              <div>
+                                <p className="font-medium text-amber-800">
+                                  Kies minimaal 7 om door te gaan
+                                </p>
+                                <p className="text-sm text-amber-700 mt-1">
+                                  De groene nummers (7-10) geven je de beste kans op succes. We willen zeker weten dat je er klaar voor bent!
+                                </p>
+                              </div>
+                            </>
+                          )}
                         </div>
-                      )}
+                      </div>
                     </div>
 
                     {/* Commitment Checklist */}
                     <div className="space-y-3 pt-4">
-                      <p className="font-medium text-gray-900">Ik commit me aan:</p>
+                      <div className="flex items-center justify-between">
+                        <p className="font-medium text-gray-900">Ik commit me aan:</p>
+                        <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+                          commitmentChecklist.daily_time && commitmentChecklist.honest_reflections && commitmentChecklist.do_exercises
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-gray-100 text-gray-500'
+                        }`}>
+                          {[commitmentChecklist.daily_time, commitmentChecklist.honest_reflections, commitmentChecklist.do_exercises].filter(Boolean).length}/3 aangevinkt
+                        </span>
+                      </div>
 
-                      <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-pink-300 transition-colors">
+                      <label className={`flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${
+                        commitmentChecklist.daily_time
+                          ? 'border-green-400 bg-green-50'
+                          : 'border-gray-200 hover:border-pink-300'
+                      }`}>
                         <Checkbox
                           checked={commitmentChecklist.daily_time}
                           onCheckedChange={(checked) =>
@@ -390,12 +452,20 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                           className="mt-1"
                         />
                         <div>
-                          <p className="font-medium text-gray-900">Dagelijks 15-20 minuten investeren</p>
-                          <p className="text-sm text-gray-600">Consistent zijn is de sleutel tot resultaat</p>
+                          <p className={`font-medium ${commitmentChecklist.daily_time ? 'text-green-800' : 'text-gray-900'}`}>
+                            Dagelijks 15-20 minuten investeren
+                          </p>
+                          <p className={`text-sm ${commitmentChecklist.daily_time ? 'text-green-700' : 'text-gray-600'}`}>
+                            Consistent zijn is de sleutel tot resultaat
+                          </p>
                         </div>
                       </label>
 
-                      <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-pink-300 transition-colors">
+                      <label className={`flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${
+                        commitmentChecklist.honest_reflections
+                          ? 'border-green-400 bg-green-50'
+                          : 'border-gray-200 hover:border-pink-300'
+                      }`}>
                         <Checkbox
                           checked={commitmentChecklist.honest_reflections}
                           onCheckedChange={(checked) =>
@@ -404,12 +474,20 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                           className="mt-1"
                         />
                         <div>
-                          <p className="font-medium text-gray-900">Eerlijk zijn in mijn reflecties</p>
-                          <p className="text-sm text-gray-600">Alleen door eerlijkheid groei je echt</p>
+                          <p className={`font-medium ${commitmentChecklist.honest_reflections ? 'text-green-800' : 'text-gray-900'}`}>
+                            Eerlijk zijn in mijn reflecties
+                          </p>
+                          <p className={`text-sm ${commitmentChecklist.honest_reflections ? 'text-green-700' : 'text-gray-600'}`}>
+                            Alleen door eerlijkheid groei je echt
+                          </p>
                         </div>
                       </label>
 
-                      <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-pink-300 transition-colors">
+                      <label className={`flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${
+                        commitmentChecklist.do_exercises
+                          ? 'border-green-400 bg-green-50'
+                          : 'border-gray-200 hover:border-pink-300'
+                      }`}>
                         <Checkbox
                           checked={commitmentChecklist.do_exercises}
                           onCheckedChange={(checked) =>
@@ -418,8 +496,12 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                           className="mt-1"
                         />
                         <div>
-                          <p className="font-medium text-gray-900">Oefeningen daadwerkelijk uitvoeren</p>
-                          <p className="text-sm text-gray-600">Niet alleen kijken, maar ook doen</p>
+                          <p className={`font-medium ${commitmentChecklist.do_exercises ? 'text-green-800' : 'text-gray-900'}`}>
+                            Oefeningen daadwerkelijk uitvoeren
+                          </p>
+                          <p className={`text-sm ${commitmentChecklist.do_exercises ? 'text-green-700' : 'text-gray-600'}`}>
+                            Niet alleen kijken, maar ook doen
+                          </p>
                         </div>
                       </label>
                     </div>

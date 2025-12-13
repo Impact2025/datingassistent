@@ -674,43 +674,46 @@ export default function DashboardPage() {
           </div>
         ) : (
           // NORMAL MOBILE DASHBOARD - With header and bottom nav
-          <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white pb-24">
-            {/* Mobile Header - Sticky */}
-            <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 px-4 py-3 sticky top-0 z-40">
+          <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white pb-24 safe-area-inset">
+            {/* Mobile Header - Sticky with enhanced design */}
+            <div className="bg-white/95 backdrop-blur-md border-b border-pink-100 px-4 py-3 sticky top-0 z-40 shadow-sm">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  {/* Logo */}
-                  <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
+                  {/* Logo with gradient border */}
+                  <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md ring-2 ring-pink-100">
                     <Image
                       src="/images/LogoDatingAssistent.png"
                       alt="DatingAssistent Logo"
                       width={40}
                       height={40}
                       className="object-contain"
+                      priority
                     />
                   </div>
                   <div>
-                    <h1 className="text-lg font-bold text-gray-900">
-                      {activeTab === 'home' && 'Dashboard'}
-                      {activeTab === 'pad' && 'Jouw Pad'}
-                      {activeTab === 'coach' && 'Coach'}
-                      {activeTab === 'profiel' && 'Tools'}
-                      {activeTab === 'subscription' && 'Abonnement'}
-                      {activeTab === 'data-management' && 'Data & Privacy'}
-                      {activeTab === 'settings' && 'Instellingen'}
-                      {!['home', 'pad', 'coach', 'profiel', 'subscription', 'data-management', 'settings'].includes(activeTab) && 'Dashboard'}
+                    <h1 className="text-base font-bold text-gray-900 leading-tight">
+                      {activeTab === 'home' && '🏠 Dashboard'}
+                      {activeTab === 'pad' && '🎯 Jouw Pad'}
+                      {activeTab === 'coach' && '💬 Coach'}
+                      {activeTab === 'profiel' && '🛠️ Tools'}
+                      {activeTab === 'tools' && '🛠️ Tools'}
+                      {activeTab === 'subscription' && '💎 Abonnement'}
+                      {activeTab === 'data-management' && '🔒 Data & Privacy'}
+                      {activeTab === 'settings' && '⚙️ Instellingen'}
+                      {!['home', 'pad', 'coach', 'profiel', 'tools', 'subscription', 'data-management', 'settings'].includes(activeTab) && '🏠 Dashboard'}
                     </h1>
                     <p className="text-xs text-gray-500">
-                      {user?.name ? `Welkom, ${user.name.split(' ')[0]}` : 'DatingAssistent'}
+                      {user?.name ? `Hoi ${user.name.split(' ')[0]} 👋` : 'DatingAssistent'}
                     </p>
                   </div>
                 </div>
-                {/* Settings button */}
+                {/* Settings button with enhanced styling */}
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => handleTabChange('settings')}
-                  className="p-2 rounded-full hover:bg-pink-50"
+                  className="p-2.5 rounded-full hover:bg-pink-50 transition-all active:scale-95"
+                  aria-label="Instellingen"
                 >
                   <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -720,8 +723,8 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Mobile Content */}
-            <div className="p-4">
+            {/* Mobile Content with smooth transitions */}
+            <div className="px-4 pt-4 pb-6">
               {showOnboarding ? (
                 <OnboardingFlow
                   journeyState={journeyState}

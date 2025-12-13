@@ -107,6 +107,15 @@ export const ToolsGridSection = React.memo(function ToolsGridSection({
                       onOpenScan?.('hechtingsstijl');
                     } else if (tool.id === FEATURED_TOOL_IDS.CHAT_COACH) {
                       onTabChange?.('coach');
+                    } else if (tool.id === FEATURED_TOOL_IDS.PHOTO_ANALYSIS || tool.id === FEATURED_TOOL_IDS.OPENERS) {
+                      // Direct open tool met query parameter
+                      if (typeof window !== 'undefined') {
+                        const currentUrl = new URL(window.location.href);
+                        currentUrl.searchParams.set('tab', 'profiel');
+                        currentUrl.searchParams.set('tool', tool.id);
+                        window.history.pushState({}, '', currentUrl.toString());
+                        onTabChange?.('profiel');
+                      }
                     } else {
                       onTabChange?.('profiel');
                     }

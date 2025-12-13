@@ -51,21 +51,6 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
   const { userTier, isLoading: accessLoading } = useAccessControl();
   const [showTour, setShowTour] = useState(false);
 
-  // Check if user should see tour (new Kickstart user)
-  useEffect(() => {
-    if (accessLoading) return;
-
-    const hasSeenTour = localStorage.getItem('tools-hub-tour-seen');
-    const isKickstartUser = userTier === 'kickstart';
-
-    // Show tour for new Kickstart users who haven't seen it
-    if (isKickstartUser && !hasSeenTour) {
-      // Delay to let the page render first
-      const timer = setTimeout(() => setShowTour(true), 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [userTier, accessLoading]);
-
   // Modal state for tools
   const [activeModal, setActiveModal] = useState<{
     isOpen: boolean;
@@ -85,6 +70,38 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
 
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [autoOpenTool, setAutoOpenTool] = useState<string | null>(null);
+
+  // Check URL for tool parameter to auto-open
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const toolParam = urlParams.get('tool');
+
+    if (toolParam) {
+      setAutoOpenTool(toolParam);
+
+      // Clean up URL
+      const newUrl = window.location.pathname + window.location.search.replace(/[?&]tool=[^&]+/, '').replace(/^&/, '?');
+      window.history.replaceState({}, '', newUrl || window.location.pathname);
+    }
+  }, []);
+
+  // Check if user should see tour (new Kickstart user)
+  useEffect(() => {
+    if (accessLoading) return;
+
+    const hasSeenTour = localStorage.getItem('tools-hub-tour-seen');
+    const isKickstartUser = userTier === 'kickstart';
+
+    // Show tour for new Kickstart users who haven't seen it
+    if (isKickstartUser && !hasSeenTour) {
+      // Delay to let the page render first
+      const timer = setTimeout(() => setShowTour(true), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [userTier, accessLoading]);
 
   // Get locked tools count for upgrade banner
   const lockedTools = useMemo(() => {
@@ -319,6 +336,16 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       category: ''
     });
   };
+
+  // Auto-open tool when autoOpenTool is set
+  useEffect(() => {
+    if (autoOpenTool) {
+      setTimeout(() => {
+        openToolModal(autoOpenTool);
+        setAutoOpenTool(null);
+      }, 300);
+    }
+  }, [autoOpenTool]);
 
   return (
     <div className="space-y-6 pb-8">
