@@ -77,9 +77,9 @@ export default function KickstartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white pb-24">
+    <div className="min-h-screen bg-white pb-24">
       {/* Header - Mobile Optimized */}
-      <div className="bg-white/95 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-10">
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -88,13 +88,13 @@ export default function KickstartPage() {
                 variant="ghost"
                 size="sm"
                 onClick={() => router.push('/dashboard')}
-                className="p-2 rounded-full hover:bg-pink-50 md:hidden"
+                className="p-2 rounded-full hover:bg-gray-100 md:hidden"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-600" />
               </Button>
               <div>
-                <h1 className="text-lg md:text-xl font-bold text-gray-900">De Kickstart</h1>
-                <p className="text-xs md:text-sm text-gray-600">21 dagen naar dating succes</p>
+                <h1 className="text-lg md:text-xl font-semibold text-gray-900">Kickstart</h1>
+                <p className="text-xs md:text-sm text-gray-500">21 dagen programma</p>
               </div>
             </div>
             {/* Desktop: Dashboard button */}
@@ -102,7 +102,7 @@ export default function KickstartPage() {
               variant="outline"
               size="sm"
               onClick={() => router.push('/dashboard')}
-              className="hidden md:flex border-pink-200 text-pink-600 hover:bg-pink-50"
+              className="hidden md:flex border-gray-200 text-gray-700 hover:bg-gray-50"
             >
               <Home className="w-4 h-4 mr-2" />
               Dashboard

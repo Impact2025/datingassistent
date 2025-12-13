@@ -44,21 +44,18 @@ const WEEK_THEMES = [
     week: 1,
     title: "Foto's & Eerste Indruk",
     subtitle: 'Bouw je visuele fundament',
-    emoji: '📸',
     icon: Camera,
   },
   {
     week: 2,
     title: 'Bio & Profiel',
     subtitle: 'Vertel je verhaal',
-    emoji: '✍️',
     icon: Pencil,
   },
   {
     week: 3,
     title: 'Gesprekken & Connectie',
     subtitle: 'Master je communicatie',
-    emoji: '💬',
     icon: MessageCircle,
   },
 ];
@@ -153,33 +150,28 @@ export function KickstartWeekOverview({ onBack }: KickstartWeekOverviewProps) {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center">
-            <Sparkles className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">21 Dagen Kickstart</h2>
-            <p className="text-gray-600">
-              {stats.completedDays} van {stats.totalDays} dagen voltooid
-            </p>
-          </div>
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900">21 Dagen Kickstart</h2>
+          <p className="text-gray-500 mt-0.5">
+            Dag {stats.completedDays} van {stats.totalDays}
+          </p>
         </div>
 
         {onBack && (
-          <Button variant="outline" onClick={onBack} className="border-pink-200 text-pink-600">
-            Dating Reis
+          <Button variant="outline" onClick={onBack} className="border-gray-200 text-gray-700">
+            Terug
           </Button>
         )}
       </div>
 
       {/* Overall Progress */}
-      <Card className="border-pink-100">
+      <Card className="border-gray-200">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Totale voortgang</span>
-            <span className="text-sm font-semibold text-pink-600">{stats.progressPercentage}%</span>
+            <span className="text-sm text-gray-600">Voortgang</span>
+            <span className="text-sm font-medium text-gray-900">{stats.progressPercentage}%</span>
           </div>
-          <Progress value={stats.progressPercentage} className="h-2" />
+          <Progress value={stats.progressPercentage} className="h-1.5 bg-gray-100" />
         </CardContent>
       </Card>
 
@@ -190,47 +182,47 @@ export function KickstartWeekOverview({ onBack }: KickstartWeekOverviewProps) {
           const WeekIcon = week.icon;
 
           return (
-            <Card key={week.week} className="overflow-hidden border-pink-100">
+            <Card key={week.week} className="overflow-hidden border-gray-200">
               {/* Week Header */}
               <button
                 onClick={() => toggleWeek(week.week)}
                 className={cn(
-                  'w-full p-4 flex items-center gap-4 hover:bg-pink-50/50 transition-colors text-left',
-                  week.hasAvailable && 'bg-gradient-to-r from-pink-50 to-rose-50'
+                  'w-full p-4 flex items-center gap-4 hover:bg-gray-50 transition-colors text-left',
+                  week.hasAvailable && 'bg-gray-50'
                 )}
               >
                 <div
                   className={cn(
-                    'w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0',
-                    week.progress === 100 ? 'bg-green-100' : 'bg-pink-100'
+                    'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0',
+                    week.progress === 100 ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600'
                   )}
                 >
                   {week.progress === 100 ? (
-                    <CheckCircle className="w-6 h-6 text-green-600" />
+                    <CheckCircle className="w-5 h-5" />
                   ) : (
-                    <span className="text-2xl">{week.emoji}</span>
+                    <WeekIcon className="w-5 h-5" />
                   )}
                 </div>
 
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-bold text-gray-900">Week {week.week}</span>
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className="font-medium text-gray-900">Week {week.week}</span>
                     {week.hasAvailable && (
-                      <Badge className="bg-pink-500 text-white text-xs">Actief</Badge>
+                      <span className="text-xs text-gray-500">Actief</span>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600">{week.title}</p>
+                  <p className="text-sm text-gray-500">{week.title}</p>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <span className="text-sm font-semibold text-pink-600">{week.progress}%</span>
-                    <p className="text-xs text-gray-500">{week.completedCount}/7</p>
+                    <span className="text-sm font-medium text-gray-900">{week.progress}%</span>
+                    <p className="text-xs text-gray-400">{week.completedCount}/7</p>
                   </div>
                   {isExpanded ? (
-                    <ChevronDown className="w-5 h-5 text-pink-400" />
+                    <ChevronDown className="w-5 h-5 text-gray-400" />
                   ) : (
-                    <ChevronRight className="w-5 h-5 text-pink-400" />
+                    <ChevronRight className="w-5 h-5 text-gray-400" />
                   )}
                 </div>
               </button>
@@ -261,59 +253,54 @@ export function KickstartWeekOverview({ onBack }: KickstartWeekOverviewProps) {
                           onClick={() => handleDayClick(day.dag_nummer, day.status)}
                           disabled={isLocked}
                           className={cn(
-                            'p-4 rounded-xl text-left transition-all',
+                            'p-4 rounded-lg text-left transition-all border',
                             // Completed
-                            isCompleted && 'bg-green-50 border-2 border-green-200 hover:border-green-300',
+                            isCompleted && 'bg-gray-50 border-gray-900 hover:bg-gray-100',
                             // Active/Available
-                            isActive && 'bg-gradient-to-br from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-200 hover:shadow-xl',
+                            isActive && 'bg-gray-900 text-white border-gray-900 hover:bg-gray-800',
                             // Locked
-                            isLocked && 'bg-gray-50 border border-gray-200 opacity-60 cursor-not-allowed',
-                            // Default (shouldn't happen)
-                            !isCompleted && !isActive && !isLocked && 'bg-white border border-pink-200 hover:border-pink-400'
+                            isLocked && 'bg-white border-gray-200 opacity-40 cursor-not-allowed',
+                            // Default
+                            !isCompleted && !isActive && !isLocked && 'bg-white border-gray-200 hover:border-gray-300'
                           )}
-                          whileHover={!isLocked ? { scale: 1.02 } : {}}
-                          whileTap={!isLocked ? { scale: 0.98 } : {}}
+                          whileHover={!isLocked ? { scale: 1.01 } : {}}
+                          whileTap={!isLocked ? { scale: 0.99 } : {}}
                         >
-                          <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-center gap-3 mb-2">
                             <div className={cn(
-                              'w-8 h-8 rounded-full flex items-center justify-center',
-                              isActive ? 'bg-white/20' : isCompleted ? 'bg-green-100' : 'bg-gray-100'
+                              'w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0',
+                              isActive ? 'bg-white/20' : isCompleted ? 'bg-gray-900' : 'bg-gray-100'
                             )}>
                               {isCompleted ? (
-                                <CheckCircle className="w-4 h-4 text-green-600" />
+                                <CheckCircle className="w-4 h-4 text-white" />
                               ) : isLocked ? (
-                                <Lock className="w-4 h-4 text-gray-400" />
+                                <Lock className="w-3.5 h-3.5 text-gray-400" />
                               ) : (
-                                <Play className={cn('w-4 h-4', isActive ? 'text-white' : 'text-pink-500')} />
+                                <Play className={cn('w-3.5 h-3.5', isActive ? 'text-white' : 'text-gray-600')} />
                               )}
                             </div>
-                            {day.emoji && !isLocked && (
-                              <span className="text-lg">{day.emoji}</span>
-                            )}
+                            <div className={cn(
+                              'text-xs font-medium',
+                              isActive ? 'text-white/70' : 'text-gray-500'
+                            )}>
+                              Dag {day.dag_nummer}
+                            </div>
                           </div>
 
                           <div className={cn(
-                            'text-xs font-medium mb-1',
-                            isActive ? 'text-white/80' : 'text-gray-500'
-                          )}>
-                            Dag {day.dag_nummer}
-                          </div>
-
-                          <div className={cn(
-                            'text-sm font-semibold line-clamp-2',
+                            'text-sm font-medium line-clamp-2',
                             isActive ? 'text-white' : isLocked ? 'text-gray-400' : 'text-gray-900'
                           )}>
                             {day.titel}
                           </div>
 
                           {day.ai_tool && !isLocked && (
-                            <Badge className={cn(
-                              'mt-2 text-xs',
-                              isActive ? 'bg-white/20 text-white border-0' : 'bg-pink-100 text-pink-600 border-0'
+                            <div className={cn(
+                              'mt-2 text-xs font-medium flex items-center gap-1',
+                              isActive ? 'text-white/70' : 'text-gray-500'
                             )}>
-                              <Sparkles className="w-3 h-3 mr-1" />
-                              AI
-                            </Badge>
+                              AI Tool
+                            </div>
                           )}
                         </motion.button>
                       );

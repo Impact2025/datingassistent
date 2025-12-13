@@ -374,35 +374,26 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
         ) : currentDay ? (
           <div className="space-y-6">
             {/* Day Header */}
-            <Card className="border-pink-100 shadow-sm">
+            <Card className="border-gray-200">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-pink-100 flex items-center justify-center">
-                      <span className="text-3xl">{currentDay.emoji}</span>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs font-medium text-gray-500">
+                        Dag {currentDay.dag_nummer} · {currentDay.dag_type}
+                      </span>
+                      {currentDay.ai_tool && (
+                        <span className="text-xs text-gray-500">
+                          · AI Tool
+                        </span>
+                      )}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <Badge className="bg-pink-500 text-white text-xs border-0">
-                          Dag {currentDay.dag_nummer}
-                        </Badge>
-                        <Badge className="bg-pink-100 text-pink-700 text-xs border-0 capitalize">
-                          {currentDay.dag_type}
-                        </Badge>
-                        {currentDay.ai_tool && (
-                          <Badge className="bg-pink-100 text-pink-700 text-xs border-0">
-                            <Sparkles className="w-3 h-3 mr-1" />
-                            {currentDay.ai_tool}
-                          </Badge>
-                        )}
-                      </div>
-                      <h1 className="text-xl lg:text-2xl font-bold text-gray-900">
-                        {currentDay.titel}
-                      </h1>
-                    </div>
+                    <h1 className="text-xl lg:text-2xl font-semibold text-gray-900">
+                      {currentDay.titel}
+                    </h1>
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-pink-600 bg-pink-50 px-3 py-1.5 rounded-full">
+                  <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">
                     <Clock className="w-4 h-4" />
                     {currentDay.duur_minuten} min
                   </div>
@@ -411,10 +402,10 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                 {/* Progress */}
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Voortgang vandaag</span>
-                    <span className="font-semibold text-pink-600">{completionPercent}%</span>
+                    <span className="text-gray-600">Voortgang</span>
+                    <span className="font-medium text-gray-900">{completionPercent}%</span>
                   </div>
-                  <Progress value={completionPercent} className="h-2" />
+                  <Progress value={completionPercent} className="h-1.5 bg-gray-100" />
                 </div>
               </CardContent>
             </Card>
@@ -523,7 +514,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                     {!isVideoComplete && (
                       <Button
                         onClick={handleVideoComplete}
-                        className="w-full mt-6 bg-pink-500 hover:bg-pink-600 text-white"
+                        className="w-full mt-6 bg-gray-900 hover:bg-gray-800 text-white"
                         disabled={saving}
                       >
                         Markeer als bekeken
@@ -531,9 +522,9 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                     )}
 
                     {isVideoComplete && (
-                      <div className="flex items-center justify-center gap-2 text-pink-600 mt-6 p-4 bg-pink-50 rounded-xl border border-pink-200">
+                      <div className="flex items-center justify-center gap-2 text-gray-900 mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <CheckCircle className="w-5 h-5" />
-                        Video voltooid!
+                        Video voltooid
                       </div>
                     )}
                   </CardContent>
@@ -607,7 +598,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                       {!quizSubmitted && quizAnswers.length === currentDay.quiz.vragen.length && (
                         <Button
                           onClick={handleQuizSubmit}
-                          className="w-full bg-pink-500 hover:bg-pink-600 text-white"
+                          className="w-full bg-gray-900 hover:bg-gray-800 text-white"
                           disabled={saving}
                         >
                           Controleer antwoorden
@@ -697,7 +688,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                           />
                           <Button
                             onClick={handleReflectieSave}
-                            className="w-full bg-pink-500 hover:bg-pink-600 text-white"
+                            className="w-full bg-gray-900 hover:bg-gray-800 text-white"
                             disabled={saving || reflectieAnswer.length < 10}
                           >
                             {saving ? 'Opslaan...' : 'Opslaan'}
@@ -774,10 +765,10 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                 variant="outline"
                 onClick={() => currentDayNumber > 1 && handleSelectDay(currentDayNumber - 1)}
                 disabled={currentDayNumber <= 1}
-                className="border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300"
+                className="border-gray-200 text-gray-700 hover:bg-gray-50"
               >
                 <ChevronLeft className="w-4 h-4 mr-1" />
-                <span className="hidden sm:inline">Vorige dag</span>
+                <span className="hidden sm:inline">Vorige</span>
               </Button>
 
               {currentDayNumber < 21 ? (
@@ -787,14 +778,14 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                     daySummaries.find((d) => d.dag_nummer === currentDayNumber + 1)?.status ===
                     'locked'
                   }
-                  className="bg-pink-500 hover:bg-pink-600 text-white"
+                  className="bg-gray-900 hover:bg-gray-800 text-white"
                 >
-                  <span className="hidden sm:inline">Volgende dag</span>
+                  <span className="hidden sm:inline">Volgende</span>
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               ) : (
-                <Button className="bg-pink-500 hover:bg-pink-600 text-white">
-                  Programma voltooid
+                <Button className="bg-gray-900 hover:bg-gray-800 text-white">
+                  Voltooid
                 </Button>
               )}
             </div>

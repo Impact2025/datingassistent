@@ -35,21 +35,18 @@ const WEEK_THEMES = [
     week: 1,
     title: "Foto's & Eerste Indruk",
     subtitle: 'Bouw je visuele fundament',
-    emoji: '📸',
     icon: Camera,
   },
   {
     week: 2,
     title: 'Bio & Profiel',
     subtitle: 'Vertel je verhaal',
-    emoji: '✍️',
     icon: Pencil,
   },
   {
     week: 3,
     title: 'Gesprekken & Connectie',
     subtitle: 'Master je communicatie',
-    emoji: '💬',
     icon: MessageCircle,
   },
 ];
@@ -146,36 +143,31 @@ export function WeekSidebar({ days, currentDay, onSelectDay, className }: WeekSi
       )}
     >
       {/* Header */}
-      <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-pink-50 to-pink-100">
-        <div className="flex items-center gap-2 mb-1">
-          <Sparkles className="w-5 h-5 text-pink-500" />
-          <h2 className="font-bold text-gray-900">21 Dagen Kickstart</h2>
-        </div>
-        <p className="text-sm text-gray-600">
+      <div className="p-4 border-b border-gray-200 bg-white">
+        <h2 className="font-semibold text-gray-900 mb-1">21 Dagen Kickstart</h2>
+        <p className="text-sm text-gray-500">
           Dag {currentDay} van 21 · {days.filter((d) => d.status === 'completed').length} voltooid
         </p>
       </div>
 
-      {/* Workbook Download - Prominent Button */}
-      <div className="p-4 bg-gradient-to-br from-blue-50 to-purple-50 border-b border-gray-100">
+      {/* Workbook Download */}
+      <div className="p-4 bg-gray-50 border-b border-gray-200">
         <button
           onClick={() => window.open('/downloads/kickstart/21-dagen-kickstart-werkboek.pdf', '_blank')}
-          className="w-full group relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+          className="w-full group bg-gray-900 hover:bg-gray-800 text-white rounded-lg p-4 transition-all"
         >
-          <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+              <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center">
                 <FileText className="w-5 h-5" />
               </div>
               <div className="text-left">
-                <p className="font-bold text-sm">Kickstart Werkboek</p>
-                <p className="text-xs text-white/90">Download de PDF</p>
+                <p className="font-medium text-sm">Werkboek</p>
+                <p className="text-xs text-white/70">Download PDF</p>
               </div>
             </div>
-            <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
+            <Download className="w-5 h-5" />
           </div>
-          {/* Shine effect on hover */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
         </button>
       </div>
 
@@ -191,55 +183,55 @@ export function WeekSidebar({ days, currentDay, onSelectDay, className }: WeekSi
               <button
                 onClick={() => toggleWeek(week.week)}
                 className={cn(
-                  'w-full p-4 flex items-center gap-3 hover:bg-pink-50/50 transition-colors',
-                  week.isCurrentWeek && 'bg-gradient-to-r from-pink-50 to-rose-50'
+                  'w-full p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors',
+                  week.isCurrentWeek && 'bg-gray-50'
                 )}
               >
                 {/* Week Icon */}
                 <div
                   className={cn(
-                    'w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0',
+                    'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0',
                     week.progress === 100
-                      ? 'bg-green-100'
-                      : 'bg-pink-100'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-gray-100 text-gray-600'
                   )}
                 >
                   {week.progress === 100 ? (
-                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <CheckCircle className="w-5 h-5" />
                   ) : (
-                    <span className="text-lg">{week.emoji}</span>
+                    <WeekIcon className="w-5 h-5" />
                   )}
                 </div>
 
                 {/* Week Info */}
                 <div className="flex-1 text-left">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-gray-900">
+                    <span className="font-medium text-gray-900">
                       Week {week.week}
                     </span>
                     {week.isCurrentWeek && (
-                      <Badge className="bg-pink-500 text-white text-xs">
+                      <span className="text-xs text-gray-500">
                         Actief
-                      </Badge>
+                      </span>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600">{week.title}</p>
+                  <p className="text-sm text-gray-500">{week.title}</p>
                 </div>
 
                 {/* Progress & Chevron */}
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <span className="text-sm font-medium text-pink-600">
+                    <span className="text-sm font-medium text-gray-900">
                       {week.progress}%
                     </span>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-400">
                       {week.completedCount}/7
                     </p>
                   </div>
                   {isExpanded ? (
-                    <ChevronDown className="w-5 h-5 text-pink-400" />
+                    <ChevronDown className="w-5 h-5 text-gray-400" />
                   ) : (
-                    <ChevronRight className="w-5 h-5 text-pink-400" />
+                    <ChevronRight className="w-5 h-5 text-gray-400" />
                   )}
                 </div>
               </button>
@@ -275,30 +267,30 @@ export function WeekSidebar({ days, currentDay, onSelectDay, className }: WeekSi
                             onClick={() => !isLocked && onSelectDay(day.dag_nummer)}
                             disabled={isLocked}
                             className={cn(
-                              'w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left',
-                              // Selected state - prominent pink
-                              isSelected && 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-200',
-                              // Completed state - soft green
-                              !isSelected && isCompleted && 'bg-green-50 border border-green-200 hover:border-green-300',
-                              // Available state - pink outline
-                              !isSelected && !isCompleted && !isLocked && 'bg-white border border-pink-200 hover:border-pink-400 hover:bg-pink-50/50',
+                              'w-full flex items-center gap-3 p-3 rounded-lg transition-all text-left border',
+                              // Selected state
+                              isSelected && 'bg-gray-900 text-white border-gray-900',
+                              // Completed state
+                              !isSelected && isCompleted && 'bg-gray-50 border-gray-900 hover:bg-gray-100',
+                              // Available state
+                              !isSelected && !isCompleted && !isLocked && 'bg-white border-gray-200 hover:border-gray-300',
                               // Locked state
-                              isLocked && 'bg-gray-50 border border-gray-200 opacity-60 cursor-not-allowed'
+                              isLocked && 'bg-white border-gray-200 opacity-40 cursor-not-allowed'
                             )}
-                            whileHover={!isLocked ? { scale: 1.02 } : {}}
-                            whileTap={!isLocked ? { scale: 0.98 } : {}}
+                            whileHover={!isLocked ? { scale: 1.01 } : {}}
+                            whileTap={!isLocked ? { scale: 0.99 } : {}}
                           >
                             {/* Status Icon */}
                             <div className={cn(
-                              'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
-                              isSelected ? 'bg-white/20' : isCompleted ? 'bg-green-100' : isLocked ? 'bg-gray-100' : 'bg-pink-100'
+                              'w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0',
+                              isSelected ? 'bg-white/20' : isCompleted ? 'bg-gray-900' : 'bg-gray-100'
                             )}>
                               {isCompleted ? (
-                                <CheckCircle className={cn('w-4 h-4', isSelected ? 'text-white' : 'text-green-600')} />
+                                <CheckCircle className={cn('w-4 h-4', isSelected ? 'text-white' : 'text-white')} />
                               ) : isLocked ? (
-                                <Lock className="w-4 h-4 text-gray-400" />
+                                <Lock className="w-3.5 h-3.5 text-gray-400" />
                               ) : (
-                                <Play className={cn('w-4 h-4', isSelected ? 'text-white' : 'text-pink-500')} />
+                                <Play className={cn('w-3.5 h-3.5', isSelected ? 'text-white' : 'text-gray-600')} />
                               )}
                             </div>
 
@@ -306,42 +298,31 @@ export function WeekSidebar({ days, currentDay, onSelectDay, className }: WeekSi
                             <div className="flex-1 min-w-0">
                               <span
                                 className={cn(
-                                  'text-sm font-semibold block truncate',
+                                  'text-sm font-medium block truncate',
                                   isSelected ? 'text-white' : isLocked ? 'text-gray-400' : 'text-gray-900'
                                 )}
                               >
                                 Dag {day.dag_nummer}: {day.titel}
                               </span>
 
-                              {/* Day Type Badge */}
-                              <div className="flex items-center gap-1.5 mt-1">
-                                <DayTypeIcon
-                                  className={cn('w-3 h-3', isSelected ? 'text-white/80' : 'text-pink-400')}
-                                />
+                              {/* Day Type */}
+                              <div className="flex items-center gap-1.5 mt-0.5">
                                 <span className={cn(
                                   'text-xs capitalize',
-                                  isSelected ? 'text-white/80' : 'text-gray-500'
+                                  isSelected ? 'text-white/70' : 'text-gray-500'
                                 )}>
                                   {day.dag_type}
                                 </span>
                                 {day.ai_tool && (
-                                  <Badge
-                                    className={cn(
-                                      'text-xs px-1.5 py-0',
-                                      isSelected ? 'bg-white/20 text-white border-0' : 'bg-pink-100 text-pink-600 border-0'
-                                    )}
-                                  >
-                                    <Sparkles className="w-3 h-3 mr-0.5" />
-                                    AI
-                                  </Badge>
+                                  <span className={cn(
+                                    'text-xs',
+                                    isSelected ? 'text-white/70' : 'text-gray-500'
+                                  )}>
+                                    · AI Tool
+                                  </span>
                                 )}
                               </div>
                             </div>
-
-                            {/* Emoji */}
-                            {day.emoji && !isLocked && (
-                              <span className="text-lg flex-shrink-0">{day.emoji}</span>
-                            )}
                           </motion.button>
                         );
                       })}
@@ -355,16 +336,16 @@ export function WeekSidebar({ days, currentDay, onSelectDay, className }: WeekSi
       </div>
 
       {/* Footer Stats */}
-      <div className="p-4 border-t border-gray-100 bg-gray-50">
-        <div className="flex items-center justify-between text-sm">
+      <div className="p-4 border-t border-gray-200 bg-gray-50">
+        <div className="flex items-center justify-between text-sm mb-2">
           <span className="text-gray-600">Totale voortgang</span>
-          <span className="font-semibold text-pink-600">
+          <span className="font-medium text-gray-900">
             {Math.round((days.filter((d) => d.status === 'completed').length / 21) * 100)}%
           </span>
         </div>
         <Progress
           value={(days.filter((d) => d.status === 'completed').length / 21) * 100}
-          className="h-2 mt-2"
+          className="h-1.5 bg-gray-200"
         />
       </div>
     </div>
