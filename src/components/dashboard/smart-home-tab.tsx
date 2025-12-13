@@ -9,7 +9,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
-  Sparkles, TrendingUp, CheckCircle2, Zap, ArrowRight, Badge as BadgeIcon
+  Sparkles, TrendingUp, CheckCircle2, Zap, ArrowRight, Badge as BadgeIcon, Gift, Rocket, Crown
 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { ScanCard } from './scan-card';
@@ -238,6 +238,89 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
             transition={{ delay: ANIMATION_DELAYS.PROGRAMS }}
           >
             <MyProgramsWidget />
+          </motion.div>
+        )}
+
+        {/* 3-Tier Tool System Banner */}
+        {!showWelcomeVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: ANIMATION_DELAYS.PROGRAMS + 0.1 }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Essentials - Free Tier */}
+              <Card
+                className="cursor-pointer overflow-hidden border-2 border-green-300 bg-gradient-to-br from-green-50 to-emerald-50 hover:shadow-lg transition-all"
+                onClick={() => router.push('/essentials')}
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                      <Gift className="w-5 h-5 text-white" />
+                    </div>
+                    <Badge className="bg-green-500 text-white border-0 text-xs">
+                      🆓 GRATIS
+                    </Badge>
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-1">Essentials</h3>
+                  <p className="text-xs text-gray-600 mb-3">
+                    Badges, Activity Logger, Stats & meer
+                  </p>
+                  <Button size="sm" variant="outline" className="border-green-500 text-green-700 hover:bg-green-100 w-full">
+                    Ontdek →
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Kickstart Toolkit */}
+              <Card
+                className="cursor-pointer overflow-hidden border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all"
+                onClick={() => router.push('/kickstart-toolkit')}
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                      <Rocket className="w-5 h-5 text-white" />
+                    </div>
+                    <Badge className="bg-blue-500 text-white border-0 text-xs">
+                      💎 KICKSTART
+                    </Badge>
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-1">Kickstart Toolkit</h3>
+                  <p className="text-xs text-gray-600 mb-3">
+                    5 AI tools met dagelijkse limieten
+                  </p>
+                  <Button size="sm" variant="outline" className="border-blue-500 text-blue-700 hover:bg-blue-100 w-full">
+                    Ontdek →
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Pro Arsenal - Premium Tier */}
+              <Card
+                className="cursor-pointer overflow-hidden border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-lg transition-all"
+                onClick={() => router.push('/pro-arsenal')}
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                      <Crown className="w-5 h-5 text-white" />
+                    </div>
+                    <Badge className="bg-purple-500 text-white border-0 text-xs">
+                      ⭐ PREMIUM
+                    </Badge>
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-1">Pro Arsenal</h3>
+                  <p className="text-xs text-gray-600 mb-3">
+                    Premium tools + unlimited access
+                  </p>
+                  <Button size="sm" className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white w-full">
+                    Ontdek →
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           </motion.div>
         )}
 
