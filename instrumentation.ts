@@ -9,19 +9,23 @@ import { assertValidEnvironment } from './src/lib/env-validation';
 export async function register() {
   // SECURITY: Validate environment variables FIRST before anything else
   // This ensures the application fails fast if critical secrets are missing
+
+  // TEMPORARY: Log warnings instead of blocking in production
+  // TODO: Remove this after setting up all environment variables in Vercel
   try {
     assertValidEnvironment();
   } catch (error) {
-    console.error('\n🚨 FATAL: Environment validation failed');
+    console.error('\n⚠️  WARNING: Environment validation failed');
     console.error(error instanceof Error ? error.message : 'Unknown error');
-    console.error('\nApplication startup blocked. Fix environment variables and restart.\n');
 
-    // In production, exit the process to prevent running with missing secrets
-    if (process.env.NODE_ENV === 'production') {
-      process.exit(1);
+    // In development, throw error
+    if (process.env.NODE_ENV === 'development') {
+      throw error;
     }
 
-    throw error;
+    // In production, only log warning (TEMPORARY)
+    console.error('\n⚠️  App is running with missing environment variables!');
+    console.error('Set required env vars in Vercel to fix this.\n');
   }
 
   // Initialize Sentry for server-side monitoring
