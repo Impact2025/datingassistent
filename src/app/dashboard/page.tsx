@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import Image from 'next/image';
 import { useUser } from '@/providers/user-provider';
 import { Header } from '@/components/layout/header';
@@ -48,123 +48,123 @@ const DashboardSkeleton = () => (
 );
 
 // Core tabs - lazy loaded with skeleton
-const SmartHomeTab = dynamic(() => import('@/components/dashboard/smart-home-tab').then(mod => ({ default: mod.SmartHomeTab })), {
+const SmartHomeTab = dynamicImport(() => import('@/components/dashboard/smart-home-tab').then(mod => ({ default: mod.SmartHomeTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const EnhancedPadTab = dynamic(() => import('@/components/dashboard/enhanced-pad-tab').then(mod => ({ default: mod.EnhancedPadTab })), {
+const EnhancedPadTab = dynamicImport(() => import('@/components/dashboard/enhanced-pad-tab').then(mod => ({ default: mod.EnhancedPadTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const CoachTab = dynamic(() => import('@/components/dashboard/coach-tab').then(mod => ({ default: mod.CoachTab })), {
+const CoachTab = dynamicImport(() => import('@/components/dashboard/coach-tab').then(mod => ({ default: mod.CoachTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const ProfielTab = dynamic(() => import('@/components/dashboard/profiel-tab-new').then(mod => ({ default: mod.ProfielTab })), {
+const ProfielTab = dynamicImport(() => import('@/components/dashboard/profiel-tab-new').then(mod => ({ default: mod.ProfielTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
 // Heavy modules - lazy loaded
-const ProfileSuite = dynamic(() => import('@/components/dashboard/profile-suite').then(mod => ({ default: mod.ProfileSuite })), {
+const ProfileSuite = dynamicImport(() => import('@/components/dashboard/profile-suite').then(mod => ({ default: mod.ProfileSuite })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const CommunicationHub = dynamic(() => import('@/components/dashboard/communication-hub').then(mod => ({ default: mod.CommunicationHub })), {
+const CommunicationHub = dynamicImport(() => import('@/components/dashboard/communication-hub').then(mod => ({ default: mod.CommunicationHub })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const DatenRelatiesModule = dynamic(() => import('@/components/dashboard/daten-relaties-module').then(mod => ({ default: mod.DatenRelatiesModule })), {
+const DatenRelatiesModule = dynamicImport(() => import('@/components/dashboard/daten-relaties-module').then(mod => ({ default: mod.DatenRelatiesModule })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const GroeiDoelenModule = dynamic(() => import('@/components/dashboard/groei-doelen-module').then(mod => ({ default: mod.GroeiDoelenModule })), {
+const GroeiDoelenModule = dynamicImport(() => import('@/components/dashboard/groei-doelen-module').then(mod => ({ default: mod.GroeiDoelenModule })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const LerenOntwikkelenModule = dynamic(() => import('@/components/dashboard/leren-ontwikkelen-module').then(mod => ({ default: mod.LerenOntwikkelenModule })), {
+const LerenOntwikkelenModule = dynamicImport(() => import('@/components/dashboard/leren-ontwikkelen-module').then(mod => ({ default: mod.LerenOntwikkelenModule })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const DashboardTab = dynamic(() => import('@/components/dashboard/dashboard-tab').then(mod => ({ default: mod.DashboardTab })), {
+const DashboardTab = dynamicImport(() => import('@/components/dashboard/dashboard-tab').then(mod => ({ default: mod.DashboardTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const CommunityTab = dynamic(() => import('@/components/dashboard/community-tab').then(mod => ({ default: mod.CommunityTab })), {
+const CommunityTab = dynamicImport(() => import('@/components/dashboard/community-tab').then(mod => ({ default: mod.CommunityTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const OnboardingFlow = dynamic(() => import('@/components/dashboard/onboarding-flow').then(mod => ({ default: mod.OnboardingFlow })), {
+const OnboardingFlow = dynamicImport(() => import('@/components/dashboard/onboarding-flow').then(mod => ({ default: mod.OnboardingFlow })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
 // Settings & Management tabs - lazy loaded
-const SettingsTab = dynamic(() => import('@/components/dashboard/settings-tab').then(mod => ({ default: mod.SettingsTab })), {
+const SettingsTab = dynamicImport(() => import('@/components/dashboard/settings-tab').then(mod => ({ default: mod.SettingsTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const DataManagementTab = dynamic(() => import('@/components/dashboard/data-management-tab').then(mod => ({ default: mod.DataManagementTab })), {
+const DataManagementTab = dynamicImport(() => import('@/components/dashboard/data-management-tab').then(mod => ({ default: mod.DataManagementTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const SubscriptionTab = dynamic(() => import('@/components/dashboard/subscription-tab').then(mod => ({ default: mod.SubscriptionTab })), {
+const SubscriptionTab = dynamicImport(() => import('@/components/dashboard/subscription-tab').then(mod => ({ default: mod.SubscriptionTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const CursussenTab = dynamic(() => import('@/components/dashboard/cursussen-tab').then(mod => ({ default: mod.CursussenTab })), {
+const CursussenTab = dynamicImport(() => import('@/components/dashboard/cursussen-tab').then(mod => ({ default: mod.CursussenTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
 // Engagement components - lazy loaded
-const DailyDashboard = dynamic(() => import('@/components/engagement/daily-dashboard').then(mod => ({ default: mod.DailyDashboard })), {
+const DailyDashboard = dynamicImport(() => import('@/components/engagement/daily-dashboard').then(mod => ({ default: mod.DailyDashboard })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const DailyCheckinModal = dynamic(() => import('@/components/engagement/daily-checkin-modal').then(mod => ({ default: mod.DailyCheckinModal })), {
+const DailyCheckinModal = dynamicImport(() => import('@/components/engagement/daily-checkin-modal').then(mod => ({ default: mod.DailyCheckinModal })), {
   ssr: false
 });
 
-const MonthlyReport = dynamic(() => import('@/components/engagement/monthly-report').then(mod => ({ default: mod.MonthlyReport })), {
+const MonthlyReport = dynamicImport(() => import('@/components/engagement/monthly-report').then(mod => ({ default: mod.MonthlyReport })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const BadgesShowcase = dynamic(() => import('@/components/engagement/badges-showcase').then(mod => ({ default: mod.BadgesShowcase })), {
+const BadgesShowcase = dynamicImport(() => import('@/components/engagement/badges-showcase').then(mod => ({ default: mod.BadgesShowcase })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const YearlyReview = dynamic(() => import('@/components/engagement/yearly-review').then(mod => ({ default: mod.YearlyReview })), {
+const YearlyReview = dynamicImport(() => import('@/components/engagement/yearly-review').then(mod => ({ default: mod.YearlyReview })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const DatingActivityLogger = dynamic(() => import('@/components/engagement/dating-activity-logger').then(mod => ({ default: mod.DatingActivityLogger })), {
+const DatingActivityLogger = dynamicImport(() => import('@/components/engagement/dating-activity-logger').then(mod => ({ default: mod.DatingActivityLogger })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
-const TrialProgress = dynamic(() => import('@/components/dashboard/trial-progress').then(mod => ({ default: mod.TrialProgress })), {
+const TrialProgress = dynamicImport(() => import('@/components/dashboard/trial-progress').then(mod => ({ default: mod.TrialProgress })), {
   ssr: false
 });
 
-const DatingWeekNotificationModal = dynamic(() => import('@/components/dashboard/dating-week-notification-modal').then(mod => ({ default: mod.DatingWeekNotificationModal })), {
+const DatingWeekNotificationModal = dynamicImport(() => import('@/components/dashboard/dating-week-notification-modal').then(mod => ({ default: mod.DatingWeekNotificationModal })), {
   ssr: false
 });
 
