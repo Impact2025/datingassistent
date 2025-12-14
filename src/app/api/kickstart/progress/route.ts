@@ -36,9 +36,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get the day and program info
+    // Get the day and program info (PERFORMANCE: specific columns instead of *)
     const dayResult = await sql`
-      SELECT pd.*, p.id as program_id
+      SELECT pd.id, pd.dag_nummer, pd.quiz, pd.reflectie, pd.werkboek, p.id as program_id
       FROM program_days pd
       JOIN programs p ON pd.program_id = p.id
       WHERE pd.id = ${day_id} AND p.slug = 'kickstart'
@@ -69,9 +69,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if progress record exists
+    // Check if progress record exists (PERFORMANCE: only check existence, no columns needed)
     const existingProgress = await sql`
-      SELECT * FROM user_day_progress
+      SELECT 1 FROM user_day_progress
       WHERE user_id = ${userId} AND day_id = ${day_id}
       LIMIT 1
     `;
