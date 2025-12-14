@@ -19,16 +19,42 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get user stats
-    const stats = await sql`
-      SELECT * FROM user_gamification_stats WHERE user_id = ${userId}
+    // PERFORMANCE: Single optimized query with JOINs instead of 4 separate queries
+    // Prevents N+1 query pattern and reduces database roundtrips
+    const today = new Date().toISOString().split('T')[0];
+
+    const result = await sql`
+      WITH user_stats AS (
+        SELECT * FROM user_gamification_stats WHERE user_id = ${userId}
+      ),
+      today_streak AS (
+        SELECT 1 as logged_in_today FROM user_streaks
+        WHERE user_id = ${userId} AND login_date = ${today}
+        LIMIT 1
+      )
+      SELECT
+        COALESCE(us.total_points, 0) as total_points,
+        COALESCE(us.current_level, 1) as current_level,
+        COALESCE(us.level_progress, 0) as level_progress,
+        COALESCE(us.current_streak, 0) as current_streak,
+        COALESCE(us.longest_streak, 0) as longest_streak,
+        COALESCE(us.total_challenges_completed, 0) as total_challenges_completed,
+        COALESCE(us.total_tools_completed, 0) as total_tools_completed,
+        COALESCE(lm_current.title, 'Nieuweling') as level_title,
+        COALESCE(lm_next.points_required, 100) as next_level_points,
+        COALESCE(ts.logged_in_today, 0) as today_completed
+      FROM user_stats us
+      LEFT JOIN level_milestones lm_current ON lm_current.level = COALESCE(us.current_level, 1)
+      LEFT JOIN level_milestones lm_next ON lm_next.level = COALESCE(us.current_level, 1) + 1
+      LEFT JOIN today_streak ts ON true
     `;
 
-    if (stats.length === 0) {
-      // Initialize stats for new user
+    // If no stats exist, initialize them
+    if (result.length === 0 || result[0].total_points === null) {
       await sql`
         INSERT INTO user_gamification_stats (user_id)
         VALUES (${userId})
+        ON CONFLICT (user_id) DO NOTHING
       `;
 
       return NextResponse.json({
@@ -40,44 +66,27 @@ export async function GET(request: NextRequest) {
         todayCompleted: false,
         levelTitle: 'Nieuweling',
         pointsToNextLevel: 100,
-        nextLevelPoints: 100
+        nextLevelPoints: 100,
+        totalChallengesCompleted: 0,
+        totalToolsCompleted: 0
       });
     }
 
-    const userStats = stats[0];
-
-    // Get level title and next level points
-    const currentLevel = userStats.current_level || 1;
-    const levelInfo = await sql`
-      SELECT * FROM level_milestones WHERE level = ${currentLevel}
-    `;
-
-    const nextLevelInfo = await sql`
-      SELECT * FROM level_milestones WHERE level = ${currentLevel + 1}
-    `;
-
-    const levelTitle = levelInfo.length > 0 ? levelInfo[0].title : 'Nieuweling';
-    const nextLevelPoints = nextLevelInfo.length > 0 ? nextLevelInfo[0].points_required : 0;
-    const pointsToNextLevel = Math.max(0, nextLevelPoints - userStats.total_points);
-
-    // Check if logged in today
-    const today = new Date().toISOString().split('T')[0];
-    const todayLogin = await sql`
-      SELECT * FROM user_streaks WHERE user_id = ${userId} AND login_date = ${today}
-    `;
+    const data = result[0];
+    const pointsToNextLevel = Math.max(0, data.next_level_points - data.total_points);
 
     return NextResponse.json({
-      totalPoints: userStats.total_points || 0,
-      currentLevel: userStats.current_level || 1,
-      levelProgress: userStats.level_progress || 0,
-      currentStreak: userStats.current_streak || 0,
-      longestStreak: userStats.longest_streak || 0,
-      todayCompleted: todayLogin.length > 0,
-      levelTitle,
+      totalPoints: data.total_points,
+      currentLevel: data.current_level,
+      levelProgress: data.level_progress,
+      currentStreak: data.current_streak,
+      longestStreak: data.longest_streak,
+      todayCompleted: data.today_completed > 0,
+      levelTitle: data.level_title,
       pointsToNextLevel,
-      nextLevelPoints,
-      totalChallengesCompleted: userStats.total_challenges_completed || 0,
-      totalToolsCompleted: userStats.total_tools_completed || 0
+      nextLevelPoints: data.next_level_points,
+      totalChallengesCompleted: data.total_challenges_completed,
+      totalToolsCompleted: data.total_tools_completed
     });
 
   } catch (error) {
