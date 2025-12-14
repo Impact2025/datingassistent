@@ -1,16 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { jwtVerify } from 'jose';
-import { applySecurityHeaders, getSecurityConfig } from './src/lib/security-headers';
 
-// Validate JWT_SECRET exists
-if (!process.env.JWT_SECRET) {
-  console.error('❌ CRITICAL: JWT_SECRET is not set in environment variables!');
-}
-
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'INSECURE-FALLBACK-DO-NOT-USE-IN-PRODUCTION'
-);
+// TEMPORARY: Simplified middleware without security headers to diagnose issue
+// TODO: Re-enable security headers after confirming middleware works
 
 // Routes that require journey completion
 const PROTECTED_ROUTES = [
@@ -51,13 +43,9 @@ const ONBOARDING_ROUTE = '/onboarding';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Get security config based on environment
-  const securityConfig = getSecurityConfig();
-
-  // Allow API routes - explicit check first (but apply security headers)
+  // Allow API routes - explicit check first
   if (pathname.startsWith('/api/')) {
-    const response = NextResponse.next();
-    return applySecurityHeaders(response, securityConfig);
+    return NextResponse.next();
   }
 
   // Allow static files and public assets (no security headers needed)
@@ -72,20 +60,17 @@ export async function middleware(request: NextRequest) {
 
   // Allow public routes (with security headers)
   if (PUBLIC_ROUTES.some(route => pathname === route || pathname.startsWith(route + '/'))) {
-    const response = NextResponse.next();
-    return applySecurityHeaders(response, securityConfig);
+    return NextResponse.next();
   }
 
   // Allow onboarding route (with security headers)
   if (pathname === ONBOARDING_ROUTE || pathname.startsWith(ONBOARDING_ROUTE + '/')) {
-    const response = NextResponse.next();
-    return applySecurityHeaders(response, securityConfig);
+    return NextResponse.next();
   }
 
   // Allow admin routes for now (admin check happens in admin layout)
   if (ADMIN_ROUTES.some(route => pathname.startsWith(route))) {
-    const response = NextResponse.next();
-    return applySecurityHeaders(response, securityConfig);
+    return NextResponse.next();
   }
 
   // Check if route is protected
@@ -95,66 +80,12 @@ export async function middleware(request: NextRequest) {
 
   if (!isProtectedRoute) {
     // Not a protected route, allow access (with security headers)
-    const response = NextResponse.next();
-    return applySecurityHeaders(response, securityConfig);
+    return NextResponse.next();
   }
 
-  // Protected route - SIMPLIFIED: Let client-side handle full auth
-  // Middleware only does basic checks to prevent obvious issues
-  try {
-    // Get auth token from cookie
-    const authToken = request.cookies.get('datespark_auth_token')?.value;
-
-    // If no cookie token, allow through - client-side UserProvider will handle redirect
-    // This prevents loops when token is in localStorage but not in cookies
-    if (!authToken) {
-      console.log('⚠️  Middleware: No cookie token, allowing through (client-side will handle auth)');
-      const response = NextResponse.next();
-      return applySecurityHeaders(response, securityConfig);
-    }
-
-    // Verify token and get user ID
-    const userId = await getUserIdFromToken(authToken);
-
-    if (!userId) {
-      console.log('🔒 Middleware: Invalid token in cookie, clearing and redirecting');
-      const response = NextResponse.redirect(new URL('/login', request.url));
-      response.cookies.delete('datespark_auth_token');
-      return applySecurityHeaders(response, securityConfig);
-    }
-
-    // Token is valid, allow through
-    // Journey status check is handled client-side in UserProvider
-    console.log(`✅ Middleware: Valid token for user ${userId}, allowing access to ${pathname}`);
-    const response = NextResponse.next();
-    return applySecurityHeaders(response, securityConfig);
-
-  } catch (error) {
-    console.error('❌ Middleware error:', error);
-    // On error, allow through - client will handle
-    const response = NextResponse.next();
-    return applySecurityHeaders(response, securityConfig);
-  }
-}
-
-async function getUserIdFromToken(token: string): Promise<number | null> {
-  try {
-    // Verify JWT token using jose (same as auth.ts)
-    const { payload } = await jwtVerify(token, JWT_SECRET);
-
-    // Handle both old and new token formats
-    if (payload.user && typeof payload.user === 'object' && 'id' in payload.user) {
-      // New format: { user: { id, email, displayName } }
-      return payload.user.id as number;
-    } else if (payload.userId) {
-      // Old format: { userId, email }
-      return payload.userId as number;
-    }
-
-    return null;
-  } catch {
-    return null;
-  }
+  // Protected route - TEMPORARY: Let client-side handle all auth
+  // This is a simplified middleware to diagnose deployment issues
+  return NextResponse.next();
 }
 
 // Journey completion check removed - handled client-side in UserProvider
