@@ -10,6 +10,9 @@ import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import AuthLayout from "../auth-layout";
 
+// Force dynamic rendering (required for useSearchParams)
+export const dynamic = "force-dynamic";
+
 function ResetPasswordContent() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

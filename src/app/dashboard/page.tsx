@@ -28,6 +28,9 @@ import { ProactiveInvite, useProactiveInvite } from '@/components/live-chat/proa
 import { trackDashboardTab, trackToolUsed } from '@/lib/analytics/ga4-events';
 import { debugLog, DASHBOARD_TABS, TAB_REDIRECT_MAP, NAVIGATION_TABS, LOADING_MESSAGES } from '@/lib/constants/dashboard';
 
+// Force dynamic rendering for this page (required for useSearchParams)
+export const dynamic = 'force-dynamic';
+
 // ============================================
 // LAZY LOADED COMPONENTS - Performance optimization
 // ============================================

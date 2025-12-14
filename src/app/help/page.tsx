@@ -36,6 +36,9 @@ import type { UserSegment } from '@/lib/support/types';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
 
+// Force dynamic rendering (required for useSearchParams)
+export const dynamic = "force-dynamic";
+
 // Popular FAQ items
 const POPULAR_FAQ = KB_ARTICLES.slice(0, 8);
 

@@ -11,6 +11,9 @@ import { Button } from '@/components/ui/button';
 import { Search, ArrowLeft, Tag, X } from 'lucide-react';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
+
+// Force dynamic rendering (required for useSearchParams)
+export const dynamic = "force-dynamic";
 import './blog.styles.css';
 
 interface BlogPost {

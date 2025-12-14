@@ -7,6 +7,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, ArrowRight, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 
+// Force dynamic rendering (required for useSearchParams)
+export const dynamic = "force-dynamic";
+
 type PaymentStatus = 'verifying' | 'success' | 'pending' | 'failed' | 'error';
 
 interface VerificationResult {

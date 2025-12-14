@@ -14,6 +14,9 @@ import Link from 'next/link';
 import { ResultReveal } from '@/components/quiz/result-reveal';
 import type { DatingStyle } from '@/lib/quiz/dating-styles';
 
+// Force dynamic rendering (required for useSearchParams)
+export const dynamic = "force-dynamic";
+
 function ResultContent() {
   const searchParams = useSearchParams();
   const resultId = searchParams.get('id');

@@ -9,6 +9,9 @@ import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { useToast } from '@/hooks/use-toast';
 
+// Force dynamic rendering (required for useSearchParams)
+export const dynamic = "force-dynamic";
+
 function PaymentContent() {
   const searchParams = useSearchParams();
   const router = useRouter();

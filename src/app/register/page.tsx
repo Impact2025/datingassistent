@@ -7,6 +7,9 @@ import { LeadRegistrationWizard } from '@/components/auth/lead-registration-wiza
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import AuthLayout from "../auth-layout";
 
+// Force dynamic rendering (required for useSearchParams)
+export const dynamic = "force-dynamic";
+
 function RegisterContent() {
   const searchParams = useSearchParams();
 

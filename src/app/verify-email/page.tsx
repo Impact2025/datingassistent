@@ -6,6 +6,9 @@ import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+// Force dynamic rendering (required for useSearchParams)
+export const dynamic = "force-dynamic";
+
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();

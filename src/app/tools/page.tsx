@@ -24,6 +24,9 @@ import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { GuidedFlow } from '@/components/dashboard/guided-flow';
 import { ToolModal, ToolModalHeader, getToolMetadata, hasModalComponent } from '@/components/tools';
 
+// Force dynamic rendering (required for useSearchParams)
+export const dynamic = "force-dynamic";
+
 interface Tool {
   id: string;
   icon: React.ReactNode;
