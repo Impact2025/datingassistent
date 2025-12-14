@@ -189,7 +189,7 @@ export function KickstartCursusRecommendations({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-xl bg-gradient-to-br from-pink-500 via-pink-600 to-purple-600 p-6 text-white shadow-lg"
+          className="relative overflow-hidden rounded-xl bg-pink-500 p-6 text-white shadow-sm"
         >
           {/* Background decoration */}
           <div className="absolute inset-0 bg-[url('/images/confetti-pattern.svg')] opacity-10"></div>
@@ -388,7 +388,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
                 </span>
               )}
               {recommendation.discount && !hasAccess && (
-                <Badge className="bg-gradient-to-r from-pink-500 to-rose-500 text-white text-xs font-semibold animate-pulse">
+                <Badge className="bg-pink-500 text-white text-xs font-semibold animate-pulse">
                   {recommendation.discount}% Kickstart korting
                 </Badge>
               )}
@@ -433,7 +433,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
                   )}
                 </div>
               </div>
-              <Button size="sm" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-md">
+              <Button size="sm" className="bg-pink-500 hover:bg-pink-600 text-white shadow-sm">
                 <Unlock className="h-4 w-4 mr-1.5" />
                 Bekijk
               </Button>

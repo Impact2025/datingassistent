@@ -374,7 +374,7 @@ export function DayViewer({
           <p className="text-gray-600 mb-6 max-w-md mx-auto">
             Koop het Kickstart programma voor toegang tot alle 21 dagen content.
           </p>
-          <Button size="lg" className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md">
+          <Button size="lg" className="bg-pink-500 hover:bg-pink-600 shadow-sm">
             Koop Kickstart - €47
           </Button>
         </CardContent>
@@ -388,9 +388,9 @@ export function DayViewer({
       <IrisIntro dayNumber={day.dag_nummer} dayTopic={day.titel} />
 
       {/* Enhanced Day Header Card */}
-      <Card className="border-pink-100 shadow-sm overflow-hidden">
+      <Card className="border-gray-200 shadow-sm overflow-hidden">
         {/* Top: Title & Time */}
-        <div className="bg-gradient-to-r from-pink-600 to-pink-500 px-4 py-3 sm:px-6 sm:py-4">
+        <div className="bg-pink-500 px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shrink-0">
@@ -681,7 +681,7 @@ export function DayViewer({
         <TabsContent value="video" className="mt-6">
           {/* Context Card */}
           {day.video_context && (
-            <Card className="border-pink-200 bg-pink-50 shadow-sm mb-4">
+            <Card className="border-gray-200 bg-gray-50 shadow-sm mb-4">
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 bg-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -759,7 +759,7 @@ export function DayViewer({
               {!isVideoComplete && (
                 <Button
                   onClick={handleVideoComplete}
-                  className="w-full mt-6 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-md"
+                  className="w-full mt-6 bg-pink-500 hover:bg-pink-600 text-white shadow-sm"
                   disabled={saving}
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
@@ -782,7 +782,7 @@ export function DayViewer({
           <TabsContent value="quiz" className="mt-6">
             {/* Context Card */}
             {day.quiz_context && (
-              <Card className="border-pink-200 bg-pink-50 shadow-sm mb-4">
+              <Card className="border-gray-200 bg-gray-50 shadow-sm mb-4">
                 <CardContent className="p-4">
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 bg-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -801,8 +801,8 @@ export function DayViewer({
               </Card>
             )}
 
-            <Card className="border-pink-100 shadow-sm">
-              <CardHeader className="border-b border-pink-50">
+            <Card className="border-gray-200 shadow-sm">
+              <CardHeader className="border-b border-gray-100">
                 <CardTitle className="text-xl text-gray-900">Quiz - Test je kennis</CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
@@ -865,7 +865,7 @@ export function DayViewer({
                 {!quizSubmitted && quizAnswers.length === day.quiz.vragen.length && (
                   <Button
                     onClick={handleQuizSubmit}
-                    className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md"
+                    className="w-full bg-pink-500 hover:bg-pink-600 shadow-sm"
                     disabled={saving}
                   >
                     Controleer antwoorden
@@ -908,11 +908,11 @@ export function DayViewer({
               </Card>
             )}
 
-            <Card className="border-pink-100 shadow-sm">
-              <CardHeader className="border-b border-pink-50">
+            <Card className="border-gray-200 shadow-sm">
+              <CardHeader className="border-b border-gray-100">
                 <CardTitle className="text-xl text-gray-900 flex items-center gap-2">
                   <span>Reflectie</span>
-                  <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-200">
+                  <Badge variant="outline" className="text-xs bg-pink-50 text-pink-700 border-pink-200">
                     Transformatie
                   </Badge>
                 </CardTitle>
@@ -1059,7 +1059,7 @@ export function DayViewer({
                             setSaving(false);
                           }
                         }}
-                        className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md"
+                        className="w-full bg-pink-500 hover:bg-pink-600 shadow-sm"
                         disabled={saving || Object.values(reflectionAnswers).filter((a) => a && a.length >= 5).length === 0}
                       >
                         {saving ? 'Opslaan...' : 'Alle antwoorden opslaan'}
@@ -1086,7 +1086,7 @@ export function DayViewer({
 
                     <Button
                       onClick={handleReflectieSave}
-                      className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md"
+                      className="w-full bg-pink-500 hover:bg-pink-600 shadow-sm"
                       disabled={saving || reflectieAnswer.length < 10}
                     >
                       {saving ? 'Opslaan...' : 'Opslaan'}
@@ -1122,8 +1122,8 @@ export function DayViewer({
               </Card>
             )}
 
-            <Card className="border-pink-100 shadow-sm">
-              <CardHeader className="border-b border-pink-50">
+            <Card className="border-gray-200 shadow-sm">
+              <CardHeader className="border-b border-gray-100">
                 <CardTitle className="text-xl text-gray-900">{day.werkboek.titel}</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
@@ -1183,13 +1183,13 @@ export function DayViewer({
       />
 
       {/* Navigation - Mobile Optimized */}
-      <div className="flex justify-between items-center pt-4 sm:pt-6 border-t border-pink-100 gap-2">
+      <div className="flex justify-between items-center pt-4 sm:pt-6 border-t border-gray-200 gap-2">
         {navigation.previous ? (
           <Button
             variant="outline"
             size="sm"
             onClick={() => onNavigate(navigation.previous!.dag_nummer)}
-            className="border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300 px-3 sm:px-4"
+            className="border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 px-3 sm:px-4"
           >
             <ChevronLeft className="w-4 h-4 sm:mr-2" />
             <span className="hidden sm:inline">Dag {navigation.previous.dag_nummer}</span>
@@ -1202,7 +1202,7 @@ export function DayViewer({
           <Button
             size="sm"
             onClick={() => onNavigate(navigation.next!.dag_nummer)}
-            className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 shadow-md px-3 sm:px-4 max-w-[200px] sm:max-w-none"
+            className="bg-pink-500 hover:bg-pink-600 shadow-sm px-3 sm:px-4 max-w-[200px] sm:max-w-none"
           >
             <span className="hidden sm:inline">Dag {navigation.next.dag_nummer}:</span>
             <span className="sm:hidden">Dag {navigation.next.dag_nummer}</span>
@@ -1212,7 +1212,7 @@ export function DayViewer({
         ) : (
           <Button
             size="sm"
-            className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg"
+            className="bg-green-500 hover:bg-green-600 shadow-sm"
           >
             <span className="text-sm sm:text-base">🎉 Voltooid!</span>
           </Button>
