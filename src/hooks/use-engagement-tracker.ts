@@ -36,6 +36,27 @@ export function useEngagementTracker() {
     async (eventType: EngagementEventType, options: TrackEventOptions = {}) => {
       const { event_data, debounce = 0 } = options;
 
+      // Perform the actual tracking
+      const performTrack = async (
+        eventType: EngagementEventType,
+        eventData?: Record<string, any>
+      ) => {
+        try {
+          await fetch('/api/engagement', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              event_type: eventType,
+              event_data: eventData,
+              session_id: sessionId.current
+            })
+          });
+        } catch (error) {
+          console.error('Error tracking engagement:', error);
+          // Silent fail - don't break the app
+        }
+      };
+
       // Debounce if specified
       if (debounce > 0) {
         const existingTimer = debounceTimers.current.get(eventType);
@@ -57,26 +78,6 @@ export function useEngagementTracker() {
     },
     []
   );
-
-  const performTrack = async (
-    eventType: EngagementEventType,
-    eventData?: Record<string, any>
-  ) => {
-    try {
-      await fetch('/api/engagement', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          event_type: eventType,
-          event_data: eventData,
-          session_id: sessionId.current
-        })
-      });
-    } catch (error) {
-      console.error('Error tracking engagement:', error);
-      // Silent fail - don't break the app
-    }
-  };
 
   /**
    * Track page view (call in useEffect)

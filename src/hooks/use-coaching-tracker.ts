@@ -205,7 +205,7 @@ export function useCoachingTracker(
     if (autoTrackView && user?.id) {
       trackToolView();
     }
-  }, [autoTrackView, user?.id]); // Only run when user becomes available
+  }, [autoTrackView, user?.id, trackToolView]);
 
   return {
     trackToolView,

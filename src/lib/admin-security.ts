@@ -374,8 +374,26 @@ export function cleanupRateLimitStore(): void {
 }
 
 // Periodic cleanup (every 5 minutes)
+// MEMORY LEAK FIX: Store interval ID for cleanup
+let cleanupIntervalId: NodeJS.Timeout | null = null;
+
 if (typeof globalThis !== 'undefined') {
-  setInterval(cleanupRateLimitStore, 5 * 60 * 1000);
+  cleanupIntervalId = setInterval(cleanupRateLimitStore, 5 * 60 * 1000);
+}
+
+// Cleanup function to be called on process exit
+export function stopAdminSecurityCleanup() {
+  if (cleanupIntervalId) {
+    clearInterval(cleanupIntervalId);
+    cleanupIntervalId = null;
+  }
+}
+
+// Auto-cleanup on process termination
+if (typeof process !== 'undefined') {
+  process.on('beforeExit', stopAdminSecurityCleanup);
+  process.on('SIGTERM', stopAdminSecurityCleanup);
+  process.on('SIGINT', stopAdminSecurityCleanup);
 }
 
 // ============================================================================

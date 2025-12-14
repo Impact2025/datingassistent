@@ -84,7 +84,7 @@ export function useIrisUsage(): UseIrisUsageReturn {
       // If SWR data is newer or different, use it
       setLocalStatus(null);
     }
-  }, [data]);
+  }, [data, localStatus]);
 
   return {
     usageStatus,

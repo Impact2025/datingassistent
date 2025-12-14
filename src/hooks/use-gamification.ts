@@ -3,7 +3,7 @@
  * Sprint 4: Gamification & Engagement
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 export interface GamificationStats {
   totalPoints: number;
@@ -44,7 +44,7 @@ export function useGamification(userId?: number): UseGamificationReturn {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     if (!userId) {
       setLoading(false);
       return;
@@ -70,9 +70,9 @@ export function useGamification(userId?: number): UseGamificationReturn {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
-  const trackLogin = async () => {
+  const trackLogin = useCallback(async () => {
     if (!userId) return;
 
     try {
@@ -89,17 +89,17 @@ export function useGamification(userId?: number): UseGamificationReturn {
     } catch (err) {
       console.error('Failed to track login:', err);
     }
-  };
+  }, [userId, fetchStats]);
 
-  const refreshStats = async () => {
+  const refreshStats = useCallback(async () => {
     setLoading(true);
     await fetchStats();
-  };
+  }, [fetchStats]);
 
   // Initial fetch
   useEffect(() => {
     fetchStats();
-  }, [userId]);
+  }, [fetchStats]);
 
   return {
     stats,
