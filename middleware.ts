@@ -91,15 +91,7 @@ export async function middleware(request: NextRequest) {
 // Journey completion check removed - handled client-side in UserProvider
 // This prevents middleware loops and allows localStorage-based auth to work
 
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, files with extensions
-     */
-    '/((?!api/|_next/static|_next/image|favicon.ico|.*\\.).*)',
-  ],
-};
+// DISABLED: Middleware completely disabled to diagnose issue
+// export const config = {
+//   matcher: [],
+// };
