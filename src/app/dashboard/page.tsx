@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useUser } from '@/providers/user-provider';
@@ -170,6 +170,8 @@ export default function DashboardPage() {
 
   const isLoading = loading;
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   // Feature flag: gebruik nieuwe 4-tab navigatie (Masterplan)
   const [useNewNav, setUseNewNav] = useState(true); // Zet op true voor nieuwe navigatie
@@ -228,14 +230,16 @@ export default function DashboardPage() {
   }, [activeTab]);
 
   // Handle URL tab parameter (e.g., ?tab=subscription)
+  // This effect runs whenever searchParams changes (Next.js App Router reactive hook)
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const urlParams = new URLSearchParams(window.location.search);
-    const tabParam = urlParams.get('tab');
+    const tabParam = searchParams.get('tab');
     if (tabParam && ['subscription', 'settings', 'data-management', 'home', 'pad', 'coach', 'profiel', 'tools'].includes(tabParam)) {
       setActiveTab(tabParam);
+    } else if (!tabParam && pathname === '/dashboard') {
+      // If on /dashboard without tab param, default to 'home' for new nav
+      setActiveTab(useNewNav ? 'home' : 'dashboard');
     }
-  }, []);
+  }, [searchParams, pathname, useNewNav]);
 
   // Use centralized journey state hook
   const {
@@ -266,9 +270,8 @@ export default function DashboardPage() {
   // Check if user is admin (from database role)
   const [isAdminUser, setIsAdminUser] = useState(false);
 
-  // Check for force parameter to bypass profile check
-  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
-  const forceAccess = searchParams?.get('force') === 'true';
+  // Check for force parameter to bypass profile check (using searchParams from useSearchParams hook)
+  const forceAccess = searchParams.get('force') === 'true';
 
   // ============================================
   // OPTIMIZED: Combined parallel API calls for admin + kickstart check
