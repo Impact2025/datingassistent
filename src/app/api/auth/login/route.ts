@@ -77,11 +77,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if email is verified
+    // SECURITY: Use generic error to prevent email enumeration
     if (!user.email_verified) {
       logger.auth('failed_login', { email, reason: 'email_not_verified' });
       return NextResponse.json(
-        { error: 'Email not verified. Please check your email and verify your account before logging in.' },
-        { status: 403 }
+        { error: 'Invalid email or password' },
+        { status: 401 }
       );
     }
 

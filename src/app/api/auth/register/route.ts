@@ -9,6 +9,7 @@ import { generateVerificationCode, storeVerificationCode, sendVerificationCodeEm
 import { startProgressiveTrial } from '@/lib/trial-management';
 import { notifyAdminNewLead } from '@/lib/admin-notifications';
 import { getJWTSecret } from '@/lib/jwt-secret';
+import { validatePassword, getPasswordErrorMessage } from '@/lib/password-validation';
 
 const JWT_SECRET = getJWTSecret();
 
@@ -42,21 +43,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (password.length < 6) {
+    // Validate password strength
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
       return NextResponse.json(
-        { error: 'Password must be at least 6 characters' },
+        { error: getPasswordErrorMessage(passwordValidation) },
         { status: 400 }
       );
     }
 
     // Check if user already exists
+    // SECURITY: Generic error message to prevent email enumeration
     const existingUser = await sql`
       SELECT id FROM users WHERE email = ${email}
     `;
 
     if (existingUser.rows.length > 0) {
       return NextResponse.json(
-        { error: 'Dit emailadres is al bij ons bekend. Vraag hier een wachtwoord aan.' },
+        { error: 'Er is een probleem met deze registratie. Als je al een account hebt, log dan in.' },
         { status: 400 }
       );
     }
