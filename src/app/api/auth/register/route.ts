@@ -8,10 +8,9 @@ import { getClientIdentifier, rateLimitAuthEndpoint, createRateLimitHeaders } fr
 import { generateVerificationCode, storeVerificationCode, sendVerificationCodeEmail } from '@/lib/email-verification';
 import { startProgressiveTrial } from '@/lib/trial-management';
 import { notifyAdminNewLead } from '@/lib/admin-notifications';
+import { getJWTSecret } from '@/lib/jwt-secret';
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'dev-only-jwt-secret-change-in-production-2024'
-);
+const JWT_SECRET = getJWTSecret();
 
 export async function POST(request: NextRequest) {
   // Apply rate limiting

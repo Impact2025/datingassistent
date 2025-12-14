@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyEmailWithCode } from '@/lib/email-verification';
 import { SignJWT } from 'jose';
 import { scheduleWelcomeEmail, scheduleProfileOptimizationReminder, scheduleWeeklyCheckin } from '@/lib/email-engagement';
+import { getJWTSecret } from '@/lib/jwt-secret';
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'dev-only-jwt-secret-change-in-production-2024'
-);
+const JWT_SECRET = getJWTSecret();
 
 export async function POST(request: NextRequest) {
   try {

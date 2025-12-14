@@ -63,7 +63,11 @@ export function generateCSRFToken(length: number = DEFAULT_CSRF_CONFIG.tokenLeng
  */
 export function createCSRFTokenPair(): { token: string; cookieValue: string } {
   const token = generateCSRFToken();
-  const secret = process.env.CSRF_SECRET || 'default-csrf-secret-change-in-production';
+  const secret = process.env.CSRF_SECRET;
+
+  if (!secret) {
+    throw new Error('CRITICAL SECURITY ERROR: CSRF_SECRET environment variable is not set. Application cannot start without this.');
+  }
 
   // Create HMAC for cookie value to prevent tampering
   const cookieValue = createHash('sha256')
@@ -84,7 +88,12 @@ export function verifyCSRFToken(
   if (!config.enabled) return true;
   if (!token || !cookieValue) return false;
 
-  const secret = process.env.CSRF_SECRET || 'default-csrf-secret-change-in-production';
+  const secret = process.env.CSRF_SECRET;
+
+  if (!secret) {
+    throw new Error('CRITICAL SECURITY ERROR: CSRF_SECRET environment variable is not set. Application cannot start without this.');
+  }
+
   const expectedCookieValue = createHash('sha256')
     .update(token + secret)
     .digest('hex');

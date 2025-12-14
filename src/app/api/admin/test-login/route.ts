@@ -3,12 +3,11 @@ import { cookies } from 'next/headers';
 import { SignJWT } from 'jose';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcryptjs';
+import { getJWTSecret } from '@/lib/jwt-secret';
 
 export const dynamic = 'force-dynamic';
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'dev-only-jwt-secret-change-in-production-2024'
-);
+const JWT_SECRET = getJWTSecret();
 const ADMIN_EMAILS = ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'];
 
 export async function POST(request: Request) {

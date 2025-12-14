@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { jwtVerify } from 'jose';
+import { getJWTSecret } from '@/lib/jwt-secret';
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'dev-only-jwt-secret-change-in-production-2024'
-);
+const JWT_SECRET = getJWTSecret();
 
 export async function POST(request: NextRequest) {
   try {
