@@ -1,229 +1,128 @@
 /**
- * ENVIRONMENT VALIDATION UTILITY
- * Validates required environment variables at runtime
- * Created: 2025-11-22
+ * ENVIRONMENT VARIABLE VALIDATION
+ *
+ * SECURITY: Validates all required environment variables at application startup
+ * Fails fast if critical secrets are missing to prevent runtime errors
  */
 
-interface EnvVarConfig {
-  key: string;
-  required: boolean;
-  category: 'database' | 'auth' | 'payment' | 'email' | 'ai' | 'security' | 'other';
-  description: string;
+export interface EnvValidationResult {
+  isValid: boolean;
+  errors: string[];
+  warnings: string[];
+  missingRequired: string[];
+  missingOptional: string[];
 }
 
-const ENV_VARS: EnvVarConfig[] = [
-  // Database
-  {
-    key: 'DATABASE_URL',
-    required: true,
-    category: 'database',
-    description: 'Neon PostgreSQL connection string'
-  },
-  {
-    key: 'POSTGRES_URL',
-    required: true,
-    category: 'database',
-    description: 'Neon PostgreSQL pooled connection'
-  },
+interface EnvVariable {
+  name: string;
+  required: boolean;
+  description: string;
+  validator?: (value: string | undefined) => boolean;
+  securityLevel?: 'critical' | 'high' | 'medium' | 'low';
+}
 
-  // Authentication & Security
+const ENV_VARIABLES: EnvVariable[] = [
   {
-    key: 'JWT_SECRET',
+    name: 'JWT_SECRET',
     required: true,
-    category: 'auth',
-    description: 'JWT token signing secret'
+    description: 'JWT secret key for authentication tokens',
+    securityLevel: 'critical',
+    validator: (val) => !!val && val.length >= 32,
   },
   {
-    key: 'NEXT_PUBLIC_RECAPTCHA_SITE_KEY',
-    required: false,
-    category: 'security',
-    description: 'Google reCAPTCHA site key'
-  },
-  {
-    key: 'RECAPTCHA_SECRET_KEY',
-    required: false,
-    category: 'security',
-    description: 'Google reCAPTCHA secret key'
-  },
-
-  // Payment
-  {
-    key: 'MULTISAFEPAY_API_KEY',
+    name: 'CSRF_SECRET',
     required: true,
-    category: 'payment',
-    description: 'MultiSafePay API key'
+    description: 'CSRF protection secret',
+    securityLevel: 'critical',
+    validator: (val) => !!val && val.length >= 32,
   },
   {
-    key: 'NEXT_PUBLIC_BASE_URL',
+    name: 'DATABASE_URL',
     required: true,
-    category: 'other',
-    description: 'Base URL for callbacks'
-  },
-
-  // Email
-  {
-    key: 'SENDGRID_API_KEY',
-    required: true,
-    category: 'email',
-    description: 'SendGrid API key'
+    description: 'PostgreSQL database connection string',
+    securityLevel: 'critical',
+    validator: (val) => !!val && (val.startsWith('postgres://') || val.startsWith('postgresql://')),
   },
   {
-    key: 'SENDGRID_FROM_EMAIL',
+    name: 'ANTHROPIC_API_KEY',
     required: true,
-    category: 'email',
-    description: 'SendGrid from email address'
+    description: 'Anthropic API key for AI features',
+    securityLevel: 'high',
+    validator: (val) => !!val && val.length > 20,
   },
-
-  // AI Services
   {
-    key: 'OPENROUTER_API_KEY',
+    name: 'SENDGRID_API_KEY',
     required: true,
-    category: 'ai',
-    description: 'OpenRouter API key for AI features'
+    description: 'SendGrid API key for email delivery',
+    securityLevel: 'high',
+    validator: (val) => !!val && val.startsWith('SG.'),
+  },
+  {
+    name: 'SENDGRID_FROM_EMAIL',
+    required: true,
+    description: 'Verified sender email address',
+    securityLevel: 'medium',
+    validator: (val) => !!val && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+  },
+  {
+    name: 'NEXT_PUBLIC_BASE_URL',
+    required: true,
+    description: 'Base URL for the application',
+    securityLevel: 'medium',
+    validator: (val) => !!val && (val.startsWith('http://') || val.startsWith('https://')),
+  },
+  {
+    name: 'MULTISAFEPAY_API_KEY',
+    required: true,
+    description: 'MultiSafePay API key for payment processing',
+    securityLevel: 'high',
   },
 ];
 
-interface ValidationResult {
-  valid: boolean;
-  errors: string[];
-  warnings: string[];
-  summary: {
-    total: number;
-    required: number;
-    missing: number;
-    configured: number;
-  };
-}
-
-export function validateEnvironment(): ValidationResult {
+export function validateEnvironment(): EnvValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
+  const missingRequired: string[] = [];
+  const missingOptional: string[] = [];
 
-  let missingRequired = 0;
-  let totalRequired = 0;
-  let configured = 0;
+  const isProduction = process.env.NODE_ENV === 'production';
 
-  for (const envVar of ENV_VARS) {
-    const value = process.env[envVar.key];
+  for (const envVar of ENV_VARIABLES) {
+    const value = process.env[envVar.name];
+    const isMissing = !value || value === '';
 
-    if (envVar.required) {
-      totalRequired++;
+    if (envVar.required && isMissing) {
+      missingRequired.push(envVar.name);
+      errors.push(`CRITICAL: ${envVar.name} is required but not set. ${envVar.description}`);
+      continue;
     }
 
-    if (!value || value.trim() === '') {
-      if (envVar.required) {
-        missingRequired++;
-        const category = envVar.category.toUpperCase();
-        errors.push(
-          "❌ [" + category + "] Missing required env var: " + envVar.key + " - " + envVar.description
-        );
-      } else {
-        const category = envVar.category.toUpperCase();
-        warnings.push(
-          "⚠️  [" + category + "] Optional env var not set: " + envVar.key + " - " + envVar.description
-        );
-      }
-    } else {
-      configured++;
-
-      const placeholders = [
-        'your_',
-        'CHANGE-THIS',
-        'your-secret-key-change-in-production',
-        'INSECURE',
-      ];
-
-      const hasPlaceholder = placeholders.some(p => value.includes(p));
-
-      if (hasPlaceholder) {
-        const category = envVar.category.toUpperCase();
-        if (envVar.required) {
-          errors.push(
-            "❌ [" + category + "] " + envVar.key + " contains placeholder value - update in production!"
-          );
-        } else {
-          warnings.push(
-            "⚠️  [" + category + "] " + envVar.key + " contains placeholder value"
-          );
-        }
-      }
+    if (value && envVar.validator && !envVar.validator(value)) {
+      errors.push(`INVALID: ${envVar.name} has an invalid value. ${envVar.description}`);
     }
   }
 
-  const valid = errors.length === 0;
+  const isValid = errors.length === 0 && missingRequired.length === 0;
 
   return {
-    valid,
+    isValid,
     errors,
     warnings,
-    summary: {
-      total: ENV_VARS.length,
-      required: totalRequired,
-      missing: missingRequired,
-      configured,
-    },
+    missingRequired,
+    missingOptional,
   };
 }
 
-export function printValidationResults(result: ValidationResult): void {
-  console.log('\n🔍 ENVIRONMENT VALIDATION REPORT');
-  console.log('='.repeat(60));
-
-  console.log('\n📊 Summary:');
-  console.log('   Total variables: ' + result.summary.total);
-  console.log('   Required: ' + result.summary.required);
-  console.log('   Configured: ' + result.summary.configured);
-  console.log('   Missing: ' + result.summary.missing);
-
-  if (result.errors.length > 0) {
-    console.log('\n❌ ERRORS (' + result.errors.length + '):');
-    result.errors.forEach(error => console.log('   ' + error));
-  }
-
-  if (result.warnings.length > 0) {
-    console.log('\n⚠️  WARNINGS (' + result.warnings.length + '):');
-    result.warnings.forEach(warning => console.log('   ' + warning));
-  }
-
-  if (result.valid) {
-    console.log('\n✅ Environment validation passed!\n');
-  } else {
-    console.log('\n❌ Environment validation FAILED!\n');
-    console.log('   Please check .env.local and compare with .env.example\n');
-  }
-
-  console.log('='.repeat(60) + '\n');
-}
-
-export function validateEnvironmentOrThrow(): void {
+export function assertValidEnvironment(): void {
   const result = validateEnvironment();
-  printValidationResults(result);
 
-  if (!result.valid) {
-    throw new Error(
-      'Environment validation failed with ' + result.errors.length + ' errors. Check console for details.'
-    );
-  }
-}
-
-export function isEnvVarValid(key: string): boolean {
-  const value = process.env[key];
-  if (!value || value.trim() === '') return false;
-
-  const placeholders = ['your_', 'CHANGE-THIS', 'your-secret-key'];
-  return !placeholders.some(p => value.includes(p));
-}
-
-export function getEnvVar(key: string, fallback?: string): string {
-  const value = process.env[key];
-
-  if (!value || value.trim() === '') {
-    if (fallback !== undefined) {
-      console.warn('⚠️  Using fallback for ' + key);
-      return fallback;
-    }
-    throw new Error('Required environment variable ' + key + ' is not set');
+  if (!result.isValid) {
+    console.error('\nENVIRONMENT VALIDATION FAILED');
+    console.error('================================\n');
+    result.errors.forEach(e => console.error(e));
+    console.error('\nAPPLICATION STARTUP BLOCKED');
+    throw new Error(`Environment validation failed: ${result.missingRequired.length} required variables missing`);
   }
 
-  return value;
+  console.log('Environment validation passed');
 }
