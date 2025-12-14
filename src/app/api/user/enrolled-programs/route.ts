@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
 import { verifyToken, cookieConfig } from '@/lib/jwt-config';
+import { UserCache, getCachedOrCompute } from '@/lib/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -230,8 +231,12 @@ export async function GET(request: NextRequest) {
 
     console.log('🔍 Fetching enrolled programs for user:', userId);
 
-    // Get all enrolled programs (this table should always exist)
-    const result = await sql`
+    // PERFORMANCE: Use cache to reduce database load
+    const programsWithProgress = await getCachedOrCompute(
+      `user:${userId}:enrolled-programs`,
+      async () => {
+        // Get all enrolled programs (this table should always exist)
+        const result = await sql`
       SELECT
         pe.program_id,
         p.slug as program_slug,
@@ -306,6 +311,11 @@ export async function GET(request: NextRequest) {
           next_lesson_title: nextLessonTitle
         };
       })
+    );
+
+        return programsWithProgress;
+      },
+      { ttl: 300 } // Cache for 5 minutes
     );
 
     return NextResponse.json({
