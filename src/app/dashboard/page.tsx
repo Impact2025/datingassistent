@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import dynamicImport from 'next/dynamic';
 import Image from 'next/image';
@@ -27,9 +27,6 @@ import { MainNavNew } from '@/components/layout/main-nav-new';
 import { ProactiveInvite, useProactiveInvite } from '@/components/live-chat/proactive-invite';
 import { trackDashboardTab, trackToolUsed } from '@/lib/analytics/ga4-events';
 import { debugLog, DASHBOARD_TABS, TAB_REDIRECT_MAP, NAVIGATION_TABS, LOADING_MESSAGES } from '@/lib/constants/dashboard';
-
-// Force dynamic rendering for this page (required for useSearchParams)
-export const dynamic = 'force-dynamic';
 
 // ============================================
 // LAZY LOADED COMPONENTS - Performance optimization
@@ -168,7 +165,8 @@ const DatingWeekNotificationModal = dynamicImport(() => import('@/components/das
   ssr: false
 });
 
-export default function DashboardPage() {
+// Internal component with useSearchParams
+function DashboardPageContent() {
   const { user, userProfile, loading } = useUser();
 
   const isLoading = loading;
@@ -859,5 +857,14 @@ export default function DashboardPage() {
         </div>
       )}
     </>
+  );
+}
+
+// Export with Suspense boundary (required for useSearchParams)
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <DashboardPageContent />
+    </Suspense>
   );
 }
