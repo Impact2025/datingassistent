@@ -240,7 +240,8 @@
       "Bash(fi)",
       "Bash(for file in src/app/blog/page.tsx src/app/help/page.tsx src/app/payment/page.tsx src/app/payment/success/page.tsx src/app/quiz/resultaat/page.tsx src/app/register/page.tsx src/app/reset-password/page.tsx src/app/tools/page.tsx src/app/verify-email/page.tsx)",
       "Bash(if grep -q \"import dynamic from ''next/dynamic''\" \"$file\")",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(python -m json.tool:*)"
     ],
     "deny": [],
     "ask": []
