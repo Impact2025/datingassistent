@@ -1,6 +1,6 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
+import { Suspense } from 'react';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -46,7 +46,7 @@ interface MenuItem {
   disabled?: boolean;
 }
 
-export default function MeerPage() {
+function MeerPageContent() {
   const router = useRouter();
   const { user, logout, userProfile } = useUser();
   const { theme, setTheme, actualTheme, mounted } = useTheme();
@@ -511,5 +511,16 @@ export default function MeerPage() {
 
       <BottomNavigation />
     </div>
+  );
+}
+export default function MeerPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500" />
+      </div>
+    }>
+      <MeerPageContent />
+    </Suspense>
   );
 }

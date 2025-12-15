@@ -1,6 +1,8 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
+import { Suspense } from 'react';
+
+
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -42,7 +44,7 @@ interface Achievement {
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
 }
 
-export default function GroeiPage() {
+function GroeiPageContent() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('goals');
 
@@ -329,5 +331,16 @@ export default function GroeiPage() {
 
       <BottomNavigation />
     </div>
+  );
+}
+export default function GroeiPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500" />
+      </div>
+    }>
+      <GroeiPageContent />
+    </Suspense>
   );
 }

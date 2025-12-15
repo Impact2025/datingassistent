@@ -1,6 +1,8 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
+import { Suspense } from 'react';
+
+
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -42,7 +44,7 @@ interface Lesson {
   isNext?: boolean;
 }
 
-export default function LerenPage() {
+function LerenPageContent() {
   const router = useRouter();
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
 
@@ -265,5 +267,16 @@ export default function LerenPage() {
 
       <BottomNavigation />
     </div>
+  );
+}
+export default function LerenPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500" />
+      </div>
+    }>
+      <LerenPageContent />
+    </Suspense>
   );
 }
