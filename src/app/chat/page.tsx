@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,9 +8,7 @@ import { ArrowLeft } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { ChatCoachTab } from '@/components/dashboard/chat-coach-tab';
 
-export const dynamic = 'force-dynamic';
-
-export default function ChatPage() {
+function ChatPageContent() {
   const router = useRouter();
 
   return (
@@ -39,5 +38,17 @@ export default function ChatPage() {
 
       <BottomNavigation />
     </div>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500" />
+      </div>
+    }>
+      <ChatPageContent />
+    </Suspense>
   );
 }
