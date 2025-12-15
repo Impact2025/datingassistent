@@ -7,6 +7,8 @@ import { ArrowLeft } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { ChatCoachTab } from '@/components/dashboard/chat-coach-tab';
 
+export const dynamic = 'force-dynamic';
+
 export default function ChatPage() {
   const router = useRouter();
 
