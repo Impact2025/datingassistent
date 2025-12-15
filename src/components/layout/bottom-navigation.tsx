@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { MessageCircle, TrendingUp, User, Sparkles, LayoutGrid } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 // Haptic feedback utility
 const triggerHapticFeedback = () => {
@@ -18,13 +19,17 @@ const triggerHapticFeedback = () => {
 
 export function BottomNavigation() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Get current tab from URL params
+  const currentTab = searchParams.get('tab');
 
   const navItems = [
     {
       href: '/dashboard',
       icon: null, // Logo image instead of icon
       label: 'Home',
-      active: pathname === '/' || (pathname?.startsWith('/dashboard') && !pathname?.includes('kickstart')),
+      active: pathname === '/' || (pathname === '/dashboard' && !currentTab),
       color: 'text-gray-700',
       activeColor: 'text-pink-500',
       isLogo: true,
@@ -41,40 +46,34 @@ export function BottomNavigation() {
       href: '/dashboard?tab=coach',
       icon: MessageCircle,
       label: 'Coach',
-      active: pathname?.startsWith('/coach') || pathname?.startsWith('/chat') || pathname?.includes('chat-coach'),
+      active: currentTab === 'coach',
       color: 'text-gray-700',
       activeColor: 'text-blue-500',
     },
     {
       href: '/dashboard?tab=tools',
-      icon: User,
+      icon: LayoutGrid,
       label: 'Tools',
-      active: pathname?.includes('tab=tools') || pathname?.startsWith('/tools'),
+      active: currentTab === 'tools',
       color: 'text-gray-700',
       activeColor: 'text-green-500',
     },
     {
-      href: '/meer',
-      icon: LayoutGrid,
-      label: 'Meer',
-      active: pathname?.startsWith('/meer') ||
-              pathname?.startsWith('/tools') ||
-              pathname?.startsWith('/community') ||
-              pathname?.startsWith('/settings') ||
-              pathname?.startsWith('/leren') ||
-              pathname?.startsWith('/groei') ||
-              pathname?.startsWith('/cursussen') ||
-              pathname?.startsWith('/courses') ||
-              pathname?.startsWith('/help') ||
-              pathname?.startsWith('/privacy') ||
-              pathname?.startsWith('/subscription'),
+      href: '/dashboard?tab=profiel',
+      icon: User,
+      label: 'Profiel',
+      active: currentTab === 'profiel',
       color: 'text-gray-700',
-      activeColor: 'text-orange-500',
+      activeColor: 'text-purple-500',
     },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-lg border-t border-gray-200 md:hidden safe-area-bottom shadow-lg">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-lg border-t border-gray-200 md:hidden safe-area-bottom shadow-lg"
+      role="navigation"
+      aria-label="Hoofdnavigatie"
+    >
       <div className="flex items-center justify-around px-1 py-2">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -85,6 +84,8 @@ export function BottomNavigation() {
               key={item.href}
               href={item.href}
               onClick={triggerHapticFeedback}
+              aria-label={`${item.label}${isActive ? ' (huidige pagina)' : ''}`}
+              aria-current={isActive ? 'page' : undefined}
               className={cn(
                 "relative flex flex-col items-center justify-center px-3 py-2 rounded-2xl transition-all duration-300 ease-out min-w-[60px] active:scale-95",
                 isActive
@@ -125,15 +126,21 @@ export function BottomNavigation() {
                   )}
                 </div>
               ) : null}
-              <span className={cn(
-                "text-xs font-medium transition-all duration-200",
-                isActive ? `${item.activeColor} font-semibold` : item.color
-              )}>
+              <span
+                className={cn(
+                  "text-sm font-medium transition-all duration-200",
+                  isActive ? `${item.activeColor} font-semibold` : item.color
+                )}
+                aria-hidden="true"
+              >
                 {item.label}
               </span>
               {/* Bottom Active Indicator */}
               {isActive && (
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-10 h-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent rounded-full" />
+                <div
+                  className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-10 h-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent rounded-full"
+                  aria-hidden="true"
+                />
               )}
             </Link>
           );
