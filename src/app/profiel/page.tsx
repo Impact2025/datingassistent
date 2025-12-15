@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = 'force-dynamic';
+
 import { ProfileSuite } from '@/components/dashboard/profile-suite';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 

@@ -27,6 +27,7 @@ import { MainNavNew } from '@/components/layout/main-nav-new';
 import { ProactiveInvite, useProactiveInvite } from '@/components/live-chat/proactive-invite';
 import { trackDashboardTab, trackToolUsed } from '@/lib/analytics/ga4-events';
 import { debugLog, DASHBOARD_TABS, TAB_REDIRECT_MAP, NAVIGATION_TABS, LOADING_MESSAGES } from '@/lib/constants/dashboard';
+import { announce } from '@/components/accessibility/screen-reader-announcer';
 
 // ============================================
 // LAZY LOADED COMPONENTS - Performance optimization
@@ -227,13 +228,26 @@ function DashboardPageContent() {
       window.history.pushState({}, '', url.toString());
     }
 
+    // Announce tab change to screen readers
+    const tabNames: Record<string, string> = {
+      'home': 'Home',
+      'pad': 'Pad',
+      'coach': 'Coach',
+      'tools': 'Tools',
+      'profiel': 'Profiel',
+      'settings': 'Instellingen',
+      'subscription': 'Abonnement',
+    };
+    const tabName = tabNames[newTab] || newTab;
+    announce(`${tabName} tabblad geladen`, 'polite');
+
     setActiveTab(newTab);
   }, [activeTab]);
 
   // Handle URL tab parameter (e.g., ?tab=subscription)
   // This effect runs whenever searchParams changes (Next.js App Router reactive hook)
   useEffect(() => {
-    const tabParam = searchParams.get('tab');
+    const tabParam = searchParams?.get('tab');
     if (tabParam && ['subscription', 'settings', 'data-management', 'home', 'pad', 'coach', 'profiel', 'tools'].includes(tabParam)) {
       setActiveTab(tabParam);
     } else if (!tabParam && pathname === '/dashboard') {
@@ -272,7 +286,7 @@ function DashboardPageContent() {
   const [isAdminUser, setIsAdminUser] = useState(false);
 
   // Check for force parameter to bypass profile check (using searchParams from useSearchParams hook)
-  const forceAccess = searchParams.get('force') === 'true';
+  const forceAccess = searchParams?.get('force') === 'true';
 
   // ============================================
   // OPTIMIZED: Combined parallel API calls for admin + kickstart check

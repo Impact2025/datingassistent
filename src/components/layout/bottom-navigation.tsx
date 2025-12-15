@@ -22,7 +22,7 @@ export function BottomNavigation() {
   const searchParams = useSearchParams();
 
   // Get current tab from URL params
-  const currentTab = searchParams.get('tab');
+  const currentTab = searchParams?.get('tab') || null;
 
   const navItems = [
     {
@@ -102,7 +102,8 @@ export function BottomNavigation() {
                 <div className="w-6 h-6 mb-1 relative">
                   <Image
                     src="/images/Logo Icon DatingAssistent.png"
-                    alt="DatingAssistent Logo"
+                    alt=""
+                    aria-hidden="true"
                     fill
                     className={cn(
                       "object-contain transition-all duration-200",
@@ -117,11 +118,12 @@ export function BottomNavigation() {
                       "w-6 h-6 mb-1 transition-all duration-200",
                       isActive ? `${item.activeColor} scale-110` : item.color
                     )}
+                    aria-hidden="true"
                   />
                   {/* Pulse effect for active icon */}
                   {isActive && (
-                    <div className="absolute inset-0 animate-ping opacity-20">
-                      <Icon className={cn("w-6 h-6", item.activeColor)} />
+                    <div className="absolute inset-0 animate-ping opacity-20" aria-hidden="true">
+                      <Icon className={cn("w-6 h-6", item.activeColor)} aria-hidden="true" />
                     </div>
                   )}
                 </div>

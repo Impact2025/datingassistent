@@ -33,11 +33,15 @@ export function PublicHeader() {
   }, []);
 
   return (
-    <header className={`sticky top-0 z-50 border-b backdrop-blur-md transition-all duration-300 ${
-      isScrolled ? 'bg-background/90 py-2' : 'bg-background/80 py-4'
-    } border-border`} suppressHydrationWarning={true}>
+    <header
+      className={`sticky top-0 z-50 border-b backdrop-blur-md transition-all duration-300 ${
+        isScrolled ? 'bg-background/90 py-2' : 'bg-background/80 py-4'
+      } border-border`}
+      suppressHydrationWarning={true}
+      role="banner"
+    >
       <div className="container mx-auto px-4 sm:px-6">
-        <nav className="flex items-center justify-between">
+        <nav className="flex items-center justify-between" role="navigation" aria-label="Hoofd navigatie">
           <Link href="/" suppressHydrationWarning>
             <Logo iconSize={32} textSize="md" />
           </Link>
@@ -48,10 +52,12 @@ export function PublicHeader() {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-md text-foreground/80 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              aria-label={isMenuOpen ? 'Sluit menu' : 'Open menu'}
+              aria-label={isMenuOpen ? 'Sluit navigatiemenu' : 'Open navigatiemenu'}
               aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+              type="button"
             >
-              <div className="w-6 h-6 flex flex-col justify-center items-center">
+              <div className="w-6 h-6 flex flex-col justify-center items-center" aria-hidden="true">
                 <span className={`block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm bg-foreground ${
                   isMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'
                 }`}></span>
@@ -97,10 +103,15 @@ export function PublicHeader() {
             )}
           </div>
         </nav>
-        
+
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-border pt-4">
+          <div
+            id="mobile-menu"
+            className="md:hidden mt-4 pb-4 border-t border-border pt-4"
+            role="menu"
+            aria-label="Mobiel navigatiemenu"
+          >
             <div className="flex flex-col space-y-4">
               <Link
                 href="/over-ons"

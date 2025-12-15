@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { WebVitals } from "@/components/analytics/web-vitals";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { SkipLinks } from "@/components/accessibility/skip-links";
+import { ScreenReaderAnnouncer } from "@/components/accessibility/screen-reader-announcer";
 import { StructuredData } from "@/components/structured-data";
 import ErrorBoundary from "@/components/error-boundary";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
@@ -144,6 +145,7 @@ export default function RootLayout({
         <MicrosoftClarity />
         <StructuredData />
         <SkipLinks />
+        <ScreenReaderAnnouncer />
         <ErrorBoundary>
           <ThemeProvider>
             <WebVitals />

@@ -33,13 +33,13 @@ export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {
 
   return (
     <>
-      <header className="flex items-center justify-between pb-6">
+      <header className="flex items-center justify-between pb-6" role="banner">
         <div>
           <div className="mb-2">
             <Logo iconSize={40} textSize="lg" />
           </div>
           <div className="flex items-center gap-2">
-            <p className="text-sm text-muted-foreground md:text-base">
+            <p className="text-sm text-muted-foreground md:text-base" role="status" aria-live="polite">
               Welkom terug, {userProfile?.name}!
             </p>
             {!tierLoading && userTier !== 'free' && (
@@ -47,7 +47,7 @@ export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {
             )}
           </div>
         </div>
-        <div className="flex items-center space-x-2">
+        <nav className="flex items-center space-x-2" role="navigation" aria-label="Gebruikersmenu">
           {mounted && (
             <Button
               variant="ghost"
@@ -57,39 +57,46 @@ export function Header({ onSettingsClick, onSubscriptionClick }: HeaderProps = {
               title={actualTheme === 'dark' ? 'Licht thema' : 'Donker thema'}
               suppressHydrationWarning
               noFocusRing
+              type="button"
             >
-              {actualTheme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              <Sun className="h-5 w-5" aria-hidden="true" />
+              <Moon className="h-5 w-5" aria-hidden="true" />
             </Button>
           )}
           <Button
             variant="ghost"
             size="icon"
             onClick={onSubscriptionClick || (() => router.push('/dashboard?tab=subscription'))}
-            aria-label="Abonnement"
+            aria-label="Open abonnement instellingen"
             title="Mijn Abonnement"
             noFocusRing
+            type="button"
           >
-            <CreditCard className="h-5 w-5" />
+            <CreditCard className="h-5 w-5" aria-hidden="true" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={onSettingsClick || (() => router.push('/dashboard?tab=settings'))}
-            aria-label="Instellingen"
+            aria-label="Open instellingen"
+            title="Instellingen"
             noFocusRing
+            type="button"
           >
-            <Settings className="h-5 w-5" />
+            <Settings className="h-5 w-5" aria-hidden="true" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => logout()}
-            aria-label="Uitloggen"
+            aria-label="Uitloggen uit je account"
+            title="Uitloggen"
             noFocusRing
+            type="button"
           >
-            <LogOut className="h-5 w-5" />
+            <LogOut className="h-5 w-5" aria-hidden="true" />
           </Button>
-        </div>
+        </nav>
       </header>
     </>
   );
