@@ -226,8 +226,8 @@ export function getCSRFConfig(): CSRFConfig {
 
   return {
     ...DEFAULT_CSRF_CONFIG,
-    // CSRF disabled in all environments for now (auth endpoints need client-side token implementation)
-    enabled: false,
+    // CSRF enabled in production for security
+    enabled: isProduction,
     secure: isProduction,
     excludePaths: [
       // Always exclude auth endpoints from CSRF protection
