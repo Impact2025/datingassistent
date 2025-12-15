@@ -3,6 +3,8 @@ import CoursesContent from '@/components/courses/courses-content';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Online Dating Cursussen | Leer de Kunst van het Daten | DatingAssistent',
   description: 'Professionele online dating cursussen om je dating skills te verbeteren. Van eerste berichten tot succesvolle relaties. Gratis en betaalde cursussen voor alle niveaus.',
