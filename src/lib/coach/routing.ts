@@ -3,7 +3,7 @@
  * Detecteert user intent en suggereert relevante tools
  */
 
-import { Camera, MessageSquare, Heart, Shield, Zap, BookOpen, Target, TrendingUp, Sparkles, Users } from 'lucide-react';
+import { Camera, MessageSquare, Heart, Shield, Zap, BookOpen, Target, TrendingUp, Sparkles, Users, Battery, CameraIcon, Ghost } from 'lucide-react';
 import type { ToolRoute } from './types';
 import type { ToolSuggestion } from '@/components/coach';
 
@@ -145,6 +145,48 @@ const TOOL_ROUTES: ToolRoute[] = [
     toolHref: '/waarden-kompas',
     category: 'Zelfinzicht',
     confidence: 0.9
+  },
+
+  // Transformatie 3.0 Tools
+  {
+    keywords: ['vibe', 'vibe check', 'uitstraling', 'emotie foto', 'hoe kom ik over', 'eerste indruk'],
+    intent: 'vibe_check',
+    toolId: 'vibe-check-simulator',
+    toolName: 'Vibe Check Simulator',
+    toolDescription: 'Ontdek hoe je foto\'s overkomen op potentiële matches',
+    toolHref: '/tools/vibe-check',
+    category: 'Profiel',
+    confidence: 0.95
+  },
+  {
+    keywords: ['energie', 'batterij', 'burnout', 'moe', 'uitgeput', 'introvert', 'swipen'],
+    intent: 'energy_check',
+    toolId: 'energie-batterij',
+    toolName: 'Energie Batterij',
+    toolDescription: 'Meet je sociale energie en voorkom dating burnout',
+    toolHref: '/tools/energie-batterij',
+    category: 'Zelfinzicht',
+    confidence: 0.95
+  },
+  {
+    keywords: ['36 vragen', 'diepgaand gesprek', 'intimiteit', 'verbinding', 'kwetsbaar'],
+    intent: 'deep_conversation',
+    toolId: '36-vragen-oefen-bot',
+    toolName: '36 Vragen Bot',
+    toolDescription: 'Oefen diepgaande gesprekken voor echte connectie',
+    toolHref: '/tools/36-vragen',
+    category: 'Communicatie',
+    confidence: 0.95
+  },
+  {
+    keywords: ['ghosting', 'ghost', 'geen reactie', 'stilte', 'afwijzing', 'verwerken'],
+    intent: 'ghosting_support',
+    toolId: 'ghosting-reframer',
+    toolName: 'Ghosting Reframer',
+    toolDescription: 'Verwerk ghosting-ervaringen op een gezonde manier',
+    toolHref: '/tools/ghosting-reframer',
+    category: 'Zelfinzicht',
+    confidence: 0.95
   },
 
   // Leren

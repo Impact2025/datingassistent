@@ -8,6 +8,8 @@
  * - vip: €997 (beta €497) - Full access + personal coaching
  */
 
+import { sql } from '@vercel/postgres';
+
 export type ProgramTier = 'free' | 'kickstart' | 'transformatie' | 'vip';
 
 export interface TierConfig {
@@ -855,6 +857,54 @@ export const PROFILE_SUITE_TOOLS: ProfileSuiteToolAccess[] = [
     upgradeMessage: 'Krijg inspiratie voor unieke dates',
     tourPriority: 0,
     tourDescription: ''
+  },
+
+  // ============================================
+  // TRANSFORMATIE 3.0 EXCLUSIVE TOOLS
+  // ============================================
+  {
+    toolId: 'vibe-check-simulator',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Vibe Check Simulator is exclusief voor Transformatie',
+    upgradeMessage: 'Ontdek hoe je foto\'s emotioneel overkomen op matches',
+    tourPriority: 1,
+    tourDescription: 'Krijg emotionele feedback op je profielfoto\'s'
+  },
+  {
+    toolId: 'energie-batterij',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Energie Batterij is exclusief voor Transformatie',
+    upgradeMessage: 'Voorkom dating burnout met slimme energie tracking',
+    tourPriority: 2,
+    tourDescription: 'Meet je sociale energie en voorkom burnout'
+  },
+  {
+    toolId: '36-vragen-oefen-bot',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: '36 Vragen Bot is exclusief voor Transformatie',
+    upgradeMessage: 'Oefen diepgaande gesprekken voor echte connectie',
+    tourPriority: 3,
+    tourDescription: 'Oefen intimiteit-opbouwende vragen'
+  },
+  {
+    toolId: 'ghosting-reframer',
+    minTier: 'transformatie',
+    kickstartLimit: 0,   // Locked
+    transformatieLimit: -1,
+    vipLimit: -1,
+    lockedMessage: 'Ghosting Reframer is exclusief voor Transformatie',
+    upgradeMessage: 'Verwerk afwijzing op een gezonde manier',
+    tourPriority: 4,
+    tourDescription: 'Therapeutische hulp bij ghosting-ervaringen'
   }
 ];
 
@@ -972,3 +1022,63 @@ export function getKickstartTourTools(): ProfileSuiteToolAccess[] {
 export function getLockedToolsForTier(userTier: ProgramTier): ProfileSuiteToolAccess[] {
   return PROFILE_SUITE_TOOLS.filter(t => !hasAccess(userTier, t.minTier));
 }
+
+// ============================================
+// DATABASE-BASED ACCESS CHECK
+// ============================================
+
+/**
+ * Check if a user has access to a specific tool
+ * This is the main function to use from API routes
+ * It fetches the user's tier from the database and checks tool access
+ */
+export async function checkToolAccessForUser(
+  userId: number,
+  toolId: string
+): Promise<{
+  hasAccess: boolean;
+  reason?: string;
+  tier?: ProgramTier;
+  requiredTier?: ProgramTier;
+}> {
+  try {
+    // Get user's enrollments to determine their tier
+    const enrollments = await sql`
+      SELECT pe.id, p.slug as program_slug, pe.status
+      FROM program_enrollments pe
+      JOIN programs p ON pe.program_id = p.id
+      WHERE pe.user_id = ${userId}
+      AND pe.status = 'active'
+    `;
+
+    const userTier = determineTierFromEnrollments(
+      enrollments.rows.map(e => ({ program_slug: e.program_slug, status: e.status }))
+    );
+
+    // Check tool access
+    const toolAccess = checkProfileSuiteToolAccess(toolId, userTier);
+
+    if (!toolAccess.hasAccess) {
+      return {
+        hasAccess: false,
+        reason: toolAccess.lockedMessage,
+        tier: userTier,
+        requiredTier: toolAccess.upgradeTier || undefined
+      };
+    }
+
+    return {
+      hasAccess: true,
+      tier: userTier
+    };
+  } catch (error) {
+    console.error('Error checking tool access:', error);
+    return {
+      hasAccess: false,
+      reason: 'Er is een fout opgetreden bij het controleren van toegang'
+    };
+  }
+}
+
+// Note: checkToolAccessForUser is the async database-based function for API routes
+// The existing checkToolAccess is a sync function for tier-based checks
