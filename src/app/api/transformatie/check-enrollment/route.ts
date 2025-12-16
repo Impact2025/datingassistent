@@ -42,8 +42,7 @@ export async function GET(request: NextRequest) {
         pe.id,
         pe.status,
         pe.enrolled_at,
-        pe.expires_at,
-        pe.tier_variant
+        pe.expires_at
       FROM program_enrollments pe
       WHERE pe.user_id = ${user.id}
       AND pe.program_id = ${program.id}
@@ -128,14 +127,13 @@ export async function GET(request: NextRequest) {
         status: enrollment.status,
         enrolled_at: enrollment.enrolled_at,
         expires_at: enrollment.expires_at,
-        tier_variant: enrollment.tier_variant,
       },
       program: {
         id: program.id,
         slug: program.slug,
         name: program.name,
       },
-      tier: enrollment.tier_variant === 'vip' ? 'vip' : 'transformatie',
+      tier: 'transformatie',
       progress: {
         total: progress.total_lessons,
         completed: progress.completed_lessons,
