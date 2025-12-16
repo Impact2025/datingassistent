@@ -18,7 +18,10 @@ import {
   Compass,
   User,
   Sparkles,
-  BookOpen
+  BookOpen,
+  Battery,
+  Ghost,
+  Zap,
 } from 'lucide-react';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { GuidedFlow } from '@/components/dashboard/guided-flow';
@@ -33,8 +36,9 @@ interface Tool {
   title: string;
   description: string;
   route: string;
-  category: 'profile' | 'communication' | 'analysis' | 'safety';
+  category: 'profile' | 'communication' | 'analysis' | 'safety' | 'transformatie';
   popular?: boolean;
+  tier?: 'free' | 'kickstart' | 'transformatie';
 }
 
 function ToolsPageContent() {
@@ -189,10 +193,51 @@ function ToolsPageContent() {
       route: '/profiel',
       category: 'analysis',
     },
+
+    // Transformatie 3.0 Tools
+    {
+      id: 'vibe-check',
+      icon: <Camera className="w-6 h-6" />,
+      title: 'Vibe Check',
+      description: 'Ontdek hoe je foto emotioneel overkomt',
+      route: '/tools/vibe-check',
+      category: 'transformatie',
+      tier: 'transformatie',
+      popular: true,
+    },
+    {
+      id: 'energie-batterij',
+      icon: <Battery className="w-6 h-6" />,
+      title: 'Energie Batterij',
+      description: 'Meet je sociale energie en voorkom burnout',
+      route: '/tools/energie-batterij',
+      category: 'transformatie',
+      tier: 'transformatie',
+    },
+    {
+      id: '36-vragen',
+      icon: <Heart className="w-6 h-6" />,
+      title: '36 Vragen',
+      description: 'Bouw diepere verbinding met je date',
+      route: '/tools/36-vragen',
+      category: 'transformatie',
+      tier: 'transformatie',
+      popular: true,
+    },
+    {
+      id: 'ghosting-reframer',
+      icon: <Ghost className="w-6 h-6" />,
+      title: 'Ghosting Reframer',
+      description: 'Verwerk afwijzing op een gezonde manier',
+      route: '/tools/ghosting-reframer',
+      category: 'transformatie',
+      tier: 'transformatie',
+    },
   ];
 
   const categories = [
     { id: 'all', label: 'Alles', count: tools.length },
+    { id: 'transformatie', label: 'Transformatie', count: tools.filter(t => t.category === 'transformatie').length },
     { id: 'profile', label: 'Profiel', count: tools.filter(t => t.category === 'profile').length },
     { id: 'communication', label: 'Communicatie', count: tools.filter(t => t.category === 'communication').length },
     { id: 'analysis', label: 'Analyse', count: tools.filter(t => t.category === 'analysis').length },
@@ -238,6 +283,7 @@ function ToolsPageContent() {
       case 'communication': return 'bg-green-100 text-green-700';
       case 'analysis': return 'bg-purple-100 text-purple-700';
       case 'safety': return 'bg-red-100 text-red-700';
+      case 'transformatie': return 'bg-pink-100 text-pink-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
@@ -350,6 +396,30 @@ function ToolsPageContent() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Transformatie 3.0 Tools Highlight */}
+        <Card className="mb-6 border-2 border-pink-300 bg-gradient-to-br from-pink-50 to-rose-50 overflow-hidden">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <Badge className="bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 mb-2">
+                  ✨ TRANSFORMATIE 3.0
+                </Badge>
+                <h3 className="font-bold text-gray-900 mb-1">4 Nieuwe AI Tools</h3>
+                <p className="text-xs text-gray-600">
+                  Vibe Check • Energie Batterij • 36 Vragen • Ghosting Reframer
+                </p>
+              </div>
+              <Button
+                size="sm"
+                onClick={() => setSelectedCategory('transformatie')}
+                className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white"
+              >
+                Bekijk →
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="grid grid-cols-1 gap-4 max-w-md mx-auto">
           {filteredTools.map((tool) => (
