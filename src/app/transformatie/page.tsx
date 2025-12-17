@@ -2,17 +2,23 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2, ArrowLeft, Home, Sparkles } from 'lucide-react';
+import { Loader2, ArrowLeft, Home } from 'lucide-react';
+import Image from 'next/image';
 import { TransformatieDashboardView } from '@/components/transformatie/TransformatieDashboardView';
+import { TransformatieOnboardingFlow } from '@/components/transformatie/TransformatieOnboardingFlow';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { Button } from '@/components/ui/button';
+import { useUser } from '@/providers/user-provider';
 
 function TransformatieContent() {
   const router = useRouter();
+  const { user } = useUser();
   const [loading, setLoading] = useState(true);
   const [enrolled, setEnrolled] = useState(false);
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
+  const [savingOnboarding, setSavingOnboarding] = useState(false);
 
   useEffect(() => {
     async function checkEnrollment() {
@@ -24,6 +30,8 @@ function TransformatieContent() {
 
           if (data.isEnrolled) {
             setEnrolled(true);
+            // Check if onboarding is needed
+            setNeedsOnboarding(!data.hasOnboardingData);
           } else {
             // Not enrolled - redirect to sales page or dashboard
             router.push('/dashboard');
@@ -40,16 +48,61 @@ function TransformatieContent() {
     checkEnrollment();
   }, [router]);
 
+  // Handle onboarding completion
+  const handleOnboardingComplete = useCallback(async (data: any) => {
+    setSavingOnboarding(true);
+    try {
+      const response = await fetch('/api/transformatie/onboarding', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data }),
+      });
+
+      if (response.ok) {
+        console.log('✅ Onboarding saved successfully');
+        setNeedsOnboarding(false);
+      } else {
+        console.error('Failed to save onboarding');
+      }
+    } catch (err) {
+      console.error('Error saving onboarding:', err);
+    } finally {
+      setSavingOnboarding(false);
+    }
+  }, []);
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-pink-500 flex items-center justify-center shadow-xl overflow-hidden">
+            <Image
+              src="/images/Logo Icon DatingAssistent.png"
+              alt="DatingAssistent"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+          </div>
+          <Loader2 className="w-8 h-8 animate-spin text-pink-500 mx-auto mb-4" />
+          <p className="text-gray-600">Transformatie laden...</p>
+        </div>
       </div>
     );
   }
 
   if (!enrolled) {
     return null;
+  }
+
+  // Show onboarding if needed
+  if (needsOnboarding) {
+    return (
+      <TransformatieOnboardingFlow
+        userName={user?.name}
+        onComplete={handleOnboardingComplete}
+      />
+    );
   }
 
   return (
@@ -69,8 +122,14 @@ function TransformatieContent() {
                 <ArrowLeft className="w-5 h-5 text-gray-600" />
               </Button>
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-md">
-                  <Sparkles className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-md overflow-hidden">
+                  <Image
+                    src="/images/Logo Icon DatingAssistent.png"
+                    alt="DatingAssistent"
+                    width={28}
+                    height={28}
+                    className="object-contain"
+                  />
                 </div>
                 <div>
                   <h1 className="text-lg md:text-xl font-semibold text-gray-900">Transformatie</h1>

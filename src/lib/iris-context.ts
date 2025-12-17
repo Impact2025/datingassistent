@@ -8,6 +8,7 @@
 // ✅ iris_user_context - basis profiel
 // ✅ AIContextManager - 7 assessments
 // ✅ kickstart_onboarding - onboarding antwoorden (gender, fears, goals)
+// ✅ transformatie_onboarding - Transformatie 3.0 onboarding (situatie, uitdagingen, doelen)
 // ✅ user_reflections - dagelijkse reflecties uit Kickstart
 // ✅ weekly_dating_logs - echte dating activiteit
 // ✅ goal_hierarchies - year/month/week doelen
@@ -41,6 +42,16 @@ interface KickstartOnboardingData {
   ideal_outcome?: string;
   completed_days?: number;
   current_day?: number;
+}
+
+interface TransformatieOnboardingData {
+  preferred_name?: string;
+  current_situation?: string;
+  biggest_challenge?: string;
+  goals?: string[];
+  commitment_level?: string;
+  age_range?: string;
+  completed_at?: Date;
 }
 
 interface UserReflection {
@@ -136,6 +147,38 @@ async function getKickstartOnboardingData(userId: number): Promise<KickstartOnbo
     };
   } catch (error) {
     console.log('No kickstart onboarding data found');
+    return null;
+  }
+}
+
+/**
+ * Haal Transformatie onboarding data op
+ */
+async function getTransformatieOnboardingData(userId: number): Promise<TransformatieOnboardingData | null> {
+  try {
+    const result = await sql`
+      SELECT data, completed_at
+      FROM transformatie_onboarding
+      WHERE user_id = ${userId}
+      AND completed_at IS NOT NULL
+    `;
+
+    if (result.rows.length === 0) return null;
+
+    const row = result.rows[0];
+    const data = row.data as any;
+
+    return {
+      preferred_name: data?.preferredName,
+      current_situation: data?.currentSituation,
+      biggest_challenge: data?.biggestChallenge,
+      goals: data?.goals,
+      commitment_level: data?.commitmentLevel,
+      age_range: data?.ageRange,
+      completed_at: row.completed_at,
+    };
+  } catch (error) {
+    console.log('No transformatie onboarding data found');
     return null;
   }
 }
@@ -304,6 +347,7 @@ export async function getIrisContext(userId: number): Promise<IrisContextForProm
 export interface EnrichedIrisContext extends IrisContextForPrompt {
   aiContext: any;
   kickstart?: KickstartOnboardingData | null;
+  transformatie?: TransformatieOnboardingData | null; // 🚀 Transformatie 3.0 onboarding
   reflections?: UserReflection[];
   patterns?: Pattern[]; // 🧠 Iris Memory Magic - detected patterns in reflections
   datingLog?: DatingLogActivity[];
@@ -324,6 +368,7 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     baseContext,
     aiContext,
     kickstartData,
+    transformatieData,
     reflections,
     datingLogData,
     goalsData
@@ -331,6 +376,7 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     getIrisContext(userId),
     AIContextManager.getUserContext(userId),
     getKickstartOnboardingData(userId),
+    getTransformatieOnboardingData(userId),
     getUserReflections(userId),
     getDatingLogActivity(userId),
     getUserGoals(userId)
@@ -351,6 +397,7 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     ...baseContext,
     aiContext: aiContext || {},
     kickstart: kickstartData,
+    transformatie: transformatieData,
     reflections: reflections,
     patterns: patterns, // 🧠 Iris Memory - top 2 detected patterns
     datingLog: datingLogData,
@@ -704,6 +751,80 @@ WAT JE WEET OVER DEZE GEBRUIKER:`);
     // Kickstart voortgang
     if (kickstart.completed_days !== undefined) {
       parts.push(`- Kickstart voortgang: dag ${kickstart.current_day || 1} van 21 (${kickstart.completed_days} dagen voltooid)`);
+    }
+  }
+
+  // 🚀 TRANSFORMATIE ONBOARDING DATA (persoonlijke transformatie info)
+  const transformatie = context.transformatie;
+  if (transformatie) {
+    parts.push(`
+🦋 TRANSFORMATIE PROFIEL (uit onboarding):`);
+    if (transformatie.preferred_name) {
+      parts.push(`- Naam: ${transformatie.preferred_name}`);
+    }
+    if (transformatie.age_range) {
+      parts.push(`- Leeftijdsgroep: ${transformatie.age_range}`);
+    }
+    if (transformatie.current_situation) {
+      const situationLabels: Record<string, string> = {
+        'single_searching': 'Single en actief zoekend',
+        'single_break': 'Single, even pauze gehad',
+        'dating_struggling': 'Dating maar het lukt niet',
+        'relationship_issues': 'Net uit een relatie',
+      };
+      parts.push(`- Dating situatie: ${situationLabels[transformatie.current_situation] || transformatie.current_situation}`);
+    }
+    if (transformatie.biggest_challenge) {
+      const challengeLabels: Record<string, string> = {
+        'no_matches': 'Weinig tot geen matches',
+        'conversations_die': 'Gesprekken sterven uit',
+        'no_dates': 'Geen dates uit gesprekken',
+        'wrong_people': 'Verkeerde mensen aantrekken',
+        'confidence': 'Gebrek aan zelfvertrouwen',
+        'past_trauma': 'Vastzitten in het verleden',
+      };
+      parts.push(`- Grootste uitdaging: ${challengeLabels[transformatie.biggest_challenge] || transformatie.biggest_challenge}`);
+    }
+    if (transformatie.goals && transformatie.goals.length > 0) {
+      const goalLabels: Record<string, string> = {
+        'find_partner': 'Vaste partner vinden',
+        'better_dates': 'Betere dates hebben',
+        'confidence': 'Meer zelfvertrouwen',
+        'communication': 'Beter communiceren',
+        'know_myself': 'Mezelf beter kennen',
+        'healthy_patterns': 'Gezondere patronen',
+      };
+      const goalList = transformatie.goals.map(g => goalLabels[g] || g).join(', ');
+      parts.push(`- Transformatie doelen: ${goalList}`);
+    }
+    if (transformatie.commitment_level) {
+      const commitmentLabels: Record<string, string> = {
+        'exploring': 'Ontdekken wat het brengt',
+        'serious': 'Serieus aan de slag',
+        'all_in': 'All-in voor mijn transformatie',
+      };
+      parts.push(`- Commitment niveau: ${commitmentLabels[transformatie.commitment_level] || transformatie.commitment_level}`);
+    }
+
+    parts.push(`
+💡 TRANSFORMATIE COACHING CONTEXT:
+- Deze persoon volgt De Transformatie (12 modules: DESIGN → ACTION → SURRENDER)
+- Pas je coaching aan op hun specifieke uitdaging en doelen
+- Refereer aan het 3-fasen framework waar relevant
+- DESIGN = identiteit & waarden ontdekken
+- ACTION = actief daten met nieuwe inzichten
+- SURRENDER = loslaten & vertrouwen`);
+
+    // Extra coaching hints based on challenge
+    if (transformatie.biggest_challenge === 'confidence') {
+      parts.push(`
+⚠️ AANDACHT: Deze persoon worstelt met zelfvertrouwen - wees extra bemoedigend en vier kleine successen!`);
+    } else if (transformatie.biggest_challenge === 'past_trauma') {
+      parts.push(`
+⚠️ AANDACHT: Deze persoon zit vast in het verleden - toon empathie, help met loslaten, verwijs naar SURRENDER fase`);
+    } else if (transformatie.biggest_challenge === 'wrong_people') {
+      parts.push(`
+⚠️ AANDACHT: Deze persoon trekt verkeerde mensen aan - focus op DESIGN fase (identiteit, waarden, patronen)`);
     }
   }
 

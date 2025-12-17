@@ -1,8 +1,13 @@
 'use client';
 
+/**
+ * BottomNavigation - World-class context-aware mobile navigation
+ * Dynamically shows relevant program tab based on user enrollments
+ */
+
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { MessageCircle, TrendingUp, User, Sparkles, LayoutGrid } from 'lucide-react';
+import { MessageCircle, User, Sparkles, LayoutGrid, Heart } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
@@ -17,12 +22,153 @@ const triggerHapticFeedback = () => {
   }
 };
 
+// Types for enrollment state
+interface EnrollmentState {
+  hasKickstart: boolean;
+  hasTransformatie: boolean;
+  isLoading: boolean;
+}
+
 export function BottomNavigation() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   // Get current tab from URL params
   const currentTab = searchParams?.get('tab') || null;
+
+  // Track enrollment state for context-aware navigation
+  const [enrollments, setEnrollments] = useState<EnrollmentState>({
+    hasKickstart: false,
+    hasTransformatie: false,
+    isLoading: true,
+  });
+
+  // Check enrollments on mount
+  useEffect(() => {
+    const checkEnrollments = async () => {
+      const token = typeof window !== 'undefined'
+        ? localStorage.getItem('datespark_auth_token')
+        : null;
+
+      if (!token) {
+        setEnrollments({ hasKickstart: false, hasTransformatie: false, isLoading: false });
+        return;
+      }
+
+      const headers = { 'Authorization': `Bearer ${token}` };
+
+      try {
+        // Check both enrollments in parallel
+        const [kickstartRes, transformatieRes] = await Promise.all([
+          fetch('/api/kickstart/check-enrollment', { headers }).catch(() => null),
+          fetch('/api/transformatie/check-enrollment', { headers }).catch(() => null),
+        ]);
+
+        let hasKickstart = false;
+        let hasTransformatie = false;
+
+        if (kickstartRes?.ok) {
+          const data = await kickstartRes.json();
+          hasKickstart = data.hasEnrollment === true;
+        }
+
+        if (transformatieRes?.ok) {
+          const data = await transformatieRes.json();
+          hasTransformatie = data.isEnrolled === true;
+        }
+
+        setEnrollments({ hasKickstart, hasTransformatie, isLoading: false });
+      } catch {
+        setEnrollments({ hasKickstart: false, hasTransformatie: false, isLoading: false });
+      }
+    };
+
+    checkEnrollments();
+  }, []);
+
+  // Determine which program tab to show based on:
+  // 1. Current page (if on /transformatie, show Transformatie)
+  // 2. Enrollment status (prioritize higher tier)
+  // 3. Default to Kickstart if no enrollment
+  const isOnTransformatiePage = pathname?.startsWith('/transformatie');
+  const isOnKickstartPage = pathname?.startsWith('/kickstart');
+
+  // Determine the program nav item configuration
+  const getProgramNavItem = () => {
+    const { hasKickstart, hasTransformatie } = enrollments;
+
+    // If currently on Transformatie page and enrolled, show Transformatie
+    if (isOnTransformatiePage && hasTransformatie) {
+      return {
+        href: '/transformatie',
+        icon: Heart,
+        label: 'Reis',
+        active: isOnTransformatiePage,
+        color: 'text-gray-700',
+        activeColor: 'text-pink-500',
+      };
+    }
+
+    // If currently on Kickstart page and enrolled, show Kickstart
+    if (isOnKickstartPage && hasKickstart) {
+      return {
+        href: '/kickstart',
+        icon: Sparkles,
+        label: 'Kickstart',
+        active: isOnKickstartPage,
+        color: 'text-gray-700',
+        activeColor: 'text-rose-500',
+      };
+    }
+
+    // If user has both enrollments - show the one based on current context
+    if (hasKickstart && hasTransformatie) {
+      // If on transformatie pages, show Transformatie
+      if (isOnTransformatiePage) {
+        return {
+          href: '/transformatie',
+          icon: Heart,
+          label: 'Reis',
+          active: isOnTransformatiePage,
+          color: 'text-gray-700',
+          activeColor: 'text-pink-500',
+        };
+      }
+      // Default to Kickstart for users with both (can switch via dashboard)
+      return {
+        href: '/kickstart',
+        icon: Sparkles,
+        label: 'Kickstart',
+        active: isOnKickstartPage,
+        color: 'text-gray-700',
+        activeColor: 'text-rose-500',
+      };
+    }
+
+    // If only Transformatie enrolled
+    if (hasTransformatie) {
+      return {
+        href: '/transformatie',
+        icon: Heart,
+        label: 'Reis',
+        active: isOnTransformatiePage,
+        color: 'text-gray-700',
+        activeColor: 'text-pink-500',
+      };
+    }
+
+    // Default: Kickstart (for enrolled users or as discovery)
+    return {
+      href: '/kickstart',
+      icon: Sparkles,
+      label: 'Kickstart',
+      active: isOnKickstartPage,
+      color: 'text-gray-700',
+      activeColor: 'text-rose-500',
+    };
+  };
+
+  const programNavItem = getProgramNavItem();
 
   const navItems = [
     {
@@ -34,14 +180,7 @@ export function BottomNavigation() {
       activeColor: 'text-pink-500',
       isLogo: true,
     },
-    {
-      href: '/kickstart',
-      icon: Sparkles,
-      label: 'Kickstart',
-      active: pathname?.startsWith('/kickstart'),
-      color: 'text-gray-700',
-      activeColor: 'text-rose-500',
-    },
+    programNavItem, // Dynamic program tab
     {
       href: '/dashboard?tab=coach',
       icon: MessageCircle,
@@ -75,13 +214,15 @@ export function BottomNavigation() {
       aria-label="Hoofdnavigatie"
     >
       <div className="flex items-center justify-around px-1 py-2">
-        {navItems.map((item) => {
+        {navItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = item.active;
+          // Use index as key since href can be dynamic
+          const key = `nav-${index}-${item.label}`;
 
           return (
             <Link
-              key={item.href}
+              key={key}
               href={item.href}
               onClick={triggerHapticFeedback}
               aria-label={`${item.label}${isActive ? ' (huidige pagina)' : ''}`}
@@ -98,7 +239,7 @@ export function BottomNavigation() {
                 <div className="absolute inset-0 bg-pink-100/30 rounded-2xl blur-sm -z-10" />
               )}
 
-              {item.isLogo ? (
+              {'isLogo' in item && item.isLogo ? (
                 <div className="w-6 h-6 mb-1 relative">
                   <Image
                     src="/images/Logo Icon DatingAssistent.png"

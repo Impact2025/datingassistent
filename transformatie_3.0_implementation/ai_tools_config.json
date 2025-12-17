@@ -1,0 +1,243 @@
+{
+  "ai_tools": [
+    {
+      "id": 101,
+      "slug": "vibe-check-simulator",
+      "name": "Vibe Check Simulator",
+      "category": "profile_suite",
+      "icon": "camera-heart",
+      "description": "Ontdek hoe je foto's overkomen op potentiële matches. Geen technische scores, maar echte emotionele feedback.",
+      "short_description": "Emotionele profielfoto analyse",
+      "is_premium": true,
+      "module_integration": 3,
+      "config": {
+        "input_type": "image",
+        "max_images": 5,
+        "output_format": "emotional_analysis"
+      },
+      "system_prompt": "Je bent een empathische dating coach die helpt bij het begrijpen van de emotionele impact van profielfoto's. Je simuleert de ervaring van een potentiële match die door een dating app scrollt.\n\nJe geeft GEEN technische feedback over:\n- Belichting\n- Resolutie\n- Compositie\n- Kwaliteit\n\nJe focust WEL op:\n- Emotionele eerste indruk\n- Vibe en energie die de foto uitstraalt\n- Wat iemand zou kunnen denken bij het zien\n- Uitnodigende vs afstotende elementen\n\nJe toon is warm, eerlijk maar constructief. Je helpt mensen begrijpen hoe ze overkomen, niet hoe technisch perfect hun foto is.",
+      "user_prompt_template": "Analyseer deze profielfoto vanuit het perspectief van een potentiële match die voor het eerst door een dating app scrollt.\n\nGeef feedback op:\n\n1. **Eerste Emotie**: Welke emotie roept deze foto direct op? (warmte, avontuur, mysterie, betrouwbaarheid, humor, etc.)\n\n2. **Eerste Gedachte**: Simuleer wat iemand zou denken: \"Deze persoon lijkt...\"\n\n3. **Vibe Check**: Welke vibe straalt de persoon uit op een schaal:\n   - Toegankelijk ←→ Mysterieus\n   - Serieus ←→ Speels\n   - Rustig ←→ Avontuurlijk\n\n4. **Nieuwsgierigheid Factor**: Wat maakt nieuwsgierig? Wat roept vragen op?\n\n5. **Suggestie**: Eén concrete tip om de emotionele impact te versterken.\n\nFormat je antwoord als:\n\"Deze foto straalt [emotie] uit. Iemand zou kunnen denken: '[gesimuleerde gedachte]'...\""
+    },
+    {
+      "id": 102,
+      "slug": "energie-batterij",
+      "name": "Energie Batterij",
+      "category": "growth_goals",
+      "icon": "battery-charging",
+      "description": "Meet en bescherm je sociale energie. Speciaal ontworpen voor introverts en iedereen die dating burnout wil voorkomen.",
+      "short_description": "Voorkom dating burnout",
+      "is_premium": true,
+      "module_integration": 4,
+      "config": {
+        "input_type": "questionnaire",
+        "energy_thresholds": {
+          "red": 40,
+          "yellow": 70,
+          "green": 100
+        },
+        "swipe_recommendations": {
+          "red": {
+            "max_minutes": 0,
+            "message": "Je batterij is te laag. Even opladen eerst.",
+            "action": "breathing_exercise"
+          },
+          "yellow": {
+            "max_minutes": 10,
+            "message": "Je hebt beperkte energie. Max 10 minuten swipen.",
+            "action": "timer_with_reminder"
+          },
+          "green": {
+            "max_minutes": 20,
+            "message": "Je energie is goed! Vergeet niet pauzes te nemen.",
+            "action": "optional_timer"
+          }
+        },
+        "breathing_exercise": {
+          "name": "4-7-8 Ademhaling",
+          "description": "Vagale regulatie voor energieherstel",
+          "steps": [
+            {"action": "inhale", "duration": 4, "instruction": "Adem in door je neus"},
+            {"action": "hold", "duration": 7, "instruction": "Houd je adem vast"},
+            {"action": "exhale", "duration": 8, "instruction": "Adem langzaam uit door je mond"}
+          ],
+          "cycles": 3
+        },
+        "introvert_mode": {
+          "enabled": true,
+          "extra_questions": [
+            "Hoeveel alleen-tijd heb je vandaag gehad?",
+            "Heb je vandaag al video calls of meetings gehad?"
+          ],
+          "adjusted_thresholds": {
+            "red": 50,
+            "yellow": 75
+          }
+        }
+      },
+      "system_prompt": "Je bent een zorgzame energie-coach die focust op burnout preventie bij dating. Je begrijpt dat:\n\n1. Introverts anders omgaan met sociale energie dan extraverts\n2. Dating apps ontworpen zijn om verslavend te zijn (dopamine loops)\n3. Choice overload leidt tot beslissingsmoeheid\n4. 78% van dating app gebruikers ervaart burnout\n\nJe bent beschermend maar niet betuttelend. Je helpt mensen bewuste keuzes maken over hun energie.\n\nAls iemand onder 40% energie zit:\n- Adviseer NIET te swipen\n- Bied de ademhalingsoefening aan\n- Valideer dat rust nemen kracht is, geen zwakte\n\nAls iemand introvert-modus aan heeft:\n- Wees extra alert op energieverlies\n- Vraag naar alleen-tijd\n- Pas drempels aan",
+      "user_prompt_template": "Laten we je huidige energieniveau meten.\n\nBeantwoord deze vragen eerlijk:\n\n1. **Lichamelijke energie**: Hoe voel je je fysiek op dit moment? (1-10)\n2. **Sociale interacties**: Hoeveel sociale interacties (gesprekken, meetings, berichten) heb je vandaag gehad?\n3. **Alleen-tijd**: Heb je vandaag bewust tijd voor jezelf gehad? (ja/nee/een beetje)\n4. **Slaap**: Hoe goed heb je afgelopen nacht geslapen? (1-10)\n5. **Stress**: Hoe gestrest voel je je op dit moment? (1-10, waarbij 10 = zeer gestrest)\n\n[OPTIONEEL - Introvert Mode]\n6. Hoeveel uur alleen-tijd heb je vandaag gehad?\n7. Heb je vandaag video calls of online meetings gehad?\n\nOp basis van je antwoorden bereken ik je energieniveau en geef ik advies over dating activiteiten."
+    },
+    {
+      "id": 103,
+      "slug": "36-vragen-oefen-bot",
+      "name": "36 Vragen Oefen-Bot",
+      "category": "communication_hub",
+      "icon": "message-heart",
+      "description": "Oefen met Arthur Aron's wetenschappelijk bewezen vragen die intimiteit creëren. Perfect voor introverts die zich willen voorbereiden.",
+      "short_description": "Oefen diepgaande gesprekken",
+      "is_premium": true,
+      "module_integration": 5,
+      "config": {
+        "input_type": "conversation",
+        "question_sets": {
+          "set_1": {
+            "name": "Kennismaking",
+            "intensity": "light",
+            "questions": [
+              "Als je kon kiezen om met wie dan ook ter wereld te dineren, wie zou je kiezen?",
+              "Zou je graag beroemd willen zijn? Op welke manier?",
+              "Repeteer je wel eens voordat je gaat bellen wat je gaat zeggen? Waarom?",
+              "Wat zou voor jou een 'perfecte' dag zijn?",
+              "Wanneer heb je voor het laatst voor jezelf gezongen? En voor iemand anders?",
+              "Als je 90 jaar oud zou kunnen worden en de keuze had om óf de geest óf het lichaam van een 30-jarige te behouden voor de laatste 60 jaar, wat zou je kiezen?",
+              "Heb je een geheim voorgevoel over hoe je zult sterven?",
+              "Noem drie dingen die jij en je gesprekspartner gemeen lijken te hebben.",
+              "Waar in je leven ben je het meest dankbaar voor?",
+              "Als je iets kon veranderen aan hoe je bent opgevoed, wat zou dat zijn?",
+              "Neem vier minuten en vertel je levensverhaal zo gedetailleerd mogelijk.",
+              "Als je morgen wakker zou worden met één nieuwe eigenschap of vaardigheid, welke zou je kiezen?"
+            ]
+          },
+          "set_2": {
+            "name": "Verdieping",
+            "intensity": "medium",
+            "questions": [
+              "Als een kristallen bol je de waarheid kon vertellen over jezelf, je leven, de toekomst, of wat dan ook, wat zou je willen weten?",
+              "Is er iets dat je al heel lang wilt doen? Waarom heb je het nog niet gedaan?",
+              "Wat is de grootste prestatie in je leven?",
+              "Wat waardeer je het meest in een vriendschap?",
+              "Wat is je meest gekoesterde herinnering?",
+              "Wat is je meest vreselijke herinnering?",
+              "Als je wist dat je over een jaar plotseling zou sterven, zou je dan iets veranderen aan hoe je nu leeft? Waarom?",
+              "Wat betekent vriendschap voor jou?",
+              "Welke rol spelen liefde en genegenheid in je leven?",
+              "Deel om de beurt iets dat je als een positieve eigenschap van je gesprekspartner beschouwt. Deel in totaal vijf items.",
+              "Hoe hecht en warm is je familie? Voel je dat je kindertijd gelukkiger was dan die van de meeste andere mensen?",
+              "Hoe voel je je over je relatie met je moeder?"
+            ]
+          },
+          "set_3": {
+            "name": "Intimiteit",
+            "intensity": "deep",
+            "questions": [
+              "Maak drie ware 'wij'-statements. Bijvoorbeeld: 'Wij zijn allebei in deze kamer en voelen...'",
+              "Maak deze zin af: 'Ik wou dat ik iemand had om ... mee te delen.'",
+              "Als je goede vrienden zou worden met je gesprekspartner, deel dan wat belangrijk zou zijn voor hem of haar om te weten.",
+              "Vertel je gesprekspartner wat je leuk vindt aan hem of haar. Wees heel eerlijk, zeg dingen die je misschien niet zou zeggen tegen iemand die je net hebt ontmoet.",
+              "Deel een gênant moment uit je leven.",
+              "Wanneer heb je voor het laatst gehuild in het bijzijn van een ander? En alleen?",
+              "Vertel je gesprekspartner iets dat je nu al leuk aan hem of haar vindt.",
+              "Wat is te serieus om grappen over te maken, als er al iets is?",
+              "Als je vanavond zou sterven zonder de mogelijkheid om met iemand te communiceren, wat zou je het meest betreuren niet te hebben gezegd? Waarom heb je het nog niet gezegd?",
+              "Je huis met alles wat je bezit vat vlam. Na het redden van je dierbaren en huisdieren heb je tijd om veilig één ding te redden. Wat zou dat zijn? Waarom?",
+              "Van alle mensen in je familie, wiens dood zou je het meest verontrustend vinden? Waarom?",
+              "Deel een persoonlijk probleem en vraag je gesprekspartner om advies over hoe hij of zij ermee om zou gaan. Vraag ook hoe je gesprekspartner denkt dat je je voelt over het probleem."
+            ]
+          }
+        },
+        "feedback_criteria": {
+          "vulnerability": {
+            "low": "Je antwoord is veilig. Durf je wat dieper te gaan?",
+            "medium": "Goed! Je deelt iets persoonlijks.",
+            "high": "Wow, dat is kwetsbaar. Dit is hoe echte connectie ontstaat."
+          },
+          "depth": {
+            "low": "Dit zou je aan iedereen kunnen vertellen. Wat maakt het persoonlijk?",
+            "medium": "Je gaat onder de oppervlakte. Mooi.",
+            "high": "Dit is diep en betekenisvol. Perfect."
+          },
+          "specificity": {
+            "low": "Kun je een concreet voorbeeld geven?",
+            "medium": "Mooi specifiek!",
+            "high": "De details maken het levend. Uitstekend."
+          }
+        }
+      },
+      "system_prompt": "Je bent een warme, nieuwsgierige oefenpartner gebaseerd op het wetenschappelijke onderzoek van Arthur Aron (1997) over het creëren van intimiteit.\n\nJe rol:\n1. Stel vragen uit de 36 Vragen methodiek\n2. Luister actief en reageer met oprechte interesse\n3. Model wederkerigheid door zelf ook (kort) te 'antwoorden'\n4. Geef constructieve feedback op kwetsbaarheid en diepgang\n5. Moedig aan om écht kwetsbaar te zijn\n\nBegin met Set 1 (lichter) en bouw op naar Set 3 (dieper) naarmate het gesprek vordert.\n\nOnthoud: Het doel is niet de vragen 'af te werken' maar om te oefenen met het voeren van diepgaande gesprekken. Kwaliteit boven kwantiteit.\n\nVoor introverts: Benadruk dat voorbereiding een superkracht is, niet een zwakte.",
+      "user_prompt_template": "Welkom bij de 36 Vragen oefensessie!\n\nDeze vragen zijn ontworpen door psycholoog Arthur Aron en zijn wetenschappelijk bewezen effectief in het creëren van intimiteit en connectie.\n\nHoe werkt het:\n1. Ik stel je een vraag\n2. Jij beantwoordt zo eerlijk en kwetsbaar mogelijk\n3. Ik reageer met interesse en deel kort mijn eigen 'antwoord'\n4. Ik geef feedback op je kwetsbaarheid en diepgang\n5. We gaan door naar de volgende vraag\n\nWe beginnen met lichtere vragen (Set 1) en bouwen op naar diepere vragen (Set 3).\n\nKlaar? Hier is je eerste vraag:\n\n**[VRAAG UIT SET 1]**"
+    },
+    {
+      "id": 104,
+      "slug": "ghosting-reframer",
+      "name": "Ghosting Reframer",
+      "category": "relationship_coach",
+      "icon": "ghost-off",
+      "description": "Verwerk ghosting-ervaringen op een gezonde manier. Gebaseerd op narratieve therapie en cognitieve herstructurering.",
+      "short_description": "Verwerk afwijzing gezond",
+      "is_premium": true,
+      "module_integration": 11,
+      "config": {
+        "input_type": "conversation",
+        "therapeutic_approaches": [
+          "narrative_therapy",
+          "cognitive_restructuring",
+          "self_compassion",
+          "somatic_regulation"
+        ],
+        "reframe_patterns": {
+          "self_blame": {
+            "trigger_phrases": ["wat is er mis met mij", "ik ben niet goed genoeg", "het is mijn schuld"],
+            "reframe_to": "information_about_other",
+            "example": "Van 'Er is iets mis met mij' naar 'Dit zegt iets over hun communicatiestijl, niet over mijn waarde'"
+          },
+          "rejection": {
+            "trigger_phrases": ["afgewezen", "niet gewild", "niet leuk genoeg"],
+            "reframe_to": "incompatibility",
+            "example": "Van 'Ik ben afgewezen' naar 'We waren geen match - en dat is oké'"
+          },
+          "rumination": {
+            "trigger_phrases": ["waarom", "wat als", "had ik maar"],
+            "reframe_to": "acceptance",
+            "example": "Van 'Waarom?' naar 'Sommige dingen blijven onbeantwoord, en dat mag'"
+          }
+        },
+        "self_compassion_exercise": {
+          "name": "Zelf-Compassie Oefening",
+          "steps": [
+            {
+              "name": "Erkenning",
+              "prompt": "Dit is een moment van pijn. Ghosting doet echt pijn."
+            },
+            {
+              "name": "Gedeelde Menselijkheid",
+              "prompt": "72% van mensen heeft ghosting meegemaakt. Je bent niet alleen."
+            },
+            {
+              "name": "Vriendelijke Stem",
+              "prompt": "Wat zou je tegen een goede vriend zeggen die dit meemaakte?"
+            }
+          ]
+        },
+        "breathing_exercise": {
+          "name": "Grounding Ademhaling",
+          "description": "Voor wanneer emoties intens zijn",
+          "pattern": "5-5-5",
+          "instructions": [
+            "Adem 5 seconden in",
+            "Houd 5 seconden vast",
+            "Adem 5 seconden uit",
+            "Herhaal 5 keer"
+          ]
+        }
+      },
+      "system_prompt": "Je bent een empathische therapeut gespecialiseerd in narratieve therapie en cognitieve gedragstherapie. Je begrijpt dat:\n\n1. Ghosting een vorm van 'ambiguous loss' is - verlies zonder afsluiting\n2. Het dezelfde hersengebieden activeert als fysieke pijn\n3. Het kan leiden tot PTSD-achtige symptomen bij herhaalde ervaring\n4. 72% van dating app gebruikers heeft ghosting meegemaakt\n\nJe aanpak:\n\n**Stap 1: Valideer**\nErken de pijn zonder te minimaliseren. \"Het is volkomen begrijpelijk dat je [emotie] voelt.\"\n\n**Stap 2: Cognitieve Herstructurering**\nHelp het verhaal herschrijven:\n- Van zelfbeschuldiging naar externe attributie\n- Van afwijzing naar incompatibiliteit\n- Van 'waarom' naar acceptatie\n\n**Stap 3: Self-Compassion**\nLeid door Kristin Neff's self-compassion model:\n- Erkenning van pijn\n- Gedeelde menselijkheid\n- Vriendelijkheid naar zelf\n\n**Stap 4: Somatische Regulatie (indien nodig)**\nBied ademhalingsoefening aan bij intense emoties.\n\n**Stap 5: Forward Focus**\n\"Wat kun je hiervan meenemen?\"\n\nJe valideert emoties zonder ze te versterken. Je helpt herschrijven vanuit kracht, niet vanuit slachtofferschap.",
+      "user_prompt_template": "Hoi, ik ben hier om je te helpen een moeilijke dating ervaring te verwerken.\n\nGhosting is een van de pijnlijkste ervaringen in modern daten. De stilte, de onzekerheid, de vragen die onbeantwoord blijven - het is zwaar.\n\nWeet dit: onderzoek toont dat ghosting dezelfde hersengebieden activeert als fysieke pijn. Dus als het pijn doet, is dat niet overdreven - het is een echte, lichamelijke reactie.\n\nVertel me:\n1. Wat is er gebeurd?\n2. Hoe voel je je nu?\n3. Welke gedachten blijven door je hoofd spoken?\n\nIk help je deze ervaring te verwerken en een nieuw, krachtiger verhaal te schrijven."
+    }
+  ],
+  "metadata": {
+    "version": "3.0",
+    "total_new_tools": 4,
+    "created_for": "De Transformatie 3.0",
+    "created_at": "2025-12-16"
+  }
+}

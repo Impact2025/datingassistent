@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { KickstartProgramCard } from '@/components/dashboard/kickstart-program-card';
+import { TransformatieProgramCard } from '@/components/dashboard/transformatie-program-card';
 import {
   Play,
   CheckCircle,
@@ -164,9 +165,20 @@ export function MyProgramsWidget() {
       <CardContent className="space-y-4">
         {programs.map((program, index) => {
           // Render Kickstart programs with dedicated card
-          if (program.program_type === 'kickstart') {
+          if (program.program_type === 'kickstart' || program.program_slug === 'kickstart') {
             return (
               <KickstartProgramCard
+                key={program.program_id}
+                program={program as any}
+                index={index}
+              />
+            );
+          }
+
+          // Render Transformatie programs with dedicated card
+          if (program.program_slug === 'transformatie' || program.program_tier === 'transformatie') {
+            return (
+              <TransformatieProgramCard
                 key={program.program_id}
                 program={program as any}
                 index={index}

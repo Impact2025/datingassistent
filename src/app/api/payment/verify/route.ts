@@ -305,8 +305,12 @@ export async function GET(request: NextRequest) {
           // If onboarding not done: dashboard shows KickstartIntakeChat
           // If onboarding done: dashboard shows normal content with Kickstart access
           nextAction = '/dashboard';
+        } else if (tx.program_slug === 'transformatie') {
+          // Transformatie has its own onboarding flow at /transformatie
+          // The page automatically detects if onboarding is needed
+          nextAction = '/transformatie';
         } else {
-          // For other programs (Transformatie, etc), also go to dashboard
+          // For other programs, go to dashboard
           // The dashboard provides access to all enrolled programs
           nextAction = '/dashboard';
         }

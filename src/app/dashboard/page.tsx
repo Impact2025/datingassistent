@@ -22,6 +22,9 @@ import { KickstartOnboardingFlow } from '@/components/kickstart/KickstartOnboard
 import { DayZeroExperience } from '@/components/kickstart/DayZeroExperience';
 import type { KickstartIntakeData } from '@/types/kickstart-onboarding.types';
 
+// Import Transformatie onboarding - World-class integrated flow
+import { TransformatieOnboardingFlow } from '@/components/transformatie/TransformatieOnboardingFlow';
+
 // NIEUWE 4-TAB NAVIGATIE SYSTEEM (Masterplan)
 import { MainNavNew } from '@/components/layout/main-nav-new';
 import { ProactiveInvite, useProactiveInvite } from '@/components/live-chat/proactive-invite';
@@ -204,6 +207,20 @@ function DashboardPageContent() {
   });
   const [kickstartOnboardingSaving, setKickstartOnboardingSaving] = useState(false);
 
+  // Wereldklasse loading management voor Transformatie enrollment check
+  const [transformatieState, setTransformatieState] = useState<{
+    isChecking: boolean;
+    hasEnrollment: boolean | null;
+    needsOnboarding: boolean;
+    checkComplete: boolean;
+  }>({
+    isChecking: false,
+    hasEnrollment: null,
+    needsOnboarding: false,
+    checkComplete: false,
+  });
+  const [transformatieOnboardingSaving, setTransformatieOnboardingSaving] = useState(false);
+
   // Wrapper for setActiveTab that includes GA4 tracking - memoized for stable reference
   const handleTabChange = useCallback((newTab: string) => {
     // Track tab change in GA4
@@ -271,7 +288,7 @@ function DashboardPageContent() {
 
   // Show Iris invite after 30 seconds for logged-in users (not during any onboarding)
   useEffect(() => {
-    if (!user || loading || showOnboarding || kickstartState.needsOnboarding) return;
+    if (!user || loading || showOnboarding || kickstartState.needsOnboarding || transformatieState.needsOnboarding) return;
 
     const timer = setTimeout(() => {
       if (shouldShowInvite) {
@@ -280,7 +297,7 @@ function DashboardPageContent() {
     }, 30000); // 30 seconds
 
     return () => clearTimeout(timer);
-  }, [user, loading, showOnboarding, kickstartState.needsOnboarding, shouldShowInvite]);
+  }, [user, loading, showOnboarding, kickstartState.needsOnboarding, transformatieState.needsOnboarding, shouldShowInvite]);
 
   // Check if user is admin (from database role)
   const [isAdminUser, setIsAdminUser] = useState(false);
@@ -289,7 +306,7 @@ function DashboardPageContent() {
   const forceAccess = searchParams?.get('force') === 'true';
 
   // ============================================
-  // OPTIMIZED: Combined parallel API calls for admin + kickstart check
+  // OPTIMIZED: Combined parallel API calls for admin + kickstart + transformatie check
   // This reduces initial load time by ~1-2 seconds
   // ============================================
   useEffect(() => {
@@ -299,8 +316,8 @@ function DashboardPageContent() {
         return;
       }
 
-      // Prevent double-checking
-      if (kickstartState.checkComplete) {
+      // Prevent double-checking (check both states)
+      if (kickstartState.checkComplete && transformatieState.checkComplete) {
         return;
       }
 
@@ -308,15 +325,17 @@ function DashboardPageContent() {
 
       // Set checking state IMMEDIATELY before any async work
       setKickstartState(prev => ({ ...prev, isChecking: true }));
+      setTransformatieState(prev => ({ ...prev, isChecking: true }));
 
       const token = localStorage.getItem('datespark_auth_token');
       const headers = { 'Authorization': `Bearer ${token}` };
 
       try {
-        // PARALLEL API CALLS - both run simultaneously
-        const [adminResponse, kickstartResponse] = await Promise.all([
+        // PARALLEL API CALLS - all run simultaneously
+        const [adminResponse, kickstartResponse, transformatieResponse] = await Promise.all([
           fetch('/api/auth/check-admin', { headers }).catch(() => null),
           fetch('/api/kickstart/check-enrollment', { headers }).catch(() => null),
+          fetch('/api/transformatie/check-enrollment', { headers }).catch(() => null),
         ]);
 
         // Process admin check result
@@ -366,7 +385,40 @@ function DashboardPageContent() {
           });
         }
 
-        // Handle admin redirect after both checks complete
+        // Process Transformatie enrollment result
+        if (transformatieResponse?.ok) {
+          const data = await transformatieResponse.json();
+          debugLog.success('Transformatie enrollment check result:', data);
+
+          const hasEnrollment = data.isEnrolled === true;
+          const needsOnboarding = hasEnrollment && !data.hasOnboardingData;
+
+          if (needsOnboarding) {
+            debugLog.action('User needs Transformatie onboarding - will show onboarding flow');
+          } else if (hasEnrollment) {
+            debugLog.success('User has completed Transformatie enrollment and onboarding');
+          } else {
+            debugLog.info('User does not have Transformatie enrollment');
+          }
+
+          // Update all state in one atomic operation
+          setTransformatieState({
+            isChecking: false,
+            hasEnrollment,
+            needsOnboarding,
+            checkComplete: true,
+          });
+        } else {
+          debugLog.warn('Failed to check Transformatie enrollment');
+          setTransformatieState({
+            isChecking: false,
+            hasEnrollment: false,
+            needsOnboarding: false,
+            checkComplete: true,
+          });
+        }
+
+        // Handle admin redirect after all checks complete
         if (adminStatus && !userProfile) {
           debugLog.navigate('Dashboard - Admin user detected without profile, redirecting to /admin');
           router.push('/admin');
@@ -381,11 +433,17 @@ function DashboardPageContent() {
           showDayZero: false,
           checkComplete: true,
         });
+        setTransformatieState({
+          isChecking: false,
+          hasEnrollment: false,
+          needsOnboarding: false,
+          checkComplete: true,
+        });
       }
     };
 
     performParallelChecks();
-  }, [user?.id, loading, kickstartState.checkComplete, userProfile, router]);
+  }, [user?.id, loading, kickstartState.checkComplete, transformatieState.checkComplete, userProfile, router]);
 
   // Check for Monday dating week notifications
   useEffect(() => {
@@ -540,6 +598,46 @@ function DashboardPageContent() {
     router.push('/kickstart/dag/1');
   }, [router]);
 
+  // Handle Transformatie onboarding completion - World-class integration
+  const handleTransformatieOnboardingComplete = useCallback(async (data: any) => {
+    if (!user?.id) return;
+
+    setTransformatieOnboardingSaving(true);
+
+    try {
+      debugLog.info('Saving Transformatie onboarding data:', data);
+
+      const response = await fetch("/api/transformatie/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save onboarding");
+      }
+
+      const result = await response.json();
+      debugLog.success('Transformatie onboarding saved successfully:', result);
+
+      // Update state and redirect to Transformatie dashboard
+      setTransformatieState(prev => ({
+        ...prev,
+        needsOnboarding: false,
+      }));
+      setTransformatieOnboardingSaving(false);
+
+      // Redirect to the Transformatie experience
+      router.push('/transformatie');
+
+    } catch (err) {
+      debugLog.error('Error saving Transformatie onboarding:', err);
+      setTransformatieOnboardingSaving(false);
+    }
+  }, [user?.id, router]);
+
   // Memoized tab content - must be before any early returns (Rules of Hooks)
   const tabContent = useMemo(() => {
     switch (activeTab) {
@@ -601,9 +699,9 @@ function DashboardPageContent() {
     }
   }, [activeTab, user?.id, userProfile, handleTabChange, checkinModalOpen, journeyDay, handleCheckinComplete]);
 
-  // While loading user data or checking Kickstart enrollment, show a loading state
+  // While loading user data or checking Kickstart/Transformatie enrollment, show a loading state
   // This prevents the flash where dashboard is shown before onboarding
-  if (isLoading || kickstartState.isChecking || !kickstartState.checkComplete) {
+  if (isLoading || kickstartState.isChecking || !kickstartState.checkComplete || transformatieState.isChecking || !transformatieState.checkComplete) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
         <div className="text-center">
@@ -636,10 +734,10 @@ function DashboardPageContent() {
     );
   }
 
-  // Allow dashboard access for Kickstart users even without user_profile
+  // Allow dashboard access for Kickstart/Transformatie users even without user_profile
   // This is the "wereldklasse" solution: full integration without requiring profile
   // Note: kickstartState.isChecking is already handled above in the main loading check
-  if (!userProfile && !kickstartState.hasEnrollment) {
+  if (!userProfile && !kickstartState.hasEnrollment && !transformatieState.hasEnrollment) {
     // No profile and no Kickstart enrollment - show error
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
@@ -668,15 +766,21 @@ function DashboardPageContent() {
   const showKickstartOnboarding = kickstartState.needsOnboarding;
   const showDayZero = kickstartState.showDayZero;
 
+  // Show Transformatie onboarding if needed - World-class integration
+  const showTransformatieOnboarding = transformatieState.needsOnboarding;
+
   if (showKickstartOnboarding) {
     debugLog.render('Rendering Kickstart onboarding flow within dashboard');
   }
   if (showDayZero) {
     debugLog.render('Rendering Day Zero experience within dashboard');
   }
+  if (showTransformatieOnboarding) {
+    debugLog.render('Rendering Transformatie onboarding flow within dashboard');
+  }
 
   // Check if we need full-screen mobile onboarding (no header/nav)
-  const isFullScreenOnboarding = showKickstartOnboarding || showDayZero;
+  const isFullScreenOnboarding = showKickstartOnboarding || showDayZero || showTransformatieOnboarding;
 
   return (
     <>
@@ -695,6 +799,11 @@ function DashboardPageContent() {
               <DayZeroExperience
                 onComplete={handleDayZeroComplete}
                 embedded={false}
+              />
+            ) : showTransformatieOnboarding ? (
+              <TransformatieOnboardingFlow
+                userName={user?.name?.split(' ')[0]}
+                onComplete={handleTransformatieOnboardingComplete}
               />
             ) : null}
           </div>
@@ -776,16 +885,16 @@ function DashboardPageContent() {
               />
 
               {/* Trial Progress Banner - Only show for trial users and not during onboarding */}
-              {user?.id && !showKickstartOnboarding && !showOnboarding && !showDayZero && <TrialProgress userId={user.id} />}
+              {user?.id && !showKickstartOnboarding && !showOnboarding && !showDayZero && !showTransformatieOnboarding && <TrialProgress userId={user.id} />}
 
               <main className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20">
               {/* Hide navigation during any onboarding or day-0 */}
-              {!showOnboarding && !showKickstartOnboarding && !showDayZero && (
+              {!showOnboarding && !showKickstartOnboarding && !showDayZero && !showTransformatieOnboarding && (
                 useNewNav
                   ? <MainNavNew activeTab={activeTab} onTabChange={handleTabChange} />
                   : <MainNav activeTab={activeTab} onTabChange={handleTabChange} />
               )}
-              <div className={showDayZero ? "" : "mt-6"}>
+              <div className={showDayZero || showTransformatieOnboarding ? "" : "mt-6"}>
                 {/* Show Kickstart onboarding if needed - takes priority */}
                 {showKickstartOnboarding ? (
                   <div className="min-h-[600px]">
@@ -800,6 +909,14 @@ function DashboardPageContent() {
                     onComplete={handleDayZeroComplete}
                     embedded={true}
                   />
+                ) : showTransformatieOnboarding ? (
+                  /* Show Transformatie onboarding if needed - World-class integration */
+                  <div className="min-h-[600px]">
+                    <TransformatieOnboardingFlow
+                      userName={user?.name?.split(' ')[0]}
+                      onComplete={handleTransformatieOnboardingComplete}
+                    />
+                  </div>
                 ) : showOnboarding ? (
                   /* Show regular onboarding if needed */
                   <OnboardingFlow
@@ -850,7 +967,7 @@ function DashboardPageContent() {
           </div>
 
           {/* Iris Proactive Invite - Only popup for registered members (no floating button) */}
-          {irisInviteVisible && !showKickstartOnboarding && (
+          {irisInviteVisible && !showKickstartOnboarding && !showTransformatieOnboarding && (
             <ProactiveInvite
               onAccept={() => {
                 setIrisInviteVisible(false);

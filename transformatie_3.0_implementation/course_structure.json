@@ -1,0 +1,882 @@
+{
+  "course": {
+    "id": "de-transformatie-3",
+    "slug": "de-transformatie-3",
+    "title": "De Transformatie 3.0",
+    "version": "3.0",
+    "subtitle": "Van Single naar Duurzame Relatie in 90 Dagen",
+    "description": "De enige datingcursus die je leert hoe je een relatie krijgt én houdt.",
+    "price": 147.00,
+    "currency": "EUR",
+    "access_period_days": 365,
+    "total_modules": 12,
+    "total_duration_hours": 9,
+    "video_format": "micro_learning",
+    "max_video_length_minutes": 5,
+    "framework": {
+      "name": "DESIGN_ACTION_SURRENDER",
+      "phases": [
+        {
+          "id": "DESIGN",
+          "name": "Het Fundament",
+          "modules": [1, 2, 3, 4],
+          "description": "Van onbewust onbekwaam naar bewust bekwaam",
+          "core_question": "Wie ben ik in de liefde?",
+          "psychological_basis": "Narrative Therapy: Herschrijf je verhaal vóór actie"
+        },
+        {
+          "id": "ACTION",
+          "name": "De Markt Op",
+          "modules": [5, 6, 7, 8],
+          "description": "Kwalitatieve dates genereren zonder burnout",
+          "core_question": "Hoe creëer ik kansen?",
+          "psychological_basis": "Graded Exposure: Stap-voor-stap confrontatie"
+        },
+        {
+          "id": "SURRENDER",
+          "name": "Relatie Bouwen",
+          "modules": [9, 10, 11, 12],
+          "description": "Van date naar duurzame partner",
+          "core_question": "Hoe laat ik liefde toe?",
+          "psychological_basis": "ACT: Acceptatie & Commitment Therapy"
+        }
+      ]
+    },
+    "live_qa_sessions": {
+      "weeks": [1, 6, 12],
+      "duration_minutes": 60,
+      "platform": "zoom"
+    },
+    "guarantee": {
+      "days": 30,
+      "type": "money_back"
+    }
+  },
+  "modules": [
+    {
+      "order": 1,
+      "slug": "design-your-love-life",
+      "title": "Design Your Love Life",
+      "phase": "DESIGN",
+      "phase_label": "Het Fundament",
+      "description": "Ontdek je kernwaarden, definieer je intentie en creëer een heldere visie voor je liefdesleven.",
+      "mindset_hook": "De meeste mensen falen in liefde omdat ze hongerig boodschappen doen zonder lijstje.",
+      "ai_tool": {
+        "id": 11,
+        "name": "Waarden Kompas",
+        "category": "growth_goals",
+        "status": "existing"
+      },
+      "duration_minutes": 45,
+      "content_source": "new_script",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "welkom-bij-je-transformatie",
+          "title": "Welkom bij je Transformatie",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Introductie tot het DESIGN→ACTION→SURRENDER framework"
+        },
+        {
+          "order": 2,
+          "slug": "waarom-dating-zo-moeilijk-voelt",
+          "title": "Waarom Dating Zo Moeilijk Voelt",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "De psychologie achter dating burnout en frustratie"
+        },
+        {
+          "order": 3,
+          "slug": "jouw-kernwaarden-ontdekken",
+          "title": "Jouw Kernwaarden Ontdekken",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Interactieve sessie met het Waarden Kompas"
+        },
+        {
+          "order": 4,
+          "slug": "je-dating-intentie-formuleren",
+          "title": "Je Dating Intentie Formuleren",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Van vage wens naar concrete intentie"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 11,
+          "instruction": "Doorloop het Waarden Kompas en noteer je top 5 kernwaarden"
+        },
+        {
+          "type": "reflection",
+          "question": "Schrijf in 3 zinnen wat je écht zoekt in een partner"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "slug": "jouw-relatie-dna",
+      "title": "Jouw Relatie-DNA",
+      "phase": "DESIGN",
+      "phase_label": "Het Fundament",
+      "description": "Begrijp je hechtingsstijl en ontdek de onbewuste patronen die je relaties vormen.",
+      "mindset_hook": "Je bent niet kapot. Je hebt gewoon een gebruiksaanwijzing die je nog niet hebt gelezen.",
+      "ai_tool": {
+        "id": 1,
+        "name": "Hechtingsstijl Scan",
+        "category": "profile_suite",
+        "status": "existing"
+      },
+      "duration_minutes": 60,
+      "content_source": "meesterschap_sql",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "wat-is-hechting",
+          "title": "Wat is Hechting?",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "De wetenschap van Bowlby en Ainsworth"
+        },
+        {
+          "order": 2,
+          "slug": "de-vier-hechtingsstijlen",
+          "title": "De Vier Hechtingsstijlen",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Veilig, Angstig, Vermijdend, Fearful-Avoidant"
+        },
+        {
+          "order": 3,
+          "slug": "jouw-hechtingsstijl-ontdekken",
+          "title": "Jouw Hechtingsstijl Ontdekken",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Interactieve test en reflectie"
+        },
+        {
+          "order": 4,
+          "slug": "van-inzicht-naar-actie",
+          "title": "Van Inzicht naar Actie",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Hoe je je hechtingsstijl kunt helen"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 1,
+          "instruction": "Voltooi de Hechtingsstijl Scan"
+        },
+        {
+          "type": "reflection",
+          "question": "Herken je patronen uit je verleden in je huidige dategedrag?"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "slug": "magnetische-identiteit",
+      "title": "Magnetische Identiteit",
+      "phase": "DESIGN",
+      "phase_label": "Het Fundament",
+      "description": "Transformeer je profiel van generiek naar magnetisch.",
+      "mindset_hook": "Je foto verkoopt niet wie je bent — het verkoopt hoe iemand zich voelt bij wie je bent.",
+      "ai_tool": {
+        "id": 101,
+        "name": "Vibe Check Simulator",
+        "category": "profile_suite",
+        "status": "new"
+      },
+      "duration_minutes": 45,
+      "content_source": "new_script",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "de-psychologie-van-eerste-indrukken",
+          "title": "De Psychologie van Eerste Indrukken",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Wat er gebeurt in 0.1 seconde"
+        },
+        {
+          "order": 2,
+          "slug": "foto-strategie-die-werkt",
+          "title": "Foto Strategie die Werkt",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Welke foto's welke emotie oproepen"
+        },
+        {
+          "order": 3,
+          "slug": "je-bio-als-uitnodiging",
+          "title": "Je Bio als Uitnodiging",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Van cliché naar conversation starter"
+        },
+        {
+          "order": 4,
+          "slug": "de-vibe-check",
+          "title": "De Vibe Check",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Test je profiel met de Vibe Check Simulator"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 101,
+          "instruction": "Upload je beste foto en ontvang emotionele feedback"
+        },
+        {
+          "type": "action",
+          "instruction": "Herschrijf je bio op basis van je kernwaarden uit Module 1"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "slug": "bewust-matchen",
+      "title": "Bewust Matchen",
+      "phase": "DESIGN",
+      "phase_label": "Het Fundament",
+      "description": "Leer swipen zonder burnout. Speciaal voor introverts.",
+      "mindset_hook": "Burnout is geen falen — het is een signaal dat je te snel rent naar iets dat je niet helder ziet.",
+      "ai_tool": {
+        "id": 102,
+        "name": "Energie Batterij",
+        "category": "growth_goals",
+        "status": "new"
+      },
+      "duration_minutes": 45,
+      "content_source": "new_script",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "wat-is-dating-burnout",
+          "title": "Wat is Dating Burnout?",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "De wetenschap achter choice overload"
+        },
+        {
+          "order": 2,
+          "slug": "introvert-vs-extrovert-daten",
+          "title": "Introvert vs Extrovert Daten",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Waarom standaard advies niet voor iedereen werkt"
+        },
+        {
+          "order": 3,
+          "slug": "je-energie-batterij-begrijpen",
+          "title": "Je Energie Batterij Begrijpen",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Meet en bescherm je sociale energie"
+        },
+        {
+          "order": 4,
+          "slug": "duurzaam-swipen",
+          "title": "Duurzaam Swipen",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Praktische strategieën voor energie management"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 102,
+          "instruction": "Meet je huidige energieniveau en volg het advies"
+        },
+        {
+          "type": "commitment",
+          "instruction": "Bepaal je persoonlijke 'swipe budget' voor deze week"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "slug": "verbinding-en-diepgang",
+      "title": "Verbinding & Diepgang",
+      "phase": "ACTION",
+      "phase_label": "De Markt Op",
+      "description": "Van oppervlakkige chat naar echte connectie.",
+      "mindset_hook": "De beste gesprekken beginnen niet met vragen stellen — maar met durven antwoorden.",
+      "ai_tool": {
+        "id": 103,
+        "name": "36 Vragen Oefen-Bot",
+        "category": "communication_hub",
+        "status": "new"
+      },
+      "duration_minutes": 60,
+      "content_source": "new_script",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "waarom-hoi-hoe-gaat-het-niet-werkt",
+          "title": "Waarom 'Hoi hoe gaat het' Niet Werkt",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "De psychologie van aandacht in een drukke inbox"
+        },
+        {
+          "order": 2,
+          "slug": "de-kunst-van-de-openingszin",
+          "title": "De Kunst van de Openingszin",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Persoonlijk, specifiek, uitnodigend"
+        },
+        {
+          "order": 3,
+          "slug": "van-small-talk-naar-echte-talk",
+          "title": "Van Small Talk naar Echte Talk",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "De wetenschap van intimiteit (Arthur Aron)"
+        },
+        {
+          "order": 4,
+          "slug": "oefenen-met-de-36-vragen",
+          "title": "Oefenen met de 36 Vragen",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Praktijksessie met de 36 Vragen Bot"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 103,
+          "instruction": "Oefen minimaal 10 vragen met de 36 Vragen Bot"
+        },
+        {
+          "type": "action",
+          "instruction": "Stuur deze week 3 gepersonaliseerde openingszinnen"
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "slug": "de-selectie-en-veiligheid",
+      "title": "De Selectie & Veiligheid",
+      "phase": "ACTION",
+      "phase_label": "De Markt Op",
+      "description": "Leer het verschil tussen chemie en compatibiliteit.",
+      "mindset_hook": "Chemie zegt: 'Dit voelt goed.' Compatibiliteit zegt: 'Dit is goed.' Je hebt beide nodig.",
+      "ai_tool": {
+        "id": 2,
+        "name": "Match Analyse",
+        "category": "profile_suite",
+        "status": "existing"
+      },
+      "duration_minutes": 60,
+      "content_source": "meesterschap_sql",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "chemie-vs-compatibiliteit",
+          "title": "Chemie vs Compatibiliteit",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Waarom vlinders misleidend kunnen zijn"
+        },
+        {
+          "order": 2,
+          "slug": "rode-vlaggen-herkennen",
+          "title": "Rode Vlaggen Herkennen",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Vroege waarschuwingssignalen"
+        },
+        {
+          "order": 3,
+          "slug": "groene-vlaggen-herkennen",
+          "title": "Groene Vlaggen Herkennen",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Tekenen van een gezonde match"
+        },
+        {
+          "order": 4,
+          "slug": "je-selectiecriteria-bepalen",
+          "title": "Je Selectiecriteria Bepalen",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Dealbreakers vs nice-to-haves"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 2,
+          "instruction": "Analyseer een huidige match met de Match Analyse tool"
+        },
+        {
+          "type": "reflection",
+          "question": "Wat zijn jouw 3 absolute dealbreakers?"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "slug": "de-ontmoeting",
+      "title": "De Ontmoeting",
+      "phase": "ACTION",
+      "phase_label": "De Markt Op",
+      "description": "Van chat naar eerste date.",
+      "mindset_hook": "Een eerste date is geen sollicitatie. Het is een uitnodiging om samen nieuwsgierig te zijn.",
+      "ai_tool": {
+        "id": 6,
+        "name": "Date Ideeën Generator",
+        "category": "communication_hub",
+        "status": "existing"
+      },
+      "duration_minutes": 45,
+      "content_source": "new_script",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "wanneer-vraag-je-om-een-date",
+          "title": "Wanneer Vraag je om een Date?",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Het juiste moment herkennen"
+        },
+        {
+          "order": 2,
+          "slug": "eerste-date-ideeen",
+          "title": "Eerste Date Ideeën",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Locaties die connectie bevorderen"
+        },
+        {
+          "order": 3,
+          "slug": "veiligheid-en-grenzen",
+          "title": "Veiligheid en Grenzen",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Praktische veiligheidstips"
+        },
+        {
+          "order": 4,
+          "slug": "de-date-zelf",
+          "title": "De Date Zelf",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Mindset en praktische tips"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 6,
+          "instruction": "Genereer 3 date ideeën gebaseerd op jullie gedeelde interesses"
+        },
+        {
+          "type": "action",
+          "instruction": "Plan een eerste date deze week (of oefen het vragen)"
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "slug": "communicatie-meesterschap",
+      "title": "Communicatie Meesterschap",
+      "phase": "ACTION",
+      "phase_label": "De Markt Op",
+      "description": "Non-Violent Communication in de praktijk.",
+      "mindset_hook": "De woorden die je kiest bepalen niet alleen wat je zegt — maar wie je wordt in de ogen van de ander.",
+      "ai_tool": {
+        "id": 3,
+        "name": "Chat Coach",
+        "category": "communication_hub",
+        "status": "existing"
+      },
+      "duration_minutes": 60,
+      "content_source": "meesterschap_sql",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "de-basis-van-nvc",
+          "title": "De Basis van NVC",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Observatie, Gevoel, Behoefte, Verzoek"
+        },
+        {
+          "order": 2,
+          "slug": "ik-boodschappen",
+          "title": "Ik-Boodschappen",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Hoe je je behoeften uit zonder aanval"
+        },
+        {
+          "order": 3,
+          "slug": "actief-luisteren",
+          "title": "Actief Luisteren",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "De ander echt horen"
+        },
+        {
+          "order": 4,
+          "slug": "moeilijke-gesprekken-voeren",
+          "title": "Moeilijke Gesprekken Voeren",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Conflict als kans voor groei"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 3,
+          "instruction": "Upload een chat screenshot voor feedback"
+        },
+        {
+          "type": "practice",
+          "instruction": "Oefen een NVC-statement voor een actuele situatie"
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "slug": "de-transitie",
+      "title": "De Transitie",
+      "phase": "SURRENDER",
+      "phase_label": "Relatie Bouwen",
+      "description": "Het DTR-gesprek (Define The Relationship).",
+      "mindset_hook": "Het gesprek over 'wat zijn wij' is niet het einde van de spanning — het is het begin van de echte verbinding.",
+      "ai_tool": {
+        "id": 9,
+        "name": "Relationship Coach",
+        "category": "relationship_coach",
+        "status": "existing"
+      },
+      "duration_minutes": 45,
+      "content_source": "meesterschap_sql",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "wat-is-het-dtr-gesprek",
+          "title": "Wat is het DTR-Gesprek?",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Timing en intentie"
+        },
+        {
+          "order": 2,
+          "slug": "het-gesprek-voorbereiden",
+          "title": "Het Gesprek Voorbereiden",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Wat wil jij eigenlijk?"
+        },
+        {
+          "order": 3,
+          "slug": "het-gesprek-voeren",
+          "title": "Het Gesprek Voeren",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Scripts en voorbeelden"
+        },
+        {
+          "order": 4,
+          "slug": "na-het-gesprek",
+          "title": "Na het Gesprek",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Omgaan met alle uitkomsten"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 9,
+          "instruction": "Bespreek je situatie met de Relationship Coach"
+        },
+        {
+          "type": "reflection",
+          "question": "Wat is je ideale uitkomst van een DTR-gesprek?"
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "slug": "onderhoud-en-groei",
+      "title": "Onderhoud & Groei",
+      "phase": "SURRENDER",
+      "phase_label": "Relatie Bouwen",
+      "description": "Gottman's Sound Relationship House in de praktijk.",
+      "mindset_hook": "Liefde is geen gevoel dat je overkomt — het is een vaardigheid die je ontwikkelt.",
+      "ai_tool": {
+        "id": 8,
+        "name": "Love Language Quiz",
+        "category": "relationship_coach",
+        "status": "existing"
+      },
+      "duration_minutes": 60,
+      "content_source": "meesterschap_sql",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "het-sound-relationship-house",
+          "title": "Het Sound Relationship House",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Gottman's wetenschappelijke model"
+        },
+        {
+          "order": 2,
+          "slug": "love-maps-bouwen",
+          "title": "Love Maps Bouwen",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Je partner echt leren kennen"
+        },
+        {
+          "order": 3,
+          "slug": "de-vijf-liefdestalen",
+          "title": "De Vijf Liefdestalen",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Hoe je partner liefde ontvangt"
+        },
+        {
+          "order": 4,
+          "slug": "conflict-als-groei",
+          "title": "Conflict als Groei",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "De vier ruiters vermijden"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 8,
+          "instruction": "Ontdek jullie beide liefdestalen"
+        },
+        {
+          "type": "action",
+          "instruction": "Plan een 'Love Map' gesprek met je partner"
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "slug": "integratie-en-veerkracht",
+      "title": "Integratie & Veerkracht",
+      "phase": "SURRENDER",
+      "phase_label": "Relatie Bouwen",
+      "description": "Hoe verweven jullie levens zonder jezelf te verliezen?",
+      "mindset_hook": "Ghosting vertelt je niets over jouw waarde — het vertelt je alles over hun capaciteit.",
+      "ai_tool": {
+        "id": 104,
+        "name": "Ghosting Reframer",
+        "category": "relationship_coach",
+        "status": "new"
+      },
+      "duration_minutes": 60,
+      "content_source": "meesterschap_sql_plus_new",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "levens-verweven",
+          "title": "Levens Verweven",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Autonomie vs verbondenheid"
+        },
+        {
+          "order": 2,
+          "slug": "grenzen-in-relaties",
+          "title": "Grenzen in Relaties",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Gezonde grenzen stellen"
+        },
+        {
+          "order": 3,
+          "slug": "omgaan-met-afwijzing",
+          "title": "Omgaan met Afwijzing",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "De psychologie van ghosting"
+        },
+        {
+          "order": 4,
+          "slug": "veerkracht-opbouwen",
+          "title": "Veerkracht Opbouwen",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Terugkaatsen na tegenslag"
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 104,
+          "instruction": "Verwerk een moeilijke dating ervaring met de Ghosting Reframer"
+        },
+        {
+          "type": "reflection",
+          "question": "Welke grenzen zijn belangrijk voor jou in een relatie?"
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "slug": "onbreekbare-mindset",
+      "title": "Onbreekbare Mindset",
+      "phase": "SURRENDER",
+      "phase_label": "Relatie Bouwen",
+      "description": "De finale. Creëer rituelen en blik vooruit.",
+      "mindset_hook": "Je zoekt niet meer naar de juiste persoon. Je bent de juiste persoon geworden.",
+      "ai_tool": {
+        "id": 12,
+        "name": "Goal Tracker",
+        "category": "growth_goals",
+        "status": "existing"
+      },
+      "duration_minutes": 45,
+      "content_source": "new_script",
+      "lessons": [
+        {
+          "order": 1,
+          "slug": "je-transformatie-reflecteren",
+          "title": "Je Transformatie Reflecteren",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Van start tot nu"
+        },
+        {
+          "order": 2,
+          "slug": "rituelen-voor-groei",
+          "title": "Rituelen voor Groei",
+          "type": "video",
+          "duration_minutes": 5,
+          "description": "Gewoontes die je vooruitgang vasthouden"
+        },
+        {
+          "order": 3,
+          "slug": "je-toekomstvisie",
+          "title": "Je Toekomstvisie",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Wat is je volgende hoofdstuk?"
+        },
+        {
+          "order": 4,
+          "slug": "afscheid-en-vooruit",
+          "title": "Afscheid en Vooruit",
+          "type": "video",
+          "duration_minutes": 4,
+          "description": "Je bent klaar. Ga ervoor."
+        }
+      ],
+      "assignments": [
+        {
+          "type": "ai_tool",
+          "tool_id": 12,
+          "instruction": "Stel je doelen voor de komende 90 dagen"
+        },
+        {
+          "type": "commitment",
+          "instruction": "Schrijf een brief aan jezelf over 1 jaar"
+        }
+      ]
+    }
+  ],
+  "ai_tools": {
+    "existing": [1, 2, 3, 6, 8, 9, 11, 12],
+    "new": [101, 102, 103, 104],
+    "new_tools_details": {
+      "101": {
+        "name": "Vibe Check Simulator",
+        "category": "profile_suite",
+        "description": "Emotionele foto feedback"
+      },
+      "102": {
+        "name": "Energie Batterij",
+        "category": "growth_goals",
+        "description": "Introvert energy management"
+      },
+      "103": {
+        "name": "36 Vragen Oefen-Bot",
+        "category": "communication_hub",
+        "description": "Arthur Aron practice partner"
+      },
+      "104": {
+        "name": "Ghosting Reframer",
+        "category": "relationship_coach",
+        "description": "Narrative therapy for rejection"
+      }
+    }
+  },
+  "pricing": {
+    "tiers": [
+      {
+        "name": "Standaard",
+        "price": 147.00,
+        "currency": "EUR",
+        "access_days": 365,
+        "features": [
+          "12 Module Videocursus",
+          "5 Exclusieve AI Tools",
+          "Pro AI Suite (onbeperkt)",
+          "3x Live Q&A Sessies",
+          "12 Maanden Toegang",
+          "30 Dagen Garantie"
+        ]
+      },
+      {
+        "name": "VIP",
+        "price": 497.00,
+        "currency": "EUR",
+        "access_days": -1,
+        "features": [
+          "Alles van Standaard",
+          "Levenslange Toegang",
+          "3x 1-op-1 Coaching Sessies",
+          "Prioriteit Support",
+          "Bonus: Kickstart Cursus"
+        ]
+      }
+    ]
+  },
+  "marketing": {
+    "headline": "De enige datingcursus die je leert hoe je een relatie krijgt én houdt.",
+    "subheadline": "Van single naar duurzame relatie in 90 dagen",
+    "target_audience": [
+      "Singles 25-45 jaar",
+      "Klaar met aanmodderen",
+      "Introverts die zich uitgeput voelen",
+      "Mensen die ghosting hebben meegemaakt",
+      "Wel matches, maar gesprekken leiden nergens toe"
+    ],
+    "usp": [
+      "AI + Educatie geïntegreerd (uniek in Benelux)",
+      "Complete reis: single → duurzame relatie",
+      "Wetenschappelijk onderbouwd (Gottman, ACT, Aron)",
+      "Introvert-first benadering",
+      "Micro-learning (<5 min video's)"
+    ]
+  },
+  "metadata": {
+    "version": "3.0",
+    "created_at": "2025-12-16",
+    "project_code": "DA-TRANS-3.0-2025",
+    "status": "ready_for_implementation"
+  }
+}

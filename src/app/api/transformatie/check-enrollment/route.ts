@@ -92,6 +92,27 @@ export async function GET(request: NextRequest) {
 
     const enrollment = enrollmentResult.rows[0];
 
+    // Check if onboarding is completed (using metadata field or separate check)
+    let hasOnboardingData = false;
+    let onboardingData = null;
+
+    try {
+      const onboardingCheck = await sql`
+        SELECT data, completed_at
+        FROM transformatie_onboarding
+        WHERE user_id = ${user.id}
+        LIMIT 1
+      `;
+
+      if (onboardingCheck.rows.length > 0 && onboardingCheck.rows[0].completed_at) {
+        hasOnboardingData = true;
+        onboardingData = onboardingCheck.rows[0].data;
+      }
+    } catch {
+      // Table might not exist yet, that's ok
+      console.log('Transformatie onboarding table not found or empty');
+    }
+
     // Check if enrollment is expired
     if (enrollment.expires_at && new Date(enrollment.expires_at) < new Date()) {
       return NextResponse.json({
@@ -122,6 +143,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       isEnrolled: true,
+      hasOnboardingData,
+      onboardingData,
       enrollment: {
         id: enrollment.id,
         status: enrollment.status,
