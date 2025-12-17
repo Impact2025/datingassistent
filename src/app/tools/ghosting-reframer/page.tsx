@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Ghost,
   ArrowLeft,
-  Loader2,
   Send,
   AlertCircle,
   MessageCircle,
@@ -77,7 +77,7 @@ const SCENARIOS: Scenario[] = [
   },
 ];
 
-export default function GhostingReframerPage() {
+function GhostingReframerContent() {
   const router = useRouter();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -421,5 +421,17 @@ export default function GhostingReframerPage() {
 
       <BottomNavigation />
     </div>
+  );
+}
+
+export default function GhostingReframerPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+      </div>
+    }>
+      <GhostingReframerContent />
+    </Suspense>
   );
 }
