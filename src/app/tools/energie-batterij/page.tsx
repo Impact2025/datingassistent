@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -104,7 +104,7 @@ interface EnergyResult {
   datingAdvice: string;
 }
 
-export default function EnergieBatterijPage() {
+function EnergieBatterijContent() {
   const router = useRouter();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
@@ -453,5 +453,17 @@ export default function EnergieBatterijPage() {
 
       <BottomNavigation />
     </div>
+  );
+}
+
+export default function EnergieBatterijPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+      </div>
+    }>
+      <EnergieBatterijContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -50,7 +50,7 @@ interface Question {
   tip?: string;
 }
 
-export default function VragenPage() {
+function VragenPageContent() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -588,5 +588,17 @@ export default function VragenPage() {
 
       <BottomNavigation />
     </div>
+  );
+}
+
+export default function VragenPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-rose-500" />
+      </div>
+    }>
+      <VragenPageContent />
+    </Suspense>
   );
 }

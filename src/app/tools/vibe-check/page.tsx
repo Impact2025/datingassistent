@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -39,7 +39,7 @@ interface VibeAnalysis {
   overallVibe: string;
 }
 
-export default function VibeCheckPage() {
+function VibeCheckContent() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -457,5 +457,17 @@ export default function VibeCheckPage() {
 
       <BottomNavigation />
     </div>
+  );
+}
+
+export default function VibeCheckPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
+      </div>
+    }>
+      <VibeCheckContent />
+    </Suspense>
   );
 }
