@@ -1,8 +1,9 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { PrimaryButton } from '@/components/ui/button-system';
-import { CheckCircle, Wrench } from 'lucide-react';
+import { CheckCircle, Wrench, ExternalLink } from 'lucide-react';
 
 interface ToolSectieProps {
   sectie: any;
@@ -10,14 +11,45 @@ interface ToolSectieProps {
   onComplete: () => void;
 }
 
+// Map tool IDs to their routes
+const TOOL_ROUTES: Record<string, string> = {
+  'bio-generator': '/tools/ai-bio-generator',
+  'ai-bio-generator': '/tools/ai-bio-generator',
+  'profile-analysis': '/profile-analysis',
+  'foto-analyse': '/foto',
+  'foto': '/foto',
+  'opener': '/opener',
+  'opener-generator': '/opener',
+  'match': '/match',
+  'match-coach': '/match',
+  'voice': '/voice',
+  'stemcoach': '/voice',
+  'ai-coach': '/ai-relationship-coach',
+  'relationship-coach': '/ai-relationship-coach',
+  'pro-tools': '/pro-tools',
+  'essentials': '/essentials',
+  'kickstart-toolkit': '/kickstart-toolkit',
+  'pro-arsenal': '/pro-arsenal',
+};
+
 export function ToolSectie({ sectie, isCompleted, onComplete }: ToolSectieProps) {
+  const router = useRouter();
   const content = sectie.inhoud || {};
 
   const handleLaunchTool = () => {
-    // TODO: Implement tool launching logic
-    // This should open the tool in the dashboard or a modal
-    console.log('Launching tool:', content.toolId);
-    alert(`Tool "${content.toolId}" opening... (not yet implemented)`);
+    const toolId = content.toolId || content.toolSlug || sectie.titel?.toLowerCase().replace(/\s+/g, '-');
+    const route = TOOL_ROUTES[toolId] || content.toolUrl;
+
+    if (route) {
+      // Open in same tab (better UX for course flow)
+      router.push(route);
+    } else if (content.toolUrl?.startsWith('http')) {
+      // External URL - open in new tab
+      window.open(content.toolUrl, '_blank');
+    } else {
+      // Fallback to tools page
+      router.push('/tools');
+    }
   };
 
   return (

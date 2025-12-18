@@ -256,47 +256,145 @@ async function createAchievementNotification(userId: number, achievement: any) {
 
 /**
  * Get user achievements
+ * Updated to use achievement_slug instead of achievement_id
  */
 export async function getUserAchievements(userId: number): Promise<Achievement[]> {
   try {
+    // Get user's unlocked achievements from user_achievements table
     const results = await sql`
-      SELECT a.*, ua.earned_at
-      FROM achievements a
-      JOIN user_achievements ua ON a.achievement_id = ua.achievement_id
+      SELECT
+        ua.achievement_slug,
+        ua.unlocked_at as earned_at,
+        ua.progress,
+        ua.notified
+      FROM user_achievements ua
       WHERE ua.user_id = ${userId}
-      ORDER BY ua.earned_at DESC
+      ORDER BY ua.unlocked_at DESC
     `;
 
-    return results as Achievement[];
+    // Map to Achievement interface with default values for missing fields
+    return results.map((r: any) => ({
+      id: r.achievement_slug,
+      slug: r.achievement_slug,
+      name: getAchievementName(r.achievement_slug),
+      description: getAchievementDescription(r.achievement_slug),
+      icon: getAchievementIcon(r.achievement_slug),
+      category: getAchievementCategory(r.achievement_slug),
+      points: getAchievementPoints(r.achievement_slug),
+      earned_at: r.earned_at,
+      progress: r.progress || 100,
+      is_active: true
+    })) as Achievement[];
   } catch (error) {
     console.error('Error fetching user achievements:', error);
     return [];
   }
 }
 
+// Helper functions to get achievement metadata by slug
+function getAchievementName(slug: string): string {
+  const names: Record<string, string> = {
+    'consistent_user': '3-Dagen Streak',
+    'week_warrior': 'Week Warrior',
+    'two_week_streak': '2 Weken Streak',
+    'month_master': 'Maand Master',
+    'first_lesson': 'Eerste Les',
+    'first_module': 'Module Voltooid',
+    'course_complete': 'Cursus Afgerond',
+  };
+  return names[slug] || slug;
+}
+
+function getAchievementDescription(slug: string): string {
+  const descriptions: Record<string, string> = {
+    'consistent_user': 'Log 3 dagen achter elkaar in',
+    'week_warrior': 'Log 7 dagen achter elkaar in',
+    'two_week_streak': 'Log 14 dagen achter elkaar in',
+    'month_master': 'Log 30 dagen achter elkaar in',
+    'first_lesson': 'Voltooi je eerste les',
+    'first_module': 'Voltooi je eerste module',
+    'course_complete': 'Rond een volledige cursus af',
+  };
+  return descriptions[slug] || '';
+}
+
+function getAchievementIcon(slug: string): string {
+  const icons: Record<string, string> = {
+    'consistent_user': 'Flame',
+    'week_warrior': 'Zap',
+    'two_week_streak': 'Trophy',
+    'month_master': 'Crown',
+    'first_lesson': 'BookOpen',
+    'first_module': 'Award',
+    'course_complete': 'GraduationCap',
+  };
+  return icons[slug] || 'Star';
+}
+
+function getAchievementCategory(slug: string): string {
+  if (slug.includes('streak') || slug.includes('warrior') || slug.includes('master') || slug === 'consistent_user') {
+    return 'streak';
+  }
+  if (slug.includes('lesson') || slug.includes('module') || slug.includes('course')) {
+    return 'learning';
+  }
+  return 'general';
+}
+
+function getAchievementPoints(slug: string): number {
+  const points: Record<string, number> = {
+    'consistent_user': 50,
+    'week_warrior': 100,
+    'two_week_streak': 200,
+    'month_master': 500,
+    'first_lesson': 25,
+    'first_module': 75,
+    'course_complete': 300,
+  };
+  return points[slug] || 10;
+}
+
 /**
  * Get achievement progress (how many achievements unlocked per category)
+ * Updated to work without achievements master table
  */
 export async function getAchievementProgress(userId: number) {
   try {
-    const total = await sql`SELECT COUNT(*) as count FROM achievements WHERE is_active = true`;
+    // Count user's earned achievements
     const earned = await sql`SELECT COUNT(*) as count FROM user_achievements WHERE user_id = ${userId}`;
+    const earnedCount = parseInt(earned[0]?.count || '0');
 
-    const byCategory = await sql`
-      SELECT
-        a.category,
-        COUNT(*) as total,
-        COUNT(ua.id) as earned
-      FROM achievements a
-      LEFT JOIN user_achievements ua ON a.achievement_id = ua.achievement_id AND ua.user_id = ${userId}
-      WHERE a.is_active = true
-      GROUP BY a.category
+    // Total available achievements (hardcoded since we don't have master table)
+    const totalAchievements = 7; // streak (4) + learning (3)
+
+    // Get achievements by category
+    const userAchievements = await sql`
+      SELECT achievement_slug FROM user_achievements WHERE user_id = ${userId}
     `;
 
+    // Count by category
+    const categoryCount: Record<string, { total: number; earned: number }> = {
+      streak: { total: 4, earned: 0 },
+      learning: { total: 3, earned: 0 },
+    };
+
+    userAchievements.forEach((ua: any) => {
+      const category = getAchievementCategory(ua.achievement_slug);
+      if (categoryCount[category]) {
+        categoryCount[category].earned++;
+      }
+    });
+
+    const byCategory = Object.entries(categoryCount).map(([category, data]) => ({
+      category,
+      total: data.total,
+      earned: data.earned
+    }));
+
     return {
-      total: parseInt(total[0].count),
-      earned: parseInt(earned[0].count),
-      percentage: Math.round((parseInt(earned[0].count) / parseInt(total[0].count)) * 100),
+      total: totalAchievements,
+      earned: earnedCount,
+      percentage: totalAchievements > 0 ? Math.round((earnedCount / totalAchievements) * 100) : 0,
       by_category: byCategory
     };
   } catch (error) {

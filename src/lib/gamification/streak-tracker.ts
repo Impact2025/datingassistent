@@ -19,40 +19,43 @@ export interface StreakData {
 
 /**
  * Track daily login and update streak
+ * Uses the user_streaks table with program_slug architecture
  */
 export async function trackDailyLogin(userId: number): Promise<StreakData> {
   try {
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+    const programSlug = 'general'; // Default program for general login tracking
 
-    // Check if user already logged in today
-    const existingLogin = await sql`
+    // Get or create user streak record
+    let userStreak = await sql`
       SELECT * FROM user_streaks
-      WHERE user_id = ${userId} AND login_date = ${today}
+      WHERE user_id = ${userId} AND program_slug = ${programSlug}
     `;
 
-    if (existingLogin.length > 0) {
-      // Already logged in today, return current streak data
-      return await getCurrentStreak(userId);
-    }
-
-    // Get user's gamification stats
-    let userStats = await sql`
-      SELECT * FROM user_gamification_stats WHERE user_id = ${userId}
-    `;
-
-    // Create stats if not exists
-    if (userStats.length === 0) {
+    // Create streak record if not exists
+    if (userStreak.length === 0) {
       await sql`
-        INSERT INTO user_gamification_stats (user_id, current_streak, longest_streak, total_logins)
-        VALUES (${userId}, 0, 0, 0)
+        INSERT INTO user_streaks (user_id, program_slug, current_streak, longest_streak, last_activity_date, total_days_completed)
+        VALUES (${userId}, ${programSlug}, 0, 0, NULL, 0)
+        ON CONFLICT (user_id, program_slug) DO NOTHING
       `;
-      userStats = await sql`
-        SELECT * FROM user_gamification_stats WHERE user_id = ${userId}
+      userStreak = await sql`
+        SELECT * FROM user_streaks
+        WHERE user_id = ${userId} AND program_slug = ${programSlug}
       `;
     }
 
-    const stats = userStats[0];
-    const lastActivityDate = stats.last_activity_date;
+    const streak = userStreak[0];
+    const lastActivityDate = streak?.last_activity_date;
+
+    // Check if already logged in today
+    if (lastActivityDate) {
+      const lastDate = new Date(lastActivityDate).toISOString().split('T')[0];
+      if (lastDate === today) {
+        // Already logged in today, return current streak data
+        return await getCurrentStreak(userId);
+      }
+    }
 
     // Calculate new streak
     let newStreak = 1;
@@ -65,11 +68,11 @@ export async function trackDailyLogin(userId: number): Promise<StreakData> {
 
       if (diffDays === 1) {
         // Consecutive day - continue streak
-        newStreak = (stats.current_streak || 0) + 1;
+        newStreak = (streak.current_streak || 0) + 1;
         streakContinued = true;
       } else if (diffDays === 0) {
-        // Same day (shouldn't happen due to check above, but safety)
-        newStreak = stats.current_streak || 1;
+        // Same day
+        newStreak = streak.current_streak || 1;
       } else {
         // Streak broken - reset to 1
         newStreak = 1;
@@ -81,30 +84,28 @@ export async function trackDailyLogin(userId: number): Promise<StreakData> {
     const bonusMultiplier = calculateStreakBonus(newStreak);
     const pointsEarned = Math.floor(basePoints * bonusMultiplier);
 
-    // Record today's login
-    await sql`
-      INSERT INTO user_streaks (user_id, login_date, streak_count, points_earned, bonus_applied)
-      VALUES (${userId}, ${today}, ${newStreak}, ${pointsEarned}, ${bonusMultiplier > 1})
-      ON CONFLICT (user_id, login_date) DO NOTHING
-    `;
+    // Update longest streak if needed
+    const longestStreak = Math.max(newStreak, streak?.longest_streak || 0);
 
-    // Update user stats
-    const longestStreak = Math.max(newStreak, stats.longest_streak || 0);
-
+    // Update streak record
     await sql`
-      UPDATE user_gamification_stats
+      UPDATE user_streaks
       SET
         current_streak = ${newStreak},
         longest_streak = ${longestStreak},
-        last_activity_date = ${today},
-        total_logins = total_logins + 1,
-        total_points = total_points + ${pointsEarned},
+        last_activity_date = ${today}::date,
+        total_days_completed = total_days_completed + 1,
         updated_at = NOW()
-      WHERE user_id = ${userId}
+      WHERE user_id = ${userId} AND program_slug = ${programSlug}
     `;
 
-    // Award points
-    await awardPoints(userId, pointsEarned, 'daily_login', today, `Dagelijkse login streak: ${newStreak} dagen`);
+    // Award points (gracefully handle if points_history table doesn't exist)
+    try {
+      await awardPoints(userId, pointsEarned, 'daily_login', today, `Dagelijkse login streak: ${newStreak} dagen`);
+    } catch (e) {
+      // Points table may not exist yet, continue without failing
+      console.log('Points tracking skipped (table may not exist)');
+    }
 
     // Check for streak achievements
     await checkStreakAchievements(userId, newStreak);
@@ -130,11 +131,15 @@ export async function trackDailyLogin(userId: number): Promise<StreakData> {
  */
 export async function getCurrentStreak(userId: number): Promise<StreakData> {
   try {
-    const stats = await sql`
-      SELECT * FROM user_gamification_stats WHERE user_id = ${userId}
+    const programSlug = 'general';
+    const today = new Date().toISOString().split('T')[0];
+
+    const streakData = await sql`
+      SELECT * FROM user_streaks
+      WHERE user_id = ${userId} AND program_slug = ${programSlug}
     `;
 
-    if (stats.length === 0) {
+    if (streakData.length === 0) {
       return {
         currentStreak: 0,
         longestStreak: 0,
@@ -146,32 +151,33 @@ export async function getCurrentStreak(userId: number): Promise<StreakData> {
       };
     }
 
-    const stat = stats[0];
-    const today = new Date().toISOString().split('T')[0];
+    const streak = streakData[0];
 
     // Check if logged in today
-    const todayLogin = await sql`
-      SELECT * FROM user_streaks
-      WHERE user_id = ${userId} AND login_date = ${today}
-    `;
+    const todayCompleted = streak.last_activity_date
+      ? new Date(streak.last_activity_date).toISOString().split('T')[0] === today
+      : false;
 
-    // Check if streak is still active
+    // Check if streak is still active (logged in today or yesterday)
     let streakActive = false;
-    if (stat.last_activity_date) {
-      const lastDate = new Date(stat.last_activity_date);
+    if (streak.last_activity_date) {
+      const lastDate = new Date(streak.last_activity_date);
       const todayDate = new Date(today);
       const diffDays = Math.floor((todayDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
       streakActive = diffDays <= 1;
     }
 
+    const bonusMultiplier = calculateStreakBonus(streak.current_streak || 0);
+    const pointsEarned = todayCompleted ? Math.floor(10 * bonusMultiplier) : 0;
+
     return {
-      currentStreak: stat.current_streak || 0,
-      longestStreak: stat.longest_streak || 0,
-      lastLoginDate: stat.last_activity_date ? new Date(stat.last_activity_date) : null,
-      todayCompleted: todayLogin.length > 0,
+      currentStreak: streak.current_streak || 0,
+      longestStreak: streak.longest_streak || 0,
+      lastLoginDate: streak.last_activity_date ? new Date(streak.last_activity_date) : null,
+      todayCompleted,
       streakActive,
-      pointsEarned: todayLogin.length > 0 ? todayLogin[0].points_earned : 0,
-      bonusMultiplier: calculateStreakBonus(stat.current_streak || 0)
+      pointsEarned,
+      bonusMultiplier
     };
 
   } catch (error) {
@@ -213,6 +219,7 @@ async function awardPoints(
 
 /**
  * Check and unlock streak-based achievements
+ * Uses achievement_slug instead of achievement_id to match database schema
  */
 async function checkStreakAchievements(userId: number, streakDays: number) {
   const achievementMap: Record<number, string> = {
@@ -222,39 +229,44 @@ async function checkStreakAchievements(userId: number, streakDays: number) {
     30: 'month_master',
   };
 
-  const achievementId = achievementMap[streakDays];
-  if (!achievementId) return;
+  const achievementSlug = achievementMap[streakDays];
+  if (!achievementSlug) return;
 
   try {
-    // Check if achievement already earned
+    // Check if achievement already earned (using achievement_slug)
     const existing = await sql`
       SELECT * FROM user_achievements
-      WHERE user_id = ${userId} AND achievement_id = ${achievementId}
+      WHERE user_id = ${userId} AND achievement_slug = ${achievementSlug}
     `;
 
     if (existing.length === 0) {
       // Award achievement
       await sql`
-        INSERT INTO user_achievements (user_id, achievement_id)
-        VALUES (${userId}, ${achievementId})
-        ON CONFLICT (user_id, achievement_id) DO NOTHING
+        INSERT INTO user_achievements (user_id, achievement_slug, progress, notified)
+        VALUES (${userId}, ${achievementSlug}, 100, false)
+        ON CONFLICT (user_id, achievement_slug) DO NOTHING
       `;
 
-      // Create notification
-      await sql`
-        INSERT INTO user_notifications (
-          user_id, notification_type, title, message, icon, color, priority
-        )
-        VALUES (
-          ${userId},
-          'achievement',
-          '🔥 Streak Achievement Unlocked!',
-          ${`Je hebt een ${streakDays}-dagen streak bereikt!`},
-          'Flame',
-          'orange',
-          2
-        )
-      `;
+      // Try to create notification (table may not exist)
+      try {
+        await sql`
+          INSERT INTO user_notifications (
+            user_id, notification_type, title, message, icon, color, priority
+          )
+          VALUES (
+            ${userId},
+            'achievement',
+            '🔥 Streak Achievement Unlocked!',
+            ${`Je hebt een ${streakDays}-dagen streak bereikt!`},
+            'Flame',
+            'orange',
+            2
+          )
+        `;
+      } catch (notifError) {
+        // Notification table may not exist, continue
+        console.log('Notification skipped (table may not exist)');
+      }
     }
   } catch (error) {
     console.error('Error checking streak achievements:', error);

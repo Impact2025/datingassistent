@@ -137,50 +137,34 @@ export function PersonalizedWelcome({ onTabChange }: PersonalizedWelcomeProps) {
           return;
         }
 
-        // Skip AI call for now to prevent dashboard from breaking
-        setRecommendation({
-          tool: 'communicatie-matching',
-          title: 'Probeer onze tools',
-          description: 'Ontdek wat DatingAssistent voor je kan doen',
-          reason: 'Onze AI tools helpen je succesvoller te daten',
-          urgency: 'medium',
-          icon: <Sparkles className="w-5 h-5" />,
-          actionLabel: 'Tools Verkennen'
-        });
-        setLoading(false);
+        // Use AI for more sophisticated recommendations with timeout and caching
+        const cacheKey = `ai_recommendation_${user.id}`;
+        const cachedData = localStorage.getItem(cacheKey);
 
-        // TODO: Re-enable AI recommendations when API is stable
-        /*
-        // Otherwise, use AI for more sophisticated recommendations
-        const contextSummary = getContextSummary();
-        const prompt = `Je bent een dating coach expert. Gebaseerd op deze gebruikerscontext, geef één specifieke tool aanbeveling.
+        // Check cache (valid for 6 hours)
+        if (cachedData) {
+          try {
+            const { recommendation: cached, timestamp } = JSON.parse(cachedData);
+            const sixHours = 6 * 60 * 60 * 1000;
+            if (Date.now() - timestamp < sixHours) {
+              const toolConfig = getToolConfig();
+              const config = toolConfig[cached.tool as keyof typeof toolConfig] || toolConfig['profiel-persoonlijkheid'];
+              setRecommendation({
+                ...cached,
+                icon: config.icon,
+                actionLabel: config.actionLabel
+              });
+              setLoading(false);
+              return;
+            }
+          } catch {
+            // Invalid cache, continue to fetch
+          }
+        }
 
-Context: ${contextSummary}
-
-Geef een JSON response met:
-{
-  "tool": "profiel-persoonlijkheid" | "communicatie-matching" | "daten-relaties" | "groei-doelen",
-  "title": "Korte titel (max 4 woorden)",
-  "description": "Korte beschrijving (max 8 woorden)",
-  "reason": "Waarom deze tool nu relevant is (max 12 woorden)",
-  "urgency": "high" | "medium" | "low"
-}
-
-Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
-
-        const openRouter = getOpenRouterClient();
-        const response = await openRouter.createChatCompletion(
-          OPENROUTER_MODELS.CLAUDE_35_HAIKU,
-          [{ role: 'user', content: prompt }],
-          { temperature: 0.3, max_tokens: 200 }
-        );
-
-        const jsonMatch = response.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const aiRecommendation = JSON.parse(jsonMatch[0]);
-
-          // Map to our format with icons
-          const toolConfig = {
+        // Helper to get tool config
+        function getToolConfig() {
+          return {
             'profiel-persoonlijkheid': {
               icon: <UserCircle2 className="w-5 h-5" />,
               actionLabel: 'Profiel Tools'
@@ -198,16 +182,80 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
               actionLabel: 'Doelen Stelling'
             }
           };
-
-          const config = toolConfig[aiRecommendation.tool as keyof typeof toolConfig] || toolConfig['profiel-persoonlijkheid'];
-
-          setRecommendation({
-            ...aiRecommendation,
-            icon: config.icon,
-            actionLabel: config.actionLabel
-          });
         }
-        */
+
+        const contextSummary = getContextSummary();
+        const prompt = `Je bent een dating coach expert. Gebaseerd op deze gebruikerscontext, geef één specifieke tool aanbeveling.
+
+Context: ${contextSummary}
+
+Geef een JSON response met:
+{
+  "tool": "profiel-persoonlijkheid" | "communicatie-matching" | "daten-relaties" | "groei-doelen",
+  "title": "Korte titel (max 4 woorden)",
+  "description": "Korte beschrijving (max 8 woorden)",
+  "reason": "Waarom deze tool nu relevant is (max 12 woorden)",
+  "urgency": "high" | "medium" | "low"
+}
+
+Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
+
+        // Timeout for AI call
+        const timeoutId = setTimeout(() => {}, 5000);
+
+        try {
+          const openRouter = getOpenRouterClient();
+          const response = await Promise.race([
+            openRouter.createChatCompletion(
+              OPENROUTER_MODELS.CLAUDE_35_HAIKU,
+              [{ role: 'user', content: prompt }],
+              { temperature: 0.3, max_tokens: 200 }
+            ),
+            new Promise<never>((_, reject) =>
+              setTimeout(() => reject(new Error('AI timeout')), 5000)
+            )
+          ]);
+
+          clearTimeout(timeoutId);
+
+          const jsonMatch = response.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            const aiRecommendation = JSON.parse(jsonMatch[0]);
+            const toolConfig = getToolConfig();
+            const config = toolConfig[aiRecommendation.tool as keyof typeof toolConfig] || toolConfig['profiel-persoonlijkheid'];
+
+            const finalRecommendation = {
+              ...aiRecommendation,
+              icon: config.icon,
+              actionLabel: config.actionLabel
+            };
+
+            // Cache the result
+            localStorage.setItem(cacheKey, JSON.stringify({
+              recommendation: aiRecommendation,
+              timestamp: Date.now()
+            }));
+
+            setRecommendation(finalRecommendation);
+            setLoading(false);
+            return;
+          }
+        } catch (aiError) {
+          clearTimeout(timeoutId);
+          console.log('AI recommendation skipped (timeout or error):', aiError);
+        }
+
+        // Fallback if AI fails
+        setRecommendation({
+          tool: 'communicatie-matching',
+          title: 'Probeer onze tools',
+          description: 'Ontdek wat DatingAssistent voor je kan doen',
+          reason: 'Onze AI tools helpen je succesvoller te daten',
+          urgency: 'medium',
+          icon: <Sparkles className="w-5 h-5" />,
+          actionLabel: 'Tools Verkennen'
+        });
+        setLoading(false);
       } catch (error) {
         console.error('Error generating recommendation:', error);
         // Fallback recommendation

@@ -140,9 +140,9 @@ export function ModuleSidebar({
   }));
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden shadow-sm">
       {/* Overall Progress Header */}
-      <div className="p-4 bg-gradient-to-r from-pink-50 to-rose-50 border-b border-pink-100">
+      <div className="p-4 bg-gradient-to-r from-pink-50 via-rose-50 to-pink-50 border-b border-pink-100">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-900">Je voortgang</span>
           <span className="text-sm font-bold text-pink-600">

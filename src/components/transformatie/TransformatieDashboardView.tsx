@@ -6,7 +6,7 @@
  * Design: DESIGN -> ACTION -> SURRENDER framework
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Play,
@@ -23,6 +23,13 @@ import {
   Sparkles,
   Target,
   Heart,
+  PanelLeftClose,
+  PanelLeft,
+  Keyboard,
+  Volume2,
+  Maximize,
+  SkipForward,
+  Award,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,7 +45,15 @@ interface TransformatieDashboardViewProps {
   onBack?: () => void;
 }
 
+// localStorage keys
+const SIDEBAR_COLLAPSED_KEY = 'transformatie_sidebar_collapsed';
+const VIDEO_PROGRESS_KEY = 'transformatie_video_progress';
+
 export function TransformatieDashboardView({ userId, onBack }: TransformatieDashboardViewProps) {
+  // Refs
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
   // State
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -50,11 +65,27 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
   const [currentLesson, setCurrentLesson] = useState<TransformatieLesson | null>(null);
   const [loadingLesson, setLoadingLesson] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    // Initialize from localStorage
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === 'true';
+    }
+    return false;
+  });
 
   // Lesson content state
   const [isVideoComplete, setIsVideoComplete] = useState(false);
   const [reflectieAnswers, setReflectieAnswers] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+
+  // Enhanced UX state
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [showKeyboardHint, setShowKeyboardHint] = useState(false);
+  const [videoProgress, setVideoProgress] = useState(0);
+  const [autoAdvance, setAutoAdvance] = useState(true);
+
+  // Mobile swipe state
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
 
   // Fetch overview data
   const fetchOverview = useCallback(async () => {
@@ -101,6 +132,150 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
     };
     init();
   }, [fetchOverview]);
+
+  // Persist sidebar state to localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, String(sidebarCollapsed));
+    }
+  }, [sidebarCollapsed]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input
+      if (e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLInputElement) {
+        return;
+      }
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          handlePrevLesson();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          handleNextLesson();
+          break;
+        case ' ':
+          e.preventDefault();
+          if (videoRef.current) {
+            if (videoRef.current.paused) {
+              videoRef.current.play();
+            } else {
+              videoRef.current.pause();
+            }
+          }
+          break;
+        case 'f':
+          // Toggle fullscreen video
+          if (videoRef.current) {
+            if (document.fullscreenElement) {
+              document.exitFullscreen();
+            } else {
+              videoRef.current.requestFullscreen();
+            }
+          }
+          break;
+        case 'm':
+          // Toggle sidebar
+          setSidebarCollapsed(prev => !prev);
+          break;
+        case '?':
+          // Show keyboard hints
+          setShowKeyboardHint(prev => !prev);
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentModule, currentLesson, modules]);
+
+  // Video progress tracking
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !currentLesson) return;
+
+    // Restore video progress
+    const savedProgress = localStorage.getItem(`${VIDEO_PROGRESS_KEY}_${currentLesson.id}`);
+    if (savedProgress && parseFloat(savedProgress) > 0) {
+      video.currentTime = parseFloat(savedProgress);
+    }
+
+    const handleTimeUpdate = () => {
+      const progress = (video.currentTime / video.duration) * 100;
+      setVideoProgress(progress);
+      // Save progress every 5 seconds
+      if (Math.floor(video.currentTime) % 5 === 0) {
+        localStorage.setItem(`${VIDEO_PROGRESS_KEY}_${currentLesson.id}`, String(video.currentTime));
+      }
+    };
+
+    const handleEnded = () => {
+      // Auto-mark as complete when video ends
+      if (!isVideoComplete) {
+        handleVideoComplete();
+      }
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    video.addEventListener('ended', handleEnded);
+
+    return () => {
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, [currentLesson?.id, isVideoComplete]);
+
+  // Mobile swipe handler
+  const handleSwipe = useCallback((direction: 'left' | 'right') => {
+    setSwipeDirection(direction);
+    setTimeout(() => setSwipeDirection(null), 300);
+
+    if (direction === 'left') {
+      handleNextLesson();
+    } else {
+      handlePrevLesson();
+    }
+  }, []);
+
+  // Touch swipe detection
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const minSwipeDistance = 50;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      touchEndX = e.changedTouches[0].clientX;
+      const distance = touchStartX - touchEndX;
+
+      if (Math.abs(distance) > minSwipeDistance) {
+        if (distance > 0) {
+          handleSwipe('left'); // Swipe left = next
+        } else {
+          handleSwipe('right'); // Swipe right = previous
+        }
+      }
+    };
+
+    const content = contentRef.current;
+    if (content) {
+      content.addEventListener('touchstart', handleTouchStart, { passive: true });
+      content.addEventListener('touchend', handleTouchEnd, { passive: true });
+    }
+
+    return () => {
+      if (content) {
+        content.removeEventListener('touchstart', handleTouchStart);
+        content.removeEventListener('touchend', handleTouchEnd);
+      }
+    };
+  }, [handleSwipe]);
 
   // Select module
   const handleSelectModule = (module: TransformatieModule) => {
@@ -152,9 +327,20 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
     await saveProgress({ videoCompleted: true, status: 'in_progress' });
   };
 
-  // Mark lesson complete
+  // Mark lesson complete with celebration
   const handleLessonComplete = async () => {
     await saveProgress({ status: 'completed' });
+
+    // Show celebration
+    setShowCelebration(true);
+    setTimeout(() => setShowCelebration(false), 3000);
+
+    // Auto-advance to next lesson after celebration
+    if (autoAdvance) {
+      setTimeout(() => {
+        handleNextLesson();
+      }, 2000);
+    }
   };
 
   // Reflectie save
@@ -265,10 +451,10 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
   // Loading state
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[600px]">
+      <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-pink-500 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Transformatie laden...</p>
+          <Loader2 className="w-10 h-10 text-pink-500 animate-spin mx-auto mb-4" />
+          <p className="text-sm text-gray-600">Je programma laden...</p>
         </div>
       </div>
     );
@@ -277,8 +463,8 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
   // Error state
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-[600px]">
-        <Card className="max-w-md">
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Card className="max-w-md border-gray-200 shadow-sm">
           <CardContent className="p-8 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -299,7 +485,154 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
   const isLessonComplete = completionPercent === 100;
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-[calc(100vh-180px)] gap-6">
+    <div className="flex flex-col lg:flex-row gap-6 relative" ref={contentRef}>
+      {/* Celebration Overlay */}
+      <AnimatePresence>
+        {showCelebration && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              className="bg-white rounded-2xl p-8 shadow-2xl text-center max-w-md mx-4"
+            >
+              <motion.div
+                animate={{ rotate: [0, -10, 10, -10, 0], scale: [1, 1.2, 1] }}
+                transition={{ duration: 0.5 }}
+              >
+                <Award className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+              </motion.div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Les Voltooid!</h2>
+              <p className="text-gray-600 mb-4">Geweldig! Je bent weer een stap dichter bij je transformatie.</p>
+              <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                <SkipForward className="w-4 h-4" />
+                <span>Automatisch naar volgende les...</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Keyboard Shortcuts Modal */}
+      <AnimatePresence>
+        {showKeyboardHint && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+            onClick={() => setShowKeyboardHint(false)}
+          >
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              className="bg-white rounded-2xl p-6 shadow-2xl max-w-sm mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Keyboard className="w-5 h-5 text-pink-500" />
+                <h3 className="text-lg font-semibold text-gray-900">Sneltoetsen</h3>
+              </div>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Volgende les</span>
+                  <kbd className="px-2 py-1 bg-gray-100 rounded text-xs font-mono">→</kbd>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Vorige les</span>
+                  <kbd className="px-2 py-1 bg-gray-100 rounded text-xs font-mono">←</kbd>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Play/Pause video</span>
+                  <kbd className="px-2 py-1 bg-gray-100 rounded text-xs font-mono">Spatie</kbd>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Fullscreen video</span>
+                  <kbd className="px-2 py-1 bg-gray-100 rounded text-xs font-mono">F</kbd>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Toggle menu</span>
+                  <kbd className="px-2 py-1 bg-gray-100 rounded text-xs font-mono">M</kbd>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full mt-4"
+                onClick={() => setShowKeyboardHint(false)}
+              >
+                Sluiten
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mini Navigation when sidebar collapsed */}
+      <AnimatePresence>
+        {sidebarCollapsed && currentModule && (
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -100, opacity: 0 }}
+            className="hidden lg:flex fixed left-4 top-1/2 -translate-y-1/2 z-30 flex-col gap-2"
+          >
+            {/* Quick navigation dots */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-xl p-2 shadow-lg border border-gray-200">
+              <div className="space-y-1">
+                {currentModule.lessons.map((lesson, idx) => (
+                  <button
+                    key={lesson.id}
+                    onClick={() => handleSelectLesson(lesson)}
+                    className={cn(
+                      "w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-all",
+                      lesson.id === currentLesson?.id
+                        ? "bg-pink-500 text-white"
+                        : lesson.progress?.status === 'completed'
+                          ? "bg-green-100 text-green-700 hover:bg-green-200"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    )}
+                    title={lesson.title}
+                  >
+                    {lesson.progress?.status === 'completed' ? (
+                      <CheckCircle className="w-4 h-4" />
+                    ) : (
+                      idx + 1
+                    )}
+                  </button>
+                ))}
+              </div>
+              <div className="border-t border-gray-200 mt-2 pt-2">
+                <button
+                  onClick={() => setSidebarCollapsed(false)}
+                  className="w-full px-2 py-1 text-xs text-gray-500 hover:text-gray-700 flex items-center justify-center gap-1"
+                >
+                  <PanelLeft className="w-3 h-3" />
+                  Menu
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Keyboard shortcut hint button */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setShowKeyboardHint(true)}
+        className="hidden lg:flex fixed bottom-4 right-4 z-20 text-gray-400 hover:text-gray-600"
+        title="Sneltoetsen (?)"
+      >
+        <Keyboard className="w-4 h-4 mr-1" />
+        <span className="text-xs">?</span>
+      </Button>
+
       {/* Mobile Header */}
       <div className="lg:hidden flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200">
         <div>
@@ -370,9 +703,18 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
         )}
       </AnimatePresence>
 
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:block w-[340px] flex-shrink-0 order-first">
-        <div className="sticky top-4">
+      {/* Desktop Sidebar - Collapsible */}
+      <motion.div
+        className="hidden lg:block flex-shrink-0 order-first"
+        initial={false}
+        animate={{
+          width: sidebarCollapsed ? 0 : 340,
+          opacity: sidebarCollapsed ? 0 : 1,
+          marginRight: sidebarCollapsed ? 0 : 24
+        }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+      >
+        <div className="sticky top-4 w-[340px]">
           <ModuleSidebar
             modules={modules}
             phases={phases}
@@ -383,34 +725,50 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             overallProgress={overallProgress}
           />
         </div>
-      </div>
+      </motion.div>
 
       {/* Main Content */}
       <div className="flex-1 min-w-0">
         {currentLesson ? (
           <div className="space-y-6">
             {/* Lesson Header */}
-            <Card className="border-gray-200">
+            <Card className="border-gray-200 shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      {currentModule && (
-                        <Badge className={cn('text-xs', getPhaseColor(currentModule.phase))}>
-                          {getPhaseIcon(currentModule.phase)}
-                          <span className="ml-1">{currentModule.phase_label}</span>
-                        </Badge>
+                  {/* Desktop Sidebar Toggle Button */}
+                  <div className="flex items-start gap-3">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                      className="hidden lg:flex h-9 w-9 bg-white border-gray-200 shadow-sm hover:bg-gray-50 flex-shrink-0"
+                      title={sidebarCollapsed ? "Toon navigatie" : "Focus mode uit"}
+                    >
+                      {sidebarCollapsed ? (
+                        <PanelLeft className="w-4 h-4" />
+                      ) : (
+                        <PanelLeftClose className="w-4 h-4" />
                       )}
-                      <span className="text-xs text-gray-500">
-                        Module {currentModule?.module_order} · Les {currentLesson.lesson_order}
-                      </span>
+                    </Button>
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        {currentModule && (
+                          <Badge className={cn('text-xs', getPhaseColor(currentModule.phase))}>
+                            {getPhaseIcon(currentModule.phase)}
+                            <span className="ml-1">{currentModule.phase_label}</span>
+                          </Badge>
+                        )}
+                        <span className="text-xs text-gray-500">
+                          Module {currentModule?.module_order} · Les {currentLesson.lesson_order}
+                        </span>
+                      </div>
+                      <h1 className="text-xl lg:text-2xl font-semibold text-gray-900">
+                        {currentLesson.title}
+                      </h1>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {currentLesson.description}
+                      </p>
                     </div>
-                    <h1 className="text-xl lg:text-2xl font-semibold text-gray-900">
-                      {currentLesson.title}
-                    </h1>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {currentLesson.description}
-                    </p>
                   </div>
 
                   <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">
@@ -440,7 +798,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             </Card>
 
             {/* Video Section */}
-            <Card>
+            <Card className="border-gray-200 shadow-sm">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Play className="w-5 h-5" />
@@ -450,15 +808,38 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
               </CardHeader>
               <CardContent className="p-4 lg:p-6">
                 {currentLesson.video_url ? (
-                  <div className="aspect-video bg-gray-900 rounded-lg mb-4 overflow-hidden">
-                    <video
-                      controls
-                      className="w-full h-full"
-                      preload="metadata"
-                    >
-                      <source src={currentLesson.video_url} type="video/mp4" />
-                      Je browser ondersteunt geen video playback.
-                    </video>
+                  <div className="relative">
+                    <div className="aspect-video bg-gray-900 rounded-lg mb-2 overflow-hidden">
+                      <video
+                        ref={videoRef}
+                        controls
+                        className="w-full h-full"
+                        preload="metadata"
+                      >
+                        <source src={currentLesson.video_url} type="video/mp4" />
+                        Je browser ondersteunt geen video playback.
+                      </video>
+                    </div>
+                    {/* Video Progress Bar */}
+                    <div className="h-1 bg-gray-200 rounded-full overflow-hidden mb-4">
+                      <motion.div
+                        className="h-full bg-gradient-to-r from-pink-500 to-rose-500"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${videoProgress}%` }}
+                        transition={{ duration: 0.1 }}
+                      />
+                    </div>
+                    {/* Video Controls Hint */}
+                    <div className="hidden lg:flex items-center justify-center gap-4 text-xs text-gray-400 mb-4">
+                      <span className="flex items-center gap-1">
+                        <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-xs">Spatie</kbd>
+                        Play/Pause
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-xs">F</kbd>
+                        Fullscreen
+                      </span>
+                    </div>
                   </div>
                 ) : (
                   <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center mb-4">
@@ -487,7 +868,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             </Card>
 
             {/* Reflectie Section */}
-            <Card>
+            <Card className="border-gray-200 shadow-sm">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <BookOpen className="w-5 h-5" />
@@ -627,13 +1008,105 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             </div>
           </div>
         ) : (
-          <Card>
+          <Card className="border-gray-200 shadow-sm">
             <CardContent className="p-12 text-center">
               <p className="text-gray-500">Selecteer een les om te beginnen</p>
             </CardContent>
           </Card>
         )}
       </div>
+
+      {/* Mobile Quick Actions Bar - Only show when lesson is selected */}
+      {currentLesson && (
+      <div className="lg:hidden fixed bottom-20 left-0 right-0 z-30 px-4">
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="bg-white/95 backdrop-blur-md rounded-2xl shadow-lg border border-gray-200 p-2"
+        >
+          <div className="flex items-center justify-between gap-2">
+            {/* Previous Lesson */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handlePrevLesson}
+              disabled={currentModule?.module_order === 1 && currentLesson?.lesson_order === 1}
+              className="flex-1 h-12"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+
+            {/* Lesson Progress Dots */}
+            <div className="flex items-center gap-1.5 px-2">
+              {currentModule?.lessons.slice(0, 5).map((lesson, idx) => (
+                <button
+                  key={lesson.id}
+                  onClick={() => handleSelectLesson(lesson)}
+                  className={cn(
+                    "w-2.5 h-2.5 rounded-full transition-all",
+                    lesson.id === currentLesson?.id
+                      ? "bg-pink-500 w-4"
+                      : lesson.progress?.status === 'completed'
+                        ? "bg-green-500"
+                        : "bg-gray-300"
+                  )}
+                />
+              ))}
+              {(currentModule?.lessons.length || 0) > 5 && (
+                <span className="text-xs text-gray-400">+{(currentModule?.lessons.length || 0) - 5}</span>
+              )}
+            </div>
+
+            {/* Menu Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSidebarOpen(true)}
+              className="h-12 px-3"
+            >
+              <Menu className="w-5 h-5" />
+            </Button>
+
+            {/* Next Lesson */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleNextLesson}
+              className="flex-1 h-12 bg-pink-50 text-pink-600"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </Button>
+          </div>
+
+          {/* Swipe Hint */}
+          <div className="text-center mt-1">
+            <p className="text-[10px] text-gray-400">
+              ← Swipe voor navigatie →
+            </p>
+          </div>
+        </motion.div>
+      </div>
+      )}
+
+      {/* Swipe Feedback Indicator */}
+      <AnimatePresence>
+        {swipeDirection && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="lg:hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
+          >
+            <div className="bg-black/70 text-white rounded-full p-4">
+              {swipeDirection === 'left' ? (
+                <ChevronRight className="w-8 h-8" />
+              ) : (
+                <ChevronLeft className="w-8 h-8" />
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -19,35 +19,66 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // PERFORMANCE: Single optimized query with JOINs instead of 4 separate queries
-    // Prevents N+1 query pattern and reduces database roundtrips
+    // Get streak data from user_streaks table (uses last_activity_date, not login_date)
     const today = new Date().toISOString().split('T')[0];
 
-    const result = await sql`
-      WITH user_stats AS (
-        SELECT * FROM user_gamification_stats WHERE user_id = ${userId}
-      ),
-      today_streak AS (
-        SELECT 1 as logged_in_today FROM user_streaks
-        WHERE user_id = ${userId} AND login_date = ${today}
-        LIMIT 1
-      )
+    // First get streak data
+    const streakResult = await sql`
       SELECT
-        COALESCE(us.total_points, 0) as total_points,
-        COALESCE(us.current_level, 1) as current_level,
-        COALESCE(us.level_progress, 0) as level_progress,
-        COALESCE(us.current_streak, 0) as current_streak,
-        COALESCE(us.longest_streak, 0) as longest_streak,
-        COALESCE(us.total_challenges_completed, 0) as total_challenges_completed,
-        COALESCE(us.total_tools_completed, 0) as total_tools_completed,
-        COALESCE(lm_current.title, 'Nieuweling') as level_title,
-        COALESCE(lm_next.points_required, 100) as next_level_points,
-        COALESCE(ts.logged_in_today, 0) as today_completed
-      FROM user_stats us
-      LEFT JOIN level_milestones lm_current ON lm_current.level = COALESCE(us.current_level, 1)
-      LEFT JOIN level_milestones lm_next ON lm_next.level = COALESCE(us.current_level, 1) + 1
-      LEFT JOIN today_streak ts ON true
+        current_streak,
+        longest_streak,
+        last_activity_date,
+        total_days_completed
+      FROM user_streaks
+      WHERE user_id = ${userId} AND program_slug = 'general'
     `;
+
+    const streak = streakResult[0] || {
+      current_streak: 0,
+      longest_streak: 0,
+      last_activity_date: null,
+      total_days_completed: 0
+    };
+
+    // Check if logged in today
+    const todayCompleted = streak.last_activity_date
+      ? new Date(streak.last_activity_date).toISOString().split('T')[0] === today
+      : false;
+
+    // Try to get level milestones (may not exist)
+    let levelTitle = 'Nieuweling';
+    let nextLevelPoints = 100;
+    try {
+      const levelResult = await sql`
+        SELECT title, points_required FROM level_milestones
+        WHERE level <= 1 ORDER BY level DESC LIMIT 1
+      `;
+      if (levelResult.length > 0) {
+        levelTitle = levelResult[0].title;
+      }
+      const nextLevelResult = await sql`
+        SELECT points_required FROM level_milestones
+        WHERE level = 2 LIMIT 1
+      `;
+      if (nextLevelResult.length > 0) {
+        nextLevelPoints = nextLevelResult[0].points_required;
+      }
+    } catch (e) {
+      // Level milestones table may not exist
+    }
+
+    const result = [{
+      total_points: streak.total_days_completed * 10, // Estimate points from days
+      current_level: 1,
+      level_progress: 0,
+      current_streak: streak.current_streak || 0,
+      longest_streak: streak.longest_streak || 0,
+      total_challenges_completed: 0,
+      total_tools_completed: 0,
+      level_title: levelTitle,
+      next_level_points: nextLevelPoints,
+      today_completed: todayCompleted ? 1 : 0
+    }];
 
     // If no stats exist, initialize them
     if (result.length === 0 || result[0].total_points === null) {

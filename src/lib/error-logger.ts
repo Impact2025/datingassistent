@@ -81,21 +81,69 @@ export function logError(
 }
 
 /**
- * Send error to tracking service (placeholder)
+ * Error tracking configuration
+ * Set NEXT_PUBLIC_SENTRY_DSN in environment to enable Sentry
+ */
+const errorTrackingConfig = {
+  enabled: process.env.NODE_ENV === 'production',
+  sentryDSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  environment: process.env.NODE_ENV || 'development',
+  release: process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0',
+};
+
+/**
+ * Initialize error tracking (call once at app start)
+ * Ready for Sentry integration - just add @sentry/nextjs package
+ */
+export async function initErrorTracking() {
+  if (!errorTrackingConfig.enabled) {
+    console.log('📊 Error tracking disabled in development');
+    return;
+  }
+
+  if (errorTrackingConfig.sentryDSN) {
+    // Sentry will be initialized here when package is added
+    // import * as Sentry from '@sentry/nextjs';
+    // Sentry.init({
+    //   dsn: errorTrackingConfig.sentryDSN,
+    //   environment: errorTrackingConfig.environment,
+    //   release: errorTrackingConfig.release,
+    //   tracesSampleRate: 0.1,
+    //   replaysSessionSampleRate: 0.1,
+    //   replaysOnErrorSampleRate: 1.0,
+    // });
+    console.log('🔍 Sentry error tracking ready (add @sentry/nextjs to enable)');
+  }
+}
+
+/**
+ * Send error to tracking service
+ * Sentry-ready implementation
  */
 function sendToErrorTracking(log: ErrorLog): void {
-  // TODO: Implement actual error tracking
-  // Example integrations:
-  // - Sentry.captureException(log.error, { contexts: log.context });
-  // - LogRocket.captureException(log.error);
-  // - Custom API endpoint
+  // Sentry integration (when @sentry/nextjs is installed)
+  // if (errorTrackingConfig.sentryDSN && typeof Sentry !== 'undefined') {
+  //   Sentry.captureException(log.error || new Error(log.message), {
+  //     level: log.severity === 'critical' ? 'fatal' : log.severity === 'high' ? 'error' : 'warning',
+  //     tags: {
+  //       route: log.context?.route,
+  //       action: log.context?.action,
+  //     },
+  //     user: log.context?.userId ? { id: String(log.context.userId), email: log.context.userEmail } : undefined,
+  //     extra: log.context?.metadata,
+  //   });
+  //   return;
+  // }
 
+  // Fallback: Send to custom API endpoint
   if (typeof window !== 'undefined') {
-    // For now, just send to a custom endpoint if available
     fetch('/api/errors/log', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(log),
+      body: JSON.stringify({
+        ...log,
+        error: log.error ? { message: log.error.message, stack: log.error.stack } : undefined,
+      }),
     }).catch(() => {
       // Silent fail - don't want error logging to cause more errors
     });
