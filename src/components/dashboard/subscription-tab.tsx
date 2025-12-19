@@ -523,7 +523,15 @@ export function SubscriptionTab() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => router.push(program.program_slug === 'kickstart' ? '/kickstart' : `/cursus/${program.program_slug}`)}
+                  onClick={() => {
+                    if (program.program_slug === 'kickstart') {
+                      router.push('/kickstart');
+                    } else if (program.program_slug === 'transformatie') {
+                      router.push('/transformatie');
+                    } else {
+                      router.push(`/cursus/${program.program_slug}`);
+                    }
+                  }}
                 >
                   <ExternalLink className="w-4 h-4" />
                 </Button>

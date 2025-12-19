@@ -77,6 +77,16 @@ export function MyProgramsWidget() {
   };
 
   const handleContinue = (program: EnrolledProgram) => {
+    // Route to dedicated pages for special programs
+    if (program.program_slug === 'transformatie' || program.program_tier === 'transformatie') {
+      router.push('/transformatie');
+      return;
+    }
+    if (program.program_slug === 'kickstart' || program.program_type === 'kickstart') {
+      router.push('/kickstart');
+      return;
+    }
+    // Generic programs use the /programs route
     if (program.next_lesson_id) {
       router.push(`/programs/${program.program_slug}/lesson/${program.next_lesson_id}`);
     } else {
@@ -85,6 +95,15 @@ export function MyProgramsWidget() {
   };
 
   const handleViewProgram = (slug: string) => {
+    // Route to dedicated pages for special programs
+    if (slug === 'transformatie') {
+      router.push('/transformatie');
+      return;
+    }
+    if (slug === 'kickstart') {
+      router.push('/kickstart');
+      return;
+    }
     router.push(`/programs/${slug}`);
   };
 
