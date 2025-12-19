@@ -241,7 +241,19 @@
       "Bash(for file in src/app/blog/page.tsx src/app/help/page.tsx src/app/payment/page.tsx src/app/payment/success/page.tsx src/app/quiz/resultaat/page.tsx src/app/register/page.tsx src/app/reset-password/page.tsx src/app/tools/page.tsx src/app/verify-email/page.tsx)",
       "Bash(if grep -q \"import dynamic from ''next/dynamic''\" \"$file\")",
       "Bash(git rm:*)",
-      "Bash(python -m json.tool:*)"
+      "Bash(python -m json.tool:*)",
+      "Bash(start http://localhost:9000/transformatie)",
+      "Bash(start http://localhost:9000/tools)",
+      "Bash(del \"C:\\Users\\v_mun\\.claude\\projects\\Datingassistent\\Datingassistentapp\\add-vip-program.js\")",
+      "Bash(npm run migrate:transformatie-3)",
+      "Bash(start \"http://localhost:9000/dashboard?tab=pad\")",
+      "Bash(start \"http://localhost:9000/dashboard?tab=subscription\")",
+      "Bash(start \"http://localhost:9000/dashboard?tab=waarden-kompas\")",
+      "Bash(start \"http://localhost:9000/dashboard?fresh=1\")",
+      "Bash(more:*)",
+      "Bash(git merge:*)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(git rev-parse:*)"
     ],
     "deny": [],
     "ask": []
