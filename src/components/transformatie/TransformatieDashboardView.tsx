@@ -7,6 +7,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Play,
@@ -49,7 +50,25 @@ interface TransformatieDashboardViewProps {
 const SIDEBAR_COLLAPSED_KEY = 'transformatie_sidebar_collapsed';
 const VIDEO_PROGRESS_KEY = 'transformatie_video_progress';
 
+// Tool name to route mapping
+const AI_TOOL_ROUTES: Record<string, string> = {
+  'Waarden Kompas': '/waarden-kompas',
+  'Hechtingsstijl Scan': '/hechtingsstijl',
+  'Dating Stijl Scan': '/dating-stijl-scan',
+  'Emotionele Readiness': '/emotionele-readiness',
+  'Vibe Check Simulator': '/tools/vibe-check',
+  'Energie Batterij': '/tools/energie-batterij',
+  '36 Vragen Bot': '/tools/36-vragen',
+  'Ghosting Reframer': '/tools/ghosting-reframer',
+  'Foto Advies': '/foto',
+  'Date Planner': '/date-planner',
+  'Bio Generator': '/dashboard?tab=profiel',
+  'Gesprek Coach': '/chat',
+};
+
 export function TransformatieDashboardView({ userId, onBack }: TransformatieDashboardViewProps) {
+  const router = useRouter();
+
   // Refs
   const videoRef = useRef<HTMLVideoElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -978,7 +997,17 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                         Gebruik deze tool om de les te verdiepen
                       </p>
                     </div>
-                    <Button size="sm" variant="outline" className="border-pink-300 text-pink-700 hover:bg-pink-100">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-pink-300 text-pink-700 hover:bg-pink-100"
+                      onClick={() => {
+                        const toolRoute = AI_TOOL_ROUTES[currentModule.ai_tool_name || ''];
+                        if (toolRoute) {
+                          router.push(toolRoute);
+                        }
+                      }}
+                    >
                       Openen
                     </Button>
                   </div>

@@ -6,8 +6,15 @@ const sql = neon(process.env.DATABASE_URL!);
 /**
  * GET /api/gamification/stats
  * Get user's gamification stats (points, level, streak)
+ *
+ * WORLD-CLASS OPTIMIZATION:
+ * - Parallel database queries
+ * - Response caching headers
+ * - Reduced query complexity
  */
 export async function GET(request: NextRequest) {
+  const startTime = Date.now();
+
   try {
     const searchParams = request.nextUrl.searchParams;
     const userId = parseInt(searchParams.get('userId') || '');
@@ -19,19 +26,30 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get streak data from user_streaks table (uses last_activity_date, not login_date)
     const today = new Date().toISOString().split('T')[0];
 
-    // First get streak data
-    const streakResult = await sql`
-      SELECT
-        current_streak,
-        longest_streak,
-        last_activity_date,
-        total_days_completed
-      FROM user_streaks
-      WHERE user_id = ${userId} AND program_slug = 'general'
-    `;
+    // OPTIMIZED: Parallel database queries instead of sequential
+    const [streakResult, levelResult] = await Promise.all([
+      // Get streak data
+      sql`
+        SELECT
+          current_streak,
+          longest_streak,
+          last_activity_date,
+          total_days_completed
+        FROM user_streaks
+        WHERE user_id = ${userId} AND program_slug = 'general'
+        LIMIT 1
+      `,
+      // Get level milestones in single query
+      sql`
+        SELECT level, title, points_required
+        FROM level_milestones
+        WHERE level <= 2
+        ORDER BY level ASC
+        LIMIT 2
+      `.catch(() => []),
+    ]);
 
     const streak = streakResult[0] || {
       current_streak: 0,
@@ -45,26 +63,14 @@ export async function GET(request: NextRequest) {
       ? new Date(streak.last_activity_date).toISOString().split('T')[0] === today
       : false;
 
-    // Try to get level milestones (may not exist)
+    // Process level data
     let levelTitle = 'Nieuweling';
     let nextLevelPoints = 100;
-    try {
-      const levelResult = await sql`
-        SELECT title, points_required FROM level_milestones
-        WHERE level <= 1 ORDER BY level DESC LIMIT 1
-      `;
-      if (levelResult.length > 0) {
-        levelTitle = levelResult[0].title;
+    if (levelResult && levelResult.length > 0) {
+      levelTitle = levelResult[0].title || 'Nieuweling';
+      if (levelResult.length > 1) {
+        nextLevelPoints = levelResult[1].points_required || 100;
       }
-      const nextLevelResult = await sql`
-        SELECT points_required FROM level_milestones
-        WHERE level = 2 LIMIT 1
-      `;
-      if (nextLevelResult.length > 0) {
-        nextLevelPoints = nextLevelResult[0].points_required;
-      }
-    } catch (e) {
-      // Level milestones table may not exist
     }
 
     const result = [{
@@ -106,6 +112,9 @@ export async function GET(request: NextRequest) {
     const data = result[0];
     const pointsToNextLevel = Math.max(0, data.next_level_points - data.total_points);
 
+    const duration = Date.now() - startTime;
+    console.log(`✅ Gamification stats fetched in ${duration}ms for user ${userId}`);
+
     return NextResponse.json({
       totalPoints: data.total_points,
       currentLevel: data.current_level,
@@ -117,7 +126,13 @@ export async function GET(request: NextRequest) {
       pointsToNextLevel,
       nextLevelPoints: data.next_level_points,
       totalChallengesCompleted: data.total_challenges_completed,
-      totalToolsCompleted: data.total_tools_completed
+      totalToolsCompleted: data.total_tools_completed,
+      _meta: { duration },
+    }, {
+      headers: {
+        // Cache for 60 seconds, stale-while-revalidate for 2 minutes
+        'Cache-Control': 'private, max-age=60, stale-while-revalidate=120',
+      },
     });
 
   } catch (error) {

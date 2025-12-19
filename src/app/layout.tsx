@@ -6,6 +6,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { Toaster } from "@/components/ui/toaster";
 import { WebVitals } from "@/components/analytics/web-vitals";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { QueryProvider } from "@/providers/query-provider";
 import { SkipLinks } from "@/components/accessibility/skip-links";
 import { ScreenReaderAnnouncer } from "@/components/accessibility/screen-reader-announcer";
 import { StructuredData } from "@/components/structured-data";
@@ -148,9 +149,10 @@ export default function RootLayout({
         <ScreenReaderAnnouncer />
         <ErrorBoundary>
           <ThemeProvider>
-            <WebVitals />
-            <ServiceWorkerRegistration />
-            <UserProvider>
+            <QueryProvider>
+              <WebVitals />
+              <ServiceWorkerRegistration />
+              <UserProvider>
               <AchievementToastProvider>
                 <TutorialEngine>
                   <div id="main-content">
@@ -162,6 +164,7 @@ export default function RootLayout({
                 </TutorialEngine>
               </AchievementToastProvider>
             </UserProvider>
+            </QueryProvider>
           </ThemeProvider>
         </ErrorBoundary>
       </body>

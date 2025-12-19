@@ -241,196 +241,132 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
           </motion.div>
         )}
 
-        {/* 3-Tier Tool System Banner */}
+        {/* Tool Tiers - Minimalist Design */}
         {!showWelcomeVideo && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: ANIMATION_DELAYS.PROGRAMS + 0.1 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Essentials - Free Tier */}
-              <Card
-                className="cursor-pointer overflow-hidden border-2 border-green-300 bg-gradient-to-br from-green-50 to-emerald-50 hover:shadow-lg transition-all"
+            <div className="grid grid-cols-3 gap-3">
+              {/* Essentials */}
+              <button
                 onClick={() => router.push('/essentials')}
+                className="p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all text-left"
               >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                      <Gift className="w-5 h-5 text-white" />
-                    </div>
-                    <Badge className="bg-green-500 text-white border-0 text-xs">
-                      🆓 GRATIS
-                    </Badge>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                    <Gift className="w-4 h-4 text-green-600" />
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-1">Essentials</h3>
-                  <p className="text-xs text-gray-600 mb-3">
-                    Badges, Activity Logger, Stats & meer
-                  </p>
-                  <Button size="sm" variant="outline" className="border-green-500 text-green-700 hover:bg-green-100 w-full">
-                    Ontdek →
-                  </Button>
-                </CardContent>
-              </Card>
+                  <span className="text-xs text-green-600 font-medium">Gratis</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 text-sm">Essentials</h3>
+                <p className="text-xs text-gray-500 mt-1">Basis tools</p>
+              </button>
 
-              {/* Kickstart Toolkit */}
-              <Card
-                className="cursor-pointer overflow-hidden border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all"
+              {/* Kickstart */}
+              <button
                 onClick={() => router.push('/kickstart-toolkit')}
+                className="p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all text-left"
               >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                      <Rocket className="w-5 h-5 text-white" />
-                    </div>
-                    <Badge className="bg-blue-500 text-white border-0 text-xs">
-                      💎 KICKSTART
-                    </Badge>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <Rocket className="w-4 h-4 text-blue-600" />
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-1">Kickstart Toolkit</h3>
-                  <p className="text-xs text-gray-600 mb-3">
-                    5 AI tools met dagelijkse limieten
-                  </p>
-                  <Button size="sm" variant="outline" className="border-blue-500 text-blue-700 hover:bg-blue-100 w-full">
-                    Ontdek →
-                  </Button>
-                </CardContent>
-              </Card>
+                  <span className="text-xs text-blue-600 font-medium">Kickstart</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 text-sm">Toolkit</h3>
+                <p className="text-xs text-gray-500 mt-1">5 AI tools</p>
+              </button>
 
-              {/* Pro Arsenal - Premium Tier */}
-              <Card
-                className="cursor-pointer overflow-hidden border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-lg transition-all"
+              {/* Pro */}
+              <button
                 onClick={() => router.push('/pro-arsenal')}
+                className="p-4 bg-white rounded-xl border border-pink-200 hover:border-pink-300 hover:shadow-sm transition-all text-left"
               >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                      <Crown className="w-5 h-5 text-white" />
-                    </div>
-                    <Badge className="bg-purple-500 text-white border-0 text-xs">
-                      ⭐ PREMIUM
-                    </Badge>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
+                    <Crown className="w-4 h-4 text-pink-600" />
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-1">Pro Arsenal</h3>
-                  <p className="text-xs text-gray-600 mb-3">
-                    Premium tools + unlimited access
-                  </p>
-                  <Button size="sm" className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white w-full">
-                    Ontdek →
-                  </Button>
-                </CardContent>
-              </Card>
+                  <span className="text-xs text-pink-600 font-medium">Premium</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 text-sm">Pro Arsenal</h3>
+                <p className="text-xs text-gray-500 mt-1">Alle tools</p>
+              </button>
             </div>
           </motion.div>
         )}
 
-        {/* Essentials - Gratis Dating Tools */}
+        {/* Gratis Dating Tools - Minimalist */}
         {!showWelcomeVideo && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: ANIMATION_DELAYS.PROGRAMS + 0.2 }}
           >
-            <Card className="border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <Gift className="w-5 h-5 text-green-600" />
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-900">Gratis Dating Tools</h2>
-                  <Badge className="bg-green-500 text-white border-0 text-xs ml-auto">
-                    🆓 100% GRATIS
-                  </Badge>
+            <div className="bg-white rounded-xl border border-gray-200 p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Gift className="w-5 h-5 text-gray-400" />
+                  <h2 className="font-semibold text-gray-900">Gratis Dating Tools</h2>
                 </div>
-                <p className="text-sm text-gray-600 mb-4">
-                  Deze essential tools zijn 100% gratis en altijd beschikbaar. Perfect om te starten met je dating journey!
-                </p>
+                <span className="text-xs text-green-600 font-medium bg-green-50 px-2 py-1 rounded-full">100% Gratis</span>
+              </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Badges & Achievements */}
-                  <Card
-                    className="cursor-pointer hover:shadow-md transition-all border-0 bg-white"
-                    onClick={() => router.push('/essentials?tab=badges')}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0">
-                          <Trophy className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 mb-1">Badges & Achievements</h3>
-                          <p className="text-xs text-gray-600">Verdien badges en unlock achievements</p>
-                          <Button size="sm" variant="ghost" className="mt-2 p-0 h-auto text-green-600 hover:text-green-700">
-                            Open Tool →
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => router.push('/essentials?tab=badges')}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                    <Trophy className="w-4 h-4 text-amber-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900 text-sm">Badges & Achievements</p>
+                    <p className="text-xs text-pink-500">Open Tool →</p>
+                  </div>
+                </button>
 
-                  {/* Dating Activity Logger */}
-                  <Card
-                    className="cursor-pointer hover:shadow-md transition-all border-0 bg-white"
-                    onClick={() => router.push('/essentials?tab=activity')}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
-                          <TrendingUp className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 mb-1">Dating Activity Logger</h3>
-                          <p className="text-xs text-gray-600">Track je matches, gesprekken en dates</p>
-                          <Button size="sm" variant="ghost" className="mt-2 p-0 h-auto text-green-600 hover:text-green-700">
-                            Open Tool →
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                <button
+                  onClick={() => router.push('/essentials?tab=activity')}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900 text-sm">Dating Activity Logger</p>
+                    <p className="text-xs text-pink-500">Open Tool →</p>
+                  </div>
+                </button>
 
-                  {/* Personal Recommendations */}
-                  <Card
-                    className="cursor-pointer hover:shadow-md transition-all border-0 bg-white"
-                    onClick={() => router.push('/essentials?tab=recommendations')}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
-                          <Sparkles className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 mb-1">Personal Recommendations</h3>
-                          <p className="text-xs text-gray-600">AI-driven aanbevelingen voor jou</p>
-                          <Button size="sm" variant="ghost" className="mt-2 p-0 h-auto text-green-600 hover:text-green-700">
-                            Open Tool →
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                <button
+                  onClick={() => router.push('/essentials?tab=recommendations')}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-pink-50 flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-4 h-4 text-pink-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900 text-sm">Personal Recommendations</p>
+                    <p className="text-xs text-pink-500">Open Tool →</p>
+                  </div>
+                </button>
 
-                  {/* Stats & Voortgang */}
-                  <Card
-                    className="cursor-pointer hover:shadow-md transition-all border-0 bg-white"
-                    onClick={() => router.push('/essentials?tab=stats')}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center flex-shrink-0">
-                          <BarChart3 className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 mb-1">Stats & Voortgang</h3>
-                          <p className="text-xs text-gray-600">Overzicht van je complete journey</p>
-                          <Button size="sm" variant="ghost" className="mt-2 p-0 h-auto text-green-600 hover:text-green-700">
-                            Open Tool →
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CardContent>
-            </Card>
+                <button
+                  onClick={() => router.push('/essentials?tab=stats')}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
+                    <BarChart3 className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900 text-sm">Stats & Voortgang</p>
+                    <p className="text-xs text-pink-500">Open Tool →</p>
+                  </div>
+                </button>
+              </div>
+            </div>
           </motion.div>
         )}
 

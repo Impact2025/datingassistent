@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import { JourneyTimeline } from '../journey/journey-timeline';
 import { AchievementShowcase } from '../achievements/achievement-showcase';
 import { KickstartDashboard } from '../kickstart/KickstartDashboard';
+import { TransformatieDashboardView } from '../transformatie/TransformatieDashboardView';
 
 interface EnrolledProgram {
   program_id: number;
@@ -58,7 +59,7 @@ interface JourneyPhase {
   estimatedTime: string;
 }
 
-type ViewMode = 'programs' | 'kickstart' | 'journey';
+type ViewMode = 'programs' | 'kickstart' | 'transformatie' | 'journey';
 
 export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
   const router = useRouter();
@@ -68,6 +69,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
   const [enrolledPrograms, setEnrolledPrograms] = useState<EnrolledProgram[]>([]);
   const [viewMode, setViewMode] = useState<ViewMode>('programs');
   const [hasKickstart, setHasKickstart] = useState(false);
+  const [hasTransformatie, setHasTransformatie] = useState(false);
 
   // Fetch enrolled programs
   useEffect(() => {
@@ -79,14 +81,24 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
           if (data.success && data.programs) {
             setEnrolledPrograms(data.programs);
 
-            // Check if user has Kickstart
-            const kickstart = data.programs.find(
-              (p: EnrolledProgram) => p.program_slug === 'kickstart'
+            // Check if user has Transformatie (prioriteit boven Kickstart)
+            const transformatie = data.programs.find(
+              (p: EnrolledProgram) => p.program_slug === 'transformatie'
             );
-            if (kickstart) {
-              setHasKickstart(true);
-              // Auto-show Kickstart if user has it
-              setViewMode('kickstart');
+            if (transformatie) {
+              setHasTransformatie(true);
+              // Auto-show Transformatie als gebruiker het heeft
+              setViewMode('transformatie');
+            } else {
+              // Check if user has Kickstart
+              const kickstart = data.programs.find(
+                (p: EnrolledProgram) => p.program_slug === 'kickstart'
+              );
+              if (kickstart) {
+                setHasKickstart(true);
+                // Auto-show Kickstart if user has it
+                setViewMode('kickstart');
+              }
             }
           }
         }
@@ -249,6 +261,41 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
     );
   }
 
+  // Show Transformatie when in transformatie mode - premium cursus ervaring
+  if (viewMode === 'transformatie' && hasTransformatie) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white p-4 lg:p-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Quick navigation header */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-md">
+                <span className="text-white font-bold text-lg">T</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-semibold text-gray-900">Transformatie</h1>
+                <p className="text-sm text-gray-500">12 modules • DESIGN → ACTION → SURRENDER</p>
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setViewMode('journey')}
+              className="border-gray-200 text-gray-700 hover:bg-gray-50"
+            >
+              ← Overzicht
+            </Button>
+          </div>
+
+          {/* TransformatieDashboardView embedded */}
+          <div className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-xl border border-white/20">
+            <TransformatieDashboardView onBack={() => setViewMode('journey')} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Show Kickstart when in kickstart mode - clean minimalist design within dashboard
   if (viewMode === 'kickstart' && hasKickstart && userId) {
     return <KickstartDashboard onBack={() => setViewMode('journey')} />;
@@ -271,18 +318,31 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
             Volg je voortgang door 5 fases: van zelfkennis tot betekenisvolle relaties
           </p>
 
-          {/* View Switcher when user has Kickstart */}
-          {hasKickstart && (
+          {/* View Switcher when user has premium programs */}
+          {(hasTransformatie || hasKickstart) && (
             <div className="flex justify-center gap-2">
-              <Button
-                variant="default"
-                size="sm"
-                onClick={() => setViewMode('kickstart')}
-                className="bg-gradient-to-r from-pink-500 to-pink-600"
-              >
-                <Rocket className="w-4 h-4 mr-2" />
-                Ga naar Kickstart
-              </Button>
+              {hasTransformatie && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => setViewMode('transformatie')}
+                  className="bg-gradient-to-r from-pink-500 to-rose-500"
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Ga naar Transformatie
+                </Button>
+              )}
+              {hasKickstart && !hasTransformatie && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => setViewMode('kickstart')}
+                  className="bg-gradient-to-r from-pink-500 to-pink-600"
+                >
+                  <Rocket className="w-4 h-4 mr-2" />
+                  Ga naar Kickstart
+                </Button>
+              )}
             </div>
           )}
 

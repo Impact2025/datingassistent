@@ -33,46 +33,31 @@ interface ScanCardProps {
   onRetake?: () => void;
 }
 
+// Minimalist color styles
 const colorStyles = {
   pink: {
-    gradient: 'from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30',
-    border: 'border-pink-200 dark:border-pink-700',
-    iconBg: 'bg-pink-100 dark:bg-pink-900/50',
-    iconText: 'text-pink-600 dark:text-pink-400',
-    titleText: 'text-pink-600 dark:text-pink-400',
-    quoteText: 'text-pink-700 dark:text-pink-400',
-    badge: 'bg-pink-500 dark:bg-pink-600',
-    button: 'from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700'
+    iconBg: 'bg-pink-50',
+    iconText: 'text-pink-600',
+    badge: 'bg-pink-500',
+    button: 'bg-pink-500 hover:bg-pink-600'
   },
   purple: {
-    gradient: 'from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30',
-    border: 'border-purple-200 dark:border-purple-700',
-    iconBg: 'bg-purple-100 dark:bg-purple-900/50',
-    iconText: 'text-purple-600 dark:text-purple-400',
-    titleText: 'text-purple-600 dark:text-purple-400',
-    quoteText: 'text-purple-700 dark:text-purple-400',
-    badge: 'bg-purple-500 dark:bg-purple-600',
-    button: 'from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700'
+    iconBg: 'bg-purple-50',
+    iconText: 'text-purple-600',
+    badge: 'bg-purple-500',
+    button: 'bg-purple-500 hover:bg-purple-600'
   },
   blue: {
-    gradient: 'from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30',
-    border: 'border-blue-200 dark:border-blue-700',
-    iconBg: 'bg-blue-100 dark:bg-blue-900/50',
-    iconText: 'text-blue-600 dark:text-blue-400',
-    titleText: 'text-blue-600 dark:text-blue-400',
-    quoteText: 'text-blue-700 dark:text-blue-400',
-    badge: 'bg-blue-500 dark:bg-blue-600',
-    button: 'from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
+    iconBg: 'bg-blue-50',
+    iconText: 'text-blue-600',
+    badge: 'bg-blue-500',
+    button: 'bg-blue-500 hover:bg-blue-600'
   },
   green: {
-    gradient: 'from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30',
-    border: 'border-green-200 dark:border-green-700',
-    iconBg: 'bg-green-100 dark:bg-green-900/50',
-    iconText: 'text-green-600 dark:text-green-400',
-    titleText: 'text-green-600 dark:text-green-400',
-    quoteText: 'text-green-700 dark:text-green-400',
-    badge: 'bg-green-500 dark:bg-green-600',
-    button: 'from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
+    iconBg: 'bg-green-50',
+    iconText: 'text-green-600',
+    badge: 'bg-green-500',
+    button: 'bg-green-500 hover:bg-green-600'
   }
 };
 
@@ -113,130 +98,103 @@ export function ScanCard({
   };
 
   return (
-    <Card className={`border-2 ${styles.border} bg-gradient-to-r ${styles.gradient} shadow-md`}>
-      <CardContent className="p-4 sm:p-6">
-        {/* Mobile: Stack layout, Desktop: Side-by-side */}
-        <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
-          {/* Icon - smaller on mobile */}
-          <div className="flex-shrink-0 flex items-center gap-3 sm:block">
-            <div className={`w-10 h-10 sm:w-12 sm:h-12 ${styles.iconBg} rounded-full flex items-center justify-center`}>
-              <div className={styles.iconText}>
-                {icon}
-              </div>
-            </div>
-            {/* Title on same line as icon on mobile */}
-            <div className="sm:hidden flex-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className={`font-semibold text-base ${styles.titleText}`}>{title}</h3>
-                {!completionStatus && (
-                  <span className={`px-3 py-1 ${styles.badge} text-white text-xs rounded-full shadow-md whitespace-nowrap font-medium`}>
-                    {badgeText}
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 min-w-0">
-            {/* Title - hidden on mobile (shown above) */}
-            <div className="hidden sm:flex items-center gap-2 mb-2 flex-wrap">
-              <h3 className={`font-semibold text-lg ${styles.titleText}`}>{title}</h3>
-              {!completionStatus && (
-                <span className={`px-3 py-1 ${styles.badge} text-white text-xs rounded-full shadow-md font-medium`}>
-                  {badgeText}
-                </span>
-              )}
-            </div>
-
-            {/* Completion Status Badge */}
-            {completionStatus && (
-              <div className="mb-2">
-                <ScanStatusBadge
-                  status={getScanStatus()}
-                  completedAt={completionStatus.completedAt}
-                  daysUntilRetake={completionStatus.daysUntilRetake}
-                  totalAttempts={completionStatus.totalAttempts}
-                />
-              </div>
-            )}
-
-            {/* Latest Result (if completed) */}
-            {completionStatus?.isCompleted && completionStatus.latestResult && (
-              <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
-                Laatste resultaat: {completionStatus.latestResult}
-              </p>
-            )}
-
-            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">{subtitle}</p>
-            <p className={`text-xs sm:text-sm ${styles.quoteText} italic mb-4`}>"{quote}"</p>
-
-            {/* Buttons - stack on mobile */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-              {/* Primary action button */}
-              {completionStatus?.isCompleted ? (
-                <>
-                  {/* View Results Button */}
-                  {onViewResults && (
-                    <Button
-                      onClick={onViewResults}
-                      variant="outline"
-                      size="sm"
-                      className="gap-2 px-6 py-2 rounded-full w-full sm:w-auto justify-center"
-                    >
-                      <Eye className="w-4 h-4" />
-                      Bekijk Resultaten
-                    </Button>
-                  )}
-
-                  {/* Retake Button (if available) */}
-                  {completionStatus.canRetake && onRetake && (
-                    <Button
-                      onClick={onRetake}
-                      size="sm"
-                      className={`gap-2 px-6 py-2 bg-gradient-to-r ${styles.button} text-white rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center`}
-                    >
-                      Retake Scan
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  )}
-
-                  {/* Locked message (if in cooldown) */}
-                  {!completionStatus.canRetake && completionStatus.daysUntilRetake && (
-                    <div className="text-xs text-gray-700 dark:text-gray-400 text-center sm:text-left">
-                      Retake beschikbaar over {completionStatus.daysUntilRetake} dagen
-                    </div>
-                  )}
-                </>
-              ) : (
-                <>
-                  {/* Start Scan Button */}
-                  <Button
-                    onClick={onAction}
-                    size="sm"
-                    className={`gap-2 px-6 py-2 bg-gradient-to-r ${styles.button} text-white rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center`}
-                  >
-                    {actionLabel}
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-
-                  {onDismiss && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleDismiss}
-                      className="text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-xs sm:text-sm"
-                    >
-                      <X className="w-4 h-4 mr-1" />
-                      Vandaag overslaan
-                    </Button>
-                  )}
-                </>
-              )}
-            </div>
+    <div className="bg-white rounded-xl border border-gray-200 p-5">
+      <div className="flex items-start gap-4">
+        {/* Icon */}
+        <div className={`w-10 h-10 ${styles.iconBg} rounded-xl flex items-center justify-center flex-shrink-0`}>
+          <div className={styles.iconText}>
+            {icon}
           </div>
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-semibold text-gray-900">{title}</h3>
+            {!completionStatus && (
+              <span className={`px-2 py-0.5 ${styles.badge} text-white text-xs rounded-full`}>
+                {badgeText}
+              </span>
+            )}
+          </div>
+
+          {/* Completion Status Badge */}
+          {completionStatus && (
+            <div className="mb-2">
+              <ScanStatusBadge
+                status={getScanStatus()}
+                completedAt={completionStatus.completedAt}
+                daysUntilRetake={completionStatus.daysUntilRetake}
+                totalAttempts={completionStatus.totalAttempts}
+              />
+            </div>
+          )}
+
+          {/* Latest Result */}
+          {completionStatus?.isCompleted && completionStatus.latestResult && (
+            <p className="text-sm font-medium text-gray-900 mb-2">
+              Laatste resultaat: {completionStatus.latestResult}
+            </p>
+          )}
+
+          <p className="text-sm text-gray-600 mb-1">{subtitle}</p>
+          <p className="text-xs text-gray-400 italic mb-3">"{quote}"</p>
+
+          {/* Buttons */}
+          <div className="flex items-center gap-2">
+            {completionStatus?.isCompleted ? (
+              <>
+                {onViewResults && (
+                  <Button
+                    onClick={onViewResults}
+                    variant="outline"
+                    size="sm"
+                    className="gap-1 rounded-full text-xs"
+                  >
+                    <Eye className="w-3 h-3" />
+                    Bekijk Resultaten
+                  </Button>
+                )}
+                {completionStatus.canRetake && onRetake && (
+                  <Button
+                    onClick={onRetake}
+                    size="sm"
+                    className={`gap-1 ${styles.button} text-white rounded-full text-xs`}
+                  >
+                    Retake Scan
+                    <ArrowRight className="w-3 h-3" />
+                  </Button>
+                )}
+                {!completionStatus.canRetake && completionStatus.daysUntilRetake && (
+                  <span className="text-xs text-gray-400">
+                    Retake over {completionStatus.daysUntilRetake} dagen
+                  </span>
+                )}
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={onAction}
+                  size="sm"
+                  className={`gap-1 ${styles.button} text-white rounded-full text-xs`}
+                >
+                  {actionLabel}
+                  <ArrowRight className="w-3 h-3" />
+                </Button>
+                {onDismiss && (
+                  <button
+                    onClick={handleDismiss}
+                    className="text-xs text-gray-400 hover:text-gray-600"
+                  >
+                    <X className="w-3 h-3 inline mr-1" />
+                    Vandaag overslaan
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

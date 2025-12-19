@@ -14,6 +14,9 @@ import { AIContextNotifications } from '@/components/shared/ai-context-notificat
 import { SocialMediaLinks } from '@/components/shared/social-media-links';
 import { Loader2 } from 'lucide-react';
 
+// World-class: React Query hooks for cached enrollment status
+import { useEnrollmentStatus } from '@/hooks/use-enrollment-status';
+
 // Import centralized onboarding system
 import { useJourneyState } from '@/hooks/use-journey-state';
 
@@ -156,6 +159,11 @@ const YearlyReview = dynamicImport(() => import('@/components/engagement/yearly-
   ssr: false
 });
 
+const WaardenKompasTool = dynamicImport(() => import('@/components/waarden-kompas/WaardenKompasTool').then(mod => ({ default: mod.WaardenKompasTool })), {
+  loading: () => <DashboardSkeleton />,
+  ssr: false
+});
+
 const DatingActivityLogger = dynamicImport(() => import('@/components/engagement/dating-activity-logger').then(mod => ({ default: mod.DatingActivityLogger })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
@@ -190,35 +198,36 @@ function DashboardPageContent() {
   const { shouldShowInvite, dismissInvite } = useProactiveInvite();
   const [irisInviteVisible, setIrisInviteVisible] = useState(false);
 
-  // Wereldklasse loading management voor Kickstart enrollment check
-  // IMPORTANT: Must be declared before any useEffect that uses it
-  const [kickstartState, setKickstartState] = useState<{
-    isChecking: boolean;
-    hasEnrollment: boolean | null;
-    needsOnboarding: boolean;
-    showDayZero: boolean; // Show dag-0 experience after intake
-    checkComplete: boolean;
-  }>({
-    isChecking: false,
-    hasEnrollment: null,
-    needsOnboarding: false,
-    showDayZero: false,
-    checkComplete: false,
-  });
+  // ============================================
+  // WORLD-CLASS: React Query cached enrollment status
+  // Single API call replaces 2 separate enrollment checks
+  // 30s cache with stale-while-revalidate
+  // ============================================
+  const {
+    data: enrollmentData,
+    isLoading: enrollmentLoading,
+    isError: enrollmentError,
+  } = useEnrollmentStatus({ enabled: !loading && !!user });
+
+  // Derive kickstart state from React Query data
+  const kickstartState = useMemo(() => ({
+    isChecking: enrollmentLoading,
+    hasEnrollment: enrollmentData?.kickstart?.isEnrolled ?? null,
+    needsOnboarding: enrollmentData?.kickstart?.needsOnboarding ?? false,
+    showDayZero: enrollmentData?.kickstart?.needsDayZero ?? false,
+    checkComplete: !enrollmentLoading && !enrollmentError,
+  }), [enrollmentData, enrollmentLoading, enrollmentError]);
+
   const [kickstartOnboardingSaving, setKickstartOnboardingSaving] = useState(false);
 
-  // Wereldklasse loading management voor Transformatie enrollment check
-  const [transformatieState, setTransformatieState] = useState<{
-    isChecking: boolean;
-    hasEnrollment: boolean | null;
-    needsOnboarding: boolean;
-    checkComplete: boolean;
-  }>({
-    isChecking: false,
-    hasEnrollment: null,
-    needsOnboarding: false,
-    checkComplete: false,
-  });
+  // Derive transformatie state from React Query data
+  const transformatieState = useMemo(() => ({
+    isChecking: enrollmentLoading,
+    hasEnrollment: enrollmentData?.transformatie?.isEnrolled ?? null,
+    needsOnboarding: enrollmentData?.transformatie?.needsOnboarding ?? false,
+    checkComplete: !enrollmentLoading && !enrollmentError,
+  }), [enrollmentData, enrollmentLoading, enrollmentError]);
+
   const [transformatieOnboardingSaving, setTransformatieOnboardingSaving] = useState(false);
 
   // Wrapper for setActiveTab that includes GA4 tracking - memoized for stable reference
@@ -265,7 +274,7 @@ function DashboardPageContent() {
   // This effect runs whenever searchParams changes (Next.js App Router reactive hook)
   useEffect(() => {
     const tabParam = searchParams?.get('tab');
-    if (tabParam && ['subscription', 'settings', 'data-management', 'home', 'pad', 'coach', 'profiel', 'tools'].includes(tabParam)) {
+    if (tabParam && ['subscription', 'settings', 'data-management', 'home', 'pad', 'coach', 'profiel', 'tools', 'waarden-kompas'].includes(tabParam)) {
       setActiveTab(tabParam);
     } else if (!tabParam && pathname === '/dashboard') {
       // If on /dashboard without tab param, default to 'home' for new nav
@@ -306,144 +315,48 @@ function DashboardPageContent() {
   const forceAccess = searchParams?.get('force') === 'true';
 
   // ============================================
-  // OPTIMIZED: Combined parallel API calls for admin + kickstart + transformatie check
-  // This reduces initial load time by ~1-2 seconds
+  // WORLD-CLASS: Minimal admin check only
+  // Enrollment checks now handled by React Query with caching
   // ============================================
   useEffect(() => {
-    const performParallelChecks = async () => {
-      // Wait until user is loaded
-      if (!user?.id || loading) {
-        return;
-      }
-
-      // Prevent double-checking (check both states)
-      if (kickstartState.checkComplete && transformatieState.checkComplete) {
-        return;
-      }
-
-      debugLog.info('Starting PARALLEL checks for user:', user.id);
-
-      // Set checking state IMMEDIATELY before any async work
-      setKickstartState(prev => ({ ...prev, isChecking: true }));
-      setTransformatieState(prev => ({ ...prev, isChecking: true }));
-
-      const token = localStorage.getItem('datespark_auth_token');
-      const headers = { 'Authorization': `Bearer ${token}` };
+    const checkAdminStatus = async () => {
+      if (!user?.id || loading) return;
 
       try {
-        // PARALLEL API CALLS - all run simultaneously
-        const [adminResponse, kickstartResponse, transformatieResponse] = await Promise.all([
-          fetch('/api/auth/check-admin', { headers }).catch(() => null),
-          fetch('/api/kickstart/check-enrollment', { headers }).catch(() => null),
-          fetch('/api/transformatie/check-enrollment', { headers }).catch(() => null),
-        ]);
+        const token = localStorage.getItem('datespark_auth_token');
+        const response = await fetch('/api/auth/check-admin', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
 
-        // Process admin check result
-        let adminStatus = false;
-        if (adminResponse?.ok) {
-          const adminData = await adminResponse.json();
-          adminStatus = adminData.isAdmin === true;
-        }
-        setIsAdminUser(adminStatus);
+        if (response.ok) {
+          const data = await response.json();
+          const adminStatus = data.isAdmin === true;
+          setIsAdminUser(adminStatus);
 
-        // Process kickstart enrollment result
-        if (kickstartResponse?.ok) {
-          const data = await kickstartResponse.json();
-          debugLog.success('Kickstart enrollment check result:', data);
-
-          const hasEnrollment = data.hasEnrollment === true;
-          const needsOnboarding = hasEnrollment && !data.hasOnboardingData;
-          // Show dag-0 if user completed intake but hasn't done dag-0 yet
-          const needsDayZero = hasEnrollment && data.hasOnboardingData && !data.dayZeroCompleted;
-
-          if (needsOnboarding) {
-            debugLog.action('User needs Kickstart onboarding - will show onboarding flow');
-          } else if (needsDayZero) {
-            debugLog.action('User needs Day Zero - will show dag-0 experience');
-          } else if (hasEnrollment) {
-            debugLog.success('User has completed Kickstart enrollment and dag-0');
-          } else {
-            debugLog.info('User does not have Kickstart enrollment');
+          // Redirect admin without profile to admin panel
+          if (adminStatus && !userProfile) {
+            debugLog.navigate('Dashboard - Admin user detected without profile, redirecting to /admin');
+            router.push('/admin');
           }
-
-          // Update all state in one atomic operation
-          setKickstartState({
-            isChecking: false,
-            hasEnrollment,
-            needsOnboarding,
-            showDayZero: needsDayZero,
-            checkComplete: true,
-          });
-        } else {
-          debugLog.warn('Failed to check Kickstart enrollment');
-          setKickstartState({
-            isChecking: false,
-            hasEnrollment: false,
-            needsOnboarding: false,
-            showDayZero: false,
-            checkComplete: true,
-          });
         }
-
-        // Process Transformatie enrollment result
-        if (transformatieResponse?.ok) {
-          const data = await transformatieResponse.json();
-          debugLog.success('Transformatie enrollment check result:', data);
-
-          const hasEnrollment = data.isEnrolled === true;
-          const needsOnboarding = hasEnrollment && !data.hasOnboardingData;
-
-          if (needsOnboarding) {
-            debugLog.action('User needs Transformatie onboarding - will show onboarding flow');
-          } else if (hasEnrollment) {
-            debugLog.success('User has completed Transformatie enrollment and onboarding');
-          } else {
-            debugLog.info('User does not have Transformatie enrollment');
-          }
-
-          // Update all state in one atomic operation
-          setTransformatieState({
-            isChecking: false,
-            hasEnrollment,
-            needsOnboarding,
-            checkComplete: true,
-          });
-        } else {
-          debugLog.warn('Failed to check Transformatie enrollment');
-          setTransformatieState({
-            isChecking: false,
-            hasEnrollment: false,
-            needsOnboarding: false,
-            checkComplete: true,
-          });
-        }
-
-        // Handle admin redirect after all checks complete
-        if (adminStatus && !userProfile) {
-          debugLog.navigate('Dashboard - Admin user detected without profile, redirecting to /admin');
-          router.push('/admin');
-        }
-
       } catch (error) {
-        debugLog.error('Error in parallel checks:', error);
-        setKickstartState({
-          isChecking: false,
-          hasEnrollment: false,
-          needsOnboarding: false,
-          showDayZero: false,
-          checkComplete: true,
-        });
-        setTransformatieState({
-          isChecking: false,
-          hasEnrollment: false,
-          needsOnboarding: false,
-          checkComplete: true,
-        });
+        debugLog.error('Admin check error:', error);
       }
     };
 
-    performParallelChecks();
-  }, [user?.id, loading, kickstartState.checkComplete, transformatieState.checkComplete, userProfile, router]);
+    checkAdminStatus();
+  }, [user?.id, loading, userProfile, router]);
+
+  // Log enrollment status from React Query (for debugging)
+  useEffect(() => {
+    if (enrollmentData && !enrollmentLoading) {
+      debugLog.success('Enrollment status (cached):', {
+        kickstart: enrollmentData.kickstart,
+        transformatie: enrollmentData.transformatie,
+        responseTime: enrollmentData._meta?.duration,
+      });
+    }
+  }, [enrollmentData, enrollmentLoading]);
 
   // Check for Monday dating week notifications
   useEffect(() => {
@@ -694,6 +607,8 @@ function DashboardPageContent() {
         return <BadgesShowcase userId={user?.id || 0} />;
       case 'dating-activity':
         return <DatingActivityLogger userId={user?.id || 0} />;
+      case 'waarden-kompas':
+        return <WaardenKompasTool />;
       default:
         return <DashboardTab onTabChange={handleTabChange} />;
     }

@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect, Suspense, useCallback } from 'react';
+import { useState, useEffect, Suspense, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, Settings, LogOut, CreditCard, Sun, Moon } from 'lucide-react';
 import Image from 'next/image';
@@ -15,16 +15,21 @@ import { useTheme } from '@/providers/theme-provider';
 import { Logo } from '@/components/shared/logo';
 import { TierBadge } from '@/components/ui/locked-feature';
 import { useAccessControl } from '@/hooks/use-access-control';
+import { useTransformatieEnrollment } from '@/hooks/use-enrollment-status';
 
 function TransformatieContent() {
   const router = useRouter();
   const { user, userProfile, logout } = useUser();
   const { theme, setTheme, actualTheme, mounted } = useTheme();
   const { userTier, isLoading: tierLoading } = useAccessControl();
-  const [loading, setLoading] = useState(true);
-  const [enrolled, setEnrolled] = useState(false);
-  const [needsOnboarding, setNeedsOnboarding] = useState(false);
   const [savingOnboarding, setSavingOnboarding] = useState(false);
+
+  // OPTIMIZED: Use cached enrollment status from React Query
+  const { data: transformatieData, isLoading: enrollmentLoading, isEnrolled, needsOnboarding } = useTransformatieEnrollment();
+
+  // Derive loading and enrolled states
+  const loading = enrollmentLoading;
+  const enrolled = isEnrolled;
 
   const toggleTheme = () => {
     if (theme === 'light') {
@@ -36,33 +41,12 @@ function TransformatieContent() {
     }
   };
 
+  // Redirect to dashboard if not enrolled
   useEffect(() => {
-    async function checkEnrollment() {
-      try {
-        // Check enrollment status
-        const response = await fetch('/api/transformatie/check-enrollment');
-        if (response.ok) {
-          const data = await response.json();
-
-          if (data.isEnrolled) {
-            setEnrolled(true);
-            // Check if onboarding is needed
-            setNeedsOnboarding(!data.hasOnboardingData);
-          } else {
-            // Not enrolled - redirect to sales page or dashboard
-            router.push('/dashboard');
-            return;
-          }
-        }
-      } catch (err) {
-        console.error('Error checking enrollment:', err);
-      } finally {
-        setLoading(false);
-      }
+    if (!enrollmentLoading && !isEnrolled) {
+      router.push('/dashboard');
     }
-
-    checkEnrollment();
-  }, [router]);
+  }, [enrollmentLoading, isEnrolled, router]);
 
   // Handle onboarding completion
   const handleOnboardingComplete = useCallback(async (data: any) => {

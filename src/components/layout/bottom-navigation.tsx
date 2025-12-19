@@ -3,6 +3,8 @@
 /**
  * BottomNavigation - World-class context-aware mobile navigation
  * Dynamically shows relevant program tab based on user enrollments
+ *
+ * OPTIMIZED: Uses React Query cached enrollment status
  */
 
 import Link from 'next/link';
@@ -10,7 +12,8 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { MessageCircle, User, Sparkles, LayoutGrid, Heart } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
+import { useEnrollmentStatus } from '@/hooks/use-enrollment-status';
 
 // Haptic feedback utility
 const triggerHapticFeedback = () => {
@@ -22,13 +25,6 @@ const triggerHapticFeedback = () => {
   }
 };
 
-// Types for enrollment state
-interface EnrollmentState {
-  hasKickstart: boolean;
-  hasTransformatie: boolean;
-  isLoading: boolean;
-}
-
 export function BottomNavigation() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -36,55 +32,15 @@ export function BottomNavigation() {
   // Get current tab from URL params
   const currentTab = searchParams?.get('tab') || null;
 
-  // Track enrollment state for context-aware navigation
-  const [enrollments, setEnrollments] = useState<EnrollmentState>({
-    hasKickstart: false,
-    hasTransformatie: false,
-    isLoading: true,
-  });
+  // OPTIMIZED: Use cached enrollment status from React Query
+  const { data: enrollmentData, isLoading } = useEnrollmentStatus();
 
-  // Check enrollments on mount
-  useEffect(() => {
-    const checkEnrollments = async () => {
-      const token = typeof window !== 'undefined'
-        ? localStorage.getItem('datespark_auth_token')
-        : null;
-
-      if (!token) {
-        setEnrollments({ hasKickstart: false, hasTransformatie: false, isLoading: false });
-        return;
-      }
-
-      const headers = { 'Authorization': `Bearer ${token}` };
-
-      try {
-        // Check both enrollments in parallel
-        const [kickstartRes, transformatieRes] = await Promise.all([
-          fetch('/api/kickstart/check-enrollment', { headers }).catch(() => null),
-          fetch('/api/transformatie/check-enrollment', { headers }).catch(() => null),
-        ]);
-
-        let hasKickstart = false;
-        let hasTransformatie = false;
-
-        if (kickstartRes?.ok) {
-          const data = await kickstartRes.json();
-          hasKickstart = data.hasEnrollment === true;
-        }
-
-        if (transformatieRes?.ok) {
-          const data = await transformatieRes.json();
-          hasTransformatie = data.isEnrolled === true;
-        }
-
-        setEnrollments({ hasKickstart, hasTransformatie, isLoading: false });
-      } catch {
-        setEnrollments({ hasKickstart: false, hasTransformatie: false, isLoading: false });
-      }
-    };
-
-    checkEnrollments();
-  }, []);
+  // Derive enrollment state from cached data
+  const enrollments = useMemo(() => ({
+    hasKickstart: enrollmentData?.kickstart?.isEnrolled ?? false,
+    hasTransformatie: enrollmentData?.transformatie?.isEnrolled ?? false,
+    isLoading,
+  }), [enrollmentData, isLoading]);
 
   // Determine which program tab to show based on:
   // 1. Current page (if on /transformatie, show Transformatie)
