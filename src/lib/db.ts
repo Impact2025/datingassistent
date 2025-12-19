@@ -1,8 +1,11 @@
-import { sql } from '@vercel/postgres';
+import { sql as vercelSql } from '@vercel/postgres';
+
+// Re-export sql for direct use in API routes
+export const sql = vercelSql;
 
 // Database connection configuration
 export const db = {
-  query: sql,
+  query: vercelSql,
 };
 
 // Helper function to execute queries with error handling

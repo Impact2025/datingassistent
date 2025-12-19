@@ -6,6 +6,7 @@ import { useState, useEffect, Suspense, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, Settings, LogOut, CreditCard, Sun, Moon } from 'lucide-react';
 import Image from 'next/image';
+import { useQueryClient } from '@tanstack/react-query';
 import { TransformatieDashboardView } from '@/components/transformatie/TransformatieDashboardView';
 import { TransformatieOnboardingFlow } from '@/components/transformatie/TransformatieOnboardingFlow';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
@@ -19,6 +20,7 @@ import { useTransformatieEnrollment } from '@/hooks/use-enrollment-status';
 
 function TransformatieContent() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { user, userProfile, logout } = useUser();
   const { theme, setTheme, actualTheme, mounted } = useTheme();
   const { userTier, isLoading: tierLoading } = useAccessControl();
@@ -60,7 +62,8 @@ function TransformatieContent() {
 
       if (response.ok) {
         console.log('✅ Onboarding saved successfully');
-        setNeedsOnboarding(false);
+        // Invalidate enrollment cache to refetch updated onboarding status
+        queryClient.invalidateQueries({ queryKey: ['enrollment-status'] });
       } else {
         console.error('Failed to save onboarding');
       }
@@ -69,7 +72,7 @@ function TransformatieContent() {
     } finally {
       setSavingOnboarding(false);
     }
-  }, []);
+  }, [queryClient]);
 
   if (loading) {
     return (
