@@ -2,14 +2,18 @@
 
 /**
  * BottomNavigation - World-class context-aware mobile navigation
- * Dynamically shows relevant program tab based on user enrollments
+ *
+ * LOGIC PRIORITY (highest tier first):
+ * 1. Transformatie enrolled → Show "Mijn Reis" (premium program)
+ * 2. Kickstart enrolled → Show "Kickstart" (starter program)
+ * 3. No enrollment → Show "Ontdek" (discovery)
  *
  * OPTIMIZED: Uses React Query cached enrollment status
  */
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { MessageCircle, User, Sparkles, LayoutGrid, Heart } from 'lucide-react';
+import { MessageCircle, User, Sparkles, LayoutGrid, Heart, Compass } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
@@ -18,9 +22,8 @@ import { useEnrollmentStatus } from '@/hooks/use-enrollment-status';
 // Haptic feedback utility
 const triggerHapticFeedback = () => {
   if (typeof window !== 'undefined' && 'navigator' in window) {
-    // Check for vibration API support
     if ('vibrate' in navigator) {
-      navigator.vibrate(50); // 50ms vibration
+      navigator.vibrate(50);
     }
   }
 };
@@ -42,107 +45,75 @@ export function BottomNavigation() {
     isLoading,
   }), [enrollmentData, isLoading]);
 
-  // Determine which program tab to show based on:
-  // 1. Current page (if on /transformatie, show Transformatie)
-  // 2. Enrollment status (prioritize higher tier)
-  // 3. Default to Kickstart if no enrollment
+  // Current page detection
   const isOnTransformatiePage = pathname?.startsWith('/transformatie');
   const isOnKickstartPage = pathname?.startsWith('/kickstart');
+  const isOnProgramPage = isOnTransformatiePage || isOnKickstartPage;
 
   // Determine the program nav item configuration
+  // PRIORITY: Transformatie (premium) > Kickstart (starter) > Discovery
   const getProgramNavItem = () => {
     const { hasKickstart, hasTransformatie } = enrollments;
 
-    // If currently on Transformatie page and enrolled, show Transformatie
-    if (isOnTransformatiePage && hasTransformatie) {
-      return {
-        href: '/transformatie',
-        icon: Heart,
-        label: 'Reis',
-        active: isOnTransformatiePage,
-        color: 'text-gray-700',
-        activeColor: 'text-pink-500',
-      };
-    }
-
-    // If currently on Kickstart page and enrolled, show Kickstart
-    if (isOnKickstartPage && hasKickstart) {
-      return {
-        href: '/kickstart',
-        icon: Sparkles,
-        label: 'Kickstart',
-        active: isOnKickstartPage,
-        color: 'text-gray-700',
-        activeColor: 'text-rose-500',
-      };
-    }
-
-    // If user has both enrollments - show the one based on current context
-    if (hasKickstart && hasTransformatie) {
-      // If on transformatie pages, show Transformatie
-      if (isOnTransformatiePage) {
-        return {
-          href: '/transformatie',
-          icon: Heart,
-          label: 'Reis',
-          active: isOnTransformatiePage,
-          color: 'text-gray-700',
-          activeColor: 'text-pink-500',
-        };
-      }
-      // Default to Kickstart for users with both (can switch via dashboard)
-      return {
-        href: '/kickstart',
-        icon: Sparkles,
-        label: 'Kickstart',
-        active: isOnKickstartPage,
-        color: 'text-gray-700',
-        activeColor: 'text-rose-500',
-      };
-    }
-
-    // If only Transformatie enrolled
+    // PRIORITY 1: Transformatie enrolled (highest tier)
+    // Always show Transformatie if user has it
     if (hasTransformatie) {
       return {
         href: '/transformatie',
         icon: Heart,
-        label: 'Reis',
+        label: 'Mijn Reis',
         active: isOnTransformatiePage,
-        color: 'text-gray-700',
+        color: 'text-gray-600',
         activeColor: 'text-pink-500',
+        gradient: 'from-pink-500 to-rose-500',
       };
     }
 
-    // Default: Kickstart (for enrolled users or as discovery)
+    // PRIORITY 2: Kickstart enrolled (starter tier)
+    if (hasKickstart) {
+      return {
+        href: '/kickstart',
+        icon: Sparkles,
+        label: 'Kickstart',
+        active: isOnKickstartPage,
+        color: 'text-gray-600',
+        activeColor: 'text-amber-500',
+        gradient: 'from-amber-500 to-orange-500',
+      };
+    }
+
+    // PRIORITY 3: No enrollment - show discovery option
     return {
-      href: '/kickstart',
-      icon: Sparkles,
-      label: 'Kickstart',
-      active: isOnKickstartPage,
-      color: 'text-gray-700',
-      activeColor: 'text-rose-500',
+      href: '/dashboard?tab=pad',
+      icon: Compass,
+      label: 'Ontdek',
+      active: currentTab === 'pad',
+      color: 'text-gray-600',
+      activeColor: 'text-indigo-500',
+      gradient: 'from-indigo-500 to-purple-500',
     };
   };
 
   const programNavItem = getProgramNavItem();
 
+  // World-class navigation items with clear hierarchy
   const navItems = [
     {
       href: '/dashboard',
-      icon: null, // Logo image instead of icon
+      icon: null,
       label: 'Home',
-      active: pathname === '/' || (pathname === '/dashboard' && !currentTab),
-      color: 'text-gray-700',
+      active: pathname === '/' || (pathname === '/dashboard' && !currentTab) || currentTab === 'home',
+      color: 'text-gray-600',
       activeColor: 'text-pink-500',
       isLogo: true,
     },
-    programNavItem, // Dynamic program tab
+    programNavItem, // Dynamic: Mijn Reis / Kickstart / Ontdek
     {
       href: '/dashboard?tab=coach',
       icon: MessageCircle,
       label: 'Coach',
       active: currentTab === 'coach',
-      color: 'text-gray-700',
+      color: 'text-gray-600',
       activeColor: 'text-blue-500',
     },
     {
@@ -150,30 +121,29 @@ export function BottomNavigation() {
       icon: LayoutGrid,
       label: 'Tools',
       active: currentTab === 'tools',
-      color: 'text-gray-700',
-      activeColor: 'text-green-500',
+      color: 'text-gray-600',
+      activeColor: 'text-emerald-500',
     },
     {
       href: '/dashboard?tab=profiel',
       icon: User,
       label: 'Profiel',
-      active: currentTab === 'profiel',
-      color: 'text-gray-700',
-      activeColor: 'text-purple-500',
+      active: currentTab === 'profiel' || currentTab === 'settings' || currentTab === 'subscription',
+      color: 'text-gray-600',
+      activeColor: 'text-violet-500',
     },
   ];
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-lg border-t border-gray-200 md:hidden safe-area-bottom shadow-lg"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-xl border-t border-gray-100 md:hidden safe-area-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
       role="navigation"
       aria-label="Hoofdnavigatie"
     >
-      <div className="flex items-center justify-around px-1 py-2">
+      <div className="flex items-center justify-around px-2 py-1.5">
         {navItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = item.active;
-          // Use index as key since href can be dynamic
           const key = `nav-${index}-${item.label}`;
 
           return (
@@ -184,19 +154,14 @@ export function BottomNavigation() {
               aria-label={`${item.label}${isActive ? ' (huidige pagina)' : ''}`}
               aria-current={isActive ? 'page' : undefined}
               className={cn(
-                "relative flex flex-col items-center justify-center px-3 py-2 rounded-2xl transition-all duration-300 ease-out min-w-[60px] active:scale-95",
+                "relative flex flex-col items-center justify-center px-2 py-1.5 rounded-xl transition-all duration-200 ease-out min-w-[56px] active:scale-95",
                 isActive
-                  ? "bg-gradient-to-t from-pink-50 via-pink-25 to-transparent shadow-sm scale-105"
-                  : "hover:bg-gray-50"
+                  ? "bg-gray-50"
+                  : "hover:bg-gray-50/50"
               )}
             >
-              {/* Active Indicator Background Glow */}
-              {isActive && (
-                <div className="absolute inset-0 bg-pink-100/30 rounded-2xl blur-sm -z-10" />
-              )}
-
               {'isLogo' in item && item.isLogo ? (
-                <div className="w-6 h-6 mb-1 relative">
+                <div className="w-6 h-6 mb-0.5 relative">
                   <Image
                     src="/images/Logo Icon DatingAssistent.png"
                     alt=""
@@ -204,40 +169,37 @@ export function BottomNavigation() {
                     fill
                     className={cn(
                       "object-contain transition-all duration-200",
-                      isActive ? "opacity-100 scale-110" : "opacity-70"
+                      isActive ? "opacity-100" : "opacity-60"
                     )}
                   />
                 </div>
               ) : Icon ? (
-                <div className="relative">
-                  <Icon
-                    className={cn(
-                      "w-6 h-6 mb-1 transition-all duration-200",
-                      isActive ? `${item.activeColor} scale-110` : item.color
-                    )}
-                    aria-hidden="true"
-                  />
-                  {/* Pulse effect for active icon */}
-                  {isActive && (
-                    <div className="absolute inset-0 animate-ping opacity-20" aria-hidden="true">
-                      <Icon className={cn("w-6 h-6", item.activeColor)} aria-hidden="true" />
-                    </div>
+                <Icon
+                  className={cn(
+                    "w-6 h-6 mb-0.5 transition-all duration-200",
+                    isActive ? item.activeColor : item.color
                   )}
-                </div>
+                  strokeWidth={isActive ? 2.5 : 2}
+                  aria-hidden="true"
+                />
               ) : null}
               <span
                 className={cn(
-                  "text-sm font-medium transition-all duration-200",
-                  isActive ? `${item.activeColor} font-semibold` : item.color
+                  "text-[11px] transition-all duration-200",
+                  isActive
+                    ? `${item.activeColor} font-semibold`
+                    : `${item.color} font-medium`
                 )}
-                aria-hidden="true"
               >
                 {item.label}
               </span>
-              {/* Bottom Active Indicator */}
+              {/* Active indicator dot */}
               {isActive && (
                 <div
-                  className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-10 h-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent rounded-full"
+                  className={cn(
+                    "absolute -bottom-0.5 w-1 h-1 rounded-full",
+                    item.activeColor?.replace('text-', 'bg-') || 'bg-pink-500'
+                  )}
                   aria-hidden="true"
                 />
               )}
