@@ -217,6 +217,12 @@ export default function CheckoutPage() {
   const hasBetaDiscount = program.price_beta && program.price_beta < program.price_regular;
   const betaDiscount = hasBetaDiscount ? program.price_regular - (program.price_beta || 0) : 0;
 
+  // Helper function to format price from cents to euros
+  const formatPrice = (cents: number) => {
+    const euros = cents / 100;
+    return euros % 1 === 0 ? euros.toFixed(0) : euros.toFixed(2);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-lg mx-auto px-4 py-12">
@@ -278,23 +284,23 @@ export default function CheckoutPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-gray-600 text-sm">{program.name}</span>
               {hasBetaDiscount ? (
-                <span className="text-gray-400 line-through text-sm">€{program.price_regular}</span>
+                <span className="text-gray-400 line-through text-sm">€{formatPrice(program.price_regular)}</span>
               ) : (
-                <span className="text-gray-900 font-medium">€{program.price_regular}</span>
+                <span className="text-gray-900 font-medium">€{formatPrice(program.price_regular)}</span>
               )}
             </div>
 
             {hasBetaDiscount && (
               <div className="flex items-center justify-between mb-2">
                 <span className="text-green-600 text-sm">Beta korting</span>
-                <span className="text-green-600 font-medium">-€{betaDiscount}</span>
+                <span className="text-green-600 font-medium">-€{formatPrice(betaDiscount)}</span>
               </div>
             )}
 
             {couponData?.valid && (
               <div className="flex items-center justify-between mb-2">
                 <span className="text-green-600 text-sm">Coupon ({couponData.code})</span>
-                <span className="text-green-600 font-medium">-€{couponDiscount}</span>
+                <span className="text-green-600 font-medium">-€{formatPrice(couponDiscount)}</span>
               </div>
             )}
 
@@ -303,7 +309,7 @@ export default function CheckoutPage() {
             <div className="flex items-center justify-between">
               <span className="text-gray-900 font-semibold">Totaal</span>
               <div className="text-right">
-                <span className="text-2xl font-bold text-gray-900">€{finalPrice}</span>
+                <span className="text-2xl font-bold text-gray-900">€{formatPrice(finalPrice)}</span>
                 <span className="text-gray-400 text-sm ml-1">eenmalig</span>
               </div>
             </div>
@@ -388,7 +394,7 @@ export default function CheckoutPage() {
             ) : (
               <>
                 <Lock className="w-4 h-4" />
-                <span>Afrekenen - €{finalPrice}</span>
+                <span>Afrekenen - €{formatPrice(finalPrice)}</span>
               </>
             )}
           </button>
