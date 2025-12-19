@@ -535,11 +535,6 @@ function DashboardPageContent() {
       const result = await response.json();
       debugLog.success('Transformatie onboarding saved successfully:', result);
 
-      // Update state and redirect to Transformatie dashboard
-      setTransformatieState(prev => ({
-        ...prev,
-        needsOnboarding: false,
-      }));
       setTransformatieOnboardingSaving(false);
 
       // Redirect to the Transformatie experience

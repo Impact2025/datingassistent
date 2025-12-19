@@ -9,7 +9,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
-  Sparkles, TrendingUp, CheckCircle2, Zap, ArrowRight, Badge as BadgeIcon, Gift, Rocket, Crown, Trophy, BarChart3
+  Sparkles, TrendingUp, CheckCircle2, Zap, ArrowRight, Badge as BadgeIcon, Gift, Rocket, Crown, Trophy, BarChart3, Heart, Play, BookOpen
 } from 'lucide-react';
 import { PersonalizedWelcome } from './personalized-welcome';
 import { ScanCard } from './scan-card';
@@ -36,6 +36,7 @@ import { ScansSection } from './sections/scans-section';
 
 // Optimized hooks
 import { useScanManager } from '@/hooks/use-scan-manager';
+import { useTransformatieEnrollment } from '@/hooks/use-enrollment-status';
 
 // Constants
 import {
@@ -95,6 +96,101 @@ const SuggestionCard = React.memo(function SuggestionCard({
   );
 });
 
+// World-class Transformatie Hero Card - Premium experience for enrolled users
+const TransformatieHeroCard = React.memo(function TransformatieHeroCard({
+  progress,
+  onClick,
+}: {
+  progress?: { total: number; completed: number; percentage: number };
+  onClick: () => void;
+}) {
+  const completedLessons = progress?.completed || 0;
+  const totalLessons = progress?.total || 48;
+  const percentage = progress?.percentage || 0;
+  const currentModule = Math.floor(completedLessons / 4) + 1;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+    >
+      <div
+        onClick={onClick}
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500 via-rose-500 to-pink-600 p-5 cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
+      >
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl transform translate-x-10 -translate-y-10" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-white rounded-full blur-2xl transform -translate-x-10 translate-y-10" />
+        </div>
+
+        <div className="relative z-10">
+          {/* Header */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Heart className="w-6 h-6 text-white" fill="white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white">Mijn Transformatie</h3>
+                <p className="text-sm text-white/80">Je reis naar duurzame liefde</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
+              <Play className="w-4 h-4 text-white" fill="white" />
+              <span className="text-sm font-semibold text-white">Verder</span>
+            </div>
+          </div>
+
+          {/* Progress Section */}
+          <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 mb-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-white/90">
+                Module {Math.min(currentModule, 12)} van 12
+              </span>
+              <span className="text-sm font-bold text-white">
+                {percentage}% voltooid
+              </span>
+            </div>
+            <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-white rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${percentage}%` }}
+                transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+              />
+            </div>
+            <div className="flex items-center justify-between mt-2 text-xs text-white/70">
+              <span>{completedLessons} van {totalLessons} lessen</span>
+              <span className="flex items-center gap-1">
+                <BookOpen className="w-3 h-3" />
+                Video lessen
+              </span>
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-3 gap-2">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2.5 text-center">
+              <div className="text-lg font-bold text-white">{Math.min(currentModule, 12)}</div>
+              <div className="text-[10px] text-white/70 uppercase tracking-wide">Huidige Module</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2.5 text-center">
+              <div className="text-lg font-bold text-white">{completedLessons}</div>
+              <div className="text-[10px] text-white/70 uppercase tracking-wide">Lessen Klaar</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-2.5 text-center">
+              <div className="text-lg font-bold text-white">{48 - completedLessons}</div>
+              <div className="text-[10px] text-white/70 uppercase tracking-wide">Te Gaan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+});
+
 export const SmartHomeTab = React.memo(function SmartHomeTab({
   onTabChange,
   userId,
@@ -114,6 +210,14 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
     closeScan,
     handleActionClick,
   } = useScanManager(userId);
+
+  // World-class: Transformatie enrollment status
+  const { isEnrolled: hasTransformatie, progress: transformatieProgress } = useTransformatieEnrollment();
+
+  // Handler for Transformatie card click
+  const handleTransformatieClick = useCallback(() => {
+    router.push('/transformatie');
+  }, [router]);
 
   // Check if welcome video should be shown
   useEffect(() => {
@@ -229,6 +333,14 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
 
         {/* Personalized Welcome */}
         {!showWelcomeVideo && <PersonalizedWelcome />}
+
+        {/* World-class Transformatie Hero Card - Priority placement for enrolled users */}
+        {!showWelcomeVideo && hasTransformatie && (
+          <TransformatieHeroCard
+            progress={transformatieProgress}
+            onClick={handleTransformatieClick}
+          />
+        )}
 
         {/* My Programs Widget */}
         {!showWelcomeVideo && (
