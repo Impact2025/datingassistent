@@ -31,6 +31,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { IrisAvatar } from '@/components/onboarding/IrisAvatar';
+import { IrisVideoScreen } from '@/components/onboarding/IrisVideoScreen';
 import { QuestionRenderer } from './QuestionComponents';
 import {
   DATING_SNAPSHOT_FLOW,
@@ -57,12 +58,36 @@ import {
 // TYPES
 // =====================================================
 
+// =====================================================
+// VIDEO CONFIGURATION
+// =====================================================
+
+/**
+ * Video URLs for Iris intro and outro videos.
+ * Hosted on media.datingassistent.nl CDN.
+ */
+const IRIS_VIDEOS = {
+  intro: {
+    mp4: 'https://media.datingassistent.nl/videos/transformatie/Welkom_Transformatie.mp4',
+    poster: '/images/iris-video-poster.jpg',
+    // Optional: Add captions later
+    captions: '',
+  },
+  outro: {
+    mp4: 'https://media.datingassistent.nl/videos/transformatie/Eind_Transformatie.mp4',
+    poster: '/images/iris-video-poster.jpg',
+    captions: '',
+  },
+};
+
 interface DatingSnapshotFlowProps {
   onComplete: (profile: UserOnboardingProfile) => void;
+  /** Set to false to skip intro/outro videos */
+  showVideos?: boolean;
   className?: string;
 }
 
-type FlowStep = 'intro' | 'questions' | 'processing' | 'summary';
+type FlowStep = 'intro_video' | 'intro' | 'questions' | 'processing' | 'outro_video' | 'summary';
 
 interface CalculatedScores {
   introvertScore: number;
@@ -90,7 +115,11 @@ const SECTION_ICONS: Record<string, React.ComponentType<any>> = {
 // MAIN COMPONENT
 // =====================================================
 
-export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlowProps) {
+export function DatingSnapshotFlow({
+  onComplete,
+  showVideos = true,
+  className
+}: DatingSnapshotFlowProps) {
   // Reduced motion preference
   const prefersReducedMotion = useReducedMotion();
 
@@ -123,8 +152,8 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
         exit: { opacity: 0, x: -20 },
       };
 
-  // State
-  const [step, setStep] = useState<FlowStep>('intro');
+  // State - Start with intro_video if videos are enabled
+  const [step, setStep] = useState<FlowStep>(showVideos ? 'intro_video' : 'intro');
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -403,7 +432,8 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
       }
 
       await new Promise((r) => setTimeout(r, 400));
-      setStep('summary');
+      // Show outro video if enabled, otherwise go to summary
+      setStep(showVideos ? 'outro_video' : 'summary');
     } else {
       // Save progress to API
       try {
@@ -529,6 +559,29 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
           </div>
         </motion.div>
       </div>
+    );
+  }
+
+  // =====================================================
+  // RENDER: INTRO VIDEO
+  // =====================================================
+  if (step === 'intro_video') {
+    return (
+      <IrisVideoScreen
+        variant="intro"
+        videoSrc={IRIS_VIDEOS.intro.mp4}
+        poster={IRIS_VIDEOS.intro.poster}
+        captions={IRIS_VIDEOS.intro.captions ? [
+          {
+            src: IRIS_VIDEOS.intro.captions,
+            srclang: 'nl',
+            label: 'Nederlands',
+            default: true,
+          },
+        ] : undefined}
+        onContinue={() => setStep('intro')}
+        className={className}
+      />
     );
   }
 
@@ -857,6 +910,35 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
           </div>
         </motion.div>
       </div>
+    );
+  }
+
+  // =====================================================
+  // RENDER: OUTRO VIDEO
+  // =====================================================
+  if (step === 'outro_video' && calculatedScores) {
+    return (
+      <IrisVideoScreen
+        variant="outro"
+        videoSrc={IRIS_VIDEOS.outro.mp4}
+        poster={IRIS_VIDEOS.outro.poster}
+        captions={IRIS_VIDEOS.outro.captions ? [
+          {
+            src: IRIS_VIDEOS.outro.captions,
+            srclang: 'nl',
+            label: 'Nederlands',
+            default: true,
+          },
+        ] : undefined}
+        onContinue={() => setStep('summary')}
+        userName={answers.display_name}
+        outroContext={{
+          energyProfile: ENERGY_PROFILE_TEXTS[calculatedScores.energyProfile],
+          attachmentStyle: ATTACHMENT_STYLE_TEXTS[calculatedScores.attachmentStyle],
+          primaryFocus: PAIN_POINT_TEXTS[calculatedScores.primaryPainPoint],
+        }}
+        className={className}
+      />
     );
   }
 
