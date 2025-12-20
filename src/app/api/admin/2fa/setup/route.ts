@@ -26,11 +26,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      qrCodeUrl,
+      qrCode: qrCodeUrl,
       backupCodes,
       secret
     });
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to setup 2FA' }, { status: 500 });
+  } catch (error: any) {
+    console.error('2FA Setup error:', error);
+    return NextResponse.json({ error: error.message || 'Failed to setup 2FA' }, { status: 500 });
   }
 }
