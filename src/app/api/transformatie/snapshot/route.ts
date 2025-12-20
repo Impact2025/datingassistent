@@ -7,7 +7,7 @@
 
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { getServerSession } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import type {
   EnergyProfile,
   AttachmentStyle,
@@ -26,12 +26,12 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession();
-    if (!session?.user?.id) {
+    const user = await getCurrentUser();
+    if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const userId = session.user.id;
+    const userId = user.id;
     const body = await request.json();
     const { answers, scores } = body;
 
@@ -293,12 +293,12 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const session = await getServerSession();
-    if (!session?.user?.id) {
+    const user = await getCurrentUser();
+    if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const userId = session.user.id;
+    const userId = user.id;
 
     const result = await sql`
       SELECT * FROM user_onboarding_profiles
