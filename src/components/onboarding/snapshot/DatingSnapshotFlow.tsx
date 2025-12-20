@@ -11,7 +11,7 @@
  * - Personalized completion summary
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
@@ -151,6 +151,9 @@ export function DatingSnapshotFlow({
         animate: { opacity: 1, x: 0 },
         exit: { opacity: 0, x: -20 },
       };
+
+  // Ref for scroll container
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // State - Start with intro_video if videos are enabled
   const [step, setStep] = useState<FlowStep>(showVideos ? 'intro_video' : 'intro');
@@ -338,10 +341,18 @@ export function DatingSnapshotFlow({
   // Navigate to next section
   const handleNext = useCallback(async () => {
     if (!validateSection()) {
-      // Scroll to first error
-      const firstError = Object.keys(errors)[0];
-      if (firstError) {
-        document.getElementById(firstError)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Scroll to first error within our scroll container
+      const firstErrorKey = Object.keys(errors)[0];
+      if (firstErrorKey && scrollContainerRef.current) {
+        const errorElement = document.getElementById(firstErrorKey);
+        if (errorElement) {
+          // Calculate position relative to scroll container
+          const containerRect = scrollContainerRef.current.getBoundingClientRect();
+          const elementRect = errorElement.getBoundingClientRect();
+          const scrollTop = scrollContainerRef.current.scrollTop;
+          const targetPosition = scrollTop + (elementRect.top - containerRect.top) - 100;
+          scrollContainerRef.current.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        }
       }
       return;
     }
@@ -459,7 +470,8 @@ export function DatingSnapshotFlow({
       });
 
       setCurrentSectionIndex((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Scroll to top of content container
+      scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [validateSection, errors, isLastSection, calculateScores, answers, currentSection, analytics, currentSectionIndex, visibleQuestions]);
 
@@ -467,7 +479,8 @@ export function DatingSnapshotFlow({
   const handlePrevious = useCallback(() => {
     if (!isFirstSection) {
       setCurrentSectionIndex((prev) => prev - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Scroll to top of content container
+      scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [isFirstSection]);
 
@@ -507,11 +520,17 @@ export function DatingSnapshotFlow({
     const sectionName = DATING_SNAPSHOT_FLOW[restoredSectionIndex]?.title || 'onbekend';
 
     return (
-      <div className={cn('min-h-[100dvh] flex items-center justify-center bg-gradient-to-b from-pink-50/50 to-white p-4', className)}>
+      <div className={cn(
+        'min-h-[100dvh] bg-gradient-to-b from-pink-50/50 to-white',
+        'overflow-y-auto overscroll-y-none',
+        'flex flex-col items-center justify-start sm:justify-center',
+        'py-4 px-4 safe-area-top safe-area-bottom',
+        className
+      )}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md"
+          className="w-full max-w-md my-auto sm:my-0"
         >
           <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 overflow-hidden">
             <div className="bg-gradient-to-br from-pink-500 to-pink-600 p-6 text-center text-white">
@@ -590,11 +609,17 @@ export function DatingSnapshotFlow({
   // =====================================================
   if (step === 'intro') {
     return (
-      <div className={cn('min-h-[100dvh] flex items-center justify-center bg-gradient-to-b from-pink-50/50 to-white p-4', className)}>
+      <div className={cn(
+        'min-h-[100dvh] bg-gradient-to-b from-pink-50/50 to-white',
+        'overflow-y-auto overscroll-y-none', // Enable scrolling on mobile
+        'flex flex-col items-center justify-start sm:justify-center', // Start-align on mobile, center on larger
+        'py-4 px-4 safe-area-top safe-area-bottom',
+        className
+      )}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-lg"
+          className="w-full max-w-lg my-auto sm:my-0"
         >
           <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 overflow-hidden">
             {/* Header with Iris */}
@@ -717,14 +742,14 @@ export function DatingSnapshotFlow({
     return (
       <div
         className={cn(
-          'min-h-[100dvh] bg-white',
-          'overscroll-y-none', // Prevent pull-to-refresh
+          'fixed inset-0 bg-white flex flex-col z-[60]',
+          'overflow-hidden', // Prevent body scroll, use inner scroll
           className
         )}
         style={{ colorScheme: 'light' }}
       >
-        {/* Progress bar - Mobile optimized with safe area */}
-        <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 safe-area-top">
+        {/* Progress bar - Fixed header */}
+        <div className="flex-shrink-0 bg-white/95 backdrop-blur-md border-b border-gray-100 safe-area-top z-10">
           {/* Progress indicator with ARIA */}
           <div
             className="h-1 bg-gray-100"
@@ -758,54 +783,60 @@ export function DatingSnapshotFlow({
           </div>
         </div>
 
-        {/* Section content */}
-        <div className="max-w-2xl mx-auto px-4 py-8 scroll-smooth-keyboard">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSection.id}
-              initial={slideIn.initial}
-              animate={slideIn.animate}
-              exit={slideIn.exit}
-              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3 }}
-            >
-              {/* Section intro */}
-              <div className="mb-8">
-                <p className="text-gray-600">{currentSection.intro_text}</p>
-                {currentSection.instruction && (
-                  <p className="text-sm text-gray-500 mt-2 italic">{currentSection.instruction}</p>
+        {/* Section content - Scrollable area */}
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto overscroll-y-contain"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
+          <div className="max-w-2xl mx-auto px-4 py-6 sm:py-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSection.id}
+                initial={slideIn.initial}
+                animate={slideIn.animate}
+                exit={slideIn.exit}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3 }}
+              >
+                {/* Section intro */}
+                <div className="mb-6 sm:mb-8">
+                  <p className="text-gray-600">{currentSection.intro_text}</p>
+                  {currentSection.instruction && (
+                    <p className="text-sm text-gray-500 mt-2 italic">{currentSection.instruction}</p>
+                  )}
+                </div>
+
+                {/* Questions */}
+                <div className="space-y-6 sm:space-y-8">
+                  {visibleQuestions.map((question, index) => (
+                    <motion.div
+                      key={question.id}
+                      id={question.id}
+                      initial={fadeInUp.initial}
+                      animate={fadeInUp.animate}
+                      transition={prefersReducedMotion ? { duration: 0 } : { delay: index * 0.1 }}
+                    >
+                      <QuestionRenderer
+                        question={question}
+                        value={answers[question.id]}
+                        onChange={(value) => handleAnswer(question.id, value)}
+                        error={errors[question.id]}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Section outro */}
+                {currentSection.outro_text && (
+                  <p className="mt-6 sm:mt-8 text-sm text-gray-500 italic">{currentSection.outro_text}</p>
                 )}
-              </div>
-
-              {/* Questions */}
-              <div className="space-y-8">
-                {visibleQuestions.map((question, index) => (
-                  <motion.div
-                    key={question.id}
-                    id={question.id}
-                    initial={fadeInUp.initial}
-                    animate={fadeInUp.animate}
-                    transition={prefersReducedMotion ? { duration: 0 } : { delay: index * 0.1 }}
-                  >
-                    <QuestionRenderer
-                      question={question}
-                      value={answers[question.id]}
-                      onChange={(value) => handleAnswer(question.id, value)}
-                      error={errors[question.id]}
-                    />
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Section outro */}
-              {currentSection.outro_text && (
-                <p className="mt-8 text-sm text-gray-500 italic">{currentSection.outro_text}</p>
-              )}
-            </motion.div>
-          </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
 
-        {/* Navigation - Mobile optimized with safe area */}
-        <div className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-gray-100 safe-area-bottom">
+        {/* Navigation - Fixed footer */}
+        <div className="flex-shrink-0 bg-white/95 backdrop-blur-md border-t border-gray-100 safe-area-bottom z-10">
           <div className="max-w-2xl mx-auto px-4 py-3 sm:py-4 flex gap-3">
             {!isFirstSection && (
               <Button
@@ -845,11 +876,17 @@ export function DatingSnapshotFlow({
   // =====================================================
   if (step === 'processing') {
     return (
-      <div className={cn('min-h-[100dvh] flex items-center justify-center bg-gradient-to-b from-pink-50/50 to-white p-4', className)}>
+      <div className={cn(
+        'min-h-[100dvh] bg-gradient-to-b from-pink-50/50 to-white',
+        'overflow-y-auto overscroll-y-none',
+        'flex flex-col items-center justify-start sm:justify-center',
+        'py-4 px-4 safe-area-top safe-area-bottom',
+        className
+      )}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md"
+          className="w-full max-w-md my-auto sm:my-0"
         >
           <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 p-8 text-center">
             <motion.div
@@ -957,8 +994,13 @@ export function DatingSnapshotFlow({
     }
 
     return (
-      <div className={cn('min-h-[100dvh] bg-gradient-to-b from-pink-50/50 to-white p-4', className)}>
-        <div className="max-w-lg mx-auto py-8">
+      <div className={cn(
+        'min-h-[100dvh] bg-gradient-to-b from-pink-50/50 to-white',
+        'overflow-y-auto overscroll-y-none',
+        'py-4 px-4 safe-area-top safe-area-bottom',
+        className
+      )}>
+        <div className="max-w-lg mx-auto py-4 sm:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

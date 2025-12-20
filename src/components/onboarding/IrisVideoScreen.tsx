@@ -84,9 +84,10 @@ export function IrisVideoScreen({
   return (
     <div
       className={cn(
-        'min-h-[100dvh] flex flex-col items-center justify-center',
+        'min-h-[100dvh] flex flex-col items-center justify-start sm:justify-center',
         'bg-gradient-to-b from-pink-50/50 to-white',
-        'p-4 safe-area-top safe-area-bottom',
+        'overflow-y-auto overscroll-y-none', // Enable scrolling on mobile
+        'py-4 px-4 safe-area-top safe-area-bottom',
         className
       )}
     >
@@ -94,7 +95,7 @@ export function IrisVideoScreen({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-2xl"
+        className="w-full max-w-2xl my-auto sm:my-0"
       >
         {/* Header text (above video) */}
         <motion.div

@@ -691,7 +691,7 @@ function DashboardPageContent() {
         // Mobile layout
         isFullScreenOnboarding ? (
           // FULL-SCREEN ONBOARDING MODE - No header, no bottom nav, full viewport
-          <div className="fixed inset-0 bg-gradient-to-br from-pink-50 via-white to-pink-50 z-50">
+          <div className="fixed inset-0 bg-gradient-to-br from-pink-50 via-white to-pink-50 z-50 overflow-hidden">
             {showKickstartOnboarding ? (
               <KickstartOnboardingFlow
                 userName={user?.name?.split(' ')[0]}
