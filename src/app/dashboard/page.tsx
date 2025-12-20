@@ -25,8 +25,9 @@ import { KickstartOnboardingFlow } from '@/components/kickstart/KickstartOnboard
 import { DayZeroExperience } from '@/components/kickstart/DayZeroExperience';
 import type { KickstartIntakeData } from '@/types/kickstart-onboarding.types';
 
-// Import Transformatie onboarding - World-class integrated flow
-import { TransformatieOnboardingFlow } from '@/components/transformatie/TransformatieOnboardingFlow';
+// Import Transformatie onboarding - World-class Dating Snapshot Flow
+import { DatingSnapshotFlow } from '@/components/onboarding/snapshot';
+import type { UserOnboardingProfile } from '@/types/dating-snapshot.types';
 
 // NIEUWE 4-TAB NAVIGATIE SYSTEEM (Masterplan)
 import { MainNavNew } from '@/components/layout/main-nav-new';
@@ -511,37 +512,29 @@ function DashboardPageContent() {
     router.push('/kickstart/dag/1');
   }, [router]);
 
-  // Handle Transformatie onboarding completion - World-class integration
-  const handleTransformatieOnboardingComplete = useCallback(async (data: any) => {
+  // Handle Transformatie onboarding completion - World-class Dating Snapshot integration
+  const handleTransformatieOnboardingComplete = useCallback(async (profile: UserOnboardingProfile) => {
     if (!user?.id) return;
 
     setTransformatieOnboardingSaving(true);
 
     try {
-      debugLog.info('Saving Transformatie onboarding data:', data);
+      debugLog.info('Dating Snapshot completed:', profile.displayName);
 
-      const response = await fetch("/api/transformatie/onboarding", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data }),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to save onboarding");
-      }
-
-      const result = await response.json();
-      debugLog.success('Transformatie onboarding saved successfully:', result);
+      // The DatingSnapshotFlow already saves to /api/transformatie/snapshot
+      // We just need to invalidate the cache and redirect
+      debugLog.success('Dating Snapshot saved, redirecting to Transformatie');
 
       setTransformatieOnboardingSaving(false);
+
+      // Invalidate enrollment cache to reflect completed onboarding
+      // This is handled by the DatingSnapshotFlow component
 
       // Redirect to the Transformatie experience
       router.push('/transformatie');
 
     } catch (err) {
-      debugLog.error('Error saving Transformatie onboarding:', err);
+      debugLog.error('Error completing Transformatie onboarding:', err);
       setTransformatieOnboardingSaving(false);
     }
   }, [user?.id, router]);
@@ -711,8 +704,7 @@ function DashboardPageContent() {
                 embedded={false}
               />
             ) : showTransformatieOnboarding ? (
-              <TransformatieOnboardingFlow
-                userName={user?.name?.split(' ')[0]}
+              <DatingSnapshotFlow
                 onComplete={handleTransformatieOnboardingComplete}
               />
             ) : null}
@@ -820,10 +812,9 @@ function DashboardPageContent() {
                     embedded={true}
                   />
                 ) : showTransformatieOnboarding ? (
-                  /* Show Transformatie onboarding if needed - World-class integration */
+                  /* Show Transformatie Dating Snapshot - World-class onboarding */
                   <div className="min-h-[600px]">
-                    <TransformatieOnboardingFlow
-                      userName={user?.name?.split(' ')[0]}
+                    <DatingSnapshotFlow
                       onComplete={handleTransformatieOnboardingComplete}
                     />
                   </div>

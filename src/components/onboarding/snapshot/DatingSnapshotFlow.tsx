@@ -12,7 +12,7 @@
  */
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
   ArrowLeft,
@@ -26,6 +26,7 @@ import {
   Clock,
   User,
   Smartphone,
+  RotateCcw,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -37,6 +38,8 @@ import {
   getTotalEstimatedMinutes,
   shouldShowQuestion,
 } from '@/lib/dating-snapshot-flow';
+import { useDatingSnapshotPersistence } from '@/hooks/use-onboarding-persistence';
+import { useOnboardingAnalytics } from '@/lib/analytics/onboarding-analytics';
 import type {
   UserOnboardingProfile,
   EnergyProfile,
@@ -88,6 +91,38 @@ const SECTION_ICONS: Record<string, React.ComponentType<any>> = {
 // =====================================================
 
 export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlowProps) {
+  // Reduced motion preference
+  const prefersReducedMotion = useReducedMotion();
+
+  // Persistence hook
+  const {
+    restoredSectionIndex,
+    restoredAnswers,
+    wasRestored,
+    saveProgress,
+    clearProgress,
+  } = useDatingSnapshotPersistence();
+
+  // Analytics hook
+  const analytics = useOnboardingAnalytics({ flowType: 'dating_snapshot' });
+
+  // Animation variants that respect reduced motion
+  const fadeInUp = prefersReducedMotion
+    ? { initial: {}, animate: {}, exit: {} }
+    : {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: -20 },
+      };
+
+  const slideIn = prefersReducedMotion
+    ? { initial: {}, animate: {}, exit: {} }
+    : {
+        initial: { opacity: 0, x: 20 },
+        animate: { opacity: 1, x: 0 },
+        exit: { opacity: 0, x: -20 },
+      };
+
   // State
   const [step, setStep] = useState<FlowStep>('intro');
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
@@ -98,6 +133,59 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
   const [calculatedScores, setCalculatedScores] = useState<CalculatedScores | null>(null);
   const [welcomeMessage, setWelcomeMessage] = useState<WelcomeMessage | null>(null);
   const [completedProfile, setCompletedProfile] = useState<UserOnboardingProfile | null>(null);
+  const [showRestorePrompt, setShowRestorePrompt] = useState(false);
+
+  // Check for restored progress on mount
+  useEffect(() => {
+    if (wasRestored && Object.keys(restoredAnswers).length > 0) {
+      setShowRestorePrompt(true);
+    }
+  }, [wasRestored, restoredAnswers]);
+
+  // Keyboard-aware scroll behavior for mobile
+  useEffect(() => {
+    if (step !== 'questions') return;
+
+    const handleFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      // Only handle input/select/textarea focus
+      if (!target.matches('input, textarea, select')) return;
+
+      // Wait for virtual keyboard to appear on mobile
+      setTimeout(() => {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }, 300);
+    };
+
+    document.addEventListener('focusin', handleFocusIn);
+    return () => document.removeEventListener('focusin', handleFocusIn);
+  }, [step]);
+
+  // Handle restore progress
+  const handleRestoreProgress = useCallback(() => {
+    setAnswers(restoredAnswers);
+    setCurrentSectionIndex(restoredSectionIndex);
+    setStep('questions');
+    setShowRestorePrompt(false);
+    analytics.trackStart({ hasRestoredProgress: true });
+  }, [restoredAnswers, restoredSectionIndex, analytics]);
+
+  // Handle start fresh
+  const handleStartFresh = useCallback(() => {
+    clearProgress();
+    setShowRestorePrompt(false);
+    analytics.trackStart({ hasRestoredProgress: false });
+  }, [clearProgress, analytics]);
+
+  // Auto-save on answer change
+  useEffect(() => {
+    if (step === 'questions' && Object.keys(answers).length > 0) {
+      saveProgress(currentSectionIndex, answers);
+    }
+  }, [answers, currentSectionIndex, step, saveProgress]);
 
   // Current section
   const currentSection = DATING_SNAPSHOT_FLOW[currentSectionIndex];
@@ -256,13 +344,60 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
           }),
         });
 
+        const data = await response.json();
+
         if (response.ok) {
-          const data = await response.json();
           setCompletedProfile(data.profile);
           setWelcomeMessage(data.welcomeMessage);
+        } else if (response.status === 400 && data.fieldErrors) {
+          // Handle validation errors from API
+          console.warn('API validation errors:', data.fieldErrors);
+
+          // Map API field errors to form errors
+          const newErrors: Record<string, string> = {};
+          for (const [fieldPath, messages] of Object.entries(data.fieldErrors)) {
+            // Extract field name from path (e.g., "answers.display_name" -> "display_name")
+            const fieldName = fieldPath.replace('answers.', '').replace('scores.', '');
+            if (Array.isArray(messages) && messages.length > 0) {
+              newErrors[fieldName] = messages[0];
+            }
+          }
+
+          if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            // Track validation error
+            analytics.trackError({
+              type: 'api_validation',
+              message: 'Server validation failed',
+            });
+            // Go back to first section with error
+            const errorFields = Object.keys(newErrors);
+            for (let i = 0; i < DATING_SNAPSHOT_FLOW.length; i++) {
+              const section = DATING_SNAPSHOT_FLOW[i];
+              const sectionHasError = section.questions.some(q => errorFields.includes(q.id));
+              if (sectionHasError) {
+                setCurrentSectionIndex(i);
+                setStep('questions');
+                setProcessingStep(0);
+                break;
+              }
+            }
+            return;
+          }
+        } else {
+          // Generic error
+          console.error('API error:', data.error || 'Unknown error');
+          analytics.trackError({
+            type: 'api_error',
+            message: data.error || 'Failed to save',
+          });
         }
       } catch (error) {
         console.error('Failed to save onboarding:', error);
+        analytics.trackError({
+          type: 'network_error',
+          message: error instanceof Error ? error.message : 'Network error',
+        });
       } finally {
         setIsSubmitting(false);
       }
@@ -284,10 +419,19 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
         console.error('Failed to save progress:', error);
       }
 
+      // Track section completion
+      analytics.trackSectionComplete({
+        index: currentSectionIndex,
+        id: currentSection.id.toString(),
+        title: currentSection.title,
+        questionsTotal: visibleQuestions.length,
+        questionsAnswered: visibleQuestions.filter(q => answers[q.id] !== undefined).length,
+      });
+
       setCurrentSectionIndex((prev) => prev + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [validateSection, errors, isLastSection, calculateScores, answers, currentSection]);
+  }, [validateSection, errors, isLastSection, calculateScores, answers, currentSection, analytics, currentSectionIndex, visibleQuestions]);
 
   // Navigate to previous section
   const handlePrevious = useCallback(() => {
@@ -300,11 +444,19 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
   // Start the onboarding
   const handleStart = () => {
     setStep('questions');
+    analytics.trackStart({ hasRestoredProgress: false });
   };
 
   // Complete and start program
   const handleComplete = () => {
     if (completedProfile) {
+      // Track completion
+      analytics.trackComplete({
+        sectionsCompleted: DATING_SNAPSHOT_FLOW.length,
+        questionsAnswered: Object.keys(answers).length,
+      });
+      // Clear saved progress on successful completion
+      clearProgress();
       onComplete(completedProfile);
     }
   };
@@ -316,6 +468,69 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
     { icon: Heart, text: 'Bepalen van je hechtingsstijl...' },
     { icon: Zap, text: 'Personaliseren van je programma...' },
   ];
+
+  // =====================================================
+  // RENDER: RESTORE PROMPT
+  // =====================================================
+  if (showRestorePrompt) {
+    const answeredCount = Object.keys(restoredAnswers).length;
+    const sectionName = DATING_SNAPSHOT_FLOW[restoredSectionIndex]?.title || 'onbekend';
+
+    return (
+      <div className={cn('min-h-[100dvh] flex items-center justify-center bg-gradient-to-b from-pink-50/50 to-white p-4', className)}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-md"
+        >
+          <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 overflow-hidden">
+            <div className="bg-gradient-to-br from-pink-500 to-pink-600 p-6 text-center text-white">
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <RotateCcw className="w-12 h-12 mx-auto mb-3 opacity-90" />
+              </motion.div>
+              <h2 className="text-xl font-bold mb-1">Welkom terug!</h2>
+              <p className="text-pink-100 text-sm">Je hebt onafgemaakte voortgang</p>
+            </div>
+
+            <div className="p-6">
+              <div className="bg-gray-50 rounded-xl p-4 mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-gray-600">Vragen beantwoord</span>
+                  <span className="text-sm font-semibold text-gray-900">{answeredCount}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">Laatst bij</span>
+                  <span className="text-sm font-semibold text-gray-900">{sectionName}</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <Button
+                  onClick={handleRestoreProgress}
+                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-5 rounded-xl font-semibold"
+                >
+                  Doorgaan waar ik was
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+
+                <Button
+                  onClick={handleStartFresh}
+                  variant="ghost"
+                  className="w-full text-gray-500 hover:text-gray-700 py-4"
+                >
+                  Opnieuw beginnen
+                </Button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   // =====================================================
   // RENDER: INTRO SCREEN
@@ -447,10 +662,25 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
     const SectionIcon = SECTION_ICONS[currentSection.icon] || Target;
 
     return (
-      <div className={cn('min-h-[100dvh] bg-white', className)} style={{ colorScheme: 'light' }}>
-        {/* Progress bar */}
-        <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
-          <div className="h-1 bg-gray-100">
+      <div
+        className={cn(
+          'min-h-[100dvh] bg-white',
+          'overscroll-y-none', // Prevent pull-to-refresh
+          className
+        )}
+        style={{ colorScheme: 'light' }}
+      >
+        {/* Progress bar - Mobile optimized with safe area */}
+        <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 safe-area-top">
+          {/* Progress indicator with ARIA */}
+          <div
+            className="h-1 bg-gray-100"
+            role="progressbar"
+            aria-valuenow={Math.round(overallProgress)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`Voortgang: ${Math.round(overallProgress)}%`}
+          >
             <motion.div
               className="h-full bg-gradient-to-r from-pink-500 to-pink-600"
               initial={{ width: 0 }}
@@ -458,31 +688,32 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
               transition={{ duration: 0.3 }}
             />
           </div>
-          <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center">
+          <div className="max-w-2xl mx-auto px-4 py-2.5 sm:py-3 flex items-center justify-between">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
                 <SectionIcon className="w-4 h-4 text-pink-600" />
               </div>
-              <div>
-                <div className="text-sm font-medium text-gray-900">{currentSection.title}</div>
-                <div className="text-xs text-gray-500">{currentSection.subtitle}</div>
+              <div className="min-w-0">
+                <div className="text-sm font-medium text-gray-900 truncate">{currentSection.title}</div>
+                <div className="text-xs text-gray-500 truncate hidden sm:block">{currentSection.subtitle}</div>
               </div>
             </div>
-            <div className="text-sm text-gray-500">
-              {currentSectionIndex + 1} / {totalSections}
+            <div className="text-sm text-gray-500 flex-shrink-0 ml-2">
+              <span className="font-medium">{currentSectionIndex + 1}</span>
+              <span className="text-gray-400"> / {totalSections}</span>
             </div>
           </div>
         </div>
 
         {/* Section content */}
-        <div className="max-w-2xl mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto px-4 py-8 scroll-smooth-keyboard">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSection.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              initial={slideIn.initial}
+              animate={slideIn.animate}
+              exit={slideIn.exit}
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3 }}
             >
               {/* Section intro */}
               <div className="mb-8">
@@ -498,9 +729,9 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
                   <motion.div
                     key={question.id}
                     id={question.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    initial={fadeInUp.initial}
+                    animate={fadeInUp.animate}
+                    transition={prefersReducedMotion ? { duration: 0 } : { delay: index * 0.1 }}
                   >
                     <QuestionRenderer
                       question={question}
@@ -520,26 +751,35 @@ export function DatingSnapshotFlow({ onComplete, className }: DatingSnapshotFlow
           </AnimatePresence>
         </div>
 
-        {/* Navigation */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-100 p-4">
-          <div className="max-w-2xl mx-auto flex gap-3">
+        {/* Navigation - Mobile optimized with safe area */}
+        <div className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-gray-100 safe-area-bottom">
+          <div className="max-w-2xl mx-auto px-4 py-3 sm:py-4 flex gap-3">
             {!isFirstSection && (
               <Button
                 variant="outline"
                 onClick={handlePrevious}
-                className="flex-shrink-0"
+                className="flex-shrink-0 min-h-[48px] px-4 touch-manipulation active:scale-95 transition-transform"
               >
                 <ArrowLeft className="w-4 h-4 mr-1" />
-                Terug
+                <span className="hidden sm:inline">Terug</span>
               </Button>
             )}
             <Button
               onClick={handleNext}
               disabled={isSubmitting}
-              className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white"
+              className="flex-1 min-h-[48px] bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white touch-manipulation active:scale-[0.98] transition-transform"
             >
-              {isLastSection ? 'Voltooien' : 'Volgende'}
-              <ArrowRight className="w-4 h-4 ml-1" />
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Laden...
+                </span>
+              ) : (
+                <>
+                  {isLastSection ? 'Voltooien' : 'Volgende'}
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </>
+              )}
             </Button>
           </div>
         </div>

@@ -3,19 +3,25 @@
  *
  * POST - Save completed Dating Snapshot onboarding
  * GET - Get user's onboarding profile
+ *
+ * Features:
+ * - World-class Zod validation
+ * - Transactional database operations
+ * - Detailed error responses
  */
 
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
+import {
+  validateDatingSnapshot,
+  type DatingSnapshotRequest,
+} from '@/lib/validations/dating-snapshot.schema';
 import type {
   EnergyProfile,
   AttachmentStyle,
   PainPoint,
   WelcomeMessage,
-  PAIN_POINT_TEXTS,
-  ATTACHMENT_STYLE_TEXTS,
-  GOAL_TEXTS,
 } from '@/types/dating-snapshot.types';
 
 export const dynamic = 'force-dynamic';
@@ -32,12 +38,35 @@ export async function POST(request: Request) {
     }
 
     const userId = user.id;
-    const body = await request.json();
-    const { answers, scores } = body;
 
-    if (!answers || !scores) {
-      return NextResponse.json({ error: 'Missing data' }, { status: 400 });
+    // Parse request body
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid JSON in request body' },
+        { status: 400 }
+      );
     }
+
+    // Validate with Zod schema
+    const validation = validateDatingSnapshot(body);
+
+    if (!validation.success) {
+      console.warn(`❌ Dating Snapshot validation failed for user ${userId}:`, validation.fieldErrors);
+      return NextResponse.json(
+        {
+          error: 'Validation failed',
+          message: 'De ingevoerde gegevens zijn ongeldig',
+          fieldErrors: validation.fieldErrors,
+          details: validation.errors?.slice(0, 5), // First 5 errors for debugging
+        },
+        { status: 400 }
+      );
+    }
+
+    const { answers, scores } = validation.data;
 
     // Extract data from answers
     const profile = {

@@ -241,6 +241,32 @@
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
   }
+
+  /* Reduced motion support - Respect user preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Mobile scroll behavior for keyboard */
+  .scroll-smooth-keyboard {
+    scroll-behavior: smooth;
+    scroll-padding-top: 120px;
+    scroll-padding-bottom: 100px;
+  }
+
+  @supports (height: 100dvh) {
+    .scroll-smooth-keyboard {
+      scroll-padding-bottom: calc(100px + env(safe-area-inset-bottom, 0));
+    }
+  }
+
   /* Pill-shaped buttons - Very rounded */
   .btn-pill {
     @apply rounded-full px-6 py-3 font-semibold text-sm transition-all duration-200 shadow-sm;

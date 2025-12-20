@@ -4,12 +4,16 @@
  * Dating Snapshot - Question Components
  *
  * World-class question components for the onboarding experience.
- * All components are mobile-first, accessible, and beautifully animated.
+ * Features:
+ * - Mobile-first responsive design
+ * - Full keyboard accessibility (arrow keys, tab, enter)
+ * - ARIA labels and roles for screen readers
+ * - Beautiful Framer Motion animations
  */
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
-import { Check, GripVertical, ChevronDown } from 'lucide-react';
+import { Check, GripVertical, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type {
   Question,
@@ -42,32 +46,51 @@ export function ScaleQuestion({ question, value, onChange, error }: ScaleQuestio
 
   return (
     <div className="space-y-4">
-      <label className="block text-base font-medium text-gray-900">
+      <label
+        id={`${question.id}-label`}
+        className="block text-base font-medium text-gray-900"
+      >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1">*</span>}
+        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
       {question.helper_text && (
-        <p className="text-sm text-gray-500">{question.helper_text}</p>
+        <p id={`${question.id}-helper`} className="text-sm text-gray-500">
+          {question.helper_text}
+        </p>
       )}
 
-      <div className="flex justify-between gap-2">
+      <div
+        role="radiogroup"
+        aria-labelledby={`${question.id}-label`}
+        aria-describedby={question.helper_text ? `${question.id}-helper` : undefined}
+        className="flex justify-between gap-1 sm:gap-2"
+      >
         {options.map((num) => (
           <motion.button
             key={num}
             type="button"
+            role="radio"
+            aria-checked={value === num}
+            aria-label={`${num}${question.labels?.[num] ? `: ${question.labels[num]}` : ''}`}
             onClick={() => onChange(num)}
             whileTap={{ scale: 0.95 }}
             className={cn(
-              'flex-1 py-4 px-2 rounded-xl border-2 text-center transition-all min-h-[60px] flex flex-col items-center justify-center',
+              // Base styles with minimum touch target (44px)
+              'flex-1 py-3 sm:py-4 px-1 sm:px-2 rounded-lg sm:rounded-xl border-2',
+              'text-center transition-all min-h-[56px] sm:min-h-[60px] min-w-[44px]',
+              'flex flex-col items-center justify-center touch-manipulation',
+              'focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
               value === num
                 ? 'border-pink-500 bg-pink-50 text-pink-700'
-                : 'border-gray-200 hover:border-pink-200 hover:bg-pink-25'
+                : 'border-gray-200 hover:border-pink-200 hover:bg-pink-50/50'
             )}
           >
-            <span className="text-lg font-semibold">{num}</span>
+            <span className="text-base sm:text-lg font-semibold">{num}</span>
+            {/* Show labels only on larger screens to prevent cramping */}
             {question.labels?.[num] && (
-              <span className="text-xs text-gray-500 mt-1 line-clamp-2">
+              <span className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1 line-clamp-2 hidden sm:block">
                 {question.labels[num]}
               </span>
             )}
@@ -75,13 +98,17 @@ export function ScaleQuestion({ question, value, onChange, error }: ScaleQuestio
         ))}
       </div>
 
-      {/* Min/Max labels */}
-      <div className="flex justify-between text-xs text-gray-400">
-        <span>{question.labels?.[question.min]}</span>
-        <span>{question.labels?.[question.max]}</span>
+      {/* Min/Max labels - always visible on mobile */}
+      <div className="flex justify-between text-xs text-gray-400 px-1">
+        <span className="max-w-[45%] text-left">{question.labels?.[question.min]}</span>
+        <span className="max-w-[45%] text-right">{question.labels?.[question.max]}</span>
       </div>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-500" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -100,6 +127,7 @@ interface SliderQuestionProps {
 export function SliderQuestion({ question, value, onChange, error }: SliderQuestionProps) {
   const [localValue, setLocalValue] = useState(value ?? question.default ?? question.min);
   const sliderRef = useRef<HTMLInputElement>(null);
+  const sliderId = `slider-${question.id}`;
 
   useEffect(() => {
     if (value !== null && value !== undefined) {
@@ -116,26 +144,34 @@ export function SliderQuestion({ question, value, onChange, error }: SliderQuest
 
   return (
     <div className="space-y-4">
-      <label className="block text-base font-medium text-gray-900">
+      <label
+        id={`${sliderId}-label`}
+        htmlFor={sliderId}
+        className="block text-base font-medium text-gray-900"
+      >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1">*</span>}
+        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
       {question.helper_text && (
-        <p className="text-sm text-gray-500">{question.helper_text}</p>
+        <p id={`${sliderId}-helper`} className="text-sm text-gray-500">
+          {question.helper_text}
+        </p>
       )}
 
       {/* Value display */}
-      <div className="text-center">
-        <span className="text-4xl font-bold text-pink-600">
+      <div className="text-center" aria-live="polite" aria-atomic="true">
+        <span className="text-3xl sm:text-4xl font-bold text-pink-600">
           {localValue}
-          {question.unit && <span className="text-2xl ml-1">{question.unit}</span>}
+          {question.unit && <span className="text-xl sm:text-2xl ml-1">{question.unit}</span>}
         </span>
       </div>
 
-      {/* Slider */}
-      <div className="relative pt-2 pb-6">
-        <div className="relative h-3 bg-gray-100 rounded-full overflow-hidden">
+      {/* Slider - increased touch target */}
+      <div className="relative pt-4 pb-8 px-2">
+        {/* Track background */}
+        <div className="relative h-3 sm:h-4 bg-gray-100 rounded-full overflow-hidden">
           <motion.div
             className="absolute inset-y-0 left-0 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full"
             style={{ width: `${percentage}%` }}
@@ -144,33 +180,55 @@ export function SliderQuestion({ question, value, onChange, error }: SliderQuest
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           />
         </div>
+
+        {/* Native input with increased height for touch */}
         <input
           ref={sliderRef}
+          id={sliderId}
           type="range"
           min={question.min}
           max={question.max}
           step={question.step}
           value={localValue}
           onChange={(e) => handleChange(parseInt(e.target.value))}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          aria-labelledby={`${sliderId}-label`}
+          aria-describedby={question.helper_text ? `${sliderId}-helper` : undefined}
+          aria-valuenow={localValue}
+          aria-valuemin={question.min}
+          aria-valuemax={question.max}
+          className="absolute inset-x-0 top-0 w-full h-16 opacity-0 cursor-pointer touch-manipulation"
         />
-        {/* Thumb indicator */}
+
+        {/* Custom thumb indicator - larger on mobile */}
         <motion.div
-          className="absolute top-1/2 -translate-y-1/2 w-6 h-6 bg-white border-4 border-pink-500 rounded-full shadow-lg pointer-events-none"
-          style={{ left: `calc(${percentage}% - 12px)` }}
+          className={cn(
+            'absolute top-1/2 -translate-y-1/2 pointer-events-none',
+            'w-7 h-7 sm:w-6 sm:h-6',
+            'bg-white border-4 border-pink-500 rounded-full shadow-lg'
+          )}
+          style={{ left: `calc(${percentage}% - 14px)` }}
           initial={false}
-          animate={{ left: `calc(${percentage}% - 12px)` }}
+          animate={{ left: `calc(${percentage}% - 14px)` }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          aria-hidden="true"
         />
       </div>
 
       {/* Min/Max labels */}
-      <div className="flex justify-between text-xs text-gray-500">
-        <span>{question.labels?.[question.min] || question.min}</span>
-        <span>{question.labels?.[question.max] || question.max}</span>
+      <div className="flex justify-between text-xs text-gray-500 px-1">
+        <span className="max-w-[45%] text-left">
+          {question.labels?.[question.min] || question.min}
+        </span>
+        <span className="max-w-[45%] text-right">
+          {question.labels?.[question.max] || question.max}
+        </span>
       </div>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-500" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -200,21 +258,58 @@ export function RankingQuestion({ question, value, onChange, error }: RankingQue
     }
     return question.options;
   });
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
   const handleReorder = (newItems: SelectOption[]) => {
     setItems(newItems);
     onChange(newItems.map((item) => item.value));
   };
 
+  // Move item up or down with keyboard
+  const moveItem = useCallback((fromIndex: number, toIndex: number) => {
+    if (toIndex < 0 || toIndex >= items.length) return;
+
+    const newItems = [...items];
+    const [movedItem] = newItems.splice(fromIndex, 1);
+    newItems.splice(toIndex, 0, movedItem);
+    setItems(newItems);
+    onChange(newItems.map((item) => item.value));
+    setFocusedIndex(toIndex);
+  }, [items, onChange]);
+
+  // Handle keyboard navigation
+  const handleKeyDown = useCallback((e: React.KeyboardEvent, index: number) => {
+    switch (e.key) {
+      case 'ArrowUp':
+        e.preventDefault();
+        moveItem(index, index - 1);
+        break;
+      case 'ArrowDown':
+        e.preventDefault();
+        moveItem(index, index + 1);
+        break;
+      case ' ':
+      case 'Enter':
+        e.preventDefault();
+        setFocusedIndex(index);
+        break;
+    }
+  }, [moveItem]);
+
   return (
     <div className="space-y-4">
-      <label className="block text-base font-medium text-gray-900">
+      <label id={`${question.id}-label`} className="block text-base font-medium text-gray-900">
         {question.label}
         {question.required && <span className="text-pink-500 ml-1">*</span>}
       </label>
 
       {question.instruction && (
-        <p className="text-sm text-gray-500">{question.instruction}</p>
+        <p id={`${question.id}-instruction`} className="text-sm text-gray-500">
+          {question.instruction}
+          <span className="block mt-1 text-xs text-gray-400">
+            Gebruik pijltjestoetsen om te herschikken
+          </span>
+        </p>
       )}
 
       <Reorder.Group
@@ -222,12 +317,22 @@ export function RankingQuestion({ question, value, onChange, error }: RankingQue
         values={items}
         onReorder={handleReorder}
         className="space-y-2"
+        role="listbox"
+        aria-labelledby={`${question.id}-label`}
+        aria-describedby={question.instruction ? `${question.id}-instruction` : undefined}
       >
         {items.map((item, index) => (
           <Reorder.Item
             key={item.value}
             value={item}
-            className="cursor-grab active:cursor-grabbing"
+            className="cursor-grab active:cursor-grabbing outline-none"
+            tabIndex={0}
+            role="option"
+            aria-selected={focusedIndex === index}
+            aria-label={`${item.label}, positie ${index + 1} van ${items.length}. Gebruik pijltjes om te verplaatsen.`}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            onFocus={() => setFocusedIndex(index)}
+            onBlur={() => setFocusedIndex(null)}
           >
             <motion.div
               layout
@@ -237,28 +342,50 @@ export function RankingQuestion({ question, value, onChange, error }: RankingQue
                 'flex items-center gap-3 p-4 bg-white rounded-xl border-2 transition-colors',
                 index === 0
                   ? 'border-pink-300 bg-pink-50'
-                  : 'border-gray-200 hover:border-gray-300'
+                  : 'border-gray-200 hover:border-gray-300',
+                focusedIndex === index && 'ring-2 ring-pink-500 ring-offset-2'
               )}
             >
-              <GripVertical className="w-5 h-5 text-gray-400 flex-shrink-0" />
+              <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
+                <ChevronUp
+                  className={cn(
+                    'w-4 h-4 transition-opacity',
+                    index === 0 ? 'opacity-20' : 'opacity-40'
+                  )}
+                />
+                <GripVertical className="w-5 h-5 text-gray-400" />
+                <ChevronDown
+                  className={cn(
+                    'w-4 h-4 transition-opacity',
+                    index === items.length - 1 ? 'opacity-20' : 'opacity-40'
+                  )}
+                />
+              </div>
               <span
                 className={cn(
                   'w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0',
                   index === 0 ? 'bg-pink-500 text-white' : 'bg-gray-100 text-gray-600'
                 )}
+                aria-hidden="true"
               >
                 {index + 1}
               </span>
               <span className="flex-1 text-gray-900">{item.label}</span>
               {index === 0 && (
-                <span className="text-xs text-pink-600 font-medium">Meest frustrerend</span>
+                <span className="text-xs text-pink-600 font-medium hidden sm:block">
+                  Meest frustrerend
+                </span>
               )}
             </motion.div>
           </Reorder.Item>
         ))}
       </Reorder.Group>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-500" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -281,6 +408,7 @@ export function MultiSelectQuestion({
   error,
 }: MultiSelectQuestionProps) {
   const selected = value || [];
+  const groupId = `multiselect-${question.id}`;
 
   const toggleOption = (optionValue: string) => {
     if (selected.includes(optionValue)) {
@@ -295,16 +423,27 @@ export function MultiSelectQuestion({
 
   return (
     <div className="space-y-4">
-      <label className="block text-base font-medium text-gray-900">
+      <label
+        id={`${groupId}-label`}
+        className="block text-base font-medium text-gray-900"
+      >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1">*</span>}
+        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
       {question.helper_text && (
-        <p className="text-sm text-gray-500">{question.helper_text}</p>
+        <p id={`${groupId}-helper`} className="text-sm text-gray-500">
+          {question.helper_text}
+        </p>
       )}
 
-      <div className="grid grid-cols-2 gap-3">
+      <div
+        role="group"
+        aria-labelledby={`${groupId}-label`}
+        aria-describedby={question.helper_text ? `${groupId}-helper` : undefined}
+        className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+      >
         {question.options.map((option) => {
           const isSelected = selected.includes(option.value);
           const isDisabled =
@@ -316,33 +455,41 @@ export function MultiSelectQuestion({
             <motion.button
               key={option.value}
               type="button"
+              role="checkbox"
+              aria-checked={isSelected}
+              aria-disabled={isDisabled}
+              aria-label={`${option.label}${option.description ? `: ${option.description}` : ''}`}
               onClick={() => toggleOption(option.value)}
               disabled={isDisabled}
               whileTap={{ scale: 0.97 }}
               className={cn(
+                // Base styles with minimum touch target
                 'relative p-4 rounded-xl border-2 text-left transition-all',
+                'min-h-[56px] touch-manipulation',
+                'focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
                 isSelected
                   ? 'border-pink-500 bg-pink-50'
                   : isDisabled
                     ? 'border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed'
-                    : 'border-gray-200 hover:border-pink-200'
+                    : 'border-gray-200 hover:border-pink-200 active:bg-pink-50/50'
               )}
             >
               <div className="flex items-start gap-3">
                 <div
                   className={cn(
-                    'w-5 h-5 rounded flex-shrink-0 flex items-center justify-center border-2 mt-0.5',
+                    'w-6 h-6 rounded flex-shrink-0 flex items-center justify-center border-2 mt-0.5',
                     isSelected
                       ? 'bg-pink-500 border-pink-500'
                       : 'border-gray-300'
                   )}
+                  aria-hidden="true"
                 >
-                  {isSelected && <Check className="w-3 h-3 text-white" />}
+                  {isSelected && <Check className="w-4 h-4 text-white" />}
                 </div>
-                <div>
-                  <span className="font-medium text-gray-900">{option.label}</span>
+                <div className="min-w-0">
+                  <span className="font-medium text-gray-900 text-base">{option.label}</span>
                   {option.description && (
-                    <p className="text-xs text-gray-500 mt-1">{option.description}</p>
+                    <p className="text-sm text-gray-500 mt-1">{option.description}</p>
                   )}
                 </div>
               </div>
@@ -352,12 +499,16 @@ export function MultiSelectQuestion({
       </div>
 
       {question.max_selections && (
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-400" aria-live="polite">
           {selected.length} / {question.max_selections} geselecteerd
         </p>
       )}
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-500" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -375,51 +526,70 @@ interface SelectQuestionProps {
 
 export function SelectQuestion({ question, value, onChange, error }: SelectQuestionProps) {
   const options = question.options as SelectOption[];
+  const groupId = `select-${question.id}`;
 
-  // Use card-style for <= 4 options, dropdown for more
+  // Use card-style for <= 5 options, dropdown for more
   const useCards = options.length <= 5;
 
   if (useCards) {
     return (
       <div className="space-y-4">
-        <label className="block text-base font-medium text-gray-900">
+        <label
+          id={`${groupId}-label`}
+          className="block text-base font-medium text-gray-900"
+        >
           {question.label}
-          {question.required && <span className="text-pink-500 ml-1">*</span>}
+          {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+          {question.required && <span className="sr-only">(verplicht)</span>}
         </label>
 
         {question.helper_text && (
-          <p className="text-sm text-gray-500">{question.helper_text}</p>
+          <p id={`${groupId}-helper`} className="text-sm text-gray-500">
+            {question.helper_text}
+          </p>
         )}
 
-        <div className="space-y-2">
+        <div
+          role="radiogroup"
+          aria-labelledby={`${groupId}-label`}
+          aria-describedby={question.helper_text ? `${groupId}-helper` : undefined}
+          className="space-y-2"
+        >
           {options.map((option) => (
             <motion.button
               key={option.value}
               type="button"
+              role="radio"
+              aria-checked={value === option.value}
+              aria-label={`${option.label}${option.description ? `: ${option.description}` : ''}`}
               onClick={() => onChange(option.value)}
               whileTap={{ scale: 0.98 }}
               className={cn(
+                // Base styles with minimum touch target
                 'w-full p-4 rounded-xl border-2 text-left transition-all',
+                'min-h-[56px] touch-manipulation',
+                'focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
                 value === option.value
                   ? 'border-pink-500 bg-pink-50'
-                  : 'border-gray-200 hover:border-pink-200'
+                  : 'border-gray-200 hover:border-pink-200 active:bg-pink-50/50'
               )}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={cn(
-                    'w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center border-2',
+                    'w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center border-2',
                     value === option.value
                       ? 'bg-pink-500 border-pink-500'
                       : 'border-gray-300'
                   )}
+                  aria-hidden="true"
                 >
                   {value === option.value && (
-                    <div className="w-2 h-2 bg-white rounded-full" />
+                    <div className="w-2.5 h-2.5 bg-white rounded-full" />
                   )}
                 </div>
-                <div className="flex-1">
-                  <span className="font-medium text-gray-900">{option.label}</span>
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium text-gray-900 text-base">{option.label}</span>
                   {option.description && (
                     <p className="text-sm text-gray-500 mt-0.5">{option.description}</p>
                   )}
@@ -429,31 +599,48 @@ export function SelectQuestion({ question, value, onChange, error }: SelectQuest
           ))}
         </div>
 
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && (
+          <p className="text-sm text-red-500" role="alert">
+            {error}
+          </p>
+        )}
       </div>
     );
   }
 
-  // Dropdown for many options
+  // Dropdown for many options - mobile optimized
   return (
     <div className="space-y-4">
-      <label className="block text-base font-medium text-gray-900">
+      <label
+        htmlFor={groupId}
+        className="block text-base font-medium text-gray-900"
+      >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1">*</span>}
+        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
       {question.helper_text && (
-        <p className="text-sm text-gray-500">{question.helper_text}</p>
+        <p id={`${groupId}-helper`} className="text-sm text-gray-500">
+          {question.helper_text}
+        </p>
       )}
 
       <div className="relative">
         <select
+          id={groupId}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
+          aria-describedby={question.helper_text ? `${groupId}-helper` : undefined}
+          aria-invalid={!!error}
           className={cn(
             'w-full p-4 pr-10 rounded-xl border-2 bg-white appearance-none cursor-pointer transition-all',
-            'focus:outline-none focus:border-pink-500',
-            value ? 'border-pink-500' : 'border-gray-200'
+            'focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20',
+            // Mobile: 16px font prevents iOS zoom on focus
+            'text-base',
+            'touch-manipulation',
+            'min-h-[56px]',
+            value ? 'border-pink-500' : error ? 'border-red-300' : 'border-gray-200'
           )}
         >
           <option value="" disabled>
@@ -465,10 +652,14 @@ export function SelectQuestion({ question, value, onChange, error }: SelectQuest
             </option>
           ))}
         </select>
-        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" aria-hidden="true" />
       </div>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-500" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -487,52 +678,78 @@ interface TextQuestionProps {
 export function TextQuestion({ question, value, onChange, error }: TextQuestionProps) {
   const isTextarea = question.type === 'textarea';
   const maxLength = question.validation?.max_length;
+  const inputId = `text-${question.id}`;
 
   return (
     <div className="space-y-4">
-      <label className="block text-base font-medium text-gray-900">
+      <label
+        htmlFor={inputId}
+        className="block text-base font-medium text-gray-900"
+      >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1">*</span>}
+        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
       {question.helper_text && (
-        <p className="text-sm text-gray-500">{question.helper_text}</p>
+        <p id={`${inputId}-helper`} className="text-sm text-gray-500">
+          {question.helper_text}
+        </p>
       )}
 
       {isTextarea ? (
         <textarea
+          id={inputId}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           placeholder={question.placeholder}
           maxLength={maxLength}
           rows={4}
+          aria-describedby={question.helper_text ? `${inputId}-helper` : undefined}
+          aria-invalid={!!error}
           className={cn(
             'w-full p-4 rounded-xl border-2 bg-white transition-all resize-none',
-            'focus:outline-none focus:border-pink-500',
+            'focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20',
             'placeholder:text-gray-400',
+            // Mobile: 16px font prevents iOS zoom on focus
+            'text-base sm:text-sm',
+            'touch-manipulation',
             error ? 'border-red-300' : 'border-gray-200'
           )}
         />
       ) : (
         <input
+          id={inputId}
           type="text"
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           placeholder={question.placeholder}
           maxLength={maxLength}
+          aria-describedby={question.helper_text ? `${inputId}-helper` : undefined}
+          aria-invalid={!!error}
+          // Disable autocorrect for names etc
+          autoCorrect="off"
+          autoCapitalize="words"
           className={cn(
             'w-full p-4 rounded-xl border-2 bg-white transition-all',
-            'focus:outline-none focus:border-pink-500',
+            'focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20',
             'placeholder:text-gray-400',
+            // Mobile: 16px font prevents iOS zoom on focus
+            'text-base sm:text-sm',
+            'touch-manipulation',
             error ? 'border-red-300' : 'border-gray-200'
           )}
         />
       )}
 
-      <div className="flex justify-between">
-        {error && <p className="text-sm text-red-500">{error}</p>}
+      <div className="flex justify-between items-start gap-2">
+        {error && (
+          <p className="text-sm text-red-500" role="alert">
+            {error}
+          </p>
+        )}
         {maxLength && (
-          <p className="text-xs text-gray-400 ml-auto">
+          <p className="text-xs text-gray-400 ml-auto flex-shrink-0">
             {(value || '').length} / {maxLength}
           </p>
         )}
@@ -553,34 +770,54 @@ interface NumberQuestionProps {
 }
 
 export function NumberQuestion({ question, value, onChange, error }: NumberQuestionProps) {
+  const inputId = `number-${question.id}`;
+
   return (
     <div className="space-y-4">
-      <label className="block text-base font-medium text-gray-900">
+      <label
+        htmlFor={inputId}
+        className="block text-base font-medium text-gray-900"
+      >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1">*</span>}
+        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
       {question.helper_text && (
-        <p className="text-sm text-gray-500">{question.helper_text}</p>
+        <p id={`${inputId}-helper`} className="text-sm text-gray-500">
+          {question.helper_text}
+        </p>
       )}
 
       <input
+        id={inputId}
         type="number"
+        inputMode="numeric"
+        pattern="[0-9]*"
         value={value ?? ''}
         onChange={(e) => onChange(parseInt(e.target.value) || 0)}
         placeholder={question.placeholder}
         min={question.min}
         max={question.max}
+        aria-describedby={question.helper_text ? `${inputId}-helper` : undefined}
+        aria-invalid={!!error}
         className={cn(
           'w-full p-4 rounded-xl border-2 bg-white transition-all',
-          'focus:outline-none focus:border-pink-500',
+          'focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20',
           'placeholder:text-gray-400',
+          // Mobile: 16px font prevents iOS zoom on focus
+          'text-base sm:text-sm',
+          'touch-manipulation',
           '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none',
           error ? 'border-red-300' : 'border-gray-200'
         )}
       />
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-500" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -597,29 +834,48 @@ interface BooleanQuestionProps {
 }
 
 export function BooleanQuestion({ question, value, onChange, error }: BooleanQuestionProps) {
+  const groupId = `boolean-${question.id}`;
+
   return (
     <div className="space-y-4">
-      <label className="block text-base font-medium text-gray-900">
+      <label
+        id={`${groupId}-label`}
+        className="block text-base font-medium text-gray-900"
+      >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1">*</span>}
+        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
       {question.description && (
-        <p className="text-sm text-gray-500">{question.description}</p>
+        <p id={`${groupId}-desc`} className="text-sm text-gray-500">
+          {question.description}
+        </p>
       )}
 
-      <div className="flex gap-3">
+      <div
+        role="radiogroup"
+        aria-labelledby={`${groupId}-label`}
+        aria-describedby={question.description ? `${groupId}-desc` : undefined}
+        className="flex gap-3"
+      >
         {question.options.map((option) => (
           <motion.button
             key={String(option.value)}
             type="button"
+            role="radio"
+            aria-checked={value === option.value}
             onClick={() => onChange(option.value)}
             whileTap={{ scale: 0.97 }}
             className={cn(
+              // Base styles with minimum touch target
               'flex-1 p-4 rounded-xl border-2 font-medium transition-all',
+              'min-h-[56px] touch-manipulation',
+              'focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
+              'text-base',
               value === option.value
                 ? 'border-pink-500 bg-pink-50 text-pink-700'
-                : 'border-gray-200 hover:border-pink-200 text-gray-700'
+                : 'border-gray-200 hover:border-pink-200 active:bg-pink-50/50 text-gray-700'
             )}
           >
             {option.label}
@@ -627,7 +883,11 @@ export function BooleanQuestion({ question, value, onChange, error }: BooleanQue
         ))}
       </div>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-500" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
