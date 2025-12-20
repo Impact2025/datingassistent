@@ -8,7 +8,8 @@ import { Loader2, Settings, LogOut, CreditCard, Sun, Moon } from 'lucide-react';
 import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
 import { TransformatieDashboardView } from '@/components/transformatie/TransformatieDashboardView';
-import { TransformatieOnboardingFlow } from '@/components/transformatie/TransformatieOnboardingFlow';
+import { DatingSnapshotFlow } from '@/components/onboarding/snapshot';
+import type { UserOnboardingProfile } from '@/types/dating-snapshot.types';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { Button } from '@/components/ui/button';
 import { useUser } from '@/providers/user-provider';
@@ -24,7 +25,6 @@ function TransformatieContent() {
   const { user, userProfile, logout } = useUser();
   const { theme, setTheme, actualTheme, mounted } = useTheme();
   const { userTier, isLoading: tierLoading } = useAccessControl();
-  const [savingOnboarding, setSavingOnboarding] = useState(false);
 
   // OPTIMIZED: Use cached enrollment status from React Query
   const { data: transformatieData, isLoading: enrollmentLoading, isEnrolled, needsOnboarding } = useTransformatieEnrollment();
@@ -53,30 +53,13 @@ function TransformatieContent() {
   // Local state to track onboarding completion (prevents race condition)
   const [onboardingJustCompleted, setOnboardingJustCompleted] = useState(false);
 
-  // Handle onboarding completion
-  const handleOnboardingComplete = useCallback(async (data: any) => {
-    setSavingOnboarding(true);
-    try {
-      const response = await fetch('/api/transformatie/onboarding', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data }),
-      });
-
-      if (response.ok) {
-        console.log('✅ Onboarding saved successfully');
-        // Set local state FIRST to immediately show dashboard (prevents race condition)
-        setOnboardingJustCompleted(true);
-        // Then invalidate cache in background
-        queryClient.invalidateQueries({ queryKey: ['enrollment-status'] });
-      } else {
-        console.error('Failed to save onboarding');
-      }
-    } catch (err) {
-      console.error('Error saving onboarding:', err);
-    } finally {
-      setSavingOnboarding(false);
-    }
+  // Handle onboarding completion (Dating Snapshot)
+  const handleOnboardingComplete = useCallback(async (profile: UserOnboardingProfile) => {
+    console.log('✅ Dating Snapshot completed:', profile.displayName);
+    // The DatingSnapshotFlow already saves to API, just update local state
+    setOnboardingJustCompleted(true);
+    // Invalidate cache to refetch enrollment status
+    queryClient.invalidateQueries({ queryKey: ['enrollment-status'] });
   }, [queryClient]);
 
   if (loading) {
@@ -108,8 +91,7 @@ function TransformatieContent() {
   // Show onboarding if needed (but NOT if just completed - prevents race condition)
   if (needsOnboarding && !onboardingJustCompleted) {
     return (
-      <TransformatieOnboardingFlow
-        userName={user?.name}
+      <DatingSnapshotFlow
         onComplete={handleOnboardingComplete}
       />
     );
