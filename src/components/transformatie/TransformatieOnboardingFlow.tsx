@@ -124,7 +124,7 @@ export function TransformatieOnboardingFlow({
                   {/* Video */}
                   <video
                     ref={videoRef}
-                    src="/videos/onboarding/Welkom_transformatie.mp4"
+                    src="https://media.datingassistent.nl/videos/transformatie/module-1-les-1-welkom-bij-je-transformatie.mp4"
                     playsInline
                     muted={isMuted}
                     controls={false}
