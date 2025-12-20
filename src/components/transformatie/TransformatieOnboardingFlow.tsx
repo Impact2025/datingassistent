@@ -1,6 +1,14 @@
 'use client';
 
 /**
+ * @deprecated This component is deprecated and no longer used.
+ * Use DatingSnapshotFlow from '@/components/onboarding/snapshot' instead.
+ *
+ * The DatingSnapshotFlow provides a comprehensive 7-section, 42-question
+ * onboarding experience with deep personalization data collection.
+ *
+ * This file is kept for reference but should be removed in a future cleanup.
+ *
  * TransformatieOnboardingFlow - World-class onboarding experience
  *
  * Minimalist, pink (no gradients), professional
