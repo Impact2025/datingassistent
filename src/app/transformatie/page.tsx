@@ -50,6 +50,9 @@ function TransformatieContent() {
     }
   }, [enrollmentLoading, isEnrolled, router]);
 
+  // Local state to track onboarding completion (prevents race condition)
+  const [onboardingJustCompleted, setOnboardingJustCompleted] = useState(false);
+
   // Handle onboarding completion
   const handleOnboardingComplete = useCallback(async (data: any) => {
     setSavingOnboarding(true);
@@ -62,7 +65,9 @@ function TransformatieContent() {
 
       if (response.ok) {
         console.log('✅ Onboarding saved successfully');
-        // Invalidate enrollment cache to refetch updated onboarding status
+        // Set local state FIRST to immediately show dashboard (prevents race condition)
+        setOnboardingJustCompleted(true);
+        // Then invalidate cache in background
         queryClient.invalidateQueries({ queryKey: ['enrollment-status'] });
       } else {
         console.error('Failed to save onboarding');
@@ -100,8 +105,8 @@ function TransformatieContent() {
     return null;
   }
 
-  // Show onboarding if needed
-  if (needsOnboarding) {
+  // Show onboarding if needed (but NOT if just completed - prevents race condition)
+  if (needsOnboarding && !onboardingJustCompleted) {
     return (
       <TransformatieOnboardingFlow
         userName={user?.name}

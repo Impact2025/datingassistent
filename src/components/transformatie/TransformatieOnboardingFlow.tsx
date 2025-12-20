@@ -138,45 +138,51 @@ export function TransformatieOnboardingFlow({
 
                   {/* Thumbnail Overlay */}
                   <div className={cn(
-                    "absolute inset-0 bg-pink-500 flex flex-col items-center justify-end text-white px-6 pb-6 pt-16 transition-opacity duration-300 rounded-t-3xl",
+                    "absolute inset-0 bg-gradient-to-b from-pink-500 via-pink-500 to-pink-600 flex flex-col items-center justify-between text-white transition-opacity duration-300 rounded-t-3xl overflow-visible",
                     videoPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
                   )}>
-                    {/* Avatar */}
+                    {/* Avatar positioned outside container */}
                     <motion.div
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ delay: 0.2 }}
-                      className="absolute -top-12 left-1/2 -translate-x-1/2 z-20"
+                      className="absolute -top-10 left-1/2 -translate-x-1/2 z-20"
                     >
-                      <IrisAvatar size="xl" showGlow className="ring-4 ring-white/30 shadow-xl" />
+                      <IrisAvatar size="xl" showGlow className="ring-4 ring-white shadow-2xl" />
                     </motion.div>
 
-                    <div className="text-center mt-8">
+                    {/* Center content with proper spacing from avatar */}
+                    <div className="flex-1 flex flex-col items-center justify-center pt-16 pb-4 px-6">
+                      {/* Play button - prominent and centered */}
+                      <motion.button
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.4, type: 'spring', bounce: 0.5 }}
+                        onClick={handlePlayVideo}
+                        className="w-20 h-20 rounded-full bg-white text-pink-500 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform mb-6"
+                      >
+                        <Play className="w-9 h-9 ml-1" fill="currentColor" />
+                      </motion.button>
+                    </div>
+
+                    {/* Bottom text section with dark overlay for readability */}
+                    <div className="w-full bg-gradient-to-t from-black/40 via-black/20 to-transparent px-6 pb-6 pt-8">
                       <motion.h2
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className="text-2xl font-bold mb-2"
+                        transition={{ delay: 0.5 }}
+                        className="text-2xl font-bold mb-2 text-center drop-shadow-lg"
                       >
                         Welkom bij De Transformatie
                       </motion.h2>
                       <motion.p
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                        className="text-pink-100 text-center mb-6"
+                        transition={{ delay: 0.6 }}
+                        className="text-white/90 text-center text-sm drop-shadow-md"
                       >
                         Iris heeft een persoonlijk bericht voor je
                       </motion.p>
-                      <motion.button
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.6, type: 'spring', bounce: 0.5 }}
-                        onClick={handlePlayVideo}
-                        className="w-16 h-16 rounded-full bg-white text-pink-500 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-                      >
-                        <Play className="w-7 h-7 ml-1" fill="currentColor" />
-                      </motion.button>
                     </div>
                   </div>
 

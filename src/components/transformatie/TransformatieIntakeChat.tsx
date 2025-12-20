@@ -287,7 +287,7 @@ export function TransformatieIntakeChat({ onComplete, className }: Transformatie
   const showChips = (currentMessage?.inputType === "chips" || currentMessage?.inputType === "multi-chips") && !isTyping;
 
   return (
-    <div className={cn("flex flex-col h-full bg-white", className)}>
+    <div className={cn("flex flex-col h-full bg-white", className)} style={{ colorScheme: 'light' }}>
       {/* Header - Minimalist */}
       <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
         <IrisAvatar size="sm" />
@@ -439,7 +439,7 @@ export function TransformatieIntakeChat({ onComplete, className }: Transformatie
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 border-t border-gray-100"
+          className="p-4 border-t border-gray-100 bg-white"
         >
           <form
             onSubmit={(e) => {
@@ -454,7 +454,8 @@ export function TransformatieIntakeChat({ onComplete, className }: Transformatie
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={currentMessage?.placeholder || "Type hier..."}
-              className="flex-1 px-4 py-3 rounded-full border border-gray-200 focus:border-pink-500 focus:outline-none text-sm"
+              className="flex-1 px-4 py-3 rounded-full border border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 focus:border-pink-500 focus:outline-none text-sm"
+              style={{ colorScheme: 'light' }}
             />
             <Button
               type="submit"
