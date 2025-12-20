@@ -30,7 +30,6 @@ export default function VerificationEmail({
   expiresIn = '24 uur',
 }: VerificationEmailProps) {
   const hasCode = verificationCode && verificationCode.length > 0;
-  const codeDigits = hasCode ? verificationCode.split('') : [];
 
   // Determine preview text based on verification type
   const previewText = hasCode
@@ -70,30 +69,33 @@ export default function VerificationEmail({
                 Je verificatiecode
               </Text>
 
-              <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto' }}>
-                <tr>
-                  {codeDigits.map((digit, index) => (
-                    <td key={index} style={{ padding: '0 4px' }}>
-                      <div style={{
-                        backgroundColor: colors.white,
-                        border: `2px solid ${colors.primary}`,
-                        borderRadius: '12px',
-                        width: '48px',
-                        height: '56px',
-                        display: 'inline-block',
-                        textAlign: 'center',
-                        lineHeight: '52px',
-                        fontSize: '28px',
-                        fontWeight: '700',
-                        color: colors.primary,
-                        fontFamily: 'monospace',
-                      }}>
-                        {digit}
-                      </div>
-                    </td>
-                  ))}
-                </tr>
-              </table>
+              {/* Makkelijk te kopiëren code - groot en duidelijk */}
+              <Text style={{
+                fontSize: '36px',
+                fontWeight: '700',
+                color: colors.primary,
+                fontFamily: 'monospace, Courier New, Courier',
+                letterSpacing: '8px',
+                margin: '0 0 8px 0',
+                padding: '16px 24px',
+                backgroundColor: colors.white,
+                borderRadius: '12px',
+                border: `2px solid ${colors.primary}`,
+                display: 'inline-block',
+                userSelect: 'all',
+                WebkitUserSelect: 'all',
+              }}>
+                {verificationCode}
+              </Text>
+
+              <Text style={{
+                fontSize: '12px',
+                color: colors.gray,
+                margin: '8px 0 0 0',
+                fontStyle: 'italic',
+              }}>
+                Tip: Selecteer en kopieer de code hierboven
+              </Text>
 
               <Text style={{
                 fontSize: '13px',
