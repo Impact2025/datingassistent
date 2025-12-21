@@ -28,7 +28,6 @@ import { GamificationWidget } from '../gamification/gamification-widget';
 import { useGamification } from '@/hooks/use-gamification';
 import { QuickWinsToday } from './quick-wins-today';
 import { MijnCursussenWidget } from './mijn-cursussen-widget';
-import { MyProgramsWidget } from './my-programs-widget';
 import { ToolModal } from '@/components/tools/tool-modal';
 import { WelcomeVideoCard } from './sections/welcome-video-card';
 import { ToolsGridSection } from './sections/tools-grid-section';
@@ -340,17 +339,6 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
             progress={transformatieProgress}
             onClick={handleTransformatieClick}
           />
-        )}
-
-        {/* My Programs Widget */}
-        {!showWelcomeVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: ANIMATION_DELAYS.PROGRAMS }}
-          >
-            <MyProgramsWidget />
-          </motion.div>
         )}
 
         {/* Tool Tiers - Minimalist Design */}

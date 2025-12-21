@@ -57,12 +57,13 @@ export function BottomNavigation() {
 
     // PRIORITY 1: Transformatie enrolled (highest tier)
     // Always show Transformatie if user has it
+    // Navigate to dashboard pad tab for consistent UX (same layout as other tabs)
     if (hasTransformatie) {
       return {
-        href: '/transformatie',
+        href: '/dashboard?tab=pad',
         icon: Heart,
         label: 'Mijn Reis',
-        active: isOnTransformatiePage,
+        active: currentTab === 'pad' || isOnTransformatiePage,
         color: 'text-gray-600',
         activeColor: 'text-pink-500',
         gradient: 'from-pink-500 to-rose-500',
@@ -70,12 +71,13 @@ export function BottomNavigation() {
     }
 
     // PRIORITY 2: Kickstart enrolled (starter tier)
+    // Navigate to dashboard pad tab for consistent UX (same layout as other tabs)
     if (hasKickstart) {
       return {
-        href: '/kickstart',
+        href: '/dashboard?tab=pad',
         icon: Sparkles,
         label: 'Kickstart',
-        active: isOnKickstartPage,
+        active: currentTab === 'pad' || isOnKickstartPage,
         color: 'text-gray-600',
         activeColor: 'text-amber-500',
         gradient: 'from-amber-500 to-orange-500',
