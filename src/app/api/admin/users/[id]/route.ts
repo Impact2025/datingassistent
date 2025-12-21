@@ -61,6 +61,7 @@ export async function GET(
 
 /**
  * PUT /api/admin/users/[id] - Update a user
+ * Supports: name, email, role, status (active/suspended/blocked), subscriptionStatus, emailVerified
  */
 export async function PUT(
   request: NextRequest,
@@ -69,38 +70,101 @@ export async function PUT(
   try {
     await requireAdmin(request);
     const { id } = await params;
-    const putUserId = id;
-    const updateData = await request.json();
-    const { email: putEmail, name: putName, role: putRole } = updateData;
+    const userId = parseInt(id);
 
-    if (!putEmail || !putName) {
-      return NextResponse.json({ error: 'Email and name are required' }, { status: 400 });
+    if (isNaN(userId)) {
+      return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
     }
 
-    // Check email uniqueness
-    const emailCheck = await sql`SELECT id FROM users WHERE email = ${putEmail} AND id != ${putUserId}`;
+    const body = await request.json();
+    const { name, email, role, status, subscriptionStatus, emailVerified } = body;
 
-    if (emailCheck.rows.length > 0) {
-      return NextResponse.json({ error: 'Email is already taken by another user' }, { status: 409 });
-    }
-
-    const updateResult = await sql`
-      UPDATE users SET email = ${putEmail}, name = ${putName}, role = ${putRole}, updated_at = NOW()
-      WHERE id = ${putUserId} RETURNING id, email, name, role, created_at, updated_at
-    `;
-
-    if (updateResult.rows.length === 0) {
+    // Check if user exists
+    const existingUser = await sql`SELECT id, role FROM users WHERE id = ${userId}`;
+    if (existingUser.rows.length === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const updatedUser = updateResult.rows[0];
+    // Build dynamic update query
+    const updates: string[] = [];
+    const values: any[] = [];
+    let paramIndex = 1;
+
+    if (name !== undefined && name.trim()) {
+      updates.push(`name = $${paramIndex++}`);
+      values.push(name.trim());
+    }
+
+    if (email !== undefined && email.trim()) {
+      // Check email uniqueness
+      const emailCheck = await sql`SELECT id FROM users WHERE email = ${email.trim().toLowerCase()} AND id != ${userId}`;
+      if (emailCheck.rows.length > 0) {
+        return NextResponse.json({ error: 'Email is already taken by another user' }, { status: 409 });
+      }
+      updates.push(`email = $${paramIndex++}`);
+      values.push(email.trim().toLowerCase());
+    }
+
+    if (role !== undefined) {
+      const allowedRoles = ['user', 'admin', 'coach'];
+      if (!allowedRoles.includes(role)) {
+        return NextResponse.json({ error: 'Invalid role. Must be: user, admin, or coach' }, { status: 400 });
+      }
+      updates.push(`role = $${paramIndex++}`);
+      values.push(role);
+    }
+
+    if (status !== undefined) {
+      const allowedStatuses = ['active', 'inactive', 'suspended', 'blocked'];
+      if (!allowedStatuses.includes(status)) {
+        return NextResponse.json({ error: 'Invalid status. Must be: active, inactive, suspended, or blocked' }, { status: 400 });
+      }
+      updates.push(`status = $${paramIndex++}`);
+      values.push(status);
+    }
+
+    if (subscriptionStatus !== undefined) {
+      const allowedSubs = ['free', 'premium', 'vip', 'pro'];
+      if (!allowedSubs.includes(subscriptionStatus)) {
+        return NextResponse.json({ error: 'Invalid subscription. Must be: free, premium, vip, or pro' }, { status: 400 });
+      }
+      updates.push(`subscription_status = $${paramIndex++}`);
+      values.push(subscriptionStatus);
+    }
+
+    if (emailVerified !== undefined) {
+      updates.push(`email_verified = $${paramIndex++}`);
+      values.push(Boolean(emailVerified));
+    }
+
+    if (updates.length === 0) {
+      return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
+    }
+
+    // Add updated_at and user ID
+    updates.push(`updated_at = NOW()`);
+    values.push(userId);
+
+    const updateQuery = `
+      UPDATE users
+      SET ${updates.join(', ')}
+      WHERE id = $${paramIndex}
+      RETURNING id, email, name, role, status, subscription_status, email_verified, updated_at
+    `;
+
+    const result = await sql.query(updateQuery, values);
+    const updatedUser = result.rows[0];
+
     return NextResponse.json({
+      success: true,
       user: {
         id: updatedUser.id,
         email: updatedUser.email,
         name: updatedUser.name,
         role: updatedUser.role,
-        status: 'active',
+        status: updatedUser.status || 'active',
+        subscriptionStatus: updatedUser.subscription_status || 'free',
+        emailVerified: updatedUser.email_verified,
         updatedAt: updatedUser.updated_at
       }
     });
@@ -112,7 +176,8 @@ export async function PUT(
 }
 
 /**
- * DELETE /api/admin/users/[id] - Delete a user
+ * DELETE /api/admin/users/[id] - Soft delete a user
+ * Anonymizes email and sets status to 'deleted'
  */
 export async function DELETE(
   request: NextRequest,
@@ -121,19 +186,42 @@ export async function DELETE(
   try {
     await requireAdmin(request);
     const { id } = await params;
-    const delUserId = id;
+    const userId = parseInt(id);
 
-    const userCheck = await sql`SELECT id, role FROM users WHERE id = ${delUserId}`;
+    if (isNaN(userId)) {
+      return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
+    }
+
+    const userCheck = await sql`SELECT id, role, email FROM users WHERE id = ${userId}`;
     if (userCheck.rows.length === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     if (userCheck.rows[0].role === 'admin') {
-      return NextResponse.json({ error: 'Cannot delete admin users' }, { status: 403 });
+      return NextResponse.json(
+        { error: 'Cannot delete admin users. Remove admin role first.' },
+        { status: 403 }
+      );
     }
 
-    await sql`DELETE FROM users WHERE id = ${delUserId}`;
-    return NextResponse.json({ message: 'User deleted successfully' });
+    // Soft delete: anonymize data and set status to deleted
+    const anonymizedEmail = `deleted_${userId}_${Date.now()}@deleted.local`;
+    await sql`
+      UPDATE users
+      SET
+        status = 'deleted',
+        email = ${anonymizedEmail},
+        name = 'Verwijderde gebruiker',
+        password_hash = NULL,
+        profile = NULL,
+        updated_at = NOW()
+      WHERE id = ${userId}
+    `;
+
+    return NextResponse.json({
+      success: true,
+      message: 'Gebruiker is succesvol verwijderd'
+    });
 
   } catch (error) {
     console.error('Delete user error:', error);

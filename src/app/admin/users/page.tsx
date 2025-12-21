@@ -38,7 +38,11 @@ import {
   Activity,
   TrendingUp,
   Users,
-  UserPlus
+  UserPlus,
+  Ban,
+  Trash2,
+  Edit,
+  Shield
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -88,6 +92,12 @@ export default function AdminUsers() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
+
+  // Edit user state
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [editForm, setEditForm] = useState({ name: '', email: '', role: '', subscriptionStatus: '' });
+  const [editLoading, setEditLoading] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchUsers();
@@ -139,6 +149,107 @@ export default function AdminUsers() {
       setStats(data);
     } catch (error) {
       console.error('Error fetching stats:', error);
+    }
+  };
+
+  // Open edit modal
+  const handleEditUser = (user: User) => {
+    setEditingUser(user);
+    setEditForm({
+      name: user.name || '',
+      email: user.email,
+      role: user.role || 'user',
+      subscriptionStatus: user.subscriptionStatus || 'free'
+    });
+    setEditError(null);
+  };
+
+  // Save user changes
+  const handleSaveUser = async () => {
+    if (!editingUser) return;
+
+    setEditLoading(true);
+    setEditError(null);
+
+    try {
+      const response = await fetch(`/api/admin/users/${editingUser.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          name: editForm.name,
+          email: editForm.email,
+          role: editForm.role,
+          subscriptionStatus: editForm.subscriptionStatus
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Opslaan mislukt');
+      }
+
+      // Update user in list
+      setUsers(users.map(u => u.id === editingUser.id ? { ...u, ...data.user } : u));
+      setEditingUser(null);
+      fetchUsers(); // Refresh list
+    } catch (error: any) {
+      setEditError(error.message || 'Er ging iets mis');
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  // Block/unblock user
+  const handleBlockUser = async (user: User) => {
+    const newStatus = user.status === 'suspended' ? 'active' : 'suspended';
+    const confirmMsg = newStatus === 'suspended'
+      ? `Weet je zeker dat je ${user.email} wilt blokkeren?`
+      : `Weet je zeker dat je ${user.email} wilt deblokkeren?`;
+
+    if (!confirm(confirmMsg)) return;
+
+    try {
+      const response = await fetch(`/api/admin/users/${user.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ status: newStatus })
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Actie mislukt');
+      }
+
+      fetchUsers(); // Refresh list
+    } catch (error: any) {
+      alert(error.message || 'Er ging iets mis');
+    }
+  };
+
+  // Delete user
+  const handleDeleteUser = async (user: User) => {
+    if (!confirm(`Weet je zeker dat je ${user.email} wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/admin/users/${user.id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Verwijderen mislukt');
+      }
+
+      fetchUsers(); // Refresh list
+      fetchStats(); // Update stats
+    } catch (error: any) {
+      alert(error.message || 'Er ging iets mis');
     }
   };
 
@@ -389,14 +500,37 @@ export default function AdminUsers() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Acties</DropdownMenuLabel>
                           <DropdownMenuItem onClick={() => setSelectedUser(user)}>
+                            <UserCheck className="w-4 h-4 mr-2" />
                             Bekijk details
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditUser(user)}>
+                            <Edit className="w-4 h-4 mr-2" />
                             Bewerk gebruiker
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">
-                            Blokkeer gebruiker
+                          <DropdownMenuItem
+                            onClick={() => handleBlockUser(user)}
+                            className={user.status === 'suspended' ? 'text-green-600' : 'text-orange-600'}
+                          >
+                            {user.status === 'suspended' ? (
+                              <>
+                                <Shield className="w-4 h-4 mr-2" />
+                                Deblokkeer
+                              </>
+                            ) : (
+                              <>
+                                <Ban className="w-4 h-4 mr-2" />
+                                Blokkeer
+                              </>
+                            )}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleDeleteUser(user)}
+                            className="text-red-600"
+                            disabled={user.role === 'admin'}
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Verwijder
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -499,8 +633,92 @@ export default function AdminUsers() {
                 <Button variant="outline" onClick={() => setSelectedUser(null)}>
                   Sluiten
                 </Button>
-                <Button>
+                <Button onClick={() => {
+                  if (selectedUser) {
+                    handleEditUser(selectedUser);
+                    setSelectedUser(null);
+                  }
+                }}>
                   Bewerken
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit User Dialog */}
+      <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Gebruiker Bewerken</DialogTitle>
+            <DialogDescription>
+              Pas de gegevens van {editingUser?.email} aan
+            </DialogDescription>
+          </DialogHeader>
+
+          {editingUser && (
+            <div className="space-y-4">
+              {editError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                  {editError}
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Naam</label>
+                <Input
+                  value={editForm.name}
+                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                  placeholder="Naam"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Email</label>
+                <Input
+                  value={editForm.email}
+                  onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                  placeholder="email@voorbeeld.nl"
+                  type="email"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Rol</label>
+                <Select value={editForm.role} onValueChange={(v) => setEditForm({ ...editForm, role: v })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecteer rol" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="user">Gebruiker</SelectItem>
+                    <SelectItem value="coach">Coach</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Abonnement</label>
+                <Select value={editForm.subscriptionStatus} onValueChange={(v) => setEditForm({ ...editForm, subscriptionStatus: v })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecteer abonnement" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="free">Gratis</SelectItem>
+                    <SelectItem value="premium">Premium</SelectItem>
+                    <SelectItem value="vip">VIP</SelectItem>
+                    <SelectItem value="pro">Pro</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-4">
+                <Button variant="outline" onClick={() => setEditingUser(null)} disabled={editLoading}>
+                  Annuleren
+                </Button>
+                <Button onClick={handleSaveUser} disabled={editLoading}>
+                  {editLoading ? 'Opslaan...' : 'Opslaan'}
                 </Button>
               </div>
             </div>

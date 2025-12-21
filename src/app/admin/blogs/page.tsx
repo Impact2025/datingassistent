@@ -10,8 +10,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 
-const ADMIN_EMAILS = ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'];
-
 interface BlogPost {
   id: string;
   title: string;
@@ -38,14 +36,11 @@ export default function BlogManagement() {
   const [currentBlog, setCurrentBlog] = useState<Partial<BlogPost>>({});
 
   useEffect(() => {
-    if (!loading) {
-      if (!user || (user.email && !ADMIN_EMAILS.includes(user.email))) {
-        router.push('/dashboard');
-      } else {
-        loadBlogs();
-      }
+    // Admin check is handled by the admin layout - just load blogs when user is available
+    if (!loading && user) {
+      loadBlogs();
     }
-  }, [user, loading, router]);
+  }, [user, loading]);
 
   const loadBlogs = async () => {
     try {
