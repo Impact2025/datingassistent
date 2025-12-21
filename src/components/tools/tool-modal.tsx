@@ -168,8 +168,10 @@ export function ToolModal({ isOpen, onClose, children, className }: ToolModalPro
               animate="visible"
               exit="exit"
               drag="y"
+              dragControls={dragControls}
+              dragListener={false}
               dragConstraints={{ top: 0, bottom: 0 }}
-              dragElastic={{ top: 0, bottom: 0.2 }}
+              dragElastic={{ top: 0, bottom: 0.3 }}
               onDragEnd={handleDragEnd}
               className={cn(
                 "pointer-events-auto w-full h-full bg-white shadow-2xl",
@@ -181,13 +183,19 @@ export function ToolModal({ isOpen, onClose, children, className }: ToolModalPro
               aria-modal="true"
               aria-labelledby="modal-title"
             >
-              {/* Drag Handle (Mobile) */}
-              <div className="flex justify-center pt-2 pb-1">
-                <div className="w-12 h-1 bg-gray-300 rounded-full" />
+              {/* Drag Handle (Mobile) - Only this area triggers swipe-to-close */}
+              <div
+                className="flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing touch-none select-none"
+                onPointerDown={startDrag}
+              >
+                <div className="w-12 h-1.5 bg-gray-300 rounded-full" />
               </div>
 
-              {/* Content */}
-              <div className="flex-1 overflow-y-auto">
+              {/* Content - Scrollable */}
+              <div
+                ref={contentRef}
+                className="flex-1 overflow-y-auto overscroll-contain touch-pan-y"
+              >
                 {children}
               </div>
             </motion.div>
