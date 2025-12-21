@@ -994,13 +994,20 @@ export function DatingSnapshotFlow({
     }
 
     return (
-      <div className={cn(
-        'min-h-[100dvh] bg-gradient-to-b from-pink-50/50 to-white',
-        'overflow-y-auto overscroll-y-none',
-        'py-4 px-4 safe-area-top safe-area-bottom',
-        className
-      )}>
-        <div className="max-w-lg mx-auto py-4 sm:py-8">
+      <div
+        className={cn(
+          'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+          'flex flex-col',
+          'overflow-hidden', // Prevent body scroll
+          className
+        )}
+      >
+        {/* Scrollable content container */}
+        <div
+          className="flex-1 overflow-y-auto overscroll-y-contain"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
+          <div className="max-w-lg mx-auto px-4 py-8 sm:py-12 safe-area-top safe-area-bottom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1125,6 +1132,7 @@ export function DatingSnapshotFlow({
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </motion.div>
+          </div>
         </div>
       </div>
     );
