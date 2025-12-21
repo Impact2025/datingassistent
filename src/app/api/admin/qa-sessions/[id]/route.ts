@@ -20,7 +20,7 @@ export async function PUT(
 ) {
   try {
     const authResult = await verifyAdminAuth(request);
-    if (!authResult.valid) {
+    if (!authResult.isValid) {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }
@@ -183,7 +183,7 @@ export async function DELETE(
 ) {
   try {
     const authResult = await verifyAdminAuth(request);
-    if (!authResult.valid) {
+    if (!authResult.isValid) {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }

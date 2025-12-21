@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     const authResult = await verifyAdminAuth(request);
-    if (!authResult.valid) {
+    if (!authResult.isValid) {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const authResult = await verifyAdminAuth(request);
-    if (!authResult.valid) {
+    if (!authResult.isValid) {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }
