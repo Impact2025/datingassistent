@@ -12,7 +12,6 @@ import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { AIContextNotifications } from '@/components/shared/ai-context-notifications';
 import { SocialMediaLinks } from '@/components/shared/social-media-links';
-import { Loader2 } from 'lucide-react';
 
 // World-class: React Query hooks for cached enrollment status
 import { useEnrollmentStatus } from '@/hooks/use-enrollment-status';
@@ -37,95 +36,84 @@ import { debugLog, DASHBOARD_TABS, TAB_REDIRECT_MAP, NAVIGATION_TABS, LOADING_ME
 import { announce } from '@/components/accessibility/screen-reader-announcer';
 
 // ============================================
-// LAZY LOADED COMPONENTS - Performance optimization
+// WORLD-CLASS: Optimized skeleton loaders per tab type
+// ============================================
+import {
+  DashboardSkeleton,
+  HomeTabSkeleton,
+  PadTabSkeleton,
+  CoachTabSkeleton,
+  ToolsTabSkeleton,
+  SettingsTabSkeleton,
+  SubscriptionTabSkeleton,
+  CommunityTabSkeleton,
+  EngagementSkeleton,
+} from '@/components/dashboard/skeletons';
+
+// ============================================
+// WORLD-CLASS: Consolidated lazy loading with specific skeletons
+// Grouped by usage pattern for optimal chunk splitting
 // ============================================
 
-// Dashboard Skeleton for loading states
-const DashboardSkeleton = () => (
-  <div className="space-y-4 animate-pulse">
-    <div className="h-32 bg-gray-200 rounded-xl"></div>
-    <div className="h-48 bg-gray-200 rounded-xl"></div>
-    <div className="grid grid-cols-2 gap-4">
-      <div className="h-24 bg-gray-200 rounded-xl"></div>
-      <div className="h-24 bg-gray-200 rounded-xl"></div>
-    </div>
-  </div>
-);
-
-// Core tabs - lazy loaded with skeleton
+// GROUP 1: Core navigation tabs (most frequently used - preload candidates)
 const SmartHomeTab = dynamicImport(() => import('@/components/dashboard/smart-home-tab').then(mod => ({ default: mod.SmartHomeTab })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <HomeTabSkeleton />,
   ssr: false
 });
 
 const EnhancedPadTab = dynamicImport(() => import('@/components/dashboard/enhanced-pad-tab').then(mod => ({ default: mod.EnhancedPadTab })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <PadTabSkeleton />,
   ssr: false
 });
 
 const CoachTab = dynamicImport(() => import('@/components/dashboard/coach-tab').then(mod => ({ default: mod.CoachTab })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <CoachTabSkeleton />,
   ssr: false
 });
 
 const ProfielTab = dynamicImport(() => import('@/components/dashboard/profiel-tab-new').then(mod => ({ default: mod.ProfielTab })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <ToolsTabSkeleton />,
   ssr: false
 });
 
-// Heavy modules - lazy loaded
+// GROUP 2: Tool modules (loaded on-demand when user navigates to specific tools)
 const ProfileSuite = dynamicImport(() => import('@/components/dashboard/profile-suite').then(mod => ({ default: mod.ProfileSuite })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <ToolsTabSkeleton />,
   ssr: false
 });
 
 const CommunicationHub = dynamicImport(() => import('@/components/dashboard/communication-hub').then(mod => ({ default: mod.CommunicationHub })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <ToolsTabSkeleton />,
   ssr: false
 });
 
 const DatenRelatiesModule = dynamicImport(() => import('@/components/dashboard/daten-relaties-module').then(mod => ({ default: mod.DatenRelatiesModule })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <ToolsTabSkeleton />,
   ssr: false
 });
 
 const GroeiDoelenModule = dynamicImport(() => import('@/components/dashboard/groei-doelen-module').then(mod => ({ default: mod.GroeiDoelenModule })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <ToolsTabSkeleton />,
   ssr: false
 });
 
 const LerenOntwikkelenModule = dynamicImport(() => import('@/components/dashboard/leren-ontwikkelen-module').then(mod => ({ default: mod.LerenOntwikkelenModule })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <ToolsTabSkeleton />,
   ssr: false
 });
 
+// GROUP 3: Secondary tabs (less frequently accessed)
 const DashboardTab = dynamicImport(() => import('@/components/dashboard/dashboard-tab').then(mod => ({ default: mod.DashboardTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
 const CommunityTab = dynamicImport(() => import('@/components/dashboard/community-tab').then(mod => ({ default: mod.CommunityTab })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <CommunityTabSkeleton />,
   ssr: false
 });
 
 const OnboardingFlow = dynamicImport(() => import('@/components/dashboard/onboarding-flow').then(mod => ({ default: mod.OnboardingFlow })), {
-  loading: () => <DashboardSkeleton />,
-  ssr: false
-});
-
-// Settings & Management tabs - lazy loaded
-const SettingsTab = dynamicImport(() => import('@/components/dashboard/settings-tab').then(mod => ({ default: mod.SettingsTab })), {
-  loading: () => <DashboardSkeleton />,
-  ssr: false
-});
-
-const DataManagementTab = dynamicImport(() => import('@/components/dashboard/data-management-tab').then(mod => ({ default: mod.DataManagementTab })), {
-  loading: () => <DashboardSkeleton />,
-  ssr: false
-});
-
-const SubscriptionTab = dynamicImport(() => import('@/components/dashboard/subscription-tab').then(mod => ({ default: mod.SubscriptionTab })), {
   loading: () => <DashboardSkeleton />,
   ssr: false
 });
@@ -135,9 +123,25 @@ const CursussenTab = dynamicImport(() => import('@/components/dashboard/cursusse
   ssr: false
 });
 
-// Engagement components - lazy loaded
+// GROUP 4: Settings & Account management
+const SettingsTab = dynamicImport(() => import('@/components/dashboard/settings-tab').then(mod => ({ default: mod.SettingsTab })), {
+  loading: () => <SettingsTabSkeleton />,
+  ssr: false
+});
+
+const DataManagementTab = dynamicImport(() => import('@/components/dashboard/data-management-tab').then(mod => ({ default: mod.DataManagementTab })), {
+  loading: () => <SettingsTabSkeleton />,
+  ssr: false
+});
+
+const SubscriptionTab = dynamicImport(() => import('@/components/dashboard/subscription-tab').then(mod => ({ default: mod.SubscriptionTab })), {
+  loading: () => <SubscriptionTabSkeleton />,
+  ssr: false
+});
+
+// GROUP 5: Engagement & Analytics (rarely accessed, large components)
 const DailyDashboard = dynamicImport(() => import('@/components/engagement/daily-dashboard').then(mod => ({ default: mod.DailyDashboard })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <EngagementSkeleton />,
   ssr: false
 });
 
@@ -146,27 +150,28 @@ const DailyCheckinModal = dynamicImport(() => import('@/components/engagement/da
 });
 
 const MonthlyReport = dynamicImport(() => import('@/components/engagement/monthly-report').then(mod => ({ default: mod.MonthlyReport })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <EngagementSkeleton />,
   ssr: false
 });
 
 const BadgesShowcase = dynamicImport(() => import('@/components/engagement/badges-showcase').then(mod => ({ default: mod.BadgesShowcase })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <EngagementSkeleton />,
   ssr: false
 });
 
 const YearlyReview = dynamicImport(() => import('@/components/engagement/yearly-review').then(mod => ({ default: mod.YearlyReview })), {
-  loading: () => <DashboardSkeleton />,
-  ssr: false
-});
-
-const WaardenKompasTool = dynamicImport(() => import('@/components/waarden-kompas/WaardenKompasTool').then(mod => ({ default: mod.WaardenKompasTool })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <EngagementSkeleton />,
   ssr: false
 });
 
 const DatingActivityLogger = dynamicImport(() => import('@/components/engagement/dating-activity-logger').then(mod => ({ default: mod.DatingActivityLogger })), {
-  loading: () => <DashboardSkeleton />,
+  loading: () => <EngagementSkeleton />,
+  ssr: false
+});
+
+// GROUP 6: Standalone tools & modals
+const WaardenKompasTool = dynamicImport(() => import('@/components/waarden-kompas/WaardenKompasTool').then(mod => ({ default: mod.WaardenKompasTool })), {
+  loading: () => <ToolsTabSkeleton />,
   ssr: false
 });
 
@@ -177,6 +182,34 @@ const TrialProgress = dynamicImport(() => import('@/components/dashboard/trial-p
 const DatingWeekNotificationModal = dynamicImport(() => import('@/components/dashboard/dating-week-notification-modal').then(mod => ({ default: mod.DatingWeekNotificationModal })), {
   ssr: false
 });
+
+// ============================================
+// WORLD-CLASS: Prefetch core tabs for instant navigation
+// ============================================
+const prefetchCoreTabs = () => {
+  // Prefetch the 4 main navigation tabs after initial load
+  // This ensures instant tab switching for the most common user journeys
+  const prefetchPromises = [
+    import('@/components/dashboard/smart-home-tab'),
+    import('@/components/dashboard/enhanced-pad-tab'),
+    import('@/components/dashboard/coach-tab'),
+    import('@/components/dashboard/profiel-tab-new'),
+  ];
+
+  // Use requestIdleCallback for non-blocking prefetch
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    (window as any).requestIdleCallback(() => {
+      Promise.all(prefetchPromises).catch(() => {
+        // Silent fail - prefetch is optimization only
+      });
+    });
+  } else {
+    // Fallback: prefetch after 2 seconds
+    setTimeout(() => {
+      Promise.all(prefetchPromises).catch(() => {});
+    }, 2000);
+  }
+};
 
 // Internal component with useSearchParams
 function DashboardPageContent() {
@@ -308,6 +341,13 @@ function DashboardPageContent() {
 
     return () => clearTimeout(timer);
   }, [user, loading, showOnboarding, kickstartState.needsOnboarding, transformatieState.needsOnboarding, shouldShowInvite]);
+
+  // WORLD-CLASS: Prefetch core tabs after initial dashboard load
+  useEffect(() => {
+    if (!loading && user && !kickstartState.needsOnboarding && !transformatieState.needsOnboarding) {
+      prefetchCoreTabs();
+    }
+  }, [loading, user, kickstartState.needsOnboarding, transformatieState.needsOnboarding]);
 
   // Check if user is admin (from database role)
   const [isAdminUser, setIsAdminUser] = useState(false);

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useCallback } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence, PanInfo, useDragControls } from 'framer-motion';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -9,10 +9,10 @@ import { cn } from '@/lib/utils';
  * ToolModal - Premium full-screen modal for tool content
  *
  * Features:
- * - Mobile: Slide-up animation with swipe-down to close
+ * - Mobile: Slide-up animation with swipe-down to close (via drag handle only)
  * - Desktop: Centered modal with backdrop blur
  * - Accessibility: Focus trap, ESC key, ARIA labels
- * - Gestures: Swipe down (mobile), click outside, ESC key
+ * - Gestures: Swipe down on handle (mobile), click outside, ESC key
  */
 
 interface ToolModalProps {
@@ -23,6 +23,9 @@ interface ToolModalProps {
 }
 
 export function ToolModal({ isOpen, onClose, children, className }: ToolModalProps) {
+  const dragControls = useDragControls();
+  const contentRef = useRef<HTMLDivElement>(null);
+
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -68,16 +71,21 @@ export function ToolModal({ isOpen, onClose, children, className }: ToolModalPro
     }
   }, [onClose]);
 
-  // Handle swipe down gesture (mobile)
+  // Handle swipe down gesture (mobile) - only via drag handle
   const handleDragEnd = useCallback(
     (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-      // If swiped down more than 150px with sufficient velocity, close modal
-      if (info.offset.y > 150 || info.velocity.y > 500) {
+      // If swiped down more than 100px with sufficient velocity, close modal
+      if (info.offset.y > 100 || info.velocity.y > 400) {
         onClose();
       }
     },
     [onClose]
   );
+
+  // Start drag from handle
+  const startDrag = useCallback((event: React.PointerEvent) => {
+    dragControls.start(event);
+  }, [dragControls]);
 
   // Mobile animation variants
   const mobileVariants = {

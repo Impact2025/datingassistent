@@ -253,7 +253,14 @@
       "Bash(more:*)",
       "Bash(git merge:*)",
       "WebFetch(domain:api.github.com)",
-      "Bash(git rev-parse:*)"
+      "Bash(git rev-parse:*)",
+      "Bash(cmd //c \"taskkill //F //PID 52120\")",
+      "WebFetch(domain:media.datingassistent.nl)",
+      "Bash(openssl s_client:*)",
+      "Bash(openssl rand:*)",
+      "Bash(git restore:*)",
+      "Bash(start http://localhost:9000/admin/qa-sessions)",
+      "Bash(cmd //c \"taskkill //F //PID 21616\")"
     ],
     "deny": [],
     "ask": []
