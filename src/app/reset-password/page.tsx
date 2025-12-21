@@ -160,7 +160,7 @@ function ResetPasswordContent() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
-                placeholder="Minimaal 8 karakters"
+                placeholder="Minimaal 8 karakters, hoofdletter, cijfer & speciaal teken"
               />
             </div>
             <div className="space-y-2">

@@ -25,7 +25,12 @@ import { LoadingSpinner } from "../shared/loading-spinner";
 const signupSchema = z.object({
   name: z.string().min(2, "Naam moet minimaal 2 karakters lang zijn."),
   email: z.string().email("Ongeldig e-mailadres."),
-  password: z.string().min(8, "Wachtwoord moet minimaal 8 karakters bevatten."),
+  password: z.string()
+    .min(8, "Wachtwoord moet minimaal 8 karakters bevatten.")
+    .regex(/[A-Z]/, "Wachtwoord moet minimaal één hoofdletter bevatten.")
+    .regex(/[a-z]/, "Wachtwoord moet minimaal één kleine letter bevatten.")
+    .regex(/[0-9]/, "Wachtwoord moet minimaal één cijfer bevatten.")
+    .regex(/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/, "Wachtwoord moet minimaal één speciaal teken bevatten (!@#$%^&* etc.)."),
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -287,7 +292,7 @@ export function RegistrationContainer() {
                 <FormItem>
                   <FormLabel>Wachtwoord</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Minimaal 8 karakters" {...field} />
+                    <Input type="password" placeholder="Minimaal 8 karakters, hoofdletter, cijfer & speciaal teken" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

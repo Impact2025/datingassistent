@@ -33,7 +33,12 @@ const signupSchema = z.object({
   firstName: z.string().min(2, "Voornaam moet minimaal 2 karakters lang zijn."),
   lastName: z.string().min(2, "Achternaam moet minimaal 2 karakters lang zijn."),
   email: z.string().email("Ongeldig e-mailadres."),
-  password: z.string().min(8, "Wachtwoord moet minimaal 8 karakters bevatten."),
+  password: z.string()
+    .min(8, "Wachtwoord moet minimaal 8 karakters bevatten.")
+    .regex(/[A-Z]/, "Wachtwoord moet minimaal één hoofdletter bevatten.")
+    .regex(/[a-z]/, "Wachtwoord moet minimaal één kleine letter bevatten.")
+    .regex(/[0-9]/, "Wachtwoord moet minimaal één cijfer bevatten.")
+    .regex(/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/, "Wachtwoord moet minimaal één speciaal teken bevatten (!@#$%^&* etc.)."),
   confirmPassword: z.string().min(1, "Bevestig je wachtwoord."),
   termsAccepted: z.boolean().refine((val) => val === true, {
     message: "Je moet akkoord gaan met de voorwaarden.",
@@ -863,7 +868,7 @@ export function RegistrationClientComponent() {
                       <FormItem suppressHydrationWarning>
                         <FormLabel suppressHydrationWarning>Wachtwoord</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="Minimaal 8 karakters" {...field} suppressHydrationWarning />
+                          <Input type="password" placeholder="Minimaal 8 karakters, hoofdletter, cijfer & speciaal teken" {...field} suppressHydrationWarning />
                         </FormControl>
                         <FormMessage suppressHydrationWarning />
                       </FormItem>
@@ -930,7 +935,7 @@ export function RegistrationClientComponent() {
                         </div>
                       ) : registrationError === "password_too_short" ? (
                         <p>
-                          <strong>Wachtwoord te kort:</strong> Je wachtwoord moet minimaal 8 karakters bevatten.
+                          <strong>Wachtwoord te kort:</strong> Je wachtwoord moet minimaal 8 karakters bevatten, met hoofdletter, kleine letter, cijfer en speciaal teken.
                         </p>
                       ) : (
                         <p>

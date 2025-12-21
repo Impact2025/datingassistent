@@ -40,7 +40,11 @@ const accountSchema = z.object({
     .email('Ongeldig e-mailadres'),
   password: z
     .string()
-    .min(8, 'Wachtwoord moet minimaal 8 karakters bevatten'),
+    .min(8, 'Wachtwoord moet minimaal 8 karakters bevatten')
+    .regex(/[A-Z]/, 'Wachtwoord moet minimaal één hoofdletter bevatten')
+    .regex(/[a-z]/, 'Wachtwoord moet minimaal één kleine letter bevatten')
+    .regex(/[0-9]/, 'Wachtwoord moet minimaal één cijfer bevatten')
+    .regex(/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/, 'Wachtwoord moet minimaal één speciaal teken bevatten (!@#$%^&* etc.)'),
 });
 
 type AccountFormValues = z.infer<typeof accountSchema>;
@@ -169,7 +173,7 @@ export function LeadAccountStep({ onComplete }: LeadAccountStepProps) {
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="Minimaal 8 karakters"
+                    placeholder="Minimaal 8 karakters, hoofdletter, cijfer & speciaal teken"
                     autoComplete="new-password"
                     {...field}
                   />
