@@ -33,6 +33,8 @@ import { cn } from '@/lib/utils';
 import { IrisAvatar } from '@/components/onboarding/IrisAvatar';
 import { IrisVideoScreen } from '@/components/onboarding/IrisVideoScreen';
 import { QuestionRenderer } from './QuestionComponents';
+import { AIAnalysisLoader } from './AIAnalysisLoader';
+import { AIAnalysisResults } from './AIAnalysisResults';
 import {
   DATING_SNAPSHOT_FLOW,
   getTotalQuestions,
@@ -53,6 +55,7 @@ import {
   ATTACHMENT_STYLE_TEXTS,
   ENERGY_PROFILE_TEXTS,
 } from '@/types/dating-snapshot.types';
+import type { SnapshotAIAnalysis, AnalysisPhase, AnalysisStreamChunk } from '@/lib/ai/snapshot-analysis-types';
 
 // =====================================================
 // TYPES
@@ -609,17 +612,24 @@ export function DatingSnapshotFlow({
   // =====================================================
   if (step === 'intro') {
     return (
-      <div className={cn(
-        'min-h-[100dvh] bg-gradient-to-b from-pink-50/50 to-white',
-        'overflow-y-auto overscroll-y-none', // Enable scrolling on mobile
-        'flex flex-col items-center justify-start sm:justify-center', // Start-align on mobile, center on larger
-        'py-4 px-4 safe-area-top safe-area-bottom',
-        className
-      )}>
+      <div
+        className={cn(
+          'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+          'flex flex-col',
+          'overflow-hidden', // Prevent body scroll
+          className
+        )}
+      >
+        {/* Scrollable content container */}
+        <div
+          className="flex-1 overflow-y-auto overscroll-y-contain"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
+          <div className="min-h-full flex flex-col items-center justify-start sm:justify-center py-4 px-4 safe-area-top safe-area-bottom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-lg my-auto sm:my-0"
+          className="w-full max-w-lg"
         >
           <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 overflow-hidden">
             {/* Header with Iris */}
@@ -652,19 +662,6 @@ export function DatingSnapshotFlow({
 
             {/* Content */}
             <div className="p-6 sm:p-8">
-              {/* Coach message */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="bg-gray-50 rounded-2xl p-4 mb-6"
-              >
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  "Hoi! Ik ben Iris, je coach. De volgende {getTotalEstimatedMinutes()} minuten bepalen hoe ik je het beste kan helpen.
-                  Beantwoord eerlijk — er zijn geen foute antwoorden."
-                </p>
-              </motion.div>
-
               {/* What you'll discover */}
               <div className="space-y-3 mb-8">
                 {[
@@ -677,7 +674,7 @@ export function DatingSnapshotFlow({
                     key={item.text}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 + index * 0.1 }}
+                    transition={{ delay: 0.5 + index * 0.1 }}
                     className="flex items-center gap-3"
                   >
                     <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
@@ -692,7 +689,7 @@ export function DatingSnapshotFlow({
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
+                transition={{ delay: 0.9 }}
                 className="flex justify-center gap-8 mb-8 text-center"
               >
                 <div>
@@ -713,7 +710,7 @@ export function DatingSnapshotFlow({
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1 }}
+                transition={{ delay: 1 }}
               >
                 <Button
                   onClick={handleStart}
@@ -729,6 +726,8 @@ export function DatingSnapshotFlow({
             </div>
           </div>
         </motion.div>
+          </div>
+        </div>
       </div>
     );
   }

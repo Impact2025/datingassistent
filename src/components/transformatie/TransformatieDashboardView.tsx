@@ -39,6 +39,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { ModuleSidebar } from './ModuleSidebar';
+import { QASessionsCalendar } from './QASessionsCalendar';
 import type { TransformatieModule, TransformatieLesson, LessonProgress as LessonProgressType } from '@/app/api/transformatie/route';
 
 interface TransformatieDashboardViewProps {
@@ -750,6 +751,9 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
       <div className="flex-1 min-w-0">
         {currentLesson ? (
           <div className="space-y-6">
+            {/* Q&A Sessions - Always visible */}
+            <QASessionsCalendar />
+
             {/* Lesson Header */}
             <Card className="border-gray-200 shadow-sm">
               <CardContent className="p-6">
@@ -1037,11 +1041,16 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             </div>
           </div>
         ) : (
-          <Card className="border-gray-200 shadow-sm">
-            <CardContent className="p-12 text-center">
-              <p className="text-gray-500">Selecteer een les om te beginnen</p>
-            </CardContent>
-          </Card>
+          <div className="space-y-6">
+            {/* Q&A Sessions - When no lesson selected */}
+            <QASessionsCalendar />
+
+            <Card className="border-gray-200 shadow-sm">
+              <CardContent className="p-12 text-center">
+                <p className="text-gray-500">Selecteer een les om te beginnen</p>
+              </CardContent>
+            </Card>
+          </div>
         )}
       </div>
 
