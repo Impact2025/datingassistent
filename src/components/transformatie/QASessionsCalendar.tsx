@@ -55,7 +55,10 @@ export function QASessionsCalendar() {
   useEffect(() => {
     async function fetchSessions() {
       try {
-        const response = await fetch('/api/transformatie/qa-sessions');
+        const token = localStorage.getItem('datespark_auth_token');
+        const response = await fetch('/api/transformatie/qa-sessions', {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
         if (!response.ok) throw new Error('Failed to fetch sessions');
 
         const data = await response.json();

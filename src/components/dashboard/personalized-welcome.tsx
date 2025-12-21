@@ -69,7 +69,7 @@ export function PersonalizedWelcome({ onTabChange }: PersonalizedWelcomeProps) {
         let simpleRecommendation: PersonalizedRecommendation | null = null;
 
         // Check if user has taken attachment assessment
-        const assessmentResponse = await fetch('/api/attachment-assessment', {
+        const assessmentResponse = await fetch(`/api/attachment-assessment?userId=${user.id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
           }
