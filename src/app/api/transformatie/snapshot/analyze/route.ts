@@ -129,11 +129,55 @@ export async function POST(request: NextRequest) {
           controller.close();
         } catch (error) {
           console.error('Streaming error:', error);
-          const errorChunk = {
-            type: 'error',
-            message: error instanceof Error ? error.message : 'Analysis failed',
+          // Send a fallback complete event instead of error
+          // The streamSnapshotAnalysis should already handle errors gracefully,
+          // but if something goes wrong here, we still want to complete
+          const fallbackComplete = {
+            type: 'complete',
+            data: {
+              id: `fallback_${userId}_${Date.now()}`,
+              userId,
+              generatedAt: new Date(),
+              model: 'fallback',
+              energyProfileAnalysis: {
+                profile: scores.energyProfile,
+                score: scores.introvertScore,
+                nuancedInterpretation: `Met een introvert score van ${scores.introvertScore}% ben je ${scores.energyProfile === 'introvert' ? 'iemand die energie haalt uit rustige momenten' : scores.energyProfile === 'extrovert' ? 'iemand die energie krijgt van sociale interactie' : 'flexibel in hoe je energie opdoet'}.`,
+                datingImplications: ['Je energie niveau bepaalt hoeveel dates je kunt plannen'],
+                strengthsInDating: ['Je kent jezelf goed'],
+                watchOuts: ['Let op je energieniveau'],
+              },
+              attachmentStyleAnalysis: {
+                style: scores.attachmentStyle,
+                confidence: scores.attachmentConfidence,
+                interpretation: 'Je hechtingsstijl geeft inzicht in hoe je relaties aangaat.',
+                triggerPatterns: ['Onzekerheid in nieuwe situaties'],
+                relationshipPatterns: ['Je zoekt verbinding'],
+                growthAreas: ['Bewustwording van je patronen'],
+                isProvisional: true,
+              },
+              painPointAnalysis: {
+                primary: scores.primaryPainPoint,
+                rootCauseAnalysis: 'Dit is een veelvoorkomende uitdaging waar veel mensen mee worstelen.',
+                connectionToProfile: 'Je profiel helpt ons begrijpen waar de focus moet liggen.',
+                immediateActionSteps: ['Start met Module 1', 'Gebruik de Iris coach', 'Reflecteer dagelijks'],
+                howProgramHelps: 'Het programma is afgestemd op jouw specifieke uitdagingen.',
+              },
+              crossCorrelationInsights: [],
+              coachingPreview: {
+                personalizedGreeting: `Hoi ${answers.display_name || 'daar'}! Welkom bij je persoonlijke dating transformatie.`,
+                whatIrisNoticed: ['Je bent gemotiveerd om te groeien', 'Je kent je uitdagingen'],
+                focusAreasForProgram: ['Zelfvertrouwen opbouwen', 'Gesprekstechnieken', 'Energie management'],
+                expectedBreakthroughs: ['Meer zelfvertrouwen', 'Betere gesprekken'],
+                firstWeekFocus: 'We beginnen met de basis: wie ben jij en wat zoek je?',
+              },
+              confidenceScore: 50,
+              processingTimeMs: 0,
+              cached: false,
+            },
           };
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify(errorChunk)}\n\n`));
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify(fallbackComplete)}\n\n`));
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'));
           controller.close();
         }
       },
@@ -149,13 +193,40 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error in snapshot analyze:', error);
-    return new Response(
-      JSON.stringify({
-        error: 'Internal server error',
-        message: 'Er ging iets mis bij het analyseren',
-      }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    // Even on fatal errors, try to return a valid streaming response
+    // so the frontend doesn't get stuck
+    const encoder = new TextEncoder();
+    const errorStream = new ReadableStream({
+      start(controller) {
+        // Send minimal fallback analysis
+        const fallback = {
+          type: 'complete',
+          data: {
+            id: `error_fallback_${Date.now()}`,
+            model: 'fallback',
+            energyProfileAnalysis: { profile: 'ambivert', score: 50, nuancedInterpretation: '', datingImplications: [], strengthsInDating: [], watchOuts: [] },
+            attachmentStyleAnalysis: { style: 'secure', confidence: 50, interpretation: '', triggerPatterns: [], relationshipPatterns: [], growthAreas: [], isProvisional: true },
+            painPointAnalysis: { primary: 'conversations_die', rootCauseAnalysis: '', connectionToProfile: '', immediateActionSteps: [], howProgramHelps: '' },
+            crossCorrelationInsights: [],
+            coachingPreview: { personalizedGreeting: 'Welkom!', whatIrisNoticed: [], focusAreasForProgram: [], expectedBreakthroughs: [], firstWeekFocus: '' },
+            confidenceScore: 0,
+            processingTimeMs: 0,
+            cached: false,
+          },
+        };
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify(fallback)}\n\n`));
+        controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+        controller.close();
+      },
+    });
+
+    return new Response(errorStream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        Connection: 'keep-alive',
+      },
+    });
   }
 }
 

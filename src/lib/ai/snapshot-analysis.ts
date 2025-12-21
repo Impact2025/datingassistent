@@ -2,11 +2,11 @@
  * AI Snapshot Analysis Engine
  *
  * Generates world-class AI-powered analysis of Dating Snapshot results
- * using Claude 3.5 Sonnet for deep, personalized insights.
+ * using Claude 3.5 Sonnet via OpenRouter for deep, personalized insights.
  */
 
-import { anthropic } from '@/lib/anthropic';
 import { sql } from '@vercel/postgres';
+import { OPENROUTER_MODELS } from '@/lib/openrouter';
 import type {
   SnapshotAIAnalysis,
   SnapshotAnswers,
@@ -474,6 +474,42 @@ function createFallbackAnalysis(
 }
 
 // =====================================================
+// OPENROUTER HELPER
+// =====================================================
+
+async function callOpenRouter(
+  systemPrompt: string,
+  userPrompt: string,
+  options: { stream?: boolean } = {}
+): Promise<Response> {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+
+  if (!apiKey) {
+    throw new Error('OPENROUTER_API_KEY not configured');
+  }
+
+  return fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl',
+      'X-Title': 'DatingAssistent',
+    },
+    body: JSON.stringify({
+      model: OPENROUTER_MODELS.CLAUDE_35_SONNET,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt },
+      ],
+      max_tokens: 2500,
+      temperature: 0.7,
+      stream: options.stream || false,
+    }),
+  });
+}
+
+// =====================================================
 // MAIN ANALYSIS FUNCTIONS
 // =====================================================
 
@@ -493,19 +529,19 @@ export async function generateSnapshotAnalysis(
 
   const startTime = Date.now();
   const prompt = buildAnalysisPrompt(answers, scores);
+  const systemPrompt = 'Je bent een expert AI dating coach. Genereer ALLEEN valid JSON output. Geen markdown code blocks, geen tekst ervoor of erna, alleen pure JSON.';
 
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 2500,
-      temperature: 0.7,
-      system:
-        'Je bent een expert AI dating coach. Genereer ALLEEN valid JSON output. Geen markdown code blocks, geen tekst ervoor of erna, alleen pure JSON.',
-      messages: [{ role: 'user', content: prompt }],
-    });
+    const response = await callOpenRouter(systemPrompt, prompt);
 
-    const textContent = response.content.find((block) => block.type === 'text');
-    const text = textContent && 'text' in textContent ? textContent.text : '';
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenRouter API error:', response.status, errorText);
+      throw new Error(`OpenRouter API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content || '';
 
     const analysis = parseAnalysisResponse(text, answers, scores, userId, Date.now() - startTime);
 
@@ -539,37 +575,71 @@ export async function* streamSnapshotAnalysis(
   yield { type: 'start', message: 'Iris analyseert je antwoorden...' };
   yield { type: 'phase', phase: 'connecting', progress: 5 };
 
+  // Check if OpenRouter API key is configured
+  if (!process.env.OPENROUTER_API_KEY) {
+    console.warn('OPENROUTER_API_KEY not configured, using fallback analysis');
+    yield { type: 'phase', phase: 'analyzing', progress: 30 };
+    yield { type: 'phase', phase: 'correlating', progress: 60 };
+    yield { type: 'phase', phase: 'personalizing', progress: 90 };
+
+    // Return fallback analysis
+    const fallbackAnalysis = createFallbackAnalysis(answers, scores, userId, Date.now() - startTime);
+    yield { type: 'phase', phase: 'complete', progress: 100 };
+    yield { type: 'complete', data: fallbackAnalysis };
+    return;
+  }
+
   const prompt = buildAnalysisPrompt(answers, scores);
+  const systemPrompt = 'Je bent een expert AI dating coach. Genereer ALLEEN valid JSON output. Geen markdown code blocks, alleen pure JSON.';
 
   try {
     yield { type: 'phase', phase: 'analyzing', progress: 15 };
 
-    const stream = await anthropic.messages.stream({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 2500,
-      temperature: 0.7,
-      system:
-        'Je bent een expert AI dating coach. Genereer ALLEEN valid JSON output. Geen markdown code blocks, alleen pure JSON.',
-      messages: [{ role: 'user', content: prompt }],
-    });
+    const response = await callOpenRouter(systemPrompt, prompt, { stream: true });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenRouter streaming error:', response.status, errorText);
+      throw new Error(`OpenRouter API error: ${response.status}`);
+    }
+
+    const reader = response.body?.getReader();
+    if (!reader) {
+      throw new Error('No reader available for streaming');
+    }
+
+    const decoder = new TextDecoder();
     let fullResponse = '';
     let chunkCount = 0;
 
-    for await (const event of stream) {
-      if (event.type === 'content_block_delta') {
-        const delta = event.delta as { type: string; text?: string };
-        if (delta.type === 'text_delta' && delta.text) {
-          fullResponse += delta.text;
-          chunkCount++;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
 
-          // Update progress based on chunks
-          const progress = Math.min(15 + chunkCount * 2, 85);
-          const phase =
-            progress < 35 ? 'analyzing' : progress < 60 ? 'correlating' : 'personalizing';
+      const text = decoder.decode(value);
+      const lines = text.split('\n');
 
-          if (chunkCount % 5 === 0) {
-            yield { type: 'phase', phase, progress };
+      for (const line of lines) {
+        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+          try {
+            const data = JSON.parse(line.slice(6));
+            const content = data.choices?.[0]?.delta?.content;
+
+            if (content) {
+              fullResponse += content;
+              chunkCount++;
+
+              // Update progress based on chunks
+              const progress = Math.min(15 + chunkCount * 2, 85);
+              const phase =
+                progress < 35 ? 'analyzing' : progress < 60 ? 'correlating' : 'personalizing';
+
+              if (chunkCount % 5 === 0) {
+                yield { type: 'phase', phase, progress };
+              }
+            }
+          } catch {
+            // Ignore parse errors for incomplete chunks
           }
         }
       }
@@ -592,9 +662,11 @@ export async function* streamSnapshotAnalysis(
     yield { type: 'complete', data: analysis };
   } catch (error) {
     console.error('Error in streaming analysis:', error);
-    yield {
-      type: 'error',
-      message: error instanceof Error ? error.message : 'Analysis failed',
-    };
+
+    // On any error, return fallback analysis instead of failing
+    console.log('Returning fallback analysis due to error');
+    const fallbackAnalysis = createFallbackAnalysis(answers, scores, userId, Date.now() - startTime);
+    yield { type: 'phase', phase: 'complete', progress: 100 };
+    yield { type: 'complete', data: fallbackAnalysis };
   }
 }

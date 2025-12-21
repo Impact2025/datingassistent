@@ -351,6 +351,14 @@ export function DatingSnapshotFlow({
     setAnalysisProgress(0);
     setAnalysisPhase('connecting');
 
+    // Helper to skip AI analysis and go directly to next step
+    const skipToNextStep = () => {
+      setAnalysisProgress(100);
+      setAnalysisPhase('complete');
+      // Move to outro video or summary (will use fallback rule-based summary)
+      setStep(showVideos ? 'outro_video' : 'summary');
+    };
+
     try {
       const response = await fetch('/api/transformatie/snapshot/analyze', {
         method: 'POST',
@@ -359,11 +367,18 @@ export function DatingSnapshotFlow({
       });
 
       if (!response.ok) {
-        throw new Error('Analysis request failed');
+        console.error('AI analysis request failed:', response.status, response.statusText);
+        // Skip AI analysis on error - continue with rule-based summary
+        skipToNextStep();
+        return;
       }
 
       const reader = response.body?.getReader();
-      if (!reader) throw new Error('No reader available');
+      if (!reader) {
+        console.error('No reader available for streaming');
+        skipToNextStep();
+        return;
+      }
 
       const decoder = new TextDecoder();
 
@@ -388,7 +403,9 @@ export function DatingSnapshotFlow({
                 setAnalysisPhase('complete');
               } else if (chunk.type === 'error') {
                 console.error('AI analysis error:', chunk.message);
-                // Continue to summary without AI analysis
+                // Skip to summary on streaming error
+                skipToNextStep();
+                return;
               }
             } catch {
               // Ignore parse errors for incomplete chunks
@@ -402,8 +419,10 @@ export function DatingSnapshotFlow({
         type: 'ai_analysis_error',
         message: error instanceof Error ? error.message : 'Unknown error',
       });
+      // Skip to summary on error - user shouldn't get stuck
+      skipToNextStep();
     }
-  }, [analytics]);
+  }, [analytics, showVideos]);
 
   // Navigate to next section
   const handleNext = useCallback(async () => {
@@ -492,12 +511,16 @@ export function DatingSnapshotFlow({
             return;
           }
         } else {
-          // Generic error
+          // Generic error - don't proceed with AI analysis
           console.error('API error:', data.error || 'Unknown error');
           analytics.trackError({
             type: 'api_error',
             message: data.error || 'Failed to save',
           });
+          // Go back to questions with error toast
+          setStep('questions');
+          setProcessingStep(0);
+          return;
         }
       } catch (error) {
         console.error('Failed to save onboarding:', error);
@@ -505,6 +528,10 @@ export function DatingSnapshotFlow({
           type: 'network_error',
           message: error instanceof Error ? error.message : 'Network error',
         });
+        // Network error - go back to questions
+        setStep('questions');
+        setProcessingStep(0);
+        return;
       } finally {
         setIsSubmitting(false);
       }
