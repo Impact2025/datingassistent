@@ -56,16 +56,33 @@ export function QASessionsCalendar() {
     async function fetchSessions() {
       try {
         const token = localStorage.getItem('datespark_auth_token');
+
+        // Skip fetch if no auth token (user not logged in)
+        if (!token) {
+          setSessions([]);
+          setLoading(false);
+          return;
+        }
+
         const response = await fetch('/api/transformatie/qa-sessions', {
-          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+          headers: { 'Authorization': `Bearer ${token}` }
         });
+
+        // Handle 401 gracefully - just show empty state
+        if (response.status === 401) {
+          setSessions([]);
+          setLoading(false);
+          return;
+        }
+
         if (!response.ok) throw new Error('Failed to fetch sessions');
 
         const data = await response.json();
         setSessions(data.sessions || []);
       } catch (err) {
         console.error('Error fetching Q&A sessions:', err);
-        setError('Kon Q&A sessies niet laden');
+        // Don't show error, just show empty state for better UX
+        setSessions([]);
       } finally {
         setLoading(false);
       }

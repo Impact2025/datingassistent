@@ -287,7 +287,7 @@ export function RegistrationContainer() {
                 <FormItem>
                   <FormLabel>Wachtwoord</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Minimaal 6 karakters" {...field} />
+                    <Input type="password" placeholder="Minimaal 8 karakters" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
