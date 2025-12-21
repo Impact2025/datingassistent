@@ -12,12 +12,14 @@
 // ✅ user_reflections - dagelijkse reflecties uit Kickstart
 // ✅ weekly_dating_logs - echte dating activiteit
 // ✅ goal_hierarchies - year/month/week doelen
+// ✅ 🤖 ai_content_cache - AI Snapshot analyse (world-class AI-powered profiel analyse)
 // ============================================================================
 
 import { sql } from '@vercel/postgres';
 import type { IrisContextForPrompt, IrisUserContext, CursusLes } from '../types/cursus.types';
 import { AIContextManager } from './ai-context-manager';
 import { detectPatterns, type Pattern } from './iris/iris-patterns';
+import type { SnapshotAIAnalysis } from './ai/snapshot-analysis-types';
 
 // ============================================================================
 // EXTENDED TYPES
@@ -283,6 +285,40 @@ async function getUserGoals(userId: number): Promise<UserGoals | null> {
 }
 
 /**
+ * 🤖 Haal gecachte AI Snapshot analyse op
+ * Dit is de wereldklasse AI-gegenereerde dating profiel analyse
+ */
+async function getAISnapshotAnalysis(userId: number): Promise<SnapshotAIAnalysis | null> {
+  try {
+    const result = await sql`
+      SELECT content_data, created_at
+      FROM ai_content_cache
+      WHERE user_id = ${userId}
+        AND content_type = 'snapshot_analysis'
+        AND (expires_at IS NULL OR expires_at > CURRENT_TIMESTAMP)
+      ORDER BY created_at DESC
+      LIMIT 1
+    `;
+
+    if (result.rows.length === 0) return null;
+
+    const row = result.rows[0];
+    const analysis = typeof row.content_data === 'string'
+      ? JSON.parse(row.content_data)
+      : row.content_data;
+
+    return {
+      ...analysis,
+      cached: true,
+      generatedAt: row.created_at,
+    } as SnapshotAIAnalysis;
+  } catch (error) {
+    console.log('No AI snapshot analysis found');
+    return null;
+  }
+}
+
+/**
  * Haalt de complete Iris context op voor een gebruiker
  * Gebruik dit voor elke AI call naar Iris
  */
@@ -352,6 +388,7 @@ export interface EnrichedIrisContext extends IrisContextForPrompt {
   patterns?: Pattern[]; // 🧠 Iris Memory Magic - detected patterns in reflections
   datingLog?: DatingLogActivity[];
   goals?: UserGoals | null;
+  aiSnapshotAnalysis?: SnapshotAIAnalysis | null; // 🤖 AI-powered Dating Snapshot analysis
 }
 
 /**
@@ -361,6 +398,7 @@ export interface EnrichedIrisContext extends IrisContextForPrompt {
  * - User reflections (dagelijkse inzichten)
  * - Dating log activity (echte dating gedrag)
  * - User goals (jaar/maand/week doelen)
+ * - 🤖 AI Snapshot Analysis (world-class AI-powered profiel analyse)
  */
 export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIrisContext> {
   // 🚀 Fetch ALL data sources IN PARALLEL for speed
@@ -371,7 +409,8 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     transformatieData,
     reflections,
     datingLogData,
-    goalsData
+    goalsData,
+    aiSnapshotAnalysis
   ] = await Promise.all([
     getIrisContext(userId),
     AIContextManager.getUserContext(userId),
@@ -379,7 +418,8 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     getTransformatieOnboardingData(userId),
     getUserReflections(userId),
     getDatingLogActivity(userId),
-    getUserGoals(userId)
+    getUserGoals(userId),
+    getAISnapshotAnalysis(userId)
   ]);
 
   // 🧠 Detect patterns from reflections (Iris Memory Magic!)
@@ -402,6 +442,7 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     patterns: patterns, // 🧠 Iris Memory - top 2 detected patterns
     datingLog: datingLogData,
     goals: goalsData,
+    aiSnapshotAnalysis: aiSnapshotAnalysis, // 🤖 AI Snapshot analysis
   };
 }
 
@@ -828,6 +869,101 @@ WAT JE WEET OVER DEZE GEBRUIKER:`);
     }
   }
 
+  // 🤖 AI SNAPSHOT ANALYSIS (world-class AI-powered insights)
+  const aiSnapshot = context.aiSnapshotAnalysis;
+  if (aiSnapshot) {
+    parts.push(`
+🤖 AI DATING SNAPSHOT ANALYSE (door Claude AI gegenereerd):`);
+
+    // Energy Profile Analysis
+    if (aiSnapshot.energyProfileAnalysis) {
+      const energy = aiSnapshot.energyProfileAnalysis;
+      parts.push(`
+⚡ ENERGIE DNA (${energy.profile} - ${energy.score}% introvert):
+${energy.nuancedInterpretation}`);
+
+      if (energy.strengthsInDating?.length > 0) {
+        parts.push(`   Sterke punten in dating: ${energy.strengthsInDating.join('; ')}`);
+      }
+      if (energy.watchOuts?.length > 0) {
+        parts.push(`   Let hierop: ${energy.watchOuts.join('; ')}`);
+      }
+    }
+
+    // Attachment Style Analysis
+    if (aiSnapshot.attachmentStyleAnalysis) {
+      const attachment = aiSnapshot.attachmentStyleAnalysis;
+      parts.push(`
+💜 HECHTINGSSTIJL INZICHT (${attachment.style} - ${attachment.confidence}% match):
+${attachment.interpretation}`);
+
+      if (attachment.triggerPatterns?.length > 0) {
+        parts.push(`   Wat hen triggert: ${attachment.triggerPatterns.join('; ')}`);
+      }
+      if (attachment.relationshipPatterns?.length > 0) {
+        parts.push(`   Relatiepatronen: ${attachment.relationshipPatterns.join('; ')}`);
+      }
+      if (attachment.growthAreas?.length > 0) {
+        parts.push(`   Groeigebieden: ${attachment.growthAreas.join(', ')}`);
+      }
+    }
+
+    // Pain Point Analysis
+    if (aiSnapshot.painPointAnalysis) {
+      const pain = aiSnapshot.painPointAnalysis;
+      parts.push(`
+🎯 HOOFDUITDAGING (${pain.primary}):
+${pain.rootCauseAnalysis}`);
+
+      if (pain.connectionToProfile) {
+        parts.push(`   Verband met profiel: ${pain.connectionToProfile}`);
+      }
+      if (pain.immediateActionSteps?.length > 0) {
+        parts.push(`   Directe acties: ${pain.immediateActionSteps.join('; ')}`);
+      }
+    }
+
+    // Cross-Correlation Insights (MOST POWERFUL)
+    if (aiSnapshot.crossCorrelationInsights?.length > 0) {
+      parts.push(`
+🔮 CROSS-CORRELATIE INZICHTEN (unieke verbanden in dit profiel):`);
+      aiSnapshot.crossCorrelationInsights.forEach((insight, i) => {
+        parts.push(`   ${i + 1}. [${insight.factors.join(' × ')}]`);
+        parts.push(`      Inzicht: ${insight.insight}`);
+        parts.push(`      Implicatie: ${insight.implication}`);
+        parts.push(`      Aanbeveling: ${insight.recommendation}`);
+      });
+    }
+
+    // Coaching Preview
+    if (aiSnapshot.coachingPreview) {
+      const preview = aiSnapshot.coachingPreview;
+      parts.push(`
+🌟 COACHING FOCUS:`);
+      if (preview.whatIrisNoticed?.length > 0) {
+        parts.push(`   Wat jij (Iris) opmerkte: ${preview.whatIrisNoticed.join('; ')}`);
+      }
+      if (preview.focusAreasForProgram?.length > 0) {
+        parts.push(`   Focus gebieden: ${preview.focusAreasForProgram.join('; ')}`);
+      }
+      if (preview.expectedBreakthroughs?.length > 0) {
+        parts.push(`   Verwachte doorbraken: ${preview.expectedBreakthroughs.join('; ')}`);
+      }
+      if (preview.firstWeekFocus) {
+        parts.push(`   Week 1 focus: ${preview.firstWeekFocus}`);
+      }
+    }
+
+    parts.push(`
+💡 HOE JE DE AI SNAPSHOT ANALYSE GEBRUIKT:
+- Dit is JOUW analyse - jij (Iris) hebt dit gegenereerd
+- Refereer aan specifieke inzichten: "Toen ik je profiel analyseerde, zag ik..."
+- Gebruik cross-correlaties: "De combinatie van je [factor1] en [factor2] betekent..."
+- Vier groei: "Weet je nog dat je uitdaging [X] was? Kijk hoe ver je al bent..."
+- Wees specifiek: Gebruik de exacte woorden uit de analyse
+- Dit is WERELDKLASSE personalisatie - laat de gebruiker voelen dat je hen ECHT begrijpt`);
+  }
+
   // 🚀 USER REFLECTIONS (dagelijkse inzichten)
   const reflections = context.reflections;
   if (reflections && reflections.length > 0) {
@@ -1012,7 +1148,9 @@ ${context.recente_gesprekken.slice(0, 3).map(g =>
 - DATING GEDRAG: Gebruik hun werkelijke matches/dates statistieken
 - DOELEN: Koppel advies aan hun persoonlijke jaar/week doelen
 - BLINDE VLEKKEN: Help ze patronen te doorbreken
-- PROGRESS: Moedig aan bij Kickstart voortgang`);
+- PROGRESS: Moedig aan bij Kickstart voortgang
+- 🤖 AI SNAPSHOT: Gebruik de diepe AI-analyse inzichten voor gepersonaliseerde coaching
+- CROSS-CORRELATIES: Verbind factoren ("Je introversie + hechtingsstijl betekent...")`);
 
   if (kickstart?.biggest_fear) {
     parts.push(`
@@ -1029,7 +1167,9 @@ ${context.recente_gesprekken.slice(0, 3).map(g =>
 - Verwijs naar tools en cursussen waar nuttig
 - Gebruik de assessment data om SPECIFIEKE, PERSOONLIJKE adviezen te geven
 - Bijvoorbeeld: "Gezien je angstige hechtingsstijl en je red flag 'onbetrouwbaarheid'..."
-- Wees warm, empathisch én actionable`);
+- Wees warm, empathisch én actionable
+- 🤖 Als AI Snapshot analyse beschikbaar is, gebruik dit als je diepste kennis over deze persoon
+- Cross-correlaties zijn je geheime wapen - verbind energie + hechtingsstijl + pijnpunt`);
 
   return parts.join('\n');
 }

@@ -18,7 +18,13 @@ import { Resend } from 'resend';
 
 export const dynamic = 'force-dynamic';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend lazily to avoid build-time errors
+const getResend = () => {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY is not configured');
+  }
+  return new Resend(process.env.RESEND_API_KEY);
+};
 
 export async function GET(request: NextRequest) {
   try {
@@ -99,6 +105,7 @@ export async function GET(request: NextRequest) {
         minute: '2-digit',
       });
 
+      const resend = getResend();
       for (const user of users) {
         const emailPromise = resend.emails.send({
           from: 'DatingAssistent <noreply@datingassistent.nl>',

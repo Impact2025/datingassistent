@@ -90,7 +90,7 @@ interface DatingSnapshotFlowProps {
   className?: string;
 }
 
-type FlowStep = 'intro_video' | 'intro' | 'questions' | 'processing' | 'outro_video' | 'summary';
+type FlowStep = 'intro_video' | 'intro' | 'questions' | 'processing' | 'ai_analysis' | 'outro_video' | 'summary';
 
 interface CalculatedScores {
   introvertScore: number;
@@ -169,6 +169,11 @@ export function DatingSnapshotFlow({
   const [welcomeMessage, setWelcomeMessage] = useState<WelcomeMessage | null>(null);
   const [completedProfile, setCompletedProfile] = useState<UserOnboardingProfile | null>(null);
   const [showRestorePrompt, setShowRestorePrompt] = useState(false);
+
+  // AI Analysis state
+  const [aiAnalysis, setAiAnalysis] = useState<SnapshotAIAnalysis | null>(null);
+  const [analysisProgress, setAnalysisProgress] = useState(0);
+  const [analysisPhase, setAnalysisPhase] = useState<AnalysisPhase>('connecting');
 
   // Check for restored progress on mount
   useEffect(() => {
@@ -341,6 +346,65 @@ export function DatingSnapshotFlow({
     };
   }, [answers]);
 
+  // Stream AI analysis from API
+  const streamAIAnalysis = useCallback(async () => {
+    setAnalysisProgress(0);
+    setAnalysisPhase('connecting');
+
+    try {
+      const response = await fetch('/api/transformatie/snapshot/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ streaming: true }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Analysis request failed');
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('No reader available');
+
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const text = decoder.decode(value);
+        const lines = text.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              const chunk: AnalysisStreamChunk = JSON.parse(line.slice(6));
+
+              if (chunk.type === 'phase') {
+                setAnalysisProgress(chunk.progress);
+                setAnalysisPhase(chunk.phase);
+              } else if (chunk.type === 'complete' || chunk.type === 'cached') {
+                setAiAnalysis(chunk.data);
+                setAnalysisProgress(100);
+                setAnalysisPhase('complete');
+              } else if (chunk.type === 'error') {
+                console.error('AI analysis error:', chunk.message);
+                // Continue to summary without AI analysis
+              }
+            } catch {
+              // Ignore parse errors for incomplete chunks
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to stream AI analysis:', error);
+      analytics.trackError({
+        type: 'ai_analysis_error',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }, [analytics]);
+
   // Navigate to next section
   const handleNext = useCallback(async () => {
     if (!validateSection()) {
@@ -446,8 +510,9 @@ export function DatingSnapshotFlow({
       }
 
       await new Promise((r) => setTimeout(r, 400));
-      // Show outro video if enabled, otherwise go to summary
-      setStep(showVideos ? 'outro_video' : 'summary');
+      // Start AI analysis
+      setStep('ai_analysis');
+      streamAIAnalysis();
     } else {
       // Save progress to API
       try {
@@ -476,7 +541,7 @@ export function DatingSnapshotFlow({
       // Scroll to top of content container
       scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [validateSection, errors, isLastSection, calculateScores, answers, currentSection, analytics, currentSectionIndex, visibleQuestions]);
+  }, [validateSection, errors, isLastSection, calculateScores, answers, currentSection, analytics, currentSectionIndex, visibleQuestions, streamAIAnalysis]);
 
   // Navigate to previous section
   const handlePrevious = useCallback(() => {
@@ -492,6 +557,12 @@ export function DatingSnapshotFlow({
     setStep('questions');
     analytics.trackStart({ hasRestoredProgress: false });
   };
+
+  // Handle AI analysis complete - move to next step
+  const handleAnalysisComplete = useCallback(() => {
+    // Move to outro video or summary
+    setStep(showVideos ? 'outro_video' : 'summary');
+  }, [showVideos]);
 
   // Complete and start program
   const handleComplete = () => {
@@ -950,6 +1021,63 @@ export function DatingSnapshotFlow({
   }
 
   // =====================================================
+  // RENDER: AI ANALYSIS
+  // =====================================================
+  if (step === 'ai_analysis') {
+    // Show loader while analysis is in progress
+    if (!aiAnalysis || analysisPhase !== 'complete') {
+      return (
+        <div
+          className={cn(
+            'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+            'flex flex-col',
+            'overflow-hidden',
+            className
+          )}
+        >
+          <div
+            className="flex-1 overflow-y-auto overscroll-y-contain"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            <div className="min-h-full flex flex-col items-center justify-center py-4 px-4 safe-area-top safe-area-bottom">
+              <AIAnalysisLoader
+                progress={analysisProgress}
+                currentPhase={analysisPhase}
+                userName={answers.display_name}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Show AI analysis results
+    return (
+      <div
+        className={cn(
+          'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+          'flex flex-col',
+          'overflow-hidden',
+          className
+        )}
+      >
+        <div
+          className="flex-1 overflow-y-auto overscroll-y-contain"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
+          <div className="py-8 px-4 safe-area-top safe-area-bottom">
+            <AIAnalysisResults
+              analysis={aiAnalysis}
+              userName={answers.display_name || 'daar'}
+              onContinue={handleAnalysisComplete}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // =====================================================
   // RENDER: OUTRO VIDEO
   // =====================================================
   if (step === 'outro_video' && calculatedScores) {
@@ -982,6 +1110,34 @@ export function DatingSnapshotFlow({
   // RENDER: SUMMARY
   // =====================================================
   if (step === 'summary' && calculatedScores) {
+    // Show AI analysis results if available
+    if (aiAnalysis) {
+      return (
+        <div
+          className={cn(
+            'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+            'flex flex-col',
+            'overflow-hidden',
+            className
+          )}
+        >
+          <div
+            className="flex-1 overflow-y-auto overscroll-y-contain"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            <div className="py-8 px-4 safe-area-top safe-area-bottom">
+              <AIAnalysisResults
+                analysis={aiAnalysis}
+                userName={answers.display_name || 'daar'}
+                onContinue={handleComplete}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Fallback to rule-based summary if AI analysis is not available
     const personalizationFlags = [];
     if (calculatedScores.introvertScore >= 60) personalizationFlags.push('Introvert Modus geactiveerd');
     if (answers.ghosting_frequency === 'often' || answers.ghosting_frequency === 'very_often') {
