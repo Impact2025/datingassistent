@@ -120,8 +120,20 @@ export async function GET(request: NextRequest) {
       count: sessions.length,
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching Q&A sessions:', error);
+
+    // If table doesn't exist, return empty array (graceful degradation)
+    if (error?.message?.includes('relation "qa_sessions" does not exist') ||
+        error?.code === '42P01') {
+      console.log('qa_sessions table does not exist, returning empty array');
+      return NextResponse.json({
+        sessions: [],
+        count: 0,
+        message: 'No Q&A sessions available yet'
+      });
+    }
+
     return NextResponse.json(
       { error: 'Failed to fetch Q&A sessions' },
       { status: 500 }

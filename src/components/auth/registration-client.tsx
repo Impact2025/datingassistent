@@ -33,7 +33,7 @@ const signupSchema = z.object({
   firstName: z.string().min(2, "Voornaam moet minimaal 2 karakters lang zijn."),
   lastName: z.string().min(2, "Achternaam moet minimaal 2 karakters lang zijn."),
   email: z.string().email("Ongeldig e-mailadres."),
-  password: z.string().min(6, "Wachtwoord moet minimaal 6 karakters bevatten."),
+  password: z.string().min(8, "Wachtwoord moet minimaal 8 karakters bevatten."),
   confirmPassword: z.string().min(1, "Bevestig je wachtwoord."),
   termsAccepted: z.boolean().refine((val) => val === true, {
     message: "Je moet akkoord gaan met de voorwaarden.",
@@ -422,7 +422,7 @@ export function RegistrationClientComponent() {
       // Set error message for display in form
       if (error.message.includes('Dit emailadres is al bij ons bekend')) {
         setRegistrationError("existing_email");
-      } else if (error.message.includes('Password must be at least 6 characters')) {
+      } else if (error.message.includes('Password must be at least') || error.message.includes('karakters')) {
         setRegistrationError("password_too_short");
       } else {
         setRegistrationError(error.message || "Er is een onbekende fout opgetreden. Probeer het opnieuw.");
@@ -863,7 +863,7 @@ export function RegistrationClientComponent() {
                       <FormItem suppressHydrationWarning>
                         <FormLabel suppressHydrationWarning>Wachtwoord</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="Minimaal 6 karakters" {...field} suppressHydrationWarning />
+                          <Input type="password" placeholder="Minimaal 8 karakters" {...field} suppressHydrationWarning />
                         </FormControl>
                         <FormMessage suppressHydrationWarning />
                       </FormItem>
@@ -930,7 +930,7 @@ export function RegistrationClientComponent() {
                         </div>
                       ) : registrationError === "password_too_short" ? (
                         <p>
-                          <strong>Wachtwoord te kort:</strong> Je wachtwoord moet minimaal 6 karakters bevatten.
+                          <strong>Wachtwoord te kort:</strong> Je wachtwoord moet minimaal 8 karakters bevatten.
                         </p>
                       ) : (
                         <p>

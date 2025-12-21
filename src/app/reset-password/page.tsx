@@ -159,8 +159,8 @@ function ResetPasswordContent() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={6}
-                placeholder="Enter new password"
+                minLength={8}
+                placeholder="Minimaal 8 karakters"
               />
             </div>
             <div className="space-y-2">
@@ -171,8 +171,8 @@ function ResetPasswordContent() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                minLength={6}
-                placeholder="Confirm new password"
+                minLength={8}
+                placeholder="Herhaal je wachtwoord"
               />
             </div>
           </CardContent>

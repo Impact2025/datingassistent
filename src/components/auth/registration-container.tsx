@@ -25,7 +25,7 @@ import { LoadingSpinner } from "../shared/loading-spinner";
 const signupSchema = z.object({
   name: z.string().min(2, "Naam moet minimaal 2 karakters lang zijn."),
   email: z.string().email("Ongeldig e-mailadres."),
-  password: z.string().min(6, "Wachtwoord moet minimaal 6 karakters bevatten."),
+  password: z.string().min(8, "Wachtwoord moet minimaal 8 karakters bevatten."),
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
