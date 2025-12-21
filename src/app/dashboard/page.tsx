@@ -359,10 +359,14 @@ function DashboardPageContent() {
     }
   }, [enrollmentData, enrollmentLoading]);
 
-  // Check for Monday dating week notifications
+  // Check for Monday dating week notifications - with visibility-aware polling
   useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    let isPageVisible = true;
+
     const checkForNotifications = async () => {
-      if (!user?.id || loading || kickstartState.needsOnboarding) return;
+      // Skip if page is not visible or conditions not met
+      if (!isPageVisible || !user?.id || loading || kickstartState.needsOnboarding) return;
 
       try {
         // Check for test mode (any day testing) - this should work immediately
@@ -396,18 +400,42 @@ function DashboardPageContent() {
           }
         } catch (fetchError) {
           debugLog.warn('Network error checking notifications:', fetchError);
-          // Non-blocking error - don't show notification if we can't check
         }
       } catch (error) {
         debugLog.error('Error checking for notifications:', error);
       }
     };
 
-    // Check immediately and then every 5 minutes
-    checkForNotifications();
-    const interval = setInterval(checkForNotifications, 5 * 60 * 1000); // 5 minutes
+    // Handle visibility change - pause/resume polling when tab is hidden/visible
+    const handleVisibilityChange = () => {
+      isPageVisible = document.visibilityState === 'visible';
 
-    return () => clearInterval(interval);
+      if (isPageVisible) {
+        // Resume: check immediately and restart interval
+        checkForNotifications();
+        if (!interval) {
+          interval = setInterval(checkForNotifications, 5 * 60 * 1000);
+        }
+      } else {
+        // Pause: clear interval when page is hidden
+        if (interval) {
+          clearInterval(interval);
+          interval = null;
+        }
+      }
+    };
+
+    // Initial check and start polling
+    checkForNotifications();
+    interval = setInterval(checkForNotifications, 5 * 60 * 1000); // 5 minutes
+
+    // Listen for visibility changes
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      if (interval) clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [user?.id, loading, journeyCheckComplete, kickstartState.needsOnboarding]);
 
   // Journey data is now loaded by the useJourneyState hook

@@ -5,7 +5,7 @@
  * Nu met geïntegreerde Kickstart support!
  */
 
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
@@ -22,6 +22,7 @@ import { JourneyTimeline } from '../journey/journey-timeline';
 import { AchievementShowcase } from '../achievements/achievement-showcase';
 import { KickstartDashboard } from '../kickstart/KickstartDashboard';
 import { TransformatieDashboardView } from '../transformatie/TransformatieDashboardView';
+import { useTransformatieEnrollment, useKickstartEnrollment } from '@/hooks/use-enrollment-status';
 
 interface EnrolledProgram {
   program_id: number;
@@ -68,38 +69,37 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
   const [loading, setLoading] = useState(true);
   const [enrolledPrograms, setEnrolledPrograms] = useState<EnrolledProgram[]>([]);
   const [viewMode, setViewMode] = useState<ViewMode>('programs');
-  const [hasKickstart, setHasKickstart] = useState(false);
-  const [hasTransformatie, setHasTransformatie] = useState(false);
 
-  // Fetch enrolled programs
+  // Use cached enrollment hooks (React Query) - prevents duplicate API calls
+  const { isEnrolled: hasTransformatie, isLoading: transformatieLoading } = useTransformatieEnrollment();
+  const { isEnrolled: hasKickstart, isLoading: kickstartLoading } = useKickstartEnrollment();
+
+  // Set initial view mode based on cached enrollment status
+  useEffect(() => {
+    if (!transformatieLoading && !kickstartLoading) {
+      if (hasTransformatie) {
+        setViewMode('transformatie');
+      } else if (hasKickstart) {
+        setViewMode('kickstart');
+      }
+    }
+  }, [hasTransformatie, hasKickstart, transformatieLoading, kickstartLoading]);
+
+  // Fetch enrolled programs for detailed progress info (only if enrolled)
   useEffect(() => {
     const fetchEnrolledPrograms = async () => {
+      // Skip fetch if user has no enrollments (use cached data from hooks)
+      if (!hasTransformatie && !hasKickstart) {
+        setEnrolledPrograms([]);
+        return;
+      }
+
       try {
         const response = await fetch('/api/user/enrolled-programs');
         if (response.ok) {
           const data = await response.json();
           if (data.success && data.programs) {
             setEnrolledPrograms(data.programs);
-
-            // Check if user has Transformatie (prioriteit boven Kickstart)
-            const transformatie = data.programs.find(
-              (p: EnrolledProgram) => p.program_slug === 'transformatie'
-            );
-            if (transformatie) {
-              setHasTransformatie(true);
-              // Auto-show Transformatie als gebruiker het heeft
-              setViewMode('transformatie');
-            } else {
-              // Check if user has Kickstart
-              const kickstart = data.programs.find(
-                (p: EnrolledProgram) => p.program_slug === 'kickstart'
-              );
-              if (kickstart) {
-                setHasKickstart(true);
-                // Auto-show Kickstart if user has it
-                setViewMode('kickstart');
-              }
-            }
           }
         }
       } catch (error) {
@@ -107,10 +107,10 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
       }
     };
 
-    if (userId) {
+    if (userId && !transformatieLoading && !kickstartLoading) {
       fetchEnrolledPrograms();
     }
-  }, [userId]);
+  }, [userId, hasTransformatie, hasKickstart, transformatieLoading, kickstartLoading]);
 
   // Fetch journey status
   useEffect(() => {

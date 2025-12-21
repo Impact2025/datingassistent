@@ -38,7 +38,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
           Gedragsgebaseerde analyse van je dating patronen met 8 professionele stijlen.
         </p>
         <Button
-          onClick={() => router.push('/dating-stijl')}
+          onClick={() => router.push('/datingstijl')}
           className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700"
         >
           Start Stijl Scan

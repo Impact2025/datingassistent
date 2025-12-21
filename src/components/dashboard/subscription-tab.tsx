@@ -43,6 +43,7 @@ export function SubscriptionTab() {
   const [loadingSubscription, setLoadingSubscription] = useState(true);
   const [usageStats, setUsageStats] = useState<any>(null);
   const [loadingUsage, setLoadingUsage] = useState(false);
+  const [showUpgradeOptions, setShowUpgradeOptions] = useState(false);
 
   // Load current subscription, enrolled programs, and usage stats
   useEffect(() => {
@@ -658,7 +659,8 @@ export function SubscriptionTab() {
   const hasActiveSubscription = currentSubscription && currentSubscription.status === 'active';
   const hasEnrolledPrograms = enrolledPrograms.length > 0;
 
-  if (hasActiveSubscription || hasEnrolledPrograms) {
+  // Show summary view with programs, unless user clicked to see upgrade options
+  if ((hasActiveSubscription || hasEnrolledPrograms) && !showUpgradeOptions) {
     return (
       <div className="space-y-6">
         {/* Show enrolled programs first (like Kickstart) */}
@@ -681,7 +683,7 @@ export function SubscriptionTab() {
           </CardHeader>
           <CardContent>
             <Button
-              onClick={() => setCurrentSubscription(null)}
+              onClick={() => setShowUpgradeOptions(true)}
               variant="outline"
               className="w-full"
             >
@@ -695,6 +697,17 @@ export function SubscriptionTab() {
 
   return (
     <div className="space-y-6">
+      {/* Back button when viewing upgrade options */}
+      {showUpgradeOptions && (hasActiveSubscription || hasEnrolledPrograms) && (
+        <Button
+          variant="ghost"
+          onClick={() => setShowUpgradeOptions(false)}
+          className="mb-2"
+        >
+          ← Terug naar overzicht
+        </Button>
+      )}
+
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="mx-auto w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center">

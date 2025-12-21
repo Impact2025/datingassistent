@@ -375,7 +375,7 @@ export function MyProgramsWidget() {
         {/* View All Button */}
         {programs.length > 2 && (
           <Button
-            onClick={() => router.push('/programs')}
+            onClick={() => router.push('/dashboard?tab=pad')}
             variant="outline"
             className="w-full"
           >
