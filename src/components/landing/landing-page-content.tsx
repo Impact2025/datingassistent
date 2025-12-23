@@ -49,14 +49,6 @@ type Blog = {
   featured_image?: string;
 };
 
-type Plan = {
-  name: string;
-  description: string;
-  monthlyPrice: number;
-  yearlyPrice: number;
-  features: string[];
-  popular: boolean;
-};
 
 type LandingPageContentProps = {
   hero?: ReactNode;
@@ -70,72 +62,6 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
   const [blogsError, setBlogsError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
 
-  const plans: Plan[] = [
-    {
-      name: 'Core',
-      description: 'Slim starten met AI',
-      monthlyPrice: 29,
-      yearlyPrice: 290,
-      features: [
-        '50 AI-berichten per week',
-        'Profiel Coach – analyseer en verbeter je bio',
-        'Chat Coach – 24/7 hulp bij gesprekken',
-        'AI Foto Check – feedback op je foto\'s',
-        '1 cursus per maand',
-        'Voortgang Tracker – zie je groei week na week',
-      ],
-      popular: false,
-    },
-    {
-      name: 'Pro',
-      description: 'Versnel je groei met AI & feedback',
-      monthlyPrice: 49,
-      yearlyPrice: 490,
-      features: [
-        '125 AI-berichten per week',
-        'Alle tools van Core, plus:',
-        'Opener Lab – originele openingszinnen',
-        'Match Analyse – waarom wel/niet matches',
-        'Date Planner – creatieve date-ideeën',
-        '2 cursussen per maand',
-        'Prioriteit Support',
-        'Maandelijkse AI-profielreview',
-      ],
-      popular: true,
-    },
-    {
-      name: 'Premium AI',
-      description: 'Persoonlijke begeleiding met slimme AI-assistentie',
-      monthlyPrice: 99,
-      yearlyPrice: 990,
-      features: [
-        'Alle tools en cursussen direct unlocked',
-        '250 AI-berichten per week',
-        'Persoonlijke intake (45 minuten video)',
-        'Persoonlijk verbeterplan op maat',
-        '3 Coach Check-ins (chat of voice)',
-        'Voortgangsrapporten en AI-feedback',
-        'Exclusieve AI-tools (Personality Match, Voice Chat)',
-      ],
-      popular: false,
-    },
-    {
-      name: 'Premium Plus',
-      description: 'De complete persoonlijke datingtransformatie',
-      monthlyPrice: 2490,
-      yearlyPrice: 2490,
-      features: [
-        'Alles uit Premium AI Coaching',
-        'Live startgesprek van 2 uur met jouw coach',
-        '4 extra 1-op-1 sessies van 60 minuten',
-        'Persoonlijke fotoshoot met professionele fotograaf',
-        'Feedback op profiel, gesprekken en dates',
-        'Wekelijkse persoonlijke begeleiding en evaluaties',
-        'Nazorggesprek na afronding',
-      ],
-      popular: false,
-    },
-  ];
 
   useEffect(() => {
     setIsClient(true);
@@ -697,7 +623,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
               </p>
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                 <p className="font-semibold text-gray-900 dark:text-gray-50">Lisa, 32 jaar</p>
-                <p className="text-sm text-gray-700 dark:text-gray-400">Pro abonnement</p>
+                <p className="text-sm text-gray-700 dark:text-gray-400">Transformatie programma</p>
               </div>
             </div>
 
@@ -748,9 +674,9 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Pricing & Value */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">💳 Is DatingAssistent echt gratis?</h4>
+                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">💳 Kan ik gratis beginnen?</h4>
                 <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Ja! Je kunt gratis starten zonder creditcard. Je krijgt toegang tot basis tools zoals de Profiel Coach en beperkte Chat Coach berichten. Upgrade naar Pro (€39/maand) wanneer je meer wilt.
+                  Ja! De Profiel Check is volledig gratis, zonder creditcard. Je krijgt direct inzicht in je dating profiel en concrete verbeterpunten. Daarna kies je zelf of je verder wilt met een van onze programma's.
                 </p>
               </div>
 
@@ -762,9 +688,9 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
               </div>
 
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">🔄 Kan ik opzeggen wanneer ik wil?</h4>
+                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">🔄 Wat als het niet voor mij werkt?</h4>
                 <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Absoluut! Geen langdurige contracten. Opzeggen kan met één klik in je account settings. Je hebt toegang tot je betaalde features tot het einde van je betaalperiode.
+                  Geen risico! Alle programma's hebben een 30 dagen niet-goed-geld-terug garantie. Niet tevreden? Je krijgt je geld terug, geen vragen.
                 </p>
               </div>
 

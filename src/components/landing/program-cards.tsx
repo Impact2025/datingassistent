@@ -150,11 +150,11 @@ export function ProgramCards() {
         </Card>
 
         {/* Plan 3: VIP Reis */}
-        <Card className="relative border-2 border-gray-200 dark:border-gray-700 h-full flex flex-col transition-all hover:shadow-lg bg-white dark:bg-gray-800">
+        <Card className="relative border-2 border-amber-300 dark:border-amber-600 h-full flex flex-col transition-all hover:shadow-lg bg-gradient-to-b from-amber-50 to-white dark:from-amber-900/20 dark:to-gray-800">
           {/* Top Scarcity Label */}
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className="bg-orange-500 dark:bg-orange-600 text-white px-3 py-1 text-xs font-bold shadow-md">
-              SLECHTS 5 PLEKKEN/MAAND
+            <Badge className="bg-amber-500 dark:bg-amber-600 text-white px-3 py-1 text-xs font-bold shadow-md">
+              MAX 10 PLEKKEN/MAAND
             </Badge>
           </div>
 
@@ -163,18 +163,15 @@ export function ProgramCards() {
             <div className="text-center space-y-3">
               <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50">VIP Reis</h3>
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                Persoonlijke 1-op-1 begeleiding
+                6 maanden persoonlijke begeleiding
               </p>
             </div>
 
             {/* Pricing */}
-            <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
+            <div className="text-center py-4 border-y border-amber-100 dark:border-amber-800/30">
               <div className="flex items-baseline justify-center gap-3 mb-2">
-                <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
+                <span className="text-5xl font-bold text-amber-600 dark:text-amber-400">
                   €997
-                </span>
-                <span className="text-5xl font-bold text-gray-900 dark:text-gray-50">
-                  €497
                 </span>
               </div>
             </div>
@@ -183,7 +180,7 @@ export function ProgramCards() {
             <div className="space-y-3 flex-grow">
               <ul className="space-y-3">
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
-                  <Sparkles className="w-5 h-5 mt-0.5 flex-shrink-0 text-purple-500 dark:text-purple-400" />
+                  <Sparkles className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500 dark:text-amber-400" />
                   <span className="font-medium">Alles uit Transformatie, plus:</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
@@ -192,11 +189,15 @@ export function ProgramCards() {
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>📞 Maandelijkse 1-op-1 Coaching</span>
+                  <span>📞 6x 1-op-1 Coaching Calls</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
                   <span>📱 WhatsApp Support (Directe lijn)</span>
+                </li>
+                <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
+                  <span>📸 Professionele Fotoshoot Planning</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
@@ -208,17 +209,16 @@ export function ProgramCards() {
             {/* CTA */}
             <Button
               onClick={() => handleSelectProgram('vip')}
-              variant="outline"
-              className="w-full border-2 border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-400 text-gray-900 dark:text-gray-100"
+              className="w-full bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-700 text-white font-semibold"
             >
               Start VIP Traject
             </Button>
 
             {/* Bottom Urgency Text */}
             <div className="flex items-center justify-center gap-2 pt-2">
-              <AlertCircle className="w-4 h-4 text-red-500 dark:text-red-400" />
-              <p className="text-xs text-red-600 dark:text-red-400 font-medium">
-                Nog 3 plekken beschikbaar voor {currentMonth}
+              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">
+                Beperkte plekken beschikbaar
               </p>
             </div>
           </CardContent>
