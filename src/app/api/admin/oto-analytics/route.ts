@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import { getOTOStats, getOTOFunnel, getDailyOTOStats, trackOTOEvent } from '@/lib/oto-analytics';
 
 export const dynamic = 'force-dynamic';
@@ -15,8 +15,8 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     // Check admin auth
-    const session = await getServerSession();
-    if (!session?.user || session.user.role !== 'admin') {
+    const user = await getCurrentUser();
+    if (!user || user.role !== 'admin') {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
