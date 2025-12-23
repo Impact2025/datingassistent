@@ -37,6 +37,30 @@ import type {
   INITIAL_WIZARD_STATE,
 } from '@/types/lead-activation.types';
 
+// Helper function to track OTO analytics events
+async function trackOTOEvent(
+  userId: number,
+  eventType: 'oto_shown' | 'oto_accepted' | 'oto_declined' | 'downsell_shown' | 'downsell_accepted' | 'downsell_declined',
+  otoProduct: 'transformatie' | 'kickstart' | null,
+  photoScore?: number
+): Promise<void> {
+  try {
+    await fetch('/api/admin/oto-analytics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId,
+        eventType,
+        otoProduct,
+        photoScore,
+        source: 'lead_wizard',
+      }),
+    });
+  } catch (error) {
+    console.error('Failed to track OTO event:', error);
+  }
+}
+
 interface LeadRegistrationWizardProps {
   className?: string;
   onComplete?: (userId: number, otoAccepted: boolean) => void;
@@ -141,6 +165,11 @@ export function LeadRegistrationWizard({
       ...prev,
       currentStep: 'oto',
     }));
+
+    // Track OTO shown event
+    if (state.userId) {
+      trackOTOEvent(state.userId, 'oto_shown', 'transformatie', state.photoResult?.overall_score);
+    }
   };
 
   // Transformatie OTO Accept - Primary conversion!
@@ -150,6 +179,11 @@ export function LeadRegistrationWizard({
       otoAccepted: true,
       currentStep: 'complete',
     }));
+
+    // Track OTO accepted event
+    if (state.userId) {
+      trackOTOEvent(state.userId, 'oto_accepted', 'transformatie', state.photoResult?.overall_score);
+    }
 
     // Show confetti for conversion!
     setShowConfetti(true);
@@ -189,6 +223,12 @@ export function LeadRegistrationWizard({
 
   // Transformatie declined - show Kickstart downsell
   const handleTransformatieDecline = () => {
+    // Track OTO declined and downsell shown events
+    if (state.userId) {
+      trackOTOEvent(state.userId, 'oto_declined', 'transformatie', state.photoResult?.overall_score);
+      trackOTOEvent(state.userId, 'downsell_shown', 'kickstart', state.photoResult?.overall_score);
+    }
+
     setState((prev) => ({
       ...prev,
       currentStep: 'downsell',
@@ -202,6 +242,11 @@ export function LeadRegistrationWizard({
       otoAccepted: true,
       currentStep: 'complete',
     }));
+
+    // Track downsell accepted event
+    if (state.userId) {
+      trackOTOEvent(state.userId, 'downsell_accepted', 'kickstart', state.photoResult?.overall_score);
+    }
 
     // Show confetti for conversion!
     setShowConfetti(true);
@@ -246,6 +291,11 @@ export function LeadRegistrationWizard({
       otoAccepted: false,
       currentStep: 'complete',
     }));
+
+    // Track downsell declined event
+    if (state.userId) {
+      trackOTOEvent(state.userId, 'downsell_declined', null, state.photoResult?.overall_score);
+    }
 
     // Mark onboarding as completed without purchase
     if (state.userId) {

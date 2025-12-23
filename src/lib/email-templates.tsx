@@ -20,6 +20,7 @@ import MonthlyProgressReportEmail from '@/emails/monthly-progress-report-email';
 import SubscriptionRenewalEmail from '@/emails/subscription-renewal-email';
 import FeatureLimitReachedEmail from '@/emails/feature-limit-reached-email';
 import PaymentFailedEmail from '@/emails/payment-failed-email';
+import KickstartUpgradeEmail from '@/emails/kickstart-upgrade-email';
 import { NotificationEmailTemplate } from '@/components/emails';
 import { AchievementEmailTemplate } from '@/components/emails/templates/achievement-template';
 import type { EmailType, EmailTemplateData } from './email-engagement';
@@ -804,6 +805,50 @@ function getEmailContent(emailType: EmailType, data: EmailTemplateData): {
       ),
       subject: `🤝 Deel de liefde - Verdien ${data.rewardAmount || '1 maand'} gratis per verwijzing!`,
       textVersion: `Hoi ${data.firstName},\n\nVerdien gratis maanden door vrienden uit te nodigen voor DatingAssistent!`,
+    },
+
+    // KICKSTART → TRANSFORMATIE UPSELL SEQUENCE
+    kickstart_upgrade_day7: {
+      component: (
+        <KickstartUpgradeEmail
+          firstName={data.firstName}
+          daysCompleted={data.daysCompleted || 7}
+          upgradeUrl={data.upgradeUrl || `${BASE_URL}/checkout/transformatie-upgrade`}
+          currentScore={data.currentScore}
+          variant="day7"
+        />
+      ),
+      subject: `${data.firstName}, week 1 voltooid! Wat nu?`,
+      textVersion: `Hoi ${data.firstName},\n\nJe hebt al 7 dagen van je Kickstart afgerond. Geweldig! Wil je door naar het volgende niveau?\n\nBekijk Transformatie: ${data.upgradeUrl || `${BASE_URL}/checkout/transformatie-upgrade`}`,
+    },
+
+    kickstart_upgrade_day14: {
+      component: (
+        <KickstartUpgradeEmail
+          firstName={data.firstName}
+          daysCompleted={data.daysCompleted || 14}
+          upgradeUrl={data.upgradeUrl || `${BASE_URL}/checkout/transformatie-upgrade`}
+          improvementPercentage={data.improvementPercentage}
+          variant="day14"
+        />
+      ),
+      subject: `${data.firstName}, halverwege! Klaar voor meer?`,
+      textVersion: `Hoi ${data.firstName},\n\nJe bent halverwege je Kickstart! 14 dagen voltooid. Het perfecte moment om te beslissen of je door wilt naar de complete Transformatie.\n\nBekijk je opties: ${data.upgradeUrl || `${BASE_URL}/checkout/transformatie-upgrade`}`,
+    },
+
+    kickstart_upgrade_day21: {
+      component: (
+        <KickstartUpgradeEmail
+          firstName={data.firstName}
+          daysCompleted={21}
+          upgradeUrl={data.upgradeUrl || `${BASE_URL}/checkout/transformatie-upgrade`}
+          currentScore={data.currentScore}
+          improvementPercentage={data.improvementPercentage}
+          variant="day21"
+        />
+      ),
+      subject: `🎉 ${data.firstName}, Kickstart voltooid! Speciale aanbieding binnen`,
+      textVersion: `Gefeliciteerd ${data.firstName}!\n\n21 dagen Kickstart voltooid! Je hebt het gehaald. Als bedankje voor je toewijding: upgrade naar Transformatie voor slechts €100 extra (je Kickstart wordt volledig verrekend).\n\nClaim je upgrade: ${data.upgradeUrl || `${BASE_URL}/checkout/transformatie-upgrade`}`,
     },
   };
 

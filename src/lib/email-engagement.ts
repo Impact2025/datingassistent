@@ -46,7 +46,11 @@ export type EmailType =
   | 'feature_limit_reached'
   | 'upgrade_suggestion'
   | 'seasonal_promotion'
-  | 'referral_reward';
+  | 'referral_reward'
+  // Kickstart → Transformatie Upsell Sequence
+  | 'kickstart_upgrade_day7'
+  | 'kickstart_upgrade_day14'
+  | 'kickstart_upgrade_day21';
 
 export type EmailCategory =
   | 'onboarding'

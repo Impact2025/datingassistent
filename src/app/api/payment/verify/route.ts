@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
+import { scheduleKickstartUpsellSequence, cancelKickstartUpsellSequence } from '@/lib/kickstart-upsell-service';
 
 export const dynamic = 'force-dynamic';
 
@@ -215,6 +216,29 @@ export async function GET(request: NextRequest) {
           // Initialize Kickstart progress if this is a Kickstart purchase
           if (tx.program_slug === 'kickstart') {
             await initializeKickstartProgress(tx.user_id, tx.program_id);
+
+            // Schedule Kickstart → Transformatie upsell email sequence
+            try {
+              await scheduleKickstartUpsellSequence({
+                userId: tx.user_id,
+                purchaseDate: new Date(),
+                kickstartOrderId: orderId,
+              });
+              console.log(`📧 Scheduled upsell sequence for Kickstart user ${tx.user_id}`);
+            } catch (upsellError) {
+              // Don't fail payment if upsell scheduling fails
+              console.error('⚠️ Failed to schedule upsell sequence (non-fatal):', upsellError);
+            }
+          }
+
+          // Cancel Kickstart upsell sequence if user upgrades to Transformatie
+          if (tx.program_slug === 'transformatie') {
+            try {
+              await cancelKickstartUpsellSequence(tx.user_id);
+              console.log(`🛑 Cancelled Kickstart upsell sequence for user ${tx.user_id} (upgraded to Transformatie)`);
+            } catch (cancelError) {
+              console.error('⚠️ Failed to cancel upsell sequence (non-fatal):', cancelError);
+            }
           }
 
           // Initialize standard program progress (only for non-Kickstart programs)
