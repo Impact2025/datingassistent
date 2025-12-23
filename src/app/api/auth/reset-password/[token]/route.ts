@@ -16,9 +16,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       );
     }
 
-    if (!password || password.length < 6) {
+    if (!password || password.length < 8) {
       return NextResponse.json(
-        { error: 'Password must be at least 6 characters long' },
+        { error: 'Wachtwoord moet minimaal 8 karakters bevatten' },
         { status: 400 }
       );
     }

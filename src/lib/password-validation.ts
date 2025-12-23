@@ -13,7 +13,7 @@ export interface PasswordValidationResult {
  * Validate password strength with comprehensive requirements
  *
  * Requirements:
- * - Minimum 12 characters
+ * - Minimum 8 characters
  * - At least one uppercase letter
  * - At least one lowercase letter
  * - At least one number
@@ -24,8 +24,8 @@ export function validatePassword(password: string): PasswordValidationResult {
   const errors: string[] = [];
 
   // Minimum length check
-  if (password.length < 12) {
-    errors.push('Wachtwoord moet minimaal 12 karakters lang zijn');
+  if (password.length < 8) {
+    errors.push('Wachtwoord moet minimaal 8 karakters lang zijn');
   }
 
   // Maximum length check (prevent DoS via bcrypt)
@@ -108,9 +108,9 @@ export function calculatePasswordStrength(password: string): number {
   let score = 0;
 
   // Length scoring (0-40 points)
-  if (password.length >= 12) score += 20;
+  if (password.length >= 8) score += 20;
+  if (password.length >= 12) score += 10;
   if (password.length >= 16) score += 10;
-  if (password.length >= 20) score += 10;
 
   // Character variety (0-40 points)
   if (/[a-z]/.test(password)) score += 10;

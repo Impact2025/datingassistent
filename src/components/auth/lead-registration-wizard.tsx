@@ -25,7 +25,8 @@ import { LeadAccountStep } from './lead-account-step';
 import { LeadIntakeQuestions } from '@/components/onboarding/lead-intake-questions';
 import { PhotoScanWizard } from '@/components/onboarding/photo-scan-wizard';
 import { PhotoScoreReveal } from '@/components/onboarding/photo-score-reveal';
-import { KickstartOTOModal } from '@/components/onboarding/kickstart-oto-modal';
+import { TransformatieOTOModal } from '@/components/onboarding/transformatie-oto-modal';
+import { KickstartDownsellModal } from '@/components/onboarding/kickstart-downsell-modal';
 
 import type {
   LeadWizardStep,
@@ -142,7 +143,8 @@ export function LeadRegistrationWizard({
     }));
   };
 
-  const handleOTOAccept = async () => {
+  // Transformatie OTO Accept - Primary conversion!
+  const handleTransformatieAccept = async () => {
     setState((prev) => ({
       ...prev,
       otoAccepted: true,
@@ -153,7 +155,7 @@ export function LeadRegistrationWizard({
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 5000);
 
-    // Mark onboarding as completed with OTO accepted (CONVERSION!) and notify admin
+    // Mark onboarding as completed with Transformatie accepted (CONVERSION!)
     if (state.userId) {
       try {
         await fetch('/api/user/complete-lead-onboarding', {
@@ -163,6 +165,7 @@ export function LeadRegistrationWizard({
             userId: state.userId,
             otoShown: true,
             otoAccepted: true,
+            otoProduct: 'transformatie',
             photoScore: state.photoResult?.overall_score,
             intakeData: state.intakeData ? {
               lookingFor: state.intakeData.lookingFor,
@@ -176,7 +179,59 @@ export function LeadRegistrationWizard({
       }
     }
 
-    // Redirect to checkout with discount
+    // Redirect to Transformatie checkout
+    setTimeout(() => {
+      router.push(`/checkout/transformatie-programma?userId=${state.userId}&discount=true`);
+    }, 1500);
+
+    onComplete?.(state.userId!, true);
+  };
+
+  // Transformatie declined - show Kickstart downsell
+  const handleTransformatieDecline = () => {
+    setState((prev) => ({
+      ...prev,
+      currentStep: 'downsell',
+    }));
+  };
+
+  // Kickstart downsell Accept - Secondary conversion
+  const handleKickstartAccept = async () => {
+    setState((prev) => ({
+      ...prev,
+      otoAccepted: true,
+      currentStep: 'complete',
+    }));
+
+    // Show confetti for conversion!
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 5000);
+
+    // Mark onboarding as completed with Kickstart accepted
+    if (state.userId) {
+      try {
+        await fetch('/api/user/complete-lead-onboarding', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: state.userId,
+            otoShown: true,
+            otoAccepted: true,
+            otoProduct: 'kickstart',
+            photoScore: state.photoResult?.overall_score,
+            intakeData: state.intakeData ? {
+              lookingFor: state.intakeData.lookingFor,
+              datingStatus: state.intakeData.datingStatus,
+              mainObstacle: state.intakeData.mainObstacle,
+            } : null,
+          }),
+        });
+      } catch (error) {
+        console.error('Failed to complete onboarding:', error);
+      }
+    }
+
+    // Redirect to Kickstart checkout
     setTimeout(() => {
       router.push(`/checkout/kickstart-programma?userId=${state.userId}&discount=true`);
     }, 1500);
@@ -184,14 +239,15 @@ export function LeadRegistrationWizard({
     onComplete?.(state.userId!, true);
   };
 
-  const handleOTODecline = async () => {
+  // Final decline - no purchase
+  const handleFinalDecline = async () => {
     setState((prev) => ({
       ...prev,
       otoAccepted: false,
       currentStep: 'complete',
     }));
 
-    // Mark onboarding as completed and notify admin
+    // Mark onboarding as completed without purchase
     if (state.userId) {
       try {
         await fetch('/api/user/complete-lead-onboarding', {
@@ -201,6 +257,7 @@ export function LeadRegistrationWizard({
             userId: state.userId,
             otoShown: true,
             otoAccepted: false,
+            otoProduct: null,
             photoScore: state.photoResult?.overall_score,
             intakeData: state.intakeData ? {
               lookingFor: state.intakeData.lookingFor,
@@ -251,7 +308,7 @@ export function LeadRegistrationWizard({
       )}
 
       {/* Step Indicator - Only show for first 4 steps */}
-      {state.currentStep !== 'complete' && state.currentStep !== 'oto' && (
+      {state.currentStep !== 'complete' && state.currentStep !== 'oto' && state.currentStep !== 'downsell' && (
         <div className="w-full max-w-lg mx-auto px-4 pt-6 pb-4">
           <div className="flex items-center justify-between">
             {steps.map((step, index) => (
@@ -405,7 +462,7 @@ export function LeadRegistrationWizard({
             </motion.div>
           )}
 
-          {/* Step 5: OTO Modal */}
+          {/* Step 5: Transformatie OTO Modal (Primary Offer) */}
           {state.currentStep === 'oto' && state.photoResult && (
             <motion.div
               key="oto"
@@ -414,11 +471,29 @@ export function LeadRegistrationWizard({
               exit={{ opacity: 0 }}
               className="w-full max-w-lg"
             >
-              <KickstartOTOModal
+              <TransformatieOTOModal
                 score={state.photoResult.overall_score}
                 userId={state.userId!}
-                onAccept={handleOTOAccept}
-                onDecline={handleOTODecline}
+                onAccept={handleTransformatieAccept}
+                onDecline={handleTransformatieDecline}
+              />
+            </motion.div>
+          )}
+
+          {/* Step 6: Kickstart Downsell Modal (After declining Transformatie) */}
+          {state.currentStep === 'downsell' && state.photoResult && (
+            <motion.div
+              key="downsell"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="w-full max-w-lg"
+            >
+              <KickstartDownsellModal
+                score={state.photoResult.overall_score}
+                userId={state.userId!}
+                onAccept={handleKickstartAccept}
+                onDecline={handleFinalDecline}
               />
             </motion.div>
           )}
@@ -431,7 +506,7 @@ export function LeadRegistrationWizard({
               animate={{ opacity: 1, y: 0 }}
               className="w-full max-w-lg"
             >
-              <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 text-center">
+              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 p-8 text-center">
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -453,13 +528,13 @@ export function LeadRegistrationWizard({
                   </svg>
                 </motion.div>
 
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-2">
                   {state.otoAccepted
-                    ? 'Geweldig! Je start met Kickstart'
+                    ? 'Geweldig! Je start je transformatie'
                     : 'Account aangemaakt!'}
                 </h1>
 
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 dark:text-gray-300 mb-6">
                   {state.otoAccepted
                     ? 'Je wordt doorgestuurd naar de betaalpagina...'
                     : 'Je wordt doorgestuurd naar je dashboard...'}

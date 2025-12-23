@@ -121,6 +121,41 @@ export const KICKSTART_OTO: OTOConfig = {
   redirectUrl: '/checkout/kickstart-programma',
 };
 
+// Primary OTO - Transformatie (Hero Product)
+export const TRANSFORMATIE_OTO: OTOConfig = {
+  headline: 'Wil je in 90 dagen van {score} naar 8+?',
+  subheadline: 'De complete opleiding tot succesvol daten. Van profiel tot date, alles in één programma.',
+  originalPrice: 297,
+  discountedPrice: 147,
+  features: [
+    '🎓 Complete Video Academy (6 Modules)',
+    '🤖 Pro AI Suite (90 dagen onbeperkt)',
+    '💬 24/7 Chat Coach & Match Analyse',
+    '👥 3x Live Q&A Sessies',
+    '📖 Alles uit Kickstart inbegrepen',
+  ],
+  ctaPrimary: 'Ja, start mijn transformatie!',
+  ctaSecondary: 'Misschien later',
+  redirectUrl: '/checkout/transformatie-programma',
+};
+
+// Downsell - Kickstart (after declining Transformatie)
+export const KICKSTART_DOWNSELL: OTOConfig = {
+  headline: 'Te snel? Start met 21 dagen.',
+  subheadline: 'Begin met de Kickstart en upgrade later wanneer je klaar bent voor de volgende stap.',
+  originalPrice: 97,
+  discountedPrice: 47,
+  features: [
+    '21-Dagen Video Challenge',
+    'AI Foto Check (Onbeperkt)',
+    'Bio Builder (AI schrijft je tekst)',
+    'Kickstart Werkboek & Templates',
+  ],
+  ctaPrimary: 'Start met Kickstart €47',
+  ctaSecondary: 'Nee bedankt, naar dashboard',
+  redirectUrl: '/checkout/kickstart-programma',
+};
+
 // ============================================
 // Wizard State Management
 // ============================================
@@ -131,7 +166,8 @@ export type LeadWizardStep =
   | 'photo-upload'
   | 'scanning'
   | 'score-reveal'
-  | 'oto'
+  | 'oto'           // Transformatie OTO (primary)
+  | 'downsell'      // Kickstart downsell (after declining Transformatie)
   | 'complete';
 
 export interface LeadWizardState {

@@ -204,7 +204,7 @@ export function RegistrationContainer() {
       } else if (error.code === 'auth/operation-not-allowed') {
         description = "Email/wachtwoord authenticatie is niet ingeschakeld. Neem contact op met support.";
       } else if (error.code === 'auth/weak-password') {
-        description = "Wachtwoord is te zwak. Gebruik minimaal 6 karakters.";
+        description = "Wachtwoord is te zwak. Gebruik minimaal 8 karakters met hoofdletter, cijfer en speciaal teken.";
       } else if (error.code === 'auth/invalid-email') {
         description = "Ongeldig e-mailadres.";
       } else if (error.message) {

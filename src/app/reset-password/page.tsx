@@ -56,10 +56,10 @@ function ResetPasswordContent() {
       return;
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       toast({
         title: "Error",
-        description: "Password must be at least 6 characters long",
+        description: "Wachtwoord moet minimaal 8 karakters bevatten",
         variant: "destructive",
       });
       return;
