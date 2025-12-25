@@ -3,9 +3,12 @@
  *
  * Caches AI responses to reduce costs and improve performance.
  * Uses Vercel KV for production caching with in-memory fallback for development.
+ *
+ * @updated 2024-12-25 - Integrated with centralized connection manager
  */
 
 import { kv } from '@vercel/kv';
+import { redisManager } from './redis/connection-manager';
 
 interface CacheEntry {
   response: string;
@@ -14,11 +17,13 @@ interface CacheEntry {
 }
 
 class AICache {
-  private isRedisAvailable: boolean = false;
   private memoryCache: Map<string, CacheEntry> = new Map();
 
-  constructor() {
-    this.isRedisAvailable = !!(process.env.KV_URL && process.env.NODE_ENV === 'production');
+  /**
+   * Check if Redis should be used (delegated to connection manager)
+   */
+  private shouldUseRedis(): boolean {
+    return redisManager.isRedisHealthy();
   }
 
   /**
@@ -62,32 +67,38 @@ class AICache {
     const now = Date.now();
 
     try {
-      if (this.isRedisAvailable) {
-        const cached = await kv.get(key) as CacheEntry | null;
-        if (cached && (now - cached.timestamp) < cached.ttl) {
-          console.log(`✅ AI Cache hit: ${key}`);
-          return cached.response;
-        }
-        if (cached) {
+      if (this.shouldUseRedis()) {
+        const result = await redisManager.execute(async () => {
+          return kv.get(key) as Promise<CacheEntry | null>;
+        }, 'read');
+
+        if (result.success && result.data) {
+          const cached = result.data;
+          if ((now - cached.timestamp) < cached.ttl) {
+            redisManager.recordCacheHit();
+            return cached.response;
+          }
           // Remove expired entry
-          await kv.del(key);
+          await redisManager.execute(() => kv.del(key), 'write');
         }
+        redisManager.recordCacheMiss();
       } else {
-        // In-memory cache for development
+        // In-memory cache for development/fallback
         const cached = this.memoryCache.get(key);
         if (cached && (now - cached.timestamp) < cached.ttl) {
-          console.log(`✅ AI Cache hit (memory): ${key}`);
+          redisManager.recordCacheHit();
           return cached.response;
         }
         if (cached) {
           this.memoryCache.delete(key);
         }
+        redisManager.recordCacheMiss();
       }
     } catch (error) {
       console.error('Cache read error:', error);
+      redisManager.recordCacheMiss();
     }
 
-    console.log(`❌ AI Cache miss: ${key}`);
     return null;
   }
 
@@ -110,9 +121,10 @@ class AICache {
     };
 
     try {
-      if (this.isRedisAvailable) {
-        await kv.set(key, entry, { ex: Math.floor(ttlMs / 1000) });
-        console.log(`💾 AI Cache stored: ${key}`);
+      if (this.shouldUseRedis()) {
+        await redisManager.execute(async () => {
+          await kv.set(key, entry, { ex: Math.floor(ttlMs / 1000) });
+        }, 'write');
       } else {
         // In-memory cache with cleanup
         this.memoryCache.set(key, entry);
@@ -126,7 +138,6 @@ class AICache {
             }
           }
         }
-        console.log(`💾 AI Cache stored (memory): ${key}`);
       }
     } catch (error) {
       console.error('Cache write error:', error);
@@ -138,13 +149,12 @@ class AICache {
    */
   async clear(): Promise<void> {
     try {
-      if (this.isRedisAvailable) {
+      if (this.shouldUseRedis()) {
         // Note: This would require scanning all keys with ai_cache: prefix
         // For now, we'll skip this in production
-        console.log('⚠️ Cache clearing not implemented for Redis in production');
+        console.log('[AI Cache] Clearing not implemented for Redis');
       } else {
         this.memoryCache.clear();
-        console.log('🧹 AI Cache cleared (memory)');
       }
     } catch (error) {
       console.error('Cache clear error:', error);
@@ -152,14 +162,15 @@ class AICache {
   }
 
   /**
-   * Get cache statistics
+   * Get cache statistics (now uses centralized metrics)
    */
-  async getStats(): Promise<{ hits: number; misses: number; size: number }> {
-    // This is a simplified version - in production you'd want proper metrics
+  async getStats(): Promise<{ hits: number; misses: number; size: number; hitRatio: string }> {
+    const metrics = redisManager.getMetrics();
     return {
-      hits: 0, // Would need to track this separately
-      misses: 0,
-      size: this.isRedisAvailable ? -1 : this.memoryCache.size // -1 means unknown for Redis
+      hits: metrics.cacheHits,
+      misses: metrics.cacheMisses,
+      size: this.memoryCache.size,
+      hitRatio: (redisManager.getCacheHitRatio() * 100).toFixed(1) + '%',
     };
   }
 }
