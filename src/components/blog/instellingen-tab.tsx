@@ -180,6 +180,30 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
             />
             <p className="text-xs text-gray-500">Komma-gescheiden</p>
           </div>
+
+          {/* Publicatiedatum */}
+          <div className="space-y-2">
+            <Label htmlFor="publish_date" className="text-sm font-medium">
+              Publicatiedatum
+            </Label>
+            <Input
+              id="publish_date"
+              type="datetime-local"
+              value={
+                blogData.published_at
+                  ? new Date(blogData.published_at).toISOString().slice(0, 16)
+                  : ''
+              }
+              onChange={(e) => {
+                const dateValue = e.target.value ? new Date(e.target.value) : undefined;
+                updateBlogData({ published_at: dateValue });
+              }}
+              className="border-gray-300 focus:ring-pink-500 w-full md:w-1/2"
+            />
+            <p className="text-xs text-gray-500">
+              Laat leeg voor huidige datum/tijd bij publiceren
+            </p>
+          </div>
         </CardContent>
       </Card>
 

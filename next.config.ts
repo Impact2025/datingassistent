@@ -72,11 +72,11 @@ const nextConfig: NextConfig = {
         // Apply enterprise-grade security headers to ALL routes
         source: '/(.*)',
         headers: [
-          // Content Security Policy (CSP) - Cloudflare Turnstile enabled
+          // Content Security Policy (CSP) - Cloudflare Turnstile + Analytics enabled
           {
             key: 'Content-Security-Policy',
             value: process.env.NODE_ENV === 'production'
-              ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://cdn.vercel-insights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https: wss: https://*.neon.tech https://api.openrouter.ai https://api.anthropic.com https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';"
+              ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://cdn.vercel-insights.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https: wss:; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';"
               : "default-src 'self' 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https: wss: http://localhost:*; frame-src 'self' https:; media-src 'self' https: blob:;"
           },
           // HTTP Strict Transport Security (HSTS)

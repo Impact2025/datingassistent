@@ -13,16 +13,36 @@ export async function POST(request: NextRequest) {
       title,
       excerpt,
       content,
+      slug,
+
+      // Legacy fields
       image,
       placeholder_text,
       metaTitle,
       metaDescription,
-      slug,
       keywords,
       midjourneyPrompt,
       publishDate,
+
+      // New fields (Blog V2)
+      category = 'Online Dating Tips',
+      tags = [],
+      cover_image_url,
+      cover_image_alt,
+      cover_image_blob_id,
+      header_type = 'image',
+      header_color = '#ec4899',
+      header_title,
+      seo_title,
+      seo_description,
+      social_title,
+      social_description,
+      reading_time,
       author = 'DatingAssistent',
-      published = true, // Default to true so blogs appear on homepage/blog page
+      author_bio,
+      author_avatar,
+      published = false, // Default to draft
+      published_at,
     } = body;
 
     // Validatie
@@ -45,22 +65,42 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Insert blog
+    // Insert blog with all V2 fields
     const result = await sql`
       INSERT INTO blogs (
         title,
         excerpt,
         content,
+        slug,
+
+        -- Legacy fields
         image,
         placeholder_text,
         meta_title,
         meta_description,
-        slug,
         keywords,
         midjourney_prompt,
         publish_date,
+
+        -- New V2 fields
+        category,
+        tags,
+        cover_image_url,
+        cover_image_alt,
+        cover_image_blob_id,
+        header_type,
+        header_color,
+        header_title,
+        seo_title,
+        seo_description,
+        social_title,
+        social_description,
+        reading_time,
         author,
+        author_bio,
+        author_avatar,
         published,
+        published_at,
         views,
         created_at,
         updated_at
@@ -68,21 +108,41 @@ export async function POST(request: NextRequest) {
         ${title},
         ${excerpt || ''},
         ${content},
-        ${image || ''},
-        ${placeholder_text || ''},
-        ${metaTitle || title},
-        ${metaDescription || excerpt || ''},
         ${slug},
+
+        -- Legacy fields
+        ${image || cover_image_url || ''},
+        ${placeholder_text || ''},
+        ${metaTitle || seo_title || title},
+        ${metaDescription || seo_description || excerpt || ''},
         ${JSON.stringify(keywords || [])},
         ${midjourneyPrompt || ''},
         ${publishDate || null},
+
+        -- New V2 fields
+        ${category},
+        ${JSON.stringify(tags)},
+        ${cover_image_url || null},
+        ${cover_image_alt || null},
+        ${cover_image_blob_id || null},
+        ${header_type},
+        ${header_color},
+        ${header_title || null},
+        ${seo_title || null},
+        ${seo_description || null},
+        ${social_title || null},
+        ${social_description || null},
+        ${reading_time || null},
         ${author},
+        ${author_bio || null},
+        ${author_avatar || null},
         ${published},
+        ${published_at ? new Date(published_at) : (published ? new Date() : null)},
         0,
         NOW(),
         NOW()
       )
-      RETURNING id, title, slug, created_at
+      RETURNING id, title, slug, category, published, published_at, created_at
     `;
 
     const blog = result.rows[0];

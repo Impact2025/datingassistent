@@ -135,6 +135,18 @@ export async function GET(request: NextRequest) {
     try {
       await sql`
         ALTER TABLE blogs
+        ADD COLUMN IF NOT EXISTS seo_title VARCHAR(100)
+      `;
+      changes.push('✅ Added seo_title column');
+
+      await sql`
+        ALTER TABLE blogs
+        ADD COLUMN IF NOT EXISTS seo_description VARCHAR(200)
+      `;
+      changes.push('✅ Added seo_description column');
+
+      await sql`
+        ALTER TABLE blogs
         ADD COLUMN IF NOT EXISTS social_title VARCHAR(100)
       `;
       changes.push('✅ Added social_title column');
@@ -192,6 +204,12 @@ export async function GET(request: NextRequest) {
     try {
       await sql`
         ALTER TABLE blogs
+        ADD COLUMN IF NOT EXISTS published_at TIMESTAMP
+      `;
+      changes.push('✅ Added published_at column');
+
+      await sql`
+        ALTER TABLE blogs
         ADD COLUMN IF NOT EXISTS last_optimized_at TIMESTAMP
       `;
       changes.push('✅ Added last_optimized_at column');
@@ -244,6 +262,13 @@ export async function GET(request: NextRequest) {
       `;
       changes.push('✅ Created index: idx_blogs_published_category');
 
+      // Published date index
+      await sql`
+        CREATE INDEX IF NOT EXISTS idx_blogs_published_at
+        ON blogs(published_at DESC)
+      `;
+      changes.push('✅ Created index: idx_blogs_published_at');
+
       // Full-text search index
       await sql`
         CREATE INDEX IF NOT EXISTS idx_blogs_search
@@ -258,6 +283,53 @@ export async function GET(request: NextRequest) {
     // STEP 9: Data Backfilling (Safe Defaults)
     // =========================================================================
     try {
+      // Copy image URL to cover_image_url for existing blogs
+      const { rowCount: imageCount } = await sql`
+        UPDATE blogs
+        SET cover_image_url = image
+        WHERE (cover_image_url IS NULL OR cover_image_url = '')
+          AND image IS NOT NULL
+          AND image != ''
+      `;
+      if (imageCount && imageCount > 0) {
+        changes.push(`✅ Migrated ${imageCount} image URLs to cover_image_url`);
+      }
+
+      // Copy publish_date to published_at for existing blogs
+      const { rowCount: dateCount } = await sql`
+        UPDATE blogs
+        SET published_at = publish_date
+        WHERE published_at IS NULL
+          AND publish_date IS NOT NULL
+      `;
+      if (dateCount && dateCount > 0) {
+        changes.push(`✅ Migrated ${dateCount} publish dates to published_at`);
+      }
+
+      // Copy meta_title to seo_title for existing blogs
+      const { rowCount: seoTitleCount } = await sql`
+        UPDATE blogs
+        SET seo_title = meta_title
+        WHERE (seo_title IS NULL OR seo_title = '')
+          AND meta_title IS NOT NULL
+          AND meta_title != ''
+      `;
+      if (seoTitleCount && seoTitleCount > 0) {
+        changes.push(`✅ Migrated ${seoTitleCount} meta titles to seo_title`);
+      }
+
+      // Copy meta_description to seo_description for existing blogs
+      const { rowCount: seoDescCount } = await sql`
+        UPDATE blogs
+        SET seo_description = meta_description
+        WHERE (seo_description IS NULL OR seo_description = '')
+          AND meta_description IS NOT NULL
+          AND meta_description != ''
+      `;
+      if (seoDescCount && seoDescCount > 0) {
+        changes.push(`✅ Migrated ${seoDescCount} meta descriptions to seo_description`);
+      }
+
       // Set default category for existing blogs
       const { rowCount: categoryCount } = await sql`
         UPDATE blogs

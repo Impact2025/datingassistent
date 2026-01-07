@@ -14,15 +14,35 @@ export async function PUT(request: NextRequest) {
       title,
       excerpt,
       content,
+      slug,
+
+      // Legacy fields
       image,
       placeholder_text,
       metaTitle,
       metaDescription,
-      slug,
       keywords,
-      author,
-      published,
       publishDate,
+
+      // New V2 fields
+      category,
+      tags,
+      cover_image_url,
+      cover_image_alt,
+      cover_image_blob_id,
+      header_type,
+      header_color,
+      header_title,
+      seo_title,
+      seo_description,
+      social_title,
+      social_description,
+      reading_time,
+      author,
+      author_bio,
+      author_avatar,
+      published,
+      published_at,
     } = body;
 
     // Validatie
@@ -45,24 +65,44 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Update blog
+    // Update blog with all V2 fields
     const result = await sql`
       UPDATE blogs SET
         title = ${title},
         excerpt = ${excerpt || ''},
         content = ${content},
-        image = ${image || ''},
-        placeholder_text = ${placeholder_text || ''},
-        meta_title = ${metaTitle || title},
-        meta_description = ${metaDescription || excerpt || ''},
         slug = ${slug},
+
+        -- Legacy fields (backward compatibility)
+        image = ${image || cover_image_url || ''},
+        placeholder_text = ${placeholder_text || ''},
+        meta_title = ${metaTitle || seo_title || title},
+        meta_description = ${metaDescription || seo_description || excerpt || ''},
         keywords = ${JSON.stringify(keywords || [])},
-        author = ${author || 'DatingAssistent'},
-        published = ${published !== undefined ? published : false},
         publish_date = ${publishDate || null},
+
+        -- New V2 fields
+        category = COALESCE(${category}, category),
+        tags = COALESCE(${tags ? JSON.stringify(tags) : null}, tags),
+        cover_image_url = COALESCE(${cover_image_url}, cover_image_url),
+        cover_image_alt = COALESCE(${cover_image_alt}, cover_image_alt),
+        cover_image_blob_id = COALESCE(${cover_image_blob_id}, cover_image_blob_id),
+        header_type = COALESCE(${header_type}, header_type),
+        header_color = COALESCE(${header_color}, header_color),
+        header_title = COALESCE(${header_title}, header_title),
+        seo_title = COALESCE(${seo_title}, seo_title),
+        seo_description = COALESCE(${seo_description}, seo_description),
+        social_title = COALESCE(${social_title}, social_title),
+        social_description = COALESCE(${social_description}, social_description),
+        reading_time = COALESCE(${reading_time}, reading_time),
+        author = COALESCE(${author}, author),
+        author_bio = COALESCE(${author_bio}, author_bio),
+        author_avatar = COALESCE(${author_avatar}, author_avatar),
+        published = COALESCE(${published}, published),
+        published_at = COALESCE(${published_at ? new Date(published_at) : null}, published_at),
         updated_at = NOW()
       WHERE id = ${id}
-      RETURNING id, title, slug, updated_at
+      RETURNING id, title, slug, category, published, published_at, updated_at
     `;
 
     if (result.rows.length === 0) {
