@@ -20,7 +20,9 @@ import {
   CheckCircle,
   Tag,
   MessageSquare,
-  BookOpen
+  BookOpen,
+  FileText,
+  PenTool
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/providers/user-provider";
@@ -67,6 +69,18 @@ const adminNavigation = [
     href: "/admin/courses",
     icon: BookOpen,
     description: "Cursus en content beheer"
+  },
+  {
+    name: "Blog",
+    href: "/admin/blogs",
+    icon: FileText,
+    description: "Blog posts beheren"
+  },
+  {
+    name: "Blog Generator",
+    href: "/admin/blog-generator",
+    icon: PenTool,
+    description: "AI blog generator"
   },
   {
     name: "Live Chat",
