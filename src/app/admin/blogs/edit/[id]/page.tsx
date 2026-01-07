@@ -398,7 +398,16 @@ export default function BlogEditorPage() {
 
       // Update blog data with generated content
       const blog = data.blog;
-      updateBlogData({
+
+      // 🐛 DEBUG: Log what AI returned
+      console.log('🤖 AI Generated Blog:', {
+        category: blog.category,
+        keywords: blog.keywords,
+        tags: blog.keywords?.slice(0, 5),
+        fullResponse: blog,
+      });
+
+      const updatedData = {
         title: blog.title,
         excerpt: blog.excerpt,
         content: blog.content,
@@ -408,12 +417,15 @@ export default function BlogEditorPage() {
         social_title: blog.socialTitle,
         social_description: blog.socialDescription,
         category: blog.category,
-        tags: blog.keywords.slice(0, 5),
+        tags: blog.keywords?.slice(0, 5) || [],
         reading_time: blog.readingTime,
-        header_type: blog.headerSuggestion.type,
-        header_color: blog.headerSuggestion.colorHex || '#ec4899',
-        header_title: blog.headerSuggestion.headerTitle,
-      });
+        header_type: blog.headerSuggestion?.type || 'color',
+        header_color: blog.headerSuggestion?.colorHex || '#ec4899',
+        header_title: blog.headerSuggestion?.headerTitle || '',
+      };
+
+      console.log('📝 Updating blog data with:', updatedData);
+      updateBlogData(updatedData);
 
       toast({
         title: 'Succesvol!',

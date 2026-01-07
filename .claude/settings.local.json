@@ -270,7 +270,9 @@
       "Bash(del:*)",
       "Bash(start http://localhost:9050/admin/blogs/edit/new)",
       "WebFetch(domain:datingassistent.nl)",
-      "Bash(start https://datingassistent.nl/login)"
+      "Bash(start https://datingassistent.nl/login)",
+      "Bash(start http://localhost:9050/api/db/migrate-blogs-v2)",
+      "Bash(start:*)"
     ],
     "deny": [],
     "ask": []

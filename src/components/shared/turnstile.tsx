@@ -301,17 +301,27 @@ export function useTurnstile(siteKey: string) {
    * Returns token on success, null on failure
    */
   const execute = useCallback(async (action?: string): Promise<string | null> => {
+    console.log('🔐 Turnstile execute called', { siteKey: siteKey?.substring(0, 10) + '...', action, isLoaded });
+
     // Bypass mode for development or missing key
     if (!siteKey || siteKey.trim() === '') {
-      console.log('Turnstile: Bypassing verification (no site key)');
+      console.log('🔓 Turnstile: Bypassing verification (no site key)');
       return 'bypass_development';
     }
 
-    if (!isLoaded || !window.turnstile) {
+    if (!isLoaded) {
+      console.error('❌ Turnstile: Not loaded yet');
       setError('Security verification not ready');
       return null;
     }
 
+    if (!window.turnstile) {
+      console.error('❌ Turnstile: window.turnstile not available');
+      setError('Security verification not ready');
+      return null;
+    }
+
+    console.log('✅ Turnstile: Script loaded, rendering widget...');
     setIsVerifying(true);
     setError(null);
 
@@ -321,6 +331,7 @@ export function useTurnstile(siteKey: string) {
         if (!containerRef.current) {
           containerRef.current = document.createElement('div');
           containerRef.current.style.display = 'none';
+          containerRef.current.id = 'turnstile-container';
           document.body.appendChild(containerRef.current);
         }
 
@@ -333,12 +344,14 @@ export function useTurnstile(siteKey: string) {
           }
         }
 
-        // Render invisible widget
+        console.log('🔄 Turnstile: Rendering widget with sitekey', siteKey.substring(0, 10) + '...');
+
+        // Render widget (managed mode - Cloudflare decides visibility)
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
-          size: 'invisible',
           action,
           callback: (newToken: string) => {
+            console.log('✅ Turnstile: Token received', newToken.substring(0, 20) + '...');
             setToken(newToken);
             setIsVerifying(false);
             resolve(newToken);
@@ -346,7 +359,7 @@ export function useTurnstile(siteKey: string) {
           'error-callback': (err: Error) => {
             setError('Verification failed');
             setIsVerifying(false);
-            console.error('Turnstile error:', err);
+            console.error('❌ Turnstile error callback:', err);
             resolve(null);
           },
           'expired-callback': () => {
