@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getBlogPostBySlug, incrementBlogViewCount } from '@/lib/db-operations';
+import { sql } from '@vercel/postgres';
 
 export async function GET(
   request: NextRequest,
@@ -8,8 +9,30 @@ export async function GET(
   try {
     const { slug } = await params;
 
-    // Fetch blog post from Neon database
-    const blog = await getBlogPostBySlug(slug);
+    let blog;
+
+    // Check if slug is a numeric ID (for Pro Editor)
+    const isNumericId = /^\d+$/.test(slug);
+
+    if (isNumericId) {
+      // Fetch by ID (for editor)
+      const blogId = parseInt(slug, 10);
+      const result = await sql`
+        SELECT *
+        FROM blogs
+        WHERE id = ${blogId}
+        LIMIT 1
+      `;
+
+      if (result.rows.length > 0) {
+        blog = {
+          blog: result.rows[0]
+        };
+      }
+    } else {
+      // Fetch by slug (for frontend)
+      blog = await getBlogPostBySlug(slug);
+    }
 
     if (!blog) {
       return NextResponse.json(

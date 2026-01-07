@@ -46,9 +46,28 @@ export async function POST(request: NextRequest) {
     const result = await response.json();
 
     if (!result.success) {
-      console.error('reCAPTCHA verification failed:', result['error-codes']);
+      console.error('reCAPTCHA verification failed:', {
+        errorCodes: result['error-codes'],
+        hostname: result.hostname,
+        action: result.action,
+        challengeTs: result.challenge_ts
+      });
+
+      // Map error codes to user-friendly messages
+      const errorCodes = result['error-codes'] || [];
+      let userMessage = 'reCAPTCHA verification failed';
+
+      if (errorCodes.includes('invalid-input-secret')) {
+        console.error('CRITICAL: Invalid reCAPTCHA secret key configured!');
+        userMessage = 'Server configuration error';
+      } else if (errorCodes.includes('timeout-or-duplicate')) {
+        userMessage = 'reCAPTCHA expired. Please try again.';
+      } else if (errorCodes.includes('bad-request')) {
+        userMessage = 'Invalid request. Please refresh and try again.';
+      }
+
       return NextResponse.json(
-        { error: 'reCAPTCHA verification failed', details: result['error-codes'] },
+        { error: userMessage, details: result['error-codes'] },
         { status: 400 }
       );
     }

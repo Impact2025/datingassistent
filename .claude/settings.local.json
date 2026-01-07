@@ -264,7 +264,11 @@
       "Bash(cmd //c \"taskkill //F //PID 118676\")",
       "Bash(npx web-push:*)",
       "Bash(npx next start:*)",
-      "Bash(start http://localhost:9050)"
+      "Bash(start http://localhost:9050)",
+      "Bash(npx next dev -p 9050)",
+      "Bash(npx vercel:*)",
+      "Bash(del:*)",
+      "Bash(start http://localhost:9050/admin/blogs/edit/new)"
     ],
     "deny": [],
     "ask": []

@@ -93,3 +93,4 @@ DeepCode/
 .env2
 
 .vercel
+.env.vercel-check

@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import AuthLayout from "../auth-layout";
-import { useRecaptchaV3 } from "@/components/shared/recaptcha";
+import { useTurnstile } from "@/components/shared/turnstile";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -16,9 +16,9 @@ export default function ForgotPasswordPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
-  // reCAPTCHA v3 hook
-  const { execute: executeRecaptcha, isLoaded: isRecaptchaLoaded } = useRecaptchaV3(
-    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
+  // Cloudflare Turnstile - privacy-first bot protection
+  const { execute: executeTurnstile, isLoaded: isTurnstileLoaded } = useTurnstile(
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,8 +33,8 @@ export default function ForgotPasswordPage() {
       return;
     }
 
-    // Verify reCAPTCHA
-    if (!isRecaptchaLoaded) {
+    // Verify Turnstile
+    if (!isTurnstileLoaded) {
       toast({
         title: "Even geduld",
         description: "Beveiliging wordt geladen. Probeer het opnieuw.",
@@ -46,36 +46,28 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      // Skip reCAPTCHA in development for easier testing
-      const shouldUseRecaptcha = process.env.NODE_ENV === 'production' &&
-                                 process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY &&
-                                 process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY !== '';
+      // Execute Turnstile verification
+      const turnstileToken = await executeTurnstile('forgot-password');
 
-      if (!shouldUseRecaptcha) {
-        console.log('🔧 Skipping reCAPTCHA verification (not configured or in development)');
-      } else {
-        // Execute reCAPTCHA v3 in production
+      if (turnstileToken && turnstileToken !== 'bypass_development') {
+        // Verify token on server
         try {
-          const recaptchaToken = await executeRecaptcha('forgot-password');
-          if (!recaptchaToken) {
-            console.warn('⚠️ reCAPTCHA token generation failed, proceeding anyway...');
-          } else {
-            // Verify token on server
-            const verifyResponse = await fetch('/api/recaptcha/verify', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ token: recaptchaToken, action: 'forgot-password' }),
-            });
+          const verifyResponse = await fetch('/api/turnstile/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: turnstileToken, action: 'forgot-password' }),
+          });
 
-            if (verifyResponse.ok) {
-              console.log('✅ reCAPTCHA verification successful');
-            } else {
-              console.warn('⚠️ reCAPTCHA verification failed, proceeding anyway...');
-            }
+          if (verifyResponse.ok) {
+            console.log('✅ Turnstile verification successful');
+          } else {
+            console.warn('⚠️ Turnstile verification failed, proceeding anyway...');
           }
-        } catch (recaptchaError) {
-          console.warn('⚠️ reCAPTCHA error:', recaptchaError, '- proceeding anyway...');
+        } catch (turnstileError) {
+          console.warn('⚠️ Turnstile error:', turnstileError, '- proceeding anyway...');
         }
+      } else {
+        console.log('🔧 Skipping Turnstile server verification (development mode)');
       }
 
       const response = await fetch("/api/auth/reset-password", {

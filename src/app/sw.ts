@@ -16,7 +16,7 @@ declare const self: ServiceWorkerGlobalScope;
 // DatingAssistent - Enterprise Grade
 // ============================================
 
-const APP_VERSION = "2.0.0";
+const APP_VERSION = "2.1.0";
 const OFFLINE_CACHE = `dating-offline-v${APP_VERSION}`;
 
 // Initialize Serwist with optimal caching strategies
@@ -25,13 +25,15 @@ const serwist = new Serwist({
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
+  // Clean up old caches on activation
+  cleanupOutdatedCaches: true,
   runtimeCaching: [
     // API Routes - Network First with fallback
     {
       matcher: ({ url }) => url.pathname.startsWith("/api/"),
       handler: "NetworkFirst",
       options: {
-        cacheName: "api-cache",
+        cacheName: `api-cache-v${APP_VERSION}`,
         networkTimeoutSeconds: 10,
         expiration: {
           maxEntries: 100,
@@ -42,18 +44,19 @@ const serwist = new Serwist({
         },
       },
     },
-    // Static Assets - Cache First
+    // Static Assets - Network First for CSS/JS to prevent stale issues
     {
       matcher: ({ request }) =>
         request.destination === "style" ||
         request.destination === "script" ||
         request.destination === "font",
-      handler: "CacheFirst",
+      handler: "NetworkFirst",
       options: {
-        cacheName: "static-assets",
+        cacheName: `static-assets-v${APP_VERSION}`,
+        networkTimeoutSeconds: 3,
         expiration: {
           maxEntries: 100,
-          maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+          maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days instead of 1 year
         },
       },
     },
@@ -62,7 +65,7 @@ const serwist = new Serwist({
       matcher: ({ request }) => request.destination === "image",
       handler: "StaleWhileRevalidate",
       options: {
-        cacheName: "image-cache",
+        cacheName: `image-cache-v${APP_VERSION}`,
         expiration: {
           maxEntries: 200,
           maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
@@ -81,10 +84,10 @@ const serwist = new Serwist({
         url.origin === "https://fonts.gstatic.com",
       handler: "CacheFirst",
       options: {
-        cacheName: "google-fonts",
+        cacheName: `google-fonts-v${APP_VERSION}`,
         expiration: {
           maxEntries: 30,
-          maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+          maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
         },
       },
     },
@@ -93,7 +96,7 @@ const serwist = new Serwist({
       matcher: ({ request }) => request.mode === "navigate",
       handler: "NetworkFirst",
       options: {
-        cacheName: "pages-cache",
+        cacheName: `pages-cache-v${APP_VERSION}`,
         networkTimeoutSeconds: 5,
         expiration: {
           maxEntries: 50,
@@ -303,7 +306,7 @@ async function sendDailyCheckIn() {
 async function refreshContent() {
   try {
     // Pre-cache important pages
-    const cache = await caches.open("pages-cache");
+    const cache = await caches.open(`pages-cache-v${APP_VERSION}`);
     await cache.addAll(["/dashboard", "/profiel", "/chat"]);
   } catch (error) {
     console.error("Content refresh failed:", error);
@@ -406,6 +409,45 @@ async function handleShareTarget(request: Request): Promise<Response> {
     return Response.redirect("/", 303);
   }
 }
+
+// ============================================
+// CACHE CLEANUP ON ACTIVATION
+// ============================================
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    (async () => {
+      // Clean up old caches that don't match current version
+      const cacheNames = await caches.keys();
+      const versionSuffix = `-v${APP_VERSION}`;
+
+      // Keep only caches with current version or serwist precache
+      const cachesToDelete = cacheNames.filter((name) => {
+        // Keep serwist precache caches
+        if (name.startsWith("serwist-precache")) return false;
+        // Keep current version caches
+        if (name.endsWith(versionSuffix)) return false;
+        // Keep current offline cache
+        if (name === OFFLINE_CACHE) return false;
+        // Delete everything else (old version caches, unversioned caches)
+        return true;
+      });
+
+      console.log(`[SW] Found ${cachesToDelete.length} old caches to delete:`, cachesToDelete);
+
+      await Promise.all(
+        cachesToDelete.map((name) => {
+          console.log(`[SW] Deleting old cache: ${name}`);
+          return caches.delete(name);
+        })
+      );
+
+      // Take control of all clients immediately
+      await self.clients.claim();
+      console.log(`[SW] Service Worker v${APP_VERSION} activated and controlling all clients`);
+    })()
+  );
+});
 
 // Initialize Serwist
 serwist.addEventListeners();

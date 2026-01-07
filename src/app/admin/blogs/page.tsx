@@ -209,8 +209,8 @@ export default function BlogManagement() {
             <Button onClick={() => router.push('/admin')} variant="outline">
               Terug naar Dashboard
             </Button>
-            <Button onClick={() => { setIsEditing(true); setCurrentBlog({}); }}>
-              Nieuw Blog
+            <Button onClick={() => router.push('/admin/blogs/edit/new')} className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white">
+              ✨ Nieuw Blog (Pro Editor)
             </Button>
           </div>
         </div>
@@ -386,9 +386,16 @@ export default function BlogManagement() {
                         <Button
                           size="sm"
                           variant="outline"
+                          onClick={() => router.push(`/admin/blogs/edit/${blog.id}`)}
+                        >
+                          ✨ Pro Editor
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
                           onClick={() => { setCurrentBlog(blog); setIsEditing(true); }}
                         >
-                          Bewerken
+                          Basis
                         </Button>
                         <Button
                           size="sm"

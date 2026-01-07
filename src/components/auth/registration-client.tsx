@@ -25,7 +25,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, CheckCircle, Mail } from "lucide-react";
 import { PACKAGES, getPackagePrice } from "@/lib/multisafepay";
 import { PackageType } from "@/lib/subscription";
-import { useRecaptchaV3 } from "../shared/recaptcha";
+import { useTurnstile } from "../shared/turnstile";
 import { VerificationCodeInput } from "./verification-code-input";
 import { trackSignUp, setUserProperties } from "@/lib/analytics/ga4-events";
 
@@ -74,9 +74,9 @@ export function RegistrationClientComponent() {
   const [verificationError, setVerificationError] = useState<string | null>(null);
   const [registrationError, setRegistrationError] = useState<string | null>(null);
 
-  // reCAPTCHA v3 hook
-  const { execute: executeRecaptcha, isLoaded: isRecaptchaLoaded } = useRecaptchaV3(
-    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''
+  // Cloudflare Turnstile - privacy-first bot protection
+  const { execute: executeTurnstile, isLoaded: isTurnstileLoaded } = useTurnstile(
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''
   );
 
   // Support both subscription packages (plan) and program purchases (program)
@@ -227,63 +227,62 @@ export function RegistrationClientComponent() {
     setRegistrationError(null); // Clear previous errors
     console.log('🔵 Starting registration...', { orderId });
 
-    // Skip reCAPTCHA in development mode
-    if (process.env.NODE_ENV !== 'development') {
-      // Verify reCAPTCHA
-      if (!isRecaptchaLoaded) {
+    // Verify Turnstile
+    if (!isTurnstileLoaded) {
+      toast({
+        title: "Fout",
+        description: "Beveiligingsverificatie wordt nog geladen. Probeer het opnieuw.",
+        variant: "destructive",
+      });
+      setIsSigningUp(false);
+      return;
+    }
+
+    try {
+      // Execute Turnstile verification
+      const turnstileToken = await executeTurnstile('register');
+      if (!turnstileToken) {
         toast({
           title: "Fout",
-          description: "reCAPTCHA wordt nog geladen. Probeer het opnieuw.",
+          description: "Beveiligingsverificatie mislukt. Probeer het opnieuw.",
           variant: "destructive",
         });
         setIsSigningUp(false);
         return;
       }
 
-      try {
-        // Execute reCAPTCHA v3
-        const recaptchaToken = await executeRecaptcha('register');
-        if (!recaptchaToken) {
-          toast({
-            title: "Fout",
-            description: "reCAPTCHA verificatie mislukt. Probeer het opnieuw.",
-            variant: "destructive",
-          });
-          setIsSigningUp(false);
-          return;
-        }
-
-        // Verify token on server
-        const verifyResponse = await fetch('/api/recaptcha/verify', {
+      // Verify token on server (skip for bypass tokens in development)
+      if (turnstileToken !== 'bypass_development') {
+        const verifyResponse = await fetch('/api/turnstile/verify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: recaptchaToken, action: 'register' }),
+          body: JSON.stringify({ token: turnstileToken, action: 'register' }),
         });
 
         if (!verifyResponse.ok) {
           const errorData = await verifyResponse.json();
           toast({
             title: "Fout",
-            description: errorData.error || "reCAPTCHA verificatie mislukt.",
+            description: errorData.error || "Beveiligingsverificatie mislukt.",
             variant: "destructive",
           });
           setIsSigningUp(false);
           return;
         }
 
-        console.log('✅ reCAPTCHA verification successful');
-      } catch (error) {
-        console.error('reCAPTCHA error:', error);
-        toast({
-          title: "Fout",
-          description: "reCAPTCHA verificatie mislukt.",
-          variant: "destructive",
-        });
-        setIsSigningUp(false);
-        return;
+        console.log('✅ Turnstile verification successful');
+      } else {
+        console.log('🔧 Skipping Turnstile server verification in development mode');
       }
-    } else {
-      console.log('🧪 Development mode: Skipping reCAPTCHA verification');
+    } catch (error) {
+      console.error('Turnstile error:', error);
+      toast({
+        title: "Fout",
+        description: "Beveiligingsverificatie mislukt.",
+        variant: "destructive",
+      });
+      setIsSigningUp(false);
+      return;
     }
 
     try {
