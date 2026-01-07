@@ -1,3 +1,6 @@
+// Force dynamic rendering to avoid build-time database calls
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';

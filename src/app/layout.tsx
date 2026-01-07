@@ -11,7 +11,8 @@ import { SkipLinks } from "@/components/accessibility/skip-links";
 import { ScreenReaderAnnouncer } from "@/components/accessibility/screen-reader-announcer";
 import { StructuredData } from "@/components/structured-data";
 import ErrorBoundary from "@/components/error-boundary";
-import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
+import { ServiceWorkerRegistration, InstallPrompt, UpdatePrompt, OfflineIndicator } from "@/components/pwa";
+import { PWAProvider } from "@/stores/pwa-store";
 import { IrisFloatingButton } from "@/components/iris/IrisFloatingButton";
 import { TutorialEngine } from "@/components/onboarding/tutorial-engine/tutorial-engine";
 import { ToastProvider as AchievementToastProvider } from "@/components/notifications/toast-container";
@@ -124,12 +125,16 @@ export default function RootLayout({
         <meta name="keywords" content="dating, AI coach, matches, dates, relaties, profiel" />
         <meta name="author" content="DatingAssistent" />
 
-        {/* PWA Icons */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/images/Logo Icon DatingAssistent.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/images/Logo Icon DatingAssistent.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/images/Logo Icon DatingAssistent.png" />
+        {/* PWA Icons - World-Class */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-180x180.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-touch-icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-touch-icon-120x120.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
+        <meta name="msapplication-TileColor" content="#FF6B9D" />
+        <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
 
         <link rel="canonical" href="https://datingassistent.nl" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -150,20 +155,25 @@ export default function RootLayout({
         <ErrorBoundary>
           <ThemeProvider>
             <QueryProvider>
-              <WebVitals />
-              <ServiceWorkerRegistration />
-              <UserProvider>
-              <AchievementToastProvider>
-                <TutorialEngine>
-                  <div id="main-content">
-                    {children}
-                  </div>
-                  <Toaster />
-                  <SonnerToaster position="bottom-right" richColors closeButton />
-                  <IrisFloatingButton />
-                </TutorialEngine>
-              </AchievementToastProvider>
-            </UserProvider>
+              <PWAProvider>
+                <WebVitals />
+                <ServiceWorkerRegistration />
+                <OfflineIndicator />
+                <UpdatePrompt />
+                <UserProvider>
+                  <AchievementToastProvider>
+                    <TutorialEngine>
+                      <div id="main-content">
+                        {children}
+                      </div>
+                      <Toaster />
+                      <SonnerToaster position="bottom-right" richColors closeButton />
+                      <IrisFloatingButton />
+                      <InstallPrompt />
+                    </TutorialEngine>
+                  </AchievementToastProvider>
+                </UserProvider>
+              </PWAProvider>
             </QueryProvider>
           </ThemeProvider>
         </ErrorBoundary>

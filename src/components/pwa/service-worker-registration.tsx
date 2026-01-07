@@ -1,20 +1,45 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
+import { usePWAStore } from '@/stores/pwa-store';
 
 export function ServiceWorkerRegistration() {
+  const {
+    setServiceWorkerRegistration,
+    setUpdateAvailable,
+    setIsOnline,
+    setIsInstalled
+  } = usePWAStore();
+
+  const checkIfInstalled = useCallback(() => {
+    // Check if running in standalone mode (installed PWA)
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+      || (window.navigator as Navigator & { standalone?: boolean }).standalone
+      || document.referrer.includes('android-app://');
+
+    setIsInstalled(isStandalone);
+    return isStandalone;
+  }, [setIsInstalled]);
+
   useEffect(() => {
-    // Only register service worker in production and if supported
-    if (
-      typeof window !== 'undefined' &&
-      'serviceWorker' in navigator &&
-      process.env.NODE_ENV === 'production'
-    ) {
+    // Check install status
+    checkIfInstalled();
+
+    // Listen for display mode changes
+    const displayModeQuery = window.matchMedia('(display-mode: standalone)');
+    const handleDisplayModeChange = (e: MediaQueryListEvent) => {
+      setIsInstalled(e.matches);
+    };
+    displayModeQuery.addEventListener('change', handleDisplayModeChange);
+
+    // Only register service worker if supported
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       // Register service worker
       navigator.serviceWorker
-        .register('/sw.js')
+        .register('/sw.js', { scope: '/' })
         .then((registration) => {
-          console.log('✅ Service Worker registered:', registration.scope);
+          console.log('Service Worker registered:', registration.scope);
+          setServiceWorkerRegistration(registration);
 
           // Handle updates
           registration.addEventListener('updatefound', () => {
@@ -23,49 +48,43 @@ export function ServiceWorkerRegistration() {
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                   // New version available
-                  console.log('🔄 New app version available!');
-
-                  // Show update prompt (you could integrate with a toast system)
-                  if (window.confirm('Nieuwe versie beschikbaar! Wil je nu updaten?')) {
-                    window.location.reload();
-                  }
+                  console.log('New app version available!');
+                  setUpdateAvailable(true);
                 }
               });
             }
           });
 
-          // Request notification permission
-          if ('Notification' in window && Notification.permission === 'default') {
-            setTimeout(() => {
-              Notification.requestPermission().then((permission) => {
-                if (permission === 'granted') {
-                  console.log('🔔 Notification permission granted');
-                }
-              });
-            }, 5000); // Wait 5 seconds after registration
-          }
+          // Check for updates periodically (every 60 minutes)
+          setInterval(() => {
+            registration.update();
+          }, 60 * 60 * 1000);
         })
         .catch((error) => {
-          console.error('❌ Service Worker registration failed:', error);
+          console.error('Service Worker registration failed:', error);
         });
 
       // Handle controller change (when new SW takes control)
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        console.log('🔄 Service Worker controller changed');
-        // Optionally reload the page
-        // window.location.reload();
+        console.log('Service Worker controller changed');
       });
     }
 
     // Handle online/offline status
+    setIsOnline(navigator.onLine);
+
     const handleOnline = () => {
-      console.log('🌐 Back online');
-      // You could show a toast or update UI state here
+      setIsOnline(true);
+      // Trigger background sync when back online
+      if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
+        navigator.serviceWorker.ready.then((registration) => {
+          return (registration as ServiceWorkerRegistration & { sync: { register: (tag: string) => Promise<void> } }).sync.register('sync-pending-data');
+        });
+      }
     };
 
     const handleOffline = () => {
-      console.log('📱 Gone offline');
-      // You could show a toast or update UI state here
+      setIsOnline(false);
     };
 
     window.addEventListener('online', handleOnline);
@@ -74,8 +93,9 @@ export function ServiceWorkerRegistration() {
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
+      displayModeQuery.removeEventListener('change', handleDisplayModeChange);
     };
-  }, []);
+  }, [setServiceWorkerRegistration, setUpdateAvailable, setIsOnline, checkIfInstalled, setIsInstalled]);
 
-  return null; // This component doesn't render anything
+  return null;
 }

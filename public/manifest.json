@@ -1,100 +1,200 @@
 {
-  "name": "DatingAssistent Pro - AI Dating Coach",
-  "short_name": "DatingPro",
-  "description": "Je persoonlijke AI dating coach voor betere matches en dates",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#FF6B9D",
-  "theme_color": "#FF6B9D",
-  "orientation": "portrait-primary",
+  "name": "DatingAssistent - AI Dating Coach",
+  "short_name": "DatingAssistent",
+  "description": "Je persoonlijke AI dating coach. Krijg realtime advies, verbeter je profiel en vind je perfecte match.",
+  "start_url": "/?source=pwa",
   "scope": "/",
+  "id": "datingassistent-pwa",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#FF6B9D",
   "lang": "nl-NL",
-  "categories": ["lifestyle", "social", "productivity"],
+  "dir": "ltr",
+  "categories": ["lifestyle", "social", "education", "health"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": false,
+
   "icons": [
     {
-      "src": "/images/Logo Icon DatingAssistent.png",
+      "src": "/icons/icon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/images/Logo Icon DatingAssistent.png",
+      "src": "/icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/images/Logo Icon DatingAssistent.png",
+      "src": "/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/images/Logo Icon DatingAssistent.png",
+      "src": "/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/images/Logo Icon DatingAssistent.png",
+      "src": "/icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/images/Logo Icon DatingAssistent.png",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/images/LogoDatingAssistent.png",
+      "src": "/icons/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
       "sizes": "384x384",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/images/LogoDatingAssistent.png",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
+
   "shortcuts": [
+    {
+      "name": "Iris AI Coach",
+      "short_name": "Iris",
+      "description": "Chat met je persoonlijke AI dating coach",
+      "url": "/chat?source=shortcut",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Bekijk je voortgang en inzichten",
+      "url": "/dashboard?source=shortcut",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96", "type": "image/png" }]
+    },
     {
       "name": "Profiel Check",
       "short_name": "Profiel",
-      "description": "Check je dating profiel",
-      "url": "/profiel",
-      "icons": [{ "src": "/images/Logo Icon DatingAssistent.png", "sizes": "96x96" }]
+      "description": "Laat je dating profiel analyseren",
+      "url": "/profiel?source=shortcut",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
-      "name": "Chat Coach",
-      "short_name": "Chat",
-      "description": "AI hulp bij gesprekken",
-      "url": "/chat",
-      "icons": [{ "src": "/images/Logo Icon DatingAssistent.png", "sizes": "96x96" }]
-    },
-    {
-      "name": "Doelen",
-      "short_name": "Doelen",
-      "description": "Je dating doelen beheren",
-      "url": "/groei",
-      "icons": [{ "src": "/images/Logo Icon DatingAssistent.png", "sizes": "96x96" }]
+      "name": "Waarden Kompas",
+      "short_name": "Waarden",
+      "description": "Ontdek je kernwaarden voor dating",
+      "url": "/waarden-kompas?source=shortcut",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96", "type": "image/png" }]
     }
   ],
+
   "screenshots": [
     {
-      "src": "/screenshot-mobile.png",
-      "sizes": "390x844",
+      "src": "/screenshots/mobile-dashboard.png",
+      "sizes": "1080x1920",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "Dashboard met persoonlijke inzichten"
     },
     {
-      "src": "/screenshot-tablet.png",
-      "sizes": "768x1024",
+      "src": "/screenshots/mobile-chat.png",
+      "sizes": "1080x1920",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "narrow",
+      "label": "Chat met Iris AI Coach"
+    },
+    {
+      "src": "/screenshots/desktop-dashboard.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Volledig dashboard overzicht"
     }
-  ]
+  ],
+
+  "share_target": {
+    "action": "/share-target",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "images",
+          "accept": ["image/*"]
+        }
+      ]
+    }
+  },
+
+  "protocol_handlers": [
+    {
+      "protocol": "web+datingassistent",
+      "url": "/protocol?type=%s"
+    }
+  ],
+
+  "file_handlers": [
+    {
+      "action": "/upload",
+      "accept": {
+        "image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"]
+      }
+    }
+  ],
+
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+
+  "handle_links": "preferred",
+
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+
+  "related_applications": [],
+
+  "serviceworker": {
+    "src": "/sw.js",
+    "scope": "/",
+    "type": "classic",
+    "update_via_cache": "none"
+  }
 }

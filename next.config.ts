@@ -1,4 +1,13 @@
 import type {NextConfig} from 'next';
+import withSerwistInit from "@serwist/next";
+
+// Serwist PWA Configuration
+const withSerwist = withSerwistInit({
+  swSrc: "src/app/sw.ts",
+  swDest: "public/sw.js",
+  reloadOnOnline: true,
+  disable: process.env.NODE_ENV === "development",
+});
 
 const nextConfig: NextConfig = {
   // Redirects for URL corrections
@@ -210,11 +219,13 @@ const sentryConfig = {
   disableLogger: true,
 };
 
+// Apply Serwist PWA wrapper
+let finalConfig = withSerwist(nextConfig);
+
 // Only wrap with Sentry in production if DSN is configured
-let finalConfig = nextConfig;
 if (process.env.NODE_ENV === 'production' && process.env.SENTRY_DSN) {
   const { withSentryConfig } = require('@sentry/nextjs');
-  finalConfig = withSentryConfig(nextConfig, sentryConfig);
+  finalConfig = withSentryConfig(finalConfig, sentryConfig);
 }
 
 export default finalConfig;

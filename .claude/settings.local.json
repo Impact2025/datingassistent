@@ -260,7 +260,11 @@
       "Bash(openssl rand:*)",
       "Bash(git restore:*)",
       "Bash(start http://localhost:9000/admin/qa-sessions)",
-      "Bash(cmd //c \"taskkill //F //PID 21616\")"
+      "Bash(cmd //c \"taskkill //F //PID 21616\")",
+      "Bash(cmd //c \"taskkill //F //PID 118676\")",
+      "Bash(npx web-push:*)",
+      "Bash(npx next start:*)",
+      "Bash(start http://localhost:9050)"
     ],
     "deny": [],
     "ask": []

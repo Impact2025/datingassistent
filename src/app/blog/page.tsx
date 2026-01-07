@@ -9,8 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Search, ArrowLeft, Tag, X } from 'lucide-react';
-import { PublicHeader } from '@/components/layout/public-header';
-import { PublicFooter } from '@/components/layout/public-footer';
 
 // Force dynamic rendering (required for useSearchParams)
 export const dynamic = "force-dynamic";
@@ -171,8 +169,6 @@ function BlogContent() {
           }}
         />
       </Head>
-
-      <PublicHeader />
 
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white">
         {/* Hero Section */}
@@ -374,8 +370,6 @@ function BlogContent() {
           )}
         </div>
       </div>
-
-      <PublicFooter />
     </>
   );
 }
