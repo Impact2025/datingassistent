@@ -89,7 +89,22 @@ export default function BlogEditorPage() {
       if (!response.ok) throw new Error('Blog niet gevonden');
 
       const data = await response.json();
-      setBlogData(data.blog);
+      const blog = data.blog;
+
+      // 🐛 DEBUG: Log loaded blog data
+      console.log('📖 Loaded blog:', {
+        category: blog.category,
+        tags: blog.tags,
+        fullBlog: blog,
+      });
+
+      // Map database fields to form fields
+      setBlogData({
+        ...blog,
+        // Ensure arrays are properly set
+        tags: Array.isArray(blog.tags) ? blog.tags : [],
+        category: blog.category || 'Online Dating Tips',
+      });
     } catch (error) {
       toast({
         title: 'Fout',

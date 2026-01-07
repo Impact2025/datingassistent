@@ -195,7 +195,7 @@ export default function PatternQuizResultEmail({
         >
           Vincent
           <br />
-          <span style={{ fontWeight: '400', color: colors.muted }}>
+          <span style={{ fontWeight: '400', color: colors.gray }}>
             DatingAssistent
           </span>
         </Text>

@@ -170,7 +170,8 @@ const nextConfig: NextConfig = {
 
   // Performance optimizations
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    // Temporarily disabled for debugging Turnstile
+    // removeConsole: process.env.NODE_ENV === 'production',
   },
 
   // Enhanced image optimization

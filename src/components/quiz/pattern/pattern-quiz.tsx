@@ -58,11 +58,13 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
 
   // Capture UTM params on mount
   useEffect(() => {
-    setUtmParams({
-      source: searchParams.get('utm_source') || undefined,
-      medium: searchParams.get('utm_medium') || undefined,
-      campaign: searchParams.get('utm_campaign') || undefined,
-    });
+    if (searchParams) {
+      setUtmParams({
+        source: searchParams.get('utm_source') || undefined,
+        medium: searchParams.get('utm_medium') || undefined,
+        campaign: searchParams.get('utm_campaign') || undefined,
+      });
+    }
   }, [searchParams]);
 
   const currentQuestion = PATTERN_QUESTIONS[currentQuestionIndex];
