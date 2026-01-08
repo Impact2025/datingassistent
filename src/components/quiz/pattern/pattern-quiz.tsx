@@ -131,7 +131,9 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit quiz');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Quiz submit error:', errorData);
+        throw new Error(errorData.error || 'Failed to submit quiz');
       }
 
       const data = await response.json();
@@ -146,8 +148,8 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
       setQuizState('analyzing');
     } catch (error) {
       console.error('Error submitting quiz:', error);
-      // TODO: Show error toast
-      alert('Er ging iets mis. Probeer het opnieuw.');
+      const message = error instanceof Error ? error.message : 'Onbekende fout';
+      alert(`Er ging iets mis: ${message}`);
     } finally {
       setIsSubmitting(false);
     }

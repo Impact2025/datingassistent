@@ -28,9 +28,22 @@ export async function POST(request: Request) {
     } = body;
 
     // Validate required fields
-    if (!answers || Object.keys(answers).length < 10) {
+    if (!answers) {
+      console.error('No answers provided');
       return NextResponse.json(
-        { error: 'Incomplete quiz answers' },
+        { error: 'No answers provided' },
+        { status: 400 }
+      );
+    }
+
+    const answerCount = Object.keys(answers).length;
+    console.log('Received answers:', answerCount, 'questions answered');
+    console.log('Answers:', JSON.stringify(answers));
+
+    if (answerCount < 10) {
+      console.error(`Incomplete quiz: only ${answerCount}/10 questions answered`);
+      return NextResponse.json(
+        { error: `Incomplete quiz answers: ${answerCount}/10 questions answered` },
         { status: 400 }
       );
     }
