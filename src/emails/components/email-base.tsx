@@ -230,6 +230,32 @@ export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
   );
 }
 
+// Header with solid pink background (brand style - no gradient)
+interface PinkHeaderProps {
+  title: string;
+  subtitle?: string;
+}
+
+export function PinkHeader({ title, subtitle }: PinkHeaderProps) {
+  return (
+    <Section style={{
+      backgroundColor: colors.primary,
+      padding: '48px 32px',
+      textAlign: 'center' as const,
+    }}>
+      <EmailLogo size="md" />
+      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '16px' }}>
+        {title}
+      </Text>
+      {subtitle && (
+        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '0' }}>
+          {subtitle}
+        </Text>
+      )}
+    </Section>
+  );
+}
+
 // Simple header with logo
 export function SimpleHeader() {
   return (

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Pattern Quiz Landing Hero - Minimalist Pro Version
+ * Pattern Quiz Landing Hero - Brand Style (Pink Minimalist)
  */
 
 import { motion } from 'framer-motion';
@@ -32,9 +32,17 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-gray-900 tracking-tight leading-[1.1] mb-6"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.1] mb-2"
           >
-            Ontdek waarom je steeds op dezelfde types valt
+            Daten is geen geluk.
+          </motion.h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-pink-500 tracking-tight leading-[1.1] mb-6"
+          >
+            Het is een patroon.
           </motion.h1>
 
           {/* Subtext */}
@@ -42,10 +50,19 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-lg sm:text-xl text-gray-500 mb-10 max-w-xl"
+            className="text-lg text-gray-600 mb-4 max-w-xl"
           >
-            Deze wetenschappelijk onderbouwde quiz onthult je onbewuste dating patroon
-            — en wat je eraan kunt doen.
+            Ontdek je onbewuste dating patroon met deze wetenschappelijk
+            onderbouwde quiz. Gebaseerd op 10+ jaar ervaring.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="text-sm text-gray-400 mb-8"
+          >
+            Anoniem. Professioneel. Effectief.
           </motion.p>
 
           {/* CTA */}
@@ -53,22 +70,31 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mb-12"
+            className="mb-4"
           >
             <button
               onClick={onStartQuiz}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600 transition-colors"
             >
-              Start de quiz
-              <ArrowRight className="w-4 h-4" />
+              Start De Quiz
+              <ArrowRight className="w-5 h-5" />
             </button>
           </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-sm text-gray-400 mb-12"
+          >
+            Geen creditcard nodig • Analyse in 2 min
+          </motion.p>
 
           {/* What you'll learn */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.5 }}
             className="space-y-3"
           >
             <p className="text-sm font-medium text-gray-400 uppercase tracking-wide">
@@ -81,7 +107,7 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
                 'Eén concrete tip om het te doorbreken',
               ].map((item) => (
                 <div key={item} className="flex items-center gap-3 text-gray-600">
-                  <Check className="w-4 h-4 text-gray-400" />
+                  <Check className="w-4 h-4 text-pink-500" />
                   <span>{item}</span>
                 </div>
               ))}

@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Section, Text, Hr } from '@react-email/components';
 import {
   BaseEmail,
-  HeroHeader,
+  PinkHeader,
   Greeting,
   CTAButton,
   InfoBox,
@@ -108,7 +108,7 @@ export default function PatternQuizResultEmail({
     <BaseEmail
       preview={`${firstName}, je Dating Patroon is: ${content.title}`}
     >
-      <HeroHeader
+      <PinkHeader
         title={`Je Dating Patroon: ${content.title}`}
         subtitle={content.subtitle}
       />

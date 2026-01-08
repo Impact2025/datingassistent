@@ -1,26 +1,12 @@
 'use client';
 
 /**
- * Pattern Quiz Email Gate
- *
- * Email capture step after quiz completion.
- * Follows the blueprint for maximum conversion.
+ * Pattern Quiz Email Gate - Brand Style (Pink Minimalist)
  */
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  ArrowLeft,
-  ArrowRight,
-  Mail,
-  User,
-  CheckCircle,
-  Shield,
-  Sparkles,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 
 interface PatternEmailGateProps {
   onSubmit: (email: string, firstName: string, acceptsMarketing: boolean) => void;
@@ -41,143 +27,126 @@ export function PatternEmailGate({
   const isValidName = firstName.trim().length >= 2;
   const canSubmit = isValidEmail && isValidName && !isSubmitting;
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (canSubmit) {
       onSubmit(email.trim(), firstName.trim(), acceptsMarketing);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
-      <div className="max-w-xl w-full space-y-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <Card className="border-2 border-pink-200 shadow-xl overflow-hidden">
-            {/* Header Banner */}
-            <div className="bg-gradient-to-r from-pink-500 to-pink-600 px-6 py-4 text-white text-center">
-              <Sparkles className="w-6 h-6 mx-auto mb-2" />
-              <p className="font-semibold">Je resultaat is klaar</p>
+    <div className="min-h-screen bg-white flex flex-col">
+      <div className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {/* Header */}
+            <div className="mb-8">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                Je resultaat is klaar
+              </h1>
+              <p className="text-gray-500">
+                Vul je gegevens in om je persoonlijke analyse te ontvangen.
+              </p>
             </div>
 
-            <CardContent className="p-6 sm:p-8">
-              <div className="space-y-6">
-                {/* What They'll Receive */}
-                <div className="text-center space-y-3">
-                  <p className="text-gray-700 leading-relaxed">
-                    Op basis van je antwoorden heb ik je{' '}
-                    <strong className="text-gray-900">Dating Patroon</strong>{' '}
-                    geïdentificeerd — inclusief:
-                  </p>
-
-                  <div className="space-y-2 text-left max-w-sm mx-auto">
-                    {[
-                      'Welk attachment type je hebt',
-                      'Hoe dit je dating gedrag beïnvloedt',
-                      'De #1 valkuil waar jij waarschijnlijk in trapt',
-                      'Eén concrete tip die je vandaag kunt toepassen',
-                    ].map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-2 text-gray-700"
-                      >
-                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                        <span className="text-sm">{item}</span>
-                      </div>
-                    ))}
-                  </div>
+            {/* What they get */}
+            <div className="mb-8 space-y-2">
+              {[
+                'Je attachment type',
+                'Hoe dit je dating beïnvloedt',
+                'Eén concrete tip',
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-2 text-sm text-gray-600">
+                  <Check className="w-4 h-4 text-pink-500" />
+                  <span>{item}</span>
                 </div>
+              ))}
+            </div>
 
-                {/* Form */}
-                <div className="space-y-4">
-                  <p className="text-center text-gray-600 font-medium">
-                    Waar mag ik je resultaat naartoe sturen?
-                  </p>
-
-                  <div className="space-y-3">
-                    {/* First Name */}
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <Input
-                        type="text"
-                        placeholder="Je voornaam"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        className="h-12 pl-10 text-base border-2 focus:border-pink-500"
-                        autoComplete="given-name"
-                      />
-                    </div>
-
-                    {/* Email */}
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <Input
-                        type="email"
-                        placeholder="jouw@email.nl"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="h-12 pl-10 text-base border-2 focus:border-pink-500"
-                        autoComplete="email"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Marketing Checkbox */}
-                  <label className="flex items-start gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={acceptsMarketing}
-                      onChange={(e) => setAcceptsMarketing(e.target.checked)}
-                      className="mt-1 w-4 h-4 text-pink-600 rounded border-gray-300 focus:ring-pink-500"
-                    />
-                    <span className="text-sm text-gray-600">
-                      Je ontvangt ook mijn beste dating inzichten — geen spam,
-                      afmelden kan altijd.
-                    </span>
-                  </label>
-
-                  {/* Submit Button */}
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={!canSubmit}
-                    className="w-full h-12 text-base bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 font-semibold"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                        Bezig met analyseren...
-                      </>
-                    ) : (
-                      <>
-                        Toon Mijn Resultaat
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </>
-                    )}
-                  </Button>
-                </div>
-
-                {/* Trust Badge */}
-                <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-                  <Shield className="w-4 h-4" />
-                  <span>Je gegevens zijn 100% veilig en privé</span>
-                </div>
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                  Voornaam
+                </label>
+                <input
+                  id="firstName"
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Je voornaam"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 transition-colors"
+                  autoComplete="given-name"
+                />
               </div>
-            </CardContent>
-          </Card>
-        </motion.div>
 
-        {/* Back Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Button variant="ghost" onClick={onBack} className="text-gray-600">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Terug naar vragen
-          </Button>
-        </motion.div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  E-mailadres
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="jouw@email.nl"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 transition-colors"
+                  autoComplete="email"
+                />
+              </div>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={acceptsMarketing}
+                  onChange={(e) => setAcceptsMarketing(e.target.checked)}
+                  className="mt-1 w-4 h-4 rounded border-gray-300 text-pink-500 focus:ring-pink-500"
+                />
+                <span className="text-sm text-gray-500">
+                  Ontvang ook mijn beste dating inzichten per mail
+                </span>
+              </label>
+
+              <button
+                type="submit"
+                disabled={!canSubmit}
+                className="w-full px-6 py-4 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Bezig...
+                  </>
+                ) : (
+                  <>
+                    Toon Mijn Resultaat
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            <p className="mt-4 text-xs text-gray-400 text-center">
+              Je gegevens zijn veilig en worden niet gedeeld.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Back button */}
+      <div className="border-t border-gray-100 px-4 py-4">
+        <div className="max-w-md mx-auto">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="text-sm">Terug</span>
+          </button>
+        </div>
       </div>
     </div>
   );

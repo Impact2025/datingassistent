@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Pattern Quiz Question Component - Minimalist Pro Version
+ * Pattern Quiz Question Component - Brand Style (Pink Minimalist)
  */
 
 import { motion } from 'framer-motion';
@@ -38,7 +38,7 @@ export function PatternQuestionComponent({
       {/* Progress bar */}
       <div className="h-1 bg-gray-100">
         <motion.div
-          className="h-full bg-gray-900"
+          className="h-full bg-pink-500"
           initial={{ width: 0 }}
           animate={{ width: `${progressPercentage}%` }}
           transition={{ duration: 0.3 }}
@@ -63,7 +63,7 @@ export function PatternQuestionComponent({
             key={question.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-8 leading-snug"
+            className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8 leading-snug"
           >
             {question.question}
           </motion.h2>
@@ -79,17 +79,17 @@ export function PatternQuestionComponent({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className={`w-full p-4 rounded-lg border text-left transition-all ${
+                  className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
                     isSelected
-                      ? 'border-gray-900 bg-gray-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-pink-500 bg-pink-50'
+                      : 'border-gray-200 hover:border-pink-300'
                   }`}
                 >
                   <div className="flex items-start gap-3">
                     <div
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
                         isSelected
-                          ? 'border-gray-900 bg-gray-900'
+                          ? 'border-pink-500 bg-pink-500'
                           : 'border-gray-300'
                       }`}
                     >
@@ -128,7 +128,7 @@ export function PatternQuestionComponent({
           <button
             onClick={onNext}
             disabled={!currentAnswer}
-            className="flex items-center gap-2 px-4 py-2 text-gray-500 hover:text-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 px-4 py-2 text-pink-500 hover:text-pink-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <span className="text-sm">Volgende</span>
             <ArrowRight className="w-4 h-4" />

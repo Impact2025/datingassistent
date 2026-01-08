@@ -542,7 +542,9 @@ export async function sendPatternQuizResultEmail(
   resultId: string
 ): Promise<boolean> {
   try {
-    const resultUrl = `${BASE_URL}/quiz/dating-patroon/resultaat?id=${resultId}`;
+    // Always use production URL for email links (not localhost)
+    const PROD_URL = 'https://datingassistent.nl';
+    const resultUrl = `${PROD_URL}/quiz/dating-patroon/resultaat?id=${resultId}`;
 
     const html = await render(
       PatternQuizResultEmail({
@@ -579,7 +581,7 @@ De meeste mensen blijven hangen bij stap 1. Ze lezen hun resultaat, knikken, en 
 Ik wil je helpen naar stap 2. De komende dagen stuur ik je specifieke inzichten voor jouw type.
 
 Maar als je nu al klaar bent voor actie, bekijk dan het Transformatie Programma:
-${BASE_URL}/transformatie
+${PROD_URL}/transformatie
 
 Tot morgen,
 Vincent
