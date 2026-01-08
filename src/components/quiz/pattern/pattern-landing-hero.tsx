@@ -1,15 +1,11 @@
 'use client';
 
 /**
- * Pattern Quiz Landing Hero
- *
- * Landing page hero section for the Dating Pattern Quiz.
- * Follows the blueprint for maximum conversion.
+ * Pattern Quiz Landing Hero - Minimalist Pro Version
  */
 
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Brain, Shield, Users, CheckCircle } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 
 interface PatternLandingHeroProps {
   onStartQuiz: () => void;
@@ -17,105 +13,76 @@ interface PatternLandingHeroProps {
 
 export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50 flex flex-col">
-      {/* Main Content */}
+    <div className="min-h-screen bg-white flex flex-col">
       <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          {/* Headline */}
+        <div className="max-w-2xl mx-auto">
+          {/* Badge */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-4"
+            className="mb-8"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-              Waarom Blijf Je Op{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-pink-600">
-                Dezelfde Types
-              </span>{' '}
-              Vallen?
-            </h1>
-            <p className="text-xl sm:text-2xl text-gray-600 font-medium">
-              Ontdek je Dating Patroon in 2 minuten — en waarom het je saboteert
-            </p>
+            <span className="inline-block px-3 py-1 text-xs font-medium text-gray-500 border border-gray-200 rounded-full">
+              2 minuten • 10 vragen • Gratis
+            </span>
           </motion.div>
+
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-gray-900 tracking-tight leading-[1.1] mb-6"
+          >
+            Ontdek waarom je steeds op dezelfde types valt
+          </motion.h1>
 
           {/* Subtext */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            transition={{ delay: 0.2 }}
+            className="text-lg sm:text-xl text-gray-500 mb-10 max-w-xl"
           >
-            Na 10 jaar en 3.000+ coaching gesprekken zie ik steeds hetzelfde:{' '}
-            <strong className="text-gray-900">
-              80% van je dating problemen komen voort uit één onbewust patroon.
-            </strong>{' '}
-            Deze wetenschappelijk onderbouwde quiz laat je zien welk patroon jij
-            hebt — en wat je eraan kunt doen.
+            Deze wetenschappelijk onderbouwde quiz onthult je onbewuste dating patroon
+            — en wat je eraan kunt doen.
           </motion.p>
 
-          {/* CTA Button */}
+          {/* CTA */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ delay: 0.3 }}
+            className="mb-12"
           >
-            <Button
+            <button
               onClick={onStartQuiz}
-              size="lg"
-              className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white text-lg px-10 py-7 rounded-full shadow-lg hover:shadow-xl transition-all font-semibold"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
             >
-              Start De Quiz
-              <span className="text-pink-200 ml-2">(2 min)</span>
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+              Start de quiz
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </motion.div>
 
-          {/* Social Proof */}
+          {/* What you'll learn */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-500"
+            transition={{ delay: 0.4 }}
+            className="space-y-3"
           >
-            <div className="flex items-center gap-2">
-              <Brain className="w-4 h-4 text-pink-500" />
-              <span>Gebaseerd op de ECR-R vragenlijst</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-pink-500" />
-              <span>2.400+ keer ingevuld</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-pink-500" />
-              <span>100% anoniem</span>
-            </div>
-          </motion.div>
-
-          {/* What You'll Discover */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="pt-8 border-t border-gray-200"
-          >
-            <p className="text-sm font-medium text-gray-500 mb-4">
-              Na de quiz weet je:
+            <p className="text-sm font-medium text-gray-400 uppercase tracking-wide">
+              Na de quiz weet je
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto text-left">
+            <div className="space-y-2">
               {[
                 'Welk attachment type je hebt',
                 'Hoe dit je dating gedrag beïnvloedt',
-                'De #1 valkuil waar jij in trapt',
-                'Eén concrete tip voor vandaag',
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-2 text-gray-700"
-                >
-                  <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                  <span className="text-sm">{item}</span>
+                'Eén concrete tip om het te doorbreken',
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 text-gray-600">
+                  <Check className="w-4 h-4 text-gray-400" />
+                  <span>{item}</span>
                 </div>
               ))}
             </div>
@@ -123,19 +90,15 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
         </div>
       </div>
 
-      {/* Footer Note */}
+      {/* Footer */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="py-6 text-center text-xs text-gray-400"
+        transition={{ delay: 0.6 }}
+        className="py-6 text-center border-t border-gray-100"
       >
-        <p>
-          Wetenschappelijke basis: Experiences in Close Relationships-Revised
-          (ECR-R)
-        </p>
-        <p className="mt-1">
-          Bartholomew & Horowitz (1991) Four-Category Model of Adult Attachment
+        <p className="text-xs text-gray-400">
+          Gebaseerd op ECR-R attachment theory • 2.400+ ingevuld
         </p>
       </motion.div>
     </div>

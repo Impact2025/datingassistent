@@ -1,13 +1,15 @@
 'use client';
 
 /**
- * Pattern Quiz Main Component
+ * Pattern Quiz Main Component - WORLD CLASS VERSION
  *
  * Orchestrates the complete Dating Pattern Quiz flow:
  * Landing → Questions (1-10) → Email Gate → Analyzing → Result
+ *
+ * Features: localStorage progress saving, smooth animations, UTM tracking
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AnimatePresence } from 'framer-motion';
 import type {
@@ -21,6 +23,76 @@ import { PatternQuestionComponent } from './pattern-question';
 import { PatternEmailGate } from './pattern-email-gate';
 import { PatternAnalyzing } from './pattern-analyzing';
 import { PatternResult } from './pattern-result';
+
+const STORAGE_KEY = 'dating-pattern-quiz-progress';
+
+interface SavedProgress {
+  quizState: QuizState;
+  currentQuestionIndex: number;
+  answers: PatternQuizAnswers;
+  savedAt: number;
+}
+
+// Helper to check if localStorage is available
+function isStorageAvailable(): boolean {
+  try {
+    const test = '__storage_test__';
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Helper to save progress
+function saveProgress(data: Omit<SavedProgress, 'savedAt'>): void {
+  if (!isStorageAvailable()) return;
+  try {
+    const progress: SavedProgress = { ...data, savedAt: Date.now() };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  } catch (e) {
+    console.warn('Failed to save quiz progress:', e);
+  }
+}
+
+// Helper to load progress (max 24 hours old)
+function loadProgress(): SavedProgress | null {
+  if (!isStorageAvailable()) return null;
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return null;
+
+    const progress: SavedProgress = JSON.parse(saved);
+    const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+
+    // Check if progress is still valid
+    if (Date.now() - progress.savedAt > maxAge) {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+
+    // Don't restore if already completed
+    if (progress.quizState === 'result' || progress.quizState === 'analyzing') {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+
+    return progress;
+  } catch {
+    return null;
+  }
+}
+
+// Helper to clear progress
+function clearProgress(): void {
+  if (!isStorageAvailable()) return;
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Ignore
+  }
+}
 
 interface PatternQuizProps {
   /** Start directly on questions instead of landing page */
@@ -40,6 +112,7 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
   const [firstName, setFirstName] = useState('');
   const [acceptsMarketing, setAcceptsMarketing] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasRestoredProgress, setHasRestoredProgress] = useState(false);
 
   // Result state
   const [resultId, setResultId] = useState<string | null>(null);
@@ -66,6 +139,37 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
       });
     }
   }, [searchParams]);
+
+  // Restore progress from localStorage on mount
+  useEffect(() => {
+    if (hasRestoredProgress) return;
+
+    const saved = loadProgress();
+    if (saved && saved.currentQuestionIndex > 0) {
+      // Only restore if user has made progress
+      setQuizState(saved.quizState);
+      setCurrentQuestionIndex(saved.currentQuestionIndex);
+      setAnswers(saved.answers);
+    }
+    setHasRestoredProgress(true);
+  }, [hasRestoredProgress]);
+
+  // Save progress when answers or question index changes
+  useEffect(() => {
+    if (!hasRestoredProgress) return;
+    if (quizState === 'result' || quizState === 'analyzing') {
+      // Clear progress when quiz is completed
+      clearProgress();
+      return;
+    }
+    if (quizState === 'question' || quizState === 'email-gate') {
+      saveProgress({
+        quizState,
+        currentQuestionIndex,
+        answers,
+      });
+    }
+  }, [quizState, currentQuestionIndex, answers, hasRestoredProgress]);
 
   const currentQuestion = PATTERN_QUESTIONS[currentQuestionIndex];
   const currentAnswer = answers[currentQuestion?.id?.toString()] || null;

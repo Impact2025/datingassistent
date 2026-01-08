@@ -37,10 +37,12 @@ import {
   Link2,
   ImageIcon,
   Code,
+  Sparkles,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { type CreateBlogPostData } from '@/types/blog';
 import { cn } from '@/lib/utils';
+import { addKennisbankLinksToContent } from '@/lib/seo-utils';
 
 interface EditorTabProps {
   blogData: Partial<CreateBlogPostData>;
@@ -146,6 +148,30 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
     if (url) {
       editor.chain().focus().setImage({ src: url }).run();
     }
+  };
+
+  const addKennisbankLinks = () => {
+    if (!editor) return;
+
+    const currentContent = editor.getHTML();
+    const { modifiedContent, linksAdded } = addKennisbankLinksToContent(currentContent);
+
+    if (linksAdded.length === 0) {
+      toast({
+        title: 'Geen links gevonden',
+        description: 'Er zijn geen kennisbank keywords gevonden in de tekst.',
+        variant: 'default',
+      });
+      return;
+    }
+
+    editor.commands.setContent(modifiedContent);
+    updateBlogData({ content: modifiedContent });
+
+    toast({
+      title: `${linksAdded.length} link${linksAdded.length > 1 ? 's' : ''} toegevoegd`,
+      description: linksAdded.map(l => `"${l.keyword}" → ${l.title}`).join(', '),
+    });
   };
 
   // =========================================================================
@@ -428,6 +454,21 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               title="Redo"
             >
               <Redo className="w-4 h-4" />
+            </Button>
+
+            <div className="w-px h-8 bg-gray-300 mx-1" />
+
+            {/* AI Kennisbank Links */}
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              onClick={addKennisbankLinks}
+              className="h-8 px-2 gap-1 text-pink-600 hover:bg-pink-100 hover:text-pink-700"
+              title="AI: Voeg automatisch interne links naar kennisbank artikelen toe"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span className="text-xs font-medium">Links</span>
             </Button>
           </div>
 

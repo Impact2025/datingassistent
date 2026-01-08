@@ -11,7 +11,7 @@ import { SkipLinks } from "@/components/accessibility/skip-links";
 import { ScreenReaderAnnouncer } from "@/components/accessibility/screen-reader-announcer";
 import { StructuredData } from "@/components/structured-data";
 import ErrorBoundary from "@/components/error-boundary";
-import { ServiceWorkerRegistration, InstallPrompt, UpdatePrompt, OfflineIndicator } from "@/components/pwa";
+import { ServiceWorkerRegistration, InstallPrompt, UpdatePrompt, OfflineIndicator, ChunkLoadErrorRecovery } from "@/components/pwa";
 import { PWAProvider } from "@/stores/pwa-store";
 import { IrisFloatingButton } from "@/components/iris/IrisFloatingButton";
 import { TutorialEngine } from "@/components/onboarding/tutorial-engine/tutorial-engine";
@@ -118,7 +118,7 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <meta name="theme-color" content="#FF6B9D" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="DatingAssistent Pro" />
         <meta name="description" content="Je persoonlijke AI dating coach voor betere matches en dates" />
@@ -157,6 +157,7 @@ export default function RootLayout({
             <QueryProvider>
               <PWAProvider>
                 <WebVitals />
+                <ChunkLoadErrorRecovery />
                 <ServiceWorkerRegistration />
                 <OfflineIndicator />
                 <UpdatePrompt />

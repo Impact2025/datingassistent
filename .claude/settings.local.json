@@ -272,7 +272,13 @@
       "WebFetch(domain:datingassistent.nl)",
       "Bash(start https://datingassistent.nl/login)",
       "Bash(start http://localhost:9050/api/db/migrate-blogs-v2)",
-      "Bash(start:*)"
+      "Bash(start:*)",
+      "Bash(printf:*)",
+      "Bash(cmd //c \"taskkill //F //PID 136820\")",
+      "WebFetch(domain:www.datingassistent.nl)",
+      "Bash(cmd //c \"taskkill //F //PID 31304\")",
+      "Bash(npm start)",
+      "Bash(npx next lint:*)"
     ],
     "deny": [],
     "ask": []

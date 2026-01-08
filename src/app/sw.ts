@@ -16,7 +16,7 @@ declare const self: ServiceWorkerGlobalScope;
 // DatingAssistent - Enterprise Grade
 // ============================================
 
-const APP_VERSION = "2.1.0";
+const APP_VERSION = "2.3.0"; // Updated: Force cache refresh for CSS loading fix
 const OFFLINE_CACHE = `dating-offline-v${APP_VERSION}`;
 
 // Initialize Serwist with optimal caching strategies
@@ -44,19 +44,37 @@ const serwist = new Serwist({
         },
       },
     },
-    // Static Assets - Network First for CSS/JS to prevent stale issues
+    // JavaScript chunks - Network First with short timeout to prevent stale chunks
     {
-      matcher: ({ request }) =>
-        request.destination === "style" ||
-        request.destination === "script" ||
-        request.destination === "font",
+      matcher: ({ request, url }) =>
+        request.destination === "script" && url.pathname.includes('/_next/static/chunks/'),
+      handler: "NetworkFirst",
+      options: {
+        cacheName: `js-chunks-v${APP_VERSION}`,
+        networkTimeoutSeconds: 5,
+        expiration: {
+          maxEntries: 150,
+          maxAgeSeconds: 60 * 60 * 24, // 1 day only for chunks
+        },
+        // Only cache successful responses
+        cacheableResponse: {
+          statuses: [0, 200],
+        },
+      },
+    },
+    // Other Static Assets (CSS, fonts, non-chunk JS)
+    {
+      matcher: ({ request, url }) =>
+        (request.destination === "style" ||
+        request.destination === "font" ||
+        (request.destination === "script" && !url.pathname.includes('/_next/static/chunks/'))),
       handler: "NetworkFirst",
       options: {
         cacheName: `static-assets-v${APP_VERSION}`,
         networkTimeoutSeconds: 3,
         expiration: {
           maxEntries: 100,
-          maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days instead of 1 year
+          maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days for CSS/fonts
         },
       },
     },
