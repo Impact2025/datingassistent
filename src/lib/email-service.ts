@@ -13,6 +13,8 @@ import PaymentFailedEmail from '@/emails/payment-failed-email';
 import SubscriptionRenewalEmail from '@/emails/subscription-renewal-email';
 import SubscriptionCancelledEmail from '@/emails/subscription-cancelled-email';
 import ProgramEnrollmentEmail from '@/emails/program-enrollment-email';
+import PatternQuizResultEmail from '@/emails/pattern-quiz-result-email';
+import type { AttachmentPattern } from '@/lib/quiz/pattern/pattern-types';
 
 // Initialize SendGrid
 if (process.env.SENDGRID_API_KEY) {
@@ -526,6 +528,75 @@ Vragen? Mail ons op ${SUPPORT_EMAIL}
     });
   } catch (error) {
     console.error('Error rendering program enrollment email:', error);
+    return false;
+  }
+}
+
+/**
+ * Send pattern quiz result email
+ */
+export async function sendPatternQuizResultEmail(
+  userEmail: string,
+  firstName: string,
+  attachmentPattern: AttachmentPattern,
+  resultId: string
+): Promise<boolean> {
+  try {
+    const resultUrl = `${BASE_URL}/quiz/dating-patroon/resultaat?id=${resultId}`;
+
+    const html = await render(
+      PatternQuizResultEmail({
+        firstName,
+        attachmentPattern,
+        resultUrl,
+      }),
+      { pretty: true }
+    );
+
+    // Pattern titles for subject line
+    const patternTitles: Record<AttachmentPattern, string> = {
+      secure: 'De Stabiele Basis',
+      anxious: 'De Toegewijde Zoeker',
+      avoidant: 'De Onafhankelijke',
+      fearful_avoidant: 'De Paradox',
+    };
+
+    const patternTitle = patternTitles[attachmentPattern];
+
+    const textContent = `
+Je Dating Patroon: ${patternTitle}
+
+Hoi ${firstName}!
+
+Je hebt de quiz gedaan. Je bent ${patternTitle}.
+
+Bekijk je volledige resultaat hier: ${resultUrl}
+
+Een patroon herkennen is stap 1. Het veranderen is stap 2.
+
+De meeste mensen blijven hangen bij stap 1. Ze lezen hun resultaat, knikken, en gaan door met wat ze altijd deden.
+
+Ik wil je helpen naar stap 2. De komende dagen stuur ik je specifieke inzichten voor jouw type.
+
+Maar als je nu al klaar bent voor actie, bekijk dan het Transformatie Programma:
+${BASE_URL}/transformatie
+
+Tot morgen,
+Vincent
+DatingAssistent
+
+P.S. Reply op deze mail met je grootste dating frustratie. Ik lees alles persoonlijk.
+    `.trim();
+
+    return sendEmail({
+      to: userEmail,
+      from: FROM_EMAIL,
+      subject: `${firstName}, je Dating Patroon is: ${patternTitle}`,
+      html,
+      text: textContent,
+    });
+  } catch (error) {
+    console.error('Error rendering pattern quiz result email:', error);
     return false;
   }
 }

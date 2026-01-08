@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { calculatePatternScore } from '@/lib/quiz/pattern/pattern-scoring';
 import { getPatternResult } from '@/lib/quiz/pattern/pattern-results';
+import { sendPatternQuizResultEmail } from '@/lib/email-service';
 import type {
   PatternQuizSubmitRequest,
   PatternQuizSubmitResponse,
@@ -114,8 +115,29 @@ export async function POST(request: Request) {
 
     const resultId = result.rows[0].id;
 
-    // TODO: Queue follow-up email
-    // await queuePatternQuizEmail(email, firstName, scoringResult.attachmentPattern, resultId);
+    // Send result email (non-blocking - don't let email failure block the response)
+    sendPatternQuizResultEmail(
+      email,
+      firstName.trim(),
+      scoringResult.attachmentPattern,
+      resultId.toString()
+    )
+      .then((sent) => {
+        if (sent) {
+          console.log(`✅ Pattern quiz result email sent to ${email}`);
+          // Update database to mark email as sent
+          sql`
+            UPDATE pattern_quiz_results
+            SET result_email_sent = true, result_email_sent_at = NOW()
+            WHERE id = ${resultId}
+          `.catch((err) => console.error('Failed to update email sent status:', err));
+        } else {
+          console.warn(`⚠️ Pattern quiz result email failed for ${email}`);
+        }
+      })
+      .catch((err) => {
+        console.error('❌ Error sending pattern quiz result email:', err);
+      });
 
     const response: PatternQuizSubmitResponse = {
       success: true,
