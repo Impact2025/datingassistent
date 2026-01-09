@@ -186,13 +186,6 @@ function IrisVideoPlayer() {
               <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm">
                 Geen creditcard nodig • Analyse in 30 sec
               </p>
-
-              <Link
-                href="#hoe-het-werkt"
-                className="inline-block mt-3 text-sm text-gray-500 dark:text-gray-400 hover:text-pink-600 dark:hover:text-pink-400 underline underline-offset-4 transition-colors"
-              >
-                Of bekijk hoe het werkt
-              </Link>
             </div>
           </motion.div>
         )}
