@@ -1,4 +1,4 @@
-import { defaultCache } from "@serwist/next/worker";
+// defaultCache removed - was causing stale asset issues
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
 import { Serwist } from "serwist";
 
@@ -16,19 +16,41 @@ declare const self: ServiceWorkerGlobalScope;
 // DatingAssistent - Enterprise Grade
 // ============================================
 
-const APP_VERSION = "2.4.0"; // Fixed: Aggressive precache cleanup to prevent stale CSS
+const APP_VERSION = "2.5.0"; // DISABLED precaching to fix stale CSS issue permanently
 const OFFLINE_CACHE = `dating-offline-v${APP_VERSION}`;
 
-// Initialize Serwist with optimal caching strategies
+// Initialize Serwist with DISABLED precaching to prevent stale assets
+// Precaching was causing CSS/JS to be served from cache after deployments
+// even when the files no longer existed on the server
 const serwist = new Serwist({
-  precacheEntries: self.__SW_MANIFEST,
+  // CRITICAL FIX: Disable precaching entirely - this was the root cause!
+  // Precaching stores assets at install time and serves them forever
+  // until SW updates, causing stale CSS/JS after deployments
+  precacheEntries: [], // Empty array = no precaching
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  // Clean up old caches on activation
   cleanupOutdatedCaches: true,
   runtimeCaching: [
-    // API Routes - Network First with fallback
+    // CRITICAL: HTML pages - ALWAYS fetch from network
+    // Never cache HTML to ensure users always get the latest version
+    {
+      matcher: ({ request }) => request.mode === "navigate",
+      handler: "NetworkOnly", // Changed from NetworkFirst - NEVER serve cached HTML
+    },
+    // CRITICAL: CSS files - ALWAYS fetch from network
+    // CSS filenames include hashes, cached versions cause 404s after deploy
+    {
+      matcher: ({ request }) => request.destination === "style",
+      handler: "NetworkOnly", // Changed from NetworkFirst - NEVER serve cached CSS
+    },
+    // CRITICAL: JavaScript - ALWAYS fetch from network
+    // JS chunk filenames include hashes, cached versions cause errors after deploy
+    {
+      matcher: ({ request }) => request.destination === "script",
+      handler: "NetworkOnly", // Changed from NetworkFirst - NEVER serve cached JS
+    },
+    // API Routes - Network First with fallback (OK to cache for offline)
     {
       matcher: ({ url }) => url.pathname.startsWith("/api/"),
       handler: "NetworkFirst",
@@ -44,41 +66,7 @@ const serwist = new Serwist({
         },
       },
     },
-    // JavaScript chunks - Network First with short timeout to prevent stale chunks
-    {
-      matcher: ({ request, url }) =>
-        request.destination === "script" && url.pathname.includes('/_next/static/chunks/'),
-      handler: "NetworkFirst",
-      options: {
-        cacheName: `js-chunks-v${APP_VERSION}`,
-        networkTimeoutSeconds: 5,
-        expiration: {
-          maxEntries: 150,
-          maxAgeSeconds: 60 * 60 * 24, // 1 day only for chunks
-        },
-        // Only cache successful responses
-        cacheableResponse: {
-          statuses: [0, 200],
-        },
-      },
-    },
-    // Other Static Assets (CSS, fonts, non-chunk JS)
-    {
-      matcher: ({ request, url }) =>
-        (request.destination === "style" ||
-        request.destination === "font" ||
-        (request.destination === "script" && !url.pathname.includes('/_next/static/chunks/'))),
-      handler: "NetworkFirst",
-      options: {
-        cacheName: `static-assets-v${APP_VERSION}`,
-        networkTimeoutSeconds: 3,
-        expiration: {
-          maxEntries: 100,
-          maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days for CSS/fonts
-        },
-      },
-    },
-    // Images - Stale While Revalidate
+    // Images - Stale While Revalidate (safe to cache, no hash issues)
     {
       matcher: ({ request }) => request.destination === "image",
       handler: "StaleWhileRevalidate",
@@ -95,7 +83,19 @@ const serwist = new Serwist({
       matcher: ({ request }) => request.destination === "video",
       handler: "NetworkOnly",
     },
-    // External fonts (Google Fonts)
+    // Fonts - Cache First (safe, rarely change)
+    {
+      matcher: ({ request }) => request.destination === "font",
+      handler: "CacheFirst",
+      options: {
+        cacheName: `font-cache-v${APP_VERSION}`,
+        expiration: {
+          maxEntries: 30,
+          maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+        },
+      },
+    },
+    // External fonts (Google Fonts) - Cache First
     {
       matcher: ({ url }) =>
         url.origin === "https://fonts.googleapis.com" ||
@@ -105,25 +105,10 @@ const serwist = new Serwist({
         cacheName: `google-fonts-v${APP_VERSION}`,
         expiration: {
           maxEntries: 30,
-          maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+          maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
         },
       },
     },
-    // Page navigations - Network First
-    {
-      matcher: ({ request }) => request.mode === "navigate",
-      handler: "NetworkFirst",
-      options: {
-        cacheName: `pages-cache-v${APP_VERSION}`,
-        networkTimeoutSeconds: 5,
-        expiration: {
-          maxEntries: 50,
-          maxAgeSeconds: 60 * 60 * 24, // 1 day
-        },
-      },
-    },
-    // Default - Stale While Revalidate
-    ...defaultCache,
   ],
   fallbacks: {
     entries: [
@@ -429,39 +414,46 @@ async function handleShareTarget(request: Request): Promise<Response> {
 }
 
 // ============================================
+// CACHE CLEANUP ON INSTALL (before activation)
+// ============================================
+
+self.addEventListener("install", (event) => {
+  console.log(`[SW] Installing Service Worker v${APP_VERSION}`);
+
+  event.waitUntil(
+    (async () => {
+      // Delete ALL existing caches during install
+      // This ensures stale assets are removed before the new SW activates
+      const cacheNames = await caches.keys();
+      if (cacheNames.length > 0) {
+        console.log(`[SW] Clearing ${cacheNames.length} old caches during install:`, cacheNames);
+        await Promise.all(cacheNames.map((name) => caches.delete(name)));
+      }
+
+      // Skip waiting to activate immediately
+      await self.skipWaiting();
+      console.log(`[SW] Service Worker v${APP_VERSION} installed and skipped waiting`);
+    })()
+  );
+});
+
+// ============================================
 // CACHE CLEANUP ON ACTIVATION
 // ============================================
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
-      // AGGRESSIVE CLEANUP: Delete ALL old caches including serwist-precache
-      // This is critical to prevent stale CSS/JS from being served after deployments
+      // NUCLEAR OPTION: Delete ALL caches on activation
+      // Since we disabled precaching and use NetworkOnly for critical assets,
+      // there's no reason to keep any old caches
       const cacheNames = await caches.keys();
-      const versionSuffix = `-v${APP_VERSION}`;
 
-      // Get the current serwist precache name (it includes a revision hash)
-      // We need to keep ONLY the current precache, not old ones
-      const cachesToDelete = cacheNames.filter((name) => {
-        // Keep current version caches
-        if (name.endsWith(versionSuffix)) return false;
-        // Keep current offline cache
-        if (name === OFFLINE_CACHE) return false;
-        // DELETE old serwist-precache caches - this is the key fix!
-        // Serwist uses revision hashes, old precaches contain stale CSS/JS
-        if (name.startsWith("serwist-precache")) {
-          console.log(`[SW] Found serwist-precache cache to evaluate: ${name}`);
-          return true; // Delete old precaches
-        }
-        // Delete everything else (old version caches, unversioned caches)
-        return true;
-      });
-
-      console.log(`[SW] Found ${cachesToDelete.length} old caches to delete:`, cachesToDelete);
+      console.log(`[SW] NUCLEAR CLEANUP: Deleting ALL ${cacheNames.length} caches:`, cacheNames);
 
       await Promise.all(
-        cachesToDelete.map((name) => {
-          console.log(`[SW] Deleting old cache: ${name}`);
+        cacheNames.map((name) => {
+          console.log(`[SW] Deleting cache: ${name}`);
           return caches.delete(name);
         })
       );

@@ -4,7 +4,7 @@ import { useEffect, useCallback } from 'react';
 import { usePWAStore } from '@/stores/pwa-store';
 
 // Current app version - must match sw.ts
-const CURRENT_APP_VERSION = "2.4.0";
+const CURRENT_APP_VERSION = "2.5.0";
 
 export function ServiceWorkerRegistration() {
   const {
