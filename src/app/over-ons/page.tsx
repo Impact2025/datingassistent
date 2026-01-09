@@ -51,7 +51,7 @@ export default function OverOnsPage() {
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto px-2">
-              Van traditioneel datingbureau naar AI-powered platform – we hebben alles gezien en weten precies wat werkt.
+              Van datingcoach naar AI-architect – waar praktijkervaring en innovatie samenkomen in één platform.
             </p>
 
             {/* CTA Button */}
@@ -67,7 +67,7 @@ export default function OverOnsPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 px-2">
               <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600 dark:text-gray-300">
                 <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
-                <span className="text-xs sm:text-sm">Sinds 2013 actief in dating</span>
+                <span className="text-xs sm:text-sm">Sinds 2014 actief in dating</span>
               </div>
               <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600 dark:text-gray-300">
                 <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
@@ -214,24 +214,81 @@ export default function OverOnsPage() {
 
       {/* Founder Section */}
       <section className="py-20 px-4 bg-white dark:bg-gray-800">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50">De oprichter: Vincent van Munster</h3>
-              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                Als sociaal ondernemer is mijn drijfveer altijd geweest om zoveel mogelijk geluksmomenten te creëren. Hoewel ik een aantal jaren als dating coach in 2012 aan de basis stond van ons bedrijf, ligt mijn expertise vooral in het vinden van innovatieve oplossingen voor maatschappelijke uitdagingen. De missie van DatingAssistent is dan ook een directe vertaling van dit doel: daten toegankelijker maken voor iedereen, waardoor we de kans op die waardevolle momenten van liefde en geluk exponentieel vergroten.
-              </p>
-            </div>
-            <div className="flex justify-center">
-              <div className="w-48 h-48 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-600">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-50 mb-4">
+              Van Datingcoach naar AI-Architect
+            </h2>
+            <p className="text-xl text-pink-600 dark:text-pink-400 font-medium">
+              Technologie met een menselijk hart
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+            {/* Photo */}
+            <div className="flex justify-center lg:order-2">
+              <div className="w-64 h-64 rounded-3xl overflow-hidden border-4 border-pink-200 dark:border-pink-700 shadow-xl">
                 <Image
                   src="/images/Vincent van Munster.png"
                   alt="Vincent van Munster - Oprichter DatingAssistent"
-                  width={192}
-                  height={192}
+                  width={256}
+                  height={256}
                   className="w-full h-full object-cover"
                   priority
                 />
+              </div>
+            </div>
+
+            {/* Story - Left Column */}
+            <div className="space-y-6 lg:order-1 lg:col-span-2">
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-50">Het begon in 2014</h3>
+                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Ik startte als datingcoach (o.a. bekend van The Undateables) en begeleidde twee jaar lang intensief singles. Maar ik was toen al vooral <strong className="text-gray-900 dark:text-gray-50">de bedenker</strong>: de strateeg die zocht naar methodes die écht werken.
+                </p>
+                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Ik zag in die praktijkjaren precies waar mensen vastliepen. Maar ik zag ook de beperking: als coach kon ik maar een handjevol mensen helpen.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-50">De Evolutie</h3>
+                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                  In de jaren daarna heb ik mijn vizier verbreed. Als <strong className="text-gray-900 dark:text-gray-50">Impact Maker</strong>, <strong className="text-gray-900 dark:text-gray-50">LEGO® Serious Play facilitator</strong> en <strong className="text-gray-900 dark:text-gray-50">AI Welzijn Expert</strong> help ik nu organisaties om te innoveren.
+                </p>
+                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Maar mijn oude missie liet me niet los.
+                </p>
+                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Met de kennis van nu heb ik de ervaring van toen gedigitaliseerd. Ik ben mijn eigen 'Makerspace' ingedoken om een oplossing te bouwen die schaalbaar is.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-2xl p-8 border border-pink-200 dark:border-pink-800 space-y-4">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-50">DatingAssistent is het resultaat</h3>
+                <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                  Het is de perfecte synergie van mijn verleden en mijn heden. Een platform waar mijn coachings-inzichten zijn omgezet in slimme AI-tools.
+                </p>
+                <ul className="space-y-3 text-lg text-gray-700 dark:text-gray-300">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-6 h-6 text-green-500 dark:text-green-400 flex-shrink-0 mt-1" />
+                    <span><strong>Geen uurtarief</strong>, maar onbeperkt toegang.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-6 h-6 text-green-500 dark:text-green-400 flex-shrink-0 mt-1" />
+                    <span><strong>Geen wachttijden</strong>, maar 24/7 hulp van mijn digitale evenknie.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed italic">
+                  Ik ben misschien geen fulltime datingcoach meer, maar ik ben wel de architect die jouw datingleven makkelijker maakt.
+                </p>
+                <div className="mt-6">
+                  <p className="text-lg font-bold text-gray-900 dark:text-gray-50">Vincent van Munster</p>
+                  <p className="text-gray-600 dark:text-gray-400">Founder, Impact Maker & AI Expert</p>
+                </div>
               </div>
             </div>
           </div>
@@ -265,12 +322,12 @@ export default function OverOnsPage() {
 
             <div className="flex items-start gap-6">
               <div className="flex-shrink-0 w-12 h-12 bg-pink-500 dark:bg-pink-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">2013</span>
+                <span className="text-white font-bold text-sm">2014</span>
               </div>
               <div className="flex-grow">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-50 mb-2">Oprichting DatingAssistent</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-50 mb-2">De Bedenker: Als Datingcoach</h3>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  Oprichting als gespecialiseerd datingbureau (bekend van tv-programma's als The Undateables). Hier ontdekten we de enorme behoefte aan professionele, toegankelijke ondersteuning.
+                  Vincent startte als datingcoach (bekend van The Undateables) en begeleidde intensief singles. Maar was al vooral de strateeg die zocht naar methodes die écht werken. Hier werden de fundamenten gelegd voor wat later DatingAssistent zou worden.
                 </p>
               </div>
             </div>
