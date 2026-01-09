@@ -4,7 +4,7 @@ import { useEffect, useCallback } from 'react';
 import { usePWAStore } from '@/stores/pwa-store';
 
 // Current app version - must match sw.ts
-const CURRENT_APP_VERSION = "2.3.0";
+const CURRENT_APP_VERSION = "2.4.0";
 
 export function ServiceWorkerRegistration() {
   const {
@@ -110,6 +110,32 @@ export function ServiceWorkerRegistration() {
     function initializeServiceWorker() {
       // Only register service worker if supported
       if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+        // Listen for messages from service worker (including reload requests)
+        navigator.serviceWorker.addEventListener('message', (event) => {
+          if (event.data?.type === 'SW_ACTIVATED') {
+            console.log('[SW] Received activation message from SW:', event.data);
+            // New SW activated, reload to get fresh assets
+            const isReloading = sessionStorage.getItem('sw-activation-reload');
+            if (!isReloading) {
+              console.log('[SW] New SW activated, reloading for fresh assets...');
+              sessionStorage.setItem('sw-activation-reload', 'true');
+              // Clear ALL caches before reload
+              if ('caches' in window) {
+                caches.keys().then((names) => Promise.all(names.map(n => caches.delete(n))))
+                  .finally(() => window.location.reload());
+              } else {
+                window.location.reload();
+              }
+            }
+          }
+        });
+
+        // Clear reload flag on successful load
+        window.addEventListener('load', () => {
+          sessionStorage.removeItem('sw-activation-reload');
+          sessionStorage.removeItem('sw-controller-change-reload');
+        }, { once: true });
+
         // Register service worker
         navigator.serviceWorker
           .register('/sw.js', { scope: '/' })
@@ -153,18 +179,11 @@ export function ServiceWorkerRegistration() {
             console.log('[SW] Reloading page to fetch latest chunks from new deployment');
             sessionStorage.setItem('sw-controller-change-reload', 'true');
 
-            // Clear the flag after reload
-            window.addEventListener('load', () => {
-              sessionStorage.removeItem('sw-controller-change-reload');
-            }, { once: true });
-
-            // Clear static asset caches to ensure fresh fetch
+            // Clear ALL caches to ensure fresh fetch (aggressive cleanup)
             if ('caches' in window) {
               caches.keys().then((cacheNames) => {
-                const staticCaches = cacheNames.filter(
-                  name => name.includes('static-assets') || name.includes('pages-cache')
-                );
-                return Promise.all(staticCaches.map(cache => caches.delete(cache)));
+                console.log('[SW] Clearing all caches:', cacheNames);
+                return Promise.all(cacheNames.map(cache => caches.delete(cache)));
               }).finally(() => {
                 window.location.reload();
               });

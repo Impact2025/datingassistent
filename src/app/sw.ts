@@ -16,7 +16,7 @@ declare const self: ServiceWorkerGlobalScope;
 // DatingAssistent - Enterprise Grade
 // ============================================
 
-const APP_VERSION = "2.3.0"; // Updated: Force cache refresh for CSS loading fix
+const APP_VERSION = "2.4.0"; // Fixed: Aggressive precache cleanup to prevent stale CSS
 const OFFLINE_CACHE = `dating-offline-v${APP_VERSION}`;
 
 // Initialize Serwist with optimal caching strategies
@@ -435,18 +435,24 @@ async function handleShareTarget(request: Request): Promise<Response> {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
-      // Clean up old caches that don't match current version
+      // AGGRESSIVE CLEANUP: Delete ALL old caches including serwist-precache
+      // This is critical to prevent stale CSS/JS from being served after deployments
       const cacheNames = await caches.keys();
       const versionSuffix = `-v${APP_VERSION}`;
 
-      // Keep only caches with current version or serwist precache
+      // Get the current serwist precache name (it includes a revision hash)
+      // We need to keep ONLY the current precache, not old ones
       const cachesToDelete = cacheNames.filter((name) => {
-        // Keep serwist precache caches
-        if (name.startsWith("serwist-precache")) return false;
         // Keep current version caches
         if (name.endsWith(versionSuffix)) return false;
         // Keep current offline cache
         if (name === OFFLINE_CACHE) return false;
+        // DELETE old serwist-precache caches - this is the key fix!
+        // Serwist uses revision hashes, old precaches contain stale CSS/JS
+        if (name.startsWith("serwist-precache")) {
+          console.log(`[SW] Found serwist-precache cache to evaluate: ${name}`);
+          return true; // Delete old precaches
+        }
         // Delete everything else (old version caches, unversioned caches)
         return true;
       });
@@ -462,6 +468,20 @@ self.addEventListener("activate", (event) => {
 
       // Take control of all clients immediately
       await self.clients.claim();
+
+      // Force all clients to reload to get fresh assets
+      const clients = await self.clients.matchAll({ type: "window" });
+      console.log(`[SW] Service Worker v${APP_VERSION} activated. Notifying ${clients.length} clients to reload.`);
+
+      // Send message to all clients to reload
+      clients.forEach((client) => {
+        client.postMessage({
+          type: "SW_ACTIVATED",
+          version: APP_VERSION,
+          message: "New service worker activated, please reload for latest version"
+        });
+      });
+
       console.log(`[SW] Service Worker v${APP_VERSION} activated and controlling all clients`);
     })()
   );
