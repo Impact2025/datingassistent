@@ -424,10 +424,11 @@ export function RegistrationClientComponent() {
       console.error("Registratie error:", error);
 
       // Set error message for display in form
-      if (error.message.includes('Dit emailadres is al bij ons bekend')) {
+      if (error.message.includes('Dit emailadres is al bij ons bekend') || error.message.includes('Als je al een account hebt')) {
         setRegistrationError("existing_email");
-      } else if (error.message.includes('Password must be at least') || error.message.includes('karakters')) {
-        setRegistrationError("password_too_short");
+      } else if (error.message.includes('Wachtwoord') || error.message.includes('Password')) {
+        // Show the specific password error from the server
+        setRegistrationError(error.message);
       } else {
         setRegistrationError(error.message || "Er is een onbekende fout opgetreden. Probeer het opnieuw.");
       }
@@ -932,10 +933,11 @@ export function RegistrationClientComponent() {
                             <Link href="/auth/reset-password" className="font-semibold underline hover:text-red-900">vraag een nieuw wachtwoord aan</Link>.
                           </p>
                         </div>
-                      ) : registrationError === "password_too_short" ? (
-                        <p>
-                          <strong>Wachtwoord te kort:</strong> Je wachtwoord moet minimaal 8 karakters bevatten, met hoofdletter, kleine letter, cijfer en speciaal teken.
-                        </p>
+                      ) : registrationError.includes('Wachtwoord') ? (
+                        <div className="space-y-1">
+                          <p><strong>Wachtwoord voldoet niet aan de eisen:</strong></p>
+                          <p className="text-sm whitespace-pre-line">{registrationError}</p>
+                        </div>
                       ) : (
                         <p>
                           <strong>Fout:</strong> {registrationError}
