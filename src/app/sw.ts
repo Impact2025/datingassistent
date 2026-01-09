@@ -19,14 +19,29 @@ declare const self: ServiceWorkerGlobalScope;
 const APP_VERSION = "2.5.0"; // DISABLED precaching to fix stale CSS issue permanently
 const OFFLINE_CACHE = `dating-offline-v${APP_VERSION}`;
 
-// Initialize Serwist with DISABLED precaching to prevent stale assets
-// Precaching was causing CSS/JS to be served from cache after deployments
-// even when the files no longer existed on the server
+// Filter precache entries to ONLY include safe assets (images, fonts)
+// NEVER precache HTML/CSS/JS as they have hashed filenames that change on deploy
+const safePrecacheEntries = (self.__SW_MANIFEST || []).filter((entry) => {
+  const url = typeof entry === "string" ? entry : entry.url;
+  // Only precache images and fonts - these are safe
+  const isSafe =
+    url.match(/\.(png|jpg|jpeg|gif|webp|svg|ico|woff|woff2|ttf|eot)$/i) ||
+    url.includes("/icons/") ||
+    url.includes("/images/");
+  // NEVER precache HTML, CSS, JS, or Next.js chunks
+  const isDangerous =
+    url.match(/\.(html|css|js|mjs)$/i) ||
+    url.includes("/_next/static/chunks/") ||
+    url.includes("/_next/static/css/");
+  return isSafe && !isDangerous;
+});
+
+console.log(`[SW] Precaching ${safePrecacheEntries.length} safe assets (images/fonts only)`);
+
+// Initialize Serwist with FILTERED precaching - only safe assets
 const serwist = new Serwist({
-  // CRITICAL FIX: Disable precaching entirely - this was the root cause!
-  // Precaching stores assets at install time and serves them forever
-  // until SW updates, causing stale CSS/JS after deployments
-  precacheEntries: [], // Empty array = no precaching
+  // Only precache images and fonts - NEVER HTML/CSS/JS
+  precacheEntries: safePrecacheEntries,
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
