@@ -79,6 +79,9 @@ export function PublicHeader() {
             <Link href="/blog" className="transition-colors text-sm text-foreground/80 hover:text-primary">
               Blog & Tips
             </Link>
+            <Link href="/kennisbank" className="transition-colors text-sm text-foreground/80 hover:text-primary">
+              Kennisbank
+            </Link>
           </div>
           
           <div className="hidden md:flex items-center space-x-3 lg:space-x-4" suppressHydrationWarning>
@@ -126,6 +129,13 @@ export function PublicHeader() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Blog & Tips
+              </Link>
+              <Link
+                href="/kennisbank"
+                className="transition-colors text-foreground/80 hover:text-primary py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Kennisbank
               </Link>
               <div className="flex items-center space-x-4 pt-4 border-t border-border">
                 {user ? (
