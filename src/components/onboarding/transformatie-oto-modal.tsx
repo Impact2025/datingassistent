@@ -8,7 +8,7 @@
  * Uses psychological triggers:
  * - Gap awareness (current score vs potential)
  * - Value stacking (everything included)
- * - Social proof (MEEST GEKOZEN badge)
+ * - Recommendation badge (ONZE AANRADER)
  */
 
 import { motion } from 'framer-motion';
@@ -41,9 +41,9 @@ export function TransformatieOTOModal({
     <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border-2 border-pink-200 dark:border-pink-700 overflow-hidden">
       {/* Header - Attention Grabber */}
       <div className="bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 p-6 text-center border-b border-pink-100 dark:border-pink-700 relative">
-        {/* MEEST GEKOZEN Badge */}
+        {/* ONZE AANRADER Badge */}
         <Badge className="absolute top-4 right-4 bg-pink-500 dark:bg-pink-600 text-white px-3 py-1 text-xs font-bold shadow-md">
-          MEEST GEKOZEN
+          ONZE AANRADER
         </Badge>
 
         <motion.div

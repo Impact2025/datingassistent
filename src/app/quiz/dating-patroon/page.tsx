@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { PatternQuiz } from '@/components/quiz/pattern';
+import { CookieConsentBanner } from '@/components/cookie-consent-banner';
 
 /**
  * Dating Patroon Quiz Landing Page
@@ -94,6 +95,9 @@ export default function DatingPatroonQuizPage() {
       >
         <PatternQuiz />
       </Suspense>
+
+      {/* Cookie Consent Banner (required by law) */}
+      <CookieConsentBanner />
     </>
   );
 }

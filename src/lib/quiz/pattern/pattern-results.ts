@@ -55,8 +55,14 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
     ctaSection: {
       headline: 'De volgende stap',
       paragraph:
-        'Je basis is goed. Maar "goed genoeg" is niet waarom je hier bent. In het Transformatie Programma leer je hoe je sneller de juiste mensen herkent — en de verkeerde eerder loslaat. Geen tijdverspilling meer.',
-      buttonText: 'Bekijk het Transformatie Programma',
+        'Je basis is goed. Maar "goed genoeg" is niet waarom je hier bent. In 21 dagen leer je hoe je sneller de juiste mensen herkent — en de verkeerde eerder loslaat. Geen tijdverspilling meer.',
+      bullets: [
+        'Dagelijkse acties die je dating aanpak transformeren',
+        'De exacte vragen om intenties te checken (zonder awkward te zijn)',
+        'AI-coach voor wanneer je twijfelt',
+      ],
+      buttonText: 'Start de 21-Dagen Kickstart',
+      buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
           'Ik dacht dat ik gewoon pech had in de liefde. Dit programma liet me zien dat ik steeds dezelfde fout maakte — en hoe ik dat kon doorbreken.',
@@ -113,13 +119,14 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
     ctaSection: {
       headline: 'Dit patroon doorbreken',
       paragraph:
-        'Ik ga eerlijk tegen je zijn: dit patroon los je niet op met één tip. Het zit diep. Het stuurt je keuzes, je reacties, je hele dating ervaring. En zolang je het niet aanpakt, blijf je dezelfde cyclus herhalen.',
+        'Ik ga eerlijk tegen je zijn: dit patroon los je niet op met één tip. Het zit diep. Maar in 21 dagen kun je de eerste stappen zetten om het te doorbreken.',
       bullets: [
         'Hoe je het verschil herkent tussen intuïtie en angst',
         'Waarom je aangetrokken bent tot mensen die je onzeker maken',
         'Concrete tools om rust te vinden — zonder afhankelijk te zijn van andermans reactie',
       ],
-      buttonText: 'Start Mijn Transformatie',
+      buttonText: 'Start de 21-Dagen Kickstart',
+      buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
           'Na 3 jaar swipen had ik het opgegeven. Dit programma liet me zien waarom ik steeds dezelfde fout maakte.',
@@ -177,13 +184,14 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
     ctaSection: {
       headline: 'De muur verlagen (zonder jezelf te verliezen)',
       paragraph:
-        'Ik ga je niet vertellen dat je moet veranderen wie je bent. Je onafhankelijkheid is waardevol. Maar als je hier bent, vermoed ik dat je ook weet: er mist iets. En dat "iets" vereist een andere aanpak dan wat je tot nu toe hebt gedaan.',
+        'Ik ga je niet vertellen dat je moet veranderen wie je bent. Je onafhankelijkheid is waardevol. Maar in 21 dagen kun je kleine stappen zetten — op jouw tempo.',
       bullets: [
         'Hoe je verbinding kunt maken zonder jezelf te verliezen',
         'Kleine, concrete stappen richting kwetsbaarheid',
         'Op jouw tempo, zonder druk',
       ],
-      buttonText: 'Bekijk Het Programma',
+      buttonText: 'Start de 21-Dagen Kickstart',
+      buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
           'Ik dacht dat ik gewoon niet gemaakt was voor relaties. Dit programma liet me zien dat ik mezelf beschermde tegen iets dat ik eigenlijk wilde.',
@@ -240,13 +248,14 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
     ctaSection: {
       headline: 'Dit vraagt om begeleiding',
       paragraph:
-        'Ik ga eerlijk zijn: van de vier patronen is dit degene die je waarschijnlijk niet alleen oplost. Niet omdat je het niet kan — maar omdat het patroon zichzelf in stand houdt. Je hebt een externe spiegel nodig, iemand die de momenten herkent die jij niet ziet.',
+        'Ik ga eerlijk zijn: van de vier patronen is dit degene die baat heeft bij structuur. Je hebt een externe spiegel nodig. Start met 21 dagen om het patroon te leren herkennen.',
       bullets: [
         'Dagelijkse begeleiding die je helpt het patroon te herkennen',
         'AI-coach voor de momenten dat het lastig wordt',
-        'Community van mensen die hetzelfde meemaken',
+        'Kleine stappen die grote verandering brengen',
       ],
-      buttonText: 'Start Het Programma',
+      buttonText: 'Start de 21-Dagen Kickstart',
+      buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
           'Ik dacht dat ik gewoon "moeilijk" was. Dit programma liet me zien dat het een patroon was — en dat patronen te doorbreken zijn.',

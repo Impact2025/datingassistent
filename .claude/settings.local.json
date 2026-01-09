@@ -278,7 +278,10 @@
       "WebFetch(domain:www.datingassistent.nl)",
       "Bash(cmd //c \"taskkill //F //PID 31304\")",
       "Bash(npm start)",
-      "Bash(npx next lint:*)"
+      "Bash(npx next lint:*)",
+      "Bash(npx next dev:*)",
+      "Bash(ping:*)",
+      "Bash(ren:*)"
     ],
     "deny": [],
     "ask": []

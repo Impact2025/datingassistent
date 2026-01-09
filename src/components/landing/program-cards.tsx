@@ -85,10 +85,10 @@ export function ProgramCards() {
 
         {/* Plan 2: Transformatie (HERO) */}
         <Card className="relative border-4 border-[#E61E63] dark:border-pink-600 h-full flex flex-col transition-all hover:shadow-2xl bg-white dark:bg-gray-800 md:scale-105 shadow-xl">
-          {/* "MEEST GEKOZEN" Badge */}
+          {/* "ONZE AANRADER" Badge */}
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
             <Badge className="bg-[#E61E63] dark:bg-pink-600 text-white px-4 py-2 text-sm font-bold shadow-lg">
-              MEEST GEKOZEN
+              ONZE AANRADER
             </Badge>
           </div>
 

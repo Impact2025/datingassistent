@@ -189,7 +189,7 @@ export default function PrijzenPage() {
                   {program.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                       <Badge className="bg-pink-500 hover:bg-pink-500 text-white px-4 py-1 text-sm font-semibold shadow-lg">
-                        Meest Gekozen
+                        Onze Aanrader
                       </Badge>
                     </div>
                   )}

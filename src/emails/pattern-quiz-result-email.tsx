@@ -34,6 +34,7 @@ const patternContent: Record<
     color: string;
     intro: string;
     insight: string;
+    tip: string;
     nextSteps: string[];
   }
 > = {
@@ -45,10 +46,12 @@ const patternContent: Record<
       'Je hebt een gezonde basis voor relaties. Je voelt je comfortabel met intimiteit én met onafhankelijkheid. Dit is een sterke uitgangspositie.',
     insight:
       'Maar hier is wat ik vaak zie: juist omdat jij stabiel bent, kun je aantrekkelijk zijn voor mensen die dat niet zijn. Je wordt dan de "fixer" in de dynamiek.',
+    tip:
+      'Stel binnen de eerste 3 dates de vraag: "Wat zoek je?" — en geloof het antwoord. Als iemand zegt "ik weet het nog niet", is dat ook een antwoord. Handel ernaar.',
     nextSteps: [
-      'Herken sneller wanneer iemand niet op jouw niveau zit',
-      'Stel binnen 3 dates de vraag: "Wat zoek je?"',
-      'Geloof het antwoord — ook als dat "ik weet het niet" is',
+      'Dagelijkse acties die je dating aanpak transformeren',
+      'De exacte vragen om intenties te checken',
+      'AI-coach voor wanneer je twijfelt',
     ],
   },
   anxious: {
@@ -59,10 +62,12 @@ const patternContent: Record<
       'Je hebt een sterk verlangen naar verbinding. Je bent attent, betrokken, en je let op signalen. Dit zijn sterke eigenschappen.',
     insight:
       'Maar je brein is geprogrammeerd om afwijzing te zoeken — zelfs waar die niet is. Een laat bericht wordt bewijs dat ze je niet leuk vinden. Dit is uitputtend.',
+    tip:
+      'De volgende keer dat je onrustig wordt omdat iemand niet reageert: "Wat is het feitelijke bewijs dat ze NIET geïnteresseerd zijn?" In 90% van de gevallen is er geen bewijs — alleen een gevoel.',
     nextSteps: [
-      'Leer het verschil tussen intuïtie en angst',
-      'Stel jezelf de vraag: "Wat is het feitelijke bewijs?"',
-      'Bouw rust op die niet afhankelijk is van andermans reactie',
+      'Hoe je het verschil herkent tussen intuïtie en angst',
+      'Waarom je aangetrokken bent tot mensen die je onzeker maken',
+      'Concrete tools om rust te vinden',
     ],
   },
   avoidant: {
@@ -73,10 +78,12 @@ const patternContent: Record<
       'Je waardeert je vrijheid en hebt een rijk leven los van relaties. Dit is een kracht die veel mensen missen.',
     insight:
       'Maar ergens heb je geleerd dat kwetsbaarheid gevaarlijk is. Dus houd je afstand — niet omdat je mensen niet leuk vindt, maar omdat dichtbij komen oncomfortabel voelt.',
+    tip:
+      'De volgende keer dat je de neiging voelt om afstand te nemen, doe het omgekeerde: deel één ding dat je normaal voor jezelf houdt. Observeer wat er gebeurt.',
     nextSteps: [
-      'Probeer kleine stappen richting kwetsbaarheid',
-      'Deel één ding dat je normaal voor jezelf houdt',
-      'Observeer wat er gebeurt — bij de ander én bij jezelf',
+      'Hoe je verbinding maakt zonder jezelf te verliezen',
+      'Kleine, concrete stappen richting kwetsbaarheid',
+      'Op jouw tempo, zonder druk',
     ],
   },
   fearful_avoidant: {
@@ -86,11 +93,13 @@ const patternContent: Record<
     intro:
       'Je wilt verbinding. Echt. Je verlangt naar intimiteit. Maar zodra het dichtbij komt, schiet er iets aan dat zegt: gevaar.',
     insight:
-      'Dit is het lastigste patroon om mee te leven, maar ook het meest veranderbare. Juist omdat het aangeleerd is, kan het ook afgeleerd worden.',
+      'Dit is het lastigste patroon om mee te leven, maar ook het meest veranderbare. Je hebt een externe spiegel nodig.',
+    tip:
+      'Let de komende week op het moment dat je wilt terugtrekken. Vraag jezelf: "Waar in mijn lichaam voel ik dit?" Het begint met opmerken, niet met veranderen.',
     nextSteps: [
-      'Herken het push-pull patroon in je gedrag',
-      'Let op waar in je lichaam je de neiging voelt om terug te trekken',
-      'Overweeg begeleiding — dit patroon los je moeilijk alleen op',
+      'Dagelijkse begeleiding die je helpt het patroon te herkennen',
+      'AI-coach voor de momenten dat het lastig wordt',
+      'Kleine stappen die grote verandering brengen',
     ],
   },
 };
@@ -101,7 +110,7 @@ export default function PatternQuizResultEmail({
   resultUrl = 'https://datingassistent.nl/quiz/dating-patroon/resultaat',
 }: PatternQuizResultEmailProps) {
   const content = patternContent[attachmentPattern];
-  const transformatieUrl = 'https://datingassistent.nl/transformatie';
+  const kickstartUrl = 'https://datingassistent.nl/prijzen';
   const preferencesUrl = 'https://datingassistent.nl/settings/email-preferences';
 
   return (
@@ -117,26 +126,35 @@ export default function PatternQuizResultEmail({
         <Greeting name={firstName} />
 
         <Text style={styles.paragraph}>
-          Je hebt de quiz gedaan. Je bent <strong>{content.title}</strong>.
+          Je hebt de quiz gedaan. Jouw patroon: <strong>{content.title}</strong>.
         </Text>
 
-        <Text style={styles.paragraph}>
-          Ik weet dat dit misschien confronterend is. Of misschien dacht je: "ja,
-          dit klopt precies."
-        </Text>
-
-        <InfoBox type="info" title="Jouw patroon in het kort">
+        <InfoBox type="info" title="Wat dit betekent">
           {content.intro}
         </InfoBox>
 
         <Text style={{ ...styles.heading2, marginTop: '32px' }}>
-          Hier is wat ik wil dat je weet:
+          Maar hier is de andere kant:
         </Text>
 
         <Text style={styles.paragraph}>{content.insight}</Text>
 
+        <InfoBox type="warning" title="Je grootste valkuil">
+          Dit patroon houdt zichzelf in stand als je het niet bewust doorbreekt.
+        </InfoBox>
+
+        <InfoBox type="success" title="Wat je vandaag kunt doen">
+          {content.tip}
+        </InfoBox>
+
+        <Hr style={styles.divider} />
+
         <Text style={{ ...styles.heading2, marginTop: '24px' }}>
-          Wat je kunt doen:
+          Klaar om dit patroon te doorbreken?
+        </Text>
+
+        <Text style={styles.paragraph}>
+          In 21 dagen leer je:
         </Text>
 
         <ul style={{ paddingLeft: '20px', marginBottom: '24px' }}>
@@ -154,37 +172,20 @@ export default function PatternQuizResultEmail({
           ))}
         </ul>
 
-        <CTAButton href={resultUrl}>Bekijk je volledige resultaat</CTAButton>
+        <CTAButton href={kickstartUrl}>
+          Start de 21-Dagen Kickstart →
+        </CTAButton>
+
+        <Text style={{ textAlign: 'center' as const, color: colors.gray, fontSize: '14px', marginTop: '-16px' }}>
+          €47 • 21 dagen • Direct starten
+        </Text>
 
         <Hr style={styles.divider} />
 
-        <Text style={{ ...styles.heading2, marginTop: '24px' }}>
-          Een patroon herkennen is stap 1.
-        </Text>
-
-        <Text style={styles.paragraph}>
-          Het veranderen is stap 2. De meeste mensen blijven hangen bij stap 1.
-          Ze lezen hun resultaat, knikken, en gaan door met wat ze altijd deden.
-          Over 6 maanden zitten ze nog steeds vast.
-        </Text>
-
-        <Text style={styles.paragraph}>
-          <strong>Ik wil je helpen naar stap 2.</strong>
-        </Text>
-
         <Text style={styles.paragraph}>
           De komende dagen stuur ik je specifieke inzichten voor jouw type. Geen
-          generieke tips — dingen die werken voor {content.title} en niet voor
-          de andere drie.
+          generieke tips — dingen die werken voor {content.title}.
         </Text>
-
-        <Text style={styles.paragraph}>
-          Maar als je nu al weet dat je klaar bent voor actie:
-        </Text>
-
-        <CTAButton href={transformatieUrl}>
-          Bekijk het Transformatie Programma
-        </CTAButton>
 
         <Text style={{ ...styles.paragraph, marginTop: '32px' }}>
           Tot morgen,

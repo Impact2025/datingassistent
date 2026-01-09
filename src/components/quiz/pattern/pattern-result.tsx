@@ -195,13 +195,27 @@ export function PatternResult({
               </ul>
             )}
 
+            {/* Primary CTA - Kickstart */}
             <Link
-              href="/transformatie"
+              href="/prijzen"
               className="inline-flex items-center gap-2 px-8 py-4 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600 transition-colors"
             >
               {result.ctaSection.buttonText}
               <ArrowRight className="w-5 h-5" />
             </Link>
+            <p className="text-gray-400 text-sm mt-2">€47 • 21 dagen • Direct starten</p>
+
+            {/* Secondary CTA - Transformatie */}
+            {result.ctaSection.buttonTextSecondary && (
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                <Link
+                  href="/prijzen"
+                  className="text-pink-400 hover:text-pink-300 transition-colors text-sm font-medium"
+                >
+                  {result.ctaSection.buttonTextSecondary} Transformatie (€147)
+                </Link>
+              </div>
+            )}
 
             {result.ctaSection.testimonial && (
               <div className="mt-8 pt-6 border-t border-gray-800">

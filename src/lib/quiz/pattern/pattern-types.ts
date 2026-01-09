@@ -140,6 +140,7 @@ export interface PatternResultConfig {
     paragraph: string;
     bullets?: string[];
     buttonText: string;
+    buttonTextSecondary?: string;
     testimonial?: PatternResultTestimonial;
   };
 }

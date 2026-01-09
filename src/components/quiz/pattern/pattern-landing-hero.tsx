@@ -4,16 +4,43 @@
  * Pattern Quiz Landing Hero - Brand Style (Pink Minimalist)
  */
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
+import Link from 'next/link';
+import { Logo } from '@/components/shared/logo';
 
 interface PatternLandingHeroProps {
   onStartQuiz: () => void;
 }
 
 export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
+  const [quizCount, setQuizCount] = useState<number>(163);
+
+  // Fetch real quiz count on mount
+  useEffect(() => {
+    fetch('/api/quiz/pattern/count')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.count) {
+          setQuizCount(data.count);
+        }
+      })
+      .catch(() => {
+        // Keep default count on error
+      });
+  }, []);
   return (
     <div className="min-h-screen bg-white flex flex-col">
+      {/* Minimal Header with Logo */}
+      <header className="py-4 px-4 border-b border-gray-100">
+        <div className="max-w-2xl mx-auto">
+          <Link href="/">
+            <Logo iconSize={28} textSize="sm" />
+          </Link>
+        </div>
+      </header>
+
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="max-w-2xl mx-auto">
           {/* Badge */}
@@ -121,11 +148,24 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
-        className="py-6 text-center border-t border-gray-100"
+        className="py-6 border-t border-gray-100"
       >
-        <p className="text-xs text-gray-400">
-          Gebaseerd op ECR-R attachment theory • 2.400+ ingevuld
-        </p>
+        <div className="max-w-2xl mx-auto px-4">
+          <p className="text-xs text-gray-400 text-center mb-3">
+            Gebaseerd op ECR-R attachment theory • {quizCount.toLocaleString('nl-NL')}+ ingevuld
+          </p>
+          <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
+            <span>© {new Date().getFullYear()} DatingAssistent</span>
+            <span>•</span>
+            <Link href="/privacyverklaring" className="hover:text-pink-500 transition-colors">
+              Privacy
+            </Link>
+            <span>•</span>
+            <Link href="/algemene-voorwaarden" className="hover:text-pink-500 transition-colors">
+              Voorwaarden
+            </Link>
+          </div>
+        </div>
       </motion.div>
     </div>
   );

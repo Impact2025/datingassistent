@@ -14,7 +14,10 @@ import SubscriptionRenewalEmail from '@/emails/subscription-renewal-email';
 import SubscriptionCancelledEmail from '@/emails/subscription-cancelled-email';
 import ProgramEnrollmentEmail from '@/emails/program-enrollment-email';
 import PatternQuizResultEmail from '@/emails/pattern-quiz-result-email';
+import PatternQuizNurtureEmail from '@/emails/pattern-quiz-nurture-email';
 import type { AttachmentPattern } from '@/lib/quiz/pattern/pattern-types';
+
+type NurtureDay = 1 | 3 | 5 | 7;
 
 // Initialize SendGrid
 if (process.env.SENDGRID_API_KEY) {
@@ -570,18 +573,21 @@ Je Dating Patroon: ${patternTitle}
 
 Hoi ${firstName}!
 
-Je hebt de quiz gedaan. Je bent ${patternTitle}.
+Je hebt de quiz gedaan. Jouw patroon: ${patternTitle}.
 
 Bekijk je volledige resultaat hier: ${resultUrl}
 
 Een patroon herkennen is stap 1. Het veranderen is stap 2.
 
-De meeste mensen blijven hangen bij stap 1. Ze lezen hun resultaat, knikken, en gaan door met wat ze altijd deden.
+De komende dagen stuur ik je specifieke inzichten voor jouw type. Geen generieke tips — dingen die werken voor ${patternTitle}.
 
-Ik wil je helpen naar stap 2. De komende dagen stuur ik je specifieke inzichten voor jouw type.
+Klaar om dit patroon te doorbreken? In 21 dagen leer je:
+• Dagelijkse acties die je dating aanpak transformeren
+• Concrete tools specifiek voor jouw patroon
+• AI-coach voor wanneer je twijfelt
 
-Maar als je nu al klaar bent voor actie, bekijk dan het Transformatie Programma:
-${PROD_URL}/transformatie
+Start de 21-Dagen Kickstart: ${PROD_URL}/prijzen
+€47 • 21 dagen • Direct starten
 
 Tot morgen,
 Vincent
@@ -599,6 +605,49 @@ P.S. Reply op deze mail met je grootste dating frustratie. Ik lees alles persoon
     });
   } catch (error) {
     console.error('Error rendering pattern quiz result email:', error);
+    return false;
+  }
+}
+
+/**
+ * Send pattern quiz nurture sequence email
+ * Day 1: Founder story
+ * Day 3: Quick win per pattern
+ * Day 5: Case study
+ * Day 7: Urgency
+ */
+export async function sendPatternQuizNurtureEmail(
+  userEmail: string,
+  firstName: string,
+  attachmentPattern: AttachmentPattern,
+  day: NurtureDay
+): Promise<boolean> {
+  try {
+    const html = await render(
+      PatternQuizNurtureEmail({
+        firstName,
+        attachmentPattern,
+        day,
+      }),
+      { pretty: true }
+    );
+
+    // Subject lines per day
+    const subjects: Record<NurtureDay, string> = {
+      1: 'Waarom ik DatingAssistent startte (het verhaal dat ik niemand vertelde)',
+      3: `De quick win specifiek voor jouw patroon`,
+      5: `Hoe iemand met jouw patroon haar doorbraak vond`,
+      7: `${firstName}, één vraag voor je`,
+    };
+
+    return sendEmail({
+      to: userEmail,
+      from: FROM_EMAIL,
+      subject: subjects[day],
+      html,
+    });
+  } catch (error) {
+    console.error(`Error rendering pattern quiz nurture email (day ${day}):`, error);
     return false;
   }
 }
