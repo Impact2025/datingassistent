@@ -37,12 +37,11 @@ function IrisVideoPlayer() {
   // Auto-set loaded state if video doesn't load within 3 seconds
   useEffect(() => {
     const loadTimer = setTimeout(() => {
-      if (!isLoaded) {
-        setIsLoaded(true);
-      }
+      setIsLoaded(true);
     }, 3000);
     return () => clearTimeout(loadTimer);
-  }, [isLoaded]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
 
   return (
     <div className="relative w-full max-w-3xl mx-auto">
