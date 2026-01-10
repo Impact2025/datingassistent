@@ -11,7 +11,7 @@ import { SkipLinks } from "@/components/accessibility/skip-links";
 import { ScreenReaderAnnouncer } from "@/components/accessibility/screen-reader-announcer";
 import { StructuredData } from "@/components/structured-data";
 import ErrorBoundary from "@/components/error-boundary";
-import { ServiceWorkerRegistration, InstallPrompt, UpdatePrompt, OfflineIndicator, ChunkLoadErrorRecovery } from "@/components/pwa";
+import { ServiceWorkerRegistration, InstallPrompt, UpdatePrompt, OfflineIndicator } from "@/components/pwa";
 import { PWAProvider } from "@/stores/pwa-store";
 import { IrisFloatingButton } from "@/components/iris/IrisFloatingButton";
 import { TutorialEngine } from "@/components/onboarding/tutorial-engine/tutorial-engine";
@@ -114,91 +114,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl">
+    <html lang="nl" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-        <meta name="theme-color" content="#FF6B9D" />
-        {/* CRITICAL: CSS Loading Fallback - Detects stale cache and auto-recovers */}
+        {/* Theme initialization script - runs BEFORE React hydration to prevent flash */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                var CSS_CHECK_KEY = 'css-load-check';
-                var CSS_RELOAD_KEY = 'css-reload-attempted';
-                var APP_VERSION = '2.7.0';
-
-                // Only run check after DOM is ready
-                if (document.readyState === 'loading') {
-                  document.addEventListener('DOMContentLoaded', checkCSS);
-                } else {
-                  setTimeout(checkCSS, 100);
-                }
-
-                function checkCSS() {
-                  try {
-                    // Check if stylesheets loaded properly
-                    var sheets = document.styleSheets;
-                    var hasWorkingCSS = false;
-
-                    for (var i = 0; i < sheets.length; i++) {
-                      try {
-                        // If we can access cssRules and it has rules, CSS is working
-                        if (sheets[i].cssRules && sheets[i].cssRules.length > 0) {
-                          hasWorkingCSS = true;
-                          break;
-                        }
-                      } catch(e) {
-                        // CORS error or other issue accessing rules
-                        continue;
-                      }
-                    }
-
-                    // Also check if body has any computed background or the page looks unstyled
-                    var body = document.body;
-                    var bodyStyle = window.getComputedStyle(body);
-                    var hasBodyStyling = bodyStyle.fontFamily !== '' || bodyStyle.backgroundColor !== 'rgba(0, 0, 0, 0)';
-
-                    if (!hasWorkingCSS && !hasBodyStyling) {
-                      var lastReload = sessionStorage.getItem(CSS_RELOAD_KEY);
-                      var now = Date.now();
-
-                      // Prevent infinite reload loop - only reload once per 30 seconds
-                      if (!lastReload || (now - parseInt(lastReload)) > 30000) {
-                        console.warn('[CSS Recovery] No CSS detected, clearing caches and reloading...');
-                        sessionStorage.setItem(CSS_RELOAD_KEY, now.toString());
-
-                        // Clear all caches
-                        if ('caches' in window) {
-                          caches.keys().then(function(names) {
-                            return Promise.all(names.map(function(n) { return caches.delete(n); }));
-                          }).then(function() {
-                            // Unregister service workers
-                            if ('serviceWorker' in navigator) {
-                              navigator.serviceWorker.getRegistrations().then(function(regs) {
-                                regs.forEach(function(reg) { reg.unregister(); });
-                              }).finally(function() {
-                                window.location.reload();
-                              });
-                            } else {
-                              window.location.reload();
-                            }
-                          });
-                        } else {
-                          window.location.reload();
-                        }
-                      }
-                    } else {
-                      // CSS loaded successfully, clear the reload flag
-                      sessionStorage.removeItem(CSS_RELOAD_KEY);
-                    }
-                  } catch(e) {
-                    console.error('[CSS Recovery] Error in CSS check:', e);
-                  }
-                }
+                try {
+                  var theme = localStorage.getItem('theme');
+                  var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  var isDark = theme === 'dark' || (theme === 'system' && systemDark) || (!theme && systemDark);
+                  document.documentElement.classList.add(isDark ? 'dark' : 'light');
+                } catch (e) {}
               })();
             `,
           }}
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta name="theme-color" content="#FF6B9D" />
+        {/* CSS Loading Fallback - DISABLED to debug ERR_FAILED */}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="DatingAssistent Pro" />
@@ -228,7 +163,7 @@ export default function RootLayout({
 
         <GoogleAnalytics />
       </head>
-      <body className="font-body bg-background text-foreground antialiased">
+      <body className="font-body bg-background text-foreground antialiased" suppressHydrationWarning>
         <MicrosoftClarity />
         <StructuredData />
         <SkipLinks />
@@ -238,7 +173,7 @@ export default function RootLayout({
             <QueryProvider>
               <PWAProvider>
                 <WebVitals />
-                <ChunkLoadErrorRecovery />
+                {/* ChunkLoadErrorRecovery - DISABLED to debug ERR_FAILED */}
                 <ServiceWorkerRegistration />
                 <OfflineIndicator />
                 <UpdatePrompt />

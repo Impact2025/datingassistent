@@ -14,24 +14,36 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('system');
+  const [theme, setThemeState] = useState<Theme>('system');
   const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
 
+  // Custom setTheme that also saves to localStorage
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
   useEffect(() => {
     setMounted(true);
-    // Load theme from localStorage
+    // Load theme from localStorage and detect current actual theme
     const savedTheme = localStorage.getItem('theme') as Theme;
+    const root = document.documentElement;
+
+    // Detect what was set by the inline script
+    const currentActual = root.classList.contains('dark') ? 'dark' : 'light';
+    setActualTheme(currentActual);
+
     if (savedTheme) {
-      setTheme(savedTheme);
+      setThemeState(savedTheme);
     }
   }, []);
 
   useEffect(() => {
-    const root = window.document.documentElement;
+    // Skip on initial mount - the inline script already set the correct class
+    if (!mounted) return;
 
-    // Remove existing theme classes
-    root.classList.remove('light', 'dark');
+    const root = window.document.documentElement;
 
     let effectiveTheme: 'light' | 'dark';
 
@@ -41,13 +53,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       effectiveTheme = theme;
     }
 
-    // Apply theme
-    root.classList.add(effectiveTheme);
+    // Only update if different from current
+    const currentTheme = root.classList.contains('dark') ? 'dark' : 'light';
+    if (currentTheme !== effectiveTheme) {
+      root.classList.remove('light', 'dark');
+      root.classList.add(effectiveTheme);
+    }
     setActualTheme(effectiveTheme);
-
-    // Save to localStorage
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+  }, [theme, mounted]);
 
   // Listen for system theme changes when theme is 'system'
   useEffect(() => {
