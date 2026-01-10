@@ -334,6 +334,7 @@ function MeerPageContent() {
                   width={64}
                   height={64}
                   className="object-contain"
+                  unoptimized
                 />
               </div>
               <div className="flex-1">

@@ -173,6 +173,7 @@ export function BottomNavigation() {
                       "object-contain transition-all duration-200",
                       isActive ? "opacity-100" : "opacity-60"
                     )}
+                    unoptimized
                   />
                 </div>
               ) : Icon ? (

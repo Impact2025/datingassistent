@@ -568,6 +568,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                     width={160}
                     height={160}
                     className="rounded-2xl object-cover"
+                    unoptimized
                   />
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 text-center flex flex-col justify-center">

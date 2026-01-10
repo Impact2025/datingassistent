@@ -284,7 +284,9 @@
       "Bash(ren:*)",
       "Bash(gunzip:*)",
       "Bash(wmic process where \"name=''node.exe''\" get ProcessId,CommandLine)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(wsl ls:*)",
+      "Bash(git cat-file:*)"
     ],
     "deny": [],
     "ask": []

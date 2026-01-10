@@ -25,6 +25,7 @@ export default function OverOnsPage() {
           className="object-cover object-center"
           quality={85}
           sizes="100vw"
+          unoptimized
         />
 
         {/* Dark overlay for better contrast */}
@@ -235,6 +236,7 @@ export default function OverOnsPage() {
                   height={256}
                   className="w-full h-full object-cover"
                   priority
+                  unoptimized
                 />
               </div>
             </div>

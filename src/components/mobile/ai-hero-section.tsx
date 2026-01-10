@@ -85,6 +85,7 @@ export function AIHeroSection({ onStartGuidedFlow, className }: AIHeroSectionPro
             width={48}
             height={48}
             className="object-contain"
+            unoptimized
           />
         </div>
       </div>

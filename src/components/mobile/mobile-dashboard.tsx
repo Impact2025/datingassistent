@@ -348,6 +348,7 @@ function LoadingScreen() {
             alt="DatingAssistent"
             fill
             className="object-contain animate-pulse"
+            unoptimized
           />
         </div>
         <div className="space-y-2">

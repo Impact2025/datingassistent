@@ -40,6 +40,7 @@ export function IrisAvatar({
         fill
         className="object-cover"
         priority
+        unoptimized
       />
     </div>
   );

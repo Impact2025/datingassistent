@@ -74,6 +74,7 @@ function TransformatieContent() {
               height={80}
               className="object-contain"
               priority
+              unoptimized
             />
           </div>
           <Loader2 className="w-8 h-8 animate-spin text-pink-500 mx-auto mb-4" />

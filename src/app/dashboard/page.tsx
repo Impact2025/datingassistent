@@ -685,6 +685,7 @@ function DashboardPageContent() {
               height={80}
               className="object-contain"
               priority
+              unoptimized
             />
           </div>
 
@@ -793,6 +794,7 @@ function DashboardPageContent() {
                       height={40}
                       className="object-contain"
                       priority
+                      unoptimized
                     />
                   </div>
                   <div>
