@@ -125,6 +125,7 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
   const [anxietyScore, setAnxietyScore] = useState(0);
   const [avoidanceScore, setAvoidanceScore] = useState(0);
   const [confidence, setConfidence] = useState(0);
+  const [userId, setUserId] = useState<number | null>(null);
 
   // UTM tracking
   const [utmParams, setUtmParams] = useState<{
@@ -213,14 +214,16 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     }
   };
 
-  const handleEmailSubmit = async (
+  const handleAccountSubmit = async (
     submittedEmail: string,
     submittedFirstName: string,
-    submittedAcceptsMarketing: boolean
+    submittedAcceptsMarketing: boolean,
+    submittedUserId: number
   ) => {
     setEmail(submittedEmail);
     setFirstName(submittedFirstName);
     setAcceptsMarketing(submittedAcceptsMarketing);
+    setUserId(submittedUserId);
     setIsSubmitting(true);
 
     try {
@@ -232,6 +235,7 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
           email: submittedEmail,
           firstName: submittedFirstName,
           acceptsMarketing: submittedAcceptsMarketing,
+          userId: submittedUserId,
           utmSource: utmParams.source,
           utmMedium: utmParams.medium,
           utmCampaign: utmParams.campaign,
@@ -287,9 +291,9 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
       )}
 
       {quizState === 'email-gate' && (
-        <PatternEmailGate
-          key="email-gate"
-          onSubmit={handleEmailSubmit}
+        <PatternAccountGate
+          key="account-gate"
+          onSubmit={handleAccountSubmit}
           onBack={handleBack}
           isSubmitting={isSubmitting}
         />
@@ -303,14 +307,15 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
         />
       )}
 
-      {quizState === 'result' && attachmentPattern && (
-        <PatternResult
+      {quizState === 'result' && attachmentPattern && userId && (
+        <PatternResultWithOTO
           key="result"
           firstName={firstName}
           pattern={attachmentPattern}
           anxietyScore={anxietyScore}
           avoidanceScore={avoidanceScore}
           confidence={confidence}
+          userId={userId}
         />
       )}
     </AnimatePresence>

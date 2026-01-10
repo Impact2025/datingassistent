@@ -281,7 +281,8 @@
       "Bash(npx next lint:*)",
       "Bash(npx next dev:*)",
       "Bash(ping:*)",
-      "Bash(ren:*)"
+      "Bash(ren:*)",
+      "Bash(gunzip:*)"
     ],
     "deny": [],
     "ask": []

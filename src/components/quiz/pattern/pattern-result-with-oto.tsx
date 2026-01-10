@@ -18,7 +18,6 @@ import type { AttachmentPattern } from '@/lib/quiz/pattern/pattern-types';
 import { getPatternResult } from '@/lib/quiz/pattern/pattern-results';
 import { TransformatieOTOModal } from '@/components/onboarding/transformatie-oto-modal';
 import { KickstartDownsellModal } from '@/components/onboarding/kickstart-downsell-modal';
-import confetti from 'canvas-confetti';
 
 interface PatternResultWithOTOProps {
   firstName: string;
@@ -80,12 +79,6 @@ export function PatternResultWithOTO({
 
   const handleOTOAccept = () => {
     trackOTOEvent('oto_accepted', 'transformatie');
-    // Trigger confetti
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
     // Redirect to checkout
     router.push(`/checkout/transformatie-programma?userId=${userId}&discount=true&source=quiz`);
   };
@@ -98,11 +91,6 @@ export function PatternResultWithOTO({
 
   const handleDownsellAccept = () => {
     trackOTOEvent('downsell_accepted', 'kickstart');
-    confetti({
-      particleCount: 50,
-      spread: 50,
-      origin: { y: 0.6 },
-    });
     router.push(`/checkout/kickstart-programma?userId=${userId}&discount=true&source=quiz`);
   };
 
