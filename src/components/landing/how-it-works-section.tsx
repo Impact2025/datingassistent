@@ -12,9 +12,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { Upload, Sparkles, TrendingUp, Play, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Upload, Sparkles, TrendingUp } from 'lucide-react';
 
 const steps = [
   {
@@ -46,7 +44,7 @@ interface HowItWorksSectionProps {
 
 export function HowItWorksSection({ className }: HowItWorksSectionProps) {
   return (
-    <section id="hoe-het-werkt" className={`py-16 md:py-24 bg-gray-50 dark:bg-gray-900 ${className || ''}`}>
+    <section id="hoe-het-werkt" className={className || 'py-16 md:py-24 bg-gray-50 dark:bg-gray-900'}>
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
@@ -81,7 +79,7 @@ export function HowItWorksSection({ className }: HowItWorksSectionProps) {
         </div>
 
         {/* Steps */}
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <div className="grid md:grid-cols-3 gap-8">
           {steps.map((step, index) => (
             <motion.div
               key={step.number}
@@ -123,54 +121,6 @@ export function HowItWorksSection({ className }: HowItWorksSectionProps) {
             </motion.div>
           ))}
         </div>
-
-        {/* Video Placeholder / CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl p-8 md:p-12 text-center text-white relative overflow-hidden"
-        >
-          {/* Background pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-60 h-60 bg-white rounded-full translate-x-1/3 translate-y-1/3" />
-          </div>
-
-          <div className="relative z-10">
-            {/* Video button placeholder */}
-            <button className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-6 hover:bg-white/30 transition-colors group">
-              <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center">
-                <Play className="w-8 h-8 text-pink-500 ml-1" />
-              </div>
-            </button>
-
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Bekijk de video uitleg
-            </h3>
-            <p className="text-lg text-pink-100 mb-8 max-w-xl mx-auto">
-              In 2 minuten laat Vincent zien hoe je met AI-coaching je dating resultaten verbetert.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="bg-white text-pink-600 hover:bg-pink-50 shadow-lg"
-              >
-                <Link href="/register">
-                  Start Gratis Profiel Check
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
-
-            <p className="text-sm text-pink-200 mt-4">
-              Geen creditcard nodig • Analyse in 30 seconden
-            </p>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

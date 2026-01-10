@@ -1,6 +1,7 @@
 /**
  * Kennisbank Article Page
  * Dynamische route voor individuele kennisbank artikelen
+ * Wereldklasse versie met TOC, reading progress, feedback, en meer
  */
 
 import { Metadata } from 'next';
@@ -26,7 +27,18 @@ import {
   getKennisbankArticle,
   getRelatedArticles,
   getAllKennisbankSlugs,
+  getAdjacentArticles,
+  extractHeadingsFromContent,
 } from '@/lib/kennisbank';
+
+// Client components
+import { TableOfContents } from '@/components/kennisbank/table-of-contents';
+import { ReadingProgress } from '@/components/kennisbank/reading-progress';
+import { ArticleFeedback } from '@/components/kennisbank/article-feedback';
+import { ArticleNavigation } from '@/components/kennisbank/article-navigation';
+import { BookmarkButton } from '@/components/kennisbank/bookmark-button';
+import { ShareButton } from '@/components/kennisbank/share-button';
+import { KennisbankArticleSchema } from '@/components/kennisbank/article-schema';
 
 interface PageProps {
   params: Promise<{
@@ -53,6 +65,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const canonicalUrl = `https://datingassistent.nl/kennisbank/${article.slug}`;
+
   return {
     title: `${article.title} | Kennisbank | DatingAssistent`,
     description: article.description,
@@ -64,8 +78,36 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: 'article',
       publishedTime: article.date,
       authors: [article.author],
+      url: canonicalUrl,
+      siteName: 'DatingAssistent',
+      locale: 'nl_NL',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.description,
+    },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    other: {
+      'article:section': article.pillar || 'Dating',
+      'article:tag': article.keywords?.join(',') || '',
     },
   };
+}
+
+// Custom heading component that adds IDs for TOC linking
+function HeadingWithId({ level, children, ...props }: { level: number; children: React.ReactNode }) {
+  const text = typeof children === 'string' ? children : '';
+  const id = text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+
+  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+  return <Tag id={id} {...props}>{children}</Tag>;
 }
 
 export default async function KennisbankArticlePage({ params }: PageProps) {
@@ -77,6 +119,8 @@ export default async function KennisbankArticlePage({ params }: PageProps) {
   }
 
   const relatedArticles = getRelatedArticles(article, 3);
+  const { previous, next } = getAdjacentArticles(article);
+  const headings = extractHeadingsFromContent(article.content);
   const slugPath = Array.isArray(slug) ? slug.join('/') : slug;
 
   // Build breadcrumbs
@@ -85,27 +129,42 @@ export default async function KennisbankArticlePage({ params }: PageProps) {
   ];
 
   if (slug.length > 1) {
-    // Add category breadcrumb
     breadcrumbs.push({
       label: slug[0].replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
       href: `/kennisbank/${slug[0]}`,
     });
   }
 
+  const showTOC = headings.length >= 3;
+
   return (
     <div className="min-h-screen bg-background">
+      {/* Schema.org Structured Data */}
+      <KennisbankArticleSchema
+        article={article}
+        breadcrumbs={breadcrumbs.map(b => ({ name: b.label, url: b.href }))}
+      />
+
+      {/* Reading Progress Bar */}
+      <ReadingProgress
+        targetSelector="article"
+        showPercentage={true}
+        showTimeRemaining={true}
+        readingTime={article.readingTime}
+      />
+
       <PublicHeader />
 
       {/* Breadcrumbs */}
       <nav className="py-4 px-4 sm:px-6 lg:px-8 bg-muted/30 border-b">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <ol className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
             <li>
               <Link href="/" className="hover:text-foreground transition-colors">
                 Home
               </Link>
             </li>
-            {breadcrumbs.map((crumb, index) => (
+            {breadcrumbs.map((crumb) => (
               <li key={crumb.href} className="flex items-center gap-2">
                 <ChevronRight className="w-4 h-4" />
                 <Link
@@ -127,7 +186,7 @@ export default async function KennisbankArticlePage({ params }: PageProps) {
       </nav>
 
       {/* Article Header */}
-      <header className="py-12 px-4 sm:px-6 lg:px-8">
+      <header className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-primary/5 to-background">
         <div className="max-w-4xl mx-auto">
           <Link
             href="/kennisbank"
@@ -139,7 +198,7 @@ export default async function KennisbankArticlePage({ params }: PageProps) {
 
           <div className="flex flex-wrap items-center gap-3 mb-4">
             {article.type === 'pillar' && (
-              <Badge variant="default">Complete Gids</Badge>
+              <Badge variant="default" className="bg-primary">Complete Gids</Badge>
             )}
             {article.pillar && (
               <Badge variant="outline" className="capitalize">
@@ -157,96 +216,155 @@ export default async function KennisbankArticlePage({ params }: PageProps) {
             {article.title}
           </h1>
 
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
             {article.description}
           </p>
 
-          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground pb-8 border-b">
-            <span className="flex items-center gap-2">
-              <User className="w-4 h-4" />
-              {article.author}
-            </span>
-            <span className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              {new Date(article.date).toLocaleDateString('nl-NL', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </span>
-            <span className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              {article.readingTime} min leestijd
-            </span>
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-8 border-b">
+            <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+              <span className="flex items-center gap-2">
+                <User className="w-4 h-4" />
+                {article.author}
+              </span>
+              <span className="flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                {new Date(article.date).toLocaleDateString('nl-NL', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </span>
+              <span className="flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                {article.readingTime} min leestijd
+              </span>
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex items-center gap-2">
+              <BookmarkButton
+                articleSlug={article.slug}
+                articleTitle={article.title}
+                variant="icon"
+              />
+              <ShareButton
+                title={article.title}
+                description={article.description}
+                variant="icon"
+              />
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Article Content */}
-      <article className="px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="prose prose-lg dark:prose-invert max-w-none
-            prose-headings:font-semibold prose-headings:text-foreground
-            prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6
-            prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4
-            prose-p:text-muted-foreground prose-p:leading-relaxed
-            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-foreground prose-strong:font-semibold
-            prose-ul:text-muted-foreground prose-ol:text-muted-foreground
-            prose-li:marker:text-primary
-            prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:py-1 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic
-            prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
-            prose-hr:border-border
-          ">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                // Custom link handling for internal links
-                a: ({ href, children, ...props }) => {
-                  const isInternal = href?.startsWith('/');
-                  if (isInternal) {
-                    return (
-                      <Link href={href || '#'} {...props}>
-                        {children}
-                      </Link>
-                    );
-                  }
-                  return (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      {...props}
-                    >
-                      {children}
-                    </a>
-                  );
-                },
-                // Custom blockquote for tips
-                blockquote: ({ children, ...props }) => {
-                  const content = String(children);
-                  const isTip = content.includes('Iris-tip') || content.includes('💡');
-                  return (
-                    <blockquote
-                      className={isTip ? 'bg-primary/5 border-l-primary' : ''}
-                      {...props}
-                    >
-                      {children}
-                    </blockquote>
-                  );
-                },
-              }}
-            >
-              {article.content}
-            </ReactMarkdown>
+      {/* Main Content Area */}
+      <div className="px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="max-w-6xl mx-auto">
+          <div className={`grid gap-8 ${showTOC ? 'lg:grid-cols-[1fr_280px]' : ''}`}>
+            {/* Article Content */}
+            <article className="min-w-0">
+              <div className="prose prose-lg dark:prose-invert max-w-none
+                prose-headings:font-semibold prose-headings:text-foreground prose-headings:scroll-mt-24
+                prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6
+                prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4
+                prose-p:text-muted-foreground prose-p:leading-relaxed
+                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                prose-strong:text-foreground prose-strong:font-semibold
+                prose-ul:text-muted-foreground prose-ol:text-muted-foreground
+                prose-li:marker:text-primary
+                prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:py-1 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic
+                prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+                prose-hr:border-border
+              ">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    // Custom heading components with IDs for TOC
+                    h2: ({ children, ...props }) => (
+                      <HeadingWithId level={2} {...props}>{children}</HeadingWithId>
+                    ),
+                    h3: ({ children, ...props }) => (
+                      <HeadingWithId level={3} {...props}>{children}</HeadingWithId>
+                    ),
+                    // Custom link handling for internal links
+                    a: ({ href, children, ...props }) => {
+                      const isInternal = href?.startsWith('/');
+                      if (isInternal) {
+                        return (
+                          <Link href={href || '#'} {...props}>
+                            {children}
+                          </Link>
+                        );
+                      }
+                      return (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          {...props}
+                        >
+                          {children}
+                        </a>
+                      );
+                    },
+                    // Custom blockquote for tips
+                    blockquote: ({ children, ...props }) => {
+                      const content = String(children);
+                      const isTip = content.includes('Iris-tip') || content.includes('💡');
+                      return (
+                        <blockquote
+                          className={isTip ? 'bg-primary/5 border-l-primary' : ''}
+                          {...props}
+                        >
+                          {children}
+                        </blockquote>
+                      );
+                    },
+                  }}
+                >
+                  {article.content}
+                </ReactMarkdown>
+              </div>
+
+              {/* Article Navigation (Prev/Next) */}
+              {(previous || next) && (
+                <div className="mt-12 pt-8 border-t">
+                  <h3 className="text-sm font-medium text-muted-foreground mb-4">
+                    Meer in deze serie
+                  </h3>
+                  <ArticleNavigation
+                    previousArticle={previous}
+                    nextArticle={next}
+                  />
+                </div>
+              )}
+
+              {/* Article Feedback */}
+              <div className="mt-12">
+                <ArticleFeedback
+                  articleSlug={article.slug}
+                  articleTitle={article.title}
+                />
+              </div>
+            </article>
+
+            {/* Sidebar with TOC */}
+            {showTOC && (
+              <aside className="hidden lg:block">
+                <TableOfContents
+                  headings={headings}
+                  className="sticky top-24"
+                />
+              </aside>
+            )}
           </div>
         </div>
-      </article>
+      </div>
 
       {/* Related Articles */}
       {relatedArticles.length > 0 && (
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30 border-t">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl font-semibold text-foreground mb-8 flex items-center gap-2">
               <BookOpen className="w-6 h-6" />
               Gerelateerde artikelen

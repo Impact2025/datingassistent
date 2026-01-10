@@ -267,3 +267,73 @@ export function getAllKennisbankSlugs(): string[][] {
 
   return slugs;
 }
+
+/**
+ * Haal vorige en volgende artikelen binnen dezelfde pillar/categorie
+ */
+export function getAdjacentArticles(article: KennisbankArticle): {
+  previous: KennisbankArticle | null;
+  next: KennisbankArticle | null;
+} {
+  // Get the pillar slug from the article
+  const pillarSlug = article.pillar || article.slug.split('/')[0];
+
+  // Find the category
+  const categories = getKennisbankCategories();
+  const category = categories.find(c => c.slug === pillarSlug);
+
+  if (!category) {
+    return { previous: null, next: null };
+  }
+
+  // Find current article index in category
+  const currentIndex = category.articles.findIndex(a => a.slug === article.slug);
+
+  if (currentIndex === -1) {
+    return { previous: null, next: null };
+  }
+
+  return {
+    previous: currentIndex > 0 ? category.articles[currentIndex - 1] : null,
+    next: currentIndex < category.articles.length - 1 ? category.articles[currentIndex + 1] : null,
+  };
+}
+
+/**
+ * Extract headings from markdown content for Table of Contents
+ */
+export interface TOCHeading {
+  id: string;
+  text: string;
+  level: number;
+}
+
+export function extractHeadingsFromContent(content: string): TOCHeading[] {
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const headings: TOCHeading[] = [];
+  let match;
+
+  while ((match = headingRegex.exec(content)) !== null) {
+    const level = match[1].length;
+    const text = match[2].trim();
+    // Create URL-friendly ID
+    const id = text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+
+    headings.push({ id, text, level });
+  }
+
+  return headings;
+}
+
+/**
+ * Get category info for an article
+ */
+export function getArticleCategory(article: KennisbankArticle): KennisbankCategory | null {
+  const pillarSlug = article.pillar || article.slug.split('/')[0];
+  const categories = getKennisbankCategories();
+  return categories.find(c => c.slug === pillarSlug) || null;
+}
