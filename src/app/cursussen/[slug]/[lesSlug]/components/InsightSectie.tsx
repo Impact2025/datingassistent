@@ -44,7 +44,7 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
     return (
       <ul className="space-y-2">
         {items.map((item: string, idx: number) => (
-          <li key={idx} className="text-sm text-gray-800 flex items-start gap-2">
+          <li key={idx} className="text-sm text-gray-800 dark:text-gray-200 flex items-start gap-2">
             <span className={`text-${color}-500 mt-1`}>•</span>
             <span>{item}</span>
           </li>
@@ -54,14 +54,14 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
   };
 
   return (
-    <Card className="shadow-lg border-pink-100 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
               <Lightbulb className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
           </div>
           {isCompleted && <CheckCircle className="w-5 h-5 text-green-500" />}
         </div>
@@ -70,23 +70,23 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
         {!isNestedContent && (
           <>
             {content.intro && (
-              <p className="text-gray-700 mb-6 leading-relaxed">{content.intro}</p>
+              <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{content.intro}</p>
             )}
 
             {content.fases && Array.isArray(content.fases) && (
               <div className="space-y-4 mb-6">
                 {content.fases.map((fase: any, idx: number) => (
-                  <div key={idx} className="p-5 rounded-lg border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-pink-100">
+                  <div key={idx} className="p-5 rounded-lg border-2 border-pink-200 dark:border-pink-700 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30">
                     <div className="flex items-start gap-3 mb-2">
                       <div className="w-8 h-8 rounded-full bg-pink-500 text-white flex items-center justify-center text-sm font-bold shrink-0">
                         {fase.nummer || idx + 1}
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-bold text-gray-900 mb-1">{fase.naam}</h4>
-                        {fase.timing && <p className="text-xs text-pink-600 mb-2">{fase.timing}</p>}
-                        {fase.basis && <p className="text-sm text-gray-700 mb-2">{fase.basis}</p>}
+                        <h4 className="font-bold text-gray-900 dark:text-white mb-1">{fase.naam}</h4>
+                        {fase.timing && <p className="text-xs text-pink-600 dark:text-pink-400 mb-2">{fase.timing}</p>}
+                        {fase.basis && <p className="text-sm text-gray-700 dark:text-gray-200 mb-2">{fase.basis}</p>}
                         {fase.probleem && (
-                          <p className="text-sm text-amber-700 mt-2 p-2 bg-amber-50 rounded border border-amber-200">
+                          <p className="text-sm text-amber-700 dark:text-amber-300 mt-2 p-2 bg-amber-50 dark:bg-amber-900/30 rounded border border-amber-200 dark:border-amber-700">
                             ⚠️ {fase.probleem}
                           </p>
                         )}
@@ -98,93 +98,93 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
             )}
 
             {content.conclusie && (
-              <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 border-2 border-pink-300 mb-6">
-                <p className="text-gray-900 font-semibold leading-relaxed">{content.conclusie}</p>
+              <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 border-2 border-pink-300 dark:border-pink-700 mb-6">
+                <p className="text-gray-900 dark:text-white font-semibold leading-relaxed">{content.conclusie}</p>
               </div>
             )}
 
             {/* Flexible rendering for common insight fields */}
             {content.wat && (
-              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200 mb-4">
-                <p className="text-sm font-semibold text-blue-900 mb-1">Wat is dit?</p>
-                <p className="text-sm text-blue-800">{content.wat}</p>
+              <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700 mb-4">
+                <p className="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-1">Wat is dit?</p>
+                <p className="text-sm text-blue-800 dark:text-blue-200">{content.wat}</p>
               </div>
             )}
 
             {content.regel && (
-              <div className="p-5 bg-gradient-to-r from-pink-100 to-pink-200 rounded-lg border-2 border-pink-300 mb-4">
-                <p className="font-bold text-pink-900 text-lg mb-2">📜 De Regel:</p>
-                <p className="text-gray-900">{content.regel}</p>
+              <div className="p-5 bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 rounded-lg border-2 border-pink-300 dark:border-pink-700 mb-4">
+                <p className="font-bold text-pink-900 dark:text-pink-300 text-lg mb-2">📜 De Regel:</p>
+                <p className="text-gray-900 dark:text-white">{content.regel}</p>
               </div>
             )}
 
             {content.vraag && (
-              <div className="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500 mb-4">
-                <p className="text-gray-900 font-medium">{content.vraag}</p>
+              <div className="p-4 bg-purple-50 dark:bg-purple-900/30 rounded-lg border-l-4 border-purple-500 mb-4">
+                <p className="text-gray-900 dark:text-white font-medium">{content.vraag}</p>
               </div>
             )}
 
             {content.probleem && (
-              <div className="p-4 bg-amber-50 rounded-lg border border-amber-300 mb-4">
-                <p className="text-xs font-semibold text-amber-900 mb-2">⚠️ Het probleem:</p>
-                <p className="text-sm text-amber-800">{content.probleem}</p>
+              <div className="p-4 bg-amber-50 dark:bg-amber-900/30 rounded-lg border border-amber-300 dark:border-amber-700 mb-4">
+                <p className="text-xs font-semibold text-amber-900 dark:text-amber-300 mb-2">⚠️ Het probleem:</p>
+                <p className="text-sm text-amber-800 dark:text-amber-200">{content.probleem}</p>
               </div>
             )}
 
             {content.oplossing && (
-              <div className="p-4 bg-green-50 rounded-lg border border-green-300 mb-4">
-                <p className="text-xs font-semibold text-green-900 mb-2">✅ De oplossing:</p>
-                <p className="text-sm text-green-800">{content.oplossing}</p>
+              <div className="p-4 bg-green-50 dark:bg-green-900/30 rounded-lg border border-green-300 dark:border-green-700 mb-4">
+                <p className="text-xs font-semibold text-green-900 dark:text-green-300 mb-2">✅ De oplossing:</p>
+                <p className="text-sm text-green-800 dark:text-green-200">{content.oplossing}</p>
               </div>
             )}
 
             {/* Render arrays */}
             {content.kenmerken && (
               <div className="mb-4">
-                <p className="font-semibold text-gray-900 mb-2">Kenmerken:</p>
+                <p className="font-semibold text-gray-900 dark:text-white mb-2">Kenmerken:</p>
                 {renderList(content.kenmerken)}
               </div>
             )}
 
             {content.waarom_drie && (
               <div className="mb-4">
-                <p className="font-semibold text-gray-900 mb-2">Waarom 3 dates?</p>
+                <p className="font-semibold text-gray-900 dark:text-white mb-2">Waarom 3 dates?</p>
                 {renderList(content.waarom_drie)}
               </div>
             )}
 
             {content.waarom_vaak_beter && (
               <div className="mb-4">
-                <p className="font-semibold text-gray-900 mb-2">Waarom dit vaak beter is:</p>
+                <p className="font-semibold text-gray-900 dark:text-white mb-2">Waarom dit vaak beter is:</p>
                 {renderList(content.waarom_vaak_beter)}
               </div>
             )}
 
             {content.effecten && (
               <div className="mb-4">
-                <p className="font-semibold text-gray-900 mb-2">Effecten:</p>
+                <p className="font-semibold text-gray-900 dark:text-white mb-2">Effecten:</p>
                 {renderList(content.effecten)}
               </div>
             )}
 
             {content.uitzonderingen && (
               <div className="mb-4">
-                <p className="font-semibold text-gray-900 mb-2">Uitzonderingen:</p>
+                <p className="font-semibold text-gray-900 dark:text-white mb-2">Uitzonderingen:</p>
                 {renderList(content.uitzonderingen, 'amber')}
               </div>
             )}
 
             {content.niet_van_toepassing && (
-              <div className="p-4 bg-red-50 rounded-lg border border-red-300 mb-4">
-                <p className="text-xs font-semibold text-red-900 mb-1">❌ Niet van toepassing als:</p>
-                <p className="text-sm text-red-800">{content.niet_van_toepassing}</p>
+              <div className="p-4 bg-red-50 dark:bg-red-900/30 rounded-lg border border-red-300 dark:border-red-700 mb-4">
+                <p className="text-xs font-semibold text-red-900 dark:text-red-300 mb-1">❌ Niet van toepassing als:</p>
+                <p className="text-sm text-red-800 dark:text-red-200">{content.niet_van_toepassing}</p>
               </div>
             )}
 
             {content.beroemde_voorbeelden && (
-              <div className="p-4 bg-purple-50 rounded-lg border border-purple-200 mb-4">
-                <p className="text-xs font-semibold text-purple-900 mb-1">🎬 Voorbeelden:</p>
-                <p className="text-sm text-purple-800">{content.beroemde_voorbeelden}</p>
+              <div className="p-4 bg-purple-50 dark:bg-purple-900/30 rounded-lg border border-purple-200 dark:border-purple-700 mb-4">
+                <p className="text-xs font-semibold text-purple-900 dark:text-purple-300 mb-1">🎬 Voorbeelden:</p>
+                <p className="text-sm text-purple-800 dark:text-purple-200">{content.beroemde_voorbeelden}</p>
               </div>
             )}
           </>

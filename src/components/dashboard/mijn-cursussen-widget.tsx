@@ -96,11 +96,11 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
 
   if (loading) {
     return (
-      <Card className="border-0 shadow-sm bg-white">
+      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
         <CardContent className="p-6">
           <div className="animate-pulse space-y-4">
-            <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-            <div className="h-24 bg-gray-200 rounded"></div>
+            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+            <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
           </div>
         </CardContent>
       </Card>
@@ -115,7 +115,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
       className="space-y-6"
     >
       {/* Header met Stats */}
-      <Card className="border-0 shadow-sm bg-white">
+      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
@@ -123,8 +123,8 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
                 <GraduationCap className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">Mijn Cursussen</h2>
-                <p className="text-sm text-gray-600">Je leertraject naar dating succes</p>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Mijn Cursussen</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Je leertraject naar dating succes</p>
               </div>
             </div>
             <Button
@@ -139,34 +139,34 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
               <div className="flex items-center justify-center mb-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center shadow-sm">
                   <CheckCircle className="w-4 h-4 text-white" />
                 </div>
               </div>
-              <div className="text-2xl font-semibold text-gray-900">{stats.totaalVoltooide}</div>
-              <div className="text-xs text-gray-600">Voltooid</div>
+              <div className="text-2xl font-semibold text-gray-900 dark:text-white">{stats.totaalVoltooide}</div>
+              <div className="text-xs text-gray-600 dark:text-gray-300">Voltooid</div>
             </div>
 
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
               <div className="flex items-center justify-center mb-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center shadow-sm">
                   <Play className="w-4 h-4 text-white" />
                 </div>
               </div>
-              <div className="text-2xl font-semibold text-gray-900">{stats.totaalActief}</div>
-              <div className="text-xs text-gray-600">Actief</div>
+              <div className="text-2xl font-semibold text-gray-900 dark:text-white">{stats.totaalActief}</div>
+              <div className="text-xs text-gray-600 dark:text-gray-300">Actief</div>
             </div>
 
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
               <div className="flex items-center justify-center mb-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center shadow-sm">
                   <Clock className="w-4 h-4 text-white" />
                 </div>
               </div>
-              <div className="text-2xl font-semibold text-gray-900">{stats.totaalMinuten}</div>
-              <div className="text-xs text-gray-600">Minuten</div>
+              <div className="text-2xl font-semibold text-gray-900 dark:text-white">{stats.totaalMinuten}</div>
+              <div className="text-xs text-gray-600 dark:text-gray-300">Minuten</div>
             </div>
           </div>
         </CardContent>
@@ -174,11 +174,11 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
 
       {/* Actieve Cursussen */}
       {activeCursussen.length > 0 && (
-        <Card className="border-0 shadow-sm bg-white">
+        <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
           <CardContent className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <Play className="w-5 h-5 text-pink-500" />
-              <h3 className="text-base font-semibold text-gray-900">Ga verder waar je was gebleven</h3>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-white">Ga verder waar je was gebleven</h3>
             </div>
 
             <div className="space-y-3">
@@ -188,13 +188,13 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
                   onClick={() => onTabChange?.('cursussen')}
                   className="cursor-pointer"
                 >
-                  <div className="p-4 rounded-lg border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50/30 transition-all group">
+                  <div className="p-4 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-500 hover:bg-pink-50/30 dark:hover:bg-pink-900/20 transition-all group">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 group-hover:text-pink-600 transition-colors mb-1">
+                        <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-pink-600 transition-colors mb-1">
                           {cursus.titel}
                         </h4>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-gray-600 dark:text-gray-300">
                           {cursus.user_progress?.voltooide_lessen} van {cursus.user_progress?.totaal_lessen} lessen
                         </p>
                       </div>
@@ -209,7 +209,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
                         className="h-2"
                       />
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-600">
+                        <span className="text-gray-600 dark:text-gray-300">
                           {cursus.user_progress?.laatste_les_titel && `Laatst: ${cursus.user_progress.laatste_les_titel}`}
                         </span>
                         <span className="text-pink-600 font-medium group-hover:underline flex items-center gap-1">
@@ -228,11 +228,11 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
 
       {/* Aanbevolen Cursussen */}
       {aanbevolenCursussen.length > 0 && (
-        <Card className="border-0 shadow-sm bg-white">
+        <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
           <CardContent className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="w-5 h-5 text-pink-500" />
-              <h3 className="text-base font-semibold text-gray-900">Aanbevolen voor jou</h3>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-white">Aanbevolen voor jou</h3>
             </div>
 
             <div className="grid md:grid-cols-3 gap-4">
@@ -242,22 +242,22 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
                   onClick={() => onTabChange?.('cursussen')}
                   className="cursor-pointer"
                 >
-                  <div className="p-4 rounded-lg border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50/30 transition-all group h-full">
+                  <div className="p-4 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-500 hover:bg-pink-50/30 dark:hover:bg-pink-900/20 transition-all group h-full">
                     <div className="flex items-start gap-3 mb-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
                         <BookOpen className="w-5 h-5 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-gray-900 group-hover:text-pink-600 transition-colors text-sm mb-1 line-clamp-2">
+                        <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-pink-600 transition-colors text-sm mb-1 line-clamp-2">
                           {cursus.titel}
                         </h4>
-                        <div className="flex items-center gap-2 text-xs text-gray-600">
+                        <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
                           <Clock className="w-3 h-3" />
                           <span>{cursus.duur_minuten} min</span>
                         </div>
                       </div>
                     </div>
-                    <p className="text-xs text-gray-600 line-clamp-2 mb-3">
+                    <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">
                       {cursus.beschrijving}
                     </p>
                     <div className="flex items-center gap-2 text-xs text-pink-600 font-medium group-hover:underline">
@@ -274,13 +274,13 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
 
       {/* Lege status als geen cursussen */}
       {activeCursussen.length === 0 && aanbevolenCursussen.length === 0 && (
-        <Card className="border-0 shadow-sm bg-white">
+        <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
           <CardContent className="p-8 text-center">
             <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
               <GraduationCap className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Start je leertraject</h3>
-            <p className="text-sm text-gray-600 mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Start je leertraject</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
               Begin met een van onze cursussen om je dating vaardigheden te verbeteren
             </p>
             <Button

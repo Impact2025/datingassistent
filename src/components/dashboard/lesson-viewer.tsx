@@ -283,13 +283,13 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
 
       default:
         return (
-          <Card key={sectie.id} className="border-0 shadow-sm">
+          <Card key={sectie.id} className="border-0 shadow-sm dark:bg-gray-800">
             <CardContent className="p-6">
               <div className="flex items-start justify-between mb-4">
-                <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
                 {isCompleted && <CheckCircle className="w-6 h-6 text-pink-500" />}
               </div>
-              <p className="text-gray-500 mb-4">Onbekend sectie type: {sectie.sectie_type}</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">Onbekend sectie type: {sectie.sectie_type}</p>
               {!isCompleted && (
                 <Button
                   onClick={() => markeerSectieAlsVoltooid(sectie.id)}
@@ -309,10 +309,10 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
     return (
       <div className="space-y-6">
         <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-          <Card className="border-0 shadow-sm">
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <Card className="border-0 shadow-sm dark:bg-gray-800">
             <CardContent className="p-6">
-              <div className="h-64 bg-gray-200 rounded"></div>
+              <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
             </CardContent>
           </Card>
         </div>
@@ -322,10 +322,10 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
 
   if (error || !les) {
     return (
-      <Card className="border-0 shadow-sm">
+      <Card className="border-0 shadow-sm dark:bg-gray-800">
         <CardContent className="p-8 text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Les niet gevonden</h2>
-          <p className="text-gray-600 mb-6">{error || 'Deze les bestaat niet of is niet beschikbaar.'}</p>
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Les niet gevonden</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">{error || 'Deze les bestaat niet of is niet beschikbaar.'}</p>
           <Button onClick={onBack} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Terug naar cursus
@@ -343,7 +343,7 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="border-0 shadow-sm">
+      <Card className="border-0 shadow-sm dark:bg-gray-800">
         <CardContent className="p-6">
           <Button onClick={onBack} variant="ghost" className="mb-4 -ml-2">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -351,19 +351,19 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
           </Button>
 
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{les.titel}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{les.titel}</h1>
             {les.beschrijving && (
-              <p className="text-gray-600 text-lg">{les.beschrijving}</p>
+              <p className="text-gray-600 dark:text-gray-300 text-lg">{les.beschrijving}</p>
             )}
           </div>
 
           {/* Progress */}
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">
+              <span className="text-gray-600 dark:text-gray-300">
                 {voltooideSecties} van {totalSecties} secties voltooid
               </span>
-              <span className="font-medium text-pink-600">{Math.round(progress)}%</span>
+              <span className="font-medium text-pink-600 dark:text-pink-400">{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} className="h-2" />
           </div>
@@ -377,10 +377,10 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
 
       {/* Complete Lesson Button */}
       {!isLesVoltooid && voltooideSecties === totalSecties && (
-        <Card className="border-0 shadow-sm bg-gradient-to-r from-pink-50 to-pink-100">
+        <Card className="border-0 shadow-sm bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30">
           <CardContent className="p-6 text-center">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Les voltooid!</h3>
-            <p className="text-gray-600 mb-4">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Les voltooid!</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
               Je hebt alle secties doorlopen. Markeer de les als voltooid om door te gaan.
             </p>
             <Button
@@ -395,7 +395,7 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
       )}
 
       {/* Navigation */}
-      <Card className="border-0 shadow-sm">
+      <Card className="border-0 shadow-sm dark:bg-gray-800">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             {les.navigatie.vorige ? (

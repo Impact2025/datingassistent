@@ -110,13 +110,13 @@ export function LeadAccountStep({ onComplete }: LeadAccountStepProps) {
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
+    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 p-8">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
           Start Gratis
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-300">
           Maak je account aan en ontdek hoe je profiel scoort
         </p>
       </div>
@@ -188,7 +188,7 @@ export function LeadAccountStep({ onComplete }: LeadAccountStepProps) {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700"
+              className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-200"
             >
               {error}
             </motion.div>
@@ -216,15 +216,15 @@ export function LeadAccountStep({ onComplete }: LeadAccountStepProps) {
       </Form>
 
       {/* Trust Anchor */}
-      <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
+      <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
         <Lock className="w-4 h-4" />
         <span>Je gegevens zijn privé. Wij posten nooit iets op je socials.</span>
       </div>
 
       {/* Login Link */}
-      <div className="mt-4 text-center text-sm text-gray-500">
+      <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
         Al een account?{' '}
-        <a href="/login" className="text-pink-600 hover:text-pink-700 font-medium">
+        <a href="/login" className="text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300 font-medium">
           Log in
         </a>
       </div>

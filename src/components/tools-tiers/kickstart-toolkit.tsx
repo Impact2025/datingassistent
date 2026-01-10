@@ -79,23 +79,23 @@ export function KickstartToolkit() {
   if (!hasAccess) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <Card className="border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-purple-50">
+        <Card className="border-2 border-blue-300 dark:border-blue-700 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30">
           <CardContent className="p-8 text-center">
             <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
               <Lock className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-2xl font-bold mb-4">Kickstart Toolkit</h2>
-            <p className="text-gray-600 mb-6 max-w-md mx-auto">
+            <h2 className="text-2xl font-bold mb-4 dark:text-white">Kickstart Toolkit</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
               Unlock AI-powered tools om je dating journey te versnellen. Start met het 21-dagen Kickstart programma en krijg toegang tot alle tools.
             </p>
             <div className="space-y-3 mb-6">
               <div className="flex items-center justify-center gap-2 text-sm">
-                <Badge className="bg-green-100 text-green-700">AI Conversation Starters</Badge>
-                <Badge className="bg-purple-100 text-purple-700">Profile Builder</Badge>
+                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300">AI Conversation Starters</Badge>
+                <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">Profile Builder</Badge>
               </div>
               <div className="flex items-center justify-center gap-2 text-sm">
-                <Badge className="bg-blue-100 text-blue-700">Photo Analysis</Badge>
-                <Badge className="bg-pink-100 text-pink-700">24/7 Chat Coach</Badge>
+                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">Photo Analysis</Badge>
+                <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300">24/7 Chat Coach</Badge>
               </div>
             </div>
             <div className="flex gap-3 justify-center">
@@ -136,8 +136,8 @@ export function KickstartToolkit() {
             <Rocket className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Kickstart Toolkit</h1>
-            <p className="text-gray-600">AI-powered tools voor je dating success</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Kickstart Toolkit</h1>
+            <p className="text-gray-600 dark:text-gray-400">AI-powered tools voor je dating success</p>
           </div>
         </div>
 
@@ -159,14 +159,14 @@ export function KickstartToolkit() {
 
         {/* Overview */}
         <TabsContent value="overview" className="space-y-6">
-          <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50">
+          <Card className="border-2 border-blue-200 dark:border-blue-700 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30">
             <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-2">Jouw AI Toolkit</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-xl font-semibold mb-2 dark:text-white">Jouw AI Toolkit</h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
                 Deze tools gebruiken AI om je te helpen met profielen, gesprekken en foto's. Perfect voor een vliegende start!
               </p>
-              <div className="text-sm text-gray-600">
-                💡 Tip: Wil je unlimited access? Upgrade naar Pro Arsenal voor onbeperkt gebruik van alle tools
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Tip: Wil je unlimited access? Upgrade naar Pro Arsenal voor onbeperkt gebruik van alle tools
               </div>
             </CardContent>
           </Card>
@@ -175,7 +175,7 @@ export function KickstartToolkit() {
             {kickstartTools.map((tool) => (
               <Card
                 key={tool.id}
-                className="group hover:shadow-lg transition-all cursor-pointer border-2 hover:border-blue-300"
+                className="group hover:shadow-lg transition-all cursor-pointer border-2 hover:border-blue-300 dark:hover:border-blue-600 dark:bg-gray-800 dark:border-gray-700"
                 onClick={() => setActiveTab(tool.id)}
               >
                 <CardContent className="p-6">
@@ -185,11 +185,11 @@ export function KickstartToolkit() {
                     >
                       {tool.icon}
                     </div>
-                    <Badge variant="outline" className="text-xs">{tool.limit}</Badge>
+                    <Badge variant="outline" className="text-xs dark:border-gray-500">{tool.limit}</Badge>
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{tool.title}</h3>
-                  <p className="text-sm text-gray-600 mb-4">{tool.description}</p>
-                  <Button size="sm" variant="ghost" className="group-hover:bg-blue-100">
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{tool.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{tool.description}</p>
+                  <Button size="sm" variant="ghost" className="group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30">
                     Open Tool →
                   </Button>
                 </CardContent>
@@ -198,15 +198,15 @@ export function KickstartToolkit() {
           </div>
 
           {/* Upgrade CTA */}
-          <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
+          <Card className="border-2 border-purple-200 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30">
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <Crown className="w-5 h-5 text-purple-600" />
-                    <h3 className="text-xl font-bold">Wil je meer?</h3>
+                    <Crown className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                    <h3 className="text-xl font-bold dark:text-white">Wil je meer?</h3>
                   </div>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     Unlock Pro Arsenal voor Skills Assessment, Date Planner en unlimited gebruik van alle tools
                   </p>
                   <Button

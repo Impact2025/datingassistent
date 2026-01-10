@@ -18,9 +18,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           ref={ref}
           className={cn(
-            'w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl',
-            'text-gray-900 placeholder-gray-500',
-            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+            'w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl',
+            'text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400',
+            'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-offset-gray-900',
             'transition-colors duration-200 resize-none',
             error && 'border-error focus:ring-error',
             className
@@ -33,7 +33,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           <div className="flex justify-end">
             <span className={cn(
               'text-xs',
-              currentLength > maxLength * 0.9 ? 'text-warning' : 'text-gray-500'
+              currentLength > maxLength * 0.9 ? 'text-warning' : 'text-gray-500 dark:text-gray-400'
             )}>
               {currentLength}/{maxLength}
             </span>

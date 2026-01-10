@@ -190,7 +190,7 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
             {question.options.map((option: any) => (
               <label
                 key={option.value}
-                className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-gray-900 transition-colors"
+                className="flex items-center gap-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:border-gray-900 dark:hover:border-gray-400 transition-colors"
               >
                 <input
                   type="radio"
@@ -198,9 +198,9 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
                   value={option.value}
                   checked={answers[question.id] === option.value}
                   onChange={(e) => handleAnswer(question.id, e.target.value)}
-                  className="w-4 h-4 text-gray-900"
+                  className="w-4 h-4 text-gray-900 dark:text-gray-100"
                 />
-                <span className="text-gray-900">{option.label}</span>
+                <span className="text-gray-900 dark:text-white">{option.label}</span>
               </label>
             ))}
           </div>
@@ -223,8 +223,8 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
                   }}
                   className={`p-4 border-2 rounded-lg text-sm font-medium transition-all ${
                     isSelected
-                      ? 'border-gray-900 bg-gray-900 text-white'
-                      : 'border-gray-200 hover:border-gray-900'
+                      ? 'border-gray-900 dark:border-gray-100 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-900 dark:hover:border-gray-400 text-gray-900 dark:text-white'
                   }`}
                 >
                   {option}
@@ -241,10 +241,10 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
               placeholder={question.placeholder}
               value={answers[question.id] || ''}
               onChange={(e) => handleAnswer(question.id, e.target.value)}
-              className="min-h-[120px] resize-none border-2 border-gray-200 focus:border-gray-900 rounded-lg"
+              className="min-h-[120px] resize-none border-2 border-gray-200 dark:border-gray-600 focus:border-gray-900 dark:focus:border-gray-400 rounded-lg dark:bg-gray-700 dark:text-white"
             />
             {question.hint && (
-              <p className="text-sm text-gray-500 italic">{question.hint}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 italic">{question.hint}</p>
             )}
           </div>
         );
@@ -267,14 +267,14 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
                   }
                 }
               }}
-              className="border-2 border-gray-200 focus:border-gray-900 rounded-lg"
+              className="border-2 border-gray-200 dark:border-gray-600 focus:border-gray-900 dark:focus:border-gray-400 rounded-lg dark:bg-gray-700 dark:text-white"
             />
             {answers[question.id]?.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {answers[question.id].map((tag: string, idx: number) => (
                   <span
                     key={idx}
-                    className="px-3 py-1 bg-gray-900 text-white text-sm rounded-full flex items-center gap-2"
+                    className="px-3 py-1 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-sm rounded-full flex items-center gap-2"
                   >
                     {tag}
                     <button
@@ -282,7 +282,7 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
                         const updated = answers[question.id].filter((_: any, i: number) => i !== idx);
                         handleAnswer(question.id, updated);
                       }}
-                      className="hover:text-gray-300"
+                      className="hover:text-gray-300 dark:hover:text-gray-600"
                     >
                       ×
                     </button>
@@ -292,8 +292,8 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
             )}
             <p className={`text-sm ${
               (answers[question.id]?.length || 0) === 0
-                ? 'text-orange-600 font-medium'
-                : 'text-gray-500'
+                ? 'text-orange-600 dark:text-orange-400 font-medium'
+                : 'text-gray-500 dark:text-gray-400'
             }`}>
               {answers[question.id]?.length || 0} / {question.maxTags} - Druk Enter om toe te voegen
               {(answers[question.id]?.length || 0) === 0 && ' (Minimaal 1 vereist)'}
@@ -309,11 +309,11 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
   if (isAnalyzing) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="p-12 max-w-md w-full text-center space-y-6 border-0 shadow-lg">
-          <Loader2 className="w-12 h-12 animate-spin text-gray-900 mx-auto" />
+        <Card className="p-12 max-w-md w-full text-center space-y-6 border-0 shadow-lg dark:bg-gray-800">
+          <Loader2 className="w-12 h-12 animate-spin text-gray-900 dark:text-gray-100 mx-auto" />
           <div className="space-y-2">
-            <h3 className="text-xl font-semibold text-gray-900">AI analyseert je antwoorden...</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">AI analyseert je antwoorden...</h3>
+            <p className="text-gray-600 dark:text-gray-300">
               Ik maak een gepersonaliseerde optimalisatie route voor je
             </p>
           </div>
@@ -329,29 +329,29 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
         <div className="space-y-4">
           <button
             onClick={handlePrevious}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm">Terug</span>
           </button>
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
               <span>Stap {currentStepIndex + 1} van {ASSESSMENT_STEPS.length}</span>
               <span>{Math.round(progress)}% voltooid</span>
             </div>
-            <Progress value={progress} className="h-1 bg-gray-200" />
+            <Progress value={progress} className="h-1 bg-gray-200 dark:bg-gray-700" />
           </div>
         </div>
 
         {/* Main Content */}
-        <Card className="p-8 border-0 shadow-lg">
+        <Card className="p-8 border-0 shadow-lg dark:bg-gray-800">
           <div className="space-y-8">
             <div className="space-y-2">
-              <div className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+              <div className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                 {currentStep.subtitle}
               </div>
-              <h2 className="text-3xl font-bold text-gray-900">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
                 {currentStep.title}
               </h2>
             </div>
@@ -359,7 +359,7 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
             <div className="space-y-8">
               {currentStep.questions.map((question) => (
                 <div key={question.id} className="space-y-3">
-                  <label className="block text-lg font-medium text-gray-900">
+                  <label className="block text-lg font-medium text-gray-900 dark:text-white">
                     {question.label}
                   </label>
                   {renderQuestion(question)}
@@ -371,7 +371,7 @@ export function AssessmentFlow({ onComplete, onBack }: AssessmentFlowProps) {
               <Button
                 onClick={handleNext}
                 disabled={!isStepComplete()}
-                className="w-full h-12 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-300 text-white font-medium rounded-lg transition-colors group"
+                className="w-full h-12 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white dark:text-gray-900 font-medium rounded-lg transition-colors group"
               >
                 {currentStepIndex === ASSESSMENT_STEPS.length - 1 ? 'Analyseer & Volgende' : 'Volgende Stap'}
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />

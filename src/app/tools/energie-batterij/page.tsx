@@ -176,16 +176,16 @@ function EnergieBatterijContent() {
   const currentQ = QUESTIONS[currentQuestion];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 to-white dark:from-gray-900 dark:to-gray-900 pb-24">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => router.back()}
-              className="p-2 hover:bg-gray-100 rounded-full"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
@@ -195,12 +195,12 @@ function EnergieBatterijContent() {
                   <Battery className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-semibold text-gray-900">Energie Batterij</h1>
-                  <p className="text-xs text-gray-500">Meet je sociale energie</p>
+                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Energie Batterij</h1>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Meet je sociale energie</p>
                 </div>
               </div>
             </div>
-            <Badge className="bg-amber-100 text-amber-700 border-0">
+            <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 border-0">
               Transformatie
             </Badge>
           </div>
@@ -210,15 +210,15 @@ function EnergieBatterijContent() {
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Intro Card */}
         {currentQuestion === 0 && !result && (
-          <Card className="border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
+          <Card className="border-amber-200 dark:border-amber-700 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30">
             <CardContent className="p-6">
               <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                  <Info className="w-6 h-6 text-amber-600" />
+                <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center flex-shrink-0">
+                  <Info className="w-6 h-6 text-amber-600 dark:text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 mb-1">Voorkom dating burnout</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-1">Voorkom dating burnout</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Speciaal voor introverts en mensen die snel social drain ervaren.
                     Ontdek hoeveel sociale energie je hebt en hoeveel herstel je nodig hebt.
                   </p>
@@ -232,8 +232,8 @@ function EnergieBatterijContent() {
         {!result && !isSubmitting && (
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Vraag {currentQuestion + 1} van {QUESTIONS.length}</span>
-              <span className="font-medium text-amber-600">{Math.round(progress)}%</span>
+              <span className="text-gray-600 dark:text-gray-400">Vraag {currentQuestion + 1} van {QUESTIONS.length}</span>
+              <span className="font-medium text-amber-600 dark:text-amber-400">{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} className="h-2 bg-amber-100" />
           </div>
@@ -249,9 +249,9 @@ function EnergieBatterijContent() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.2 }}
             >
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                     {currentQ.question}
                   </h2>
 
@@ -267,19 +267,19 @@ function EnergieBatterijContent() {
                           className={cn(
                             'p-4 rounded-xl border-2 text-left transition-all',
                             isSelected
-                              ? 'border-amber-500 bg-amber-50'
-                              : 'border-gray-200 hover:border-amber-300 hover:bg-amber-50/50'
+                              ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-amber-300 dark:hover:border-amber-600 hover:bg-amber-50/50 dark:hover:bg-amber-900/20'
                           )}
                         >
                           {Icon && (
                             <Icon className={cn(
                               'w-6 h-6 mb-2',
-                              isSelected ? 'text-amber-600' : 'text-gray-400'
+                              isSelected ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400'
                             )} />
                           )}
                           <span className={cn(
                             'font-medium',
-                            isSelected ? 'text-amber-700' : 'text-gray-700'
+                            isSelected ? 'text-amber-700 dark:text-amber-300' : 'text-gray-700 dark:text-gray-300'
                           )}>
                             {option.label}
                           </span>
@@ -295,20 +295,20 @@ function EnergieBatterijContent() {
 
         {/* Loading */}
         {isSubmitting && (
-          <Card>
+          <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardContent className="p-12 text-center">
               <Loader2 className="w-12 h-12 text-amber-500 animate-spin mx-auto mb-4" />
-              <p className="text-gray-600">Je energie wordt berekend...</p>
+              <p className="text-gray-600 dark:text-gray-300">Je energie wordt berekend...</p>
             </CardContent>
           </Card>
         )}
 
         {/* Error */}
         {error && (
-          <Card className="border-red-200 bg-red-50">
+          <Card className="border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/30">
             <CardContent className="p-4 flex items-center gap-3">
               <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-              <p className="text-sm text-red-700">{error}</p>
+              <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
             </CardContent>
           </Card>
         )}
@@ -322,47 +322,47 @@ function EnergieBatterijContent() {
               className="space-y-4"
             >
               {/* Main Battery Level */}
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardContent className="p-6 text-center">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center mx-auto mb-4">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center mx-auto mb-4">
                     {getBatteryIcon(result.energyLevel)}
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                     {result.energyLevel}% Energie
                   </h2>
-                  <p className="text-gray-600">{result.recommendation}</p>
+                  <p className="text-gray-600 dark:text-gray-300">{result.recommendation}</p>
                 </CardContent>
               </Card>
 
               {/* Detailed Scores */}
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg flex items-center gap-2">
+                  <CardTitle className="text-lg flex items-center gap-2 dark:text-white">
                     <Zap className="w-5 h-5 text-amber-500" />
                     Jouw energie profiel
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Social Capacity */}
-                  <div className="p-4 rounded-xl border border-blue-100 bg-blue-50/50">
+                  <div className="p-4 rounded-xl border border-blue-100 dark:border-blue-700 bg-blue-50/50 dark:bg-blue-900/20">
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-2">
-                        <Users className="w-4 h-4 text-blue-600" />
-                        <span className="text-sm font-medium text-gray-700">Sociale capaciteit</span>
+                        <Users className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Sociale capaciteit</span>
                       </div>
-                      <span className="text-sm font-bold text-blue-600">{result.socialCapacity}%</span>
+                      <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{result.socialCapacity}%</span>
                     </div>
                     <Progress value={result.socialCapacity} className="h-2 bg-blue-100" />
                   </div>
 
                   {/* Recovery Needed */}
-                  <div className="p-4 rounded-xl border border-purple-100 bg-purple-50/50">
+                  <div className="p-4 rounded-xl border border-purple-100 dark:border-purple-700 bg-purple-50/50 dark:bg-purple-900/20">
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-2">
-                        <Moon className="w-4 h-4 text-purple-600" />
-                        <span className="text-sm font-medium text-gray-700">Herstel nodig</span>
+                        <Moon className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Herstel nodig</span>
                       </div>
-                      <span className="text-sm font-bold text-purple-600">{result.recoveryNeeded}%</span>
+                      <span className="text-sm font-bold text-purple-600 dark:text-purple-400">{result.recoveryNeeded}%</span>
                     </div>
                     <Progress value={result.recoveryNeeded} className="h-2 bg-purple-100" />
                   </div>
@@ -370,39 +370,39 @@ function EnergieBatterijContent() {
               </Card>
 
               {/* Reflectie Section - Matching Design */}
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Reflectie</CardTitle>
+                  <CardTitle className="text-lg dark:text-white">Reflectie</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Spiegel - Dating Advies */}
-                  <div className="p-4 rounded-xl border-2 border-pink-200 bg-pink-50/50">
+                  <div className="p-4 rounded-xl border-2 border-pink-200 dark:border-pink-700 bg-pink-50/50 dark:bg-pink-900/20">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center">
                         <Heart className="w-3 h-3 text-white" />
                       </div>
-                      <Badge className="bg-pink-100 text-pink-700 border-0 text-xs">
+                      <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0 text-xs">
                         Spiegel
                       </Badge>
                     </div>
-                    <p className="text-sm font-medium text-gray-700 mb-1">Dating advies</p>
-                    <p className="text-sm text-gray-600">{result.datingAdvice}</p>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Dating advies</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{result.datingAdvice}</p>
                   </div>
 
                   {/* Identiteit - Tips */}
-                  <div className="p-4 rounded-xl border-2 border-amber-200 bg-amber-50/50">
+                  <div className="p-4 rounded-xl border-2 border-amber-200 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-900/20">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center">
                         <Sparkles className="w-3 h-3 text-white" />
                       </div>
-                      <Badge className="bg-amber-100 text-amber-700 border-0 text-xs">
+                      <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 border-0 text-xs">
                         Identiteit
                       </Badge>
                     </div>
-                    <p className="text-sm font-medium text-gray-700 mb-2">Energie tips</p>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Energie tips</p>
                     <ul className="space-y-1">
                       {result.tips.map((tip, i) => (
-                        <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
+                        <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
                           <CheckCircle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
                           {tip}
                         </li>
@@ -411,17 +411,17 @@ function EnergieBatterijContent() {
                   </div>
 
                   {/* Actie */}
-                  <div className="p-4 rounded-xl border-2 border-green-200 bg-green-50/50">
+                  <div className="p-4 rounded-xl border-2 border-green-200 dark:border-green-700 bg-green-50/50 dark:bg-green-900/20">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
                         <Zap className="w-3 h-3 text-white" />
                       </div>
-                      <Badge className="bg-green-100 text-green-700 border-0 text-xs">
+                      <Badge className="bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 border-0 text-xs">
                         Actie
                       </Badge>
                     </div>
-                    <p className="text-sm font-medium text-gray-700 mb-1">Volgende stap</p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Volgende stap</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
                       Plan je dates op basis van je energieniveau. Check deze tool regelmatig
                       om je sociale batterij te monitoren.
                     </p>
@@ -434,7 +434,7 @@ function EnergieBatterijContent() {
                 <Button
                   variant="outline"
                   onClick={resetAssessment}
-                  className="flex-1 border-gray-200"
+                  className="flex-1 border-gray-200 dark:border-gray-600"
                 >
                   <RefreshCcw className="w-4 h-4 mr-2" />
                   Opnieuw
@@ -459,7 +459,7 @@ function EnergieBatterijContent() {
 export default function EnergieBatterijPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center dark:bg-gray-900">
         <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
       </div>
     }>

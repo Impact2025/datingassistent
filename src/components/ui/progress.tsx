@@ -31,14 +31,14 @@ export function Progress({
   };
 
   return (
-    <div className={cn('w-full bg-gray-200 rounded-full overflow-hidden', sizeClasses[size], className)} {...props}>
+    <div className={cn('w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden', sizeClasses[size], className)} {...props}>
       <div
         className={cn('h-full transition-all duration-300 ease-out rounded-full', variantClasses[variant])}
         style={{ width: `${clampedValue}%` }}
       />
       {showLabel && (
         <div className="flex justify-center mt-2">
-          <span className="text-sm font-medium text-gray-700">{clampedValue}%</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{clampedValue}%</span>
         </div>
       )}
     </div>

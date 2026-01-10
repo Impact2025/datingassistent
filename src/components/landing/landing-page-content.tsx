@@ -679,7 +679,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
           {/* Start vandaag - Logout page style */}
           <div className="max-w-2xl mx-auto space-y-8">
             {/* Main Card */}
-            <Card className="border-2 border-pink-200 dark:border-pink-700 shadow-xl">
+            <Card className="border-2 border-pink-200 dark:border-pink-700 shadow-xl bg-white dark:bg-gray-800">
               <CardContent className="p-8 text-center space-y-6">
                 <div className="space-y-3">
                   <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50">
@@ -735,7 +735,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
               </Card>
 
               {/* Register Card */}
-              <Card className="border-2 hover:border-purple-300 dark:hover:border-purple-600 transition-all cursor-pointer hover:shadow-lg">
+              <Card className="border-2 border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-600 transition-all cursor-pointer hover:shadow-lg bg-white dark:bg-gray-800">
                 <Link href="/register">
                   <CardContent className="p-6 text-center">
                     <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">

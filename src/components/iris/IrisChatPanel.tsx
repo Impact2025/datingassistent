@@ -166,8 +166,8 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 20, scale: 0.95 }}
       className={isCompact
-        ? "bg-white rounded-2xl border border-gray-200 flex flex-col w-full max-h-[500px]"
-        : "fixed z-50 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col inset-x-3 bottom-20 top-auto max-h-[70vh] sm:inset-x-auto sm:right-4 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 sm:max-h-[80vh] sm:w-96 sm:max-w-[calc(100vw-2rem)] lg:right-6 lg:mr-16"
+        ? "bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 flex flex-col w-full max-h-[500px]"
+        : "fixed z-50 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 flex flex-col inset-x-3 bottom-20 top-auto max-h-[70vh] sm:inset-x-auto sm:right-4 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 sm:max-h-[80vh] sm:w-96 sm:max-w-[calc(100vw-2rem)] lg:right-6 lg:mr-16"
       }
       style={{
         minHeight: isCompact ? '300px' : '350px',
@@ -256,16 +256,16 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
                   className={`px-4 py-3 rounded-2xl ${
                     bericht.type === 'gebruiker'
                       ? 'bg-pink-500 text-white'
-                      : 'bg-white shadow-sm border border-gray-100 text-gray-800'
+                      : 'bg-white dark:bg-gray-700 shadow-sm border border-gray-100 dark:border-gray-600 text-gray-800 dark:text-gray-100'
                   }`}
                 >
                   <p className="text-sm leading-relaxed whitespace-pre-wrap">{bericht.tekst}</p>
 
                   {/* Topics & Sentiment for Iris messages */}
                   {bericht.type === 'iris' && (bericht.topics?.length > 0 || bericht.sentiment) && (
-                    <div className="mt-2 pt-2 border-t border-gray-200 flex flex-wrap gap-1.5">
+                    <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600 flex flex-wrap gap-1.5">
                       {bericht.topics?.map((topic, i) => (
-                        <span key={i} className="text-xs bg-pink-50 px-2 py-0.5 rounded-full text-pink-700">
+                        <span key={i} className="text-xs bg-pink-50 dark:bg-pink-900/30 px-2 py-0.5 rounded-full text-pink-700 dark:text-pink-300">
                           #{topic}
                         </span>
                       ))}
@@ -290,7 +290,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               {/* Typing Bubble - Dashboard Style */}
-              <div className="px-4 py-3 bg-white shadow-sm border border-gray-100 rounded-2xl">
+              <div className="px-4 py-3 bg-white dark:bg-gray-700 shadow-sm border border-gray-100 dark:border-gray-600 rounded-2xl">
                 <div className="flex gap-1.5">
                   <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                   <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '200ms' }} />
@@ -308,7 +308,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
             animate={{ opacity: 1, y: 0 }}
             className="space-y-2"
           >
-            <p className="text-xs text-gray-500 font-medium flex items-center gap-1">
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium flex items-center gap-1">
               <Lightbulb className="w-3 h-3 text-pink-500" />
               Misschien kan dit je helpen
             </p>
@@ -319,13 +319,13 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
                 onClick={() => handleQuickQuestion(suggestion.actionText)}
-                className="bg-white border border-pink-200 hover:border-pink-400 rounded-xl p-3 cursor-pointer hover:shadow-md transition-all"
+                className="bg-white dark:bg-gray-700 border border-pink-200 dark:border-pink-700 hover:border-pink-400 dark:hover:border-pink-500 rounded-xl p-3 cursor-pointer hover:shadow-md transition-all"
               >
                 <div className="flex items-start gap-2">
                   <span className="text-lg">{suggestion.emoji}</span>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-800">{suggestion.title}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{suggestion.description}</p>
+                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{suggestion.title}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{suggestion.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -347,7 +347,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
                 onClick={() => handleQuickQuestion(suggestion)}
-                className="text-xs bg-white border border-gray-200 hover:border-pink-300 hover:bg-pink-50 px-3 py-1.5 rounded-full transition-all text-gray-700 hover:text-pink-600"
+                className="text-xs bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:border-pink-300 dark:hover:border-pink-500 hover:bg-pink-50 dark:hover:bg-pink-900/30 px-3 py-1.5 rounded-full transition-all text-gray-700 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400"
               >
                 {suggestion}
               </motion.button>
@@ -359,12 +359,12 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
       </div>
 
       {/* Input - Dashboard Style */}
-      <form onSubmit={handleSubmit} className="p-3 sm:p-4 bg-white border-t border-gray-100 flex-shrink-0 rounded-b-2xl safe-area-bottom">
+      <form onSubmit={handleSubmit} className="p-3 sm:p-4 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 flex-shrink-0 rounded-b-2xl safe-area-bottom">
         {/* Limit Reached Warning */}
         {limitReached && usageStatus && (
-          <div className="mb-2 sm:mb-3 bg-orange-50 border border-orange-200 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-2">
-            <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-600 flex-shrink-0" />
-            <p className="text-[11px] sm:text-xs text-orange-700">
+          <div className="mb-2 sm:mb-3 bg-orange-50 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-800 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-2">
+            <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+            <p className="text-[11px] sm:text-xs text-orange-700 dark:text-orange-300">
               Dagelijkse limiet bereikt. Reset over {usageStatus.resetTimeHuman}
             </p>
           </div>
@@ -377,10 +377,10 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
             onChange={(e) => setInput(e.target.value)}
             placeholder={limitReached ? "Limiet bereikt" : "Stel een vraag..."}
             disabled={limitReached}
-            className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-50 rounded-full
-                       border-2 border-gray-200 focus:border-pink-400 focus:bg-white
-                       focus:outline-none text-sm text-gray-900
-                       placeholder:text-gray-400 transition-all
+            className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-50 dark:bg-gray-700 rounded-full
+                       border-2 border-gray-200 dark:border-gray-600 focus:border-pink-400 dark:focus:border-pink-500 focus:bg-white dark:focus:bg-gray-600
+                       focus:outline-none text-sm text-gray-900 dark:text-white
+                       placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all
                        ${limitReached ? 'opacity-50 cursor-not-allowed' : ''}`}
           />
           <button

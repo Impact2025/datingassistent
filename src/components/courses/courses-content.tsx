@@ -113,19 +113,19 @@ export default function CoursesContent() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 px-4 overflow-hidden bg-gradient-to-br from-pink-50 to-pink-100">
+      <section className="relative py-20 md:py-32 px-4 overflow-hidden bg-gradient-to-br from-pink-50 to-pink-100 dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-6xl mx-auto text-center">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 border border-pink-200">
+            <div className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 rounded-full px-4 py-2 border border-pink-200 dark:border-gray-600">
               <BookOpen className="w-5 h-5 text-pink-500" />
-              <span className="text-sm font-medium text-gray-700">Online Cursussen</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Online Cursussen</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
               Leer de <span className="text-pink-500">kunst van het daten</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Professionele online cursussen om je dating skills naar een hoger niveau te tillen.
               Van eerste berichten tot succesvolle relaties.
             </p>
@@ -147,59 +147,59 @@ export default function CoursesContent() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4 bg-white border-b border-gray-100">
+      <section className="py-16 px-4 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-3xl font-bold text-pink-500 mb-2">{courses.length}+</div>
-              <div className="text-sm text-gray-600">Cursussen</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Cursussen</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-pink-500 mb-2">
                 {courses.reduce((acc, course) => acc + course.lesson_count, 0)}
               </div>
-              <div className="text-sm text-gray-600">Lessen</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Lessen</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-pink-500 mb-2">25.000+</div>
-              <div className="text-sm text-gray-600">Studenten</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Studenten</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-pink-500 mb-2">4.9/5</div>
-              <div className="text-sm text-gray-600">Gemiddelde beoordeling</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Gemiddelde beoordeling</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Courses Grid */}
-      <section id="courses" className="py-24 px-4 bg-gray-50">
+      <section id="courses" className="py-24 px-4 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
               Kies je cursus
             </h2>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
               Van beginner tot expert - vind de cursus die bij jou past
             </p>
           </div>
 
           {courses.length === 0 ? (
             <div className="text-center py-12">
-              <BookOpen className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <BookOpen className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                 Nog geen cursussen beschikbaar
               </h3>
-              <p className="text-gray-500">
+              <p className="text-gray-500 dark:text-gray-400">
                 Nieuwe cursussen worden binnenkort toegevoegd!
               </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {courses.map((course) => (
-                <Card key={course.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
+                <Card key={course.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden dark:bg-gray-800">
                   <div className="relative">
-                    <div className="aspect-video bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+                    <div className="aspect-video bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900/30 dark:to-pink-800/30 flex items-center justify-center">
                       {course.thumbnail_url ? (
                         <img
                           src={course.thumbnail_url}
@@ -230,18 +230,18 @@ export default function CoursesContent() {
 
                   <CardContent className="p-6 space-y-4">
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
                         {toSentenceCase(course.title)}
                       </h3>
                       {course.description && (
-                        <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
+                        <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 leading-relaxed">
                           {course.description}
                         </p>
                       )}
                     </div>
 
                     {/* Course Stats */}
-                    <div className="flex items-center gap-4 text-sm text-gray-500">
+                    <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
                         <span>{course.duration_hours}h</span>
@@ -258,7 +258,7 @@ export default function CoursesContent() {
 
                     {/* Price */}
                     <div className="flex items-center justify-between pt-2">
-                      <div className="text-2xl font-bold text-gray-900">
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">
                         {course.is_free ? (
                           'Gratis'
                         ) : (
@@ -282,44 +282,44 @@ export default function CoursesContent() {
       </section>
 
       {/* Why Choose Our Courses */}
-      <section className="py-24 px-4 bg-white">
+      <section className="py-24 px-4 bg-white dark:bg-gray-800">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
               Waarom onze cursussen?
             </h2>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
               Meer dan alleen theorie - praktische skills die werken
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="text-center space-y-4 p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100">
+            <div className="text-center space-y-4 p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30">
               <div className="w-16 h-16 mx-auto rounded-2xl bg-blue-500 flex items-center justify-center">
                 <Award className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900">Praktische oefeningen</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Praktische oefeningen</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 Elke cursus bevat praktijkopdrachten die je direct kunt toepassen in je dating leven.
               </p>
             </div>
 
-            <div className="text-center space-y-4 p-6 rounded-2xl bg-gradient-to-br from-green-50 to-green-100">
+            <div className="text-center space-y-4 p-6 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30">
               <div className="w-16 h-16 mx-auto rounded-2xl bg-green-500 flex items-center justify-center">
                 <TrendingUp className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900">Bewijzen resultaten</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Bewijzen resultaten</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 Onze methoden zijn gebaseerd op wetenschappelijk onderzoek en jarenlange ervaring.
               </p>
             </div>
 
-            <div className="text-center space-y-4 p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100">
+            <div className="text-center space-y-4 p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30">
               <div className="w-16 h-16 mx-auto rounded-2xl bg-purple-500 flex items-center justify-center">
                 <Heart className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900">Persoonlijke aandacht</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Persoonlijke aandacht</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 Directe feedback van experts en een community van gelijkgestemde singles.
               </p>
             </div>

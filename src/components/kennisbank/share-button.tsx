@@ -66,7 +66,7 @@ export function ShareButton({
               aria-label="Delen"
             >
               {copied ? (
-                <Check className="w-5 h-5 text-green-500" />
+                <Check className="w-5 h-5 text-green-500 dark:text-green-400" />
               ) : (
                 <Share2 className="w-5 h-5" />
               )}

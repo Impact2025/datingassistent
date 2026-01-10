@@ -309,10 +309,10 @@ export default function LesViewerPage() {
 
       default:
         return (
-          <Card key={sectie.id} className="mb-6">
+          <Card key={sectie.id} className="mb-6 dark:bg-gray-800">
             <CardContent className="p-6">
-              <p className="text-gray-500">Onbekend sectie type: {sectie.sectie_type}</p>
-              <p className="text-xs text-gray-400 mt-2">Type: {sectie.sectie_type}</p>
+              <p className="text-gray-500 dark:text-gray-400">Onbekend sectie type: {sectie.sectie_type}</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Type: {sectie.sectie_type}</p>
             </CardContent>
           </Card>
         );
@@ -321,12 +321,12 @@ export default function LesViewerPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="max-w-5xl mx-auto px-6 py-8">
           <div className="animate-pulse space-y-4">
-            <div className="h-6 bg-gray-200 rounded w-1/4"></div>
-            <div className="h-48 bg-white rounded shadow-sm"></div>
-            <div className="h-32 bg-white rounded shadow-sm"></div>
+            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+            <div className="h-48 bg-white dark:bg-gray-800 rounded shadow-sm"></div>
+            <div className="h-32 bg-white dark:bg-gray-800 rounded shadow-sm"></div>
           </div>
         </div>
       </div>
@@ -335,11 +335,11 @@ export default function LesViewerPage() {
 
   if (error || !les) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
-        <Card className="max-w-md border-0 shadow-sm bg-white">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-6">
+        <Card className="max-w-md border-0 shadow-sm bg-white dark:bg-gray-800">
           <CardContent className="p-8 text-center">
-            <h2 className="text-xl font-semibold text-gray-900 mb-3">Les niet gevonden</h2>
-            <p className="text-gray-600 mb-6 text-sm">{error || 'Deze les bestaat niet of is niet beschikbaar.'}</p>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Les niet gevonden</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm">{error || 'Deze les bestaat niet of is niet beschikbaar.'}</p>
             <Link href={`/cursussen/${slug}`}>
               <SecondaryButton>
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -357,33 +357,33 @@ export default function LesViewerPage() {
   const progressPercentage = totalSecties > 0 ? Math.round((voltooideSecties / totalSecties) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header - Clean & Minimal */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 py-6">
           <Link
             href={`/cursussen/${slug}`}
-            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 mb-4 transition-colors"
+            className="inline-flex items-center text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white mb-4 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             {les.cursus.titel}
           </Link>
 
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">{les.titel}</h1>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">{les.titel}</h1>
 
           {les.beschrijving && (
-            <p className="text-gray-600 text-sm">{les.beschrijving}</p>
+            <p className="text-gray-600 dark:text-gray-300 text-sm">{les.beschrijving}</p>
           )}
 
           {/* Progress */}
           <div className="mt-4">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-600">
+              <span className="text-gray-600 dark:text-gray-300">
                 {voltooideSecties} van {totalSecties} secties voltooid
               </span>
-              <span className="font-medium text-pink-600">{progressPercentage}%</span>
+              <span className="font-medium text-pink-600 dark:text-pink-400">{progressPercentage}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-pink-500 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progressPercentage}%` }}
@@ -402,18 +402,18 @@ export default function LesViewerPage() {
 
         {/* Iris AI Coach */}
         <div className="mt-12">
-          <Card className="border-0 shadow-sm bg-white">
+          <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
             <CardContent className="p-8">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center">
                   <span className="text-white text-sm font-semibold">AI</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Iris Insights</h3>
-                  <p className="text-sm text-gray-600">Je persoonlijke dating coach</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Iris Insights</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Je persoonlijke dating coach</p>
                 </div>
               </div>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Heb je vragen over deze les? Stel ze aan Iris.
               </p>
               <IrisChatPanel
@@ -472,20 +472,20 @@ function VideoSectie({ sectie, isCompleted, onComplete }: any) {
   const [watched, setWatched] = useState(isCompleted);
 
   return (
-    <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{sectie.titel}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
           {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
         </div>
 
         {sectie.beschrijving && (
-          <p className="text-gray-600 mb-6">{sectie.beschrijving}</p>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">{sectie.beschrijving}</p>
         )}
 
         {/* Intro tekst */}
         {sectie.inhoud?.introTekst && (
-          <p className="text-gray-700 mb-6">{sectie.inhoud.introTekst}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6">{sectie.inhoud.introTekst}</p>
         )}
 
         {/* Video Player */}
@@ -520,7 +520,7 @@ function VideoSectie({ sectie, isCompleted, onComplete }: any) {
             </div>
           )
         ) : (
-          <div className="bg-gray-100 rounded-lg aspect-video mb-6 flex flex-col items-center justify-center text-gray-400">
+          <div className="bg-gray-100 dark:bg-gray-700 rounded-lg aspect-video mb-6 flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
             <Play className="w-12 h-12 mb-2" />
             <p className="text-sm">Video wordt binnenkort toegevoegd</p>
           </div>
@@ -567,7 +567,7 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
       return (
         <p
           key={idx}
-          className="text-gray-700 leading-relaxed mb-4"
+          className="text-gray-700 dark:text-gray-200 leading-relaxed mb-4"
           dangerouslySetInnerHTML={{ __html: formatted }}
         />
       );
@@ -585,20 +585,20 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
   };
 
   return (
-    <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow">
       <CardContent className="p-8">
         {sectie.titel && (
           <div className="flex items-start justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">{sectie.titel}</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
             {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
           </div>
         )}
 
         {/* Intro or main content */}
         {content && (
-          <div className="prose max-w-none mb-6">
+          <div className="prose dark:prose-invert max-w-none mb-6">
             {isMarkdown ? renderContent(content) : (
-              <p className="text-gray-700 whitespace-pre-line leading-relaxed">{content}</p>
+              <p className="text-gray-700 dark:text-gray-200 whitespace-pre-line leading-relaxed">{content}</p>
             )}
           </div>
         )}
@@ -607,15 +607,15 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
         {categorieen && Array.isArray(categorieen) && (
           <div className="space-y-4 mb-6">
             {categorieen.map((cat: any, idx: number) => (
-              <div key={idx} className="p-5 rounded-lg border-2 border-gray-200 bg-gray-50">
-                <h4 className="font-semibold text-gray-900 mb-2 text-base">{cat.naam}</h4>
+              <div key={idx} className="p-5 rounded-lg border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-2 text-base">{cat.naam}</h4>
                 {cat.beschrijving && (
-                  <p className="text-sm text-gray-600 mb-3 italic">{cat.beschrijving}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 italic">{cat.beschrijving}</p>
                 )}
                 {cat.voorbeelden && Array.isArray(cat.voorbeelden) && (
                   <ul className="space-y-2">
                     {cat.voorbeelden.map((vb: string, vidx: number) => (
-                      <li key={vidx} className="text-sm text-gray-700 flex items-start gap-2">
+                      <li key={vidx} className="text-sm text-gray-700 dark:text-gray-200 flex items-start gap-2">
                         <span className="text-pink-500 mt-1">•</span>
                         <span>{vb}</span>
                       </li>
@@ -639,27 +639,27 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
                   onClick={() => handleOptieClick(idx)}
                   className={`flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
                     isSelected
-                      ? 'border-pink-500 bg-pink-50 shadow-sm'
-                      : 'border-gray-200 bg-white hover:border-gray-300'
+                      ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 shadow-sm'
+                      : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
                   } ${isCompleted ? 'cursor-default' : 'cursor-pointer'}`}
                 >
                   <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
                     isSelected
                       ? 'border-pink-500 bg-pink-500'
-                      : 'border-gray-300 bg-white'
+                      : 'border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-600'
                   }`}>
                     {isSelected && (
                       <CheckCircle className="w-4 h-4 text-white fill-current" />
                     )}
                   </div>
-                  <span className={`text-gray-800 font-medium ${isSelected ? 'text-gray-900' : ''}`}>
+                  <span className={`text-gray-800 dark:text-gray-200 font-medium ${isSelected ? 'text-gray-900 dark:text-white' : ''}`}>
                     {optie.tekst || optie}
                   </span>
                 </div>
               );
             })}
             {sectie.inhoud?.context && (
-              <p className="text-sm text-gray-600 mt-4 italic">{sectie.inhoud.context}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-4 italic">{sectie.inhoud.context}</p>
             )}
           </div>
         )}
@@ -668,25 +668,25 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
         {voorbeelden && (
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             {voorbeelden.vaag && (
-              <div className="p-4 bg-gray-100 rounded-lg border-2 border-gray-300">
-                <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+              <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg border-2 border-gray-300 dark:border-gray-600">
+                <h4 className="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                   <span className="text-red-500">❌</span> Vaag
                 </h4>
                 <ul className="space-y-2">
                   {voorbeelden.vaag.map((item: string, idx: number) => (
-                    <li key={idx} className="text-sm text-gray-700">• {item}</li>
+                    <li key={idx} className="text-sm text-gray-700 dark:text-gray-300">• {item}</li>
                   ))}
                 </ul>
               </div>
             )}
             {voorbeelden.concreet && (
-              <div className="p-4 bg-green-50 rounded-lg border-2 border-green-300">
-                <h4 className="font-bold text-green-900 mb-3 flex items-center gap-2">
+              <div className="p-4 bg-green-50 dark:bg-green-900/30 rounded-lg border-2 border-green-300 dark:border-green-700">
+                <h4 className="font-bold text-green-900 dark:text-green-300 mb-3 flex items-center gap-2">
                   <span className="text-green-500">✓</span> Concreet
                 </h4>
                 <ul className="space-y-2">
                   {voorbeelden.concreet.map((item: string, idx: number) => (
-                    <li key={idx} className="text-sm text-green-800">• {item}</li>
+                    <li key={idx} className="text-sm text-green-800 dark:text-green-300">• {item}</li>
                   ))}
                 </ul>
               </div>
@@ -696,11 +696,11 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
 
         {/* Waarschuwing (voor oefening type) */}
         {waarschuwing && (
-          <div className="p-4 rounded-lg bg-amber-50 border-l-4 border-amber-500 mb-6">
-            <p className="text-sm font-semibold text-amber-900 flex items-center gap-2 mb-1">
+          <div className="p-4 rounded-lg bg-amber-50 dark:bg-amber-900/30 border-l-4 border-amber-500 mb-6">
+            <p className="text-sm font-semibold text-amber-900 dark:text-amber-300 flex items-center gap-2 mb-1">
               <span>⚠️</span> Let op:
             </p>
-            <p className="text-sm text-amber-800">{waarschuwing}</p>
+            <p className="text-sm text-amber-800 dark:text-amber-200">{waarschuwing}</p>
           </div>
         )}
 
@@ -726,15 +726,15 @@ function KernpuntenSectie({ sectie, isCompleted, onComplete }: any) {
   const displayItems = items.length > 0 ? items : punten;
 
   return (
-    <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">{sectie.titel || 'Kernpunten'}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'Kernpunten'}</h3>
           {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
         </div>
 
         {intro && (
-          <p className="text-gray-700 mb-6 leading-relaxed">{intro}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{intro}</p>
         )}
 
         <ul className="space-y-4 mb-6">
@@ -748,7 +748,7 @@ function KernpuntenSectie({ sectie, isCompleted, onComplete }: any) {
             if (!titel && !beschrijving) return null;
 
             return (
-              <li key={idx} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <li key={idx} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                 {icon ? (
                   <div className="shrink-0 text-2xl mt-0.5">
                     {icon}
@@ -759,8 +759,8 @@ function KernpuntenSectie({ sectie, isCompleted, onComplete }: any) {
                   </div>
                 )}
                 <div className="flex-1">
-                  {titel && <div className="font-semibold text-gray-900 mb-1">{titel}</div>}
-                  {beschrijving && <div className="text-gray-600 text-sm leading-relaxed">{beschrijving}</div>}
+                  {titel && <div className="font-semibold text-gray-900 dark:text-white mb-1">{titel}</div>}
+                  {beschrijving && <div className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">{beschrijving}</div>}
                 </div>
               </li>
             );
@@ -810,21 +810,21 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
   };
 
   return (
-    <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{sectie.titel || 'Quiz'}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'Quiz'}</h3>
           {submitted && <CheckCircle className="w-5 h-5 text-pink-500" />}
         </div>
 
         {sectie.beschrijving && (
-          <p className="text-gray-600 mb-6">{sectie.beschrijving}</p>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">{sectie.beschrijving}</p>
         )}
 
         <div className="space-y-6">
           {vragen.map((vraag: any, idx: number) => (
-            <div key={vraag.id} className="border-l-2 border-gray-300 pl-5">
-              <p className="font-semibold text-gray-900 mb-3">
+            <div key={vraag.id} className="border-l-2 border-gray-300 dark:border-gray-600 pl-5">
+              <p className="font-semibold text-gray-900 dark:text-white mb-3">
                 {idx + 1}. {vraag.vraag}
               </p>
 
@@ -841,13 +841,13 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
                       className={`flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         submitted
                           ? isCorrect
-                            ? 'border-green-500 bg-green-50'
+                            ? 'border-green-500 bg-green-50 dark:bg-green-900/30'
                             : antwoorden[vraag.id] === optieId
-                            ? 'border-red-500 bg-red-50'
-                            : 'border-gray-200 bg-white'
+                            ? 'border-red-500 bg-red-50 dark:bg-red-900/30'
+                            : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700'
                           : antwoorden[vraag.id] === optieId
-                          ? 'border-pink-500 bg-pink-50'
-                          : 'border-gray-200 bg-white hover:border-pink-300 hover:bg-gray-50'
+                          ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30'
+                          : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-pink-300 hover:bg-gray-50 dark:hover:bg-gray-600'
                       }`}
                     >
                       <input
@@ -859,7 +859,7 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
                         disabled={submitted}
                         className="text-pink-500"
                       />
-                      <span className={`text-sm ${submitted && isCorrect ? 'font-semibold' : ''}`}>
+                      <span className={`text-sm dark:text-gray-200 ${submitted && isCorrect ? 'font-semibold' : ''}`}>
                         {optieTekst}
                       </span>
                     </label>
@@ -868,9 +868,9 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
               </div>
 
               {submitted && vraag.uitleg && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <p className="text-sm text-gray-700">
-                    <strong className="text-gray-900">Uitleg:</strong> {vraag.uitleg}
+                <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                  <p className="text-sm text-gray-700 dark:text-gray-200">
+                    <strong className="text-gray-900 dark:text-white">Uitleg:</strong> {vraag.uitleg}
                   </p>
                 </div>
               )}
@@ -891,8 +891,8 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
         )}
 
         {submitted && score !== null && (
-          <div className="mt-6 p-5 bg-green-50 rounded-lg border-2 border-green-200">
-            <p className="text-base font-semibold text-green-900">
+          <div className="mt-6 p-5 bg-green-50 dark:bg-green-900/30 rounded-lg border-2 border-green-200 dark:border-green-700">
+            <p className="text-base font-semibold text-green-900 dark:text-green-300">
               Score: {score}% ({Object.values(antwoorden).filter((a, i) => a === vragen[i]?.correct_antwoord).length}/{vragen.length} correct)
             </p>
           </div>
@@ -908,20 +908,20 @@ function ReflectieSectie({ sectie, isCompleted, onComplete }: any) {
   const [saved, setSaved] = useState(isCompleted);
 
   return (
-    <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{sectie.titel || 'Reflectievraag'}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'Reflectievraag'}</h3>
           {saved && <CheckCircle className="w-5 h-5 text-pink-500" />}
         </div>
 
         {/* Reflectievraag kan in vragen array zitten of als enkele vraag */}
-        <p className="text-gray-700 mb-6 leading-relaxed">
+        <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">
           {sectie.inhoud?.vragen?.[0] || sectie.inhoud?.vraag || sectie.beschrijving}
         </p>
 
         <textarea
-          className="w-full min-h-[120px] p-4 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition-all text-gray-900 placeholder:text-gray-400"
+          className="w-full min-h-[120px] p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition-all text-gray-900 dark:text-white bg-white dark:bg-gray-700 placeholder:text-gray-400"
           placeholder="Schrijf hier je antwoord..."
           value={antwoord}
           onChange={(e) => setAntwoord(e.target.value)}
@@ -962,22 +962,22 @@ function OpdrachtSectie({ sectie, isCompleted, onComplete }: any) {
   const allCompleted = voltooide.length === acties.length && acties.length > 0;
 
   return (
-    <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{sectie.titel || 'In de Praktijk'}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'In de Praktijk'}</h3>
           {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
         </div>
 
         {introTekst && (
-          <p className="text-gray-700 mb-6 leading-relaxed">{introTekst}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{introTekst}</p>
         )}
 
         <div className="space-y-3 mb-6">
           {acties.map((actie: string, idx: number) => (
             <label
               key={idx}
-              className="flex items-start gap-3 p-4 rounded-lg border-2 border-gray-200 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all"
+              className="flex items-start gap-3 p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-pink-50 dark:hover:bg-pink-900/30 hover:border-pink-300 transition-all"
             >
               <input
                 type="checkbox"
@@ -986,7 +986,7 @@ function OpdrachtSectie({ sectie, isCompleted, onComplete }: any) {
                 disabled={isCompleted}
                 className="mt-1 w-5 h-5 text-pink-500 rounded"
               />
-              <span className={voltooide.includes(idx) ? 'line-through text-gray-500' : 'text-gray-800'}>
+              <span className={voltooide.includes(idx) ? 'line-through text-gray-500 dark:text-gray-400' : 'text-gray-800 dark:text-gray-200'}>
                 {actie}
               </span>
             </label>
@@ -1008,21 +1008,21 @@ function OpdrachtSectie({ sectie, isCompleted, onComplete }: any) {
 
 function ToolSectie({ sectie, isCompleted, onComplete }: any) {
   return (
-    <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{sectie.titel}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
           {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
         </div>
 
         {/* Intro tekst */}
         {sectie.inhoud?.introTekst && (
-          <p className="text-gray-700 mb-6 leading-relaxed">{sectie.inhoud.introTekst}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{sectie.inhoud.introTekst}</p>
         )}
 
-        <div className="p-4 bg-gray-50 border-2 border-gray-200 rounded-lg mb-6">
-          <p className="text-sm text-gray-700">
-            <strong className="text-gray-900">Tool:</strong> {sectie.inhoud?.toolId || sectie.inhoud?.tool_naam || 'Onbekend'}
+        <div className="p-4 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg mb-6">
+          <p className="text-sm text-gray-700 dark:text-gray-200">
+            <strong className="text-gray-900 dark:text-white">Tool:</strong> {sectie.inhoud?.toolId || sectie.inhoud?.tool_naam || 'Onbekend'}
           </p>
         </div>
 
@@ -1041,15 +1041,15 @@ function ToolSectie({ sectie, isCompleted, onComplete }: any) {
 
 function TipSectie({ sectie, isCompleted, onComplete }: any) {
   return (
-    <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow border-l-4 border-pink-500">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow border-l-4 border-pink-500">
       <CardContent className="p-8">
         <div className="flex items-start gap-4">
           <div className="shrink-0 w-8 h-8 rounded-md bg-pink-500 text-white flex items-center justify-center text-sm font-medium">
             TIP
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{sectie.titel || 'Pro Tip'}</h3>
-            <p className="text-gray-600 leading-relaxed">{sectie.inhoud?.tip || sectie.beschrijving}</p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{sectie.titel || 'Pro Tip'}</h3>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{sectie.inhoud?.tip || sectie.beschrijving}</p>
           </div>
         </div>
       </CardContent>
@@ -1073,15 +1073,15 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
   const allCompleted = voltooideActies.length === acties.length && acties.length > 0;
 
   return (
-    <Card className="border-0 shadow-sm bg-white hover:shadow-md transition-shadow">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">{sectie.titel || 'Actieplan'}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'Actieplan'}</h3>
           {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
         </div>
 
         {sectie.beschrijving && (
-          <p className="text-gray-700 mb-6 leading-relaxed">{sectie.beschrijving}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{sectie.beschrijving}</p>
         )}
 
         <div className="space-y-3 mb-6">
@@ -1094,8 +1094,8 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
                 key={idx}
                 className={`flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
                   voltooideActies.includes(idx)
-                    ? 'border-green-500 bg-green-50'
-                    : 'border-gray-200 hover:border-pink-300 hover:bg-gray-50'
+                    ? 'border-green-500 bg-green-50 dark:bg-green-900/30'
+                    : 'border-gray-200 dark:border-gray-600 hover:border-pink-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
                 <input
@@ -1106,13 +1106,13 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
                   className="mt-1 w-5 h-5 text-pink-500 rounded"
                 />
                   <div className="flex-1">
-                    <span className={`text-gray-900 font-medium ${
-                      voltooideActies.includes(idx) ? 'line-through text-gray-500' : ''
+                    <span className={`text-gray-900 dark:text-white font-medium ${
+                      voltooideActies.includes(idx) ? 'line-through text-gray-500 dark:text-gray-400' : ''
                     }`}>
                       {actieTekst}
                     </span>
                     {deadline && (
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         Deadline: {deadline}
                       </div>
                     )}
@@ -1123,7 +1123,7 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
         </div>
 
         <div className="flex items-center justify-between mt-4">
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-gray-600 dark:text-gray-300">
             <span className="font-semibold text-pink-500">{voltooideActies.length}</span> van{' '}
             <span className="font-semibold">{acties.length}</span> acties voltooid
           </div>

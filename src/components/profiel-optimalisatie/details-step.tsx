@@ -48,26 +48,26 @@ export function DetailsStep({ onComplete, onBack, profileData }: DetailsStepProp
         <div className="space-y-4">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm">Terug naar Route</span>
           </button>
 
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
               ✓ Details & Afwerking
             </h1>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 dark:text-gray-300 mt-2">
               Laatste details voor een compleet profiel
             </p>
           </div>
         </div>
 
-        <Card className="p-8 border-0 shadow-lg space-y-6">
+        <Card className="p-8 border-0 shadow-lg space-y-6 dark:bg-gray-800">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                 Lengte
               </label>
               <Input
@@ -75,12 +75,12 @@ export function DetailsStep({ onComplete, onBack, profileData }: DetailsStepProp
                 placeholder="Bijv: 178 cm"
                 value={details.height}
                 onChange={(e) => setDetails(prev => ({ ...prev, height: e.target.value }))}
-                className="border-2 border-gray-200 focus:border-gray-900"
+                className="border-2 border-gray-200 dark:border-gray-600 focus:border-gray-900 dark:focus:border-gray-400 dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                 Opleiding
               </label>
               <Input
@@ -88,12 +88,12 @@ export function DetailsStep({ onComplete, onBack, profileData }: DetailsStepProp
                 placeholder="Bijv: HBO"
                 value={details.education}
                 onChange={(e) => setDetails(prev => ({ ...prev, education: e.target.value }))}
-                className="border-2 border-gray-200 focus:border-gray-900"
+                className="border-2 border-gray-200 dark:border-gray-600 focus:border-gray-900 dark:focus:border-gray-400 dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                 Werk
               </label>
               <Input
@@ -101,12 +101,12 @@ export function DetailsStep({ onComplete, onBack, profileData }: DetailsStepProp
                 placeholder="Bijv: Software Developer"
                 value={details.work}
                 onChange={(e) => setDetails(prev => ({ ...prev, work: e.target.value }))}
-                className="border-2 border-gray-200 focus:border-gray-900"
+                className="border-2 border-gray-200 dark:border-gray-600 focus:border-gray-900 dark:focus:border-gray-400 dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                 Woonplaats
               </label>
               <Input
@@ -114,12 +114,12 @@ export function DetailsStep({ onComplete, onBack, profileData }: DetailsStepProp
                 placeholder="Bijv: Amsterdam"
                 value={details.location}
                 onChange={(e) => setDetails(prev => ({ ...prev, location: e.target.value }))}
-                className="border-2 border-gray-200 focus:border-gray-900"
+                className="border-2 border-gray-200 dark:border-gray-600 focus:border-gray-900 dark:focus:border-gray-400 dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                 Interesses
               </label>
               <div className="flex gap-2">
@@ -129,9 +129,9 @@ export function DetailsStep({ onComplete, onBack, profileData }: DetailsStepProp
                   value={interestInput}
                   onChange={(e) => setInterestInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && addInterest()}
-                  className="border-2 border-gray-200 focus:border-gray-900"
+                  className="border-2 border-gray-200 dark:border-gray-600 focus:border-gray-900 dark:focus:border-gray-400 dark:bg-gray-700 dark:text-white"
                 />
-                <Button onClick={addInterest} variant="outline" className="border-2 border-gray-900">
+                <Button onClick={addInterest} variant="outline" className="border-2 border-gray-900 dark:border-gray-100 dark:text-white dark:hover:bg-gray-100 dark:hover:text-gray-900">
                   Toevoegen
                 </Button>
               </div>
@@ -140,12 +140,12 @@ export function DetailsStep({ onComplete, onBack, profileData }: DetailsStepProp
                   {details.interests.map((interest: string, idx: number) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 bg-gray-900 text-white text-sm rounded-full flex items-center gap-2"
+                      className="px-3 py-1 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-sm rounded-full flex items-center gap-2"
                     >
                       {interest}
                       <button
                         onClick={() => removeInterest(idx)}
-                        className="hover:text-gray-300"
+                        className="hover:text-gray-300 dark:hover:text-gray-600"
                       >
                         ×
                       </button>
@@ -159,7 +159,7 @@ export function DetailsStep({ onComplete, onBack, profileData }: DetailsStepProp
           <Button
             onClick={() => onComplete({ ...details, completeness: 100 })}
             disabled={!canContinue}
-            className="w-full h-12 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-300 text-white font-medium group"
+            className="w-full h-12 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white dark:text-gray-900 font-medium group"
             size="lg"
           >
             Voltooien & Resultaten Bekijken

@@ -228,32 +228,32 @@ function VragenPageContent() {
 
   const getSetBgColor = (setNumber: number) => {
     switch (setNumber) {
-      case 1: return 'bg-blue-50 border-blue-200';
-      case 2: return 'bg-amber-50 border-amber-200';
-      case 3: return 'bg-rose-50 border-rose-200';
-      default: return 'bg-gray-50 border-gray-200';
+      case 1: return 'bg-blue-50 border-blue-200 dark:bg-blue-900/30 dark:border-blue-700';
+      case 2: return 'bg-amber-50 border-amber-200 dark:bg-amber-900/30 dark:border-amber-700';
+      case 3: return 'bg-rose-50 border-rose-200 dark:bg-rose-900/30 dark:border-rose-700';
+      default: return 'bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700';
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center dark:bg-gray-900">
         <Loader2 className="w-8 h-8 animate-spin text-rose-500" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-rose-50/50 to-white pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-rose-50/50 to-white dark:from-gray-900 dark:to-gray-900 pb-24">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => activeSession ? exitSession() : router.back()}
-              className="p-2 hover:bg-gray-100 rounded-full"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
@@ -263,14 +263,14 @@ function VragenPageContent() {
                   <Heart className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-semibold text-gray-900">36 Vragen</h1>
-                  <p className="text-xs text-gray-500">
+                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">36 Vragen</h1>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     {activeSession ? `Met ${activeSession.partnerName}` : 'Bouw diepere verbinding'}
                   </p>
                 </div>
               </div>
             </div>
-            <Badge className="bg-rose-100 text-rose-700 border-0">
+            <Badge className="bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 border-0">
               Transformatie
             </Badge>
           </div>
@@ -282,15 +282,15 @@ function VragenPageContent() {
         {!activeSession && !showNewSession && (
           <>
             {/* Intro Card */}
-            <Card className="border-rose-200 bg-gradient-to-r from-rose-50 to-pink-50">
+            <Card className="border-rose-200 dark:border-rose-700 bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/30 dark:to-pink-900/30">
               <CardContent className="p-6">
                 <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0">
-                    <Info className="w-6 h-6 text-rose-600" />
+                  <div className="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/50 flex items-center justify-center flex-shrink-0">
+                    <Info className="w-6 h-6 text-rose-600 dark:text-rose-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900 mb-1">De 36 Vragen om Verliefd te Worden</h3>
-                    <p className="text-sm text-gray-600">
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-1">De 36 Vragen om Verliefd te Worden</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
                       Gebaseerd op het onderzoek van Dr. Arthur Aron. Deze vragen zijn ontworpen
                       om intimiteit en verbinding op te bouwen - perfect voor dates of verdieping van bestaande relaties.
                     </p>
@@ -310,9 +310,9 @@ function VragenPageContent() {
 
             {/* Previous Sessions */}
             {sessions.length > 0 && (
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg flex items-center gap-2">
+                  <CardTitle className="text-lg flex items-center gap-2 dark:text-white">
                     <MessageCircle className="w-5 h-5 text-rose-500" />
                     Eerdere sessies
                   </CardTitle>
@@ -322,14 +322,14 @@ function VragenPageContent() {
                     <button
                       key={session.id}
                       onClick={() => continueSession(session)}
-                      className="w-full p-4 rounded-xl border border-gray-200 hover:border-rose-300 hover:bg-rose-50/50 text-left transition-all"
+                      className="w-full p-4 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-rose-50/50 dark:hover:bg-rose-900/20 text-left transition-all"
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium text-gray-900">{session.partnerName}</p>
-                          <p className="text-sm text-gray-500">
+                          <p className="font-medium text-gray-900 dark:text-white">{session.partnerName}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
                             {session.status === 'completed' ? (
-                              <span className="text-green-600">Voltooid</span>
+                              <span className="text-green-600 dark:text-green-400">Voltooid</span>
                             ) : (
                               `Vraag ${((session.currentSet || 1) - 1) * 12 + (session.currentQuestion || 1)} van 36`
                             )}
@@ -347,28 +347,28 @@ function VragenPageContent() {
 
         {/* New Session Form */}
         {showNewSession && !activeSession && (
-          <Card>
+          <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center gap-2">
+              <CardTitle className="text-lg flex items-center gap-2 dark:text-white">
                 <Users className="w-5 h-5 text-rose-500" />
                 Nieuwe sessie starten
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
                   Naam van je gesprekspartner
                 </label>
                 <Input
                   value={partnerName}
                   onChange={(e) => setPartnerName(e.target.value)}
                   placeholder="Bijv. Lisa, Mark, etc."
-                  className="border-gray-200"
+                  className="border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 />
               </div>
 
               {error && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-sm text-red-700">
+                <div className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg flex items-center gap-2 text-sm text-red-700 dark:text-red-300">
                   <AlertCircle className="w-4 h-4" />
                   {error}
                 </div>
@@ -414,8 +414,8 @@ function VragenPageContent() {
               {/* Progress */}
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">{currentQuestion.set}</span>
-                  <span className="font-medium text-rose-600">
+                  <span className="text-gray-600 dark:text-gray-400">{currentQuestion.set}</span>
+                  <span className="font-medium text-rose-600 dark:text-rose-400">
                     Vraag {currentQuestion.number} van 36
                   </span>
                 </div>
@@ -430,14 +430,14 @@ function VragenPageContent() {
                 <CardContent className="p-6">
                   <Badge className={cn(
                     'mb-4',
-                    currentQuestion.setNumber === 1 && 'bg-blue-100 text-blue-700',
-                    currentQuestion.setNumber === 2 && 'bg-amber-100 text-amber-700',
-                    currentQuestion.setNumber === 3 && 'bg-rose-100 text-rose-700'
+                    currentQuestion.setNumber === 1 && 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
+                    currentQuestion.setNumber === 2 && 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300',
+                    currentQuestion.setNumber === 3 && 'bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300'
                   )}>
                     Set {currentQuestion.setNumber} - Vraag {currentQuestion.questionInSet}
                   </Badge>
 
-                  <h2 className="text-xl font-semibold text-gray-900 leading-relaxed">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white leading-relaxed">
                     {currentQuestion.text}
                   </h2>
                 </CardContent>
@@ -445,27 +445,27 @@ function VragenPageContent() {
 
               {/* Tip */}
               {currentQuestion.tip && (
-                <Card className="border-gray-200 bg-gray-50">
+                <Card className="border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
                   <CardContent className="p-4">
                     <div className="flex gap-3">
                       <Sparkles className="w-5 h-5 text-amber-500 flex-shrink-0" />
-                      <p className="text-sm text-gray-600 italic">{currentQuestion.tip}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 italic">{currentQuestion.tip}</p>
                     </div>
                   </CardContent>
                 </Card>
               )}
 
               {/* Answer Area (Optional) */}
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardContent className="p-4 space-y-3">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Noteer je antwoord (optioneel - voor je eigen reflectie)
                   </p>
                   <Textarea
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                     placeholder="Schrijf hier je antwoord..."
-                    className="min-h-[100px] border-gray-200"
+                    className="min-h-[100px] border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                   />
                 </CardContent>
               </Card>
@@ -496,25 +496,25 @@ function VragenPageContent() {
             animate={{ opacity: 1, scale: 1 }}
             className="space-y-6"
           >
-            <Card className="border-rose-200 bg-gradient-to-r from-rose-50 to-pink-50">
+            <Card className="border-rose-200 dark:border-rose-700 bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/30 dark:to-pink-900/30">
               <CardContent className="p-8 text-center">
                 <div className="w-20 h-20 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center mx-auto mb-6">
                   <Trophy className="w-10 h-10 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                   Gefeliciteerd!
                 </h2>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 dark:text-gray-300 mb-6">
                   Jullie hebben alle 36 vragen doorlopen met {activeSession?.partnerName}.
                 </p>
 
                 {/* Final instruction */}
-                <div className="p-4 bg-white rounded-xl border border-rose-200 text-left">
-                  <h3 className="font-medium text-gray-900 mb-2 flex items-center gap-2">
+                <div className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-rose-200 dark:border-rose-700 text-left">
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                     <Eye className="w-5 h-5 text-rose-500" />
                     Laatste stap
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Neem nu <strong>4 minuten</strong> om in stilte in elkaars ogen te kijken.
                     Dit verdiept de connectie die jullie net hebben opgebouwd.
                   </p>
@@ -523,43 +523,43 @@ function VragenPageContent() {
             </Card>
 
             {/* Reflectie Section */}
-            <Card>
+            <Card className="dark:bg-gray-800 dark:border-gray-700">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Reflectie</CardTitle>
+                <CardTitle className="text-lg dark:text-white">Reflectie</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-4 rounded-xl border-2 border-pink-200 bg-pink-50/50">
+                <div className="p-4 rounded-xl border-2 border-pink-200 dark:border-pink-700 bg-pink-50/50 dark:bg-pink-900/20">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center">
                       <Eye className="w-3 h-3 text-white" />
                     </div>
-                    <Badge className="bg-pink-100 text-pink-700 border-0 text-xs">Spiegel</Badge>
+                    <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0 text-xs">Spiegel</Badge>
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Wat heb je geleerd over {activeSession?.partnerName} dat je nog niet wist?
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl border-2 border-amber-200 bg-amber-50/50">
+                <div className="p-4 rounded-xl border-2 border-amber-200 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-900/20">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center">
                       <Sparkles className="w-3 h-3 text-white" />
                     </div>
-                    <Badge className="bg-amber-100 text-amber-700 border-0 text-xs">Identiteit</Badge>
+                    <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 border-0 text-xs">Identiteit</Badge>
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Welke vraag heeft jou het meest geraakt of verrast?
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl border-2 border-green-200 bg-green-50/50">
+                <div className="p-4 rounded-xl border-2 border-green-200 dark:border-green-700 bg-green-50/50 dark:bg-green-900/20">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
                       <Zap className="w-3 h-3 text-white" />
                     </div>
-                    <Badge className="bg-green-100 text-green-700 border-0 text-xs">Actie</Badge>
+                    <Badge className="bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 border-0 text-xs">Actie</Badge>
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Hoe wil je deze connectie verder verdiepen?
                   </p>
                 </div>
@@ -594,7 +594,7 @@ function VragenPageContent() {
 export default function VragenPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center dark:bg-gray-900">
         <Loader2 className="w-8 h-8 animate-spin text-rose-500" />
       </div>
     }>

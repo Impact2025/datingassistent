@@ -459,7 +459,7 @@ export function RegistrationClientComponent() {
 
   // Show code verification screen
   if (showCodeVerification && registeredUserId && registeredUserEmail) {
-    const handleVerificationSuccess = (user: any) => {
+    const handleVerificationSuccess = (user: unknown) => {
       console.log('✅ Email verified successfully:', user);
 
       // Track successful sign up in GA4
@@ -575,8 +575,8 @@ export function RegistrationClientComponent() {
     };
 
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4 sm:p-6 lg:p-8">
-        <Card className="w-full max-w-md rounded-2xl bg-card shadow-2xl">
+      <div className="min-h-screen bg-background dark:bg-gray-900 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+        <Card className="w-full max-w-md rounded-2xl bg-card dark:bg-gray-800 shadow-2xl">
           <CardHeader className="text-center pb-4 pt-6">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
@@ -644,11 +644,12 @@ export function RegistrationClientComponent() {
           const errorData = await response.json();
           throw new Error(errorData.error || 'Failed to resend verification email');
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         console.error('Resend verification email error:', error);
         toast({
           title: "Fout bij verzenden",
-          description: error.message || "Er is een fout opgetreden bij het verzenden van de verificatie email.",
+          description: errorMessage || "Er is een fout opgetreden bij het verzenden van de verificatie email.",
           variant: "destructive",
         });
       } finally {
@@ -658,21 +659,21 @@ export function RegistrationClientComponent() {
 
     return (
       <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
-        <Card className="rounded-2xl bg-card shadow-2xl">
+        <Card className="rounded-2xl bg-card dark:bg-gray-800 shadow-2xl">
           <CardContent className="flex flex-col items-center justify-center py-16 space-y-6 text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-              <svg className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+              <svg className="h-8 w-8 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
             <div className="space-y-3">
-              <h2 className="text-2xl font-bold">Controleer je email!</h2>
+              <h2 className="text-2xl font-bold dark:text-white">Controleer je email!</h2>
               <p className="text-muted-foreground text-base max-w-md">
                 We hebben een verificatie email gestuurd naar <strong>{pendingVerificationEmail}</strong>.
                 Klik op de link in de email om je account te activeren.
               </p>
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
-                <p className="text-sm text-yellow-800">
+              <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mt-4">
+                <p className="text-sm text-yellow-800 dark:text-yellow-200">
                   <strong>Belangrijk:</strong> Controleer ook je spam/junk folder als je de email niet ziet.
                   De verificatie link verloopt over 24 uur.
                 </p>
@@ -715,10 +716,10 @@ export function RegistrationClientComponent() {
   if (showSuccessMessage) {
     return (
       <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
-        <Card className="rounded-2xl bg-card shadow-2xl">
+        <Card className="rounded-2xl bg-card dark:bg-gray-800 shadow-2xl">
           <CardContent className="flex flex-col items-center justify-center py-16 space-y-6 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-              <CheckCircle className="h-8 w-8 text-green-600" />
+            <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
             <div className="space-y-3">
               <div className="flex items-center justify-center gap-3">
@@ -727,7 +728,7 @@ export function RegistrationClientComponent() {
                 </div>
                 <span className="text-muted-foreground font-medium">afgerond</span>
               </div>
-              <h2 className="text-2xl font-bold">Account aangemaakt!</h2>
+              <h2 className="text-2xl font-bold dark:text-white">Account aangemaakt!</h2>
               <p className="text-muted-foreground text-base max-w-md">
                 We zetten nu Stap 2 klaar: vul je profiel aan zodat je coach direct aan de slag kan.
                 Je ontvangt ook een welkomstmail met een samenvatting.
@@ -745,9 +746,9 @@ export function RegistrationClientComponent() {
       <div className="space-y-6">
         {/* Payment Success Banner - Only show when payment is validated */}
         {orderId && paymentValidated && (
-          <Alert className="border-green-200 bg-green-50">
+          <Alert className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/30">
             <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
+            <AlertDescription className="text-green-800 dark:text-green-200">
               <strong>Betaling geslaagd!</strong> Stap 1: maak je inlog aan zodat we je abonnement kunnen koppelen. Stap 2 (profiel invullen) volgt direct daarna.
             </AlertDescription>
           </Alert>
@@ -765,9 +766,9 @@ export function RegistrationClientComponent() {
 
         {/* Program Purchase Info */}
         {isProgramPurchase && programSlug && !orderId && (
-          <Alert className="border-purple-200 bg-purple-50">
+          <Alert className="border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/30">
             <AlertCircle className="h-4 w-4 text-purple-600" />
-            <AlertDescription className="text-purple-800">
+            <AlertDescription className="text-purple-800 dark:text-purple-200">
               <strong>Stap 1 van 2</strong> – Je hebt het <span className="font-semibold">{programSlug.replace(/-/g, ' ')}</span> geselecteerd.
               Maak eerst je account aan, daarna ga je naar de betaalpagina.
             </AlertDescription>
@@ -781,14 +782,14 @@ export function RegistrationClientComponent() {
             <AlertDescription>
               <strong>Stap 1 van 2</strong> – Je hebt het <span className="font-semibold">{planLabel ?? plan}</span>
               {planPriceCents !== null && (
-                <span> ({billingParam === 'monthly' ? 'maandelijks' : 'jaarlijks'}: €{(planPriceCents / 100).toFixed(2)})</span>
+                <span> ({billingParam === 'monthly' ? 'maandelijks' : 'jaarlijks'}: {(planPriceCents / 100).toFixed(2)})</span>
               )} geselecteerd. Vul hieronder je gegevens in om door te gaan naar het profielformulier.
             </AlertDescription>
           </Alert>
         )}
 
         {/* Main Registration Card - Dashboard Style */}
-        <Card className="rounded-2xl bg-card shadow-2xl">
+        <Card className="rounded-2xl bg-card dark:bg-gray-800 shadow-2xl">
           <CardHeader className="text-center pb-6">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
@@ -920,9 +921,9 @@ export function RegistrationClientComponent() {
 
                 {/* Registration Error Alert */}
                 {registrationError && (
-                  <Alert className="border-red-200 bg-red-50">
+                  <Alert className="border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30">
                     <AlertCircle className="h-4 w-4 text-red-600" />
-                    <AlertDescription className="text-red-800">
+                    <AlertDescription className="text-red-800 dark:text-red-200">
                       {registrationError === "existing_email" ? (
                         <div className="space-y-2">
                           <p>
@@ -948,10 +949,10 @@ export function RegistrationClientComponent() {
                 )}
 
                 {/* Security Note */}
-                <Alert className="border-pink-200 bg-pink-50">
+                <Alert className="border-pink-200 dark:border-pink-800 bg-pink-50 dark:bg-pink-900/30">
                   <AlertCircle className="h-4 w-4 text-pink-600" />
-                  <AlertDescription className="text-pink-800">
-                    <strong>Veilig & Vertrouwelijk:</strong> Je gegevens zijn veilig versleuteld en worden alleen gebruikt voor je DatingAssistent account. We verkopen of delen je persoonlijke informatie nooit met derden.
+                  <AlertDescription className="text-pink-800 dark:text-pink-200">
+                    <strong>Veilig en Vertrouwelijk:</strong> Je gegevens zijn veilig versleuteld en worden alleen gebruikt voor je DatingAssistent account. We verkopen of delen je persoonlijke informatie nooit met derden.
                   </AlertDescription>
                 </Alert>
               </CardContent>

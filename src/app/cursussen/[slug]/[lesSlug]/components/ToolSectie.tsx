@@ -53,32 +53,32 @@ export function ToolSectie({ sectie, isCompleted, onComplete }: ToolSectieProps)
   };
 
   return (
-    <Card className="shadow-lg border-pink-100 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
               <Wrench className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
           </div>
           {isCompleted && <CheckCircle className="w-5 h-5 text-green-500" />}
         </div>
 
         {/* Intro text */}
         {content.introTekst && (
-          <p className="text-gray-700 mb-6 leading-relaxed">{content.introTekst}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{content.introTekst}</p>
         )}
 
         {/* Tool card */}
-        <div className="mb-6 p-6 rounded-lg bg-gradient-to-r from-pink-50 to-white border-2 border-pink-200">
+        <div className="mb-6 p-6 rounded-lg bg-gradient-to-r from-pink-50 to-white dark:from-pink-900/30 dark:to-gray-800 border-2 border-pink-200 dark:border-pink-700">
           <div className="text-center">
             <div className="text-4xl mb-4">🛠️</div>
-            <h4 className="font-bold text-gray-900 mb-2 text-lg">
+            <h4 className="font-bold text-gray-900 dark:text-white mb-2 text-lg">
               {content.toolNaam || sectie.titel}
             </h4>
             {content.toolBeschrijving && (
-              <p className="text-sm text-gray-600 mb-4">{content.toolBeschrijving}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{content.toolBeschrijving}</p>
             )}
             <PrimaryButton
               onClick={handleLaunchTool}
@@ -91,9 +91,9 @@ export function ToolSectie({ sectie, isCompleted, onComplete }: ToolSectieProps)
 
         {/* Instructions */}
         {content.instructies && (
-          <div className="mb-6 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
-            <h4 className="font-semibold text-blue-900 mb-2">📋 Hoe te gebruiken:</h4>
-            <p className="text-sm text-blue-800 whitespace-pre-wrap">{content.instructies}</p>
+          <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg border-2 border-blue-200 dark:border-blue-700">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">Hoe te gebruiken:</h4>
+            <p className="text-sm text-blue-800 dark:text-blue-200 whitespace-pre-wrap">{content.instructies}</p>
           </div>
         )}
 
@@ -101,7 +101,7 @@ export function ToolSectie({ sectie, isCompleted, onComplete }: ToolSectieProps)
         {!isCompleted && (
           <PrimaryButton
             onClick={onComplete}
-            className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full border-2 border-gray-300"
+            className="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full border-2 border-gray-300 dark:border-gray-600"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
             Tool gebruikt

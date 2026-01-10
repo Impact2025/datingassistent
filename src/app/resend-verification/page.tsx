@@ -77,9 +77,9 @@ export default function ResendVerificationPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
-              <p className="font-semibold mb-2">Volgende stappen:</p>
-              <ol className="list-decimal list-inside space-y-1">
+            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4 text-sm">
+              <p className="font-semibold mb-2 dark:text-blue-200">Volgende stappen:</p>
+              <ol className="list-decimal list-inside space-y-1 dark:text-blue-100">
                 <li>Check je inbox (en spam folder!)</li>
                 <li>Kopieer de 6-cijferige code</li>
                 <li>Ga naar de verificatie pagina</li>
@@ -87,9 +87,9 @@ export default function ResendVerificationPage() {
               </ol>
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm">
-              <p className="font-semibold mb-1">💡 Tip: Email in spam?</p>
-              <p>Voeg <strong>noreply@datingassistent.nl</strong> toe aan je contacten om toekomstige emails te ontvangen.</p>
+            <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 text-sm">
+              <p className="font-semibold mb-1 dark:text-yellow-200">Tip: Email in spam?</p>
+              <p className="dark:text-yellow-100">Voeg <strong>noreply@datingassistent.nl</strong> toe aan je contacten om toekomstige emails te ontvangen.</p>
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">
@@ -127,7 +127,7 @@ export default function ResendVerificationPage() {
         <form onSubmit={handleResend}>
           <CardContent className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="block text-sm font-medium mb-2 dark:text-gray-200">
                 Emailadres
               </label>
               <Input
@@ -140,9 +140,9 @@ export default function ResendVerificationPage() {
               />
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm">
-              <p className="font-semibold mb-2">⚠️ Let op:</p>
-              <ul className="list-disc list-inside space-y-1">
+            <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 text-sm">
+              <p className="font-semibold mb-2 dark:text-yellow-200">Let op:</p>
+              <ul className="list-disc list-inside space-y-1 dark:text-yellow-100">
                 <li>Check je <strong>spam/junk folder</strong></li>
                 <li>De code is <strong>1 uur geldig</strong></li>
                 <li>Voeg ons toe aan je contacten</li>

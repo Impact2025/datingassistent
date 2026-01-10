@@ -184,37 +184,37 @@ function GhostingReframerContent() {
 
   const getScenarioColor = (color: string) => {
     switch (color) {
-      case 'rose': return 'border-rose-200 bg-rose-50 hover:border-rose-400';
-      case 'blue': return 'border-blue-200 bg-blue-50 hover:border-blue-400';
-      case 'amber': return 'border-amber-200 bg-amber-50 hover:border-amber-400';
-      case 'purple': return 'border-purple-200 bg-purple-50 hover:border-purple-400';
-      case 'green': return 'border-green-200 bg-green-50 hover:border-green-400';
-      default: return 'border-gray-200 bg-gray-50 hover:border-gray-400';
+      case 'rose': return 'border-rose-200 bg-rose-50 hover:border-rose-400 dark:border-rose-700 dark:bg-rose-900/30 dark:hover:border-rose-500';
+      case 'blue': return 'border-blue-200 bg-blue-50 hover:border-blue-400 dark:border-blue-700 dark:bg-blue-900/30 dark:hover:border-blue-500';
+      case 'amber': return 'border-amber-200 bg-amber-50 hover:border-amber-400 dark:border-amber-700 dark:bg-amber-900/30 dark:hover:border-amber-500';
+      case 'purple': return 'border-purple-200 bg-purple-50 hover:border-purple-400 dark:border-purple-700 dark:bg-purple-900/30 dark:hover:border-purple-500';
+      case 'green': return 'border-green-200 bg-green-50 hover:border-green-400 dark:border-green-700 dark:bg-green-900/30 dark:hover:border-green-500';
+      default: return 'border-gray-200 bg-gray-50 hover:border-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-500';
     }
   };
 
   const getScenarioIconColor = (color: string) => {
     switch (color) {
-      case 'rose': return 'text-rose-600';
-      case 'blue': return 'text-blue-600';
-      case 'amber': return 'text-amber-600';
-      case 'purple': return 'text-purple-600';
-      case 'green': return 'text-green-600';
-      default: return 'text-gray-600';
+      case 'rose': return 'text-rose-600 dark:text-rose-400';
+      case 'blue': return 'text-blue-600 dark:text-blue-400';
+      case 'amber': return 'text-amber-600 dark:text-amber-400';
+      case 'purple': return 'text-purple-600 dark:text-purple-400';
+      case 'green': return 'text-green-600 dark:text-green-400';
+      default: return 'text-gray-600 dark:text-gray-400';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50/50 to-white pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-purple-50/50 to-white dark:from-gray-900 dark:to-gray-900 pb-24">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => selectedScenario ? resetSession() : router.back()}
-              className="p-2 hover:bg-gray-100 rounded-full"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
@@ -224,12 +224,12 @@ function GhostingReframerContent() {
                   <Ghost className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-semibold text-gray-900">Ghosting Reframer</h1>
-                  <p className="text-xs text-gray-500">Verwerk afwijzing op een gezonde manier</p>
+                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Ghosting Reframer</h1>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Verwerk afwijzing op een gezonde manier</p>
                 </div>
               </div>
             </div>
-            <Badge className="bg-purple-100 text-purple-700 border-0">
+            <Badge className="bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 border-0">
               Transformatie
             </Badge>
           </div>
@@ -241,15 +241,15 @@ function GhostingReframerContent() {
         {!selectedScenario && (
           <div className="space-y-6">
             {/* Intro Card */}
-            <Card className="border-purple-200 bg-gradient-to-r from-purple-50 to-violet-50">
+            <Card className="border-purple-200 dark:border-purple-700 bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/30 dark:to-violet-900/30">
               <CardContent className="p-6">
                 <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
-                    <Info className="w-6 h-6 text-purple-600" />
+                  <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center flex-shrink-0">
+                    <Info className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900 mb-1">Therapeutische ondersteuning</h3>
-                    <p className="text-sm text-gray-600">
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-1">Therapeutische ondersteuning</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
                       Een veilige plek om je gevoelens te verwerken na ghosting of afwijzing.
                       Gebaseerd op CGT en zelfcompassie-technieken.
                     </p>
@@ -259,9 +259,9 @@ function GhostingReframerContent() {
             </Card>
 
             {/* Scenario Selection */}
-            <Card>
+            <Card className="dark:bg-gray-800 dark:border-gray-700">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Wat speelt er bij je?</CardTitle>
+                <CardTitle className="text-lg dark:text-white">Wat speelt er bij je?</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {SCENARIOS.map((scenario) => {
@@ -279,8 +279,8 @@ function GhostingReframerContent() {
                       <div className="flex items-start gap-3">
                         <Icon className={cn('w-5 h-5 mt-0.5', getScenarioIconColor(scenario.color))} />
                         <div>
-                          <p className="font-medium text-gray-900">{scenario.title}</p>
-                          <p className="text-sm text-gray-600">{scenario.description}</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{scenario.title}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">{scenario.description}</p>
                         </div>
                       </div>
                     </button>
@@ -291,10 +291,10 @@ function GhostingReframerContent() {
 
             {/* Error */}
             {error && (
-              <Card className="border-red-200 bg-red-50">
+              <Card className="border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/30">
                 <CardContent className="p-4 flex items-center gap-3">
                   <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                  <p className="text-sm text-red-700">{error}</p>
+                  <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
                 </CardContent>
               </Card>
             )}
@@ -327,14 +327,14 @@ function GhostingReframerContent() {
                         'max-w-[80%] rounded-2xl p-4',
                         message.role === 'user'
                           ? 'bg-purple-500 text-white rounded-br-sm'
-                          : 'bg-white border border-gray-200 text-gray-800 rounded-bl-sm'
+                          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-sm'
                       )}
                     >
                       <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                     </div>
                     {message.role === 'user' && (
-                      <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
-                        <User className="w-4 h-4 text-gray-600" />
+                      <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center flex-shrink-0">
+                        <User className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                       </div>
                     )}
                   </motion.div>
@@ -350,7 +350,7 @@ function GhostingReframerContent() {
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-violet-500 flex items-center justify-center flex-shrink-0">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
-                  <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-sm p-4">
+                  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-sm p-4">
                     <div className="flex gap-1">
                       <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                       <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -365,14 +365,14 @@ function GhostingReframerContent() {
 
             {/* Error */}
             {error && (
-              <div className="p-3 mb-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-sm text-red-700">
+              <div className="p-3 mb-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg flex items-center gap-2 text-sm text-red-700 dark:text-red-300">
                 <AlertCircle className="w-4 h-4" />
                 {error}
               </div>
             )}
 
             {/* Input */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-2">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-2">
               <div className="flex gap-2">
                 <Textarea
                   ref={textareaRef}
@@ -380,7 +380,7 @@ function GhostingReframerContent() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Deel wat je voelt..."
-                  className="flex-1 border-0 resize-none min-h-[44px] max-h-[120px] focus-visible:ring-0"
+                  className="flex-1 border-0 resize-none min-h-[44px] max-h-[120px] focus-visible:ring-0 dark:bg-gray-800 dark:text-white"
                   rows={1}
                 />
                 <Button
@@ -427,7 +427,7 @@ function GhostingReframerContent() {
 export default function GhostingReframerPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center dark:bg-gray-900">
         <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
       </div>
     }>

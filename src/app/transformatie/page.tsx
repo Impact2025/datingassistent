@@ -64,7 +64,7 @@ function TransformatieContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
           <div className="flex justify-center mb-8 animate-pulse">
             <Image
@@ -77,8 +77,8 @@ function TransformatieContent() {
             />
           </div>
           <Loader2 className="w-8 h-8 animate-spin text-pink-500 mx-auto mb-4" />
-          <p className="text-lg font-semibold text-gray-900">Transformatie laden...</p>
-          <p className="text-sm text-gray-500">Even geduld...</p>
+          <p className="text-lg font-semibold text-gray-900 dark:text-white">Transformatie laden...</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Even geduld...</p>
         </div>
       </div>
     );
@@ -98,7 +98,7 @@ function TransformatieContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
         <div className="space-y-6">
           {/* Header - Consistent with Dashboard */}
@@ -169,23 +169,23 @@ function TransformatieContent() {
           </header>
 
           {/* Main Content Card */}
-          <main className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20">
+          <main className="rounded-2xl bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20 dark:border-gray-700/20">
             {/* Transformatie Title Bar */}
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-gray-700">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-md">
                   <span className="text-white font-bold text-lg">T</span>
                 </div>
                 <div>
-                  <h1 className="text-xl font-semibold text-gray-900">Transformatie</h1>
-                  <p className="text-sm text-gray-500">12 modules • DESIGN → ACTION → SURRENDER</p>
+                  <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Transformatie</h1>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">12 modules • DESIGN → ACTION → SURRENDER</p>
                 </div>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => router.push('/dashboard')}
-                className="border-gray-200 text-gray-700 hover:bg-gray-50"
+                className="border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 ← Terug naar Dashboard
               </Button>

@@ -67,16 +67,16 @@ export const ToolsGridSection = React.memo(function ToolsGridSection({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: ANIMATION_DELAYS.TOOLS }}
     >
-      <Card className="border-0 shadow-sm bg-gradient-to-br from-white to-pink-50/30">
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-white to-pink-50/30 dark:from-gray-800 dark:to-pink-900/10">
         <CardContent className="p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="p-2 bg-pink-100 rounded-lg">
-                <Zap className="w-4 h-4 text-pink-600" />
+              <div className="p-2 bg-pink-100 dark:bg-pink-900/30 rounded-lg">
+                <Zap className="w-4 h-4 text-pink-600 dark:text-pink-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Jouw Tools</h3>
-                <p className="text-xs text-gray-500">Alles wat je nodig hebt</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Jouw Tools</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Alles wat je nodig hebt</p>
               </div>
             </div>
             <Button

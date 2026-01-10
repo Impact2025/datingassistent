@@ -60,16 +60,16 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
   };
 
   return (
-    <Card className="shadow-lg border-pink-100 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
           {isCompleted && <CheckCircle className="w-5 h-5 text-green-500" />}
         </div>
 
         {/* Intro */}
         {content.intro && (
-          <p className="text-gray-700 mb-6 leading-relaxed">{content.intro}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{content.intro}</p>
         )}
 
         {/* Questions */}
@@ -84,12 +84,12 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
                 className={`p-5 rounded-lg border-2 transition-all ${
                   isAnswered
                     ? answer
-                      ? 'border-amber-300 bg-amber-50'
-                      : 'border-green-300 bg-green-50'
-                    : 'border-gray-200 bg-white'
+                      ? 'border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/30'
+                      : 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30'
+                    : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700'
                 }`}
               >
-                <p className="text-gray-900 font-medium mb-3">{vraagItem.vraag}</p>
+                <p className="text-gray-900 dark:text-white font-medium mb-3">{vraagItem.vraag}</p>
 
                 {/* Yes/No buttons */}
                 {!isCompleted && (
@@ -99,7 +99,7 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
                       className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-all ${
                         answer === true
                           ? 'border-amber-500 bg-amber-500 text-white'
-                          : 'border-gray-300 bg-white text-gray-700 hover:border-amber-300 hover:bg-amber-50'
+                          : 'border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:border-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/30'
                       }`}
                     >
                       Ja
@@ -109,7 +109,7 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
                       className={`flex-1 py-2 px-4 rounded-lg border-2 font-medium transition-all ${
                         answer === false
                           ? 'border-green-500 bg-green-500 text-white'
-                          : 'border-gray-300 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50'
+                          : 'border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:border-green-300 hover:bg-green-50 dark:hover:bg-green-900/30'
                       }`}
                     >
                       Nee
@@ -119,9 +119,9 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
 
                 {/* Show meaning if answered "Ja" and result is shown */}
                 {showResult && answer === true && vraagItem.ja_betekent && (
-                  <div className="mt-3 p-3 bg-amber-100 rounded border border-amber-300">
-                    <p className="text-xs font-semibold text-amber-900 mb-1">Dit betekent:</p>
-                    <p className="text-sm text-amber-800">{vraagItem.ja_betekent}</p>
+                  <div className="mt-3 p-3 bg-amber-100 dark:bg-amber-900/40 rounded border border-amber-300 dark:border-amber-700">
+                    <p className="text-xs font-semibold text-amber-900 dark:text-amber-300 mb-1">Dit betekent:</p>
+                    <p className="text-sm text-amber-800 dark:text-amber-200">{vraagItem.ja_betekent}</p>
                   </div>
                 )}
               </div>
@@ -145,21 +145,21 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
         {showResult && (
           <div className="space-y-4 mb-6">
             {/* Score */}
-            <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 border-2 border-pink-300">
-              <p className="text-sm text-gray-700 mb-2">Je score:</p>
-              <p className="text-3xl font-bold text-pink-600 mb-1">
+            <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 border-2 border-pink-300 dark:border-pink-700">
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">Je score:</p>
+              <p className="text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">
                 {yesCount} / {vragen.length}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {yesCount === 1 ? '1 "ja" antwoord' : `${yesCount} "ja" antwoorden`}
               </p>
             </div>
 
             {/* Interpretation */}
             {interpretatie && getInterpretation() && (
-              <div className="p-5 rounded-lg bg-white border-2 border-pink-200">
-                <p className="text-sm font-semibold text-pink-900 mb-2">Wat dit betekent:</p>
-                <p className="text-gray-800 leading-relaxed">{getInterpretation()}</p>
+              <div className="p-5 rounded-lg bg-white dark:bg-gray-700 border-2 border-pink-200 dark:border-pink-700">
+                <p className="text-sm font-semibold text-pink-900 dark:text-pink-300 mb-2">Wat dit betekent:</p>
+                <p className="text-gray-800 dark:text-gray-200 leading-relaxed">{getInterpretation()}</p>
               </div>
             )}
           </div>

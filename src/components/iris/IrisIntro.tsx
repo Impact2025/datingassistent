@@ -120,12 +120,12 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                 </motion.div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-purple-900">Iris</h3>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium">
+                    <h3 className="font-bold text-purple-900 dark:text-purple-100">Iris</h3>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-200 font-medium">
                       Je AI Coach
                     </span>
                   </div>
-                  <p className="text-xs text-purple-600">Persoonlijk bericht voor jou</p>
+                  <p className="text-xs text-purple-600 dark:text-purple-300">Persoonlijk bericht voor jou</p>
                 </div>
               </div>
 
@@ -165,21 +165,21 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                 >
                   <div className="px-4 pb-4">
                     {/* Message Content */}
-                    <div className="bg-white/80 backdrop-blur rounded-xl p-4 shadow-sm border border-purple-100">
+                    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-xl p-4 shadow-sm border border-purple-100 dark:border-purple-800">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-2xl">{message.emoji}</span>
-                        <h4 className="font-bold text-gray-900">{message.title}</h4>
+                        <h4 className="font-bold text-gray-900 dark:text-white">{message.title}</h4>
                       </div>
-                      <p className="text-gray-700 leading-relaxed">{message.message}</p>
+                      <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{message.message}</p>
 
                       {message.actionPrompt && (
                         <motion.div
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.5 }}
-                          className="mt-3 pt-3 border-t border-purple-100"
+                          className="mt-3 pt-3 border-t border-purple-100 dark:border-purple-800"
                         >
-                          <p className="text-sm text-purple-700 font-medium flex items-center gap-2">
+                          <p className="text-sm text-purple-700 dark:text-purple-300 font-medium flex items-center gap-2">
                             <Sparkles className="w-4 h-4" />
                             {message.actionPrompt}
                           </p>
@@ -199,7 +199,7 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                           <div
                             key={index}
                             className={cn(
-                              'bg-white/80 backdrop-blur rounded-lg p-3 border-l-4',
+                              'bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-lg p-3 border-l-4',
                               pattern.color === 'green' && 'border-green-500',
                               pattern.color === 'orange' && 'border-orange-500',
                               pattern.color === 'purple' && 'border-purple-500',
@@ -208,9 +208,9 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                           >
                             <div className="flex items-center gap-2 mb-1">
                               <span className="text-xl">{pattern.emoji}</span>
-                              <h5 className="font-bold text-sm text-gray-900">{pattern.title}</h5>
+                              <h5 className="font-bold text-sm text-gray-900 dark:text-white">{pattern.title}</h5>
                             </div>
-                            <p className="text-xs text-gray-700 leading-relaxed">{pattern.message}</p>
+                            <p className="text-xs text-gray-700 dark:text-gray-200 leading-relaxed">{pattern.message}</p>
                           </div>
                         ))}
                       </motion.div>
@@ -225,27 +225,27 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                         className="mt-3 flex gap-2"
                       >
                         {message.context.streak && (
-                          <div className="flex-1 bg-white/60 rounded-lg p-2 text-center">
-                            <div className="text-lg font-bold text-orange-600">
+                          <div className="flex-1 bg-white/60 dark:bg-gray-700/60 rounded-lg p-2 text-center">
+                            <div className="text-lg font-bold text-orange-600 dark:text-orange-400">
                               {message.context.streak}🔥
                             </div>
-                            <div className="text-xs text-gray-600">Streak</div>
+                            <div className="text-xs text-gray-600 dark:text-gray-300">Streak</div>
                           </div>
                         )}
                         {message.context.completedDays && (
-                          <div className="flex-1 bg-white/60 rounded-lg p-2 text-center">
-                            <div className="text-lg font-bold text-purple-600">
+                          <div className="flex-1 bg-white/60 dark:bg-gray-700/60 rounded-lg p-2 text-center">
+                            <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
                               {message.context.completedDays}/21
                             </div>
-                            <div className="text-xs text-gray-600">Dagen</div>
+                            <div className="text-xs text-gray-600 dark:text-gray-300">Dagen</div>
                           </div>
                         )}
                         {message.context.percentage && (
-                          <div className="flex-1 bg-white/60 rounded-lg p-2 text-center">
-                            <div className="text-lg font-bold text-green-600">
+                          <div className="flex-1 bg-white/60 dark:bg-gray-700/60 rounded-lg p-2 text-center">
+                            <div className="text-lg font-bold text-green-600 dark:text-green-400">
                               {message.context.percentage}%
                             </div>
-                            <div className="text-xs text-gray-600">Voltooid</div>
+                            <div className="text-xs text-gray-600 dark:text-gray-300">Voltooid</div>
                           </div>
                         )}
                       </motion.div>

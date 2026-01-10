@@ -174,7 +174,7 @@ export function ToolModal({ isOpen, onClose, children, className }: ToolModalPro
               dragElastic={{ top: 0, bottom: 0.3 }}
               onDragEnd={handleDragEnd}
               className={cn(
-                "pointer-events-auto w-full h-full bg-white shadow-2xl",
+                "pointer-events-auto w-full h-full bg-white dark:bg-gray-900 shadow-2xl",
                 "flex flex-col",
                 "md:hidden", // Hide on desktop
                 className
@@ -188,7 +188,7 @@ export function ToolModal({ isOpen, onClose, children, className }: ToolModalPro
                 className="flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing touch-none select-none"
                 onPointerDown={startDrag}
               >
-                <div className="w-12 h-1.5 bg-gray-300 rounded-full" />
+                <div className="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full" />
               </div>
 
               {/* Content - Scrollable */}
@@ -209,7 +209,7 @@ export function ToolModal({ isOpen, onClose, children, className }: ToolModalPro
               className={cn(
                 "pointer-events-auto hidden md:flex flex-col",
                 "w-full max-w-6xl h-[92vh]",
-                "bg-white rounded-2xl shadow-2xl",
+                "bg-white dark:bg-gray-900 rounded-2xl shadow-2xl",
                 "mx-4",
                 className
               )}

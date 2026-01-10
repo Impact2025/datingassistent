@@ -75,13 +75,13 @@ function VerifyEmailContent() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
           <LoadingSpinner className="mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
             Email Verificatie
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-300">
             Bezig met verifiëren van je emailadres...
           </p>
         </div>
@@ -91,20 +91,20 @@ function VerifyEmailContent() {
 
   if (status === 'success') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-green-50">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+      <div className="min-h-screen flex items-center justify-center bg-green-50 dark:bg-gray-900">
+        <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
           <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Email Geverifieerd! ✅
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Email Geverifieerd!
           </h2>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
             Welkom bij DatingAssistent, {userName}!
           </p>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
             {message} Je wordt automatisch doorgestuurd naar de inlogpagina.
           </p>
           <LoadingSpinner className="mx-auto" />
-          <p className="text-xs text-gray-400 mt-4">
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-4">
             Als je niet automatisch wordt doorgestuurd,{' '}
             <Button
               variant="link"
@@ -121,13 +121,13 @@ function VerifyEmailContent() {
 
   if (status === 'error') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-red-50">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+      <div className="min-h-screen flex items-center justify-center bg-red-50 dark:bg-gray-900">
+        <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
           <XCircle className="mx-auto h-16 w-16 text-red-500 mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Verificatie Mislukt ❌
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Verificatie Mislukt
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
             {message}
           </p>
           <div className="space-y-3">
@@ -145,7 +145,7 @@ function VerifyEmailContent() {
               Opnieuw Registreren
             </Button>
           </div>
-          <p className="text-xs text-gray-400 mt-4">
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-4">
             Hulp nodig? Neem contact op met{' '}
             <a href="mailto:support@datingassistent.nl" className="text-blue-500 hover:underline">
               support@datingassistent.nl
@@ -162,13 +162,13 @@ function VerifyEmailContent() {
 export default function VerifyEmailPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
           <LoadingSpinner className="mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
             Email Verificatie
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-300">
             Laden...
           </p>
         </div>

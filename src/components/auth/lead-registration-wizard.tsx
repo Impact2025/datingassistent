@@ -372,8 +372,8 @@ export function LeadRegistrationWizard({
                     'w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm transition-colors',
                     index < currentStepIndex && 'bg-pink-500 text-white',
                     index === currentStepIndex &&
-                      'bg-pink-500 text-white ring-4 ring-pink-200',
-                    index > currentStepIndex && 'bg-gray-200 text-gray-500'
+                      'bg-pink-500 text-white ring-4 ring-pink-200 dark:ring-pink-800',
+                    index > currentStepIndex && 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
                   )}
                 >
                   {index < currentStepIndex ? (
@@ -395,7 +395,7 @@ export function LeadRegistrationWizard({
 
                 {/* Connector Line */}
                 {index < steps.length - 1 && (
-                  <div className="flex-1 mx-2 h-0.5 bg-gray-200 relative min-w-[40px]">
+                  <div className="flex-1 mx-2 h-0.5 bg-gray-200 dark:bg-gray-700 relative min-w-[40px]">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{
@@ -417,7 +417,7 @@ export function LeadRegistrationWizard({
                 key={step.key}
                 className={cn(
                   'text-xs font-medium text-center',
-                  index <= currentStepIndex ? 'text-pink-600' : 'text-gray-400'
+                  index <= currentStepIndex ? 'text-pink-600 dark:text-pink-400' : 'text-gray-400 dark:text-gray-500'
                 )}
                 style={{ width: `${100 / steps.length}%` }}
               >

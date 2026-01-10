@@ -69,44 +69,44 @@ export function ProArsenal() {
   if (!hasAccess) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <Card className="border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50">
+        <Card className="border-2 border-purple-300 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30">
           <CardContent className="p-8 text-center">
             <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
               <Lock className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-2xl font-bold mb-4">Pro Arsenal</h2>
-            <p className="text-gray-600 mb-6 max-w-md mx-auto">
+            <h2 className="text-2xl font-bold mb-4 dark:text-white">Pro Arsenal</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
               Premium dating tools voor maximale resultaten. Krijg toegang tot geavanceerde assessments, date planning en unlimited gebruik van alle tools.
             </p>
 
-            <div className="bg-white rounded-lg p-6 mb-6 max-w-md mx-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mb-6 max-w-md mx-auto">
               <div className="space-y-3 text-left">
                 <div className="flex items-start gap-3">
-                  <Crown className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <Crown className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <div className="font-semibold">Skills Assessment</div>
-                    <div className="text-sm text-gray-600">Ontdek je dating DNA</div>
+                    <div className="font-semibold dark:text-white">Skills Assessment</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Ontdek je dating DNA</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Crown className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <Crown className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <div className="font-semibold">Date Planner</div>
-                    <div className="text-sm text-gray-600">Plan perfecte dates</div>
+                    <div className="font-semibold dark:text-white">Date Planner</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Plan perfecte dates</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Crown className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <Crown className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <div className="font-semibold">Zelfbeeld Scan</div>
-                    <div className="text-sm text-gray-600">Diepe zelfinzichten</div>
+                    <div className="font-semibold dark:text-white">Zelfbeeld Scan</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Diepe zelfinzichten</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Infinity className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <Infinity className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <div className="font-semibold">Unlimited Alles</div>
-                    <div className="text-sm text-gray-600">Geen limieten meer</div>
+                    <div className="font-semibold dark:text-white">Unlimited Alles</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Geen limieten meer</div>
                   </div>
                 </div>
               </div>
@@ -150,8 +150,8 @@ export function ProArsenal() {
             <Crown className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Pro Arsenal</h1>
-            <p className="text-gray-600">Premium tools voor maximale dating success</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Pro Arsenal</h1>
+            <p className="text-gray-600 dark:text-gray-400">Premium tools voor maximale dating success</p>
           </div>
         </div>
 
@@ -172,16 +172,16 @@ export function ProArsenal() {
 
         {/* Overview */}
         <TabsContent value="overview" className="space-y-6">
-          <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
+          <Card className="border-2 border-purple-200 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30">
             <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-2">Premium Dating Arsenal</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-xl font-semibold mb-2 dark:text-white">Premium Dating Arsenal</h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
                 Deze geavanceerde tools geven je diepe inzichten en praktische hulp voor dating success.
                 Plus: unlimited gebruik van alle Kickstart tools!
               </p>
               <div className="flex items-center gap-2 text-sm">
-                <Infinity className="w-4 h-4 text-purple-600" />
-                <span className="text-purple-600 font-semibold">Unlimited access - geen limieten</span>
+                <Infinity className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                <span className="text-purple-600 dark:text-purple-400 font-semibold">Unlimited access - geen limieten</span>
               </div>
             </CardContent>
           </Card>
@@ -190,7 +190,7 @@ export function ProArsenal() {
             {proTools.map((tool) => (
               <Card
                 key={tool.id}
-                className="group hover:shadow-lg transition-all cursor-pointer border-2 hover:border-purple-300"
+                className="group hover:shadow-lg transition-all cursor-pointer border-2 hover:border-purple-300 dark:hover:border-purple-600"
                 onClick={() => setActiveTab(tool.id)}
               >
                 <CardContent className="p-6">
@@ -200,14 +200,14 @@ export function ProArsenal() {
                     >
                       {tool.icon}
                     </div>
-                    <Badge className="bg-purple-100 text-purple-700 border-0">
+                    <Badge className="bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 border-0">
                       <Crown className="w-3 h-3 mr-1" />
                       Premium
                     </Badge>
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{tool.title}</h3>
-                  <p className="text-sm text-gray-600 mb-4">{tool.description}</p>
-                  <Button size="sm" variant="ghost" className="group-hover:bg-purple-100">
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{tool.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{tool.description}</p>
+                  <Button size="sm" variant="ghost" className="group-hover:bg-purple-100 dark:group-hover:bg-purple-900/30">
                     Open Tool →
                   </Button>
                 </CardContent>
@@ -216,35 +216,35 @@ export function ProArsenal() {
           </div>
 
           {/* Benefits */}
-          <Card className="border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+          <Card className="border-2 border-green-200 dark:border-green-700 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30">
             <CardContent className="p-6">
-              <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <Infinity className="w-5 h-5 text-green-600" />
+              <h3 className="font-semibold mb-4 flex items-center gap-2 dark:text-white">
+                <Infinity className="w-5 h-5 text-green-600 dark:text-green-400" />
                 Jouw Premium Voordelen
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm dark:text-gray-300">
                 <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-600"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></div>
                   <span>Unlimited Conversation Starters</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-600"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></div>
                   <span>Unlimited Photo Analysis</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-600"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></div>
                   <span>Unlimited Profile Builds</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-600"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></div>
                   <span>Unlimited Chat Coach</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-600"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></div>
                   <span>Skills Assessment</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-600"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400"></div>
                   <span>Date Planner</span>
                 </div>
               </div>

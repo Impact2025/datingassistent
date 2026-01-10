@@ -52,9 +52,9 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
   // If no questions, just show message
   if (vragen.length === 0) {
     return (
-      <Card className="shadow-lg border-pink-100">
+      <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800">
         <CardContent className="p-8 text-center">
-          <p className="text-gray-600">Deze quiz heeft nog geen vragen.</p>
+          <p className="text-gray-600 dark:text-gray-400">Deze quiz heeft nog geen vragen.</p>
         </CardContent>
       </Card>
     );
@@ -63,28 +63,28 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
   // Show results
   if (showResults) {
     return (
-      <Card className="shadow-lg border-pink-100 hover:shadow-xl transition-shadow">
+      <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
         <CardContent className="p-8">
           <div className="text-center mb-6">
             <div className={`w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center ${
-              passed ? 'bg-green-100' : 'bg-red-100'
+              passed ? 'bg-green-100 dark:bg-green-900/40' : 'bg-red-100 dark:bg-red-900/40'
             }`}>
               {passed ? (
-                <Trophy className="w-10 h-10 text-green-600" />
+                <Trophy className="w-10 h-10 text-green-600 dark:text-green-400" />
               ) : (
-                <XCircle className="w-10 h-10 text-red-600" />
+                <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
               )}
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {passed ? 'Gefeliciteerd!' : 'Nog even oefenen'}
             </h3>
-            <p className="text-lg text-gray-700 mb-4">
-              Je score: <span className="font-bold text-pink-600">{score} / {vragen.length}</span>
+            <p className="text-lg text-gray-700 dark:text-gray-200 mb-4">
+              Je score: <span className="font-bold text-pink-600 dark:text-pink-400">{score} / {vragen.length}</span>
             </p>
             {passed ? (
-              <p className="text-gray-600">{content.succesMessage || 'Je hebt de quiz gehaald!'}</p>
+              <p className="text-gray-600 dark:text-gray-400">{content.succesMessage || 'Je hebt de quiz gehaald!'}</p>
             ) : (
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-400">
                 Je hebt minimaal {minimumScore} goede antwoorden nodig. Probeer het opnieuw!
               </p>
             )}
@@ -100,27 +100,27 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
                 <div
                   key={index}
                   className={`p-4 rounded-lg border-2 ${
-                    isCorrect ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'
+                    isCorrect ? 'border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/30' : 'border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/30'
                   }`}
                 >
                   <div className="flex items-start gap-3 mb-2">
                     {isCorrect ? (
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                     ) : (
-                      <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                      <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                     )}
                     <div className="flex-1">
-                      <p className="font-medium text-gray-900">{vraag.vraag}</p>
-                      <p className={`text-sm mt-1 ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+                      <p className="font-medium text-gray-900 dark:text-white">{vraag.vraag}</p>
+                      <p className={`text-sm mt-1 ${isCorrect ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
                         Jouw antwoord: {userAnswer}
                       </p>
                       {!isCorrect && (
-                        <p className="text-sm text-green-700 mt-1">
+                        <p className="text-sm text-green-700 dark:text-green-300 mt-1">
                           Correct antwoord: {vraag.correcte_optie}
                         </p>
                       )}
                       {vraag.uitleg && (
-                        <p className="text-sm text-gray-600 mt-2 italic">{vraag.uitleg}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 italic">{vraag.uitleg}</p>
                       )}
                     </div>
                   </div>
@@ -163,22 +163,22 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
   const opties = [vraag.optie_a, vraag.optie_b, vraag.optie_c, vraag.optie_d].filter(Boolean);
 
   return (
-    <Card className="shadow-lg border-pink-100 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
           {isCompleted && <CheckCircle className="w-5 h-5 text-green-500" />}
         </div>
 
         {/* Progress */}
         <div className="mb-6">
           <div className="flex justify-between text-sm mb-2">
-            <span className="text-gray-600">Vraag {currentQuestion + 1} van {vragen.length}</span>
-            <span className="font-medium text-pink-600">
+            <span className="text-gray-600 dark:text-gray-400">Vraag {currentQuestion + 1} van {vragen.length}</span>
+            <span className="font-medium text-pink-600 dark:text-pink-400">
               {Object.keys(answers).length} beantwoord
             </span>
           </div>
-          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-pink-500 to-pink-600 transition-all duration-300"
               style={{ width: `${((currentQuestion + 1) / vragen.length) * 100}%` }}
@@ -188,7 +188,7 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
 
         {/* Question */}
         <div className="mb-6">
-          <h4 className="text-lg font-semibold text-gray-900 mb-4">{vraag.vraag}</h4>
+          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{vraag.vraag}</h4>
 
           {/* Options */}
           <div className="space-y-3">
@@ -200,11 +200,11 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
                   onClick={() => handleAnswer(optie)}
                   className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
                     isSelected
-                      ? 'border-pink-500 bg-pink-50 shadow-md'
-                      : 'border-gray-300 bg-white hover:border-pink-300 hover:bg-pink-50'
+                      ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 shadow-md'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-pink-300 hover:bg-pink-50 dark:hover:bg-pink-900/20'
                   }`}
                 >
-                  <span className="font-medium text-gray-900">{optie}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{optie}</span>
                 </button>
               );
             })}

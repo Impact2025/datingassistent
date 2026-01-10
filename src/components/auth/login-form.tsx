@@ -255,8 +255,8 @@ export function LoginForm() {
         <CardTitle className="text-3xl">Jouw DatingAssistent</CardTitle>
         <CardDescription>Vind liefde met een coach die altijd voor je klaarstaat.</CardDescription>
         {orderId && (
-          <div className="mt-4 p-3 bg-green-100 text-green-800 rounded-md text-sm">
-            ✅ Betaling succesvol! Log in om toegang te krijgen tot je abonnement.
+          <div className="mt-4 p-3 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-md text-sm">
+            Betaling succesvol! Log in om toegang te krijgen tot je abonnement.
           </div>
         )}
       </CardHeader>

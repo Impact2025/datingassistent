@@ -63,17 +63,17 @@ export function PhotoOptimizationStep({ onComplete, onBack, existingPhotoCount }
         <div className="space-y-4">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm">Terug naar Route</span>
           </button>
 
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
               📸 Foto Strategie
             </h1>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 dark:text-gray-300 mt-2">
               Upload 3-6 foto's voor AI analyse en optimalisatie
             </p>
           </div>
@@ -81,8 +81,8 @@ export function PhotoOptimizationStep({ onComplete, onBack, existingPhotoCount }
 
         {/* Upload Area */}
         <Card
-          className={`p-12 border-2 border-dashed transition-colors ${
-            isDragging ? 'border-gray-900 bg-gray-50' : 'border-gray-300'
+          className={`p-12 border-2 border-dashed transition-colors dark:bg-gray-800 ${
+            isDragging ? 'border-gray-900 dark:border-gray-100 bg-gray-50 dark:bg-gray-700' : 'border-gray-300 dark:border-gray-600'
           }`}
           onDragOver={(e) => {
             e.preventDefault();
@@ -96,21 +96,21 @@ export function PhotoOptimizationStep({ onComplete, onBack, existingPhotoCount }
           }}
         >
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto">
-              <Upload className="w-8 h-8 text-gray-600" />
+            <div className="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center mx-auto">
+              <Upload className="w-8 h-8 text-gray-600 dark:text-gray-300" />
             </div>
             <div>
-              <p className="text-lg font-medium text-gray-900">
+              <p className="text-lg font-medium text-gray-900 dark:text-white">
                 Sleep foto's hierheen of klik om te uploaden
               </p>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 PNG, JPG tot 10MB • Minimaal 3 foto's, ideaal 6
               </p>
             </div>
             <Button
               onClick={() => document.getElementById('photo-upload')?.click()}
               variant="outline"
-              className="border-2 border-gray-900"
+              className="border-2 border-gray-900 dark:border-gray-100 dark:text-white dark:hover:bg-gray-100 dark:hover:text-gray-900"
             >
               <Camera className="w-4 h-4 mr-2" />
               Selecteer Foto's
@@ -130,11 +130,11 @@ export function PhotoOptimizationStep({ onComplete, onBack, existingPhotoCount }
         {photos.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Jouw Foto's ({photos.length}/6)
               </h3>
               {canContinue && (
-                <div className="flex items-center gap-2 text-green-600">
+                <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
                   <CheckCircle className="w-5 h-5" />
                   <span className="text-sm font-medium">Minimaal aantal bereikt</span>
                 </div>
@@ -143,7 +143,7 @@ export function PhotoOptimizationStep({ onComplete, onBack, existingPhotoCount }
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {photos.map((photo, index) => (
-                <Card key={index} className="overflow-hidden border-0 shadow-md group relative">
+                <Card key={index} className="overflow-hidden border-0 shadow-md group relative dark:bg-gray-800">
                   <div className="aspect-square relative">
                     <img
                       src={photo.url}
@@ -157,23 +157,23 @@ export function PhotoOptimizationStep({ onComplete, onBack, existingPhotoCount }
                       <X className="w-4 h-4 text-white" />
                     </button>
                   </div>
-                  <div className="p-3 bg-white">
+                  <div className="p-3 bg-white dark:bg-gray-800">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-900">
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
                         Foto {index + 1}
                       </span>
                       <div className="flex items-center gap-1">
-                        <div className="text-lg font-bold text-gray-900">{photo.score}</div>
-                        <div className="text-xs text-gray-500">/10</div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">{photo.score}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">/10</div>
                       </div>
                     </div>
                     <div className="mt-2 flex flex-wrap gap-1">
                       {photo.analysis.smile && (
-                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">
+                        <span className="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded">
                           ✓ Lach
                         </span>
                       )}
-                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded">
+                      <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded">
                         {photo.analysis.lighting}
                       </span>
                     </div>
@@ -193,7 +193,7 @@ export function PhotoOptimizationStep({ onComplete, onBack, existingPhotoCount }
                 photoMetadata: getPhotoMetadata(),
                 photoScore: 8.5
               })}
-              className="w-full h-12 bg-gray-900 hover:bg-gray-800 text-white font-medium group"
+              className="w-full h-12 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-medium group"
               size="lg"
             >
               Foto's Opslaan & Verder
@@ -203,7 +203,7 @@ export function PhotoOptimizationStep({ onComplete, onBack, existingPhotoCount }
         )}
 
         {!canContinue && photos.length > 0 && (
-          <div className="text-center text-sm text-gray-600">
+          <div className="text-center text-sm text-gray-600 dark:text-gray-400">
             Upload nog {3 - photos.length} foto{3 - photos.length !== 1 ? "'s" : ''} om door te gaan
           </div>
         )}

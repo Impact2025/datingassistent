@@ -94,7 +94,7 @@ export default function ContactForm() {
       availability: "24/7 beschikbaar",
       action: "Start chat",
       href: "#chat",
-      color: "bg-blue-50 border-blue-200"
+      color: "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800"
     },
     {
       icon: Mail,
@@ -103,7 +103,7 @@ export default function ContactForm() {
       availability: "Response < 24 uur",
       action: "E-mail sturen",
       href: "mailto:support@datingassistent.nl",
-      color: "bg-green-50 border-green-200"
+      color: "bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800"
     },
     {
       icon: Phone,
@@ -112,7 +112,7 @@ export default function ContactForm() {
       availability: "Ma-Vr 9:00-17:00",
       action: "020 - 123 45 67",
       href: "tel:+31201234567",
-      color: "bg-purple-50 border-purple-200"
+      color: "bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-800"
     }
   ];
 
@@ -140,13 +140,13 @@ export default function ContactForm() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               Neem contact met ons op
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
               We helpen je graag verder. Kies de manier die het beste bij je past.
             </p>
 
@@ -157,10 +157,10 @@ export default function ContactForm() {
                 return (
                   <Card key={index} className={`${method.color} border-2 hover:shadow-lg transition-all`}>
                     <CardContent className="p-6 text-center">
-                      <Icon className="w-12 h-12 mx-auto mb-4 text-gray-700" />
-                      <h3 className="font-semibold mb-2">{method.title}</h3>
-                      <p className="text-sm text-gray-600 mb-3">{method.description}</p>
-                      <p className="text-xs text-gray-500 mb-4">{method.availability}</p>
+                      <Icon className="w-12 h-12 mx-auto mb-4 text-gray-700 dark:text-gray-300" />
+                      <h3 className="font-semibold mb-2 dark:text-white">{method.title}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{method.description}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">{method.availability}</p>
                       <Button
                         asChild
                         size="sm"
@@ -180,17 +180,17 @@ export default function ContactForm() {
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Contact Form */}
-              <Card className="p-8">
+              <Card className="p-8 dark:bg-gray-800">
                 {isSubmitted ? (
                   <CardContent className="text-center py-12">
                     <CheckCircle className="w-16 h-16 mx-auto mb-6 text-green-500" />
-                    <h3 className="text-2xl font-bold mb-4 text-gray-900">Bedankt voor je bericht!</h3>
-                    <p className="text-gray-600 mb-6">
+                    <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Bedankt voor je bericht!</h3>
+                    <p className="text-gray-600 dark:text-gray-300 mb-6">
                       We hebben je bericht ontvangen en nemen zo snel mogelijk contact met je op.
                       Meestal reageren we binnen 24 uur.
                     </p>
@@ -201,8 +201,8 @@ export default function ContactForm() {
                 ) : (
                   <>
                     <CardHeader>
-                      <CardTitle className="text-2xl">Stuur ons een bericht</CardTitle>
-                      <p className="text-gray-600">
+                      <CardTitle className="text-2xl dark:text-white">Stuur ons een bericht</CardTitle>
+                      <p className="text-gray-600 dark:text-gray-300">
                         Vul het formulier in en we nemen zo snel mogelijk contact met je op.
                       </p>
                     </CardHeader>
@@ -210,84 +210,84 @@ export default function ContactForm() {
                       <form onSubmit={handleSubmit}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-medium mb-2">Voornaam *</label>
+                            <label className="block text-sm font-medium mb-2 dark:text-gray-200">Voornaam *</label>
                             <input
                               type="text"
                               name="firstName"
                               required
                               value={formData.firstName}
                               onChange={handleInputChange}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
                               placeholder="Jouw voornaam"
                             />
                           </div>
                           <div>
-                            <label className="block text-sm font-medium mb-2">Achternaam *</label>
+                            <label className="block text-sm font-medium mb-2 dark:text-gray-200">Achternaam *</label>
                             <input
                               type="text"
                               name="lastName"
                               required
                               value={formData.lastName}
                               onChange={handleInputChange}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
                               placeholder="Jouw achternaam"
                             />
                           </div>
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium mb-2">E-mailadres *</label>
+                          <label className="block text-sm font-medium mb-2 dark:text-gray-200">E-mailadres *</label>
                           <input
                             type="email"
                             name="email"
                             required
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
                             placeholder="jouw@email.nl"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium mb-2">Telefoonnummer</label>
+                          <label className="block text-sm font-medium mb-2 dark:text-gray-200">Telefoonnummer</label>
                           <input
                             type="tel"
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
                             placeholder="+31 6 1234 5678"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium mb-2">Onderwerp *</label>
+                          <label className="block text-sm font-medium mb-2 dark:text-gray-200">Onderwerp *</label>
                           <select
                             name="subject"
                             required
                             value={formData.subject}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
                           >
                             <option value="">Kies een onderwerp...</option>
                             <option value="support">Technische ondersteuning</option>
-                            <option value="sales">Verkoop & abonnementen</option>
-                            <option value="partnership">Partnership & samenwerkingen</option>
-                            <option value="press">Pers & media</option>
-                            <option value="feedback">Feedback & suggesties</option>
+                            <option value="sales">Verkoop en abonnementen</option>
+                            <option value="partnership">Partnership en samenwerkingen</option>
+                            <option value="press">Pers en media</option>
+                            <option value="feedback">Feedback en suggesties</option>
                             <option value="other">Anders</option>
                           </select>
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium mb-2">Bericht *</label>
+                          <label className="block text-sm font-medium mb-2 dark:text-gray-200">Bericht *</label>
                           <textarea
                             name="message"
                             rows={5}
                             required
                             value={formData.message}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
                             placeholder="Beschrijf je vraag of bericht zo gedetailleerd mogelijk..."
                           />
                         </div>
@@ -302,9 +302,9 @@ export default function ContactForm() {
                             onChange={handleInputChange}
                             className="mt-1"
                           />
-                          <label htmlFor="privacy" className="text-sm text-gray-600">
+                          <label htmlFor="privacy" className="text-sm text-gray-600 dark:text-gray-300">
                             Ik accepteer de{' '}
-                            <Link href="/privacyverklaring" className="text-blue-600 hover:underline">
+                            <Link href="/privacyverklaring" className="text-blue-600 dark:text-blue-400 hover:underline">
                               privacyverklaring
                             </Link>
                             {' '}en ga akkoord met de verwerking van mijn gegevens.
@@ -338,30 +338,30 @@ export default function ContactForm() {
               {/* Contact Information */}
               <div className="space-y-8">
                 {/* Business Info */}
-                <Card className="p-6">
+                <Card className="p-6 dark:bg-gray-800">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 dark:text-white">
                       <Building className="w-5 h-5" />
                       Bedrijfsgegevens
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <h4 className="font-semibold">{businessInfo.company}</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-semibold dark:text-white">{businessInfo.company}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
                         {businessInfo.address}<br />
                         {businessInfo.city}<br />
                         {businessInfo.country}
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-3 text-sm">
+                    <div className="grid grid-cols-1 gap-3 text-sm dark:text-gray-300">
                       <div className="flex items-center gap-2">
-                        <Mail className="w-4 h-4 text-gray-500" />
+                        <Mail className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                         <span>{businessInfo.email}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-gray-500" />
+                        <Phone className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                         <span>{businessInfo.phone}</span>
                       </div>
                       <div className="flex items-center gap-2">
@@ -377,9 +377,9 @@ export default function ContactForm() {
                 </Card>
 
                 {/* Office Locations */}
-                <Card className="p-6">
+                <Card className="p-6 dark:bg-gray-800">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 dark:text-white">
                       <MapPin className="w-5 h-5" />
                       Ons kantoor
                     </CardTitle>
@@ -388,19 +388,19 @@ export default function ContactForm() {
                     {offices.map((office, index) => (
                       <div key={index} className="space-y-3">
                         <div>
-                          <h4 className="font-semibold">{office.city}</h4>
-                          <p className="text-sm text-gray-600 whitespace-pre-line">
+                          <h4 className="font-semibold dark:text-white">{office.city}</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-line">
                             {office.address}
                           </p>
                         </div>
 
-                        <div className="space-y-2 text-sm">
+                        <div className="space-y-2 text-sm dark:text-gray-300">
                           <div className="flex items-center gap-2">
-                            <Phone className="w-4 h-4 text-gray-500" />
+                            <Phone className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                             <span>{office.phone}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Mail className="w-4 h-4 text-gray-500" />
+                            <Mail className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                             <span>{office.email}</span>
                           </div>
                         </div>
@@ -410,25 +410,25 @@ export default function ContactForm() {
                 </Card>
 
                 {/* Response Times */}
-                <Card className="p-6 bg-blue-50 border-blue-200">
+                <Card className="p-6 bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 dark:text-blue-200">
                       <Clock className="w-5 h-5" />
                       Response tijden
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm">Live Chat</span>
-                      <span className="text-sm font-medium">Direct</span>
+                      <span className="text-sm dark:text-blue-100">Live Chat</span>
+                      <span className="text-sm font-medium dark:text-blue-100">Direct</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm">E-mail</span>
-                      <span className="text-sm font-medium">{"<"} 24 uur</span>
+                      <span className="text-sm dark:text-blue-100">E-mail</span>
+                      <span className="text-sm font-medium dark:text-blue-100">{"<"} 24 uur</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm">Telefoon</span>
-                      <span className="text-sm font-medium">{"<"} 1 uur</span>
+                      <span className="text-sm dark:text-blue-100">Telefoon</span>
+                      <span className="text-sm font-medium dark:text-blue-100">{"<"} 1 uur</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -440,15 +440,15 @@ export default function ContactForm() {
 
 
       {/* Newsletter & Social Proof */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Newsletter */}
-              <Card className="p-6">
+              <Card className="p-6 dark:bg-gray-800">
                 <CardHeader>
-                  <CardTitle>Blijf op de hoogte</CardTitle>
-                  <p className="text-sm text-gray-600">
+                  <CardTitle className="dark:text-white">Blijf op de hoogte</CardTitle>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Ontvang updates over nieuwe features en dating tips
                   </p>
                 </CardHeader>
@@ -457,7 +457,7 @@ export default function ContactForm() {
                     <input
                       type="email"
                       placeholder="jouw@email.nl"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
                     />
                     <Button>Abonneren</Button>
                   </div>
@@ -465,34 +465,34 @@ export default function ContactForm() {
               </Card>
 
               {/* Quick Links */}
-              <Card className="p-6">
+              <Card className="p-6 dark:bg-gray-800">
                 <CardHeader>
-                  <CardTitle>Snel naar hulp</CardTitle>
-                  <p className="text-sm text-gray-600">
+                  <CardTitle className="dark:text-white">Snel naar hulp</CardTitle>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Vind snel wat je nodig hebt
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Link href="/help" className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                  <Link href="/help" className="flex items-center justify-between p-3 rounded-lg border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div className="flex items-center gap-3">
                       <MessageCircle className="w-5 h-5 text-blue-600" />
-                      <span className="text-sm">Help Center</span>
+                      <span className="text-sm dark:text-gray-200">Help Center</span>
                     </div>
                     <ArrowRight className="w-4 h-4 text-gray-400" />
                   </Link>
 
-                  <Link href="/faq" className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                  <Link href="/faq" className="flex items-center justify-between p-3 rounded-lg border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="text-sm">Veelgestelde vragen</span>
+                      <span className="text-sm dark:text-gray-200">Veelgestelde vragen</span>
                     </div>
                     <ArrowRight className="w-4 h-4 text-gray-400" />
                   </Link>
 
-                  <Link href="/status" className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                  <Link href="/status" className="flex items-center justify-between p-3 rounded-lg border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div className="flex items-center gap-3">
                       <Clock className="w-5 h-5 text-purple-600" />
-                      <span className="text-sm">Systeem status</span>
+                      <span className="text-sm dark:text-gray-200">Systeem status</span>
                     </div>
                     <ArrowRight className="w-4 h-4 text-gray-400" />
                   </Link>

@@ -177,11 +177,11 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-white border-0 shadow-sm">
+      <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm">
         <CardContent className="p-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-3">Jouw Dating Succes Dashboard</h1>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Jouw Dating Succes Dashboard</h1>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
               Welkom bij je persoonlijke dating-cockpit. Begin met de 'Online Cursus' voor een vliegende start,
               of ga direct aan de slag met de andere tools!
             </p>
@@ -193,17 +193,17 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
       <PersonalizedWelcome onTabChange={onTabChange} />
 
       {/* Learning Path Card */}
-      <Card className="bg-white border-0 shadow-sm">
+      <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            <div className="bg-gray-100 rounded-lg p-3">
-              <TrendingUp className="h-6 w-6 text-gray-600" />
+            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+              <TrendingUp className="h-6 w-6 text-gray-600 dark:text-gray-300" />
             </div>
             <div className="flex-1 space-y-3">
-              <h3 className="font-semibold text-lg text-gray-900">
+              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
                 Jouw persoonlijke leertraject
               </h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-300">
                 Gebaseerd op je vaardighedenbeoordeling hebben we een leertraject voor je samengesteld.
               </p>
               <Button
@@ -219,11 +219,11 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
       </Card>
 
       {/* Quick Actions Grid */}
-      <Card className="bg-white border-0 shadow-sm">
+      <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm">
         <CardContent className="p-8">
           <div className="text-center mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Snelle acties</h2>
-            <p className="text-gray-600">Direct toegang tot je meest gebruikte tools</p>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Snelle acties</h2>
+            <p className="text-gray-600 dark:text-gray-300">Direct toegang tot je meest gebruikte tools</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -232,9 +232,9 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
               return (
                 <Card
                   key={action.action}
-                  className="cursor-pointer transition-all duration-200 border-0 shadow-sm hover:shadow-md bg-white"
+                  className="cursor-pointer transition-all duration-200 border-0 shadow-sm hover:shadow-md bg-white dark:bg-gray-700"
                   onClick={() => {
-                    console.log('🔘 Quick action clicked:', action.action);
+                    console.log('Quick action clicked:', action.action);
                     onTabChange?.(action.action);
                   }}
                 >
@@ -245,10 +245,10 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
                       </div>
 
                       <div className="space-y-2">
-                        <h3 className="font-semibold text-sm text-gray-900">
+                        <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
                           {action.title}
                         </h3>
-                        <p className="text-sm text-gray-600 leading-tight">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 leading-tight">
                           {action.description}
                         </p>
                       </div>
@@ -262,18 +262,18 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
       </Card>
 
       {/* Stats Row */}
-      <Card className="bg-white border-0 shadow-sm">
+      <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm">
         <CardContent className="p-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat) => {
               const Icon = stat.icon;
               return (
-                <div key={stat.label} className="bg-gray-50 rounded-lg p-6 text-center">
+                <div key={stat.label} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
-                    <Icon className="h-8 w-8 text-gray-400" />
+                    <Icon className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300">{stat.label}</div>
                 </div>
               );
             })}
@@ -283,17 +283,17 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
 
       {/* Tip of the Day */}
       {dailyTip && (
-        <Card className="bg-white border-0 shadow-sm">
+        <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
-              <div className="bg-gray-100 rounded-lg p-3">
-                <Lightbulb className="h-5 w-5 text-gray-600" />
+              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+                <Lightbulb className="h-5 w-5 text-gray-600 dark:text-gray-300" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2">
                   Tip van de coach
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {dailyTip}
                 </p>
               </div>
@@ -304,29 +304,29 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
 
       {/* Active Goals */}
       {goals.length > 0 && (
-        <Card className="bg-white border-0 shadow-sm">
+        <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-semibold text-lg text-gray-900">Je actieve doelen</h3>
+              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">Je actieve doelen</h3>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => onTabChange?.('doelen')}
-                className="bg-white border-gray-200 hover:bg-gray-50 rounded-full"
+                className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-full"
               >
                 Alles bekijken
               </Button>
             </div>
             <div className="space-y-4">
               {goals.map((goal) => (
-                <div key={goal.id} className="bg-gray-50 rounded-lg p-4">
+                <div key={goal.id} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="font-medium text-gray-900">{goal.title}</span>
-                    <span className="text-sm text-gray-600">
+                    <span className="font-medium text-gray-900 dark:text-white">{goal.title}</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">
                       {goal.current_value}/{goal.target_value}
                     </span>
                   </div>
-                  <Progress value={goal.progress_percentage} className="h-2 bg-gray-200" />
+                  <Progress value={goal.progress_percentage} className="h-2 bg-gray-200 dark:bg-gray-700" />
                 </div>
               ))}
             </div>
@@ -337,20 +337,20 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
       {/* Interactive Tools Section */}
       <div className="space-y-4">
         <div className="text-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Interactieve Tools</h2>
-          <p className="text-gray-600">Ontdek je potentieel met onze professionele hulpmiddelen</p>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Interactieve Tools</h2>
+          <p className="text-gray-600 dark:text-gray-300">Ontdek je potentieel met onze professionele hulpmiddelen</p>
         </div>
 
         {/* AI Confidence Coach */}
-        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+        <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl overflow-hidden">
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-gray-600" />
+              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">AI Confidence Coach</h3>
-                <p className="text-sm text-gray-600">Gepersonaliseerd advies voor je dating zelfvertrouwen</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white">AI Confidence Coach</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Gepersonaliseerd advies voor je dating zelfvertrouwen</p>
               </div>
             </div>
             <AIConfidenceCoach
@@ -364,15 +364,15 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
         </Card>
 
         {/* Interactive Profile Builder */}
-        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+        <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl overflow-hidden">
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                <User className="w-6 h-6 text-gray-600" />
+              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                <User className="w-6 h-6 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Profiel Builder</h3>
-                <p className="text-sm text-gray-600">Bouw je ideale dating profiel stap voor stap</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Profiel Builder</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Bouw je ideale dating profiel stap voor stap</p>
               </div>
             </div>
             <InteractiveProfileBuilder
@@ -385,15 +385,15 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
         </Card>
 
         {/* Gamification System */}
-        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+        <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl overflow-hidden">
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                <Target className="w-6 h-6 text-gray-600" />
+              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                <Target className="w-6 h-6 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Voortgang & Punten</h3>
-                <p className="text-sm text-gray-600">Verdien punten en volg je dating voortgang</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Voortgang & Punten</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Verdien punten en volg je dating voortgang</p>
               </div>
             </div>
             <GamificationSystem
@@ -407,15 +407,15 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
         </Card>
 
         {/* Real-time AI Feedback */}
-        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+        <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl overflow-hidden">
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                <MessageCircle className="w-6 h-6 text-gray-600" />
+              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                <MessageCircle className="w-6 h-6 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">AI Feedback</h3>
-                <p className="text-sm text-gray-600">Krijg direct feedback op je teksten</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white">AI Feedback</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Krijg direct feedback op je teksten</p>
               </div>
             </div>
             <RealTimeAIFeedback
@@ -429,15 +429,15 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
         </Card>
 
         {/* Social Learning */}
-        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+        <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl overflow-hidden">
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                <Users className="w-6 h-6 text-gray-600" />
+              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                <Users className="w-6 h-6 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Community Learning</h3>
-                <p className="text-sm text-gray-600">Leer van anderen in de community</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Community Learning</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Leer van anderen in de community</p>
               </div>
             </div>
             <SocialLearning
@@ -453,15 +453,15 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
         </Card>
 
         {/* Introductory Slides */}
-        <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
+        <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl overflow-hidden">
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                <BookOpen className="w-6 h-6 text-gray-600" />
+              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                <BookOpen className="w-6 h-6 text-gray-600 dark:text-gray-300" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Executive Assessment Intro</h3>
-                <p className="text-sm text-gray-600">Ontdek je sterke punten met deze interactieve presentatie</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Executive Assessment Intro</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Ontdek je sterke punten met deze interactieve presentatie</p>
               </div>
             </div>
             <SlideViewer deck={executiveAssessmentSlides} />

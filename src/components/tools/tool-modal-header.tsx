@@ -40,7 +40,7 @@ export function ToolModalHeader({
   return (
     <div
       className={cn(
-        "sticky top-0 z-10 bg-white border-b border-gray-200",
+        "sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700",
         "shadow-sm",
         className
       )}
@@ -53,17 +53,17 @@ export function ToolModalHeader({
             variant="ghost"
             size="sm"
             onClick={onBack}
-            className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
             aria-label="Ga terug"
           >
-            <ArrowLeft className="w-5 h-5 text-gray-700" />
+            <ArrowLeft className="w-5 h-5 text-gray-700 dark:text-gray-300" />
           </Button>
 
           {/* Title */}
           <div className="flex-1 mx-3 min-w-0">
             <h1
               id="modal-title"
-              className="text-lg font-bold text-gray-900 truncate"
+              className="text-lg font-bold text-gray-900 dark:text-white truncate"
             >
               {title}
             </h1>
@@ -75,17 +75,17 @@ export function ToolModalHeader({
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="flex p-2 -mr-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="flex p-2 -mr-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
               aria-label="Sluit"
             >
-              <X className="w-5 h-5 text-gray-700" />
+              <X className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </Button>
           )}
         </div>
 
         {/* Subtitle */}
         {subtitle && (
-          <p className="text-sm text-gray-600 mb-3 px-1">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 px-1">
             {subtitle}
           </p>
         )}
@@ -110,7 +110,7 @@ export function ToolModalHeader({
                         ? "bg-pink-500 w-2 h-2" // Completed
                         : i === currentStep
                         ? "bg-pink-500 w-2.5 h-2.5" // Current
-                        : "bg-gray-300" // Upcoming
+                        : "bg-gray-300 dark:bg-gray-600" // Upcoming
                     )}
                   />
                 ))}
@@ -119,7 +119,7 @@ export function ToolModalHeader({
 
             {/* Step Counter Text */}
             {currentStep && totalSteps && (
-              <p className="text-xs text-gray-500 text-center">
+              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                 Stap {currentStep} van {totalSteps}
               </p>
             )}

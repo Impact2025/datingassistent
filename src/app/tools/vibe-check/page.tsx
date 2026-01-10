@@ -142,16 +142,16 @@ function VibeCheckContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pink-50/50 to-white pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-pink-50/50 to-white dark:from-gray-900 dark:to-gray-900 pb-24">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => router.back()}
-              className="p-2 hover:bg-gray-100 rounded-full"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
@@ -161,12 +161,12 @@ function VibeCheckContent() {
                   <Camera className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-semibold text-gray-900">Vibe Check</h1>
-                  <p className="text-xs text-gray-500">Ontdek hoe je foto overkomt</p>
+                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Vibe Check</h1>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Ontdek hoe je foto overkomt</p>
                 </div>
               </div>
             </div>
-            <Badge className="bg-pink-100 text-pink-700 border-0">
+            <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0">
               Transformatie
             </Badge>
           </div>
@@ -176,15 +176,15 @@ function VibeCheckContent() {
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Intro Card */}
         {!selectedImage && !analysis && (
-          <Card className="border-pink-200 bg-gradient-to-r from-pink-50 to-rose-50">
+          <Card className="border-pink-200 dark:border-pink-700 bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/30 dark:to-rose-900/30">
             <CardContent className="p-6">
               <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
-                  <Info className="w-6 h-6 text-pink-600" />
+                <div className="w-12 h-12 rounded-full bg-pink-100 dark:bg-pink-900/50 flex items-center justify-center flex-shrink-0">
+                  <Info className="w-6 h-6 text-pink-600 dark:text-pink-400" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 mb-1">Hoe werkt het?</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-1">Hoe werkt het?</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Upload een profielfoto en ontdek welke <strong>emotionele eerste indruk</strong> je
                     maakt. Geen technische feedback over belichting - puur hoe iemand zich voelt
                     als ze door dating apps scrollen en jouw foto zien.
@@ -197,9 +197,9 @@ function VibeCheckContent() {
 
         {/* Upload Area */}
         {!analysis && (
-          <Card>
+          <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center gap-2">
+              <CardTitle className="text-lg flex items-center gap-2 dark:text-white">
                 <Upload className="w-5 h-5" />
                 Upload je foto
               </CardTitle>
@@ -210,8 +210,8 @@ function VibeCheckContent() {
                   className={cn(
                     'border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer',
                     dragActive
-                      ? 'border-pink-500 bg-pink-50'
-                      : 'border-gray-200 hover:border-pink-300 hover:bg-pink-50/50'
+                      ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-pink-300 dark:hover:border-pink-600 hover:bg-pink-50/50 dark:hover:bg-pink-900/20'
                   )}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
@@ -226,16 +226,16 @@ function VibeCheckContent() {
                     onChange={handleFileSelect}
                     className="hidden"
                   />
-                  <div className="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 rounded-full bg-pink-100 dark:bg-pink-900/50 flex items-center justify-center mx-auto mb-4">
                     <ImageIcon className="w-8 h-8 text-pink-500" />
                   </div>
-                  <p className="text-gray-900 font-medium mb-1">
+                  <p className="text-gray-900 dark:text-white font-medium mb-1">
                     Sleep je foto hierheen
                   </p>
-                  <p className="text-sm text-gray-500 mb-4">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                     of klik om te selecteren
                   </p>
-                  <Button variant="outline" className="border-pink-300 text-pink-700 hover:bg-pink-50">
+                  <Button variant="outline" className="border-pink-300 dark:border-pink-600 text-pink-700 dark:text-pink-400 hover:bg-pink-50 dark:hover:bg-pink-900/30">
                     Kies foto
                   </Button>
                 </div>
@@ -280,10 +280,10 @@ function VibeCheckContent() {
 
         {/* Error */}
         {error && (
-          <Card className="border-red-200 bg-red-50">
+          <Card className="border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/30">
             <CardContent className="p-4 flex items-center gap-3">
               <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-              <p className="text-sm text-red-700">{error}</p>
+              <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
             </CardContent>
           </Card>
         )}
@@ -298,22 +298,22 @@ function VibeCheckContent() {
               className="space-y-4"
             >
               {/* First Impression */}
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg flex items-center gap-2">
+                  <CardTitle className="text-lg flex items-center gap-2 dark:text-white">
                     <Eye className="w-5 h-5 text-pink-500" />
                     Eerste Indruk
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl border border-pink-100">
-                    <p className="text-lg font-medium text-gray-900 italic">
+                  <div className="p-4 bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/30 dark:to-rose-900/30 rounded-xl border border-pink-100 dark:border-pink-700">
+                    <p className="text-lg font-medium text-gray-900 dark:text-white italic">
                       "{analysis.eersteGedachte}"
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <Badge className="bg-pink-100 text-pink-700 border-0 px-3 py-1">
+                    <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0 px-3 py-1">
                       <Heart className="w-3 h-3 mr-1" />
                       {analysis.eersteEmotie}
                     </Badge>
@@ -322,61 +322,61 @@ function VibeCheckContent() {
               </Card>
 
               {/* Vibe Scores */}
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg flex items-center gap-2">
+                  <CardTitle className="text-lg flex items-center gap-2 dark:text-white">
                     <Zap className="w-5 h-5 text-amber-500" />
                     Vibe Scores
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Score 1: Toegankelijk - Mysterieus */}
-                  <div className="p-4 rounded-xl border border-blue-100 bg-blue-50/50">
+                  <div className="p-4 rounded-xl border border-blue-100 dark:border-blue-700 bg-blue-50/50 dark:bg-blue-900/20">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-gray-700">Toegankelijk</span>
-                      <span className="text-sm font-medium text-gray-700">Mysterieus</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Toegankelijk</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Mysterieus</span>
                     </div>
-                    <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div
                         className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all"
                         style={{ width: `${analysis.vibeScores.toegankelijkMysterieus}%` }}
                       />
                     </div>
-                    <p className="text-xs text-gray-500 mt-1 text-center">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
                       {analysis.vibeScores.toegankelijkMysterieus}%
                     </p>
                   </div>
 
                   {/* Score 2: Serieus - Speels */}
-                  <div className="p-4 rounded-xl border border-amber-100 bg-amber-50/50">
+                  <div className="p-4 rounded-xl border border-amber-100 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-900/20">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-gray-700">Serieus</span>
-                      <span className="text-sm font-medium text-gray-700">Speels</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Serieus</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Speels</span>
                     </div>
-                    <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div
                         className="absolute left-0 top-0 h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full transition-all"
                         style={{ width: `${analysis.vibeScores.serieuseSpeels}%` }}
                       />
                     </div>
-                    <p className="text-xs text-gray-500 mt-1 text-center">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
                       {analysis.vibeScores.serieuseSpeels}%
                     </p>
                   </div>
 
                   {/* Score 3: Rustig - Avontuurlijk */}
-                  <div className="p-4 rounded-xl border border-rose-100 bg-rose-50/50">
+                  <div className="p-4 rounded-xl border border-rose-100 dark:border-rose-700 bg-rose-50/50 dark:bg-rose-900/20">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-gray-700">Rustig</span>
-                      <span className="text-sm font-medium text-gray-700">Avontuurlijk</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Rustig</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Avontuurlijk</span>
                     </div>
-                    <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div
                         className="absolute left-0 top-0 h-full bg-gradient-to-r from-rose-400 to-rose-600 rounded-full transition-all"
                         style={{ width: `${analysis.vibeScores.rustigAvontuurlijk}%` }}
                       />
                     </div>
-                    <p className="text-xs text-gray-500 mt-1 text-center">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
                       {analysis.vibeScores.rustigAvontuurlijk}%
                     </p>
                   </div>
@@ -384,51 +384,51 @@ function VibeCheckContent() {
               </Card>
 
               {/* Reflectie Section - Matching Design */}
-              <Card>
+              <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Reflectie</CardTitle>
+                  <CardTitle className="text-lg dark:text-white">Reflectie</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Spiegel */}
-                  <div className="p-4 rounded-xl border-2 border-pink-200 bg-pink-50/50">
+                  <div className="p-4 rounded-xl border-2 border-pink-200 dark:border-pink-700 bg-pink-50/50 dark:bg-pink-900/20">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center">
                         <Eye className="w-3 h-3 text-white" />
                       </div>
-                      <Badge className="bg-pink-100 text-pink-700 border-0 text-xs">
+                      <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0 text-xs">
                         Spiegel
                       </Badge>
                     </div>
-                    <p className="text-sm font-medium text-gray-700 mb-1">Nieuwsgierigheid factor</p>
-                    <p className="text-sm text-gray-600">{analysis.nieuwsgierigheidFactor}</p>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nieuwsgierigheid factor</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{analysis.nieuwsgierigheidFactor}</p>
                   </div>
 
                   {/* Identiteit */}
-                  <div className="p-4 rounded-xl border-2 border-amber-200 bg-amber-50/50">
+                  <div className="p-4 rounded-xl border-2 border-amber-200 dark:border-amber-700 bg-amber-50/50 dark:bg-amber-900/20">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center">
                         <Sparkles className="w-3 h-3 text-white" />
                       </div>
-                      <Badge className="bg-amber-100 text-amber-700 border-0 text-xs">
+                      <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 border-0 text-xs">
                         Identiteit
                       </Badge>
                     </div>
-                    <p className="text-sm font-medium text-gray-700 mb-1">Overall vibe</p>
-                    <p className="text-sm text-gray-600">{analysis.overallVibe}</p>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Overall vibe</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{analysis.overallVibe}</p>
                   </div>
 
                   {/* Actie */}
-                  <div className="p-4 rounded-xl border-2 border-green-200 bg-green-50/50">
+                  <div className="p-4 rounded-xl border-2 border-green-200 dark:border-green-700 bg-green-50/50 dark:bg-green-900/20">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
                         <Zap className="w-3 h-3 text-white" />
                       </div>
-                      <Badge className="bg-green-100 text-green-700 border-0 text-xs">
+                      <Badge className="bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 border-0 text-xs">
                         Actie
                       </Badge>
                     </div>
-                    <p className="text-sm font-medium text-gray-700 mb-1">Suggestie</p>
-                    <p className="text-sm text-gray-600">{analysis.suggestie}</p>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Suggestie</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{analysis.suggestie}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -438,7 +438,7 @@ function VibeCheckContent() {
                 <Button
                   variant="outline"
                   onClick={resetAnalysis}
-                  className="flex-1 border-gray-200"
+                  className="flex-1 border-gray-200 dark:border-gray-600"
                 >
                   <RefreshCcw className="w-4 h-4 mr-2" />
                   Nieuwe foto
@@ -463,7 +463,7 @@ function VibeCheckContent() {
 export default function VibeCheckPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center dark:bg-gray-900">
         <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
       </div>
     }>

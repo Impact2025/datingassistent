@@ -217,8 +217,8 @@ export function IrisInsightsPanel({ currentTab, userId, onTabChange }: IrisInsig
 
               {/* Insight Content */}
               <div className="space-y-2">
-                <h4 className="font-bold text-gray-900">{currentInsight.title}</h4>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <h4 className="font-bold text-gray-900 dark:text-white">{currentInsight.title}</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                   {currentInsight.message}
                 </p>
               </div>
@@ -238,8 +238,8 @@ export function IrisInsightsPanel({ currentTab, userId, onTabChange }: IrisInsig
               )}
 
               {/* Navigation */}
-              <div className="flex items-center justify-between pt-2 border-t">
-                <span className="text-xs text-gray-500">
+              <div className="flex items-center justify-between pt-2 border-t dark:border-gray-700">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
                   Tip {insightIndex + 1} van {insights.length}
                 </span>
                 <Button

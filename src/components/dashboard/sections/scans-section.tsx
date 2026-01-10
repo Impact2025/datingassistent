@@ -78,20 +78,20 @@ export const ScansSection = React.memo(function ScansSection({
         animate={{ opacity: 1, y: 0 }}
       >
         <Card
-          className="border-2 border-purple-200 hover:border-purple-300 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50"
+          className="border-2 border-purple-200 dark:border-purple-800 hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-900/20 dark:to-pink-900/20"
           onClick={() => setShowMijnScans(!showMijnScans)}
         >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-purple-100 rounded-xl">
-                  <Scan className="w-6 h-6 text-purple-600" />
+                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-xl">
+                  <Scan className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-1">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
                     Mijn Scans
                   </h3>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
                     {totalCount > 0
                       ? `${completedCount} van ${totalCount} voltooid`
                       : 'Ontdek je dating patterns'}
@@ -100,10 +100,10 @@ export const ScansSection = React.memo(function ScansSection({
               </div>
               <div className="flex items-center gap-3">
                 <div className="text-right hidden sm:block">
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
                     {showMijnScans ? 'Verberg' : 'Bekijk'} {totalCount > 0 ? 'resultaten' : 'scans'}
                   </p>
-                  <p className="text-xs text-purple-600 font-medium">
+                  <p className="text-xs text-purple-600 dark:text-purple-400 font-medium">
                     {totalCount > 0 ? 'en track je groei' : 'Start je eerste scan'}
                   </p>
                 </div>
@@ -111,7 +111,7 @@ export const ScansSection = React.memo(function ScansSection({
                   animate={{ rotate: showMijnScans ? 90 : 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <ArrowRight className="w-5 h-5 text-purple-600" />
+                  <ArrowRight className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                 </motion.div>
               </div>
             </div>
@@ -131,11 +131,11 @@ export const ScansSection = React.memo(function ScansSection({
           {totalCount === 0 ? (
             <Card className="p-6 text-center">
               <Sparkles className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Start je eerste scan!</h3>
-              <p className="text-gray-700 mb-4">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Start je eerste scan!</h3>
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
                 Ontdek je hechtingsstijl, dating patterns en blinde vlekken met onze AI-powered scans.
               </p>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-700 dark:text-gray-300">
                 Scans worden automatisch hier getoond zodra je ze voltooit.
               </p>
             </Card>

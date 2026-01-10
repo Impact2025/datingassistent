@@ -36,26 +36,26 @@ interface ScanCardProps {
 // Minimalist color styles
 const colorStyles = {
   pink: {
-    iconBg: 'bg-pink-50',
-    iconText: 'text-pink-600',
+    iconBg: 'bg-pink-50 dark:bg-pink-900/30',
+    iconText: 'text-pink-600 dark:text-pink-400',
     badge: 'bg-pink-500',
     button: 'bg-pink-500 hover:bg-pink-600'
   },
   purple: {
-    iconBg: 'bg-purple-50',
-    iconText: 'text-purple-600',
+    iconBg: 'bg-purple-50 dark:bg-purple-900/30',
+    iconText: 'text-purple-600 dark:text-purple-400',
     badge: 'bg-purple-500',
     button: 'bg-purple-500 hover:bg-purple-600'
   },
   blue: {
-    iconBg: 'bg-blue-50',
-    iconText: 'text-blue-600',
+    iconBg: 'bg-blue-50 dark:bg-blue-900/30',
+    iconText: 'text-blue-600 dark:text-blue-400',
     badge: 'bg-blue-500',
     button: 'bg-blue-500 hover:bg-blue-600'
   },
   green: {
-    iconBg: 'bg-green-50',
-    iconText: 'text-green-600',
+    iconBg: 'bg-green-50 dark:bg-green-900/30',
+    iconText: 'text-green-600 dark:text-green-400',
     badge: 'bg-green-500',
     button: 'bg-green-500 hover:bg-green-600'
   }
@@ -98,7 +98,7 @@ export function ScanCard({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
       <div className="flex items-start gap-4">
         {/* Icon */}
         <div className={`w-10 h-10 ${styles.iconBg} rounded-xl flex items-center justify-center flex-shrink-0`}>
@@ -110,7 +110,7 @@ export function ScanCard({
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-semibold text-gray-900">{title}</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
             {!completionStatus && (
               <span className={`px-2 py-0.5 ${styles.badge} text-white text-xs rounded-full`}>
                 {badgeText}
@@ -132,13 +132,13 @@ export function ScanCard({
 
           {/* Latest Result */}
           {completionStatus?.isCompleted && completionStatus.latestResult && (
-            <p className="text-sm font-medium text-gray-900 mb-2">
+            <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">
               Laatste resultaat: {completionStatus.latestResult}
             </p>
           )}
 
-          <p className="text-sm text-gray-600 mb-1">{subtitle}</p>
-          <p className="text-xs text-gray-400 italic mb-3">"{quote}"</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{subtitle}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 italic mb-3">"{quote}"</p>
 
           {/* Buttons */}
           <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ export function ScanCard({
                   </Button>
                 )}
                 {!completionStatus.canRetake && completionStatus.daysUntilRetake && (
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-gray-400 dark:text-gray-500">
                     Retake over {completionStatus.daysUntilRetake} dagen
                   </span>
                 )}
@@ -184,7 +184,7 @@ export function ScanCard({
                 {onDismiss && (
                   <button
                     onClick={handleDismiss}
-                    className="text-xs text-gray-400 hover:text-gray-600"
+                    className="text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                   >
                     <X className="w-3 h-3 inline mr-1" />
                     Vandaag overslaan

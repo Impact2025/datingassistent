@@ -51,14 +51,14 @@ export function LockedFeature({
 
   if (variant === 'inline') {
     return (
-      <div className={cn('flex items-center gap-2 text-gray-500', className)}>
+      <div className={cn('flex items-center gap-2 text-gray-500 dark:text-gray-400', className)}>
         <Lock className="h-4 w-4" />
         <span className="text-sm">{message}</span>
         <Button
           size="sm"
           variant="ghost"
           onClick={handleUpgrade}
-          className="text-pink-600 hover:text-pink-700 p-0 h-auto"
+          className="text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300 p-0 h-auto"
         >
           Upgrade
         </Button>
@@ -130,9 +130,9 @@ export function LockedFeature({
       </Button>
 
       {showPrice && cta.betaPrice > 0 && (
-        <p className="mt-3 text-sm text-gray-500">
+        <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
           <span className="line-through mr-2">€{cta.price}</span>
-          <span className="text-pink-600 font-semibold">€{cta.betaPrice}</span>
+          <span className="text-pink-600 dark:text-pink-400 font-semibold">€{cta.betaPrice}</span>
           <span className="text-xs ml-1">(Beta prijs)</span>
         </p>
       )}

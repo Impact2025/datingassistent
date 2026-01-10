@@ -28,21 +28,21 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
   const allActionsCompleted = acties.length > 0 && completedActions.length === acties.length;
 
   return (
-    <Card className="shadow-lg border-pink-100 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
               <Calendar className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
           </div>
           {isCompleted && <CheckCircle className="w-5 h-5 text-green-500" />}
         </div>
 
         {/* Intro text */}
         {content.intro && (
-          <p className="text-gray-700 mb-6 leading-relaxed">{content.intro}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{content.intro}</p>
         )}
 
         {/* Action items */}
@@ -56,8 +56,8 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
                 onClick={() => !isCompleted && handleActionToggle(index)}
                 className={`p-5 rounded-lg border-2 transition-all cursor-pointer ${
                   isActionCompleted
-                    ? 'border-green-300 bg-green-50'
-                    : 'border-gray-200 bg-white hover:border-pink-300 hover:shadow-md'
+                    ? 'border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/30'
+                    : 'border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700 hover:border-pink-300 dark:hover:border-pink-600 hover:shadow-md'
                 }`}
               >
                 <div className="flex items-start gap-4">
@@ -65,7 +65,7 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
                   <div className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
                     isActionCompleted
                       ? 'border-green-500 bg-green-500'
-                      : 'border-gray-300'
+                      : 'border-gray-300 dark:border-gray-500'
                   }`}>
                     {isActionCompleted && (
                       <CheckCircle className="w-4 h-4 text-white" />
@@ -75,7 +75,7 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
                   <div className="flex-1">
                     {/* Action text */}
                     <p className={`font-medium ${
-                      isActionCompleted ? 'text-green-900 line-through' : 'text-gray-900'
+                      isActionCompleted ? 'text-green-900 dark:text-green-300 line-through' : 'text-gray-900 dark:text-white'
                     }`}>
                       {actie.tekst}
                     </p>
@@ -83,9 +83,9 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
                     {/* Deadline */}
                     {actie.deadline && (
                       <div className="flex items-center gap-2 mt-2">
-                        <Calendar className="w-4 h-4 text-pink-500" />
+                        <Calendar className="w-4 h-4 text-pink-500 dark:text-pink-400" />
                         <span className={`text-sm ${
-                          isActionCompleted ? 'text-green-700' : 'text-pink-600'
+                          isActionCompleted ? 'text-green-700 dark:text-green-400' : 'text-pink-600 dark:text-pink-400'
                         }`}>
                           {actie.deadline}
                         </span>
@@ -94,7 +94,7 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
                   </div>
 
                   {/* Action number */}
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-sm font-bold">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 flex items-center justify-center text-sm font-bold">
                     {index + 1}
                   </div>
                 </div>
@@ -107,12 +107,12 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
         {acties.length > 0 && (
           <div className="mb-6">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-600">Voortgang</span>
-              <span className="font-medium text-pink-600">
+              <span className="text-gray-600 dark:text-gray-400">Voortgang</span>
+              <span className="font-medium text-pink-600 dark:text-pink-400">
                 {completedActions.length} / {acties.length} acties voltooid
               </span>
             </div>
-            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-pink-500 to-pink-600 transition-all duration-300"
                 style={{ width: `${(completedActions.length / acties.length) * 100}%` }}
@@ -123,18 +123,18 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
 
         {/* Success message */}
         {allActionsCompleted && !isCompleted && (
-          <div className="p-4 rounded-lg bg-green-100 border-2 border-green-300 mb-6">
-            <p className="text-green-900 font-semibold text-center">
-              🎉 Fantastisch! Alle acties voltooid!
+          <div className="p-4 rounded-lg bg-green-100 dark:bg-green-900/40 border-2 border-green-300 dark:border-green-700 mb-6">
+            <p className="text-green-900 dark:text-green-300 font-semibold text-center">
+              Fantastisch! Alle acties voltooid!
             </p>
           </div>
         )}
 
         {/* Motivation */}
         {content.motivatie && (
-          <div className="mb-6 p-4 bg-pink-50 rounded-lg border-2 border-pink-200">
-            <p className="text-pink-900 font-medium text-center">
-              💪 {content.motivatie}
+          <div className="mb-6 p-4 bg-pink-50 dark:bg-pink-900/30 rounded-lg border-2 border-pink-200 dark:border-pink-700">
+            <p className="text-pink-900 dark:text-pink-300 font-medium text-center">
+              {content.motivatie}
             </p>
           </div>
         )}

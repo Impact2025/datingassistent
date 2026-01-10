@@ -60,7 +60,7 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
   const currentStepData = ANALYSIS_STEPS[currentStep];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full space-y-8">
         {/* Main Animation */}
         <motion.div
@@ -122,7 +122,7 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
 
           {/* Analysis Text */}
           <div className="space-y-4">
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
               We analyseren je profiel...
             </h2>
 
@@ -135,7 +135,7 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
-                    className="text-lg text-gray-600"
+                    className="text-lg text-gray-600 dark:text-gray-300"
                   >
                     {currentStepData.text}
                   </motion.p>
@@ -146,11 +146,11 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
 
           {/* Progress Bar */}
           <div className="space-y-3">
-            <div className="flex justify-between text-sm text-gray-600">
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
               <span>Voortgang</span>
               <span>{Math.round(progress)}%</span>
             </div>
-            <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-pink-500 to-pink-600"
                 initial={{ width: 0 }}
@@ -167,8 +167,8 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
             transition={{ delay: 1 }}
             className="pt-8"
           >
-            <div className="inline-block px-6 py-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
-              <p className="text-sm text-gray-600">
+            <div className="inline-block px-6 py-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg">
+              <p className="text-sm text-gray-600 dark:text-gray-300">
                 💡 <span className="font-semibold">Fun fact:</span> {getFunFact(currentStep)}
               </p>
             </div>

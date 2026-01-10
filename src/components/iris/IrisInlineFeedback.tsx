@@ -15,8 +15,8 @@ export function IrisInlineFeedback({ feedback, isLoading }: IrisInlineFeedbackPr
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-4 bg-gradient-to-r from-pink-50 to-pink-100
-                 rounded-xl p-4 border border-pink-100"
+      className="mt-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30
+                 rounded-xl p-4 border border-pink-100 dark:border-pink-800"
     >
       <div className="flex gap-3">
         <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-pink-600
@@ -25,7 +25,7 @@ export function IrisInlineFeedback({ feedback, isLoading }: IrisInlineFeedbackPr
         </div>
         <div className="flex-1">
           {isLoading ? (
-            <div className="flex items-center gap-2 text-gray-500">
+            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
               <div className="flex gap-1">
                 <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" />
                 <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce delay-100" />
@@ -34,7 +34,7 @@ export function IrisInlineFeedback({ feedback, isLoading }: IrisInlineFeedbackPr
               <span className="text-sm">Iris denkt na...</span>
             </div>
           ) : (
-            <p className="text-gray-700 text-sm leading-relaxed">{feedback}</p>
+            <p className="text-gray-700 dark:text-gray-200 text-sm leading-relaxed">{feedback}</p>
           )}
         </div>
       </div>

@@ -207,7 +207,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full space-y-6">
         {/* Logo & Header */}
         <motion.div
@@ -217,10 +217,10 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
         >
           <Logo iconSize={48} textSize="lg" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Ontdek je Dating Stijl
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300">
               In 2 minuten weet je precies wat jou tegenhoudt
             </p>
           </div>
@@ -232,7 +232,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
           animate={{ opacity: 1 }}
           className="space-y-2"
         >
-          <div className="flex justify-between text-sm text-gray-600">
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
             <span>Vraag {currentStep + 1} van {totalSteps}</span>
             <span>{Math.round(progressPercentage)}%</span>
           </div>
@@ -250,7 +250,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
             exit="exit"
             transition={{ duration: 0.3 }}
           >
-            <Card className="border-2 border-pink-200 shadow-xl">
+            <Card className="border-2 border-pink-200 dark:border-pink-900/50 shadow-xl dark:bg-gray-800">
               <CardContent className="p-8">
                 {!isEmailStep ? (
                   <div className="space-y-6">
@@ -259,11 +259,11 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
                       <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center shadow-lg">
                         {currentQuestion && <currentQuestion.icon className="w-8 h-8 text-white" />}
                       </div>
-                      <h2 className="text-2xl font-bold text-gray-900">
+                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                         {currentQuestion?.question}
                       </h2>
                       {currentQuestion?.description && (
-                        <p className="text-gray-600">
+                        <p className="text-gray-600 dark:text-gray-300">
                           {currentQuestion.description}
                         </p>
                       )}
@@ -277,26 +277,26 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
                           <button
                             key={option.value}
                             onClick={() => handleAnswer(option.value)}
-                            className={`w-full p-4 rounded-lg border-2 text-left transition-all hover:border-pink-300 hover:bg-pink-50 ${
+                            className={`w-full p-4 rounded-lg border-2 text-left transition-all hover:border-pink-300 dark:hover:border-pink-700 hover:bg-pink-50 dark:hover:bg-pink-900/20 ${
                               isSelected
-                                ? 'border-pink-500 bg-pink-50 shadow-md'
-                                : 'border-gray-200 bg-white'
+                                ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 shadow-md'
+                                : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700'
                             }`}
                           >
                             <div className="flex items-start gap-3">
                               <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
                                 isSelected
                                   ? 'border-pink-500 bg-pink-500'
-                                  : 'border-gray-300'
+                                  : 'border-gray-300 dark:border-gray-500'
                               }`}>
                                 {isSelected && <CheckCircle className="w-4 h-4 text-white" />}
                               </div>
                               <div className="flex-1">
-                                <div className="font-semibold text-gray-900 mb-1">
+                                <div className="font-semibold text-gray-900 dark:text-white mb-1">
                                   {option.label}
                                 </div>
                                 {option.description && (
-                                  <div className="text-sm text-gray-600">
+                                  <div className="text-sm text-gray-600 dark:text-gray-300">
                                     {option.description}
                                   </div>
                                 )}
@@ -314,17 +314,17 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
                       <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center shadow-lg">
                         <Mail className="w-8 h-8 text-white" />
                       </div>
-                      <h2 className="text-2xl font-bold text-gray-900">
+                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                         Laatste stap!
                       </h2>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 dark:text-gray-300">
                         Waar sturen we je persoonlijke Dating Stijl Analyse naartoe?
                       </p>
                     </div>
 
                     <div className="space-y-4">
                       <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           E-mailadres
                         </label>
                         <Input
@@ -343,9 +343,9 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
                           type="checkbox"
                           checked={acceptsMarketing}
                           onChange={(e) => setAcceptsMarketing(e.target.checked)}
-                          className="mt-1 w-4 h-4 text-pink-600 rounded border-gray-300 focus:ring-pink-500"
+                          className="mt-1 w-4 h-4 text-pink-600 rounded border-gray-300 dark:border-gray-600 focus:ring-pink-500"
                         />
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-gray-600 dark:text-gray-300">
                           Ja, stuur me wekelijks dating tips en exclusieve aanbiedingen
                         </span>
                       </label>
@@ -368,7 +368,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
                         )}
                       </Button>
 
-                      <p className="text-xs text-center text-gray-500">
+                      <p className="text-xs text-center text-gray-500 dark:text-gray-400">
                         Je ontvangt direct je persoonlijke analyse + concrete tips
                       </p>
                     </div>
@@ -390,7 +390,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
               variant="ghost"
               onClick={handleBack}
               disabled={currentStep === 0}
-              className="text-gray-600"
+              className="text-gray-600 dark:text-gray-400"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Vorige
@@ -400,7 +400,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
               variant="ghost"
               onClick={handleNext}
               disabled={!answers[currentQuestion?.id.toString()]}
-              className="text-pink-600"
+              className="text-pink-600 dark:text-pink-400"
             >
               Volgende
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -416,7 +416,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
             <Button
               variant="ghost"
               onClick={handleBack}
-              className="text-gray-600"
+              className="text-gray-600 dark:text-gray-400"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Vorige
@@ -429,7 +429,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="flex items-center justify-center gap-2 text-sm text-gray-500"
+          className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400"
         >
           <Shield className="w-4 h-4" />
           <span>Je gegevens zijn 100% veilig en worden niet gedeeld</span>

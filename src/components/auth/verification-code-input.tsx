@@ -161,7 +161,7 @@ export function VerificationCodeInput({
       {/* Code Input Fields */}
       <div className="space-y-5">
         <div className="text-center">
-          <h3 className="text-base sm:text-lg font-semibold mb-2">Voer je verificatie code in</h3>
+          <h3 className="text-base sm:text-lg font-semibold mb-2 dark:text-white">Voer je verificatie code in</h3>
           <p className="text-xs sm:text-sm text-muted-foreground">
             We hebben een 6-cijferige code gestuurd naar je email
           </p>
@@ -181,22 +181,8 @@ export function VerificationCodeInput({
               value={digit}
               onChange={(e) => handleInputChange(index, e.target.value)}
               onKeyDown={(e) => handleInputKeyDown(index, e)}
-              className="w-11 h-12 sm:w-12 sm:h-14 text-center focus:border-pink-500 focus:ring-pink-500 focus:ring-2"
+              className="w-11 h-12 sm:w-12 sm:h-14 text-center focus:border-pink-500 focus:ring-pink-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               disabled={isVerifying}
-              style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#000000',
-                backgroundColor: '#ffffff',
-                border: '2px solid #e5e7eb',
-                borderRadius: '10px',
-                textAlign: 'center',
-                lineHeight: '1',
-                padding: '6px',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                WebkitTextFillColor: '#000000',
-                WebkitAppearance: 'none'
-              }}
             />
           ))}
         </div>

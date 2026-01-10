@@ -152,22 +152,22 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
   const totalPoints = wins.filter(w => w.completed).reduce((sum, w) => sum + w.points, 0);
 
   const colorMap: Record<string, string> = {
-    blue: 'bg-blue-100 text-blue-600 border-blue-200',
-    purple: 'bg-purple-100 text-purple-600 border-purple-200',
-    green: 'bg-green-100 text-green-600 border-green-200',
-    pink: 'bg-pink-100 text-pink-600 border-pink-200',
-    orange: 'bg-orange-100 text-orange-600 border-orange-200'
+    blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800',
+    purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800',
+    green: 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800',
+    pink: 'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 border-pink-200 dark:border-pink-800',
+    orange: 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-800'
   };
 
   if (loading) {
     return (
       <Card className="shadow-sm animate-pulse">
         <CardContent className="p-6">
-          <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
           <div className="space-y-3">
-            <div className="h-16 bg-gray-200 rounded"></div>
-            <div className="h-16 bg-gray-200 rounded"></div>
-            <div className="h-16 bg-gray-200 rounded"></div>
+            <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
           </div>
         </CardContent>
       </Card>
@@ -180,13 +180,13 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="shadow-sm border-2 border-pink-100">
+      <Card className="shadow-sm border-2 border-pink-100 dark:border-pink-900/50">
         <CardContent className="p-4 sm:p-6">
           {/* Header - Responsive: Stack on mobile */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-5">
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
-              <h2 className="text-base sm:text-lg font-semibold text-gray-900">Quick Wins Vandaag</h2>
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Quick Wins Vandaag</h2>
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="secondary" className="text-xs">
@@ -203,7 +203,7 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
           {/* Progress bar */}
           {completedCount > 0 && (
             <div className="mb-4">
-              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full bg-gradient-to-r from-pink-500 to-pink-600"
                   initial={{ width: 0 }}
@@ -227,8 +227,8 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
                   className={cn(
                     "flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg border-2 transition-all",
                     win.completed
-                      ? "bg-green-50 border-green-200 opacity-75"
-                      : "bg-white border-gray-200 hover:border-pink-300 hover:shadow-sm cursor-pointer"
+                      ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 opacity-75"
+                      : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-500 hover:shadow-sm cursor-pointer"
                   )}
                   onClick={() => {
                     if (!win.completed) {
@@ -240,16 +240,16 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
                   {/* Checkbox */}
                   <div className="flex-shrink-0">
                     {win.completed ? (
-                      <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                      <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-400" />
                     ) : (
-                      <Circle className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+                      <Circle className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 dark:text-gray-500" />
                     )}
                   </div>
 
                   {/* Icon - Compact on mobile */}
                   <div className={cn(
                     "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0",
-                    win.completed ? "bg-green-100 text-green-600" : colorMap[win.color]
+                    win.completed ? "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400" : colorMap[win.color]
                   )}>
                     <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
@@ -258,11 +258,11 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
                   <div className="flex-1 min-w-0">
                     <p className={cn(
                       "text-xs sm:text-sm font-medium truncate",
-                      win.completed ? "text-gray-600 line-through" : "text-gray-900"
+                      win.completed ? "text-gray-600 dark:text-gray-400 line-through" : "text-gray-900 dark:text-white"
                     )}>
                       {win.title}
                     </p>
-                    <p className="text-xs text-gray-500 hidden sm:block">{win.description}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">{win.description}</p>
                   </div>
 
                   {/* Points */}
@@ -281,13 +281,13 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gradient-to-r from-pink-50 to-pink-100 rounded-lg border border-pink-200 text-center"
+              className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20 rounded-lg border border-pink-200 dark:border-pink-800 text-center"
             >
               <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-pink-500 mx-auto mb-1.5 sm:mb-2" />
-              <p className="text-xs sm:text-sm font-semibold text-gray-900">
+              <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">
                 Geweldig! Alle Quick Wins voltooid!
               </p>
-              <p className="text-xs text-gray-600 mt-0.5 sm:mt-1">
+              <p className="text-xs text-gray-600 dark:text-gray-300 mt-0.5 sm:mt-1">
                 Kom morgen terug voor nieuwe uitdagingen
               </p>
             </motion.div>

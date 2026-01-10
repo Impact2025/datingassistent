@@ -157,16 +157,16 @@ function MobileDataManagementPageContent() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
       {/* Mobile Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-4">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -177,14 +177,14 @@ function MobileDataManagementPageContent() {
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Data & Privacy</h1>
-            <p className="text-sm text-gray-600">Beheer je gegevens</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Data & Privacy</h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Beheer je gegevens</p>
           </div>
         </div>
       </div>
 
       {/* Tab Navigation */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
         <div className="flex gap-1">
           {[
             { id: 'overview', label: 'Overzicht' },
@@ -197,8 +197,8 @@ function MobileDataManagementPageContent() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 py-2 px-3 text-sm font-medium rounded-lg transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-pink-100 text-pink-700'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
               {tab.label}
@@ -220,21 +220,21 @@ function MobileDataManagementPageContent() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-sm text-gray-600">Naam:</span>
-                  <span className="font-medium">{userProfile?.name || 'Niet ingesteld'}</span>
+                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Naam:</span>
+                  <span className="font-medium dark:text-white">{userProfile?.name || 'Niet ingesteld'}</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-sm text-gray-600">Email:</span>
-                  <span className="font-medium">{user.email}</span>
+                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Email:</span>
+                  <span className="font-medium dark:text-white">{user.email}</span>
                 </div>
-                <div className="flex justify-between py-2 border-b border-gray-100">
-                  <span className="text-sm text-gray-600">Leeftijd:</span>
-                  <span className="font-medium">{userProfile?.age || 'Niet ingesteld'}</span>
+                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Leeftijd:</span>
+                  <span className="font-medium dark:text-white">{userProfile?.age || 'Niet ingesteld'}</span>
                 </div>
                 <div className="flex justify-between py-2">
-                  <span className="text-sm text-gray-600">Locatie:</span>
-                  <span className="font-medium">{userProfile?.location || 'Niet ingesteld'}</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Locatie:</span>
+                  <span className="font-medium dark:text-white">{userProfile?.location || 'Niet ingesteld'}</span>
                 </div>
               </CardContent>
             </Card>
@@ -254,9 +254,9 @@ function MobileDataManagementPageContent() {
                   'Gebruiksstatistieken',
                   'Communicatie logs'
                 ].map((category, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                    <span className="text-sm">{category}</span>
-                    <CheckCircle className="w-4 h-4 text-green-600" />
+                  <div key={index} className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                    <span className="text-sm dark:text-gray-200">{category}</span>
+                    <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
                   </div>
                 ))}
               </CardContent>

@@ -56,7 +56,7 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
       case 'bezig':
         return <Play className="w-5 h-5 text-pink-500" />;
       default:
-        return <Lock className="w-5 h-5 text-gray-400" />;
+        return <Lock className="w-5 h-5 text-gray-400 dark:text-gray-500" />;
     }
   };
 
@@ -85,10 +85,10 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
     return (
       <div className="space-y-6">
         <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-          <Card className="border-0 shadow-sm">
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+          <Card className="border-0 shadow-sm dark:bg-gray-800">
             <CardContent className="p-6">
-              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
             </CardContent>
           </Card>
         </div>
@@ -98,10 +98,10 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
 
   if (error || !cursus) {
     return (
-      <Card className="border-0 shadow-sm">
+      <Card className="border-0 shadow-sm dark:bg-gray-800">
         <CardContent className="p-8 text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Cursus niet gevonden</h2>
-          <p className="text-gray-600 mb-6">{error || 'Deze cursus bestaat niet of is niet beschikbaar.'}</p>
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Cursus niet gevonden</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">{error || 'Deze cursus bestaat niet of is niet beschikbaar.'}</p>
           <Button onClick={onBack} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Terug
@@ -118,7 +118,7 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
   return (
     <div className="space-y-6">
       {/* Header Card */}
-      <Card className="border-0 shadow-sm">
+      <Card className="border-0 shadow-sm dark:bg-gray-800">
         <CardContent className="p-6">
           <Button
             onClick={onBack}
@@ -132,19 +132,19 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-2xl font-bold text-gray-900">{cursus.titel}</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{cursus.titel}</h1>
                 <Badge className="bg-pink-100 text-pink-800 border-0">
                   {cursus.cursus_type === 'gratis' ? 'Gratis' : `EUR ${cursus.prijs}`}
                 </Badge>
               </div>
               {cursus.subtitel && (
-                <p className="text-gray-600">{cursus.subtitel}</p>
+                <p className="text-gray-600 dark:text-gray-300">{cursus.subtitel}</p>
               )}
             </div>
           </div>
 
           {/* Meta Info */}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 mb-6">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 dark:text-gray-300 mb-6">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-pink-500" />
               <span>{cursus.duur_minuten} minuten</span>
@@ -163,11 +163,11 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
           {progressPercentage > 0 && (
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-700 font-medium">Je voortgang</span>
-                <span className="text-pink-600 font-semibold">{progressPercentage}%</span>
+                <span className="text-gray-700 dark:text-gray-200 font-medium">Je voortgang</span>
+                <span className="text-pink-600 dark:text-pink-400 font-semibold">{progressPercentage}%</span>
               </div>
               <Progress value={progressPercentage} className="h-2" />
-              <p className="text-xs text-gray-600">
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 {completedLessons} van {totalLessons} lessen voltooid
               </p>
             </div>
@@ -177,18 +177,18 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
 
       {/* Description */}
       {cursus.beschrijving && (
-        <Card className="border-0 shadow-sm">
+        <Card className="border-0 shadow-sm dark:bg-gray-800">
           <CardContent className="p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-3">Over deze cursus</h2>
-            <p className="text-gray-700 leading-relaxed">{cursus.beschrijving}</p>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Over deze cursus</h2>
+            <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{cursus.beschrijving}</p>
           </CardContent>
         </Card>
       )}
 
       {/* Lessons */}
-      <Card className="border-0 shadow-sm">
+      <Card className="border-0 shadow-sm dark:bg-gray-800">
         <CardContent className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Lessen</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Lessen</h2>
           <div className="space-y-3">
             {cursus.lessen?.map((les: any, index: number) => {
               const status = getLesStatus(les);
@@ -196,7 +196,7 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
                 <div
                   key={les.id}
                   onClick={() => handleLesClick(les.slug)}
-                  className="p-4 rounded-lg border border-gray-200 hover:border-pink-300 hover:bg-pink-50/30 transition-all cursor-pointer group"
+                  className="p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-pink-300 hover:bg-pink-50/30 dark:hover:bg-pink-900/20 transition-all cursor-pointer group"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
@@ -204,14 +204,14 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
                         {getStatusIcon(status)}
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 group-hover:text-pink-600 transition-colors">
+                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-pink-600 transition-colors">
                           Les {index + 1}: {les.titel}
                         </h3>
                         {les.subtitel && (
-                          <p className="text-sm text-gray-600 mt-1">{les.subtitel}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{les.subtitel}</p>
                         )}
                         {les.duur_minuten && (
-                          <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-1">
                             <Clock className="w-3 h-3" />
                             {les.duur_minuten} min
                           </p>

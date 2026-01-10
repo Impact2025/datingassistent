@@ -13,32 +13,32 @@ export function PremiumGate({ title, description, features, onUpgrade }: Premium
   };
 
   return (
-    <Card className="border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 shadow-lg">
+    <Card className="border-2 border-amber-200 dark:border-amber-700 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 shadow-lg">
       <CardHeader className="text-center pb-6">
         <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
           <Crown className="w-8 h-8 text-white" />
         </div>
-        <CardTitle className="text-xl font-bold text-gray-900 flex items-center justify-center gap-2">
+        <CardTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
           <Lock className="w-5 h-5" />
           {title}
         </CardTitle>
-        <p className="text-gray-600 mt-2">{description}</p>
+        <p className="text-gray-600 dark:text-gray-300 mt-2">{description}</p>
       </CardHeader>
 
       <CardContent className="space-y-6">
         {/* Features List */}
         <div className="space-y-3">
-          <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-600" />
+          <h4 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             Inclusief in Premium:
           </h4>
           <div className="space-y-2">
             {features.map((feature, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 bg-white/60 rounded-lg">
-                <div className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-bold text-amber-700">{index + 1}</span>
+              <div key={index} className="flex items-center gap-3 p-3 bg-white/60 dark:bg-gray-800/60 rounded-lg">
+                <div className="w-6 h-6 bg-amber-100 dark:bg-amber-900/50 rounded-full flex items-center justify-center">
+                  <span className="text-xs font-bold text-amber-700 dark:text-amber-300">{index + 1}</span>
                 </div>
-                <span className="text-sm text-gray-700">{feature}</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
               </div>
             ))}
           </div>
@@ -64,10 +64,10 @@ export function PremiumGate({ title, description, features, onUpgrade }: Premium
         </Button>
 
         {/* Additional Info */}
-        <div className="text-center text-xs text-gray-500 space-y-1">
-          <p>✓ 30 dagen geld terug garantie</p>
-          <p>✓ Direct toegang tot alle premium modules</p>
-          <p>✓ Ongelimiteerde AI coaching</p>
+        <div className="text-center text-xs text-gray-500 dark:text-gray-400 space-y-1">
+          <p>30 dagen geld terug garantie</p>
+          <p>Direct toegang tot alle premium modules</p>
+          <p>Ongelimiteerde AI coaching</p>
         </div>
       </CardContent>
     </Card>

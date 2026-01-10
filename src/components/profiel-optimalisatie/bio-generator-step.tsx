@@ -101,11 +101,11 @@ export function BioGeneratorStep({ onComplete, onBack, profileData }: BioGenerat
   if (isGenerating) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="p-12 max-w-md w-full text-center space-y-6 border-0 shadow-lg">
-          <Loader2 className="w-12 h-12 animate-spin text-gray-900 mx-auto" />
+        <Card className="p-12 max-w-md w-full text-center space-y-6 border-0 shadow-lg dark:bg-gray-800">
+          <Loader2 className="w-12 h-12 animate-spin text-gray-900 dark:text-gray-100 mx-auto" />
           <div className="space-y-2">
-            <h3 className="text-xl font-semibold text-gray-900">AI genereert je bio's...</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">AI genereert je bio's...</h3>
+            <p className="text-gray-600 dark:text-gray-300">
               3 gepersonaliseerde varianten gebaseerd op jouw antwoorden
             </p>
           </div>
@@ -121,17 +121,17 @@ export function BioGeneratorStep({ onComplete, onBack, profileData }: BioGenerat
           <div className="space-y-4">
             <button
               onClick={() => setGeneratedBios([])}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm">Antwoorden Aanpassen</span>
             </button>
 
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
                 Kies Je Bio
               </h1>
-              <p className="text-gray-600 mt-2">
+              <p className="text-gray-600 dark:text-gray-300 mt-2">
                 3 gepersonaliseerde bio's gemaakt voor jou
               </p>
             </div>
@@ -141,37 +141,37 @@ export function BioGeneratorStep({ onComplete, onBack, profileData }: BioGenerat
             {generatedBios.map((bio, index) => (
               <Card
                 key={index}
-                className={`p-6 border-2 cursor-pointer transition-all ${
+                className={`p-6 border-2 cursor-pointer transition-all dark:bg-gray-800 ${
                   selectedBio === bio.variant
-                    ? 'border-gray-900 shadow-lg'
-                    : 'border-gray-200 hover:border-gray-400'
+                    ? 'border-gray-900 dark:border-gray-100 shadow-lg'
+                    : 'border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
                 onClick={() => setSelectedBio(bio.variant)}
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-sm font-medium text-gray-500">Optie {index + 1}</span>
-                      <h3 className="text-lg font-semibold text-gray-900 mt-1">{bio.style}</h3>
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Optie {index + 1}</span>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{bio.style}</h3>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="text-right">
-                        <div className="text-2xl font-bold text-gray-900">{bio.score}</div>
-                        <div className="text-xs text-gray-500">Match Score</div>
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white">{bio.score}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">Match Score</div>
                       </div>
                       {selectedBio === bio.variant && (
-                        <CheckCircle className="w-6 h-6 text-green-600" />
+                        <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
                       )}
                     </div>
                   </div>
 
-                  <p className="text-gray-700 leading-relaxed">{bio.variant}</p>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{bio.variant}</p>
 
                   {index === 0 && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
                       <div className="flex items-start gap-2">
-                        <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                        <p className="text-sm text-blue-900">
+                        <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                        <p className="text-sm text-blue-900 dark:text-blue-100">
                           <strong>Aanbevolen:</strong> Deze bio balanceert humor, authenticiteit en specifieke details
                         </p>
                       </div>
@@ -185,7 +185,7 @@ export function BioGeneratorStep({ onComplete, onBack, profileData }: BioGenerat
           {selectedBio && (
             <Button
               onClick={() => onComplete({ selectedBio, bioScore: 92, bioVariants: generatedBios })}
-              className="w-full h-12 bg-gray-900 hover:bg-gray-800 text-white font-medium group"
+              className="w-full h-12 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-medium group"
               size="lg"
             >
               Bio Opslaan & Verder
@@ -203,36 +203,36 @@ export function BioGeneratorStep({ onComplete, onBack, profileData }: BioGenerat
         <div className="space-y-4">
           <button
             onClick={handlePrevious}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm">{currentQuestion === 0 ? 'Terug naar Route' : 'Vorige Vraag'}</span>
           </button>
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
               <span>Vraag {currentQuestion + 1} van {BIO_QUESTIONS.length}</span>
             </div>
-            <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gray-900 transition-all duration-300"
+                className="h-full bg-gray-900 dark:bg-gray-100 transition-all duration-300"
                 style={{ width: `${((currentQuestion + 1) / BIO_QUESTIONS.length) * 100}%` }}
               />
             </div>
           </div>
         </div>
 
-        <Card className="p-8 border-0 shadow-lg">
+        <Card className="p-8 border-0 shadow-lg dark:bg-gray-800">
           <div className="space-y-6">
             <div className="space-y-2">
-              <div className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+              <div className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                 Bio Generator
               </div>
-              <h2 className="text-3xl font-bold text-gray-900">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
                 {question.question}
               </h2>
               {question.hint && (
-                <p className="text-sm text-gray-500 italic">{question.hint}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 italic">{question.hint}</p>
               )}
             </div>
 
@@ -240,13 +240,13 @@ export function BioGeneratorStep({ onComplete, onBack, profileData }: BioGenerat
               placeholder={question.placeholder}
               value={answers[question.id] || ''}
               onChange={(e) => setAnswers(prev => ({ ...prev, [question.id]: e.target.value }))}
-              className="min-h-[150px] resize-none border-2 border-gray-200 focus:border-gray-900 rounded-lg text-lg"
+              className="min-h-[150px] resize-none border-2 border-gray-200 dark:border-gray-600 focus:border-gray-900 dark:focus:border-gray-400 rounded-lg text-lg dark:bg-gray-700 dark:text-white"
             />
 
             <Button
               onClick={handleNext}
               disabled={!answers[question.id]?.trim()}
-              className="w-full h-12 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-300 text-white font-medium group"
+              className="w-full h-12 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white dark:text-gray-900 font-medium group"
             >
               {currentQuestion === BIO_QUESTIONS.length - 1 ? 'Genereer Bio\'s' : 'Volgende Vraag'}
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />

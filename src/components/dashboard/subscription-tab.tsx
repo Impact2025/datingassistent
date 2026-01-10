@@ -273,39 +273,39 @@ export function SubscriptionTab() {
     return (
       <div className="space-y-6">
         {/* Current Subscription Status */}
-        <Card className="border-pink-200 bg-pink-50/50">
+        <Card className="border-pink-200 dark:border-pink-800 bg-pink-50/50 dark:bg-pink-900/20">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                  <CheckIcon className="w-5 h-5 text-pink-600" />
+                <div className="w-10 h-10 bg-pink-100 dark:bg-pink-900/50 rounded-full flex items-center justify-center">
+                  <CheckIcon className="w-5 h-5 text-pink-600 dark:text-pink-400" />
                 </div>
                 <div>
-                  <CardTitle className="text-pink-900">Actief Abonnement</CardTitle>
-                  <CardDescription className="text-pink-700">
+                  <CardTitle className="text-pink-900 dark:text-pink-100">Actief Abonnement</CardTitle>
+                  <CardDescription className="text-pink-700 dark:text-pink-300">
                     Je hebt toegang tot alle {pkgInfo.name} features
                   </CardDescription>
                 </div>
               </div>
-              <Badge className="bg-pink-100 text-pink-800 border-pink-200">
+              <Badge className="bg-pink-100 dark:bg-pink-900/50 text-pink-800 dark:text-pink-200 border-pink-200 dark:border-pink-700">
                 {currentSubscription.billingPeriod === 'yearly' ? 'Jaarlijks' : 'Maandelijks'}
               </Badge>
             </div>
           </CardHeader>
 
           <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-white rounded-lg border">
+            <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-700">
               <div className="flex items-center gap-3">
                 {getPackageIcon(currentSubscription.packageType as PackageType)}
                 <div>
-                  <h3 className="font-semibold">{pkgInfo.name} Abonnement</h3>
+                  <h3 className="font-semibold dark:text-white">{pkgInfo.name} Abonnement</h3>
                   <p className="text-sm text-muted-foreground">
                     Geactiveerd op {new Date(currentSubscription.startDate).toLocaleDateString('nl-NL')}
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold dark:text-white">
                   €{(currentSubscription.amount / 100).toFixed(2)}
                 </div>
                 <div className="text-sm text-muted-foreground">
@@ -315,11 +315,11 @@ export function SubscriptionTab() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-3">Jouw Features:</h4>
+              <h4 className="font-semibold mb-3 dark:text-white">Jouw Features:</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {features.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-2 text-sm">
-                    <CheckIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <div key={index} className="flex items-center gap-2 text-sm dark:text-gray-300">
+                    <CheckIcon className="h-4 w-4 text-green-500 dark:text-green-400 flex-shrink-0" />
                     <span>{feature}</span>
                   </div>
                 ))}
@@ -474,15 +474,15 @@ export function SubscriptionTab() {
     }
 
     return (
-      <Card className="border-blue-200 bg-blue-50/50">
+      <Card className="border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-900/20">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
+              <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <CardTitle className="text-blue-900">Mijn Programma&apos;s</CardTitle>
-              <CardDescription className="text-blue-700">
+              <CardTitle className="text-blue-900 dark:text-blue-100">Mijn Programma&apos;s</CardTitle>
+              <CardDescription className="text-blue-700 dark:text-blue-300">
                 Je hebt toegang tot de volgende programma&apos;s
               </CardDescription>
             </div>
@@ -492,14 +492,14 @@ export function SubscriptionTab() {
           {enrolledPrograms.map((program) => (
             <div
               key={program.program_id}
-              className="flex items-center justify-between p-4 bg-white rounded-lg border"
+              className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-700"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">{program.program_name || 'Kickstart 21-Dagen'}</h3>
+                  <h3 className="font-semibold dark:text-white">{program.program_name || 'Kickstart 21-Dagen'}</h3>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Badge variant={program.status === 'active' ? 'default' : 'secondary'} className="text-xs">
                       {program.status === 'active' ? 'Actief' : program.status}
@@ -513,7 +513,7 @@ export function SubscriptionTab() {
               <div className="flex items-center gap-3">
                 {program.program_type === 'kickstart' && (
                   <div className="text-right">
-                    <div className="text-lg font-bold text-blue-600">
+                    <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
                       Dag {program.next_day || 1}/21
                     </div>
                     <div className="text-xs text-muted-foreground">

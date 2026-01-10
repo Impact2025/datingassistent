@@ -212,12 +212,12 @@ export function CheckoutClientComponent() {
   const billingLabel = billing === 'monthly' ? 'maand' : 'jaar';
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-lg mx-auto px-4 py-12">
         {/* Back Link */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-8 text-sm"
+          className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 mb-8 text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           Terug
@@ -227,37 +227,37 @@ export function CheckoutClientComponent() {
         <Card className="p-8 rounded-2xl shadow-sm">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {planData.name}
             </h1>
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 dark:text-gray-400 text-sm">
               {planData.description}
             </p>
           </div>
 
           {/* Price Section */}
-          <div className="bg-gray-50 rounded-xl p-6 mb-6">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 mb-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600">{planData.name} ({billingLabel})</span>
-              <span className={discountAmount > 0 ? "text-gray-400 line-through" : "text-gray-900 font-semibold"}>
+              <span className="text-gray-600 dark:text-gray-300">{planData.name} ({billingLabel})</span>
+              <span className={discountAmount > 0 ? "text-gray-400 dark:text-gray-500 line-through" : "text-gray-900 dark:text-white font-semibold"}>
                 €{(originalPrice / 100).toFixed(2)}
               </span>
             </div>
 
             {discountAmount > 0 && (
               <div className="flex items-center justify-between mb-2">
-                <span className="text-green-600 text-sm">Korting ({couponData?.code})</span>
-                <span className="text-green-600 font-medium">-€{(discountAmount / 100).toFixed(2)}</span>
+                <span className="text-green-600 dark:text-green-400 text-sm">Korting ({couponData?.code})</span>
+                <span className="text-green-600 dark:text-green-400 font-medium">-€{(discountAmount / 100).toFixed(2)}</span>
               </div>
             )}
 
-            <div className="border-t border-gray-200 my-4" />
+            <div className="border-t border-gray-200 dark:border-gray-700 my-4" />
 
             <div className="flex items-center justify-between">
-              <span className="text-gray-900 font-semibold">Totaal</span>
+              <span className="text-gray-900 dark:text-white font-semibold">Totaal</span>
               <div className="text-right">
-                <span className="text-2xl font-bold text-gray-900">€{(finalPrice / 100).toFixed(2)}</span>
-                <span className="text-gray-500 text-sm">/{billingLabel}</span>
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">€{(finalPrice / 100).toFixed(2)}</span>
+                <span className="text-gray-500 dark:text-gray-400 text-sm">/{billingLabel}</span>
               </div>
             </div>
           </div>
@@ -266,7 +266,7 @@ export function CheckoutClientComponent() {
           {!showCoupon && !couponData?.valid && (
             <button
               onClick={() => setShowCoupon(true)}
-              className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-6"
+              className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 mb-6"
             >
               <Tag className="w-4 h-4" />
               Coupon code?
@@ -292,7 +292,7 @@ export function CheckoutClientComponent() {
           )}
 
           {couponData?.valid && (
-            <div className="flex items-center gap-2 text-sm text-green-600 mb-6">
+            <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 mb-6">
               <CheckCircle className="w-4 h-4" />
               <span>{couponData.message}</span>
             </div>
@@ -301,8 +301,8 @@ export function CheckoutClientComponent() {
           {/* Features */}
           <div className="space-y-3 mb-8">
             {['Direct toegang tot alle features', 'Opzeggen wanneer je wilt', 'Geen verborgen kosten'].map((feature, i) => (
-              <div key={i} className="flex items-center gap-3 text-sm text-gray-600">
-                <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+              <div key={i} className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
+                <CheckCircle className="w-4 h-4 text-green-500 dark:text-green-400 flex-shrink-0" />
                 <span>{feature}</span>
               </div>
             ))}
@@ -328,13 +328,13 @@ export function CheckoutClientComponent() {
           </button>
 
           {/* Trust Text */}
-          <p className="text-center text-xs text-gray-400 mt-4">
+          <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-4">
             Veilig betalen via MultiSafePay
           </p>
         </Card>
 
         {/* Payment Methods */}
-        <div className="flex items-center justify-center gap-4 mt-6 text-xs text-gray-400">
+        <div className="flex items-center justify-center gap-4 mt-6 text-xs text-gray-400 dark:text-gray-500">
           <span>iDEAL</span>
           <span>•</span>
           <span>Visa</span>
@@ -345,9 +345,9 @@ export function CheckoutClientComponent() {
         </div>
 
         {/* Terms */}
-        <p className="text-center text-xs text-gray-400 mt-4">
+        <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-4">
           Door te betalen ga je akkoord met onze{' '}
-          <Link href="/algemene-voorwaarden" className="underline hover:text-gray-600">
+          <Link href="/algemene-voorwaarden" className="underline hover:text-gray-300 dark:hover:text-gray-400">
             voorwaarden
           </Link>
         </p>

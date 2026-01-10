@@ -279,19 +279,19 @@ function ToolsPageContent() {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'profile': return 'bg-blue-100 text-blue-700';
-      case 'communication': return 'bg-green-100 text-green-700';
-      case 'analysis': return 'bg-purple-100 text-purple-700';
-      case 'safety': return 'bg-red-100 text-red-700';
-      case 'transformatie': return 'bg-pink-100 text-pink-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'profile': return 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300';
+      case 'communication': return 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300';
+      case 'analysis': return 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300';
+      case 'safety': return 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300';
+      case 'transformatie': return 'bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300';
+      default: return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-4">
         <div className="flex items-center gap-3 mb-4">
           <Button
             variant="ghost"
@@ -302,8 +302,8 @@ function ToolsPageContent() {
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">AI Tools</h1>
-            <p className="text-sm text-gray-600">Kies je dating tool</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">AI Tools</h1>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Kies je dating tool</p>
           </div>
         </div>
 
@@ -317,7 +317,7 @@ function ToolsPageContent() {
                 className={`px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
                   selectedCategory === category.id
                     ? 'bg-pink-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
                 {category.label} ({category.count})
@@ -341,18 +341,18 @@ function ToolsPageContent() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {/* Essentials - Free Tier */}
           <Card
-            className="cursor-pointer overflow-hidden border-2 border-green-300 bg-gradient-to-br from-green-50 to-emerald-50 hover:shadow-lg transition-all"
+            className="cursor-pointer overflow-hidden border-2 border-green-300 dark:border-green-700 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 hover:shadow-lg transition-all"
             onClick={() => router.push('/essentials')}
           >
             <CardContent className="p-4">
               <Badge className="bg-green-500 text-white border-0 mb-2">
                 🆓 GRATIS
               </Badge>
-              <h3 className="font-bold text-gray-900 mb-1">Essentials</h3>
-              <p className="text-xs text-gray-600 mb-3">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-1">Essentials</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
                 Badges, Activity Logger, Stats & meer
               </p>
-              <Button size="sm" variant="outline" className="border-green-500 text-green-700 hover:bg-green-100 w-full">
+              <Button size="sm" variant="outline" className="border-green-500 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50 w-full">
                 Ontdek →
               </Button>
             </CardContent>
@@ -360,18 +360,18 @@ function ToolsPageContent() {
 
           {/* Kickstart Toolkit */}
           <Card
-            className="cursor-pointer overflow-hidden border-2 border-blue-300 bg-gradient-to-br from-blue-50 to-purple-50 hover:shadow-lg transition-all"
+            className="cursor-pointer overflow-hidden border-2 border-blue-300 dark:border-blue-700 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 hover:shadow-lg transition-all"
             onClick={() => router.push('/kickstart-toolkit')}
           >
             <CardContent className="p-4">
               <Badge className="bg-blue-500 text-white border-0 mb-2">
                 💎 KICKSTART
               </Badge>
-              <h3 className="font-bold text-gray-900 mb-1">Kickstart Toolkit</h3>
-              <p className="text-xs text-gray-600 mb-3">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-1">Kickstart Toolkit</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
                 5 AI tools met dagelijkse limieten
               </p>
-              <Button size="sm" variant="outline" className="border-blue-500 text-blue-700 hover:bg-blue-100 w-full">
+              <Button size="sm" variant="outline" className="border-blue-500 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 w-full">
                 Ontdek →
               </Button>
             </CardContent>
@@ -379,15 +379,15 @@ function ToolsPageContent() {
 
           {/* Pro Arsenal - Premium Tier */}
           <Card
-            className="cursor-pointer overflow-hidden border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-lg transition-all"
+            className="cursor-pointer overflow-hidden border-2 border-purple-300 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 hover:shadow-lg transition-all"
             onClick={() => router.push('/pro-arsenal')}
           >
             <CardContent className="p-4">
               <Badge className="bg-purple-500 text-white border-0 mb-2">
                 ⭐ PREMIUM
               </Badge>
-              <h3 className="font-bold text-gray-900 mb-1">Pro Arsenal</h3>
-              <p className="text-xs text-gray-600 mb-3">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-1">Pro Arsenal</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
                 Premium tools + unlimited access
               </p>
               <Button size="sm" className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white w-full">
@@ -398,15 +398,15 @@ function ToolsPageContent() {
         </div>
 
         {/* Transformatie 3.0 Tools Highlight */}
-        <Card className="mb-6 border-2 border-pink-300 bg-gradient-to-br from-pink-50 to-rose-50 overflow-hidden">
+        <Card className="mb-6 border-2 border-pink-300 dark:border-pink-700 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/30 dark:to-rose-900/30 overflow-hidden">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <Badge className="bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 mb-2">
                   ✨ TRANSFORMATIE 3.0
                 </Badge>
-                <h3 className="font-bold text-gray-900 mb-1">4 Nieuwe AI Tools</h3>
-                <p className="text-xs text-gray-600">
+                <h3 className="font-bold text-gray-900 dark:text-white mb-1">4 Nieuwe AI Tools</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-300">
                   Vibe Check • Energie Batterij • 36 Vragen • Ghosting Reframer
                 </p>
               </div>
@@ -425,14 +425,14 @@ function ToolsPageContent() {
           {filteredTools.map((tool) => (
             <Card
               key={tool.id}
-              className="cursor-pointer hover:shadow-md transition-shadow border-0 bg-white"
+              className="cursor-pointer hover:shadow-md transition-shadow border-0 bg-white dark:bg-gray-800"
               onClick={() => handleToolClick(tool.route, tool.title, tool.description)}
             >
               <CardContent className="p-4">
                 <div className="flex flex-col items-center text-center space-y-3">
                   {/* Icon */}
-                  <div className="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center">
-                    <div className="text-pink-600">
+                  <div className="w-12 h-12 bg-pink-50 dark:bg-pink-900/30 rounded-xl flex items-center justify-center">
+                    <div className="text-pink-600 dark:text-pink-400">
                       {tool.icon}
                     </div>
                   </div>
@@ -440,16 +440,16 @@ function ToolsPageContent() {
                   {/* Content */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-center gap-2">
-                      <h3 className="font-semibold text-gray-900 text-sm">
+                      <h3 className="font-semibold text-gray-900 dark:text-white text-sm">
                         {tool.title}
                       </h3>
                       {tool.popular && (
-                        <Badge className="text-xs bg-pink-100 text-pink-700">
+                        <Badge className="text-xs bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300">
                           🔥
                         </Badge>
                       )}
                     </div>
-                    <p className="text-xs text-gray-600 leading-tight">
+                    <p className="text-xs text-gray-600 dark:text-gray-300 leading-tight">
                       {tool.description}
                     </p>
                   </div>
@@ -471,8 +471,8 @@ function ToolsPageContent() {
         {filteredTools.length === 0 && (
           <div className="text-center py-12">
             <div className="text-4xl mb-4">🔍</div>
-            <h3 className="font-semibold text-gray-900 mb-2">Geen tools gevonden</h3>
-            <p className="text-gray-600 text-sm">Probeer een andere categorie</p>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Geen tools gevonden</h3>
+            <p className="text-gray-600 dark:text-gray-300 text-sm">Probeer een andere categorie</p>
           </div>
         )}
       </div>
@@ -503,8 +503,8 @@ function ToolsPageContent() {
               fallback={
                 <div className="flex items-center justify-center min-h-[400px]">
                   <div className="text-center space-y-4">
-                    <div className="w-12 h-12 border-3 border-gray-300 border-t-pink-500 rounded-full animate-spin mx-auto" />
-                    <p className="text-sm text-gray-600">Tool laden...</p>
+                    <div className="w-12 h-12 border-3 border-gray-300 dark:border-gray-600 border-t-pink-500 rounded-full animate-spin mx-auto" />
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Tool laden...</p>
                   </div>
                 </div>
               }
@@ -521,10 +521,10 @@ function ToolsPageContent() {
 export default function ToolsPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 pb-20 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20 flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="text-4xl">🔧</div>
-          <p className="text-gray-600">Tools laden...</p>
+          <p className="text-gray-600 dark:text-gray-300">Tools laden...</p>
         </div>
       </div>
     }>

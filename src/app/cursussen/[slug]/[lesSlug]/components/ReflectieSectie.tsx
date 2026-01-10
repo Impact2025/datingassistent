@@ -24,21 +24,21 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
   const allAnswered = vragen.length > 0 && vragen.every((_: any, i: number) => answers[i]?.trim().length > 0);
 
   return (
-    <Card className="shadow-lg border-pink-100 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
               <MessageSquare className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
           </div>
           {isCompleted && <CheckCircle className="w-5 h-5 text-green-500" />}
         </div>
 
         {/* Intro text */}
         {content.intro && (
-          <p className="text-gray-700 mb-6 leading-relaxed">{content.intro}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{content.intro}</p>
         )}
 
         {/* Questions */}
@@ -46,8 +46,8 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
           {vragen.map((vraag: string, index: number) => (
             <div key={index} className="space-y-3">
               <label className="block">
-                <span className="text-gray-900 font-medium flex items-center gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-sm font-bold">
+                <span className="text-gray-900 dark:text-white font-medium flex items-center gap-2">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 flex items-center justify-center text-sm font-bold">
                     {index + 1}
                   </span>
                   {vraag}
@@ -56,7 +56,7 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
                   value={answers[index] || ''}
                   onChange={(e) => handleAnswerChange(index, e.target.value)}
                   disabled={isCompleted}
-                  className="mt-3 w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-pink-500 focus:ring-2 focus:ring-pink-200 transition-all resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="mt-3 w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:border-pink-500 focus:ring-2 focus:ring-pink-200 dark:focus:ring-pink-800 transition-all resize-none disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   rows={4}
                   placeholder={isCompleted ? 'Al ingevuld' : 'Schrijf je antwoord hier...'}
                 />
@@ -67,8 +67,8 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
 
         {/* AI Analysis notice */}
         {content.aiAnalyse && (
-          <div className="p-4 rounded-lg bg-blue-50 border-2 border-blue-200 mb-6">
-            <p className="text-sm text-blue-900 flex items-center gap-2">
+          <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700 mb-6">
+            <p className="text-sm text-blue-900 dark:text-blue-200 flex items-center gap-2">
               <span className="text-xl">🤖</span>
               <span>
                 Je antwoorden worden opgeslagen en kunnen worden gebruikt voor gepersonaliseerde feedback.
@@ -81,12 +81,12 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
         {vragen.length > 0 && (
           <div className="mb-6">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-600">Beantwoorde vragen</span>
-              <span className="font-medium text-pink-600">
+              <span className="text-gray-600 dark:text-gray-400">Beantwoorde vragen</span>
+              <span className="font-medium text-pink-600 dark:text-pink-400">
                 {Object.keys(answers).filter(k => answers[parseInt(k)]?.trim().length > 0).length} / {vragen.length}
               </span>
             </div>
-            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-pink-500 to-pink-600 transition-all duration-300"
                 style={{

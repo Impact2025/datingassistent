@@ -66,7 +66,7 @@ export function EssentialsHub() {
             variant="ghost"
             size="sm"
             onClick={() => router.push('/dashboard')}
-            className="hover:bg-white"
+            className="hover:bg-white dark:hover:bg-gray-700"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Dashboard
@@ -78,8 +78,8 @@ export function EssentialsHub() {
             <Gift className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Essentials</h1>
-            <p className="text-gray-600">Gratis tools voor iedereen</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Essentials</h1>
+            <p className="text-gray-600 dark:text-gray-400">Gratis tools voor iedereen</p>
           </div>
         </div>
 
@@ -100,20 +100,20 @@ export function EssentialsHub() {
 
         {/* Overview */}
         <TabsContent value="overview" className="space-y-6">
-          <Card className="border-2 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+          <Card className="border-2 border-green-200 dark:border-green-700 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30">
             <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-2">Gratis Dating Tools</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-xl font-semibold mb-2 dark:text-white">Gratis Dating Tools</h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
                 Deze essential tools zijn 100% gratis en altijd beschikbaar. Perfect om te starten met je dating journey!
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div className="bg-white p-3 rounded-lg">
-                  <div className="font-semibold text-green-600">Gamification</div>
-                  <div className="text-gray-600">Blijf gemotiveerd met badges</div>
+                <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                  <div className="font-semibold text-green-600 dark:text-green-400">Gamification</div>
+                  <div className="text-gray-600 dark:text-gray-400">Blijf gemotiveerd met badges</div>
                 </div>
-                <div className="bg-white p-3 rounded-lg">
-                  <div className="font-semibold text-blue-600">Analytics</div>
-                  <div className="text-gray-600">Track je complete dating activiteit</div>
+                <div className="bg-white dark:bg-gray-800 p-3 rounded-lg">
+                  <div className="font-semibold text-blue-600 dark:text-blue-400">Analytics</div>
+                  <div className="text-gray-600 dark:text-gray-400">Track je complete dating activiteit</div>
                 </div>
               </div>
             </CardContent>
@@ -123,7 +123,7 @@ export function EssentialsHub() {
             {essentialTools.map((tool) => (
               <Card
                 key={tool.id}
-                className="group hover:shadow-lg transition-all cursor-pointer border-2 hover:border-green-300"
+                className="group hover:shadow-lg transition-all cursor-pointer border-2 hover:border-green-300 dark:hover:border-green-600 dark:bg-gray-800 dark:border-gray-700"
                 onClick={() => setActiveTab(tool.id)}
               >
                 <CardContent className="p-6">
@@ -132,9 +132,9 @@ export function EssentialsHub() {
                   >
                     {tool.icon}
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{tool.title}</h3>
-                  <p className="text-sm text-gray-600 mb-4">{tool.description}</p>
-                  <Button size="sm" variant="ghost" className="group-hover:bg-green-100">
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{tool.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{tool.description}</p>
+                  <Button size="sm" variant="ghost" className="group-hover:bg-green-100 dark:group-hover:bg-green-900/30">
                     Open Tool →
                   </Button>
                 </CardContent>
@@ -143,12 +143,12 @@ export function EssentialsHub() {
           </div>
 
           {/* Upgrade CTA */}
-          <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50">
+          <Card className="border-2 border-blue-200 dark:border-blue-700 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30">
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2">Klaar voor meer?</h3>
-                  <p className="text-gray-600 mb-4">
+                  <h3 className="text-xl font-bold mb-2 dark:text-white">Klaar voor meer?</h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     Unlock AI-powered tools en geavanceerde features met Kickstart Toolkit
                   </p>
                   <div className="flex gap-3">

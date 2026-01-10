@@ -115,22 +115,22 @@ export const WelcomeVideoCard = React.memo(function WelcomeVideoCard({
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center mx-auto mb-3">
                   <span className="text-2xl font-bold text-white">I</span>
                 </div>
-                <p className="text-gray-600 text-sm">Iris, je persoonlijke coach</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">Iris, je persoonlijke coach</p>
               </div>
             </div>
           )}
         </div>
 
         {/* Video Caption with dismiss button */}
-        <div className="p-4 bg-white flex items-start justify-between gap-4">
-          <p className="text-gray-600 text-sm leading-relaxed flex-1">
+        <div className="p-4 bg-white dark:bg-gray-800 flex items-start justify-between gap-4">
+          <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed flex-1">
             Welkom op je dashboard! Dit is je startpunt voor alles wat je nodig hebt om succesvol te daten. Laat me je rondleiden!
           </p>
           <Button
             variant="ghost"
             size="sm"
             onClick={onDismiss}
-            className="text-gray-400 hover:text-gray-600 flex-shrink-0"
+            className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 flex-shrink-0"
           >
             Begrepen
           </Button>

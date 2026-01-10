@@ -66,13 +66,13 @@ export default function StatusPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'operational':
-        return 'text-green-600 bg-green-50 border-green-200';
+        return 'text-green-600 bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800';
       case 'degraded':
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+        return 'text-yellow-600 bg-yellow-50 dark:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800';
       case 'outage':
-        return 'text-red-600 bg-red-50 border-red-200';
+        return 'text-red-600 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800';
       default:
-        return 'text-gray-600 bg-gray-50 border-gray-200';
+        return 'text-gray-600 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700';
     }
   };
 
@@ -122,13 +122,13 @@ export default function StatusPage() {
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto space-y-8">
             {/* Overall Status */}
-            <Card className="bg-green-50 border-green-200">
+            <Card className="bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <CheckCircle className="w-8 h-8 text-green-600" />
                   <div>
-                    <h2 className="text-xl font-semibold text-green-800">Alle systemen operationeel</h2>
-                    <p className="text-green-700">
+                    <h2 className="text-xl font-semibold text-green-800 dark:text-green-200">Alle systemen operationeel</h2>
+                    <p className="text-green-700 dark:text-green-300">
                       DatingAssistent werkt normaal. Alle diensten zijn beschikbaar.
                     </p>
                   </div>
@@ -228,9 +228,9 @@ export default function StatusPage() {
             </div>
 
             {/* Subscribe to Updates */}
-            <Card className="bg-blue-50 border-blue-200">
+            <Card className="bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800">
               <CardContent className="p-6 text-center">
-                <h3 className="text-lg font-semibold mb-2">Blijf op de hoogte</h3>
+                <h3 className="text-lg font-semibold mb-2 dark:text-blue-200">Blijf op de hoogte</h3>
                 <p className="text-muted-foreground mb-4">
                   Ontvang notificaties bij systeem updates of onderhoud.
                 </p>
@@ -238,7 +238,7 @@ export default function StatusPage() {
                   <input
                     type="email"
                     placeholder="jouw@email.nl"
-                    className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 dark:text-white"
                   />
                   <Button>Abonneren</Button>
                 </div>

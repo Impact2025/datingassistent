@@ -35,29 +35,29 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
   const hasFoutGoed = content.fout && content.goed;
 
   return (
-    <Card className="shadow-lg border-pink-100 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-xl font-semibold text-gray-900">{sectie.titel}</h3>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
           {isCompleted && <CheckCircle className="w-5 h-5 text-green-500" />}
         </div>
 
         {/* Intro text */}
         {content.intro && (
-          <p className="text-gray-700 mb-6 leading-relaxed">{content.intro}</p>
+          <p className="text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">{content.intro}</p>
         )}
 
         {/* Type 1: Vaag vs Concreet */}
         {hasVaagConcreet && (
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             {/* Vaag column */}
-            <div className="p-5 rounded-lg border-2 border-gray-300 bg-gray-100">
-              <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <div className="p-5 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700">
+              <h4 className="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                 <span className="text-red-500">❌</span> Vaag
               </h4>
               <ul className="space-y-2">
                 {voorbeelden.vaag.map((item: string, idx: number) => (
-                  <li key={idx} className="text-sm text-gray-700 p-2 bg-white rounded border border-gray-200">
+                  <li key={idx} className="text-sm text-gray-700 dark:text-gray-200 p-2 bg-white dark:bg-gray-600 rounded border border-gray-200 dark:border-gray-500">
                     {item}
                   </li>
                 ))}
@@ -65,13 +65,13 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
             </div>
 
             {/* Concreet column */}
-            <div className="p-5 rounded-lg border-2 border-green-300 bg-green-50">
-              <h4 className="font-bold text-green-900 mb-3 flex items-center gap-2">
+            <div className="p-5 rounded-lg border-2 border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30">
+              <h4 className="font-bold text-green-900 dark:text-green-300 mb-3 flex items-center gap-2">
                 <span className="text-green-500">✓</span> Concreet
               </h4>
               <ul className="space-y-2">
                 {voorbeelden.concreet.map((item: string, idx: number) => (
-                  <li key={idx} className="text-sm text-green-800 p-2 bg-white rounded border border-green-200">
+                  <li key={idx} className="text-sm text-green-800 dark:text-green-200 p-2 bg-white dark:bg-green-800/30 rounded border border-green-200 dark:border-green-700">
                     {item}
                   </li>
                 ))}
@@ -82,13 +82,13 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
 
         {/* Proces examples (if available in voorbeelden) */}
         {voorbeelden.proces && Array.isArray(voorbeelden.proces) && (
-          <div className="mt-6 p-5 rounded-lg bg-blue-50 border-2 border-blue-200">
-            <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
+          <div className="mt-6 p-5 rounded-lg bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700">
+            <h4 className="font-bold text-blue-900 dark:text-blue-300 mb-3 flex items-center gap-2">
               <span>🎯</span> Procesdoelen (beter dan resultaatdoelen!)
             </h4>
             <ul className="space-y-2">
               {voorbeelden.proces.map((item: string, idx: number) => (
-                <li key={idx} className="text-sm text-blue-800 flex items-start gap-2">
+                <li key={idx} className="text-sm text-blue-800 dark:text-blue-200 flex items-start gap-2">
                   <span className="text-blue-500 mt-1">→</span>
                   <span>{item}</span>
                 </li>
@@ -101,13 +101,13 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
         {hasNietWel && (
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             {/* Niet column */}
-            <div className="p-5 rounded-lg border-2 border-red-300 bg-red-50">
-              <h4 className="font-bold text-red-900 mb-3 flex items-center gap-2">
+            <div className="p-5 rounded-lg border-2 border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30">
+              <h4 className="font-bold text-red-900 dark:text-red-300 mb-3 flex items-center gap-2">
                 <span className="text-red-500">❌</span> Niet doen
               </h4>
               <ul className="space-y-2">
                 {content.niet.map((item: string, idx: number) => (
-                  <li key={idx} className="text-sm text-red-800 p-2 bg-white rounded border border-red-200">
+                  <li key={idx} className="text-sm text-red-800 dark:text-red-200 p-2 bg-white dark:bg-red-800/30 rounded border border-red-200 dark:border-red-700">
                     {item}
                   </li>
                 ))}
@@ -115,13 +115,13 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
             </div>
 
             {/* Wel column */}
-            <div className="p-5 rounded-lg border-2 border-green-300 bg-green-50">
-              <h4 className="font-bold text-green-900 mb-3 flex items-center gap-2">
+            <div className="p-5 rounded-lg border-2 border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30">
+              <h4 className="font-bold text-green-900 dark:text-green-300 mb-3 flex items-center gap-2">
                 <span className="text-green-500">✓</span> Wel doen
               </h4>
               <ul className="space-y-2">
                 {content.wel.map((item: string, idx: number) => (
-                  <li key={idx} className="text-sm text-green-800 p-2 bg-white rounded border border-green-200">
+                  <li key={idx} className="text-sm text-green-800 dark:text-green-200 p-2 bg-white dark:bg-green-800/30 rounded border border-green-200 dark:border-green-700">
                     {item}
                   </li>
                 ))}
@@ -133,18 +133,18 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
         {/* Type 3: Fout vs Goed */}
         {hasFoutGoed && (
           <div className="space-y-4 mb-6">
-            <div className="p-4 rounded-lg border-2 border-red-300 bg-red-50">
-              <p className="text-xs font-semibold text-red-900 mb-2">❌ Fout:</p>
-              <p className="text-sm text-red-800">{content.fout}</p>
+            <div className="p-4 rounded-lg border-2 border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30">
+              <p className="text-xs font-semibold text-red-900 dark:text-red-300 mb-2">❌ Fout:</p>
+              <p className="text-sm text-red-800 dark:text-red-200">{content.fout}</p>
             </div>
-            <div className="p-4 rounded-lg border-2 border-green-300 bg-green-50">
-              <p className="text-xs font-semibold text-green-900 mb-2">✓ Goed:</p>
-              <p className="text-sm text-green-800">{content.goed}</p>
+            <div className="p-4 rounded-lg border-2 border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30">
+              <p className="text-xs font-semibold text-green-900 dark:text-green-300 mb-2">✓ Goed:</p>
+              <p className="text-sm text-green-800 dark:text-green-200">{content.goed}</p>
             </div>
             {content.waarom && (
-              <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
-                <p className="text-xs font-semibold text-blue-900 mb-1">Waarom:</p>
-                <p className="text-sm text-blue-800">{content.waarom}</p>
+              <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700">
+                <p className="text-xs font-semibold text-blue-900 dark:text-blue-300 mb-1">Waarom:</p>
+                <p className="text-sm text-blue-800 dark:text-blue-200">{content.waarom}</p>
               </div>
             )}
           </div>
@@ -152,9 +152,9 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
 
         {/* Tip / Formule */}
         {(content.tip || content.formule) && (
-          <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 border-l-4 border-pink-500 mb-6">
-            <p className="text-sm font-semibold text-pink-900 mb-2">💡 Tip:</p>
-            <p className="text-gray-900 leading-relaxed">{content.tip || content.formule}</p>
+          <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 border-l-4 border-pink-500 mb-6">
+            <p className="text-sm font-semibold text-pink-900 dark:text-pink-300 mb-2">💡 Tip:</p>
+            <p className="text-gray-900 dark:text-white leading-relaxed">{content.tip || content.formule}</p>
           </div>
         )}
 

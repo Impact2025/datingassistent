@@ -106,11 +106,11 @@ export function GamificationDashboard() {
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return 'bg-gray-100 text-gray-800';
-      case 'rare': return 'bg-blue-100 text-blue-800';
-      case 'epic': return 'bg-purple-100 text-purple-800';
-      case 'legendary': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'common': return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
+      case 'rare': return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300';
+      case 'epic': return 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300';
+      case 'legendary': return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
+      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
     }
   };
 
@@ -122,9 +122,9 @@ export function GamificationDashboard() {
           <CardContent className="p-4 text-center">
             <div className="flex items-center justify-center mb-2">
               <Star className="h-6 w-6 text-yellow-500 mr-2" />
-              <span className="text-2xl font-bold">{stats.totalPoints}</span>
+              <span className="text-2xl font-bold dark:text-white">{stats.totalPoints}</span>
             </div>
-            <p className="text-sm text-gray-600">Punten</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Punten</p>
           </CardContent>
         </Card>
 
@@ -132,9 +132,9 @@ export function GamificationDashboard() {
           <CardContent className="p-4 text-center">
             <div className="flex items-center justify-center mb-2">
               <Flame className="h-6 w-6 text-orange-500 mr-2" />
-              <span className="text-2xl font-bold">{stats.currentStreak}</span>
+              <span className="text-2xl font-bold dark:text-white">{stats.currentStreak}</span>
             </div>
-            <p className="text-sm text-gray-600">Streaks</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Streaks</p>
           </CardContent>
         </Card>
 
@@ -142,9 +142,9 @@ export function GamificationDashboard() {
           <CardContent className="p-4 text-center">
             <div className="flex items-center justify-center mb-2">
               <Trophy className="h-6 w-6 text-purple-500 mr-2" />
-              <span className="text-2xl font-bold">{stats.badgesEarned}</span>
+              <span className="text-2xl font-bold dark:text-white">{stats.badgesEarned}</span>
             </div>
-            <p className="text-sm text-gray-600">Badges</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Badges</p>
           </CardContent>
         </Card>
 
@@ -152,9 +152,9 @@ export function GamificationDashboard() {
           <CardContent className="p-4 text-center">
             <div className="flex items-center justify-center mb-2">
               <Target className="h-6 w-6 text-green-500 mr-2" />
-              <span className="text-2xl font-bold">Niveau {stats.level}</span>
+              <span className="text-2xl font-bold dark:text-white">Niveau {stats.level}</span>
             </div>
-            <p className="text-sm text-gray-600">Level</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Level</p>
           </CardContent>
         </Card>
       </div>
@@ -172,7 +172,7 @@ export function GamificationDashboard() {
         </CardHeader>
         <CardContent>
           <Progress value={levelProgress} className="mb-2" />
-          <div className="flex justify-between text-sm text-gray-600">
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
             <span>Niveau {stats.level}</span>
             <span>Niveau {stats.level + 1}</span>
           </div>
@@ -194,17 +194,17 @@ export function GamificationDashboard() {
           <CardContent>
             <div className="space-y-3">
               {recentBadges.map((badge) => (
-                <div key={badge.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <div key={badge.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div className="text-2xl">{badge.icon}</div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-medium">{badge.name}</span>
+                      <span className="font-medium dark:text-white">{badge.name}</span>
                       <Badge className={getRarityColor(badge.rarity)} variant="secondary">
                         {badge.rarity}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600">{badge.description}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{badge.description}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500">
                       {badge.earnedAt.toLocaleDateString('nl-NL')}
                     </p>
                   </div>
@@ -236,24 +236,24 @@ export function GamificationDashboard() {
                   key={challenge.id}
                   className={`flex items-center gap-3 p-3 rounded-lg border-2 ${
                     challenge.completed
-                      ? 'bg-green-50 border-green-200'
-                      : 'bg-white border-gray-200'
+                      ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700'
+                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
                   }`}
                 >
                   <div className="text-xl">{challenge.icon}</div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className={`font-medium ${challenge.completed ? 'line-through text-gray-500' : ''}`}>
+                      <span className={`font-medium ${challenge.completed ? 'line-through text-gray-500 dark:text-gray-500' : 'dark:text-white'}`}>
                         {challenge.title}
                       </span>
                       {challenge.completed && (
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
                       )}
                     </div>
-                    <p className="text-sm text-gray-600">{challenge.description}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{challenge.description}</p>
                     <div className="flex items-center gap-1 mt-1">
                       <Zap className="h-3 w-3 text-yellow-500" />
-                      <span className="text-xs text-yellow-600">+{challenge.points} punten</span>
+                      <span className="text-xs text-yellow-600 dark:text-yellow-400">+{challenge.points} punten</span>
                     </div>
                   </div>
                   {!challenge.completed && (
@@ -305,13 +305,13 @@ export function GamificationDashboard() {
               <Progress value={90} className="mb-4" />
             </div>
 
-            <div className="pt-4 border-t">
+            <div className="pt-4 border-t dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium">Deze week verdien je:</p>
-                  <p className="text-sm text-gray-600">+150 bonuspunten voor je streak!</p>
+                  <p className="font-medium dark:text-white">Deze week verdien je:</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">+150 bonuspunten voor je streak!</p>
                 </div>
-                <Badge className="bg-green-100 text-green-800">
+                <Badge className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
                   <Flame className="h-3 w-3 mr-1" />
                   {stats.currentStreak} dagen
                 </Badge>
@@ -334,20 +334,20 @@ export function GamificationDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg">
-              <Trophy className="mx-auto mb-2 h-8 w-8 text-yellow-600" />
-              <h3 className="font-semibold">Top 10%</h3>
-              <p className="text-sm text-gray-600">van alle gebruikers</p>
+            <div className="text-center p-4 bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 rounded-lg">
+              <Trophy className="mx-auto mb-2 h-8 w-8 text-yellow-600 dark:text-yellow-400" />
+              <h3 className="font-semibold dark:text-white">Top 10%</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">van alle gebruikers</p>
             </div>
-            <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
-              <Flame className="mx-auto mb-2 h-8 w-8 text-blue-600" />
-              <h3 className="font-semibold">12 dagen</h3>
-              <p className="text-sm text-gray-600">langste streak</p>
+            <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg">
+              <Flame className="mx-auto mb-2 h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <h3 className="font-semibold dark:text-white">12 dagen</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">langste streak</p>
             </div>
-            <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
-              <Award className="mx-auto mb-2 h-8 w-8 text-purple-600" />
-              <h3 className="font-semibold">8 badges</h3>
-              <p className="text-sm text-gray-600">verdiend</p>
+            <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg">
+              <Award className="mx-auto mb-2 h-8 w-8 text-purple-600 dark:text-purple-400" />
+              <h3 className="font-semibold dark:text-white">8 badges</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">verdiend</p>
             </div>
           </div>
           <Button className="w-full mt-4" variant="outline">

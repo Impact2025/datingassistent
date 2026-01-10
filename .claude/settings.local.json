@@ -283,7 +283,8 @@
       "Bash(ping:*)",
       "Bash(ren:*)",
       "Bash(gunzip:*)",
-      "Bash(wmic process where \"name=''node.exe''\" get ProcessId,CommandLine)"
+      "Bash(wmic process where \"name=''node.exe''\" get ProcessId,CommandLine)",
+      "Bash(npm run lint:*)"
     ],
     "deny": [],
     "ask": []
