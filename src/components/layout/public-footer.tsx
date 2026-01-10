@@ -31,7 +31,7 @@ export function PublicFooter() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/#prijzen" className="text-sm text-foreground/80 hover:text-primary transition-colors">
+                    <Link href="/#programmas" className="text-sm text-foreground/80 hover:text-primary transition-colors">
                       Prijzen
                     </Link>
                   </li>

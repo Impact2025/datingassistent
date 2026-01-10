@@ -497,7 +497,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
         </div>
       </section>
 
-      <section className="py-24 px-4 bg-white dark:bg-gray-900">
+      <section id="over-ons" className="py-24 px-4 bg-white dark:bg-gray-900">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Van Datingcoach naar AI-Architect</h2>
