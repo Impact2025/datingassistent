@@ -161,6 +161,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
 
+        {/* Preload LCP image - video poster for hero section */}
+        <link rel="preload" as="image" href="/images/iris-video-poster.jpg" />
+
         <GoogleAnalytics />
       </head>
       <body className="font-body bg-background text-foreground antialiased" suppressHydrationWarning>

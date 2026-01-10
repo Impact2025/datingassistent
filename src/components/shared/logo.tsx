@@ -30,6 +30,7 @@ export function Logo({
           width={iconSize}
           height={iconSize}
           className="object-contain"
+          priority
         />
       )}
       <span className={`${textSizeClasses[textSize]} font-bold`}>

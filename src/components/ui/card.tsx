@@ -9,12 +9,12 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', ...props }, ref) => {
-    const baseClasses = 'bg-white rounded-2xl border transition-shadow duration-200';
+    const baseClasses = 'bg-white dark:bg-gray-800 rounded-2xl border transition-shadow duration-200';
 
     const variantClasses = {
-      default: 'border-gray-200 shadow-sm',
-      elevated: 'border-gray-200 shadow-lg',
-      outlined: 'border-gray-300 shadow-none',
+      default: 'border-gray-200 dark:border-gray-700 shadow-sm',
+      elevated: 'border-gray-200 dark:border-gray-700 shadow-lg',
+      outlined: 'border-gray-300 dark:border-gray-600 shadow-none',
     };
 
     return (
@@ -45,7 +45,7 @@ export const CardTitle = forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTM
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn('text-lg font-semibold text-gray-900', className)}
+      className={cn('text-lg font-semibold text-gray-900 dark:text-white', className)}
       {...props}
     />
   )
@@ -57,7 +57,7 @@ export const CardDescription = forwardRef<HTMLParagraphElement, React.HTMLAttrib
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('text-sm text-gray-600 mt-1', className)}
+      className={cn('text-sm text-gray-600 dark:text-gray-300 mt-1', className)}
       {...props}
     />
   )
@@ -81,7 +81,7 @@ export const CardFooter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('p-6 pt-4 border-t border-gray-100', className)}
+      className={cn('p-6 pt-4 border-t border-gray-100 dark:border-gray-700', className)}
       {...props}
     />
   )

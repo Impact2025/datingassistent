@@ -282,7 +282,8 @@
       "Bash(npx next dev:*)",
       "Bash(ping:*)",
       "Bash(ren:*)",
-      "Bash(gunzip:*)"
+      "Bash(gunzip:*)",
+      "Bash(wmic process where \"name=''node.exe''\" get ProcessId,CommandLine)"
     ],
     "deny": [],
     "ask": []

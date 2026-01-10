@@ -13,28 +13,28 @@ import {
 
 export function FeatureBlocks() {
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-20 px-4 bg-white dark:bg-gray-900">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
           {/* Block 1: Quiz */}
-          <Card className="border border-gray-200 shadow-sm hover:shadow-lg transition-all group">
+          <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all group bg-white dark:bg-gray-800">
             <CardContent className="p-8 sm:p-10 text-center space-y-6">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-pink-50 flex items-center justify-center group-hover:bg-pink-100 transition-colors">
-                <Sparkles className="w-7 h-7 text-pink-600" />
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-pink-50 dark:bg-pink-900/30 flex items-center justify-center group-hover:bg-pink-100 dark:group-hover:bg-pink-900/50 transition-colors">
+                <Sparkles className="w-7 h-7 text-pink-600 dark:text-pink-400" />
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-gray-900">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Ontdek je Dating Stijl in 2 minuten
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   AI-analyse van je gedrag met direct persoonlijk actieplan
                 </p>
               </div>
 
               <Link href="/quiz">
-                <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2.5 rounded-lg font-medium">
+                <Button className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 text-white dark:text-gray-900 px-6 py-2.5 rounded-lg font-medium">
                   Start Gratis Analyse
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -43,23 +43,23 @@ export function FeatureBlocks() {
           </Card>
 
           {/* Block 2: Programs */}
-          <Card className="border border-gray-200 shadow-sm hover:shadow-lg transition-all group">
+          <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all group bg-white dark:bg-gray-800">
             <CardContent className="p-8 sm:p-10 text-center space-y-6">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-purple-50 flex items-center justify-center group-hover:bg-purple-100 transition-colors">
-                <Target className="w-7 h-7 text-purple-600" />
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center group-hover:bg-purple-100 dark:group-hover:bg-purple-900/50 transition-colors">
+                <Target className="w-7 h-7 text-purple-600 dark:text-purple-400" />
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-gray-900">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Kies jouw programma
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   Van gratis tools tot persoonlijke 1-op-1 coaching
                 </p>
               </div>
 
               <Link href="#programmas">
-                <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2.5 rounded-lg font-medium">
+                <Button className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 text-white dark:text-gray-900 px-6 py-2.5 rounded-lg font-medium">
                   Bekijk Programma's
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -68,23 +68,23 @@ export function FeatureBlocks() {
           </Card>
 
           {/* Block 3: About */}
-          <Card className="border border-gray-200 shadow-sm hover:shadow-lg transition-all group">
+          <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all group bg-white dark:bg-gray-800">
             <CardContent className="p-8 sm:p-10 text-center space-y-6">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                <Award className="w-7 h-7 text-blue-600" />
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors">
+                <Award className="w-7 h-7 text-blue-600 dark:text-blue-400" />
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-gray-900">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Van The Undateables tot jouw persoonlijke AI coach
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   10 jaar dating expertise, nu voor iedereen toegankelijk
                 </p>
               </div>
 
               <Link href="/over-ons">
-                <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2.5 rounded-lg font-medium">
+                <Button className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 text-white dark:text-gray-900 px-6 py-2.5 rounded-lg font-medium">
                   Lees Ons Verhaal
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -93,17 +93,17 @@ export function FeatureBlocks() {
           </Card>
 
           {/* Block 4: CTA */}
-          <Card className="border border-gray-200 shadow-sm hover:shadow-lg transition-all group">
+          <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all group bg-white dark:bg-gray-800">
             <CardContent className="p-8 sm:p-10 text-center space-y-6">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-green-50 flex items-center justify-center group-hover:bg-green-100 transition-colors">
-                <TrendingUp className="w-7 h-7 text-green-600" />
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-green-50 dark:bg-green-900/30 flex items-center justify-center group-hover:bg-green-100 dark:group-hover:bg-green-900/50 transition-colors">
+                <TrendingUp className="w-7 h-7 text-green-600 dark:text-green-400" />
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-gray-900">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Stop met wachten. Start met groeien.
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   Gratis beginnen • Geen creditcard nodig • Direct toegang
                 </p>
               </div>

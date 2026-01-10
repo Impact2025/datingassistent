@@ -87,7 +87,7 @@ export function ArticleFeedback({ articleSlug, articleTitle, className }: Articl
                 variant="outline"
                 size="lg"
                 onClick={() => handleVote(true)}
-                className="gap-2 hover:bg-green-50 hover:border-green-300 hover:text-green-700 dark:hover:bg-green-950/30"
+                className="gap-2 hover:bg-green-50 hover:border-green-300 hover:text-green-700 dark:hover:bg-green-950/30 dark:hover:border-green-700 dark:hover:text-green-400"
               >
                 <ThumbsUp className="w-5 h-5" />
                 Ja, nuttig
@@ -96,7 +96,7 @@ export function ArticleFeedback({ articleSlug, articleTitle, className }: Articl
                 variant="outline"
                 size="lg"
                 onClick={() => handleVote(false)}
-                className="gap-2 hover:bg-red-50 hover:border-red-300 hover:text-red-700 dark:hover:bg-red-950/30"
+                className="gap-2 hover:bg-red-50 hover:border-red-300 hover:text-red-700 dark:hover:bg-red-950/30 dark:hover:border-red-700 dark:hover:text-red-400"
               >
                 <ThumbsDown className="w-5 h-5" />
                 Kan beter
@@ -117,7 +117,7 @@ export function ArticleFeedback({ articleSlug, articleTitle, className }: Articl
               {state === 'positive' ? (
                 <>
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 mb-2">
-                    <ThumbsUp className="w-6 h-6 text-green-600" />
+                    <ThumbsUp className="w-6 h-6 text-green-600 dark:text-green-400" />
                   </div>
                   <h3 className="font-semibold text-foreground">Bedankt!</h3>
                   <p className="text-sm text-muted-foreground">
@@ -127,7 +127,7 @@ export function ArticleFeedback({ articleSlug, articleTitle, className }: Articl
               ) : (
                 <>
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 mb-2">
-                    <ThumbsDown className="w-6 h-6 text-amber-600" />
+                    <ThumbsDown className="w-6 h-6 text-amber-600 dark:text-amber-400" />
                   </div>
                   <h3 className="font-semibold text-foreground">
                     Bedankt voor je feedback

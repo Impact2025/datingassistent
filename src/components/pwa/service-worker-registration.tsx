@@ -72,151 +72,35 @@ export function ServiceWorkerRegistration() {
     // Check install status
     checkIfInstalled();
 
-    // Clear caches on version mismatch first
-    clearAllCachesOnVersionMismatch().then((didReload) => {
-      if (didReload) return; // Page will reload, don't continue
-
-      // Continue with normal initialization
-      initializeServiceWorker();
-    });
-
-    // Listen for display mode changes
-    const displayModeQuery = window.matchMedia('(display-mode: standalone)');
-    const handleDisplayModeChange = (e: MediaQueryListEvent) => {
-      setIsInstalled(e.matches);
-    };
-    displayModeQuery.addEventListener('change', handleDisplayModeChange);
-
-    // Handle online/offline status
-    setIsOnline(navigator.onLine);
-
-    const handleOnline = () => {
-      setIsOnline(true);
-      // Trigger background sync when back online
-      if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
-        navigator.serviceWorker.ready.then((registration) => {
-          return (registration as ServiceWorkerRegistration & { sync: { register: (tag: string) => Promise<void> } }).sync.register('sync-pending-data');
+    // TEMPORARILY DISABLED: Service Worker causing ERR_FAILED on some networks
+    // Unregister any existing SW to fix the issue
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((registration) => {
+          registration.unregister();
+          console.log('[SW] Unregistered service worker to fix ERR_FAILED');
         });
-      }
-    };
-
-    const handleOffline = () => {
-      setIsOnline(false);
-    };
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    async function initializeServiceWorker() {
-      // Only register service worker if supported
-      if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-        // In development mode, ALWAYS unregister any existing SW to prevent stale cache issues
-        // The SW is disabled in development (next.config.ts), but old SWs may still be active
-        if (process.env.NODE_ENV === 'development') {
-          try {
-            const registrations = await navigator.serviceWorker.getRegistrations();
-            if (registrations.length > 0) {
-              console.log('[SW] Development mode: Unregistering all service workers to prevent ERR_FAILED');
-              for (const registration of registrations) {
-                await registration.unregister();
-              }
-              // Clear all caches too
-              if ('caches' in window) {
-                const cacheNames = await caches.keys();
-                await Promise.all(cacheNames.map(name => caches.delete(name)));
-              }
-              // Reload once to apply the unregistration
-              if (!sessionStorage.getItem('sw-dev-unregister-reload')) {
-                sessionStorage.setItem('sw-dev-unregister-reload', 'true');
-                window.location.reload();
-                return;
-              }
-            }
-            sessionStorage.removeItem('sw-dev-unregister-reload');
-            return; // Don't register SW in development
-          } catch (error) {
-            console.error('[SW] Error unregistering service workers:', error);
-          }
-          return; // Don't continue with SW registration in development
-        }
-
-        // Listen for messages from service worker (log only, no reload)
-        navigator.serviceWorker.addEventListener('message', (event) => {
-          if (event.data?.type === 'SW_ACTIVATED') {
-            console.log('[SW] Received activation message from SW:', event.data);
-            // DO NOT reload here - let controllerchange handle it to prevent double reload
-          }
-        });
-
-        // Clear reload flag on successful load
-        window.addEventListener('load', () => {
-          sessionStorage.removeItem('sw-activation-reload');
-          sessionStorage.removeItem('sw-controller-change-reload');
-        }, { once: true });
-
-        // Register service worker
-        navigator.serviceWorker
-          .register('/sw.js', { scope: '/' })
-          .then((registration) => {
-            console.log('Service Worker registered:', registration.scope);
-            setServiceWorkerRegistration(registration);
-
-            // Handle updates
-            registration.addEventListener('updatefound', () => {
-              const newWorker = registration.installing;
-              if (newWorker) {
-                newWorker.addEventListener('statechange', () => {
-                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // New version available
-                    console.log('New app version available!');
-                    setUpdateAvailable(true);
-                  }
-                });
-              }
-            });
-
-            // Check for updates periodically (every 60 minutes)
-            setInterval(() => {
-              registration.update();
-            }, 60 * 60 * 1000);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
-
-        // Handle controller change (when new SW takes control)
-        // ONLY reload if this is an UPDATE, not initial registration
-        let hasController = !!navigator.serviceWorker.controller;
-
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          console.log('[SW] Service Worker controller changed - new version is active');
-
-          // Only reload if we HAD a controller before (this is an update, not first install)
-          // This prevents reload loops on first visit
-          if (!hasController) {
-            console.log('[SW] First SW installation, no reload needed');
-            hasController = true;
-            return;
-          }
-
-          const isReloading = sessionStorage.getItem('sw-controller-change-reload');
-
-          if (!isReloading) {
-            console.log('[SW] SW update detected, reloading for fresh assets');
-            sessionStorage.setItem('sw-controller-change-reload', 'true');
-            // Simple reload without aggressive cache clearing (SW handles that)
-            window.location.reload();
-          }
+      });
+      // Clear all caches
+      if ('caches' in window) {
+        caches.keys().then((names) => {
+          names.forEach((name) => caches.delete(name));
         });
       }
     }
 
+    // Handle online/offline status (still useful without SW)
+    setIsOnline(navigator.onLine);
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
-      displayModeQuery.removeEventListener('change', handleDisplayModeChange);
     };
-  }, [setServiceWorkerRegistration, setUpdateAvailable, setIsOnline, checkIfInstalled, setIsInstalled, clearAllCachesOnVersionMismatch]);
+  }, [checkIfInstalled, setIsOnline]);
 
   return null;
 }
