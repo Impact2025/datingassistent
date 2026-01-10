@@ -31,6 +31,7 @@ import { ChatWidgetWrapper } from '@/components/live-chat/chat-widget-wrapper';
 import { HeroSection } from '@/components/landing/hero-section';
 import { HowItWorksSection } from '@/components/landing/how-it-works-section';
 import { ProgramCards } from '@/components/landing/program-cards';
+import { FAQSection } from '@/components/landing/faq-section';
 import { useUser } from '@/providers/user-provider';
 
 type Review = {
@@ -673,108 +674,8 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             ))}
           </div>
 
-          <div className="max-w-5xl mx-auto mb-16">
-            <div className="text-center mb-12">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-4">Veelgestelde vragen</h3>
-              <p className="text-gray-700 dark:text-gray-400">Alle antwoorden om je laatste twijfels weg te nemen</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Pricing & Value */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">💳 Kan ik gratis beginnen?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Ja! De Profiel Check is volledig gratis, zonder creditcard. Je krijgt direct inzicht in je dating profiel en concrete verbeterpunten. Daarna kies je zelf of je verder wilt met een van onze programma's.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">💰 Is de investering het waard?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  De gemiddelde gebruiker bespaart 15+ uur per maand door gerichte hulp vs. zelf uitproberen. Plus: kwaliteit over kwantiteit betekent minder tijdverspilling aan verkeerde matches. Veel gebruikers zeggen dat één goede date de investering al waard was.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">🔄 Wat als het niet voor mij werkt?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Geen risico! Alle programma's hebben een 30 dagen niet-goed-geld-terug garantie. Niet tevreden? Je krijgt je geld terug, geen vragen.
-                </p>
-              </div>
-
-              {/* Effectiveness */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">⏱️ Hoe snel zie ik resultaten?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Profiel verbeteringen zie je binnen 48 uur (meer matches). Betere gesprekken starten binnen 1 week. Voor de meeste gebruikers: eerste betekenisvolle date binnen 2-4 weken bij actief gebruik.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">🤔 Werkt dit ook als ik weinig/geen matches krijg?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Juist dan! Onze Profiel Coach analyseert precies waarom je geen matches krijgt (foto's, bio, selectie) en geeft concrete verbeteringen. 78% van gebruikers met minder dan 5 matches/maand komt uit op 15+ matches na profiel optimalisatie.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">📱 Voor welke dating apps werkt het?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Alle! Tinder, Bumble, Hinge, Lexa, Relatieplanet, etc. Onze tips zijn platform-onafhankelijk omdat het gaat om menselijke psychologie, niet om app-specifieke trucjes.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">🤖 Is dit niet gewoon een algemene chatbot?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Nee! DatingAssistent gebruikt context-aware AI gebaseerd op 10 jaar coaching ervaring. De AI ziet je profiel, je match's profiel, en gesprekscontext. Het geeft specifieke suggesties, geen algemene "wees jezelf" adviezen.
-                </p>
-              </div>
-
-              {/* Privacy & Trust */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">🔒 Is mijn data veilig?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  100%. We gebruiken SSL encryptie, opslaan geen gevoelige persoonlijke data langer dan nodig, en verkopen nooit je informatie. GDPR-compliant en gehost in Nederland.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">👀 Zien anderen dat ik een dating coach gebruik?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Nee, niemand ziet dat je DatingAssistent gebruikt. De suggesties die je krijgt zijn jouw eigen woorden—wij helpen je alleen om authentiek én aantrekkelijk over te komen.
-                </p>
-              </div>
-
-              {/* Target Audience */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">👤 Ben ik te oud/jong voor DatingAssistent?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Onze gebruikers zijn van 18-65+. De meeste tips zijn leeftijd-onafhankelijk. Wel: onze tone of voice en voorbeelden zijn het meest gericht op 25-45 jaar.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">🏳️‍🌈 Werkt dit ook voor LGBTQ+ dating?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Ja! Onze AI is getraind op diverse dating scenario's. Of je nu man, vrouw, non-binair bent of op zoek naar welke gender dan ook—de principes van goede communicatie zijn universeel.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-md transition-all">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">⚡ Heb ik technische kennis nodig?</h4>
-                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                  Nee! Als je een dating app kunt gebruiken, kun je DatingAssistent gebruiken. Simpele interface, geen installatie, werkt in je browser én als app.
-                </p>
-              </div>
-            </div>
-
-            <div className="text-center mt-8">
-              <Link href="/faq" className="text-pink-500 dark:text-pink-400 hover:text-pink-600 dark:hover:text-pink-300 font-medium transition-all inline-flex items-center gap-2">
-                Bekijk alle 20+ veelgestelde vragen →
-              </Link>
-            </div>
-          </div>
+          {/* FAQ Section - Now as separate component */}
+          <FAQSection />
 
           {/* Start vandaag - Logout page style */}
           <div className="max-w-2xl mx-auto space-y-8">
