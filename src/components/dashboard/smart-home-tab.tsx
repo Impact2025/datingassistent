@@ -71,10 +71,10 @@ const SuggestionCard = React.memo(function SuggestionCard({
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: ANIMATION_DELAYS.SUGGESTIONS + index * 0.05 }}
     >
-      <Card className="shadow-sm">
+      <Card className="shadow-sm bg-white dark:bg-gray-800">
         <CardContent className="p-0">
           <div
-            className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+            className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer"
             onClick={onClick}
           >
             <div className={cn(
@@ -84,10 +84,10 @@ const SuggestionCard = React.memo(function SuggestionCard({
               <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">{suggestion.title}</p>
-              <p className="text-xs text-gray-600 hidden sm:block">{suggestion.description}</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate">{suggestion.title}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400 hidden sm:block">{suggestion.description}</p>
             </div>
-            <ArrowRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <ArrowRight className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
           </div>
         </CardContent>
       </Card>
@@ -313,17 +313,17 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Dashboard laden...</p>
+          <p className="text-gray-600 dark:text-gray-400">Dashboard laden...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
       <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
         {/* Welcome Video */}
         {showWelcomeVideo && (
@@ -352,46 +352,46 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
               {/* Essentials */}
               <button
                 onClick={() => router.push('/essentials')}
-                className="p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all text-left"
+                className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm transition-all text-left"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                    <Gift className="w-4 h-4 text-green-600" />
+                  <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <Gift className="w-4 h-4 text-green-600 dark:text-green-400" />
                   </div>
-                  <span className="text-xs text-green-600 font-medium">Gratis</span>
+                  <span className="text-xs text-green-600 dark:text-green-400 font-medium">Gratis</span>
                 </div>
-                <h3 className="font-semibold text-gray-900 text-sm">Essentials</h3>
-                <p className="text-xs text-gray-500 mt-1">Basis tools</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Essentials</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Basis tools</p>
               </button>
 
               {/* Kickstart */}
               <button
                 onClick={() => router.push('/kickstart-toolkit')}
-                className="p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all text-left"
+                className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm transition-all text-left"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                    <Rocket className="w-4 h-4 text-blue-600" />
+                  <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                    <Rocket className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <span className="text-xs text-blue-600 font-medium">Kickstart</span>
+                  <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">Kickstart</span>
                 </div>
-                <h3 className="font-semibold text-gray-900 text-sm">Toolkit</h3>
-                <p className="text-xs text-gray-500 mt-1">5 AI tools</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Toolkit</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">5 AI tools</p>
               </button>
 
               {/* Pro */}
               <button
                 onClick={() => router.push('/pro-arsenal')}
-                className="p-4 bg-white rounded-xl border border-pink-200 hover:border-pink-300 hover:shadow-sm transition-all text-left"
+                className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-pink-200 dark:border-pink-800 hover:border-pink-300 dark:hover:border-pink-700 hover:shadow-sm transition-all text-left"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
-                    <Crown className="w-4 h-4 text-pink-600" />
+                  <div className="w-8 h-8 rounded-lg bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
+                    <Crown className="w-4 h-4 text-pink-600 dark:text-pink-400" />
                   </div>
-                  <span className="text-xs text-pink-600 font-medium">Premium</span>
+                  <span className="text-xs text-pink-600 dark:text-pink-400 font-medium">Premium</span>
                 </div>
-                <h3 className="font-semibold text-gray-900 text-sm">Pro Arsenal</h3>
-                <p className="text-xs text-gray-500 mt-1">Alle tools</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Pro Arsenal</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Alle tools</p>
               </button>
             </div>
           </motion.div>
@@ -404,64 +404,64 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: ANIMATION_DELAYS.PROGRAMS + 0.2 }}
           >
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <Gift className="w-5 h-5 text-gray-400" />
-                  <h2 className="font-semibold text-gray-900">Gratis Dating Tools</h2>
+                  <Gift className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+                  <h2 className="font-semibold text-gray-900 dark:text-white">Gratis Dating Tools</h2>
                 </div>
-                <span className="text-xs text-green-600 font-medium bg-green-50 px-2 py-1 rounded-full">100% Gratis</span>
+                <span className="text-xs text-green-600 dark:text-green-400 font-medium bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded-full">100% Gratis</span>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => router.push('/essentials?tab=badges')}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
-                    <Trophy className="w-4 h-4 text-amber-600" />
+                  <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                    <Trophy className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">Badges & Achievements</p>
+                    <p className="font-medium text-gray-900 dark:text-white text-sm">Badges & Achievements</p>
                     <p className="text-xs text-pink-500">Open Tool →</p>
                   </div>
                 </button>
 
                 <button
                   onClick={() => router.push('/essentials?tab=activity')}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                    <TrendingUp className="w-4 h-4 text-blue-600" />
+                  <div className="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">Dating Activity Logger</p>
+                    <p className="font-medium text-gray-900 dark:text-white text-sm">Dating Activity Logger</p>
                     <p className="text-xs text-pink-500">Open Tool →</p>
                   </div>
                 </button>
 
                 <button
                   onClick={() => router.push('/essentials?tab=recommendations')}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-pink-50 flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-4 h-4 text-pink-600" />
+                  <div className="w-9 h-9 rounded-lg bg-pink-50 dark:bg-pink-900/30 flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-4 h-4 text-pink-600 dark:text-pink-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">Personal Recommendations</p>
+                    <p className="font-medium text-gray-900 dark:text-white text-sm">Personal Recommendations</p>
                     <p className="text-xs text-pink-500">Open Tool →</p>
                   </div>
                 </button>
 
                 <button
                   onClick={() => router.push('/essentials?tab=stats')}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
-                    <BarChart3 className="w-4 h-4 text-green-600" />
+                  <div className="w-9 h-9 rounded-lg bg-green-50 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                    <BarChart3 className="w-4 h-4 text-green-600 dark:text-green-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">Stats & Voortgang</p>
+                    <p className="font-medium text-gray-900 dark:text-white text-sm">Stats & Voortgang</p>
                     <p className="text-xs text-pink-500">Open Tool →</p>
                   </div>
                 </button>
@@ -533,7 +533,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                         return <IconComponent className="w-5 h-5 sm:w-7 sm:h-7" />;
                       })()}
                     </div>
-                    <h3 className="sm:hidden text-lg font-bold text-gray-900">
+                    <h3 className="sm:hidden text-lg font-bold text-gray-900 dark:text-white">
                       {nextAction.title}
                     </h3>
                   </div>
@@ -567,7 +567,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
             transition={{ delay: 0.1 }}
           >
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3 sm:mb-4">
-              <h2 className="text-base sm:text-lg font-semibold text-gray-900">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                 Fase {userContext?.journeyPhase || 1} Quick Actions
               </h2>
               <Button
@@ -605,11 +605,11 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                             <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-sm sm:text-base text-gray-900">{action.title}</h3>
+                            <h3 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white">{action.title}</h3>
                             <p className="text-xs sm:text-sm text-gray-600 sm:hidden">{action.description}</p>
                           </div>
                         </div>
-                        <p className="hidden sm:block text-sm text-gray-600">{action.description}</p>
+                        <p className="hidden sm:block text-sm text-gray-600 dark:text-gray-400">{action.description}</p>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -628,7 +628,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
         >
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
-            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Vandaag voor jou</h2>
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Vandaag voor jou</h2>
           </div>
 
           {suggestions.slice(1, 4).map((suggestion, index) => (
@@ -656,16 +656,16 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
             <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-3 sm:mb-4">
                 <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
-                <h3 className="font-semibold text-sm sm:text-base text-gray-900">Je Reis</h3>
+                <h3 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white">Je Reis</h3>
               </div>
               <div className="space-y-2 sm:space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs sm:text-sm text-gray-600">Huidige fase</span>
+                  <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Huidige fase</span>
                   <Badge variant="secondary" className="text-xs">Fase {userContext?.journeyPhase || 1}/5</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs sm:text-sm text-gray-600">Voltooide assessments</span>
-                  <span className="text-xs sm:text-sm font-medium text-gray-900">
+                  <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Voltooide assessments</span>
+                  <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
                     {userContext?.completedAssessments?.length || 0}
                   </span>
                 </div>
@@ -686,9 +686,9 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
             <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-3 sm:mb-4">
                 <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
-                <h3 className="font-semibold text-sm sm:text-base text-gray-900">Recente Activiteit</h3>
+                <h3 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white">Recente Activiteit</h3>
               </div>
-              <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-600">
+              <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                 <p>Je bent actief bezig met je dating journey!</p>
                 <p className="text-xs text-gray-500">
                   Laatste activiteit: vandaag
