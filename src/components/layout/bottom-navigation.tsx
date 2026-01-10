@@ -64,7 +64,7 @@ export function BottomNavigation() {
         icon: Heart,
         label: 'Mijn Reis',
         active: currentTab === 'pad' || isOnTransformatiePage,
-        color: 'text-gray-600',
+        color: 'text-gray-600 dark:text-gray-400',
         activeColor: 'text-pink-500',
         gradient: 'from-pink-500 to-rose-500',
       };
@@ -78,7 +78,7 @@ export function BottomNavigation() {
         icon: Sparkles,
         label: 'Kickstart',
         active: currentTab === 'pad' || isOnKickstartPage,
-        color: 'text-gray-600',
+        color: 'text-gray-600 dark:text-gray-400',
         activeColor: 'text-amber-500',
         gradient: 'from-amber-500 to-orange-500',
       };
@@ -90,7 +90,7 @@ export function BottomNavigation() {
       icon: Compass,
       label: 'Ontdek',
       active: currentTab === 'pad',
-      color: 'text-gray-600',
+      color: 'text-gray-600 dark:text-gray-400',
       activeColor: 'text-indigo-500',
       gradient: 'from-indigo-500 to-purple-500',
     };
@@ -105,7 +105,7 @@ export function BottomNavigation() {
       icon: null,
       label: 'Home',
       active: pathname === '/' || (pathname === '/dashboard' && !currentTab) || currentTab === 'home',
-      color: 'text-gray-600',
+      color: 'text-gray-600 dark:text-gray-400',
       activeColor: 'text-pink-500',
       isLogo: true,
     },
@@ -115,7 +115,7 @@ export function BottomNavigation() {
       icon: MessageCircle,
       label: 'Coach',
       active: currentTab === 'coach',
-      color: 'text-gray-600',
+      color: 'text-gray-600 dark:text-gray-400',
       activeColor: 'text-blue-500',
     },
     {
@@ -123,7 +123,7 @@ export function BottomNavigation() {
       icon: LayoutGrid,
       label: 'Tools',
       active: currentTab === 'tools',
-      color: 'text-gray-600',
+      color: 'text-gray-600 dark:text-gray-400',
       activeColor: 'text-emerald-500',
     },
     {
@@ -131,14 +131,14 @@ export function BottomNavigation() {
       icon: User,
       label: 'Profiel',
       active: currentTab === 'profiel' || currentTab === 'settings' || currentTab === 'subscription',
-      color: 'text-gray-600',
+      color: 'text-gray-600 dark:text-gray-400',
       activeColor: 'text-violet-500',
     },
   ];
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-xl border-t border-gray-100 md:hidden safe-area-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white/98 dark:bg-gray-950/98 backdrop-blur-xl border-t border-gray-100 dark:border-gray-800 md:hidden safe-area-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)]"
       role="navigation"
       aria-label="Hoofdnavigatie"
     >
@@ -158,8 +158,8 @@ export function BottomNavigation() {
               className={cn(
                 "relative flex flex-col items-center justify-center px-2 py-1.5 rounded-xl transition-all duration-200 ease-out min-w-[56px] active:scale-95",
                 isActive
-                  ? "bg-gray-50"
-                  : "hover:bg-gray-50/50"
+                  ? "bg-gray-50 dark:bg-gray-800"
+                  : "hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
               )}
             >
               {'isLogo' in item && item.isLogo ? (

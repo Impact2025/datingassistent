@@ -303,9 +303,9 @@ function MeerPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-4">
         <div className="flex items-center gap-3 mb-4">
           <Button
             variant="ghost"
@@ -316,15 +316,15 @@ function MeerPageContent() {
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Meer</h1>
-            <p className="text-sm text-gray-600">Instellingen en account</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Meer</h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Instellingen en account</p>
           </div>
         </div>
       </div>
 
       <div className="p-4 space-y-6">
         {/* User Profile Card */}
-        <Card className="border-0 bg-gradient-to-r from-pink-50 to-pink-100 shadow-sm">
+        <Card className="border-0 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-950/30 dark:to-pink-900/20 shadow-sm">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
@@ -337,10 +337,10 @@ function MeerPageContent() {
                 />
               </div>
               <div className="flex-1">
-                <h2 className="font-semibold text-gray-900 text-lg">
+                <h2 className="font-semibold text-gray-900 dark:text-white text-lg">
                   {user?.name || 'Dating Expert'}
                 </h2>
-                <p className="text-sm text-gray-600 mb-2">{user?.email}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{user?.email}</p>
                 <div className="flex items-center gap-2">
                   <Badge className={`text-xs px-2 py-1 ${
                     userTier === 'vip'
@@ -362,11 +362,11 @@ function MeerPageContent() {
                 </div>
                 {/* Progress bar */}
                 <div className="mt-3">
-                  <div className="flex justify-between text-xs text-gray-500 mb-1">
+                  <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
                     <span>Voortgang</span>
                     <span>{getUserProgress()}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
                       className="bg-gradient-to-r from-pink-400 to-pink-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${getUserProgress()}%` }}
@@ -382,7 +382,7 @@ function MeerPageContent() {
         {Object.entries(groupedItems).map(([section, items]) => (
           items.length > 0 && (
             <div key={section}>
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1">
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 px-1">
                 {section === 'profile' && 'Profiel'}
                 {section === 'features' && 'Features'}
                 {section === 'settings' && 'Instellingen'}
@@ -396,22 +396,22 @@ function MeerPageContent() {
                     key={item.id}
                     className={`border-0 transition-colors ${
                       item.disabled
-                        ? 'bg-gray-50 cursor-not-allowed opacity-60'
-                        : 'bg-white cursor-pointer hover:bg-gray-50'
+                        ? 'bg-gray-50 dark:bg-gray-800/50 cursor-not-allowed opacity-60'
+                        : 'bg-white dark:bg-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                     onClick={() => handleMenuClick(item)}
                   >
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                            <div className="text-gray-600">
+                          <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                            <div className="text-gray-600 dark:text-gray-300">
                               {item.icon}
                             </div>
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <h4 className={`font-medium ${item.disabled ? 'text-gray-400' : 'text-gray-900'}`}>
+                              <h4 className={`font-medium ${item.disabled ? 'text-gray-400' : 'text-gray-900 dark:text-white'}`}>
                                 {item.title}
                               </h4>
                               {item.badge && (
@@ -421,7 +421,7 @@ function MeerPageContent() {
                               )}
                             </div>
                             {item.subtitle && (
-                              <p className={`text-sm ${item.disabled ? 'text-gray-400' : 'text-gray-600'}`}>
+                              <p className={`text-sm ${item.disabled ? 'text-gray-400' : 'text-gray-600 dark:text-gray-400'}`}>
                                 {item.subtitle}
                               </p>
                             )}
@@ -447,7 +447,7 @@ function MeerPageContent() {
                             />
                           )}
                           {(item.type === 'navigation' || item.type === 'action') && (
-                            <div className={`w-5 h-5 ${item.disabled ? 'text-gray-300' : 'text-gray-400'}`}>
+                            <div className={`w-5 h-5 ${item.disabled ? 'text-gray-300' : 'text-gray-400 dark:text-gray-500'}`}>
                               →
                             </div>
                           )}
@@ -462,9 +462,9 @@ function MeerPageContent() {
         ))}
 
         {/* App Info */}
-        <Card className="border-0 bg-white shadow-sm">
+        <Card className="border-0 bg-white dark:bg-gray-800 shadow-sm">
           <CardContent className="p-4 text-center">
-            <div className="text-sm text-gray-500 space-y-1">
+            <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
               <div>DatingAssistent v2.1.0</div>
               <div>© 2025 Impact Media Group</div>
             </div>
@@ -475,15 +475,15 @@ function MeerPageContent() {
       {/* Logout Confirmation Modal */}
       {showLogoutConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-sm">
+          <Card className="w-full max-w-sm bg-white dark:bg-gray-800">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
                 <LogOut className="w-5 h-5 text-red-500" />
                 Uitloggen bevestigen
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-400">
                 Weet je zeker dat je wilt uitloggen? Je wordt teruggestuurd naar de inlogpagina.
               </p>
               <div className="flex gap-3">
