@@ -1,12 +1,14 @@
 import type {NextConfig} from 'next';
 import withSerwistInit from "@serwist/next";
 
-// Serwist PWA Configuration
+// Serwist PWA Configuration - DISABLED to fix ERR_FAILED issues
 const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.ts",
   swDest: "public/sw.js",
   reloadOnOnline: true,
-  disable: process.env.NODE_ENV === "development",
+  // DISABLED: Service Worker causes ERR_FAILED on initial page load
+  // Users see "Deze pagina is niet bereikbaar" until hard refresh
+  disable: true,
 });
 
 const nextConfig: NextConfig = {
