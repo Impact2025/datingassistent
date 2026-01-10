@@ -40,9 +40,12 @@ export function ProgramCards() {
 
             {/* Pricing */}
             <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
+              <Badge className="bg-green-500 dark:bg-green-600 text-white px-3 py-1 text-xs font-bold mb-2">
+                EARLYBIRD t/m 25 januari
+              </Badge>
               <div className="flex items-baseline justify-center gap-3 mb-2">
                 <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
-                  €97
+                  €79
                 </span>
                 <span className="text-5xl font-bold text-gray-900 dark:text-gray-50">
                   €47
@@ -103,6 +106,9 @@ export function ProgramCards() {
 
             {/* Pricing */}
             <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
+              <Badge className="bg-green-500 dark:bg-green-600 text-white px-3 py-1 text-xs font-bold mb-2">
+                EARLYBIRD t/m 25 januari
+              </Badge>
               <div className="flex items-baseline justify-center gap-3 mb-2">
                 <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
                   €297
@@ -122,19 +128,19 @@ export function ProgramCards() {
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>🎓 Complete Video Academy (6 Modules)</span>
+                  <span>Complete Video Academy (6 Modules)</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>🤖 Pro AI Suite (90 Dagen onbeperkt)</span>
+                  <span>Pro AI Suite (90 Dagen onbeperkt)</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>💬 24/7 Chat Coach & Match Analyse</span>
+                  <span>24/7 Chat Coach & Match Analyse</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>👥 3x Live Q&A Sessies</span>
+                  <span>3x Live Q&A Sessies</span>
                 </li>
               </ul>
             </div>
@@ -144,7 +150,7 @@ export function ProgramCards() {
               onClick={() => handleSelectProgram('transformatie')}
               className="w-full bg-[#E61E63] hover:bg-[#c51a56] dark:bg-pink-600 dark:hover:bg-pink-700 text-white font-semibold text-lg py-6 shadow-lg hover:shadow-xl transition-all"
             >
-              Kies dit programma ✨
+              Kies dit programma
             </Button>
           </CardContent>
         </Card>
@@ -169,9 +175,15 @@ export function ProgramCards() {
 
             {/* Pricing */}
             <div className="text-center py-4 border-y border-amber-100 dark:border-amber-800/30">
+              <Badge className="bg-green-500 dark:bg-green-600 text-white px-3 py-1 text-xs font-bold mb-2">
+                EARLYBIRD t/m 25 januari
+              </Badge>
               <div className="flex items-baseline justify-center gap-3 mb-2">
-                <span className="text-5xl font-bold text-amber-600 dark:text-amber-400">
+                <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
                   €997
+                </span>
+                <span className="text-5xl font-bold text-amber-600 dark:text-amber-400">
+                  €797
                 </span>
               </div>
             </div>
@@ -185,23 +197,23 @@ export function ProgramCards() {
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>🤝 Persoonlijke Intake (60 min video)</span>
+                  <span>Persoonlijke Intake (60 min video)</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>📞 6x 1-op-1 Coaching Calls</span>
+                  <span>6x 1-op-1 Coaching Calls</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>📱 WhatsApp Support (Directe lijn)</span>
+                  <span>WhatsApp Support (Directe lijn)</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>📸 Professionele Fotoshoot Planning</span>
+                  <span>Professionele Fotoshoot Planning</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>⏳ Levenslang Toegang tot alles</span>
+                  <span>Levenslang Toegang tot alles</span>
                 </li>
               </ul>
             </div>
