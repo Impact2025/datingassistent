@@ -16,7 +16,7 @@ declare const self: ServiceWorkerGlobalScope;
 // DatingAssistent - Enterprise Grade
 // ============================================
 
-const APP_VERSION = "2.6.0"; // DISABLED navigationPreload to fix ERR_FAILED on initial load
+const APP_VERSION = "2.7.0"; // Fixed reload loop causing ERR_FAILED
 const OFFLINE_CACHE = `dating-offline-v${APP_VERSION}`;
 
 // Filter precache entries to ONLY include safe assets (images, fonts)

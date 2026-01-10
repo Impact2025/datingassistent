@@ -125,7 +125,7 @@ export default function RootLayout({
               (function() {
                 var CSS_CHECK_KEY = 'css-load-check';
                 var CSS_RELOAD_KEY = 'css-reload-attempted';
-                var APP_VERSION = '2.5.0';
+                var APP_VERSION = '2.7.0';
 
                 // Only run check after DOM is ready
                 if (document.readyState === 'loading') {
