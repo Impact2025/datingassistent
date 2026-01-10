@@ -1,12 +1,16 @@
 'use client';
 
 /**
- * Pattern Quiz Main Component - WORLD CLASS VERSION
+ * Pattern Quiz Main Component - CONVERSION OPTIMIZED VERSION
  *
  * Orchestrates the complete Dating Pattern Quiz flow:
- * Landing → Questions (1-10) → Email Gate → Analyzing → Result
+ * Landing → Questions (1-10) → Account Creation → Analyzing → Result with OTO
  *
- * Features: localStorage progress saving, smooth animations, UTM tracking
+ * Features:
+ * - localStorage progress saving
+ * - Account creation during flow
+ * - OTO modal sequence (Transformatie → Kickstart downsell)
+ * - UTM tracking
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -20,9 +24,9 @@ import type {
 import { PATTERN_QUESTIONS } from '@/lib/quiz/pattern/pattern-questions';
 import { PatternLandingHero } from './pattern-landing-hero';
 import { PatternQuestionComponent } from './pattern-question';
-import { PatternEmailGate } from './pattern-email-gate';
+import { PatternAccountGate } from './pattern-account-gate';
 import { PatternAnalyzing } from './pattern-analyzing';
-import { PatternResult } from './pattern-result';
+import { PatternResultWithOTO } from './pattern-result-with-oto';
 
 const STORAGE_KEY = 'dating-pattern-quiz-progress';
 

@@ -31,7 +31,10 @@ export async function GET(
       }
     } else {
       // Fetch by slug (for frontend)
-      blog = await getBlogPostBySlug(slug);
+      const blogPost = await getBlogPostBySlug(slug);
+      if (blogPost) {
+        blog = { blog: blogPost };
+      }
     }
 
     if (!blog) {

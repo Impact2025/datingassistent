@@ -111,6 +111,10 @@ export default function BlogPostPage() {
         const data = await response.json();
         const blogData = data.blog;
 
+        if (!blogData) {
+          throw new Error('Blog niet gevonden');
+        }
+
         // Map database fields
         const mappedBlog: BlogPost = {
           id: blogData.id,

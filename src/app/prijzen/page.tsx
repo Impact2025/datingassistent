@@ -78,7 +78,7 @@ const programs = [
     id: 'vip',
     name: 'De VIP Reis',
     tagline: 'Persoonlijke 1-op-1 begeleiding',
-    price: 497,
+    price: 797,
     duration: '180 dagen toegang',
     icon: Crown,
     popular: false,
