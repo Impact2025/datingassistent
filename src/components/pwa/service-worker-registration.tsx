@@ -4,7 +4,7 @@ import { useEffect, useCallback } from 'react';
 import { usePWAStore } from '@/stores/pwa-store';
 
 // Current app version - must match sw.ts
-const CURRENT_APP_VERSION = "2.5.0";
+const CURRENT_APP_VERSION = "2.6.0";
 
 export function ServiceWorkerRegistration() {
   const {
@@ -107,9 +107,39 @@ export function ServiceWorkerRegistration() {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    function initializeServiceWorker() {
+    async function initializeServiceWorker() {
       // Only register service worker if supported
       if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+        // In development mode, ALWAYS unregister any existing SW to prevent stale cache issues
+        // The SW is disabled in development (next.config.ts), but old SWs may still be active
+        if (process.env.NODE_ENV === 'development') {
+          try {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            if (registrations.length > 0) {
+              console.log('[SW] Development mode: Unregistering all service workers to prevent ERR_FAILED');
+              for (const registration of registrations) {
+                await registration.unregister();
+              }
+              // Clear all caches too
+              if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                await Promise.all(cacheNames.map(name => caches.delete(name)));
+              }
+              // Reload once to apply the unregistration
+              if (!sessionStorage.getItem('sw-dev-unregister-reload')) {
+                sessionStorage.setItem('sw-dev-unregister-reload', 'true');
+                window.location.reload();
+                return;
+              }
+            }
+            sessionStorage.removeItem('sw-dev-unregister-reload');
+            return; // Don't register SW in development
+          } catch (error) {
+            console.error('[SW] Error unregistering service workers:', error);
+          }
+          return; // Don't continue with SW registration in development
+        }
+
         // Listen for messages from service worker (including reload requests)
         navigator.serviceWorker.addEventListener('message', (event) => {
           if (event.data?.type === 'SW_ACTIVATED') {

@@ -16,7 +16,7 @@ declare const self: ServiceWorkerGlobalScope;
 // DatingAssistent - Enterprise Grade
 // ============================================
 
-const APP_VERSION = "2.5.0"; // DISABLED precaching to fix stale CSS issue permanently
+const APP_VERSION = "2.6.0"; // DISABLED navigationPreload to fix ERR_FAILED on initial load
 const OFFLINE_CACHE = `dating-offline-v${APP_VERSION}`;
 
 // Filter precache entries to ONLY include safe assets (images, fonts)
@@ -44,7 +44,9 @@ const serwist = new Serwist({
   precacheEntries: safePrecacheEntries,
   skipWaiting: true,
   clientsClaim: true,
-  navigationPreload: true,
+  // DISABLED: navigationPreload causes ERR_FAILED when SW initialization is slow
+  // The SW must be fully ready before handling preloaded responses
+  navigationPreload: false,
   cleanupOutdatedCaches: true,
   runtimeCaching: [
     // CRITICAL: HTML pages - ALWAYS fetch from network
