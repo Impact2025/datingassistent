@@ -45,7 +45,7 @@ export function ProgramCards() {
               </Badge>
               <div className="flex items-baseline justify-center gap-3 mb-2">
                 <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
-                  €79
+                  €97
                 </span>
                 <span className="text-5xl font-bold text-gray-900 dark:text-gray-50">
                   €47
@@ -128,7 +128,7 @@ export function ProgramCards() {
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />
-                  <span>Complete Video Academy (6 Modules)</span>
+                  <span>Complete Video Academy (12 Modules)</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
                   <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-green-500 dark:text-green-400" />

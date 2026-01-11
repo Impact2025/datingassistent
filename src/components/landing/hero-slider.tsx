@@ -14,7 +14,7 @@ const slides = [
     subheadline: "Voor introverten, technici en mensen die sociale netwerken niet snappen. Ontdek hoe je écht verbinding maakt - zonder de awkward small talk.",
     painPoint: "Ben je intelligent, grappig en succesvol... maar voelt daten overweldigend? Weet je niet hoe je profiel op te zetten of goeie gesprekken te voeren? Jij bent niet alleen.",
     ctaPrimary: "Start met AI-coaching",
-    ctaSecondary: "Bekijk hoe het werkt",
+    ctaSecondary: "Bekijk de programma's",
     visual: "nerdy-person-laptop",
     type: "hero"
   },

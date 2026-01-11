@@ -128,7 +128,7 @@ export const TRANSFORMATIE_OTO: OTOConfig = {
   originalPrice: 297,
   discountedPrice: 147,
   features: [
-    '🎓 Complete Video Academy (6 Modules)',
+    '🎓 Complete Video Academy (12 Modules)',
     '🤖 Pro AI Suite (90 dagen onbeperkt)',
     '💬 24/7 Chat Coach & Match Analyse',
     '👥 3x Live Q&A Sessies',

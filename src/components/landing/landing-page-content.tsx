@@ -29,7 +29,6 @@ import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { CookieConsentBanner } from '@/components/cookie-consent-banner';
 import { ChatWidgetWrapper } from '@/components/live-chat/chat-widget-wrapper';
 import { HeroSection } from '@/components/landing/hero-section';
-import { HowItWorksSection } from '@/components/landing/how-it-works-section';
 import { ProgramCards } from '@/components/landing/program-cards';
 import { FAQSection } from '@/components/landing/faq-section';
 import { useUser } from '@/providers/user-provider';
@@ -181,9 +180,6 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
       <PublicHeader />
 
       {hero ?? <HeroSection />}
-
-      {/* Hoe het werkt sectie - targeted by "Of bekijk hoe het werkt" link */}
-      <HowItWorksSection />
 
       {/* Sectie 2: Het Probleem (Agitatie) */}
       <section className="py-20 px-4 bg-white dark:bg-gray-800">
