@@ -32,6 +32,7 @@ import { ToolModal } from '@/components/tools/tool-modal';
 import { WelcomeVideoCard } from './sections/welcome-video-card';
 import { ToolsGridSection } from './sections/tools-grid-section';
 import { ScansSection } from './sections/scans-section';
+import { SubscriptionWidget } from './subscription-widget';
 
 // Optimized hooks
 import { useScanManager } from '@/hooks/use-scan-manager';
@@ -340,6 +341,9 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
             onClick={handleTransformatieClick}
           />
         )}
+
+        {/* Subscription Widget - Shows enrolled programs and active subscriptions */}
+        {!showWelcomeVideo && <SubscriptionWidget userId={userId} />}
 
         {/* Tool Tiers - Minimalist Design */}
         {!showWelcomeVideo && (

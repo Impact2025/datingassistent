@@ -37,6 +37,9 @@ const NEW_TABS = [
   }
 ];
 
+// Settings/Account tabs - these don't show in nav but keep nav visible
+const SETTINGS_TABS = ['settings', 'subscription', 'data-management'];
+
 interface MainNavNewProps {
   activeTab: string;
   onTabChange: (tabId: string) => void;
@@ -54,14 +57,18 @@ export function MainNavNew({ activeTab, onTabChange }: MainNavNewProps) {
     return null;
   }
 
-  // Desktop: Top horizontal tabs
+  // If on a settings tab, don't highlight any main tab
+  const isOnSettingsTab = SETTINGS_TABS.includes(activeTab);
+  const displayActiveTab = isOnSettingsTab ? '' : activeTab;
+
+  // Desktop: Top horizontal tabs - always visible, even on settings tabs
   return (
     <nav className="border-b border-gray-200 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex gap-1">
           {NEW_TABS.map((tab) => {
             const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
+            const isActive = displayActiveTab === tab.id;
 
             return (
               <button

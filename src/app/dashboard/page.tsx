@@ -183,6 +183,9 @@ const DatingWeekNotificationModal = dynamicImport(() => import('@/components/das
   ssr: false
 });
 
+// Settings Header - Shows navigation for settings tabs
+import { SettingsHeader } from '@/components/dashboard/settings-header';
+
 // ============================================
 // WORLD-CLASS: Prefetch core tabs for instant navigation
 // ============================================
@@ -609,6 +612,34 @@ function DashboardPageContent() {
 
   // Memoized tab content - must be before any early returns (Rules of Hooks)
   const tabContent = useMemo(() => {
+    // Settings tabs include header with navigation
+    const isSettingsTab = ['settings', 'subscription', 'data-management'].includes(activeTab);
+
+    const getSettingsContent = () => {
+      switch (activeTab) {
+        case 'settings':
+          return <SettingsTab />;
+        case 'subscription':
+          return <SubscriptionTab />;
+        case 'data-management':
+          return <DataManagementTab />;
+        default:
+          return null;
+      }
+    };
+
+    if (isSettingsTab) {
+      return (
+        <>
+          <SettingsHeader
+            activeTab={activeTab as 'settings' | 'subscription' | 'data-management'}
+            onTabChange={handleTabChange}
+          />
+          {getSettingsContent()}
+        </>
+      );
+    }
+
     switch (activeTab) {
       case 'home':
         return <SmartHomeTab onTabChange={handleTabChange} userId={user?.id} userProfile={userProfile} />;
@@ -632,12 +663,6 @@ function DashboardPageContent() {
         return <LerenOntwikkelenModule onTabChange={handleTabChange} />;
       case 'cursussen':
         return <CursussenTab />;
-      case 'settings':
-        return <SettingsTab />;
-      case 'data-management':
-        return <DataManagementTab />;
-      case 'subscription':
-        return <SubscriptionTab />;
       case 'dashboard':
         return <DashboardTab onTabChange={handleTabChange} />;
       case 'daily':
