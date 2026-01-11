@@ -496,53 +496,55 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
       <section id="over-ons" className="py-24 px-4 bg-white dark:bg-gray-900">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Van Datingcoach naar AI-Architect</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">Technologie met een menselijk hart</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">De Architect van jouw Datingleven</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
               <div className="space-y-4">
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  Het begon in 2014. Ik startte als datingcoach (o.a. bekend van <strong>The Undateables</strong>) en begeleidde twee jaar lang intensief singles. Maar ik was toen al vooral <strong>de bedenker</strong>: de strateeg die zocht naar methodes die écht werken.
+                  Het begon in 2009 met mijn eerste datingsite. Die ervaring werd vanaf 2014 verder aangescherpt in de praktijk toen ik DatingAssistent oprichtte en als coach werkte (o.a. bekend van <strong>The Undateables</strong>). Ik heb van dichtbij gezien waar singles vastlopen, maar vooral hoe ze doorbreken.
                 </p>
               </div>
 
               <div className="space-y-4">
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  Ik zag in die praktijkjaren precies waar mensen vastliepen. Maar ik zag ook de beperking: als coach kon ik maar een handjevol mensen helpen.
+                  Toch zag ik een probleem: traditionele coaching is intensief, kostbaar en niet beschikbaar op het moment dat je het écht nodig hebt — zoals op die zaterdagavond om 23:00 uur.
                 </p>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  In de jaren daarna heb ik mijn vizier verbreed. Als <strong>Impact Maker</strong> en <strong>AI Expert</strong> help ik nu organisaties om te innoveren. Maar mijn oude missie liet me niet los.
+                  Daarom heb ik in 2024 de vernieuwde DatingAssistent gelanceerd. Hierin combineer ik mijn jarenlange ervaring als strateeg met de slagkracht van AI.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 rounded-xl p-6 border border-pink-100 dark:border-pink-700">
+                <p className="text-gray-800 dark:text-gray-100 leading-relaxed italic">
+                  &quot;AI vervangt jou niet, het laat je bloeien. Het geeft je de woorden en het inzicht, zodat jij zelfverzekerd de connectie maakt. Uiteindelijk doe je het zelf, maar je staat er niet alleen voor.&quot;
                 </p>
               </div>
 
               <div className="space-y-4">
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
-                  Met de kennis van nu heb ik de ervaring van toen gedigitaliseerd:
+                  Wat ik je bied:
                 </p>
                 <ul className="space-y-3 ml-4">
                   <li className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
                     <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                    <span>Al mijn kennis uit 10+ jaar praktijkervaring, direct toepasbaar.</span>
+                    <span><strong>De strateeg:</strong> 15 jaar ervaring in online dating en coaching.</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
                     <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                    <span>Geen €150 per uur, maar €147 voor 3 maanden onbeperkt advies.</span>
+                    <span><strong>De innovatie:</strong> AI-technologie die 24/7 naast je staat.</span>
                   </li>
                   <li className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
                     <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                    <span>24/7 beschikbaar, precies op het moment dat jij het nodig hebt.</span>
+                    <span><strong>De deal:</strong> Al mijn kennis voor €147 (3 maanden onbeperkt) in plaats van €150 per uur.</span>
                   </li>
                 </ul>
               </div>
 
-              <div className="bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 rounded-xl p-6 border border-pink-100 dark:border-pink-700">
-                <p className="text-gray-800 dark:text-gray-100 leading-relaxed italic">
-                  "Ik ben misschien geen fulltime datingcoach meer, maar ik ben wel de architect die jouw datingleven makkelijker maakt."
-                </p>
-                <p className="text-sm text-gray-700 dark:text-gray-400 mt-3 font-medium">
-                  — Vincent van Munster, Founder & AI Expert
+              <div className="pt-2">
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  Ik ben <strong>Vincent van Munster</strong>. Ik ben er om het moeilijke deel van daten makkelijk te maken, zodat jij je kunt focussen op wat echt telt: de klik.
                 </p>
               </div>
 
@@ -576,7 +578,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                   <div className="text-sm text-gray-700 dark:text-gray-400">Sinds</div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 text-center">
-                  <div className="text-3xl font-bold text-pink-500 dark:text-pink-400 mb-2">10+</div>
+                  <div className="text-3xl font-bold text-pink-500 dark:text-pink-400 mb-2">15+</div>
                   <div className="text-sm text-gray-700 dark:text-gray-400">Jaar expertise</div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 text-center">
