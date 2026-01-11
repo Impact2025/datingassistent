@@ -2,11 +2,19 @@ import type {NextConfig} from 'next';
 import withSerwistInit from "@serwist/next";
 
 // Serwist PWA Configuration
+// CRITICAL FIX: Disable in all environments until SW compilation is fixed
+// The "self is not defined" error occurs because sw.ts is bundled into vendors.js
+// which is evaluated in Node.js context during SSG
+const DISABLE_SERVICE_WORKER = process.env.DISABLE_SW === 'true' || true; // Temporarily disabled
+
 const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.ts",
   swDest: "public/sw.js",
   reloadOnOnline: true,
-  disable: process.env.NODE_ENV === "development",
+  // Disable SW to prevent build crash - will create manual fallback SW
+  disable: DISABLE_SERVICE_WORKER || process.env.NODE_ENV === "development",
+  // Explicitly set injection point to prevent bundling issues
+  injectionPoint: "self.__SW_MANIFEST",
 });
 
 const nextConfig: NextConfig = {

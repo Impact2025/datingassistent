@@ -11,7 +11,7 @@ import { SkipLinks } from "@/components/accessibility/skip-links";
 import { ScreenReaderAnnouncer } from "@/components/accessibility/screen-reader-announcer";
 import { StructuredData } from "@/components/structured-data";
 import ErrorBoundary from "@/components/error-boundary";
-import { ServiceWorkerRegistration, InstallPrompt, UpdatePrompt, OfflineIndicator } from "@/components/pwa";
+import { ServiceWorkerRegistration, ServiceWorkerErrorBoundary, InstallPrompt, UpdatePrompt, OfflineIndicator } from "@/components/pwa";
 import { PWAProvider } from "@/stores/pwa-store";
 import { IrisFloatingButton } from "@/components/iris/IrisFloatingButton";
 import { TutorialEngine } from "@/components/onboarding/tutorial-engine/tutorial-engine";
@@ -176,10 +176,12 @@ export default function RootLayout({
             <QueryProvider>
               <PWAProvider>
                 <WebVitals />
-                {/* ChunkLoadErrorRecovery - DISABLED to debug ERR_FAILED */}
-                <ServiceWorkerRegistration />
-                <OfflineIndicator />
-                <UpdatePrompt />
+                {/* SW components wrapped in error boundary for graceful degradation */}
+                <ServiceWorkerErrorBoundary>
+                  <ServiceWorkerRegistration />
+                  <OfflineIndicator />
+                  <UpdatePrompt />
+                </ServiceWorkerErrorBoundary>
                 <UserProvider>
                   <AchievementToastProvider>
                     <TutorialEngine>

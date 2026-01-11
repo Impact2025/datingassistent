@@ -12,11 +12,22 @@ declare global {
 declare const self: ServiceWorkerGlobalScope;
 
 // ============================================
+// CRITICAL: Runtime context check
+// This prevents "self is not defined" errors during SSG/SSR
+// Service Worker code should ONLY run in worker context
+// ============================================
+if (typeof self === 'undefined') {
+  // We're in Node.js context (SSG/SSR) - do nothing
+  // This file should only execute in Service Worker context
+  throw new Error('Service Worker must run in worker context, not Node.js');
+}
+
+// ============================================
 // WORLD-CLASS PWA SERVICE WORKER
 // DatingAssistent - Enterprise Grade
 // ============================================
 
-const APP_VERSION = "2.7.0"; // Fixed reload loop causing ERR_FAILED
+const APP_VERSION = "2.7.1"; // Fixed SSG "self is not defined" error
 const OFFLINE_CACHE = `dating-offline-v${APP_VERSION}`;
 
 // Filter precache entries to ONLY include safe assets (images, fonts)
