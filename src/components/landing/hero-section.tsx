@@ -239,7 +239,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.25 }}
             >
-              Gratis quiz gebaseerd op attachment theory • 10.000+ mensen gingen je voor
+              Gratis quiz gebaseerd op attachment theory
             </motion.p>
 
             {/* Primary CTA */}

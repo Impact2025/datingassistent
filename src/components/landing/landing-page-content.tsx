@@ -655,24 +655,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
       <section className="py-24 px-4 bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50">Gratis: Ontdek je Dating Stijl</h2>
-          </div>
-
-          {/* Simple member display */}
-          <div className="flex flex-wrap justify-center gap-6 mb-16">
-            {reviews.slice(0, 3).map((review) => (
-              <div key={review.id} className="flex items-center gap-3 bg-white dark:bg-gray-800 rounded-full px-6 py-3 border-2 border-pink-200 dark:border-pink-700 shadow-sm">
-                <Image className="w-10 h-10 rounded-full ring-2 ring-pink-100 dark:ring-pink-700" src={review.avatar} alt={review.name} width={40} height={40} loading="lazy" />
-                <div>
-                  <p className="font-semibold text-gray-900 dark:text-gray-50 text-sm">{review.name}</p>
-                  <p className="text-xs text-gray-700 dark:text-gray-400">{review.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* FAQ Section - Now as separate component */}
+          {/* FAQ Section */}
           <FAQSection />
 
           {/* Start vandaag - Logout page style */}
