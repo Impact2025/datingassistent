@@ -1199,8 +1199,8 @@ export default function HomePageV4() {
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: colors.cream }}>
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur" style={{ borderColor: colors.softBlush }}>
-        <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/homepage-v4" className="flex items-center gap-2">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
             <Image
               src="/images/LogoDA.png"
               alt="DatingAssistent Logo"
@@ -1213,6 +1213,23 @@ export default function HomePageV4() {
               DatingAssistent
             </span>
           </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-1">
+            <Link href="/over-ons" className="px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100" style={{ color: colors.charcoal }}>
+              Over Ons
+            </Link>
+            <Link href="/prijzen" className="px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100" style={{ color: colors.charcoal }}>
+              Prijzen
+            </Link>
+            <Link href="/blog" className="px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100" style={{ color: colors.charcoal }}>
+              Blog
+            </Link>
+            <Link href="/kennisbank" className="px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100" style={{ color: colors.charcoal }}>
+              Kennisbank
+            </Link>
+          </nav>
+
           <div className="flex items-center gap-4">
             <Link href="/login" className="text-sm transition-colors hover:opacity-80" style={{ color: colors.charcoal }}>
               Inloggen
