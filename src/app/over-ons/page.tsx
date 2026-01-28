@@ -36,7 +36,7 @@ export default function OverOnsPage() {
           <div className="inline-block bg-white/90 dark:bg-gray-800/90 sm:bg-white/85 dark:sm:bg-gray-800/85 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl max-w-4xl mx-auto w-full">
 
             {/* Tagline */}
-            <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+            <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-coral-100 dark:bg-coral-900/30 text-coral-700 dark:text-coral-300 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               👨‍💻 De oprichter achter DatingAssistent
             </div>
 
@@ -58,7 +58,7 @@ export default function OverOnsPage() {
             {/* CTA Button */}
             <div className="flex justify-center mb-6 sm:mb-8 px-2">
               <Link href="#missie" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
+                <Button className="w-full sm:w-auto bg-coral-500 hover:bg-coral-600 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
                   Ontdek ons verhaal →
                 </Button>
               </Link>
@@ -90,7 +90,7 @@ export default function OverOnsPage() {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-50 mb-8">
             Onze missie: Daten toegankelijker maken
           </h2>
-          <div className="bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-900/50 rounded-2xl p-8 border border-pink-200 dark:border-pink-700 max-w-3xl mx-auto mb-8">
+          <div className="bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-900/50 rounded-2xl p-8 border border-coral-200 dark:border-coral-700 max-w-3xl mx-auto mb-8">
             <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed italic">
               "Onze missie blijft onveranderd: jouw datingleven makkelijker, persoonlijker en succesvoller maken. Of je nu net begint, al even bezig bent of compleet vastloopt, DatingAssistent helpt je graag om met meer rust, helderheid en vertrouwen je volgende stap te zetten richting liefde."
             </p>
@@ -115,8 +115,8 @@ export default function OverOnsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center space-y-4 p-6 rounded-2xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-              <div className="w-16 h-16 mx-auto rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
-                <Heart className="w-8 h-8 text-pink-500 dark:text-pink-400" />
+              <div className="w-16 h-16 mx-auto rounded-full bg-coral-100 dark:bg-coral-900/30 flex items-center justify-center">
+                <Heart className="w-8 h-8 text-coral-500 dark:text-coral-400" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-gray-50">Authenticiteit</h3>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -161,19 +161,19 @@ export default function OverOnsPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="bg-white dark:bg-gray-700 rounded-2xl p-8 text-center border border-gray-200 dark:border-gray-600">
-              <div className="text-4xl font-bold text-pink-500 dark:text-pink-400 mb-3">89%</div>
+              <div className="text-4xl font-bold text-coral-500 dark:text-coral-400 mb-3">89%</div>
               <div className="text-gray-600 dark:text-gray-400">Meer matches gemiddeld voor onze gebruikers</div>
             </div>
             <div className="bg-white dark:bg-gray-700 rounded-2xl p-8 text-center border border-gray-200 dark:border-gray-600">
-              <div className="text-4xl font-bold text-pink-500 dark:text-pink-400 mb-3">4.9/5</div>
+              <div className="text-4xl font-bold text-coral-500 dark:text-coral-400 mb-3">4.9/5</div>
               <div className="text-gray-600 dark:text-gray-400">Gemiddelde gebruikersbeoordeling over alle platforms</div>
             </div>
             <div className="bg-white dark:bg-gray-700 rounded-2xl p-8 text-center border border-gray-200 dark:border-gray-600">
-              <div className="text-4xl font-bold text-pink-500 dark:text-pink-400 mb-3">10+</div>
+              <div className="text-4xl font-bold text-coral-500 dark:text-coral-400 mb-3">10+</div>
               <div className="text-gray-600 dark:text-gray-400">Jaar ervaring in datingbegeleiding</div>
             </div>
             <div className="bg-white dark:bg-gray-700 rounded-2xl p-8 text-center border border-gray-200 dark:border-gray-600">
-              <div className="text-4xl font-bold text-pink-500 dark:text-pink-400 mb-3">24/7</div>
+              <div className="text-4xl font-bold text-coral-500 dark:text-coral-400 mb-3">24/7</div>
               <div className="text-gray-600 dark:text-gray-400">AI ondersteuning beschikbaar</div>
             </div>
           </div>
@@ -186,7 +186,7 @@ export default function OverOnsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <Bot className="w-8 h-8 text-pink-500 dark:text-pink-400" />
+                <Bot className="w-8 h-8 text-coral-500 dark:text-coral-400" />
                 <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50">De kracht van AI: Ontmoet Iris</h3>
               </div>
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -220,7 +220,7 @@ export default function OverOnsPage() {
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-50 mb-4">
               Van Datingcoach naar AI-Architect
             </h2>
-            <p className="text-xl text-pink-600 dark:text-pink-400 font-medium">
+            <p className="text-xl text-coral-600 dark:text-coral-400 font-medium">
               Technologie met een menselijk hart
             </p>
           </div>
@@ -228,7 +228,7 @@ export default function OverOnsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
             {/* Photo */}
             <div className="flex justify-center lg:order-2">
-              <div className="w-64 h-64 rounded-3xl overflow-hidden border-4 border-pink-200 dark:border-pink-700 shadow-xl">
+              <div className="w-64 h-64 rounded-3xl overflow-hidden border-4 border-coral-200 dark:border-coral-700 shadow-xl">
                 <Image
                   src="/images/Vincent van Munster.png"
                   alt="Vincent van Munster - Oprichter DatingAssistent"
@@ -266,7 +266,7 @@ export default function OverOnsPage() {
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-2xl p-8 border border-pink-200 dark:border-pink-800 space-y-4">
+              <div className="bg-gradient-to-r from-coral-50 to-purple-50 dark:from-coral-900/20 dark:to-purple-900/20 rounded-2xl p-8 border border-coral-200 dark:border-coral-800 space-y-4">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-50">DatingAssistent is het resultaat</h3>
                 <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                   Het is de perfecte synergie van mijn verleden en mijn heden. Een platform waar mijn coachings-inzichten zijn omgezet in slimme AI-tools.
@@ -311,7 +311,7 @@ export default function OverOnsPage() {
 
           <div className="space-y-8">
             <div className="flex items-start gap-6">
-              <div className="flex-shrink-0 w-12 h-12 bg-pink-500 dark:bg-pink-600 rounded-full flex items-center justify-center">
+              <div className="flex-shrink-0 w-12 h-12 bg-coral-500 dark:bg-coral-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">2009</span>
               </div>
               <div className="flex-grow">
@@ -323,7 +323,7 @@ export default function OverOnsPage() {
             </div>
 
             <div className="flex items-start gap-6">
-              <div className="flex-shrink-0 w-12 h-12 bg-pink-500 dark:bg-pink-600 rounded-full flex items-center justify-center">
+              <div className="flex-shrink-0 w-12 h-12 bg-coral-500 dark:bg-coral-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">2014</span>
               </div>
               <div className="flex-grow">
@@ -335,7 +335,7 @@ export default function OverOnsPage() {
             </div>
 
             <div className="flex items-start gap-6">
-              <div className="flex-shrink-0 w-12 h-12 bg-pink-500 dark:bg-pink-600 rounded-full flex items-center justify-center">
+              <div className="flex-shrink-0 w-12 h-12 bg-coral-500 dark:bg-coral-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">2018</span>
               </div>
               <div className="flex-grow">
@@ -347,7 +347,7 @@ export default function OverOnsPage() {
             </div>
 
             <div className="flex items-start gap-6">
-              <div className="flex-shrink-0 w-12 h-12 bg-pink-500 dark:bg-pink-600 rounded-full flex items-center justify-center">
+              <div className="flex-shrink-0 w-12 h-12 bg-coral-500 dark:bg-coral-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">2022</span>
               </div>
               <div className="flex-grow">
@@ -359,7 +359,7 @@ export default function OverOnsPage() {
             </div>
 
             <div className="flex items-start gap-6">
-              <div className="flex-shrink-0 w-12 h-12 bg-pink-500 dark:bg-pink-600 rounded-full flex items-center justify-center">
+              <div className="flex-shrink-0 w-12 h-12 bg-coral-500 dark:bg-coral-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">2025</span>
               </div>
               <div className="flex-grow">
@@ -384,7 +384,7 @@ export default function OverOnsPage() {
           </p>
           <div className="flex items-center justify-center">
             <Link href="/register">
-              <Button className="bg-pink-500 hover:bg-pink-600 dark:bg-pink-600 dark:hover:bg-pink-700 text-white px-8 py-3 rounded-full">
+              <Button className="bg-coral-500 hover:bg-coral-600 dark:bg-coral-600 dark:hover:bg-coral-700 text-white px-8 py-3 rounded-full">
                 Start je dating succes
               </Button>
             </Link>

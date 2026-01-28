@@ -64,9 +64,9 @@ export function LockedToolCard({
       case 'vip':
         return { label: 'VIP', icon: Crown, color: 'from-amber-500 to-yellow-400' };
       case 'transformatie':
-        return { label: 'PRO', icon: Sparkles, color: 'from-purple-500 to-pink-500' };
+        return { label: 'PRO', icon: Sparkles, color: 'from-purple-500 to-coral-500' };
       default:
-        return { label: 'Upgrade', icon: Zap, color: 'from-pink-500 to-rose-500' };
+        return { label: 'Upgrade', icon: Zap, color: 'from-coral-500 to-rose-500' };
     }
   };
 
@@ -137,7 +137,7 @@ export function LockedToolCard({
             </div>
             {/* Pulse ring on hover */}
             {isHovered && (
-              <div className="absolute inset-0 rounded-full animate-ping bg-pink-400/30" />
+              <div className="absolute inset-0 rounded-full animate-ping bg-coral-400/30" />
             )}
           </div>
 
@@ -172,7 +172,7 @@ export function LockedToolCard({
               size="sm"
               className={cn(
                 "h-7 text-[10px] bg-gradient-to-r hover:opacity-90",
-                tierBadge?.color || "from-pink-500 to-purple-500"
+                tierBadge?.color || "from-coral-500 to-purple-500"
               )}
             >
               Ontgrendel
@@ -245,7 +245,7 @@ export function LockedToolCard({
                         "w-1.5 h-1.5 rounded-full transition-colors",
                         i < (typeof remaining === 'number' ? (limit || 3) - remaining : 0)
                           ? "bg-gray-300 dark:bg-gray-600"
-                          : "bg-pink-500"
+                          : "bg-coral-500"
                       )}
                     />
                   ))}
@@ -305,10 +305,10 @@ export function LockedIndicator({
   upgradeTier: ProgramTier | null
 }) {
   const tierConfig: Record<ProgramTier, { label: string; icon: typeof Crown; color: string }> = {
-    free: { label: 'Upgrade', icon: Zap, color: 'from-pink-500 to-rose-500' },
+    free: { label: 'Upgrade', icon: Zap, color: 'from-coral-500 to-rose-500' },
     vip: { label: 'VIP', icon: Crown, color: 'from-amber-500 to-yellow-400' },
-    transformatie: { label: 'PRO', icon: Sparkles, color: 'from-purple-500 to-pink-500' },
-    kickstart: { label: 'Upgrade', icon: Zap, color: 'from-pink-500 to-rose-500' },
+    transformatie: { label: 'PRO', icon: Sparkles, color: 'from-purple-500 to-coral-500' },
+    kickstart: { label: 'Upgrade', icon: Zap, color: 'from-coral-500 to-rose-500' },
   };
 
   const config = upgradeTier ? tierConfig[upgradeTier] : tierConfig.kickstart;
@@ -347,7 +347,7 @@ export function UpgradeBanner({
       name: 'Transformatie',
       price: '€147',
       icon: Sparkles,
-      color: 'from-purple-500 to-pink-500'
+      color: 'from-purple-500 to-coral-500'
     },
     vip: {
       name: 'VIP',

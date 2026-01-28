@@ -128,7 +128,7 @@ export function ModuleSidebar({
       return <CheckCircle className="w-4 h-4 text-green-500" />;
     }
     if (lesson.progress.status === 'in_progress') {
-      return <Play className="w-4 h-4 text-pink-500" />;
+      return <Play className="w-4 h-4 text-coral-500" />;
     }
     return <BookOpen className="w-4 h-4 text-gray-400" />;
   };
@@ -142,10 +142,10 @@ export function ModuleSidebar({
   return (
     <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden shadow-sm">
       {/* Overall Progress Header */}
-      <div className="p-4 bg-gradient-to-r from-pink-50 via-rose-50 to-pink-50 border-b border-pink-100">
+      <div className="p-4 bg-gradient-to-r from-coral-50 via-rose-50 to-coral-50 border-b border-coral-100">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-900">Je voortgang</span>
-          <span className="text-sm font-bold text-pink-600">
+          <span className="text-sm font-bold text-coral-600">
             {overallProgress?.percentage || 0}%
           </span>
         </div>
@@ -203,7 +203,7 @@ export function ModuleSidebar({
                       className={cn(
                         'w-full flex items-center gap-2 p-2 rounded-lg text-left transition-all',
                         isCurrentModule
-                          ? 'bg-pink-50 border border-pink-200'
+                          ? 'bg-coral-50 border border-coral-200'
                           : 'hover:bg-gray-50'
                       )}
                     >
@@ -261,7 +261,7 @@ export function ModuleSidebar({
                                     isLocked
                                       ? 'opacity-50 cursor-not-allowed'
                                       : isCurrentLesson
-                                        ? 'bg-pink-100 border border-pink-300'
+                                        ? 'bg-coral-100 border border-coral-300'
                                         : 'hover:bg-gray-50'
                                   )}
                                 >
@@ -270,7 +270,7 @@ export function ModuleSidebar({
                                     className={cn(
                                       'flex-1 truncate',
                                       isCurrentLesson
-                                        ? 'font-medium text-pink-700'
+                                        ? 'font-medium text-coral-700'
                                         : 'text-gray-600'
                                     )}
                                   >

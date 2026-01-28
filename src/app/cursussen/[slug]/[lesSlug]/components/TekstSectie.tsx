@@ -14,7 +14,7 @@ export function TekstSectie({ sectie, isCompleted, onComplete }: TekstSectieProp
   const content = sectie.inhoud || {};
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -33,7 +33,7 @@ export function TekstSectie({ sectie, isCompleted, onComplete }: TekstSectieProp
           <div className="mt-6">
             <PrimaryButton
               onClick={onComplete}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+              className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
             >
               <CheckCircle className="w-4 h-4 mr-2" />
               Gelezen!

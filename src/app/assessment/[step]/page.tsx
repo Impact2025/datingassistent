@@ -95,7 +95,7 @@ export default function AssessmentStepPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white py-8 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -159,8 +159,8 @@ export default function AssessmentStepPage() {
                         onClick={() => handleSelectOption(option.value)}
                         className={`w-full text-left p-5 rounded-xl border-2 transition-all ${
                           selectedAnswer === option.value
-                            ? 'border-pink-500 bg-pink-50 shadow-md'
-                            : 'border-gray-200 bg-white hover:border-pink-300 hover:shadow-sm'
+                            ? 'border-coral-500 bg-coral-50 shadow-md'
+                            : 'border-gray-200 bg-white hover:border-coral-300 hover:shadow-sm'
                         }`}
                       >
                         <div className="flex items-start gap-4">
@@ -176,7 +176,7 @@ export default function AssessmentStepPage() {
                                 {option.label}
                               </h3>
                               {selectedAnswer === option.value && (
-                                <CheckCircle className="w-5 h-5 text-pink-500 flex-shrink-0" />
+                                <CheckCircle className="w-5 h-5 text-coral-500 flex-shrink-0" />
                               )}
                             </div>
                             {option.description && (
@@ -196,7 +196,7 @@ export default function AssessmentStepPage() {
                   <Button
                     onClick={handleNext}
                     disabled={!selectedAnswer || isLoading}
-                    className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading ? (
                       <>

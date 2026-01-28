@@ -137,7 +137,7 @@ export default function RoadmapPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-3 border-pink-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-coral-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -187,7 +187,7 @@ export default function RoadmapPage() {
 
           {/* Iris Video Card */}
           <Card className="p-0 rounded-2xl shadow-sm overflow-hidden mb-6">
-            <div className="relative aspect-video bg-gradient-to-br from-pink-100 to-pink-200">
+            <div className="relative aspect-video bg-gradient-to-br from-coral-100 to-coral-200">
               {!videoError ? (
                 <>
                   <video
@@ -209,7 +209,7 @@ export default function RoadmapPage() {
                       className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors"
                     >
                       <div className="w-16 h-16 rounded-full bg-white/95 flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
-                        <Play className="w-7 h-7 text-pink-500 ml-1" />
+                        <Play className="w-7 h-7 text-coral-500 ml-1" />
                       </div>
                     </button>
                   )}
@@ -240,7 +240,7 @@ export default function RoadmapPage() {
                 /* Fallback als video niet laadt */
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center p-6">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center mx-auto mb-3">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center mx-auto mb-3">
                       <span className="text-2xl font-bold text-white">I</span>
                     </div>
                     <p className="text-gray-600 text-sm">Iris, je persoonlijke coach</p>
@@ -264,10 +264,10 @@ export default function RoadmapPage() {
 
           {/* First Action Recommendation */}
           {firstToolDetails && (
-            <Card className="p-5 rounded-2xl shadow-sm mb-6 bg-gradient-to-r from-violet-50 to-pink-50 border-pink-200">
+            <Card className="p-5 rounded-2xl shadow-sm mb-6 bg-gradient-to-r from-violet-50 to-coral-50 border-coral-200">
               <div className="flex items-start gap-1 mb-3">
                 <span className="text-amber-500 text-lg">⭐</span>
-                <span className="text-xs font-semibold text-pink-500 uppercase tracking-wide">
+                <span className="text-xs font-semibold text-coral-500 uppercase tracking-wide">
                   Aanbevolen eerste stap
                 </span>
               </div>
@@ -295,7 +295,7 @@ export default function RoadmapPage() {
           <button
             onClick={handleComplete}
             disabled={isCompleting}
-            className="w-full py-4 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+            className="w-full py-4 bg-coral-500 hover:bg-coral-600 text-white font-semibold rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
           >
             {isCompleting ? (
               <>

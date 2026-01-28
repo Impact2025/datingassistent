@@ -124,7 +124,7 @@ export function WelcomeQuestions({ onComplete }: WelcomeQuestionsProps) {
                 key={index}
                 className={`w-3 h-3 rounded-full transition-colors ${
                   index === currentQuestion
-                    ? 'bg-pink-500'
+                    ? 'bg-coral-500'
                     : index < currentQuestion
                     ? 'bg-green-500'
                     : 'bg-gray-300'
@@ -220,7 +220,7 @@ export function WelcomeQuestions({ onComplete }: WelcomeQuestionsProps) {
             <Button
               onClick={handleNext}
               disabled={!isAnswered}
-              className="bg-pink-500 hover:bg-pink-600 px-6"
+              className="bg-coral-500 hover:bg-coral-600 px-6"
             >
               {currentQuestion === questions.length - 1 ? 'Naar Dashboard' : 'Volgende'}
             </Button>

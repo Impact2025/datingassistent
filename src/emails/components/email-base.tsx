@@ -22,10 +22,10 @@ import {
 
 // Brand Colors
 export const colors = {
-  primary: '#E14874',
+  primary: '#FF7B54',
   primaryDark: '#c73d64',
   secondary: '#f97316',
-  gradient: 'linear-gradient(135deg, #E14874 0%, #f97316 100%)',
+  gradient: 'linear-gradient(135deg, #FF7B54 0%, #f97316 100%)',
   success: '#10b981',
   warning: '#f59e0b',
   error: '#ef4444',
@@ -60,7 +60,7 @@ export const styles = {
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   heroGradient: {
-    background: 'linear-gradient(135deg, #E14874 0%, #f97316 100%)',
+    background: 'linear-gradient(135deg, #FF7B54 0%, #f97316 100%)',
     padding: '48px 32px',
     textAlign: 'center' as const,
   },
@@ -399,7 +399,7 @@ export function ProgressBar({ progress, label }: ProgressBarProps) {
             height: '10px',
           }}>
             <div style={{
-              background: 'linear-gradient(135deg, #E14874 0%, #f97316 100%)',
+              background: 'linear-gradient(135deg, #FF7B54 0%, #f97316 100%)',
               borderRadius: '10px',
               height: '10px',
               width: `${Math.min(100, Math.max(0, progress))}%`,
@@ -491,7 +491,7 @@ export function StepsList({ steps }: StepsListProps) {
             <table cellPadding="0" cellSpacing="0">
               <tr>
                 <td style={{
-                  background: 'linear-gradient(135deg, #E14874 0%, #f97316 100%)',
+                  background: 'linear-gradient(135deg, #FF7B54 0%, #f97316 100%)',
                   borderRadius: '50%',
                   width: '32px',
                   height: '32px',

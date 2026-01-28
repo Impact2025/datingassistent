@@ -165,8 +165,8 @@ export function Module3Container({ userProfile, onComplete, onBack }: Module3Con
         {/* Header */}
         <Card className="border-0 bg-white shadow-sm rounded-xl">
         <CardHeader className="text-center pb-8">
-          <div className="w-16 h-16 mx-auto mb-6 bg-pink-100 rounded-2xl flex items-center justify-center">
-            <Compass className="w-8 h-8 text-pink-600" />
+          <div className="w-16 h-16 mx-auto mb-6 bg-coral-100 rounded-2xl flex items-center justify-center">
+            <Compass className="w-8 h-8 text-coral-600" />
           </div>
           <CardTitle className="text-3xl font-bold text-gray-900">
             Module 3: Profieltekst die wel werkt
@@ -203,7 +203,7 @@ export function Module3Container({ userProfile, onComplete, onBack }: Module3Con
                         disabled={!canNavigate}
                         className={`p-4 rounded-xl text-center transition-all border-2 ${
                           isCurrent
-                            ? 'bg-pink-500 text-white border-pink-500 shadow-md'
+                            ? 'bg-coral-500 text-white border-coral-500 shadow-md'
                             : isCompleted
                             ? 'bg-green-50 text-green-800 border-green-200 hover:bg-green-100'
                             : 'bg-white text-gray-400 border-gray-200 cursor-not-allowed'

@@ -52,7 +52,7 @@ export function HowItWorksSection({ className }: HowItWorksSectionProps) {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-block px-4 py-1.5 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 text-sm font-medium rounded-full mb-4"
+            className="inline-block px-4 py-1.5 bg-coral-100 dark:bg-coral-900/30 text-coral-600 dark:text-coral-400 text-sm font-medium rounded-full mb-4"
           >
             In 3 simpele stappen
           </motion.span>
@@ -91,18 +91,18 @@ export function HowItWorksSection({ className }: HowItWorksSectionProps) {
             >
               {/* Connector line (hidden on mobile, shown on md+) */}
               {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-12 left-1/2 w-full h-0.5 bg-gradient-to-r from-pink-300 to-pink-100 dark:from-pink-700 dark:to-pink-900" />
+                <div className="hidden md:block absolute top-12 left-1/2 w-full h-0.5 bg-gradient-to-r from-coral-300 to-coral-100 dark:from-coral-700 dark:to-coral-900" />
               )}
 
               <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 h-full">
                 {/* Step number badge */}
-                <div className="absolute -top-4 left-6 w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
+                <div className="absolute -top-4 left-6 w-8 h-8 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
                   {step.number}
                 </div>
 
                 {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-pink-50 dark:bg-pink-900/30 flex items-center justify-center mb-4 mt-2">
-                  <step.icon className="w-7 h-7 text-pink-500 dark:text-pink-400" />
+                <div className="w-14 h-14 rounded-xl bg-coral-50 dark:bg-coral-900/30 flex items-center justify-center mb-4 mt-2">
+                  <step.icon className="w-7 h-7 text-coral-500 dark:text-coral-400" />
                 </div>
 
                 {/* Content */}

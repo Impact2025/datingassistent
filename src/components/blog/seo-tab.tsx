@@ -58,12 +58,12 @@ export function SEOTab({ blogData, updateBlogData }: SEOTabProps) {
   return (
     <div className="space-y-6">
       {/* SEO Meta Tags Card */}
-      <Card className="border-pink-100 shadow-lg">
+      <Card className="border-coral-100 shadow-lg">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-lg font-semibold flex items-center">
-                <Search className="w-5 h-5 mr-2 text-pink-500" />
+                <Search className="w-5 h-5 mr-2 text-coral-500" />
                 SEO Meta Tags
               </CardTitle>
               <p className="text-sm text-gray-500 mt-1">
@@ -75,7 +75,7 @@ export function SEOTab({ blogData, updateBlogData }: SEOTabProps) {
               size="sm"
               variant="outline"
               onClick={autoFillSEO}
-              className="border-pink-200 text-pink-700 hover:bg-pink-50"
+              className="border-coral-200 text-coral-700 hover:bg-coral-50"
             >
               <Sparkles className="w-4 h-4 mr-2" />
               Auto-vullen
@@ -94,7 +94,7 @@ export function SEOTab({ blogData, updateBlogData }: SEOTabProps) {
               value={blogData.seo_title || ''}
               onChange={(e) => updateBlogData({ seo_title: e.target.value })}
               className={cn(
-                'border-gray-300 focus:ring-pink-500',
+                'border-gray-300 focus:ring-coral-500',
                 titleStatus === 'warning' && 'border-orange-300 focus:ring-orange-500'
               )}
             />
@@ -142,7 +142,7 @@ export function SEOTab({ blogData, updateBlogData }: SEOTabProps) {
               value={blogData.seo_description || ''}
               onChange={(e) => updateBlogData({ seo_description: e.target.value })}
               className={cn(
-                'border-gray-300 focus:ring-pink-500 min-h-[100px]',
+                'border-gray-300 focus:ring-coral-500 min-h-[100px]',
                 descriptionStatus === 'warning' && 'border-orange-300 focus:ring-orange-500'
               )}
             />
@@ -182,7 +182,7 @@ export function SEOTab({ blogData, updateBlogData }: SEOTabProps) {
       </Card>
 
       {/* Google Preview Card */}
-      <Card className="border-pink-100 shadow-lg">
+      <Card className="border-coral-100 shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg font-semibold">
             Google Zoekresultaat Preview
@@ -207,10 +207,10 @@ export function SEOTab({ blogData, updateBlogData }: SEOTabProps) {
       </Card>
 
       {/* SEO Tips Card */}
-      <Card className="border-pink-100 shadow-lg bg-gradient-to-br from-pink-50 to-pink-100">
+      <Card className="border-coral-100 shadow-lg bg-gradient-to-br from-coral-50 to-coral-100">
         <CardHeader>
           <CardTitle className="text-lg font-semibold flex items-center">
-            <Sparkles className="w-5 h-5 mr-2 text-pink-600" />
+            <Sparkles className="w-5 h-5 mr-2 text-coral-600" />
             SEO Tips
           </CardTitle>
         </CardHeader>

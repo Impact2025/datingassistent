@@ -38,7 +38,7 @@ export function ForumSearch({ onSearch, isLoading }: ForumSearchProps) {
     <Card className="border-2 border-primary/10 shadow-lg bg-gradient-to-r from-card via-card to-card/95">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-r from-primary to-pink-600 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-full bg-gradient-to-r from-primary to-coral-600 flex items-center justify-center">
             <Lucide.Search className="h-5 w-5 text-white" />
           </div>
           <div>
@@ -101,7 +101,7 @@ export function ForumSearch({ onSearch, isLoading }: ForumSearchProps) {
               <Button
                 onClick={handleSearch}
                 disabled={!query.trim() || isLoading}
-                className="w-full sm:w-auto h-10 bg-gradient-to-r from-primary to-pink-600 hover:from-primary/90 hover:to-pink-600/90"
+                className="w-full sm:w-auto h-10 bg-gradient-to-r from-primary to-coral-600 hover:from-primary/90 hover:to-coral-600/90"
                 size="lg"
               >
                 {isLoading ? (
@@ -115,9 +115,9 @@ export function ForumSearch({ onSearch, isLoading }: ForumSearchProps) {
           </div>
 
           {/* Search tips */}
-          <div className="bg-gradient-to-r from-primary/5 to-pink-600/5 rounded-lg p-4 border border-primary/10">
+          <div className="bg-gradient-to-r from-primary/5 to-coral-600/5 rounded-lg p-4 border border-primary/10">
             <div className="flex items-start gap-3">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary/10 to-pink-600/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary/10 to-coral-600/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <Lucide.Lightbulb className="h-4 w-4 text-primary" />
               </div>
               <div>

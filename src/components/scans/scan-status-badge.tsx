@@ -78,7 +78,7 @@ export function ScanStatusBadge({
     case 'available_retake':
       return (
         <div className={cn("flex items-center gap-2", className)}>
-          <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400 border-pink-200 dark:border-pink-800 animate-pulse">
+          <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/30 dark:text-coral-400 border-coral-200 dark:border-coral-800 animate-pulse">
             <Sparkles className="w-3 h-3 mr-1" />
             Retake Beschikbaar
           </Badge>
@@ -144,7 +144,7 @@ export function ScanStatusIndicator({
     // Available for retake - pulsing pink
     return (
       <div
-        className={cn("rounded-full bg-pink-500 animate-pulse", sizeClasses[size])}
+        className={cn("rounded-full bg-coral-500 animate-pulse", sizeClasses[size])}
         title="Retake beschikbaar"
       />
     );
@@ -174,7 +174,7 @@ export function RetakeCountdown({ canRetakeAt, className }: RetakeCountdownProps
 
   if (daysRemaining <= 0) {
     return (
-      <div className={cn("text-sm text-pink-600 dark:text-pink-400", className)}>
+      <div className={cn("text-sm text-coral-600 dark:text-coral-400", className)}>
         <Sparkles className="w-4 h-4 inline mr-1" />
         Retake nu beschikbaar!
       </div>
@@ -198,7 +198,7 @@ export function RetakeCountdown({ canRetakeAt, className }: RetakeCountdownProps
       {/* Progress bar */}
       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
         <div
-          className="bg-gradient-to-r from-pink-500 to-pink-600 h-full rounded-full transition-all duration-500"
+          className="bg-gradient-to-r from-coral-500 to-coral-600 h-full rounded-full transition-all duration-500"
           style={{ width: `${Math.min(percentage, 100)}%` }}
         />
       </div>

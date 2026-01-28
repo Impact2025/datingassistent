@@ -54,7 +54,7 @@ export function MicroInterventions({ interventions, onInterventionComplete }: Mi
     switch (categorie) {
       case 'veiligheid': return 'text-blue-600 bg-blue-50 border-blue-200';
       case 'communicatie': return 'text-green-600 bg-green-50 border-green-200';
-      case 'zelfzorg': return 'text-pink-600 bg-pink-50 border-pink-200';
+      case 'zelfzorg': return 'text-coral-600 bg-coral-50 border-coral-200';
       case 'actie': return 'text-purple-600 bg-purple-50 border-purple-200';
       default: return 'text-gray-600 bg-gray-50 border-gray-200';
     }
@@ -120,7 +120,7 @@ export function MicroInterventions({ interventions, onInterventionComplete }: Mi
       duur: '1 minuut',
       categorie: 'zelfzorg',
       icoon: <Heart className="w-5 h-5" />,
-      kleur: 'text-pink-600 bg-pink-50 border-pink-200',
+      kleur: 'text-coral-600 bg-coral-50 border-coral-200',
       stappen: [
         '3 verwachtingen voor deze date noteren',
         '1 grens die je wilt bewaken',
@@ -164,7 +164,7 @@ export function MicroInterventions({ interventions, onInterventionComplete }: Mi
           const progress = (completedStepCount / intervention.stappen.length) * 100;
 
           return (
-            <Card key={intervention.id} className={`transition-all duration-300 ${isActive ? 'ring-2 ring-pink-300 shadow-lg' : ''}`}>
+            <Card key={intervention.id} className={`transition-all duration-300 ${isActive ? 'ring-2 ring-coral-300 shadow-lg' : ''}`}>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -193,7 +193,7 @@ export function MicroInterventions({ interventions, onInterventionComplete }: Mi
                       variant="outline"
                       size="sm"
                       onClick={() => toggleIntervention(intervention.id)}
-                      className={isRunningThis ? 'bg-pink-50 border-pink-300' : ''}
+                      className={isRunningThis ? 'bg-coral-50 border-coral-300' : ''}
                     >
                       {isRunningThis ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                     </Button>

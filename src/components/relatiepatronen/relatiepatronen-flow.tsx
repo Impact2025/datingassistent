@@ -135,7 +135,7 @@ export function RelatiepatronenFlow({ onClose }: RelatiepatronenFlowProps) {
 
   const renderIntro = () => (
     <div className="space-y-6">
-      <Card className="bg-gradient-to-r from-purple-50 via-pink-50 to-blue-50 border-0">
+      <Card className="bg-gradient-to-r from-purple-50 via-coral-50 to-blue-50 border-0">
         <CardContent className="p-8 text-center">
           <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Repeat className="w-8 h-8 text-purple-600" />
@@ -147,7 +147,7 @@ export function RelatiepatronenFlow({ onClose }: RelatiepatronenFlowProps) {
         </CardContent>
       </Card>
       <div className="flex justify-center">
-        <Button onClick={startAssessment} className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-6 text-lg">
+        <Button onClick={startAssessment} className="bg-gradient-to-r from-purple-500 to-coral-600 text-white px-8 py-6 text-lg">
           Start Reflectie <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
       </div>
@@ -182,7 +182,7 @@ export function RelatiepatronenFlow({ onClose }: RelatiepatronenFlowProps) {
     if (!results) return null;
     return (
       <div className="space-y-6">
-        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-0">
+        <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-0">
           <CardContent className="p-8 text-center">
             <CheckCircle className="w-16 h-16 text-purple-600 mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-3">Je Relatiepatroon Analyse</h2>
@@ -220,7 +220,7 @@ export function RelatiepatronenFlow({ onClose }: RelatiepatronenFlowProps) {
           </CardContent>
         </Card>
         {onClose && (
-          <Button onClick={onClose} className="w-full bg-gradient-to-r from-purple-500 to-pink-600">
+          <Button onClick={onClose} className="w-full bg-gradient-to-r from-purple-500 to-coral-600">
             Terug naar Dashboard
           </Button>
         )}

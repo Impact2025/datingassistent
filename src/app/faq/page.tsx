@@ -101,13 +101,13 @@ export default function FAQPage() {
 
       <main className="flex-grow">
         {/* Hero Header */}
-        <header className="bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 border-b border-gray-200 dark:border-gray-800">
+        <header className="bg-gradient-to-br from-coral-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 border-b border-gray-200 dark:border-gray-800">
           <div className="container mx-auto px-4 py-12">
             {/* Breadcrumb */}
             <nav className="mb-6" aria-label="Breadcrumb">
               <ol className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li>
-                  <Link href="/" className="hover:text-pink-500 transition-colors">
+                  <Link href="/" className="hover:text-coral-500 transition-colors">
                     Home
                   </Link>
                 </li>
@@ -151,7 +151,7 @@ export default function FAQPage() {
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   placeholder="Zoek in veelgestelde vragen..."
-                  className="w-full pl-12 pr-12 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 focus:outline-none transition-all shadow-sm"
+                  className="w-full pl-12 pr-12 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:border-coral-500 focus:ring-2 focus:ring-coral-500/20 focus:outline-none transition-all shadow-sm"
                 />
                 {searchQuery && (
                   <button
@@ -175,7 +175,7 @@ export default function FAQPage() {
                 onClick={() => setSelectedCategory(null)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   !selectedCategory
-                    ? 'bg-pink-500 text-white shadow-md'
+                    ? 'bg-coral-500 text-white shadow-md'
                     : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                 }`}
               >
@@ -190,7 +190,7 @@ export default function FAQPage() {
                     onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
                     className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
                       selectedCategory === category
-                        ? 'bg-pink-500 text-white shadow-md'
+                        ? 'bg-coral-500 text-white shadow-md'
                         : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                     }`}
                   >
@@ -209,7 +209,7 @@ export default function FAQPage() {
                 </span>
                 <button
                   onClick={clearFilters}
-                  className="text-pink-500 hover:text-pink-600 font-medium transition-colors"
+                  className="text-coral-500 hover:text-coral-600 font-medium transition-colors"
                 >
                   Filters wissen
                 </button>
@@ -269,7 +269,7 @@ export default function FAQPage() {
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <button
                     onClick={clearFilters}
-                    className="text-pink-500 hover:text-pink-600 font-medium transition-colors"
+                    className="text-coral-500 hover:text-coral-600 font-medium transition-colors"
                   >
                     Alle vragen bekijken
                   </button>
@@ -285,10 +285,10 @@ export default function FAQPage() {
             )}
 
             {/* Iris CTA Card */}
-            <Card className="mt-12 p-8 bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-pink-200 dark:border-gray-700">
+            <Card className="mt-12 p-8 bg-gradient-to-br from-coral-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-coral-200 dark:border-gray-700">
               <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-8 h-8 text-pink-500" />
+                <div className="w-16 h-16 bg-coral-100 dark:bg-coral-900/30 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-8 h-8 text-coral-500" />
                 </div>
                 <div className="text-center md:text-left flex-grow">
                   <h3 className="text-xl font-bold text-gray-900 dark:text-gray-50 mb-2">
@@ -299,7 +299,7 @@ export default function FAQPage() {
                   </p>
                 </div>
                 <Link href="/dashboard">
-                  <Button className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6">
+                  <Button className="bg-coral-500 hover:bg-coral-600 text-white rounded-full px-6">
                     <MessageCircle className="w-4 h-4 mr-2" />
                     Chat met Iris
                   </Button>
@@ -387,11 +387,11 @@ function FAQAccordionItem({ faq, isOpen, onToggle, index, searchQuery }: FAQAcco
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
-      className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:border-pink-200 dark:hover:border-pink-800 hover:shadow-md transition-all"
+      className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:border-coral-200 dark:hover:border-coral-800 hover:shadow-md transition-all"
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-inset"
+        className="w-full flex items-center justify-between gap-4 p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-coral-500 focus-visible:ring-inset"
         aria-expanded={isOpen}
       >
         <span className="font-semibold text-gray-900 dark:text-gray-50">

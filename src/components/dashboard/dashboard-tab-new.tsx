@@ -67,7 +67,7 @@ export function DashboardTabNew({ onTabChange }: { onTabChange?: (tab: string) =
       title: "Jouw profiel",
       description: "Bekijk en optimaliseer je profiel",
       action: "profiel",
-      color: "from-pink-500 to-rose-500"
+      color: "from-coral-500 to-rose-500"
     },
     {
       icon: MessageCircle,
@@ -112,11 +112,11 @@ export function DashboardTabNew({ onTabChange }: { onTabChange?: (tab: string) =
       </div>
 
       {/* Learning Path Card - Minimal */}
-      <Card className="border-l-4 border-l-pink-500 bg-gradient-to-r from-pink-50 to-white dark:from-pink-950/20 dark:to-background">
+      <Card className="border-l-4 border-l-coral-500 bg-gradient-to-r from-coral-50 to-white dark:from-coral-950/20 dark:to-background">
         <CardContent className="pt-6">
           <div className="flex items-start gap-4">
-            <div className="rounded-full bg-pink-100 dark:bg-pink-900 p-3">
-              <TrendingUp className="h-6 w-6 text-pink-600 dark:text-pink-400" />
+            <div className="rounded-full bg-coral-100 dark:bg-coral-900 p-3">
+              <TrendingUp className="h-6 w-6 text-coral-600 dark:text-coral-400" />
             </div>
             <div className="flex-1 space-y-3">
               <h3 className="font-semibold text-lg">
@@ -127,7 +127,7 @@ export function DashboardTabNew({ onTabChange }: { onTabChange?: (tab: string) =
               </p>
               <Button
                 onClick={() => onTabChange?.('goals')}
-                className="bg-pink-500 hover:bg-pink-600"
+                className="bg-coral-500 hover:bg-coral-600"
               >
                 Bekijk leertraject
               </Button>
@@ -152,7 +152,7 @@ export function DashboardTabNew({ onTabChange }: { onTabChange?: (tab: string) =
                     <Icon className="h-6 w-6 text-white" />
                   </div>
                   <div className="space-y-1">
-                    <h3 className="font-semibold group-hover:text-pink-600 transition-colors">
+                    <h3 className="font-semibold group-hover:text-coral-600 transition-colors">
                       {action.title}
                     </h3>
                     <p className="text-sm text-muted-foreground">

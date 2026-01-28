@@ -259,7 +259,7 @@ function VragenPageContent() {
             </Button>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-coral-500 flex items-center justify-center">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -282,7 +282,7 @@ function VragenPageContent() {
         {!activeSession && !showNewSession && (
           <>
             {/* Intro Card */}
-            <Card className="border-rose-200 dark:border-rose-700 bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/30 dark:to-pink-900/30">
+            <Card className="border-rose-200 dark:border-rose-700 bg-gradient-to-r from-rose-50 to-coral-50 dark:from-rose-900/30 dark:to-coral-900/30">
               <CardContent className="p-6">
                 <div className="flex gap-4">
                   <div className="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/50 flex items-center justify-center flex-shrink-0">
@@ -302,7 +302,7 @@ function VragenPageContent() {
             {/* New Session Button */}
             <Button
               onClick={() => setShowNewSession(true)}
-              className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white py-6"
+              className="w-full bg-gradient-to-r from-rose-500 to-coral-500 hover:from-rose-600 hover:to-coral-600 text-white py-6"
             >
               <Plus className="w-5 h-5 mr-2" />
               Start nieuwe sessie
@@ -474,7 +474,7 @@ function VragenPageContent() {
               <Button
                 onClick={submitAnswer}
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white py-6"
+                className="w-full bg-gradient-to-r from-rose-500 to-coral-500 hover:from-rose-600 hover:to-coral-600 text-white py-6"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -496,9 +496,9 @@ function VragenPageContent() {
             animate={{ opacity: 1, scale: 1 }}
             className="space-y-6"
           >
-            <Card className="border-rose-200 dark:border-rose-700 bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-900/30 dark:to-pink-900/30">
+            <Card className="border-rose-200 dark:border-rose-700 bg-gradient-to-r from-rose-50 to-coral-50 dark:from-rose-900/30 dark:to-coral-900/30">
               <CardContent className="p-8 text-center">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center mx-auto mb-6">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-rose-400 to-coral-500 flex items-center justify-center mx-auto mb-6">
                   <Trophy className="w-10 h-10 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -528,12 +528,12 @@ function VragenPageContent() {
                 <CardTitle className="text-lg dark:text-white">Reflectie</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-4 rounded-xl border-2 border-pink-200 dark:border-pink-700 bg-pink-50/50 dark:bg-pink-900/20">
+                <div className="p-4 rounded-xl border-2 border-coral-200 dark:border-coral-700 bg-coral-50/50 dark:bg-coral-900/20">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-coral-500 flex items-center justify-center">
                       <Eye className="w-3 h-3 text-white" />
                     </div>
-                    <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0 text-xs">Spiegel</Badge>
+                    <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-0 text-xs">Spiegel</Badge>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
                     Wat heb je geleerd over {activeSession?.partnerName} dat je nog niet wist?

@@ -55,9 +55,9 @@ export default function BlindVlekkenPage() {
 
   if (loading || loadingData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-purple-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-pink-200 border-t-pink-600 rounded-full mx-auto mb-4"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-coral-200 border-t-coral-600 rounded-full mx-auto mb-4"></div>
           <p className="text-gray-700">Blindvlekken Analyse laden...</p>
         </div>
       </div>
@@ -65,7 +65,7 @@ export default function BlindVlekkenPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-purple-50 to-white">
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -81,8 +81,8 @@ export default function BlindVlekkenPage() {
 
             <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden mb-8">
               <CardContent className="p-12 text-center">
-                <div className="w-20 h-20 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
-                  <Eye className="w-10 h-10 text-pink-600" />
+                <div className="w-20 h-20 bg-coral-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                  <Eye className="w-10 h-10 text-coral-600" />
                 </div>
                 <CardTitle className="text-3xl font-bold text-gray-900 mb-6">
                   Dating Blindvlekken Analyse

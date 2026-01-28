@@ -109,7 +109,7 @@ export function MyProgramsWidget() {
 
   const tierColors = {
     kickstart: 'from-blue-500 to-blue-600',
-    transformatie: 'from-pink-500 to-pink-600',
+    transformatie: 'from-coral-500 to-coral-600',
     'vip-reis': 'from-purple-500 to-indigo-600'
   };
 
@@ -130,7 +130,7 @@ export function MyProgramsWidget() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center py-8">
-            <div className="w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-8 h-8 border-4 border-coral-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
         </CardContent>
       </Card>
@@ -159,7 +159,7 @@ export function MyProgramsWidget() {
               </p>
               <Button
                 onClick={() => router.push('/#programmas')}
-                className="bg-gradient-to-r from-pink-500 to-pink-600"
+                className="bg-gradient-to-r from-coral-500 to-coral-600"
               >
                 Ontdek programma's
               </Button>
@@ -219,14 +219,14 @@ export function MyProgramsWidget() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="border rounded-lg p-4 hover:border-pink-500 transition-colors cursor-pointer group">
+              <div className="border rounded-lg p-4 hover:border-coral-500 transition-colors cursor-pointer group">
                 <div onClick={() => handleViewProgram(program.program_slug)}>
                   {/* Header */}
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className="text-3xl">{tierIcon}</div>
                       <div>
-                        <h3 className="font-semibold text-gray-900 group-hover:text-pink-600 transition-colors">
+                        <h3 className="font-semibold text-gray-900 group-hover:text-coral-600 transition-colors">
                           {program.program_name}
                         </h3>
                         <div className="flex items-center gap-2 mt-1">
@@ -273,7 +273,7 @@ export function MyProgramsWidget() {
                             fill="none"
                             strokeDasharray={`${2 * Math.PI * 20}`}
                             strokeDashoffset={`${2 * Math.PI * 20 * (1 - progress / 100)}`}
-                            className="text-pink-500 transition-all duration-500"
+                            className="text-coral-500 transition-all duration-500"
                             strokeLinecap="round"
                           />
                         </svg>

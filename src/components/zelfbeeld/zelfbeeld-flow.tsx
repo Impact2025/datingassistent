@@ -278,7 +278,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
       <div className="p-6">
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-14 h-14 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
+            <div className="w-14 h-14 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
               <Camera className="w-7 h-7 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">Profiel Analyse</h2>
@@ -294,7 +294,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
               { icon: Clock, label: '~5 min', value: 'invultijd' }
             ].map((stat, i) => (
               <div key={i} className="bg-gray-50 rounded-lg p-3 text-center">
-                <stat.icon className="w-5 h-5 text-pink-500 mx-auto mb-1" />
+                <stat.icon className="w-5 h-5 text-coral-500 mx-auto mb-1" />
                 <div className="text-sm font-semibold text-gray-900">{stat.label}</div>
                 <div className="text-xs text-gray-500">{stat.value}</div>
               </div>
@@ -313,7 +313,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
                   'Voor/na voorbeelden'
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-2 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-pink-500 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-coral-500 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700">{item}</span>
                   </div>
                 ))}
@@ -323,7 +323,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
 
           <Button
             onClick={handleStart}
-            className="w-full h-12 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 shadow-sm"
+            className="w-full h-12 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 shadow-sm"
           >
             Start Analyse
             <ArrowRight className="w-4 h-4 ml-2" />
@@ -452,7 +452,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
             <Button
               onClick={handleSubmit}
               disabled={!bioValid || loading}
-              className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 shadow-sm"
+              className="flex-1 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 shadow-sm"
             >
               Analyseer
               <Sparkles className="w-4 h-4 ml-2" />
@@ -472,9 +472,9 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
         <Card className="w-full max-w-md bg-white border-0 shadow-sm">
           <CardContent className="p-10 text-center space-y-6">
             <div className="relative mx-auto w-20 h-20">
-              <div className="absolute inset-0 animate-spin rounded-full border-4 border-gray-100 border-t-pink-500"></div>
+              <div className="absolute inset-0 animate-spin rounded-full border-4 border-gray-100 border-t-coral-500"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-pink-500 animate-pulse" />
+                <Sparkles className="w-8 h-8 text-coral-500 animate-pulse" />
               </div>
             </div>
             <div>
@@ -486,13 +486,13 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
             <div className="space-y-2">
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-pink-500 rounded-full"
+                  className="h-full bg-coral-500 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${progressValue}%` }}
                   transition={{ duration: 0.3 }}
                 />
               </div>
-              <div className="text-sm font-medium text-pink-600">{progressValue}%</div>
+              <div className="text-sm font-medium text-coral-600">{progressValue}%</div>
             </div>
             <div className="grid grid-cols-4 gap-2">
               {progressStages.map((_, i) => (
@@ -500,7 +500,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
                   key={i}
                   className={cn(
                     "h-1 rounded-full",
-                    i <= progressStage ? "bg-pink-500" : "bg-gray-200"
+                    i <= progressStage ? "bg-coral-500" : "bg-gray-200"
                   )}
                 />
               ))}
@@ -519,7 +519,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
       <div className="p-6 pb-12">
         <div className="max-w-5xl mx-auto space-y-5">
           <div className="text-center space-y-2">
-            <Badge className="bg-gradient-to-r from-pink-500 to-pink-600 text-white border-0">Je Analyse</Badge>
+            <Badge className="bg-gradient-to-r from-coral-500 to-coral-600 text-white border-0">Je Analyse</Badge>
             <h2 className="text-2xl font-bold text-gray-900">
               {analysis?.firstImpression?.personaTitle || 'Je Resultaten'}
             </h2>
@@ -532,7 +532,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
             <Card className="bg-white border-0 shadow-sm">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Sparkles className="w-5 h-5 text-pink-500" />
+                  <Sparkles className="w-5 h-5 text-coral-500" />
                   Je Vibe Profiel
                 </CardTitle>
                 <p className="text-xs text-gray-500">6 dimensies die bepalen hoe je overkomt</p>
@@ -557,7 +557,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
           )}
 
           {analysis?.firstImpression?.thirtySecond && (
-            <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-0 shadow-sm">
+            <Card className="bg-gradient-to-r from-coral-50 to-coral-100 border-0 shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Eerste 30 Seconden</CardTitle>
                 <p className="text-xs text-gray-600">Dit denken matches direct</p>
@@ -565,7 +565,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
               <CardContent className="space-y-2">
                 {analysis.firstImpression.thirtySecond.map((item: string, i: number) => (
                   <div key={i} className="flex items-start gap-2 text-sm">
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-coral-500 to-coral-600 flex items-center justify-center flex-shrink-0 shadow-sm">
                       <span className="text-xs font-bold text-white">{i + 1}</span>
                     </div>
                     <p className="text-gray-700">{item}</p>
@@ -595,14 +595,14 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
               <CardContent className="grid sm:grid-cols-2 gap-4 text-sm">
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1.5 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-pink-500 rounded-full" />
+                    <div className="w-2 h-2 bg-coral-500 rounded-full" />
                     Hoe je jezelf ziet
                   </h4>
                   <p className="text-gray-700">{analysis.selfVsReality.selfImage}</p>
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1.5 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-pink-600 rounded-full" />
+                    <div className="w-2 h-2 bg-coral-600 rounded-full" />
                     Hoe je overkomt
                   </h4>
                   <p className="text-gray-700">{analysis.selfVsReality.actualImpression}</p>

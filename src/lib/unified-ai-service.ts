@@ -7,6 +7,7 @@
 
 import { chatCompletion } from './ai-service';
 import { getOpenRouterClient, OPENROUTER_MODELS } from './openrouter';
+import { getAgeRange, createAnonymizedContext } from './ai-privacy';
 import type { UserProfile } from './types';
 
 // ============================================================================
@@ -175,16 +176,15 @@ Let op: [belangrijke opmerking]
 
 Succes ermee!`;
 
-      // Add user profile information to the system prompt if available
+      // Add anonymized user profile information to the system prompt if available
+      // Privacy: No name, no exact age, no specific location
       if (request.userProfile) {
-        systemPrompt += '\n\nThe user\'s profile information:\n';
-        if (request.userProfile.name) systemPrompt += `- Name: ${request.userProfile.name}\n`;
-        if (request.userProfile.age) systemPrompt += `- Age: ${request.userProfile.age}\n`;
-        if (request.userProfile.gender) systemPrompt += `- Gender: ${request.userProfile.gender}\n`;
-        if (request.userProfile.location) systemPrompt += `- Location: ${request.userProfile.location}\n`;
-        if (request.userProfile.seekingGender && request.userProfile.seekingGender.length > 0) {
-          systemPrompt += `- Looking for: ${request.userProfile.seekingGender.join(', ')}\n`;
-        }
+        systemPrompt += '\n\n' + createAnonymizedContext({
+          age: request.userProfile.age,
+          gender: request.userProfile.gender,
+          seekingGender: request.userProfile.seekingGender
+          // Note: name and location are intentionally excluded for privacy
+        });
       }
 
       // Convert history to the format expected by our AI service
@@ -332,12 +332,15 @@ JSON Structuur:
           profileData.habit && `Gewoonte: ${profileData.habit}`,
         ].filter(Boolean).join('. ');
 
-        const prompt = `Schrijf een dating profiel voor ${request.userProfile?.name || 'mij'}.
+        // Privacy: No name, use age range, no specific location
+        const profileAgeRange = request.userProfile?.age ? getAgeRange(request.userProfile.age) : '25-29';
+
+        const prompt = `Schrijf een dating profiel.
 
 Gebruik deze informatie:
-- Leeftijd: ${request.userProfile?.age || 25}
+- Leeftijdsgroep: ${profileAgeRange}
 - Geslacht: ${request.userProfile?.gender || 'niet gespecificeerd'}
-- Locatie: ${request.userProfile?.location || 'Nederland'}
+- Land: Nederland
 - Persoonlijkheid: ${enhancedKeywords}
 
 Stijl: ${variation} en aantrekkelijk
@@ -380,14 +383,17 @@ Maak het persoonlijk en uniek. Focus op positieve eigenschappen en gedeelde inte
 
   async matchPlatforms(request: PlatformMatchRequest): Promise<PlatformRecommendation[]> {
     try {
+      // Privacy: Use age ranges instead of exact age, no location
+      const ageRange = request.userProfile?.age ? getAgeRange(request.userProfile.age) : 'niet opgegeven';
+
       const systemPrompt = `Je bent een ervaren dating coach en expert op het gebied van Nederlandse dating apps en websites. Je kent alle platforms goed en weet precies welke doelgroepen ze bedienen.
 
-Gebruikersprofiel:
-- Leeftijd: ${request.userProfile?.age || 25} jaar
+Gebruikersprofiel (geanonimiseerd):
+- Leeftijdsgroep: ${ageRange}
 - Geslacht: ${request.userProfile?.gender || 'niet opgegeven'}
 - Zoekt: ${request.userPreferences.genderPreference || 'niet opgegeven'}
 - Relatietype: ${request.userPreferences.relationshipGoal || 'niet opgegeven'}
-- Locatie: ${request.userProfile?.location || 'niet opgegeven'}
+- Land: Nederland
 
 Voorkeuren:
 - Platform type: ${request.userPreferences.appExpectations?.join(', ') || 'geen voorkeur'}

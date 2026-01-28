@@ -100,7 +100,7 @@ export function SkeletonAvatar({ size = 'md', className }: { size?: 'sm' | 'md' 
 // Page-level loading component
 export function PageLoading({ title = 'Laden...', subtitle }: { title?: string; subtitle?: string }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-pink-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-coral-50 to-coral-100">
       <div className="text-center">
         <LoadingSpinner size="xl" className="mb-6" />
         <h2 className="text-xl font-semibold text-gray-900 mb-2">

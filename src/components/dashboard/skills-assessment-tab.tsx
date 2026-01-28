@@ -40,8 +40,8 @@ export function SkillsAssessmentTab() {
       <Card className="bg-secondary/50">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Lucide.Award className="w-6 h-6 text-pink-600" />
-            <span className="text-pink-600">Dating Vaardigheden Beoordeling</span>
+            <Lucide.Award className="w-6 h-6 text-coral-600" />
+            <span className="text-coral-600">Dating Vaardigheden Beoordeling</span>
           </CardTitle>
         </CardHeader>
         <CardContent>

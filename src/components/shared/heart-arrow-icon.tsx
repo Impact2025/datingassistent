@@ -19,7 +19,7 @@ export function HeartArrowIcon({ size = 32, className = '' }: HeartArrowIconProp
       <path
         d="M120 220C120 220 20 140 20 80C20 50 40 30 65 30C85 30 105 45 120 65C135 45 155 30 175 30C200 30 220 50 220 80C220 140 120 220 120 220Z"
         fill="none"
-        stroke="#E14874"
+        stroke="#FF7B54"
         strokeWidth="28"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -40,7 +40,7 @@ export function HeartArrowIcon({ size = 32, className = '' }: HeartArrowIconProp
           y1="140"
           x2="165"
           y2="60"
-          stroke="#E14874"
+          stroke="#FF7B54"
           strokeWidth="18"
           strokeLinecap="round"
         />
@@ -48,8 +48,8 @@ export function HeartArrowIcon({ size = 32, className = '' }: HeartArrowIconProp
         {/* Arrow head - upper triangle */}
         <polygon
           points="165,60 145,75 160,85"
-          fill="#E14874"
-          stroke="#E14874"
+          fill="#FF7B54"
+          stroke="#FF7B54"
           strokeWidth="2"
           strokeLinejoin="round"
         />
@@ -57,8 +57,8 @@ export function HeartArrowIcon({ size = 32, className = '' }: HeartArrowIconProp
         {/* Arrow head - right triangle */}
         <polygon
           points="165,60 150,50 160,70"
-          fill="#E14874"
-          stroke="#E14874"
+          fill="#FF7B54"
+          stroke="#FF7B54"
           strokeWidth="2"
           strokeLinejoin="round"
         />

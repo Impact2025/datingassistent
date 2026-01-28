@@ -42,7 +42,7 @@ export default function OnboardingLayout({
   if (isLoading || userLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-8 h-8 border-3 border-pink-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-coral-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -54,7 +54,7 @@ export default function OnboardingLayout({
         <div className="max-w-lg mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-pink-500 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-full bg-coral-500 flex items-center justify-center">
                 <span className="text-white text-xs font-bold">D</span>
               </div>
               <span className="font-medium text-gray-900 text-sm">
@@ -69,7 +69,7 @@ export default function OnboardingLayout({
                   key={step.path}
                   className={`w-2 h-2 rounded-full transition-colors ${
                     index <= currentStepIndex
-                      ? "bg-pink-500"
+                      ? "bg-coral-500"
                       : "bg-gray-200"
                   }`}
                 />

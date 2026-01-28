@@ -135,7 +135,7 @@ export function QASessionsCalendar() {
     return (
       <Card className="border-gray-200 shadow-sm">
         <CardContent className="p-12 text-center">
-          <Loader2 className="w-8 h-8 text-pink-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-8 h-8 text-coral-500 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Q&A sessies laden...</p>
         </CardContent>
       </Card>
@@ -158,8 +158,8 @@ export function QASessionsCalendar() {
     return (
       <Card className="border-gray-200 bg-gradient-to-br from-gray-50 to-white">
         <CardContent className="p-8 text-center">
-          <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Calendar className="w-8 h-8 text-pink-500" />
+          <div className="w-16 h-16 bg-coral-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Calendar className="w-8 h-8 text-coral-500" />
           </div>
           <h3 className="font-semibold text-gray-900 mb-2">Geen Q&A sessies gepland</h3>
           <p className="text-sm text-gray-600 max-w-xs mx-auto">
@@ -174,12 +174,12 @@ export function QASessionsCalendar() {
     <div className="space-y-4">
       {/* Upcoming Sessions */}
       {upcomingSessions.length > 0 && (
-        <Card className="border-pink-200 bg-gradient-to-br from-pink-50 to-white shadow-md">
+        <Card className="border-coral-200 bg-gradient-to-br from-coral-50 to-white shadow-md">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-pink-600" />
+              <Calendar className="w-5 h-5 text-coral-600" />
               Aankomende Q&A Sessies
-              <Badge className="ml-auto bg-pink-100 text-pink-700 border-0">
+              <Badge className="ml-auto bg-coral-100 text-coral-700 border-0">
                 {upcomingSessions.length}
               </Badge>
             </CardTitle>

@@ -70,7 +70,7 @@ export default function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
         <div className="flex flex-col gap-3">
           <button
             onClick={reset}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 px-6 rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
+            className="w-full bg-gradient-to-r from-purple-600 to-coral-600 text-white py-3 px-6 rounded-lg font-medium hover:from-purple-700 hover:to-coral-700 transition-all shadow-md hover:shadow-lg"
           >
             Probeer opnieuw
           </button>

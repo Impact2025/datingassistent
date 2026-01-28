@@ -351,7 +351,7 @@ export default function ArticleToBlog() {
                       <Label className="text-lg font-semibold">📱 Social Media Content</Label>
 
                       {/* Instagram */}
-                      <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 border border-purple-200 dark:border-purple-800 rounded p-4">
+                      <div className="bg-gradient-to-br from-purple-50 to-coral-50 dark:from-purple-950 dark:to-coral-950 border border-purple-200 dark:border-purple-800 rounded p-4">
                         <h4 className="font-semibold mb-2 flex items-center gap-2">
                           📸 Instagram
                         </h4>

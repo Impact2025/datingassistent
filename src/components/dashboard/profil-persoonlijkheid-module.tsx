@@ -83,8 +83,8 @@ export function ProfilPersoonlijkheidModule({ onTabChange }: ProfilPersoonlijkhe
                 className={cn(
                   "cursor-pointer transition-all duration-200 hover:shadow-lg border-2",
                   isActive
-                    ? "border-pink-500 bg-pink-50/50 dark:bg-pink-950/20 ring-2 ring-pink-500/20"
-                    : "border-border hover:border-pink-300 hover:bg-pink-50/30 dark:hover:bg-pink-950/10"
+                    ? "border-coral-500 bg-coral-50/50 dark:bg-coral-950/20 ring-2 ring-coral-500/20"
+                    : "border-border hover:border-coral-300 hover:bg-coral-50/30 dark:hover:bg-coral-950/10"
                 )}
                 onClick={() => setActiveSubTab(module.id)}
               >
@@ -93,7 +93,7 @@ export function ProfilPersoonlijkheidModule({ onTabChange }: ProfilPersoonlijkhe
                     <div className={cn(
                       "w-16 h-16 mx-auto rounded-full flex items-center justify-center transition-colors",
                       isActive
-                        ? "bg-pink-500 text-white"
+                        ? "bg-coral-500 text-white"
                         : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white"
                     )}>
                       <Icon className="w-8 h-8" />
@@ -103,7 +103,7 @@ export function ProfilPersoonlijkheidModule({ onTabChange }: ProfilPersoonlijkhe
                       <div className="flex items-center justify-center gap-2">
                         <h4 className={cn(
                           "font-semibold text-sm",
-                          isActive ? "text-pink-700 dark:text-pink-300" : "text-foreground"
+                          isActive ? "text-coral-700 dark:text-coral-300" : "text-foreground"
                         )}>
                           {module.label}
                         </h4>
@@ -129,7 +129,7 @@ export function ProfilPersoonlijkheidModule({ onTabChange }: ProfilPersoonlijkhe
         </div>
 
         {/* Active Module Content */}
-        <Card className="border-t-4 border-t-pink-500">
+        <Card className="border-t-4 border-t-coral-500">
           <CardContent className="p-6">
             {(() => {
               const activeModule = subModules.find(m => m.id === activeSubTab);
@@ -139,7 +139,7 @@ export function ProfilPersoonlijkheidModule({ onTabChange }: ProfilPersoonlijkhe
               return (
                 <div className="space-y-6">
                   <div className="text-center">
-                    <div className="w-12 h-12 mx-auto mb-3 bg-pink-500 text-white rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 mx-auto mb-3 bg-coral-500 text-white rounded-full flex items-center justify-center">
                       <Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-bold mb-1">{activeModule.label}</h3>

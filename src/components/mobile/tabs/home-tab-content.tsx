@@ -50,7 +50,7 @@ export function HomeTabContent({ user, userProfile }: HomeTabContentProps) {
       title: 'Profiel Review',
       description: 'Optimaliseer je dating profiel',
       icon: Target,
-      color: 'bg-pink-50 text-pink-600',
+      color: 'bg-coral-50 text-coral-600',
       route: '/profiel',
     },
     {
@@ -104,7 +104,7 @@ export function HomeTabContent({ user, userProfile }: HomeTabContentProps) {
               </div>
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-pink-500 rounded-full transition-all duration-500"
+                  className="h-full bg-coral-500 rounded-full transition-all duration-500"
                   style={{ width: `${(stats.goalsCompleted / stats.totalGoals) * 100}%` }}
                 />
               </div>
@@ -113,23 +113,23 @@ export function HomeTabContent({ user, userProfile }: HomeTabContentProps) {
         </Card>
 
         {/* AI Recommendation - Highlighted Card */}
-        <Card className="border-2 border-pink-100 shadow-sm">
+        <Card className="border-2 border-coral-100 shadow-sm">
           <CardContent className="p-5">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-6 h-6 text-pink-500" />
+              <div className="w-12 h-12 bg-coral-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-6 h-6 text-coral-500" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <h3 className="font-semibold text-gray-900">Aanbevolen voor jou</h3>
-                  <Badge className="bg-pink-500 text-white text-[10px] px-1.5 py-0.5">AI</Badge>
+                  <Badge className="bg-coral-500 text-white text-[10px] px-1.5 py-0.5">AI</Badge>
                 </div>
                 <p className="text-sm text-gray-600 mb-3">
                   Je profiel foto's zijn goed! Focus nu op je bio om meer matches te krijgen.
                 </p>
                 <Button
                   onClick={() => router.push('/tools/ai-bio-generator')}
-                  className="bg-pink-500 hover:bg-pink-600 text-white h-9 text-sm"
+                  className="bg-coral-500 hover:bg-coral-600 text-white h-9 text-sm"
                 >
                   Bio verbeteren
                   <ArrowRight className="w-4 h-4 ml-1.5" />
@@ -173,7 +173,7 @@ export function HomeTabContent({ user, userProfile }: HomeTabContentProps) {
         <Card className="border-0 shadow-sm">
           <CardContent className="p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Zap className="w-5 h-5 text-pink-500" />
+              <Zap className="w-5 h-5 text-coral-500" />
               <h3 className="font-semibold text-gray-900">Vandaag</h3>
             </div>
 

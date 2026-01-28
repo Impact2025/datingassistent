@@ -291,7 +291,7 @@ export function LoginForm() {
             />
           </CardContent>
           <CardFooter className="flex-col gap-4">
-            <Button type="submit" size="lg" className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all" disabled={isLoggingIn}>
+            <Button type="submit" size="lg" className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all" disabled={isLoggingIn}>
                 {isLoggingIn && <LoadingSpinner />}
                 Inloggen
             </Button>

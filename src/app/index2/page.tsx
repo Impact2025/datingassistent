@@ -61,7 +61,7 @@ export default function Index2Page() {
             {/* Main Heading */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
               Vind je perfecte match met{' '}
-              <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary via-purple-500 to-coral-500 bg-clip-text text-transparent">
                 expert begeleiding
               </span>
             </h1>
@@ -504,7 +504,7 @@ export default function Index2Page() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 lg:py-32 bg-gradient-to-r from-primary via-purple-500 to-pink-500 text-white">
+      <section className="py-20 lg:py-32 bg-gradient-to-r from-primary via-purple-500 to-coral-500 text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto space-y-8">
             <h2 className="text-4xl md:text-5xl font-bold">

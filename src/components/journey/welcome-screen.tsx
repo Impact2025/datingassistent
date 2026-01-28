@@ -56,7 +56,7 @@ export function WelcomeScreen({ onStartJourney, userName }: WelcomeScreenProps) 
   const CurrentIcon = VALUE_PROPS[currentProp]?.icon;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center p-4">
       <AnimatePresence>
         {showContent && (
           <motion.div
@@ -75,11 +75,11 @@ export function WelcomeScreen({ onStartJourney, userName }: WelcomeScreenProps) 
                   transition={{ delay: 0.2, duration: 0.6 }}
                   className="space-y-4"
                 >
-                  <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full mb-6">
+                  <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full mb-6">
                     <Heart className="w-10 h-10 text-white" />
                   </div>
 
-                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent">
                     Welkom bij je Dating Journey! {userName && ` ${userName}`}
                   </h1>
 
@@ -100,8 +100,8 @@ export function WelcomeScreen({ onStartJourney, userName }: WelcomeScreenProps) 
                 >
                   <div className="flex flex-col items-center space-y-4">
                     {CurrentIcon && (
-                      <div className="p-4 bg-gradient-to-r from-pink-100 to-pink-200 rounded-full">
-                        <CurrentIcon className="w-8 h-8 text-pink-600" />
+                      <div className="p-4 bg-gradient-to-r from-coral-100 to-coral-200 rounded-full">
+                        <CurrentIcon className="w-8 h-8 text-coral-600" />
                       </div>
                     )}
                     <h3 className="text-xl font-semibold text-gray-800">
@@ -121,7 +121,7 @@ export function WelcomeScreen({ onStartJourney, userName }: WelcomeScreenProps) 
                       onClick={() => setCurrentProp(index)}
                       className={`w-3 h-3 rounded-full transition-all duration-300 ${
                         index === currentProp
-                          ? 'bg-pink-500 scale-125'
+                          ? 'bg-coral-500 scale-125'
                           : 'bg-gray-300 hover:bg-gray-400'
                       }`}
                       aria-label={`Bekijk voordeel ${index + 1}`}
@@ -139,7 +139,7 @@ export function WelcomeScreen({ onStartJourney, userName }: WelcomeScreenProps) 
                   <Button
                     onClick={onStartJourney}
                     size="lg"
-                    className="w-full md:w-auto px-12 py-4 text-lg font-semibold bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    className="w-full md:w-auto px-12 py-4 text-lg font-semibold bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                   >
                     Start mijn DatingScan 🚀
                   </Button>

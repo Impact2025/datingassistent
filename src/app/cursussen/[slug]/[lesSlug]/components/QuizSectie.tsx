@@ -52,7 +52,7 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
   // If no questions, just show message
   if (vragen.length === 0) {
     return (
-      <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800">
+      <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800">
         <CardContent className="p-8 text-center">
           <p className="text-gray-600 dark:text-gray-400">Deze quiz heeft nog geen vragen.</p>
         </CardContent>
@@ -63,7 +63,7 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
   // Show results
   if (showResults) {
     return (
-      <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+      <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
         <CardContent className="p-8">
           <div className="text-center mb-6">
             <div className={`w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center ${
@@ -79,7 +79,7 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
               {passed ? 'Gefeliciteerd!' : 'Nog even oefenen'}
             </h3>
             <p className="text-lg text-gray-700 dark:text-gray-200 mb-4">
-              Je score: <span className="font-bold text-pink-600 dark:text-pink-400">{score} / {vragen.length}</span>
+              Je score: <span className="font-bold text-coral-600 dark:text-coral-400">{score} / {vragen.length}</span>
             </p>
             {passed ? (
               <p className="text-gray-600 dark:text-gray-400">{content.succesMessage || 'Je hebt de quiz gehaald!'}</p>
@@ -138,7 +138,7 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
                   setCurrentQuestion(0);
                   setShowResults(false);
                 }}
-                className="flex-1 bg-pink-500 hover:bg-pink-600 text-white rounded-full"
+                className="flex-1 bg-coral-500 hover:bg-coral-600 text-white rounded-full"
               >
                 Opnieuw proberen
               </PrimaryButton>
@@ -163,7 +163,7 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
   const opties = [vraag.optie_a, vraag.optie_b, vraag.optie_c, vraag.optie_d].filter(Boolean);
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -174,13 +174,13 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
         <div className="mb-6">
           <div className="flex justify-between text-sm mb-2">
             <span className="text-gray-600 dark:text-gray-400">Vraag {currentQuestion + 1} van {vragen.length}</span>
-            <span className="font-medium text-pink-600 dark:text-pink-400">
+            <span className="font-medium text-coral-600 dark:text-coral-400">
               {Object.keys(answers).length} beantwoord
             </span>
           </div>
           <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-pink-500 to-pink-600 transition-all duration-300"
+              className="h-full bg-gradient-to-r from-coral-500 to-coral-600 transition-all duration-300"
               style={{ width: `${((currentQuestion + 1) / vragen.length) * 100}%` }}
             />
           </div>
@@ -200,8 +200,8 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
                   onClick={() => handleAnswer(optie)}
                   className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
                     isSelected
-                      ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 shadow-md'
-                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-pink-300 hover:bg-pink-50 dark:hover:bg-pink-900/20'
+                      ? 'border-coral-500 bg-coral-50 dark:bg-coral-900/30 shadow-md'
+                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-coral-300 hover:bg-coral-50 dark:hover:bg-coral-900/20'
                   }`}
                 >
                   <span className="font-medium text-gray-900 dark:text-white">{optie}</span>
@@ -225,7 +225,7 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
           {currentQuestion < vragen.length - 1 && answers[currentQuestion] && (
             <PrimaryButton
               onClick={() => setCurrentQuestion(currentQuestion + 1)}
-              className="flex-1 bg-pink-500 hover:bg-pink-600 text-white"
+              className="flex-1 bg-coral-500 hover:bg-coral-600 text-white"
             >
               Volgende vraag
             </PrimaryButton>
@@ -233,7 +233,7 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
           {allAnswered && (
             <PrimaryButton
               onClick={handleShowResults}
-              className="flex-1 bg-pink-500 hover:bg-pink-600 text-white"
+              className="flex-1 bg-coral-500 hover:bg-coral-600 text-white"
             >
               Bekijk resultaten
             </PrimaryButton>

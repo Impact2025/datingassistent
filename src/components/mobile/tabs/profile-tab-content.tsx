@@ -72,7 +72,7 @@ function MenuItem({
         )}
       </div>
       {badge && (
-        <Badge className="bg-pink-100 text-pink-600 text-[10px]">{badge}</Badge>
+        <Badge className="bg-coral-100 text-coral-600 text-[10px]">{badge}</Badge>
       )}
       <ChevronRight className="w-4 h-4 text-gray-300" />
     </button>
@@ -124,7 +124,7 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
             <div className="flex items-center gap-4">
               {/* Avatar */}
               <div className="relative">
-                <div className="w-16 h-16 rounded-full bg-pink-50 flex items-center justify-center overflow-hidden">
+                <div className="w-16 h-16 rounded-full bg-coral-50 flex items-center justify-center overflow-hidden">
                   {userProfile?.avatar_url ? (
                     <img
                       src={userProfile.avatar_url}
@@ -132,7 +132,7 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-2xl text-pink-500 font-semibold">
+                    <span className="text-2xl text-coral-500 font-semibold">
                       {user?.name?.charAt(0)?.toUpperCase() || '?'}
                     </span>
                   )}
@@ -180,7 +180,7 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
                 label="Level"
                 value="3"
                 icon={Crown}
-                color="bg-pink-500"
+                color="bg-coral-500"
               />
             </div>
           </CardContent>

@@ -161,7 +161,7 @@ export function VibeMeter({
               variant="ghost"
               size="sm"
               onClick={() => setExpanded(!expanded)}
-              className="w-full justify-between text-pink-600 hover:text-pink-700 hover:bg-pink-50"
+              className="w-full justify-between text-coral-600 hover:text-coral-700 hover:bg-coral-50"
             >
               <span className="flex items-center gap-2">
                 <Lightbulb className="w-4 h-4" />
@@ -188,7 +188,7 @@ export function VibeMeter({
                 <ul className="space-y-2">
                   {tips.map((tip, index) => (
                     <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
-                      <span className="w-5 h-5 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
+                      <span className="w-5 h-5 rounded-full bg-coral-100 text-coral-600 flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
                         {index + 1}
                       </span>
                       <span>{tip}</span>

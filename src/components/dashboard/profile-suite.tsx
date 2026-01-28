@@ -119,7 +119,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Ontdek je hechtingsdynamiek - de basis van hoe je liefhebt en verbindt",
       component: <AttachmentAssessmentFlow />,
       badge: "AI-PRO",
-      color: "from-purple-500 to-pink-500",
+      color: "from-purple-500 to-coral-500",
       featured: true
     },
     {
@@ -170,7 +170,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "AI feedback op je profielfoto's",
       component: <PhotoAnalysisTab />,
       badge: "AI",
-      color: "from-indigo-500 to-pink-500"
+      color: "from-indigo-500 to-coral-500"
     },
     {
       id: "platform-match",
@@ -190,7 +190,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Ontdek je sterke punten",
       component: <SkillsAssessmentTab />,
       badge: "Nieuw",
-      color: "from-pink-500 to-rose-500"
+      color: "from-coral-500 to-rose-500"
     },
     {
       id: "stats",
@@ -233,7 +233,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Genereer effectieve openingsberichten",
       component: <OpeningszinnenTool />,
       badge: "Persoonlijk",
-      color: "from-pink-500 to-rose-600"
+      color: "from-coral-500 to-rose-600"
     },
     {
       id: "icebreakers",
@@ -243,7 +243,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Perfecte gesprekstarters voor elke situatie",
       component: <IJsbrekerGeneratorTool />,
       badge: "Context",
-      color: "from-purple-500 to-pink-600"
+      color: "from-purple-500 to-coral-600"
     },
     {
       id: "safety",
@@ -265,7 +265,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Plan geslaagde dates met checklists en ideeën",
       component: <DatePlannerTab />,
       badge: "Populair",
-      color: "from-rose-500 to-pink-600",
+      color: "from-rose-500 to-coral-600",
       featured: true
     },
     {
@@ -356,12 +356,12 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
   return (
     <div className="space-y-6 pb-8">
       {/* Header met zoekfunctie */}
-      <Card className="border-0 shadow-sm bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800">
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-coral-50 via-purple-50 to-blue-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-pink-500" />
+                <Sparkles className="w-6 h-6 text-coral-500" />
                 Jouw Tools
               </CardTitle>
               <p className="text-sm text-muted-foreground mt-1">
@@ -375,7 +375,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => setShowTour(true)}
-                  className="h-8 text-xs gap-1.5 border-pink-200 text-pink-600 hover:bg-pink-50"
+                  className="h-8 text-xs gap-1.5 border-coral-200 text-coral-600 hover:bg-coral-50"
                 >
                   <Play className="w-3 h-3" />
                   Rondleiding
@@ -449,7 +449,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
           </Card>
 
           <Card
-            className="cursor-pointer border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50 hover:shadow-lg transition-all"
+            className="cursor-pointer border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-coral-50 hover:shadow-lg transition-all"
             onClick={() => window.location.href = '/pro-arsenal'}
           >
             <CardContent className="p-4">
@@ -477,7 +477,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
                 return (
                   <Card
                     key={tool.id}
-                    className="cursor-pointer transition-all duration-200 border-2 border-pink-200 hover:border-pink-400 hover:shadow-lg bg-gradient-to-br from-white to-pink-50 dark:from-gray-800 dark:to-pink-900/10"
+                    className="cursor-pointer transition-all duration-200 border-2 border-coral-200 hover:border-coral-400 hover:shadow-lg bg-gradient-to-br from-white to-coral-50 dark:from-gray-800 dark:to-coral-900/10"
                     onClick={() => openToolModal(tool.id)}
                   >
                     <CardContent className="p-5">
@@ -600,7 +600,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
               fallback={
                 <div className="flex items-center justify-center min-h-[400px]">
                   <div className="text-center space-y-4">
-                    <div className="w-12 h-12 border-3 border-gray-300 border-t-pink-500 rounded-full animate-spin mx-auto" />
+                    <div className="w-12 h-12 border-3 border-gray-300 border-t-coral-500 rounded-full animate-spin mx-auto" />
                     <p className="text-sm text-gray-600">Tool laden...</p>
                   </div>
                 </div>

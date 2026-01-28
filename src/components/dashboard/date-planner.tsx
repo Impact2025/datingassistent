@@ -252,14 +252,14 @@ export function DatePlanner() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 to-white">
       <div className="max-w-4xl mx-auto p-6 space-y-6">
         {/* Header */}
-        <Card className="bg-white/80 backdrop-blur-sm border-pink-100 shadow-lg">
+        <Card className="bg-white/80 backdrop-blur-sm border-coral-100 shadow-lg">
           <CardHeader className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="p-3 bg-pink-100 rounded-full">
-                <Sparkles className="w-8 h-8 text-pink-600" />
+              <div className="p-3 bg-coral-100 rounded-full">
+                <Sparkles className="w-8 h-8 text-coral-600" />
               </div>
               <div>
                 <CardTitle className="text-2xl text-gray-800">Date Planner</CardTitle>
@@ -269,7 +269,7 @@ export function DatePlanner() {
                 variant="outline"
                 size="sm"
                 onClick={startTutorial}
-                className="gap-2 border-pink-200 hover:bg-pink-50"
+                className="gap-2 border-coral-200 hover:bg-coral-50"
               >
                 <HelpCircle className="w-4 h-4" />
                 <span className="hidden sm:inline">Tutorial</span>
@@ -281,13 +281,13 @@ export function DatePlanner() {
                 <span>Stap {currentStep + 1} van {totalSteps}</span>
                 <span>{Math.round(progress)}% compleet</span>
               </div>
-              <Progress value={progress} className="h-2 bg-pink-100" />
+              <Progress value={progress} className="h-2 bg-coral-100" />
             </div>
           </CardHeader>
         </Card>
 
         {/* Step Content */}
-        <Card className="bg-white/90 backdrop-blur-sm border-pink-100 shadow-lg">
+        <Card className="bg-white/90 backdrop-blur-sm border-coral-100 shadow-lg">
           <CardContent className="p-8">
             {currentStep === 0 && <StepBasicInfo formData={formData} onChange={handleInputChange} />}
             {currentStep === 1 && <StepContentInfo formData={formData} onChange={handleInputChange} />}
@@ -298,14 +298,14 @@ export function DatePlanner() {
         </Card>
 
         {/* Navigation */}
-        <Card className="bg-white/80 backdrop-blur-sm border-pink-100 shadow-lg">
+        <Card className="bg-white/80 backdrop-blur-sm border-coral-100 shadow-lg">
           <CardContent className="p-6">
             <div className="flex justify-between">
               <Button
                 variant="outline"
                 onClick={handlePrevious}
                 disabled={currentStep === 0}
-                className="gap-2 border-pink-200 hover:bg-pink-50"
+                className="gap-2 border-coral-200 hover:bg-coral-50"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Vorige
@@ -314,7 +314,7 @@ export function DatePlanner() {
               <Button
                 onClick={handleNext}
                 disabled={isGenerating}
-                className="gap-2 bg-pink-500 hover:bg-pink-600"
+                className="gap-2 bg-coral-500 hover:bg-coral-600"
               >
                 {currentStep === totalSteps - 1 ? (
                   <>
@@ -437,7 +437,7 @@ function StepBasicInfo({ formData, onChange }: any) {
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Date Type</label>
           <Select value={formData.dateType} onValueChange={(value) => onChange('dateType', value)}>
-            <SelectTrigger className="border-pink-200 focus:border-pink-400">
+            <SelectTrigger className="border-coral-200 focus:border-coral-400">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -455,13 +455,13 @@ function StepBasicInfo({ formData, onChange }: any) {
 
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">
-            Locatie <span className="text-pink-600">*</span>
+            Locatie <span className="text-coral-600">*</span>
           </label>
           <Input
             value={formData.location || ''}
             onChange={(e) => onChange('location', e.target.value)}
             placeholder="Bijv: Café Central, Amsterdam"
-            className="border-pink-200 focus:border-pink-400"
+            className="border-coral-200 focus:border-coral-400"
             required
           />
           <p className="text-xs text-gray-500">Vul de specifieke locatie in voor betere adviezen</p>
@@ -475,14 +475,14 @@ function StepBasicInfo({ formData, onChange }: any) {
             onChange={(e) => onChange('duration', parseInt(e.target.value))}
             min={30}
             max={480}
-            className="border-pink-200 focus:border-pink-400"
+            className="border-coral-200 focus:border-coral-400"
           />
         </div>
 
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Initiatief</label>
           <Select value={formData.initiator || 'ik'} onValueChange={(value) => onChange('initiator', value)}>
-            <SelectTrigger className="border-pink-200 focus:border-pink-400">
+            <SelectTrigger className="border-coral-200 focus:border-coral-400">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -509,7 +509,7 @@ function StepContentInfo({ formData, onChange }: any) {
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Energie Level</label>
           <Select value={formData.energyLevel} onValueChange={(value) => onChange('energyLevel', value)}>
-            <SelectTrigger className="border-pink-200 focus:border-pink-400">
+            <SelectTrigger className="border-coral-200 focus:border-coral-400">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -525,7 +525,7 @@ function StepContentInfo({ formData, onChange }: any) {
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Gewenste Stijl</label>
           <Select value={formData.desiredStyle} onValueChange={(value) => onChange('desiredStyle', value)}>
-            <SelectTrigger className="border-pink-200 focus:border-pink-400">
+            <SelectTrigger className="border-coral-200 focus:border-coral-400">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -541,7 +541,7 @@ function StepContentInfo({ formData, onChange }: any) {
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Budget</label>
           <Select value={formData.budget} onValueChange={(value) => onChange('budget', value)}>
-            <SelectTrigger className="border-pink-200 focus:border-pink-400">
+            <SelectTrigger className="border-coral-200 focus:border-coral-400">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -562,7 +562,7 @@ function StepContentInfo({ formData, onChange }: any) {
           onChange={(e) => onChange('dateInfo', e.target.value)}
           placeholder="Bijv: Houdt van Italiaans eten, sportief, heeft gevoel voor humor..."
           rows={3}
-          className="border-pink-200 focus:border-pink-400"
+          className="border-coral-200 focus:border-coral-400"
         />
       </div>
     </div>
@@ -578,14 +578,14 @@ function StepPracticalPrep({ formData, onChange }: any) {
       </div>
 
       <div className="space-y-4">
-        <div className="flex items-center gap-3 p-4 bg-pink-50 rounded-lg border border-pink-200">
-          <Calendar className="w-5 h-5 text-pink-600" />
+        <div className="flex items-center gap-3 p-4 bg-coral-50 rounded-lg border border-coral-200">
+          <Calendar className="w-5 h-5 text-coral-600" />
           <div className="flex-1">
             <p className="font-medium text-gray-800">Reservering nodig?</p>
             <p className="text-sm text-gray-600">Voor restaurants, activiteiten of speciale gelegenheden</p>
           </div>
           <Select value={formData.needsReservation ? 'ja' : 'nee'} onValueChange={(value) => onChange('needsReservation', value === 'ja')}>
-            <SelectTrigger className="w-20 border-pink-200">
+            <SelectTrigger className="w-20 border-coral-200">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -630,7 +630,7 @@ function StepPersonalWishes({ formData, onChange }: any) {
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700">Wat vind je lastig op dates?</label>
           <Select value={formData.mainChallenge || ''} onValueChange={(value) => onChange('mainChallenge', value)}>
-            <SelectTrigger className="border-pink-200 focus:border-pink-400">
+            <SelectTrigger className="border-coral-200 focus:border-coral-400">
               <SelectValue placeholder="Selecteer je grootste uitdaging" />
             </SelectTrigger>
             <SelectContent>
@@ -650,7 +650,7 @@ function StepPersonalWishes({ formData, onChange }: any) {
             onChange={(e) => onChange('needsHelp', e.target.value)}
             placeholder="Bijv: Ik vind het moeilijk om opener zinnen te bedenken, of ik maak me zorgen over stiltes..."
             rows={3}
-            className="border-pink-200 focus:border-pink-400"
+            className="border-coral-200 focus:border-coral-400"
           />
         </div>
 
@@ -661,7 +661,7 @@ function StepPersonalWishes({ formData, onChange }: any) {
             onChange={(e) => onChange('userGoals', e.target.value)}
             placeholder="Bijv: Een leuke connectie maken, kijken of er chemistry is, gewoon een gezellige avond..."
             rows={2}
-            className="border-pink-200 focus:border-pink-400"
+            className="border-coral-200 focus:border-coral-400"
           />
         </div>
       </div>
@@ -673,8 +673,8 @@ function StepAIGeneration({ isGenerating }: { isGenerating: boolean }) {
   return (
     <div className="text-center space-y-6 py-12">
       <div className="flex justify-center">
-        <div className="p-6 bg-pink-100 rounded-full">
-          <Sparkles className="w-12 h-12 text-pink-600 animate-pulse" />
+        <div className="p-6 bg-coral-100 rounded-full">
+          <Sparkles className="w-12 h-12 text-coral-600 animate-pulse" />
         </div>
       </div>
 
@@ -692,8 +692,8 @@ function StepAIGeneration({ isGenerating }: { isGenerating: boolean }) {
 
       {isGenerating && (
         <div className="space-y-2">
-          <div className="w-full bg-pink-100 rounded-full h-2">
-            <div className="bg-pink-500 h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
+          <div className="w-full bg-coral-100 rounded-full h-2">
+            <div className="bg-coral-500 h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
           </div>
           <p className="text-sm text-gray-500">Dit duurt ongeveer 3 seconden...</p>
         </div>
@@ -721,10 +721,10 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 to-white">
       <div className="max-w-4xl mx-auto p-6 space-y-6">
         {/* Success Header */}
-        <Card className="bg-gradient-to-r from-pink-100 to-pink-200 border-pink-200 shadow-lg">
+        <Card className="bg-gradient-to-r from-coral-100 to-coral-200 border-coral-200 shadow-lg">
           <CardContent className="p-8 text-center">
             <div className="flex justify-center mb-4">
               <div className="p-4 bg-white rounded-full shadow-lg">
@@ -737,10 +737,10 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
         </Card>
 
         {/* Checklist */}
-        <Card className="bg-white/90 backdrop-blur-sm border-pink-100 shadow-lg">
+        <Card className="bg-white/90 backdrop-blur-sm border-coral-100 shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-pink-600" />
+              <CheckCircle className="w-5 h-5 text-coral-600" />
               Checklist
             </CardTitle>
           </CardHeader>
@@ -776,7 +776,7 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
         </Card>
 
         {/* Timeline */}
-        <Card className="bg-white/90 backdrop-blur-sm border-pink-100 shadow-lg">
+        <Card className="bg-white/90 backdrop-blur-sm border-coral-100 shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Clock className="w-5 h-5 text-blue-600" />
@@ -809,10 +809,10 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
 
         {/* Outfit & Items */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="bg-white/90 backdrop-blur-sm border-pink-100 shadow-lg">
+          <Card className="bg-white/90 backdrop-blur-sm border-coral-100 shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Heart className="w-5 h-5 text-pink-600" />
+                <Heart className="w-5 h-5 text-coral-600" />
                 Outfit Advies
               </CardTitle>
             </CardHeader>
@@ -822,7 +822,7 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
                 <ul className="space-y-1">
                   {plan.outfit.items.map((item, index) => (
                     <li key={index} className="flex items-center gap-2 text-sm text-gray-600">
-                      <div className="w-1.5 h-1.5 bg-pink-400 rounded-full"></div>
+                      <div className="w-1.5 h-1.5 bg-coral-400 rounded-full"></div>
                       {item}
                     </li>
                   ))}
@@ -832,7 +832,7 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
             </CardContent>
           </Card>
 
-          <Card className="bg-white/90 backdrop-blur-sm border-pink-100 shadow-lg">
+          <Card className="bg-white/90 backdrop-blur-sm border-coral-100 shadow-lg">
             <CardHeader>
               <CardTitle>Wat Neem Je Mee?</CardTitle>
             </CardHeader>
@@ -850,7 +850,7 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
         </div>
 
         {/* Conversation Guide */}
-        <Card className="bg-white/90 backdrop-blur-sm border-pink-100 shadow-lg">
+        <Card className="bg-white/90 backdrop-blur-sm border-coral-100 shadow-lg">
           <CardHeader>
             <CardTitle>Gespreksgids</CardTitle>
           </CardHeader>
@@ -860,7 +860,7 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
                 <h4 className="font-medium text-gray-800 mb-3">Openingszinnen</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {plan.openers.map((opener, index) => (
-                    <div key={index} className="p-3 bg-pink-50 rounded-lg border border-pink-200">
+                    <div key={index} className="p-3 bg-coral-50 rounded-lg border border-coral-200">
                       <p className="text-sm text-gray-700 italic">"{opener}"</p>
                     </div>
                   ))}
@@ -888,7 +888,7 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
         </Card>
 
         {/* WhatsApp & Actions */}
-        <Card className="bg-white/90 backdrop-blur-sm border-pink-100 shadow-lg">
+        <Card className="bg-white/90 backdrop-blur-sm border-coral-100 shadow-lg">
           <CardHeader>
             <CardTitle>WhatsApp Uitnodiging</CardTitle>
           </CardHeader>
@@ -907,14 +907,14 @@ function DatePlanResult({ plan, onReset }: { plan: DatePlanResponse; onReset: ()
         </Card>
 
         {/* Actions */}
-        <Card className="bg-white/80 backdrop-blur-sm border-pink-100 shadow-lg">
+        <Card className="bg-white/80 backdrop-blur-sm border-coral-100 shadow-lg">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline" onClick={onReset} className="gap-2 border-pink-200 hover:bg-pink-50">
+              <Button variant="outline" onClick={onReset} className="gap-2 border-coral-200 hover:bg-coral-50">
                 <ArrowLeft className="w-4 h-4" />
                 Nieuwe Date Plan
               </Button>
-              <Button className="gap-2 bg-pink-500 hover:bg-pink-600">
+              <Button className="gap-2 bg-coral-500 hover:bg-coral-600">
                 <Heart className="w-4 h-4" />
                 Plan Uitvoeren
               </Button>

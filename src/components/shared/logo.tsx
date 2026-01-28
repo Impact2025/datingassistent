@@ -25,7 +25,7 @@ export function Logo({
     <div className={`flex items-center gap-2 ${className}`}>
       {showIcon && (
         <Image
-          src="/images/LogoDatingAssistent.png"
+          src="/images/LogoDA.png"
           alt="DatingAssistent Logo"
           width={iconSize}
           height={iconSize}
@@ -35,7 +35,7 @@ export function Logo({
         />
       )}
       <span className={`${textSizeClasses[textSize]} font-bold`}>
-        <span className="text-[#E14874]">Dating</span>
+        <span className="text-[#722F37]">Dating</span>
         <span className="text-foreground">Assistent</span>
       </span>
     </div>

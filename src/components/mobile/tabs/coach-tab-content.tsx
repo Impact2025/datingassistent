@@ -47,15 +47,15 @@ function MessageBubble({ message }: { message: Message }) {
   return (
     <div className={cn("flex", isIris ? "justify-start" : "justify-end")}>
       {isIris && (
-        <div className="w-8 h-8 bg-pink-50 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-          <Sparkles className="w-4 h-4 text-pink-500" />
+        <div className="w-8 h-8 bg-coral-50 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+          <Sparkles className="w-4 h-4 text-coral-500" />
         </div>
       )}
       <div className={cn(
         "max-w-[80%] px-4 py-3 rounded-2xl",
         isIris
           ? "bg-white shadow-sm rounded-bl-md"
-          : "bg-pink-500 text-white rounded-br-md"
+          : "bg-coral-500 text-white rounded-br-md"
       )}>
         <p className={cn(
           "text-sm leading-relaxed",
@@ -78,8 +78,8 @@ function MessageBubble({ message }: { message: Message }) {
 function TypingIndicator() {
   return (
     <div className="flex justify-start">
-      <div className="w-8 h-8 bg-pink-50 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-        <Sparkles className="w-4 h-4 text-pink-500" />
+      <div className="w-8 h-8 bg-coral-50 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+        <Sparkles className="w-4 h-4 text-coral-500" />
       </div>
       <div className="bg-white shadow-sm px-4 py-3 rounded-2xl rounded-bl-md">
         <div className="flex items-center gap-2">
@@ -180,8 +180,8 @@ export function CoachTabContent({ user, userProfile }: CoachTabContentProps) {
       {/* Header - Clean Design */}
       <div className="bg-white shadow-sm px-4 py-3 flex-shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-pink-50 rounded-full flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-pink-500" />
+          <div className="w-10 h-10 bg-coral-50 rounded-full flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-coral-500" />
           </div>
           <div>
             <h2 className="font-semibold text-gray-900">Iris AI Coach</h2>
@@ -215,7 +215,7 @@ export function CoachTabContent({ user, userProfile }: CoachTabContentProps) {
                 <button
                   key={index}
                   onClick={() => handleSend(suggestion.text)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 hover:bg-pink-50 rounded-full text-xs text-gray-700 hover:text-pink-600 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 hover:bg-coral-50 rounded-full text-xs text-gray-700 hover:text-coral-600 transition-colors"
                 >
                   <Icon className="w-3 h-3" />
                   {suggestion.text}
@@ -234,13 +234,13 @@ export function CoachTabContent({ user, userProfile }: CoachTabContentProps) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Stel een vraag..."
-            className="flex-1 px-4 py-2.5 bg-gray-50 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all"
+            className="flex-1 px-4 py-2.5 bg-gray-50 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-coral-500 transition-all"
             disabled={isTyping}
           />
           <Button
             type="submit"
             disabled={!input.trim() || isTyping}
-            className="w-10 h-10 rounded-full bg-pink-500 hover:bg-pink-600 disabled:bg-gray-200 p-0 flex items-center justify-center"
+            className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 disabled:bg-gray-200 p-0 flex items-center justify-center"
           >
             <Send className="w-4 h-4 text-white" />
           </Button>

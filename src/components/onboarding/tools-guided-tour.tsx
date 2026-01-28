@@ -67,7 +67,7 @@ const KICKSTART_TOUR_STEPS: TourStep[] = [
     title: 'Welkom bij je Tools Hub!',
     subtitle: 'Je persoonlijke dating toolkit',
     description: 'Gefeliciteerd met je Kickstart aankoop! Je hebt nu toegang tot krachtige AI-tools die je helpen bij elke stap van je dating journey. Laten we je rondleiden.',
-    icon: <Gift className="w-12 h-12 text-pink-500" />,
+    icon: <Gift className="w-12 h-12 text-coral-500" />,
     animation: 'glow'
   },
   {
@@ -141,7 +141,7 @@ const KICKSTART_TOUR_STEPS: TourStep[] = [
       },
       {
         name: 'Openingszinnen',
-        icon: <Sparkles className="w-5 h-5 text-pink-500" />,
+        icon: <Sparkles className="w-5 h-5 text-coral-500" />,
         description: 'Perfecte eerste berichten',
         access: 'limited',
         limit: '3x inbegrepen'
@@ -189,7 +189,7 @@ const KICKSTART_TOUR_STEPS: TourStep[] = [
     title: 'Je bent klaar!',
     subtitle: 'Start je dating journey',
     description: 'Je hebt alle tools gezien. Onze aanbeveling: begin met de Hechtingsstijl QuickScan om Iris te leren wie jij bent.',
-    icon: <Rocket className="w-12 h-12 text-pink-500" />,
+    icon: <Rocket className="w-12 h-12 text-coral-500" />,
     animation: 'bounce'
   }
 ];
@@ -237,7 +237,7 @@ export function ToolsGuidedTour({
         {/* Progress bar */}
         <div className="h-1 bg-gray-100 dark:bg-gray-800">
           <div
-            className="h-full bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-500"
+            className="h-full bg-gradient-to-r from-coral-500 to-purple-500 transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -258,7 +258,7 @@ export function ToolsGuidedTour({
               Stap {currentStep + 1} van {tourSteps.length}
             </Badge>
             {userTier === 'kickstart' && (
-              <Badge className="bg-gradient-to-r from-pink-500 to-rose-500 text-white text-xs">
+              <Badge className="bg-gradient-to-r from-coral-500 to-rose-500 text-white text-xs">
                 <Rocket className="w-3 h-3 mr-1" />
                 Kickstart
               </Badge>
@@ -276,8 +276,8 @@ export function ToolsGuidedTour({
           )}>
             <div className={cn(
               "w-20 h-20 rounded-2xl flex items-center justify-center",
-              "bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20",
-              step.animation === 'glow' && "shadow-lg shadow-pink-500/20"
+              "bg-gradient-to-br from-coral-50 to-purple-50 dark:from-coral-900/20 dark:to-purple-900/20",
+              step.animation === 'glow' && "shadow-lg shadow-coral-500/20"
             )}>
               {step.icon}
             </div>
@@ -288,7 +288,7 @@ export function ToolsGuidedTour({
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
               {step.title}
             </h2>
-            <p className="text-sm text-pink-600 dark:text-pink-400 font-medium mb-3">
+            <p className="text-sm text-coral-600 dark:text-coral-400 font-medium mb-3">
               {step.subtitle}
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -306,7 +306,7 @@ export function ToolsGuidedTour({
                     "flex items-center gap-3 p-3 rounded-xl transition-all",
                     tool.access === 'locked'
                       ? "bg-gray-50 dark:bg-gray-800/50 opacity-60"
-                      : "bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/10 dark:to-purple-900/10"
+                      : "bg-gradient-to-r from-coral-50 to-purple-50 dark:from-coral-900/10 dark:to-purple-900/10"
                   )}
                 >
                   <div className={cn(
@@ -394,8 +394,8 @@ export function ToolsGuidedTour({
                 className={cn(
                   "gap-1",
                   isLastStep
-                    ? "bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
-                    : "bg-pink-500 hover:bg-pink-600"
+                    ? "bg-gradient-to-r from-coral-500 to-purple-500 hover:from-coral-600 hover:to-purple-600"
+                    : "bg-coral-500 hover:bg-coral-600"
                 )}
               >
                 {isLastStep ? (
@@ -423,9 +423,9 @@ export function ToolsGuidedTour({
               className={cn(
                 "w-2 h-2 rounded-full transition-all duration-300",
                 index === currentStep
-                  ? "bg-pink-500 w-6"
+                  ? "bg-coral-500 w-6"
                   : index < currentStep
-                  ? "bg-pink-300"
+                  ? "bg-coral-300"
                   : "bg-gray-300 dark:bg-gray-600"
               )}
             />

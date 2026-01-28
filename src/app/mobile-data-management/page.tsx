@@ -197,7 +197,7 @@ function MobileDataManagementPageContent() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 py-2 px-3 text-sm font-medium rounded-lg transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
+                  ? 'bg-coral-100 dark:bg-coral-900/30 text-coral-700 dark:text-coral-300'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
@@ -447,7 +447,7 @@ export default function MobileDataManagementPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500" />
       </div>
     }>
       <MobileDataManagementPageContent />

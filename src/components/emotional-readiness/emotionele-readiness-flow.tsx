@@ -76,8 +76,8 @@ export function EmotioneleReadinessFlow({ onClose }: EmotioneleReadinessFlowProp
           )}
 
           <div className="text-center">
-            <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
-              <Sparkles className="w-8 h-8 text-pink-500" />
+            <div className="w-16 h-16 bg-coral-50 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-8 h-8 text-coral-500" />
             </div>
 
             <h1 className="text-3xl font-bold text-gray-900 mb-3">{getStepTitle()}</h1>
@@ -152,21 +152,21 @@ function IntroCard({ onStart }: IntroCardProps) {
         <h3 className="text-sm font-semibold text-gray-900 mb-4 text-center">Wat je krijgt</h3>
         <div className="space-y-3">
           <div className="flex items-start gap-3">
-            <div className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+            <div className="w-2 h-2 bg-coral-500 rounded-full mt-2 flex-shrink-0"></div>
             <div>
               <p className="font-medium text-gray-900">Readiness Score</p>
               <p className="text-sm text-gray-600">Van 1-10, met uitleg wat het betekent</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <div className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+            <div className="w-2 h-2 bg-coral-500 rounded-full mt-2 flex-shrink-0"></div>
             <div>
               <p className="font-medium text-gray-900">Rebound Risico %</p>
               <p className="text-sm text-gray-600">Hoe groot is de kans op rebound dating?</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <div className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+            <div className="w-2 h-2 bg-coral-500 rounded-full mt-2 flex-shrink-0"></div>
             <div>
               <p className="font-medium text-gray-900">Groei Plan</p>
               <p className="text-sm text-gray-600">Concrete stappen naar dating readiness</p>
@@ -180,7 +180,7 @@ function IntroCard({ onStart }: IntroCardProps) {
         <Button
           onClick={onStart}
           size="lg"
-          className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"
+          className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"
         >
           Start Scan
           <Sparkles className="w-5 h-5 ml-2" />

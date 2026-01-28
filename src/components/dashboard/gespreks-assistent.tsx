@@ -142,7 +142,7 @@ export function GespreksAssistent({ onTabChange }: GespreksAssistentProps) {
                   key={tab.id}
                   className={`cursor-pointer transition-all duration-200 border-0 shadow-sm hover:shadow-md ${
                     isActive
-                      ? 'bg-gradient-to-r from-pink-50 to-pink-100 ring-2 ring-pink-200'
+                      ? 'bg-gradient-to-r from-coral-50 to-coral-100 ring-2 ring-coral-200'
                       : 'bg-white hover:bg-gray-50'
                   }`}
                   onClick={() => setActiveTab(tab.id)}
@@ -151,7 +151,7 @@ export function GespreksAssistent({ onTabChange }: GespreksAssistentProps) {
                     <div className="text-center space-y-4">
                       <div className={`w-14 h-14 mx-auto rounded-full flex items-center justify-center transition-colors ${
                         isActive
-                          ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white'
+                          ? 'bg-gradient-to-r from-coral-500 to-coral-600 text-white'
                           : 'bg-gray-100 text-gray-600'
                       }`}>
                         <Icon className="w-7 h-7" />

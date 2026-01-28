@@ -17,21 +17,86 @@ export default {
         code: ['monospace'],
       },
       colors: {
-        // DatingAssistent Design System kleuren
+        /* =====================================================================
+         * WARM VERTROUWEN KLEURENPALET
+         * =====================================================================
+         */
+
+        // Primary - Warm Coral (CTA buttons, key actions)
         primary: {
-          50: 'var(--primary-50)',
-          100: 'var(--primary-100)',
-          200: 'var(--primary-200)',
-          300: 'var(--primary-300)',
-          400: 'var(--primary-400)',
-          500: 'var(--primary-500)',
-          600: 'var(--primary-600)',
-          700: 'var(--primary-700)',
+          50: 'var(--primary-50)',   // #FFF5F2
+          100: 'var(--primary-100)', // #FFE8E1
+          200: 'var(--primary-200)', // #FFD4C8
+          300: 'var(--primary-300)', // #FFB59E
+          400: 'var(--primary-400)', // #FF9676
+          500: 'var(--primary-500)', // #FF7B54 - Main CTA color
+          600: 'var(--primary-600)', // #E66A43 - Hover
+          700: 'var(--primary-700)', // #CC5A36
         },
-        accent: {
-          500: 'var(--accent-500)',
-          600: 'var(--accent-600)',
+
+        // Coral - Alias for primary (semantic naming)
+        coral: {
+          25: '#FFFAF8',   // Ultra light - subtle backgrounds
+          50: '#FFF5F2',
+          100: '#FFE8E1',
+          200: '#FFD4C8',
+          300: '#FFB59E',
+          400: '#FF9676',
+          500: '#FF7B54',   // Main CTA color
+          600: '#E66A43',   // Hover state
+          700: '#CC5A36',
+          800: '#A84A2B',   // Dark mode accents
+          900: '#8A3B22',   // Darkest variant
+          950: '#5C2817',   // Ultra dark for gradients
         },
+
+        // Deep Purple - Headers, secondary actions
+        'deep-purple': {
+          DEFAULT: 'var(--accent-500)', // #722F37
+          light: '#8B4249',
+          dark: 'var(--accent-600)',    // #5C262D
+        },
+
+        // Royal Purple - VIP elements
+        'royal-purple': {
+          DEFAULT: 'var(--royal-purple)', // #6B4D8A
+          light: '#8B6BA8',
+          dark: '#5A3F75',
+        },
+
+        // Rose Gold - Luxury accents
+        'rose-gold': {
+          DEFAULT: 'var(--rose-gold)', // #B76E79
+          light: '#D4909A',
+          dark: '#9A5A64',
+        },
+
+        // Dusty Rose - Secondary accent
+        'dusty-rose': {
+          DEFAULT: 'var(--dusty-rose)', // #E3867D
+          light: '#F0A8A1',
+          dark: '#C96B62',
+        },
+
+        // Sage Green - Success, growth
+        sage: {
+          DEFAULT: 'var(--success)', // #A8B5A0
+          light: '#C4CFBE',
+          dark: '#8A9A82',
+        },
+
+        // Charcoal - Primary text (replaces black)
+        charcoal: {
+          DEFAULT: 'var(--gray-800)', // #2D3142
+          light: '#3D4456',
+          dark: '#1F2028',
+        },
+
+        // Warm neutrals
+        cream: 'var(--gray-50)',      // #FFF8F3
+        blush: 'var(--gray-100)',     // #F5E6E8
+
+        // Gray scale (warm tinted)
         gray: {
           50: 'var(--gray-50)',
           100: 'var(--gray-100)',
@@ -44,11 +109,21 @@ export default {
           800: 'var(--gray-800)',
           900: 'var(--gray-900)',
         },
+
+        // Icon system colors
+        icon: {
+          analysis: 'var(--icon-analysis)',   // #FF7B54
+          emotional: 'var(--icon-emotional)', // #E3867D
+          strategy: 'var(--icon-strategy)',   // #8B7BA8
+          growth: 'var(--icon-growth)',       // #A8B5A0
+        },
+
+        // Status colors
         success: 'var(--success)',
         warning: 'var(--warning)',
         error: 'var(--error)',
 
-        // Legacy shadcn kleuren (voor compatibiliteit)
+        // Shadcn/UI compatible colors
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -59,10 +134,6 @@ export default {
           DEFAULT: 'hsl(var(--popover))',
           foreground: 'hsl(var(--popover-foreground))',
         },
-        'primary-legacy': {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
@@ -71,7 +142,7 @@ export default {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
-        'accent-legacy': {
+        accent: {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
         },

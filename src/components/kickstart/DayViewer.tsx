@@ -365,16 +365,16 @@ export function DayViewer({
 
   if (!hasAccess) {
     return (
-      <Card className="border-pink-100 shadow-lg">
+      <Card className="border-coral-100 shadow-lg">
         <CardContent className="p-12 text-center">
-          <div className="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Lock className="w-10 h-10 text-pink-400" />
+          <div className="w-20 h-20 bg-coral-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Lock className="w-10 h-10 text-coral-400" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Deze content is vergrendeld</h2>
           <p className="text-gray-600 mb-6 max-w-md mx-auto">
             Koop het Kickstart programma voor toegang tot alle 21 dagen content.
           </p>
-          <Button size="lg" className="bg-pink-500 hover:bg-pink-600 shadow-sm">
+          <Button size="lg" className="bg-coral-500 hover:bg-coral-600 shadow-sm">
             Koop Kickstart - €47
           </Button>
         </CardContent>
@@ -390,7 +390,7 @@ export function DayViewer({
       {/* Enhanced Day Header Card */}
       <Card className="border-gray-200 shadow-sm overflow-hidden">
         {/* Top: Title & Time */}
-        <div className="bg-pink-500 px-4 py-3 sm:px-6 sm:py-4">
+        <div className="bg-coral-500 px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shrink-0">
@@ -427,10 +427,10 @@ export function DayViewer({
 
         {/* Focus & Why Section */}
         {(day.focus_statement || day.why_this_matters) && (
-          <div className="bg-pink-50 border-t border-pink-100 px-4 py-4 sm:px-6 space-y-3">
+          <div className="bg-coral-50 border-t border-coral-100 px-4 py-4 sm:px-6 space-y-3">
             {day.focus_statement && (
               <div>
-                <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-1">
+                <p className="text-xs font-semibold text-coral-700 uppercase tracking-wide mb-1">
                   FOCUS VANDAAG
                 </p>
                 <p className="text-sm sm:text-base font-medium text-gray-900">
@@ -441,7 +441,7 @@ export function DayViewer({
 
             {day.why_this_matters && (
               <div>
-                <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-1">
+                <p className="text-xs font-semibold text-coral-700 uppercase tracking-wide mb-1">
                   WAAROM DIT BELANGRIJK IS
                 </p>
                 <p className="text-sm text-gray-700 leading-relaxed">
@@ -451,21 +451,21 @@ export function DayViewer({
             )}
 
             {/* Activity Priority Overview */}
-            <div className="pt-2 border-t border-pink-200">
-              <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-2">
+            <div className="pt-2 border-t border-coral-200">
+              <p className="text-xs font-semibold text-coral-700 uppercase tracking-wide mb-2">
                 WAT TE DOEN VANDAAG
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {/* Video */}
                 <div className="flex items-center gap-2">
-                  <Badge className="bg-pink-600 text-white border-0 text-[10px] font-bold px-1.5 py-0.5">
+                  <Badge className="bg-coral-600 text-white border-0 text-[10px] font-bold px-1.5 py-0.5">
                     {day.video_priority}
                   </Badge>
-                  <Play className="w-3.5 h-3.5 text-pink-600" />
+                  <Play className="w-3.5 h-3.5 text-coral-600" />
                   <span className="text-xs font-medium text-gray-700">
                     Video ({day.duur_minuten} min)
                   </span>
-                  <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-pink-50 text-pink-700 border-pink-300 ml-auto">
+                  <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-coral-50 text-coral-700 border-coral-300 ml-auto">
                     VERPLICHT
                   </Badge>
                 </div>
@@ -473,14 +473,14 @@ export function DayViewer({
                 {/* Quiz */}
                 {day.quiz && (
                   <div className="flex items-center gap-2">
-                    <Badge className="bg-pink-600 text-white border-0 text-[10px] font-bold px-1.5 py-0.5">
+                    <Badge className="bg-coral-600 text-white border-0 text-[10px] font-bold px-1.5 py-0.5">
                       {day.quiz_priority}
                     </Badge>
-                    <ClipboardList className="w-3.5 h-3.5 text-pink-600" />
+                    <ClipboardList className="w-3.5 h-3.5 text-coral-600" />
                     <span className="text-xs font-medium text-gray-700">
                       Quiz (~3 min)
                     </span>
-                    <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-pink-50 text-pink-700 border-pink-300 ml-auto">
+                    <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-coral-50 text-coral-700 border-coral-300 ml-auto">
                       VERPLICHT
                     </Badge>
                   </div>
@@ -526,7 +526,7 @@ export function DayViewer({
         <CardContent className="p-4 bg-white">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-600">Voortgang vandaag</span>
-            <span className="text-sm font-semibold text-pink-600">{completionPercent}%</span>
+            <span className="text-sm font-semibold text-coral-600">{completionPercent}%</span>
           </div>
           <Progress value={completionPercent} className="h-2" />
 
@@ -549,7 +549,7 @@ export function DayViewer({
                 )}
                 <span>Video bekeken</span>
                 {!isVideoComplete && (
-                  <span className="text-xs text-pink-600 ml-auto">Vereist</span>
+                  <span className="text-xs text-coral-600 ml-auto">Vereist</span>
                 )}
               </div>
 
@@ -569,7 +569,7 @@ export function DayViewer({
                     {quizSubmitted && ` (${quizAnswers.filter(a => a.isCorrect).length}/${day.quiz.vragen.length} correct)`}
                   </span>
                   {!quizSubmitted && (
-                    <span className="text-xs text-pink-600 ml-auto">Vereist</span>
+                    <span className="text-xs text-coral-600 ml-auto">Vereist</span>
                   )}
                 </div>
               )}
@@ -625,7 +625,7 @@ export function DayViewer({
               </div>
             ) : (
               <p className="text-xs text-gray-500 mt-3">
-                Complete alle <span className="text-pink-600 font-medium">vereiste</span> onderdelen om dag {day.dag_nummer + 1} te unlocken
+                Complete alle <span className="text-coral-600 font-medium">vereiste</span> onderdelen om dag {day.dag_nummer + 1} te unlocken
               </p>
             )}
           </div>
@@ -634,10 +634,10 @@ export function DayViewer({
 
       {/* Content Tabs */}
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)}>
-        <TabsList className="grid w-full grid-cols-4 bg-white border border-pink-100 p-1 rounded-xl">
+        <TabsList className="grid w-full grid-cols-4 bg-white border border-coral-100 p-1 rounded-xl">
           <TabsTrigger
             value="video"
-            className="flex items-center gap-2 data-[state=active]:bg-pink-600 data-[state=active]:text-white rounded-lg"
+            className="flex items-center gap-2 data-[state=active]:bg-coral-600 data-[state=active]:text-white rounded-lg"
           >
             <Play className="w-4 h-4" />
             <span className="hidden sm:inline">Video</span>
@@ -646,7 +646,7 @@ export function DayViewer({
           {day.quiz && (
             <TabsTrigger
               value="quiz"
-              className="flex items-center gap-2 data-[state=active]:bg-pink-600 data-[state=active]:text-white rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-coral-600 data-[state=active]:text-white rounded-lg"
             >
               <MessageSquare className="w-4 h-4" />
               <span className="hidden sm:inline">Quiz</span>
@@ -656,7 +656,7 @@ export function DayViewer({
           {day.reflectie && (
             <TabsTrigger
               value="reflectie"
-              className="flex items-center gap-2 data-[state=active]:bg-pink-600 data-[state=active]:text-white rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-coral-600 data-[state=active]:text-white rounded-lg"
             >
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Reflectie</span>
@@ -666,7 +666,7 @@ export function DayViewer({
           {day.werkboek && (
             <TabsTrigger
               value="werkboek"
-              className="flex items-center gap-2 data-[state=active]:bg-pink-600 data-[state=active]:text-white rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-coral-600 data-[state=active]:text-white rounded-lg"
             >
               <ClipboardList className="w-4 h-4" />
               <span className="hidden sm:inline">Werkboek</span>
@@ -684,11 +684,11 @@ export function DayViewer({
             <Card className="border-gray-200 bg-gray-50 shadow-sm mb-4">
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 bg-coral-600 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-1">
+                    <p className="text-xs font-semibold text-coral-700 uppercase tracking-wide mb-1">
                       💡 WAAROM DEZE VIDEO?
                     </p>
                     <p className="text-sm text-gray-700 leading-relaxed">
@@ -700,7 +700,7 @@ export function DayViewer({
             </Card>
           )}
 
-          <Card className="border-pink-100 shadow-sm">
+          <Card className="border-coral-100 shadow-sm">
             <CardContent className="p-6">
               {day.video_url ? (
                 <div className="aspect-video bg-gray-900 rounded-xl mb-6 overflow-hidden shadow-lg">
@@ -717,7 +717,7 @@ export function DayViewer({
               ) : day.video_script ? (
                 <div className="space-y-6">
                   {/* Hook */}
-                  <div className="bg-pink-50 p-6 rounded-xl border border-pink-100">
+                  <div className="bg-coral-50 p-6 rounded-xl border border-coral-100">
                     <p className="text-lg font-medium text-gray-900 italic">
                       "{day.video_script.hook}"
                     </p>
@@ -735,11 +735,11 @@ export function DayViewer({
                   ))}
 
                   {/* Opdracht */}
-                  <div className="bg-pink-50 p-6 rounded-xl border border-pink-200">
-                    <h3 className="font-semibold text-pink-900 mb-2 flex items-center gap-2">
+                  <div className="bg-coral-50 p-6 rounded-xl border border-coral-200">
+                    <h3 className="font-semibold text-coral-900 mb-2 flex items-center gap-2">
                       <span>📝</span> Opdracht van vandaag
                     </h3>
-                    <p className="text-pink-800">{day.video_script.opdracht}</p>
+                    <p className="text-coral-800">{day.video_script.opdracht}</p>
                   </div>
 
                   {/* Outro */}
@@ -749,8 +749,8 @@ export function DayViewer({
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Play className="w-8 h-8 text-pink-400" />
+                  <div className="w-16 h-16 bg-coral-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Play className="w-8 h-8 text-coral-400" />
                   </div>
                   <p className="text-gray-500">Video content komt binnenkort beschikbaar.</p>
                 </div>
@@ -759,7 +759,7 @@ export function DayViewer({
               {!isVideoComplete && (
                 <Button
                   onClick={handleVideoComplete}
-                  className="w-full mt-6 bg-pink-500 hover:bg-pink-600 text-white shadow-sm"
+                  className="w-full mt-6 bg-coral-500 hover:bg-coral-600 text-white shadow-sm"
                   disabled={saving}
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
@@ -768,7 +768,7 @@ export function DayViewer({
               )}
 
               {isVideoComplete && (
-                <div className="flex items-center justify-center gap-2 text-pink-600 mt-6 p-4 bg-pink-50 rounded-xl border border-pink-200">
+                <div className="flex items-center justify-center gap-2 text-coral-600 mt-6 p-4 bg-coral-50 rounded-xl border border-coral-200">
                   <CheckCircle className="w-5 h-5" />
                   <span className="font-medium">Video voltooid!</span>
                 </div>
@@ -785,11 +785,11 @@ export function DayViewer({
               <Card className="border-gray-200 bg-gray-50 shadow-sm mb-4">
                 <CardContent className="p-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 bg-coral-600 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Sparkles className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-pink-700 uppercase tracking-wide mb-1">
+                      <p className="text-xs font-semibold text-coral-700 uppercase tracking-wide mb-1">
                         💡 WAAROM DEZE QUIZ?
                       </p>
                       <p className="text-sm text-gray-700 leading-relaxed">
@@ -809,7 +809,7 @@ export function DayViewer({
                 {day.quiz.vragen.map((vraag, qIndex) => (
                   <div
                     key={qIndex}
-                    className="p-6 rounded-xl border-2 border-pink-100 bg-white"
+                    className="p-6 rounded-xl border-2 border-coral-100 bg-white"
                   >
                     <p className="font-semibold text-gray-900 mb-4">
                       {qIndex + 1}. {vraag.vraag}
@@ -835,8 +835,8 @@ export function DayViewer({
                                     ? 'bg-red-100 border-2 border-red-500 text-red-800'
                                     : 'bg-gray-50 border border-gray-200 text-gray-600'
                                 : isSelected
-                                  ? 'bg-pink-100 border-2 border-pink-500 text-pink-800'
-                                  : 'bg-white border border-gray-200 hover:border-pink-300 hover:bg-pink-50'
+                                  ? 'bg-coral-100 border-2 border-coral-500 text-coral-800'
+                                  : 'bg-white border border-gray-200 hover:border-coral-300 hover:bg-coral-50'
                             )}
                           >
                             {optie.tekst}
@@ -865,7 +865,7 @@ export function DayViewer({
                 {!quizSubmitted && quizAnswers.length === day.quiz.vragen.length && (
                   <Button
                     onClick={handleQuizSubmit}
-                    className="w-full bg-pink-500 hover:bg-pink-600 shadow-sm"
+                    className="w-full bg-coral-500 hover:bg-coral-600 shadow-sm"
                     disabled={saving}
                   >
                     Controleer antwoorden
@@ -873,8 +873,8 @@ export function DayViewer({
                 )}
 
                 {quizSubmitted && (
-                  <div className="text-center p-6 bg-pink-50 rounded-xl border border-pink-200">
-                    <p className="text-xl font-bold text-pink-600">
+                  <div className="text-center p-6 bg-coral-50 rounded-xl border border-coral-200">
+                    <p className="text-xl font-bold text-coral-600">
                       Score: {quizAnswers.filter((a) => a.isCorrect).length} / {day.quiz.vragen.length} correct
                     </p>
                   </div>
@@ -912,7 +912,7 @@ export function DayViewer({
               <CardHeader className="border-b border-gray-100">
                 <CardTitle className="text-xl text-gray-900 flex items-center gap-2">
                   <span>Reflectie</span>
-                  <Badge variant="outline" className="text-xs bg-pink-50 text-pink-700 border-pink-200">
+                  <Badge variant="outline" className="text-xs bg-coral-50 text-coral-700 border-coral-200">
                     Transformatie
                   </Badge>
                 </CardTitle>
@@ -1034,7 +1034,7 @@ export function DayViewer({
                     })}
 
                     {/* Save all reflections button */}
-                    <div className="pt-4 border-t border-pink-100">
+                    <div className="pt-4 border-t border-coral-100">
                       <Button
                         onClick={async () => {
                           // Save all individual reflections + combined progress
@@ -1059,7 +1059,7 @@ export function DayViewer({
                             setSaving(false);
                           }
                         }}
-                        className="w-full bg-pink-500 hover:bg-pink-600 shadow-sm"
+                        className="w-full bg-coral-500 hover:bg-coral-600 shadow-sm"
                         disabled={saving || Object.values(reflectionAnswers).filter((a) => a && a.length >= 5).length === 0}
                       >
                         {saving ? 'Opslaan...' : 'Alle antwoorden opslaan'}
@@ -1072,21 +1072,21 @@ export function DayViewer({
                 ) : (
                   // Old format - single question (backwards compatible)
                   <div className="space-y-6">
-                    <div className="bg-pink-50 p-6 rounded-xl border border-pink-200">
-                      <p className="font-semibold text-pink-900 mb-2">{day.reflectie.vraag}</p>
-                      <p className="text-sm text-pink-700">Doel: {day.reflectie.doel}</p>
+                    <div className="bg-coral-50 p-6 rounded-xl border border-coral-200">
+                      <p className="font-semibold text-coral-900 mb-2">{day.reflectie.vraag}</p>
+                      <p className="text-sm text-coral-700">Doel: {day.reflectie.doel}</p>
                     </div>
 
                     <Textarea
                       value={reflectieAnswer}
                       onChange={(e) => setReflectieAnswer(e.target.value)}
                       placeholder="Schrijf je antwoord hier..."
-                      className="min-h-[200px] border-pink-200 focus:border-pink-400 focus:ring-pink-400"
+                      className="min-h-[200px] border-coral-200 focus:border-coral-400 focus:ring-coral-400"
                     />
 
                     <Button
                       onClick={handleReflectieSave}
-                      className="w-full bg-pink-500 hover:bg-pink-600 shadow-sm"
+                      className="w-full bg-coral-500 hover:bg-coral-600 shadow-sm"
                       disabled={saving || reflectieAnswer.length < 10}
                     >
                       {saving ? 'Opslaan...' : 'Opslaan'}
@@ -1135,19 +1135,19 @@ export function DayViewer({
                       className={cn(
                         'flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all',
                         item.completed
-                          ? 'bg-pink-50 border-pink-300'
-                          : 'bg-white border-pink-100 hover:border-pink-300'
+                          ? 'bg-coral-50 border-coral-300'
+                          : 'bg-white border-coral-100 hover:border-coral-300'
                       )}
                     >
                       <Checkbox
                         checked={item.completed}
                         onCheckedChange={() => handleWerkboekToggle(index)}
-                        className="mt-1 data-[state=checked]:bg-pink-500 data-[state=checked]:border-pink-500"
+                        className="mt-1 data-[state=checked]:bg-coral-500 data-[state=checked]:border-coral-500"
                       />
                       <span
                         className={cn(
                           'flex-1',
-                          item.completed ? 'text-pink-700 line-through' : 'text-gray-700'
+                          item.completed ? 'text-coral-700 line-through' : 'text-gray-700'
                         )}
                       >
                         {item.stap}
@@ -1156,10 +1156,10 @@ export function DayViewer({
                   ))}
                 </div>
 
-                <div className="mt-6 p-4 bg-pink-50 rounded-xl border border-pink-200">
+                <div className="mt-6 p-4 bg-coral-50 rounded-xl border border-coral-200">
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-pink-700">Voortgang</span>
-                    <span className="font-semibold text-pink-600">
+                    <span className="text-coral-700">Voortgang</span>
+                    <span className="font-semibold text-coral-600">
                       {werkboekAnswers.filter((w) => w.completed).length} / {werkboekAnswers.length}
                     </span>
                   </div>
@@ -1202,7 +1202,7 @@ export function DayViewer({
           <Button
             size="sm"
             onClick={() => onNavigate(navigation.next!.dag_nummer)}
-            className="bg-pink-500 hover:bg-pink-600 shadow-sm px-3 sm:px-4 max-w-[200px] sm:max-w-none"
+            className="bg-coral-500 hover:bg-coral-600 shadow-sm px-3 sm:px-4 max-w-[200px] sm:max-w-none"
           >
             <span className="hidden sm:inline">Dag {navigation.next.dag_nummer}:</span>
             <span className="sm:hidden">Dag {navigation.next.dag_nummer}</span>

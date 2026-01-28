@@ -39,7 +39,7 @@ export function AIContextNotifications() {
           type: 'milestone',
           title: 'AI Expert Status!',
           message: 'Je hebt al 10 AI tools gebruikt. Je wordt een echte dating expert!',
-          icon: <Star className="w-4 h-4 text-pink-500" />,
+          icon: <Star className="w-4 h-4 text-coral-500" />,
           timestamp: new Date(),
           dismissible: true
         });
@@ -52,7 +52,7 @@ export function AIContextNotifications() {
           type: 'milestone',
           title: 'Actief Gebruiker!',
           message: '5 AI tools gebruikt. Je dating skills groeien snel!',
-          icon: <Target className="w-4 h-4 text-pink-500" />,
+          icon: <Target className="w-4 h-4 text-coral-500" />,
           timestamp: new Date(),
           dismissible: true
         });
@@ -69,7 +69,7 @@ export function AIContextNotifications() {
           type: 'insight_available',
           title: 'Succesvolle Openers!',
           message: `Je hebt ${openerCount} werkende openingszinnen opgeslagen. Check je Chat Coach voor advies!`,
-          icon: <Heart className="w-4 h-4 text-pink-500" />,
+          icon: <Heart className="w-4 h-4 text-coral-500" />,
           timestamp: new Date(),
           dismissible: true
         });
@@ -94,12 +94,12 @@ export function AIContextNotifications() {
         <div
           key={notification.id}
           className={cn(
-            "bg-white/95 backdrop-blur-sm border border-pink-200 rounded-lg p-4 shadow-lg animate-in slide-in-from-right-2 duration-300",
-            "border-l-4 border-l-pink-400"
+            "bg-white/95 backdrop-blur-sm border border-coral-200 rounded-lg p-4 shadow-lg animate-in slide-in-from-right-2 duration-300",
+            "border-l-4 border-l-coral-400"
           )}
         >
           <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 mt-0.5 p-1 bg-pink-50 rounded-full">
+            <div className="flex-shrink-0 mt-0.5 p-1 bg-coral-50 rounded-full">
               {notification.icon}
             </div>
 
@@ -112,7 +112,7 @@ export function AIContextNotifications() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-6 w-6 p-0 hover:bg-pink-50 text-pink-600 hover:text-pink-700"
+                    className="h-6 w-6 p-0 hover:bg-coral-50 text-coral-600 hover:text-coral-700"
                     onClick={() => dismissNotification(notification.id)}
                   >
                     <X className="w-3 h-3" />
@@ -125,7 +125,7 @@ export function AIContextNotifications() {
               </p>
 
               <div className="flex items-center gap-2 mt-2">
-                <Badge variant="secondary" className="text-xs bg-pink-100 text-pink-700 border-pink-200">
+                <Badge variant="secondary" className="text-xs bg-coral-100 text-coral-700 border-coral-200">
                   {notification.type === 'milestone' && 'Mijlpaal'}
                   {notification.type === 'insight_available' && 'Nieuwe Insight'}
                   {notification.type === 'context_update' && 'Update'}

@@ -143,7 +143,7 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <Card className="bg-white border-0 shadow-sm rounded-xl p-8 text-center max-w-sm">
-          <Compass className="w-8 h-8 animate-spin mx-auto mb-4 text-pink-500" />
+          <Compass className="w-8 h-8 animate-spin mx-auto mb-4 text-coral-500" />
           <p className="text-gray-600">Waarden Kompas laden...</p>
         </Card>
       </div>
@@ -157,8 +157,8 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
           {/* Hero Card */}
           <Card className="bg-white border-0 shadow-sm rounded-xl overflow-hidden">
             <CardContent className="p-12 text-center">
-              <div className="w-20 h-20 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
-                <Compass className="w-10 h-10 text-pink-600" />
+              <div className="w-20 h-20 bg-coral-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                <Compass className="w-10 h-10 text-coral-600" />
               </div>
               <CardTitle className="text-3xl font-bold text-gray-900 mb-6">
                 Ontdek Jouw Waarden Kompas™
@@ -169,7 +169,7 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
 
               <Button
                 onClick={startNewSession}
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all py-4 text-lg max-w-md mx-auto"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all py-4 text-lg max-w-md mx-auto"
                 size="lg"
               >
                 <Compass className="w-5 h-5 mr-2" />
@@ -183,11 +183,11 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
           </Card>
 
           {/* Promise Card */}
-          <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-0 shadow-sm rounded-xl">
+          <Card className="bg-gradient-to-r from-coral-50 to-purple-50 border-0 shadow-sm rounded-xl">
             <CardContent className="p-8">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-7 h-7 text-pink-600" />
+                <div className="w-14 h-14 bg-coral-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-7 h-7 text-coral-600" />
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 text-lg">Onze Belofte</h3>
@@ -273,8 +273,8 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
                 <ArrowLeft className="w-4 h-4" />
               </Button>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-pink-100 rounded-2xl flex items-center justify-center">
-                  <Compass className="w-6 h-6 text-pink-600" />
+                <div className="w-12 h-12 bg-coral-100 rounded-2xl flex items-center justify-center">
+                  <Compass className="w-6 h-6 text-coral-600" />
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">Waarden Kompas</h1>
@@ -294,7 +294,7 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
                 <p className="text-gray-600">Fase {getPhaseTitle()}</p>
               </div>
               <div className="text-right">
-                <div className="text-3xl font-bold text-pink-600">{getProgressPercentage()}%</div>
+                <div className="text-3xl font-bold text-coral-600">{getProgressPercentage()}%</div>
               </div>
             </div>
             <Progress value={getProgressPercentage()} className="h-3 bg-gray-200" />
@@ -368,7 +368,7 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
               </p>
               <Button
                 onClick={() => window.location.reload()}
-                className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all px-8 py-4 text-lg"
+                className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all px-8 py-4 text-lg"
               >
                 Bekijk Resultaten Opnieuw
               </Button>
@@ -384,7 +384,7 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2">
-                    <HelpCircle className="w-5 h-5 text-pink-600" />
+                    <HelpCircle className="w-5 h-5 text-coral-600" />
                     Handleiding Waarden Kompas
                   </CardTitle>
                   <Button
@@ -420,15 +420,15 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
                   </div>
                 </div>
 
-                <div className="bg-pink-50 border border-pink-200 rounded-lg p-3">
-                  <p className="text-sm text-pink-800">
+                <div className="bg-coral-50 border border-coral-200 rounded-lg p-3">
+                  <p className="text-sm text-coral-800">
                     <strong>Tip:</strong> Neem de tijd voor elke vraag. Je antwoorden helpen ons om de beste inzichten voor jou te genereren.
                   </p>
                 </div>
 
                 <Button
                   onClick={() => setShowGuide(false)}
-                  className="w-full bg-pink-500 hover:bg-pink-600 text-white"
+                  className="w-full bg-coral-500 hover:bg-coral-600 text-white"
                 >
                   Begrepen, doorgaan
                 </Button>

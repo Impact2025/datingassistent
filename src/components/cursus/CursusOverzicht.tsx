@@ -76,17 +76,17 @@ const ModuleCard = ({ module }: { module: typeof mockModules[0] }) => {
       flex flex-col
       ${isBinnenkort 
         ? 'cursor-not-allowed' 
-        : 'hover:shadow-lg hover:border-pink-200 hover:-translate-y-1'}
+        : 'hover:shadow-lg hover:border-coral-200 hover:-translate-y-1'}
     `}>
       <CardContent className="p-6 flex flex-col flex-grow">
         <div className="flex items-start gap-4">
           <div className={`
             w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0
-            ${isBinnenkort ? 'bg-gray-100' : 'bg-pink-50'}
+            ${isBinnenkort ? 'bg-gray-100' : 'bg-coral-50'}
           `}>
             <IconComponent className={`
               w-6 h-6 
-              ${isBinnenkort ? 'text-gray-400' : 'text-pink-600'}
+              ${isBinnenkort ? 'text-gray-400' : 'text-coral-600'}
             `} />
           </div>
           <div className="flex-1 min-w-0">
@@ -132,7 +132,7 @@ const ModuleCard = ({ module }: { module: typeof mockModules[0] }) => {
           </Button>
         ) : (
           <Link href={`/cursus/${module.slug}`} className="w-full">
-            <Button size="sm" className="w-full bg-pink-600 hover:bg-pink-700">
+            <Button size="sm" className="w-full bg-coral-600 hover:bg-coral-700">
               Start Cursus
             </Button>
           </Link>

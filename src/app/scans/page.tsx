@@ -119,7 +119,7 @@ export default function ScansPage() {
   const completionPercentage = (completedScans.length / scans.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-coral-50 to-blue-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -204,7 +204,7 @@ export default function ScansPage() {
               Ontdek je dating patterns en unlock personalized inzichten
             </p>
             <Link href="/dashboard">
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600">
+              <Button className="bg-gradient-to-r from-purple-600 to-coral-600">
                 Naar Dashboard
               </Button>
             </Link>
@@ -226,12 +226,12 @@ function ScanOverviewCard({ scan, metadata, delay }: ScanOverviewCardProps) {
 
   const colorClasses = {
     pink: {
-      bg: 'bg-pink-50',
-      border: 'border-pink-200',
-      text: 'text-pink-700',
-      badge: 'bg-pink-100 text-pink-700',
-      button: 'from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800',
-      icon: 'text-pink-600'
+      bg: 'bg-coral-50',
+      border: 'border-coral-200',
+      text: 'text-coral-700',
+      badge: 'bg-coral-100 text-coral-700',
+      button: 'from-coral-600 to-coral-700 hover:from-coral-700 hover:to-coral-800',
+      icon: 'text-coral-600'
     },
     purple: {
       bg: 'bg-purple-50',
@@ -411,7 +411,7 @@ function ScanOverviewCard({ scan, metadata, delay }: ScanOverviewCardProps) {
               <p className="text-gray-700 mb-4">Je hebt deze scan nog niet gedaan</p>
               <Button
                 onClick={() => router.push(metadata.href)}
-                className="bg-gradient-to-r from-purple-600 to-pink-600"
+                className="bg-gradient-to-r from-purple-600 to-coral-600"
               >
                 Start Scan
               </Button>

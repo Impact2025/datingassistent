@@ -230,7 +230,7 @@ export function LearningPath() {
                   
                   <div className="flex gap-2 mt-3">
                     {step.status === 'available' && (
-                      <Button size="sm" className="bg-pink-500 hover:bg-pink-600">
+                      <Button size="sm" className="bg-coral-500 hover:bg-coral-600">
                         Start nu
                       </Button>
                     )}

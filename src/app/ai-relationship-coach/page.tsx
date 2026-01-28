@@ -74,7 +74,7 @@ export default function AIRelationshipCoachPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-pink-25 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-coral-25 to-white">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -214,7 +214,7 @@ export default function AIRelationshipCoachPage() {
             <Button
               data-tutorial="skills-button"
               onClick={() => router.push('/dashboard?tab=leren-ontwikkelen')}
-              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-purple-500 to-coral-600 hover:from-purple-600 hover:to-coral-700"
             >
               <Brain className="w-6 h-6" />
               <span className="font-medium">Skills Ontwikkelen</span>

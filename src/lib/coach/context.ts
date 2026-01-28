@@ -1,9 +1,11 @@
 /**
  * Coach Context Builder
  * Verzamelt user data voor AI personalisatie
+ * Privacy: Geanonimiseerde data - geen namen, leeftijdsgroepen ipv exacte leeftijden
  */
 
 import { sql } from '@vercel/postgres';
+import { getAgeRange } from '../ai-privacy';
 import type { CoachContext, UserProfile, AssessmentResults, JourneyProgress, UserGoals, RecentActivity } from './types';
 
 export async function buildCoachContext(userId: number): Promise<CoachContext> {
@@ -258,14 +260,15 @@ function calculateProgress(completedSteps: string[]): number {
 
 /**
  * Convert context to rich text for AI prompt
+ * Privacy: Geen naam, leeftijdsgroep ipv exacte leeftijd, geen specifieke locatie
  */
 export function contextToPrompt(context: CoachContext): string {
   const parts: string[] = [];
 
-  // User intro
-  parts.push(`Je praat met ${context.user.name}`);
+  // User intro - Privacy: geen naam, geen exacte leeftijd
+  parts.push('Gebruiker context (geanonimiseerd):');
   if (context.user.age) {
-    parts.push(`, ${context.user.age} jaar`);
+    parts.push(` Leeftijdsgroep: ${getAgeRange(context.user.age)}`);
   }
   if (context.user.gender) {
     parts.push(`, ${context.user.gender}`);
@@ -273,7 +276,7 @@ export function contextToPrompt(context: CoachContext): string {
   if (context.user.lookingFor) {
     parts.push(`, zoekt: ${context.user.lookingFor}`);
   }
-  parts.push('.');
+  parts.push(', Nederland.'); // Privacy: alleen land, geen specifieke locatie
 
   // Assessments
   if (context.assessments.hechtingsstijl) {

@@ -113,16 +113,16 @@ export default function CoursesContent() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 px-4 overflow-hidden bg-gradient-to-br from-pink-50 to-pink-100 dark:from-gray-800 dark:to-gray-900">
+      <section className="relative py-20 md:py-32 px-4 overflow-hidden bg-gradient-to-br from-coral-50 to-coral-100 dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-6xl mx-auto text-center">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 rounded-full px-4 py-2 border border-pink-200 dark:border-gray-600">
-              <BookOpen className="w-5 h-5 text-pink-500" />
+            <div className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 rounded-full px-4 py-2 border border-coral-200 dark:border-gray-600">
+              <BookOpen className="w-5 h-5 text-coral-500" />
               <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Online Cursussen</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
-              Leer de <span className="text-pink-500">kunst van het daten</span>
+              Leer de <span className="text-coral-500">kunst van het daten</span>
             </h1>
 
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
@@ -132,12 +132,12 @@ export default function CoursesContent() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link href="/register">
-                <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
+                <Button className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
                   Start je eerste cursus
                 </Button>
               </Link>
               <Link href="#courses">
-                <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 px-8 py-6 text-lg rounded-full transition-all">
+                <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:border-coral-500 hover:text-coral-500 px-8 py-6 text-lg rounded-full transition-all">
                   Bekijk alle cursussen
                 </Button>
               </Link>
@@ -151,21 +151,21 @@ export default function CoursesContent() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-3xl font-bold text-pink-500 mb-2">{courses.length}+</div>
+              <div className="text-3xl font-bold text-coral-500 mb-2">{courses.length}+</div>
               <div className="text-sm text-gray-600 dark:text-gray-300">Cursussen</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-pink-500 mb-2">
+              <div className="text-3xl font-bold text-coral-500 mb-2">
                 {courses.reduce((acc, course) => acc + course.lesson_count, 0)}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-300">Lessen</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-pink-500 mb-2">25.000+</div>
+              <div className="text-3xl font-bold text-coral-500 mb-2">25.000+</div>
               <div className="text-sm text-gray-600 dark:text-gray-300">Studenten</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-pink-500 mb-2">4.9/5</div>
+              <div className="text-3xl font-bold text-coral-500 mb-2">4.9/5</div>
               <div className="text-sm text-gray-600 dark:text-gray-300">Gemiddelde beoordeling</div>
             </div>
           </div>
@@ -199,7 +199,7 @@ export default function CoursesContent() {
               {courses.map((course) => (
                 <Card key={course.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden dark:bg-gray-800">
                   <div className="relative">
-                    <div className="aspect-video bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900/30 dark:to-pink-800/30 flex items-center justify-center">
+                    <div className="aspect-video bg-gradient-to-br from-coral-100 to-coral-200 dark:from-coral-900/30 dark:to-coral-800/30 flex items-center justify-center">
                       {course.thumbnail_url ? (
                         <img
                           src={course.thumbnail_url}
@@ -207,7 +207,7 @@ export default function CoursesContent() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <BookOpen className="w-12 h-12 text-pink-500" />
+                        <BookOpen className="w-12 h-12 text-coral-500" />
                       )}
                     </div>
 
@@ -267,7 +267,7 @@ export default function CoursesContent() {
                       </div>
 
                       <Link href={`/courses/${course.id}`}>
-                        <Button className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6 group-hover:bg-pink-600 transition-colors">
+                        <Button className="bg-coral-500 hover:bg-coral-600 text-white rounded-full px-6 group-hover:bg-coral-600 transition-colors">
                           Start cursus
                           <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
@@ -328,24 +328,24 @@ export default function CoursesContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 bg-gradient-to-r from-pink-500 to-pink-600">
+      <section className="py-24 px-4 bg-gradient-to-r from-coral-500 to-coral-600">
         <div className="max-w-4xl mx-auto text-center">
           <div className="space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold text-white">
               Klaar om je dating skills te verbeteren?
             </h2>
-            <p className="text-lg text-pink-100 max-w-2xl mx-auto">
+            <p className="text-lg text-coral-100 max-w-2xl mx-auto">
               Start vandaag nog met je eerste cursus en ontdek hoe leuk en succesvol daten kan zijn.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link href="/register">
-                <Button className="bg-white text-pink-600 hover:bg-gray-50 px-8 py-6 text-lg rounded-full shadow-lg font-semibold">
+                <Button className="bg-white text-coral-600 hover:bg-gray-50 px-8 py-6 text-lg rounded-full shadow-lg font-semibold">
                   Start gratis cursus
                 </Button>
               </Link>
               <Link href="/dashboard">
-                <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-pink-600 px-8 py-6 text-lg rounded-full font-semibold">
+                <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-coral-600 px-8 py-6 text-lg rounded-full font-semibold">
                   Naar dashboard
                 </Button>
               </Link>

@@ -589,7 +589,7 @@ export function DatingProfilerAI() {
       <div className="max-w-2xl mx-auto space-y-6">
         <Card>
           <CardContent className="p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500 mx-auto mb-4"></div>
             <h3 className="text-lg font-semibold mb-2">AI Profiler aan het werk...</h3>
             <p className="text-gray-600">
               Je persoonlijke dating profielen worden gegenereerd
@@ -605,13 +605,13 @@ export function DatingProfilerAI() {
     return (
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
-        <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+        <Card className="bg-gradient-to-r from-coral-50 to-coral-100 border-coral-200">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-pink-900">
+            <CardTitle className="flex items-center gap-2 text-coral-900">
               <Sparkles className="w-6 h-6" />
               Jouw Dating Profielen - Klaar!
             </CardTitle>
-            <p className="text-pink-700">
+            <p className="text-coral-700">
               Hier zijn 3 unieke profiel opties gebaseerd op je antwoorden
             </p>
           </CardHeader>
@@ -676,7 +676,7 @@ export function DatingProfilerAI() {
         </div>
 
         {/* Course Promotion */}
-        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+        <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
           <CardContent className="p-6 text-center">
             <h3 className="text-lg font-semibold text-purple-900 mb-2">
               Wil je echt een top profiel?
@@ -704,7 +704,7 @@ export function DatingProfilerAI() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Nieuwe Profielen Maken
           </Button>
-          <Button className="bg-pink-500 hover:bg-pink-600">
+          <Button className="bg-coral-500 hover:bg-coral-600">
             <Heart className="w-4 h-4 mr-2" />
             Naar Chat Coach
           </Button>
@@ -717,13 +717,13 @@ export function DatingProfilerAI() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+      <Card className="bg-gradient-to-r from-coral-50 to-coral-100 border-coral-200">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-pink-900">
+          <CardTitle className="flex items-center gap-2 text-coral-900">
             <Sparkles className="w-6 h-6" />
             Dating Profiler AI
           </CardTitle>
-          <p className="text-pink-700">
+          <p className="text-coral-700">
             Laat onze AI een pakkend dating profiel voor je schrijven!
           </p>
         </CardHeader>
@@ -888,8 +888,8 @@ export function DatingProfilerAI() {
                     key={style.id}
                     className={`p-3 border-2 rounded-lg cursor-pointer transition-all ${
                       profileData.style === style.id
-                        ? 'border-pink-500 bg-pink-50'
-                        : 'border-gray-200 hover:border-pink-300'
+                        ? 'border-coral-500 bg-coral-50'
+                        : 'border-gray-200 hover:border-coral-300'
                     }`}
                     onClick={() => setProfileData(prev => ({ ...prev, style: style.id }))}
                   >
@@ -899,7 +899,7 @@ export function DatingProfilerAI() {
                         <p className="text-sm text-gray-600">{style.description}</p>
                       </div>
                       {profileData.style === style.id && (
-                        <CheckCircle className="w-5 h-5 text-pink-500 ml-auto" />
+                        <CheckCircle className="w-5 h-5 text-coral-500 ml-auto" />
                       )}
                     </div>
                   </div>
@@ -912,7 +912,7 @@ export function DatingProfilerAI() {
           <Button
             onClick={generateProfiles}
             disabled={!canProceed()}
-            className="w-full bg-pink-500 hover:bg-pink-600"
+            className="w-full bg-coral-500 hover:bg-coral-600"
             size="lg"
           >
             <Zap className="w-5 h-5 mr-2" />

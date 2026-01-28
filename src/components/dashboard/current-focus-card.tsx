@@ -153,10 +153,10 @@ export function CurrentFocusCard({ userId, onNavigate }: CurrentFocusCardProps) 
       {/* Focus Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Journey Phase Card */}
-        <Card className="border-2 border-pink-200 bg-gradient-to-br from-pink-50/50 to-white dark:from-pink-950/20 dark:to-gray-900">
+        <Card className="border-2 border-coral-200 bg-gradient-to-br from-coral-50/50 to-white dark:from-coral-950/20 dark:to-gray-900">
           <CardContent className="p-4 text-center">
             <div className="space-y-3">
-              <div className="w-12 h-12 mx-auto rounded-full bg-pink-500 text-white flex items-center justify-center">
+              <div className="w-12 h-12 mx-auto rounded-full bg-coral-500 text-white flex items-center justify-center">
                 <Target className="w-6 h-6" />
               </div>
 
@@ -199,7 +199,7 @@ export function CurrentFocusCard({ userId, onNavigate }: CurrentFocusCardProps) 
                   <Button
                     onClick={() => onNavigate(nextAction.tool!)}
                     size="sm"
-                    className="w-full text-xs bg-pink-500 hover:bg-pink-600"
+                    className="w-full text-xs bg-coral-500 hover:bg-coral-600"
                   >
                     Start nu
                     <ArrowRight className="w-3 h-3 ml-1" />

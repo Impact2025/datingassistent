@@ -56,7 +56,7 @@ export function FAQSection() {
         >
           <Link
             href="/faq"
-            className="inline-flex items-center gap-2 text-pink-500 dark:text-pink-400 hover:text-pink-600 dark:hover:text-pink-300 font-medium transition-colors group"
+            className="inline-flex items-center gap-2 text-coral-500 dark:text-coral-400 hover:text-coral-600 dark:hover:text-coral-300 font-medium transition-colors group"
           >
             Bekijk alle 30+ vragen
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -108,11 +108,11 @@ function FAQAccordionItem({ faq, isOpen, onToggle, index }: FAQAccordionItemProp
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:border-pink-200 dark:hover:border-pink-800 transition-colors"
+      className="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:border-coral-200 dark:hover:border-coral-800 transition-colors"
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-inset"
+        className="w-full flex items-center justify-between gap-4 p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-coral-500 focus-visible:ring-inset"
         aria-expanded={isOpen}
       >
         <span className="font-semibold text-gray-900 dark:text-gray-50 text-base md:text-lg">

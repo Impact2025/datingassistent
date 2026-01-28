@@ -397,7 +397,7 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <Heart className="w-12 h-12 mx-auto mb-4 text-pink-500" />
+              <Heart className="w-12 h-12 mx-auto mb-4 text-coral-500" />
               <h3 className="text-xl font-bold mb-2">Type date & sfeer</h3>
               <p className="text-muted-foreground">
                 Wat voor soort date wordt dit? Dit bepaalt de toon van de ideeën
@@ -412,8 +412,8 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
                   className={cn(
                     "p-4 border-2 rounded-lg text-left transition-all hover:shadow-md",
                     formData.vibe === vibe.id
-                      ? "border-pink-500 bg-pink-50 shadow-md"
-                      : "border-gray-200 hover:border-pink-300 bg-white"
+                      ? "border-coral-500 bg-coral-50 shadow-md"
+                      : "border-gray-200 hover:border-coral-300 bg-white"
                   )}
                 >
                   <div className="flex items-start gap-3">
@@ -480,7 +480,7 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
                   id="weather"
                   checked={formData.weatherConsideration}
                   onChange={(e) => updateFormData('weatherConsideration', e.target.checked)}
-                  className="w-4 h-4 text-pink-500"
+                  className="w-4 h-4 text-coral-500"
                 />
                 <label htmlFor="weather" className="text-sm">
                   Neem weer mee in overweging (indoor vs outdoor ideeën)
@@ -497,8 +497,8 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
                       className={cn(
                         "px-4 py-2 border rounded-lg text-sm transition-colors",
                         formData.indoorOutdoor === option.toLowerCase()
-                          ? "border-pink-500 bg-pink-50 text-pink-700"
-                          : "border-gray-200 hover:border-pink-300"
+                          ? "border-coral-500 bg-coral-50 text-coral-700"
+                          : "border-gray-200 hover:border-coral-300"
                       )}
                     >
                       {option}
@@ -517,8 +517,8 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
                       className={cn(
                         "px-4 py-2 border rounded-lg text-sm transition-colors",
                         formData.timeOfDay === time.toLowerCase()
-                          ? "border-pink-500 bg-pink-50 text-pink-700"
-                          : "border-gray-200 hover:border-pink-300"
+                          ? "border-coral-500 bg-coral-50 text-coral-700"
+                          : "border-gray-200 hover:border-coral-300"
                       )}
                     >
                       {time}
@@ -637,7 +637,7 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
           >
             Nieuwe Ideeën Genereren
           </Button>
-          <Button className="flex-1 bg-pink-500 hover:bg-pink-600">
+          <Button className="flex-1 bg-coral-500 hover:bg-coral-600">
             <Sparkles className="w-4 h-4 mr-2" />
             Opslaan voor Later
           </Button>
@@ -708,7 +708,7 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
           <Button
             onClick={nextStep}
             disabled={!canProceedToNext()}
-            className="bg-pink-500 hover:bg-pink-600"
+            className="bg-coral-500 hover:bg-coral-600"
           >
             Volgende
             <ArrowRight className="w-4 h-4 ml-2" />
@@ -717,7 +717,7 @@ export function DateIdeasProForm({ onComplete }: DateIdeasProFormProps) {
           <Button
             onClick={generateIdeas}
             disabled={isGenerating}
-            className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 px-8"
+            className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 px-8"
           >
             {isGenerating ? (
               <>

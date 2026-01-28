@@ -283,7 +283,7 @@ export function SmartContactForm({
             placeholder="Jouw naam"
             className={cn(
               'w-full px-4 py-3 rounded-xl border-2',
-              'focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500',
+              'focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500',
               'transition-all duration-200',
               errors.name ? 'border-red-300 bg-red-50' : 'border-gray-200'
             )}
@@ -307,7 +307,7 @@ export function SmartContactForm({
             placeholder="jouw@email.nl"
             className={cn(
               'w-full px-4 py-3 rounded-xl border-2',
-              'focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500',
+              'focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500',
               'transition-all duration-200',
               errors.email ? 'border-red-300 bg-red-50' : 'border-gray-200'
             )}
@@ -330,7 +330,7 @@ export function SmartContactForm({
           onChange={handleChange}
           className={cn(
             'w-full px-4 py-3 rounded-xl border-2 border-gray-200',
-            'focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500',
+            'focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500',
             'transition-all duration-200 bg-white'
           )}
         >
@@ -356,7 +356,7 @@ export function SmartContactForm({
           placeholder="Kort omschrijving van je vraag"
           className={cn(
             'w-full px-4 py-3 rounded-xl border-2',
-            'focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500',
+            'focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500',
             'transition-all duration-200',
             errors.subject ? 'border-red-300 bg-red-50' : 'border-gray-200'
           )}
@@ -379,7 +379,7 @@ export function SmartContactForm({
           placeholder="Beschrijf je vraag of probleem zo gedetailleerd mogelijk..."
           className={cn(
             'w-full px-4 py-3 rounded-xl border-2 resize-none',
-            'focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500',
+            'focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500',
             'transition-all duration-200',
             errors.message ? 'border-red-300 bg-red-50' : 'border-gray-200'
           )}
@@ -449,8 +449,8 @@ export function SmartContactForm({
         disabled={isSubmitting}
         className={cn(
           'w-full py-4 rounded-xl font-medium',
-          'bg-gradient-to-r from-pink-500 to-purple-600',
-          'hover:from-pink-600 hover:to-purple-700',
+          'bg-gradient-to-r from-coral-500 to-purple-600',
+          'hover:from-coral-600 hover:to-purple-700',
           'text-white shadow-lg hover:shadow-xl',
           'transition-all duration-200'
         )}

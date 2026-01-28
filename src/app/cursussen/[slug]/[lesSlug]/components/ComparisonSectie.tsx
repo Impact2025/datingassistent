@@ -31,7 +31,7 @@ export function ComparisonSectie({ sectie, isCompleted, onComplete }: Comparison
   const hasLinksRechts = content.links && content.rechts;
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -51,7 +51,7 @@ export function ComparisonSectie({ sectie, isCompleted, onComplete }: Comparison
                 ? 'border-amber-300 bg-amber-50 dark:bg-amber-900/30 dark:border-amber-700'
                 : item.kleur === 'success'
                 ? 'border-green-300 bg-green-50 dark:bg-green-900/30 dark:border-green-700'
-                : 'border-pink-300 bg-pink-50 dark:bg-pink-900/30 dark:border-pink-700';
+                : 'border-coral-300 bg-coral-50 dark:bg-coral-900/30 dark:border-coral-700';
 
               return (
                 <div key={idx} className={`p-5 rounded-lg border-2 ${kleurClass}`}>
@@ -61,7 +61,7 @@ export function ComparisonSectie({ sectie, isCompleted, onComplete }: Comparison
                     <ul className="space-y-2 mb-4">
                       {item.kenmerken.map((kenmerk: string, kidx: number) => (
                         <li key={kidx} className="text-sm text-gray-800 dark:text-gray-200 flex items-start gap-2">
-                          <span className="text-pink-500 mt-1">•</span>
+                          <span className="text-coral-500 mt-1">•</span>
                           <span>{kenmerk}</span>
                         </li>
                       ))}
@@ -84,21 +84,21 @@ export function ComparisonSectie({ sectie, isCompleted, onComplete }: Comparison
         {hasVanNaar && (
           <div className="space-y-4 mb-6">
             {content.van_naar.map((item: any, idx: number) => (
-              <div key={idx} className="flex items-start gap-4 p-5 rounded-lg border-2 border-pink-200 dark:border-pink-700 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30">
+              <div key={idx} className="flex items-start gap-4 p-5 rounded-lg border-2 border-coral-200 dark:border-coral-700 bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="flex-1">
                       <p className="text-sm text-gray-600 dark:text-gray-400 font-medium mb-1">Van:</p>
                       <p className="text-gray-800 dark:text-gray-300 line-through opacity-70">{item.van}</p>
                     </div>
-                    <ArrowRight className="w-6 h-6 text-pink-500 shrink-0" />
+                    <ArrowRight className="w-6 h-6 text-coral-500 shrink-0" />
                     <div className="flex-1">
                       <p className="text-sm text-green-600 dark:text-green-400 font-medium mb-1">Naar:</p>
                       <p className="text-gray-900 dark:text-white font-semibold">{item.naar}</p>
                     </div>
                   </div>
                   {item.waarom && (
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-3 pl-4 border-l-2 border-pink-300 dark:border-pink-600">
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-3 pl-4 border-l-2 border-coral-300 dark:border-coral-600">
                       <span className="font-medium">Waarom:</span> {item.waarom}
                     </p>
                   )}
@@ -165,7 +165,7 @@ export function ComparisonSectie({ sectie, isCompleted, onComplete }: Comparison
 
         {/* Conclusie / Kernboodschap */}
         {(content.conclusie || content.kernboodschap) && (
-          <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 border-2 border-pink-300 dark:border-pink-700 mb-6">
+          <div className="p-5 rounded-lg bg-gradient-to-r from-coral-100 to-coral-200 dark:from-coral-900/40 dark:to-coral-800/40 border-2 border-coral-300 dark:border-coral-700 mb-6">
             <p className="text-gray-900 dark:text-white font-semibold leading-relaxed">
               {content.conclusie || content.kernboodschap}
             </p>
@@ -176,7 +176,7 @@ export function ComparisonSectie({ sectie, isCompleted, onComplete }: Comparison
         {!isCompleted && (
           <PrimaryButton
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
             Begrepen!

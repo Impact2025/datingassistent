@@ -55,7 +55,7 @@ const INTEREST_CATEGORIES: Interest[] = [
     id: 'chill',
     label: 'Chill & Cozy',
     icon: '🛋️',
-    color: 'bg-pink-100 border-pink-200 text-pink-800',
+    color: 'bg-coral-100 border-coral-200 text-coral-800',
     description: 'Thuis koken, Netflix, spelletjes, knuffelen'
   },
   {

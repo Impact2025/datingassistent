@@ -255,9 +255,9 @@ export default function LessonPlayerPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-blue-50 flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-16 h-16 border-4 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600 font-medium">Lesson laden...</p>
         </div>
       </div>
@@ -266,7 +266,7 @@ export default function LessonPlayerPage() {
 
   if (error || !lessonData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-blue-50 flex items-center justify-center p-4">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center space-y-4">
             <Lock className="w-16 h-16 mx-auto text-red-500" />
@@ -496,7 +496,7 @@ export default function LessonPlayerPage() {
             {lesson.content_type === 'download' && lesson.download_url && (
               <Card>
                 <CardContent className="p-6 sm:p-8 text-center">
-                  <Download className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-pink-500 mb-3 sm:mb-4" />
+                  <Download className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-coral-500 mb-3 sm:mb-4" />
                   <h3 className="text-lg sm:text-xl font-bold mb-2 break-words px-2">
                     {lesson.download_filename}
                   </h3>
@@ -505,7 +505,7 @@ export default function LessonPlayerPage() {
                   </p>
                   <Button
                     asChild
-                    className="bg-gradient-to-r from-pink-500 to-pink-600 w-full sm:w-auto"
+                    className="bg-gradient-to-r from-coral-500 to-coral-600 w-full sm:w-auto"
                   >
                     <a href={lesson.download_url} download>
                       <Download className="w-4 h-4 mr-2" />
@@ -554,7 +554,7 @@ export default function LessonPlayerPage() {
                   <Button
                     onClick={handleNext}
                     disabled={!next_lesson.is_unlocked}
-                    className="w-full justify-start bg-gradient-to-r from-pink-500 to-pink-600 text-sm sm:text-base min-h-[44px]"
+                    className="w-full justify-start bg-gradient-to-r from-coral-500 to-coral-600 text-sm sm:text-base min-h-[44px]"
                   >
                     {next_lesson.is_unlocked ? (
                       <>

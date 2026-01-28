@@ -36,8 +36,8 @@ export function CoachSuggestions({ suggestions, title = "Snelle acties" }: Coach
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.05 }}
             onClick={suggestion.action}
-            className="px-4 py-2 bg-white hover:bg-pink-50 border border-gray-200 hover:border-pink-300
-                       rounded-full text-sm text-gray-700 hover:text-pink-600
+            className="px-4 py-2 bg-white hover:bg-coral-50 border border-gray-200 hover:border-coral-300
+                       rounded-full text-sm text-gray-700 hover:text-coral-600
                        transition-all shadow-sm hover:shadow-md
                        flex items-center gap-2"
           >

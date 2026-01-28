@@ -14,7 +14,7 @@ export function ChecklistSlideTemplate({ slide }: ChecklistSlideTemplateProps) {
       <div className="w-full max-w-3xl bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
         {/* Title */}
         <div className="mb-6 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-pink-600">
+          <h2 className="text-2xl md:text-3xl font-bold text-coral-600">
             {slide.title}
           </h2>
         </div>
@@ -29,7 +29,7 @@ export function ChecklistSlideTemplate({ slide }: ChecklistSlideTemplateProps) {
               <div className={`flex-shrink-0 mt-0.5 ${
                 item.checked
                   ? 'text-green-600'
-                  : 'text-pink-300'
+                  : 'text-coral-300'
               }`}>
                 {item.checked ? (
                   <Lucide.CheckCircle2 className="h-4 w-4" />

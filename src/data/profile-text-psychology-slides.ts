@@ -134,7 +134,7 @@ export const doelgroepPsychologieSlides: SlideDeck = {
       title: 'Doelgroep Psychologie',
       subtitle: 'Schrijf specifiek voor je ideale partner',
       emoji: '🎯',
-      backgroundColor: 'from-rose-600 to-pink-600'
+      backgroundColor: 'from-rose-600 to-coral-600'
     },
     {
       type: 'content',
@@ -160,8 +160,8 @@ export const doelgroepPsychologieSlides: SlideDeck = {
         'Relatie visie: Wat betekent commitment?',
         'Communicatiestijl: Direct vs. diplomatiek'
       ],
-      backgroundColor: 'bg-gradient-to-br from-rose-50 to-pink-50',
-      highlightColor: 'text-pink-700'
+      backgroundColor: 'bg-gradient-to-br from-rose-50 to-coral-50',
+      highlightColor: 'text-coral-700'
     },
     {
       type: 'split',
@@ -278,7 +278,7 @@ export const charismaEliminatieSlides: SlideDeck = {
       title: 'Charisma Eliminatie',
       subtitle: 'Transformeer clichés naar verhalen die opvallen',
       emoji: '🚫',
-      backgroundColor: 'from-red-600 to-pink-600'
+      backgroundColor: 'from-red-600 to-coral-600'
     },
     {
       type: 'content',
@@ -303,8 +303,8 @@ export const charismaEliminatieSlides: SlideDeck = {
         'Vulnerability: "Spontaan" → "Ik zeg ja tegen plannen die me eigenlijk eng vinden"',
         'Uniekmaking: "Creatief" → "Ik teken cartoons over mijn slechte dagen"'
       ],
-      backgroundColor: 'bg-gradient-to-br from-red-50 to-pink-50',
-      highlightColor: 'text-pink-700'
+      backgroundColor: 'bg-gradient-to-br from-red-50 to-coral-50',
+      highlightColor: 'text-coral-700'
     },
     {
       type: 'split',
@@ -493,7 +493,7 @@ export const validatieMasterySlides: SlideDeck = {
         'Constructieve kritiek filteren',
         'Data combineren met gevoel'
       ],
-      backgroundColor: 'bg-gradient-to-br from-purple-50 to-pink-50',
+      backgroundColor: 'bg-gradient-to-br from-purple-50 to-coral-50',
       highlightColor: 'text-purple-700'
     },
     {
@@ -651,7 +651,7 @@ export const masteryCertificeringSlides: SlideDeck = {
         'Kennis documenteren',
         'Nieuwe experts opleiden'
       ],
-      backgroundColor: 'bg-gradient-to-br from-purple-50 to-pink-50',
+      backgroundColor: 'bg-gradient-to-br from-purple-50 to-coral-50',
       highlightColor: 'text-purple-700'
     },
     {

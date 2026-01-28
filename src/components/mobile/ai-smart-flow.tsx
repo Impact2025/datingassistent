@@ -79,7 +79,7 @@ export function AISmartFlow({ className, userId }: AISmartFlowProps) {
           break;
         default:
           cardType = 'insight';
-          icon = <Sparkles className="w-5 h-5 text-pink-500" />;
+          icon = <Sparkles className="w-5 h-5 text-coral-500" />;
       }
 
       // Determine priority based on confidence
@@ -116,7 +116,7 @@ export function AISmartFlow({ className, userId }: AISmartFlowProps) {
       smartCards.push({
         id: 'motivation-daily',
         type: 'motivation',
-        icon: <Heart className="w-5 h-5 text-pink-500" />,
+        icon: <Heart className="w-5 h-5 text-coral-500" />,
         title: 'Dagelijkse reminder',
         description: 'Elke stap telt. Je dating succes is een marathon, geen sprint.',
         priority: 'low',
@@ -192,7 +192,7 @@ export function AISmartFlow({ className, userId }: AISmartFlowProps) {
    };
 
   const getCardStyle = (type: SmartCard['type'], priority: SmartCard['priority']) => {
-    const baseClasses = "bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:border-pink-200 hover:bg-pink-50/30 active:scale-98";
+    const baseClasses = "bg-white border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-200 hover:border-coral-200 hover:bg-coral-50/30 active:scale-98";
 
     return baseClasses;
   };
@@ -215,7 +215,7 @@ export function AISmartFlow({ className, userId }: AISmartFlowProps) {
         <h2 className="text-lg font-semibold text-gray-900">
           AI Aanbevelingen
         </h2>
-        <Badge variant="secondary" className="text-xs bg-pink-100 text-pink-700">
+        <Badge variant="secondary" className="text-xs bg-coral-100 text-coral-700">
           Persoonlijk
         </Badge>
       </div>
@@ -224,7 +224,7 @@ export function AISmartFlow({ className, userId }: AISmartFlowProps) {
       <div className="relative">
         {refreshing && (
           <div className="absolute top-0 left-0 right-0 z-10 bg-white/90 border border-gray-200 rounded-lg p-3 flex items-center justify-center gap-2">
-            <RefreshCw className="w-4 h-4 text-pink-500 animate-spin" />
+            <RefreshCw className="w-4 h-4 text-coral-500 animate-spin" />
             <span className="text-sm text-gray-600">AI denkt na...</span>
           </div>
         )}
@@ -273,7 +273,7 @@ export function AISmartFlow({ className, userId }: AISmartFlowProps) {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="text-xs h-8 border-pink-200 text-pink-700 hover:bg-pink-50"
+                      className="text-xs h-8 border-coral-200 text-coral-700 hover:bg-coral-50"
                       onClick={(e) => {
                         e.stopPropagation();
                         card.onAction?.();

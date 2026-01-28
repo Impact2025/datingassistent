@@ -163,10 +163,10 @@ export function LevensvisieFlow({ onClose }: LevensvisieFlowProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-pink-200">
+        <Card className="border-2 border-coral-200">
           <CardContent className="p-6">
-            <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center mb-3">
-              <Heart className="w-5 h-5 text-pink-600" />
+            <div className="w-10 h-10 bg-coral-100 rounded-lg flex items-center justify-center mb-3">
+              <Heart className="w-5 h-5 text-coral-600" />
             </div>
             <h3 className="font-semibold mb-2">Partner Profiel</h3>
             <p className="text-sm text-gray-600">Definieer wat je nodig hebt voor duurzame liefde</p>
@@ -385,7 +385,7 @@ export function LevensvisieFlow({ onClose }: LevensvisieFlowProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Heart className="w-5 h-5 text-pink-600" />
+              <Heart className="w-5 h-5 text-coral-600" />
               Je Ideale Partner Profiel
             </CardTitle>
           </CardHeader>
@@ -393,7 +393,7 @@ export function LevensvisieFlow({ onClose }: LevensvisieFlowProps) {
             <ul className="space-y-2">
               {results.toekomstPartnerProfiel?.map((quality: string, i: number) => (
                 <li key={i} className="flex items-start gap-2">
-                  <CheckCircle className="w-5 h-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-coral-500 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">{quality}</span>
                 </li>
               ))}

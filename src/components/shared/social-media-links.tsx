@@ -12,7 +12,7 @@ const socialLinks = [
     name: 'Instagram',
     icon: Instagram,
     url: 'https://www.instagram.com/datingassistent/',
-    color: 'text-pink-400 hover:text-pink-500',
+    color: 'text-coral-400 hover:text-coral-500',
   },
   {
     name: 'Facebook',

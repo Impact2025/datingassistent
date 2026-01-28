@@ -35,7 +35,7 @@ export function IrisFloatingButton() {
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed right-6 top-1/2 -translate-y-1/2 z-40
-                   bg-pink-500 hover:bg-pink-600
+                   bg-coral-500 hover:bg-coral-600
                    text-white px-4 py-3 rounded-full shadow-lg
                    flex items-center gap-2
                    hover:shadow-xl transition-all"

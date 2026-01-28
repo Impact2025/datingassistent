@@ -21,7 +21,7 @@ export function CoachMessage({ type, content, timestamp }: CoachMessageProps) {
       <div className={`flex gap-3 max-w-[80%] ${!isCoach && 'flex-row-reverse'}`}>
         {/* Avatar */}
         {isCoach && (
-          <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 bg-coral-500 rounded-full flex items-center justify-center flex-shrink-0">
             <Sparkles className="w-4 h-4 text-white" />
           </div>
         )}
@@ -31,14 +31,14 @@ export function CoachMessage({ type, content, timestamp }: CoachMessageProps) {
           className={`px-4 py-3 rounded-2xl ${
             isCoach
               ? 'bg-white shadow-sm border border-gray-100'
-              : 'bg-pink-500 text-white'
+              : 'bg-coral-500 text-white'
           }`}
         >
           <p className={`text-sm leading-relaxed ${isCoach ? 'text-gray-800' : 'text-white'}`}>
             {content}
           </p>
           {timestamp && (
-            <p className={`text-xs mt-1 ${isCoach ? 'text-gray-400' : 'text-pink-100'}`}>
+            <p className={`text-xs mt-1 ${isCoach ? 'text-gray-400' : 'text-coral-100'}`}>
               {timestamp.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
             </p>
           )}

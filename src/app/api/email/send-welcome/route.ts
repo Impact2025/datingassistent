@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #E14874;">Welkom bij DatingAssistent!</h1>
+            <h1 style="color: #FF7B54;">Welkom bij DatingAssistent!</h1>
             <p style="font-size: 18px; color: #333;">Hallo ${name},</p>
           </div>
           
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
           
           <div style="text-align: center; margin: 30px 0;">
             <a href="${process.env.NEXT_PUBLIC_BASE_URL}/login" 
-               style="background-color: #E14874; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+               style="background-color: #FF7B54; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;">
               Inloggen op DatingAssistent
             </a>
           </div>
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
           <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
             <p style="color: #666; font-size: 14px;">
               Heb je vragen? Neem contact op met onze support via 
-              <a href="mailto:support@datingassistent.nl" style="color: #E14874;">support@datingassistent.nl</a>
+              <a href="mailto:support@datingassistent.nl" style="color: #FF7B54;">support@datingassistent.nl</a>
             </p>
             <p style="color: #999; font-size: 12px; margin-top: 20px;">
               © ${new Date().getFullYear()} DatingAssistent. Alle rechten voorbehouden.

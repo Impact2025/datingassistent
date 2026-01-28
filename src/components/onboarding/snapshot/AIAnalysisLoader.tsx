@@ -44,7 +44,7 @@ export function AIAnalysisLoader({ progress, currentPhase, userName }: AIAnalysi
         transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         className="mb-8 rounded-full"
       >
-        <IrisAvatar size="xl" showGlow className="ring-4 ring-pink-100" />
+        <IrisAvatar size="xl" showGlow className="ring-4 ring-coral-100" />
       </motion.div>
 
       {/* Title */}
@@ -63,7 +63,7 @@ export function AIAnalysisLoader({ progress, currentPhase, userName }: AIAnalysi
       <div className="w-full max-w-md mb-8">
         <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-pink-500 to-purple-500"
+            className="h-full bg-gradient-to-r from-coral-500 to-purple-500"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -95,7 +95,7 @@ export function AIAnalysisLoader({ progress, currentPhase, userName }: AIAnalysi
                 isComplete
                   ? 'bg-green-50'
                   : isCurrent
-                    ? 'bg-pink-50'
+                    ? 'bg-coral-50'
                     : 'bg-gray-50'
               }`}
             >
@@ -104,7 +104,7 @@ export function AIAnalysisLoader({ progress, currentPhase, userName }: AIAnalysi
                   isComplete
                     ? 'bg-green-500 text-white'
                     : isCurrent
-                      ? 'bg-pink-500 text-white'
+                      ? 'bg-coral-500 text-white'
                       : 'bg-gray-200 text-gray-400'
                 }`}
               >
@@ -125,7 +125,7 @@ export function AIAnalysisLoader({ progress, currentPhase, userName }: AIAnalysi
                   isComplete
                     ? 'text-green-700'
                     : isCurrent
-                      ? 'text-pink-700'
+                      ? 'text-coral-700'
                       : 'text-gray-400'
                 }`}
               >

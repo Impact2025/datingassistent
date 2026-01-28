@@ -108,7 +108,7 @@ export function RecommendedCourses({ userId, maxCourses = 3 }: RecommendedCourse
       starter: { text: 'Starter', color: 'bg-blue-500 text-white' },
       groeier: { text: 'Groeier', color: 'bg-purple-500 text-white' },
       expert: { text: 'Expert', color: 'bg-orange-500 text-white' },
-      vip: { text: 'VIP', color: 'bg-pink-500 text-white' }
+      vip: { text: 'VIP', color: 'bg-coral-500 text-white' }
     };
     return labels[type] || { text: type, color: 'bg-gray-500 text-white' };
   };

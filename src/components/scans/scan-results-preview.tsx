@@ -47,11 +47,11 @@ const SCAN_META = {
   'dating-style': {
     name: 'Dating Style',
     icon: Brain,
-    color: 'pink' as const,
-    gradient: 'from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30',
-    border: 'border-pink-200 dark:border-pink-700',
-    iconBg: 'bg-pink-100 dark:bg-pink-900/50',
-    iconColor: 'text-pink-600 dark:text-pink-400'
+    color: 'coral' as const,
+    gradient: 'from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30',
+    border: 'border-coral-200 dark:border-coral-700',
+    iconBg: 'bg-coral-100 dark:bg-coral-900/50',
+    iconColor: 'text-coral-600 dark:text-coral-400'
   },
   'emotional-readiness': {
     name: 'Emotional Readiness',

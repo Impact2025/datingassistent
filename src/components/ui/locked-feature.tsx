@@ -58,7 +58,7 @@ export function LockedFeature({
           size="sm"
           variant="ghost"
           onClick={handleUpgrade}
-          className="text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300 p-0 h-auto"
+          className="text-coral-600 hover:text-coral-700 dark:text-coral-400 dark:hover:text-coral-300 p-0 h-auto"
         >
           Upgrade
         </Button>
@@ -84,7 +84,7 @@ export function LockedFeature({
           </p>
           <Button
             onClick={handleUpgrade}
-            className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+            className="bg-gradient-to-r from-coral-500 to-purple-600 hover:from-coral-600 hover:to-purple-700"
           >
             <TierIcon className="h-4 w-4 mr-2" />
             {cta.buttonText}
@@ -123,7 +123,7 @@ export function LockedFeature({
 
       <Button
         onClick={handleUpgrade}
-        className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+        className="bg-gradient-to-r from-coral-500 to-purple-600 hover:from-coral-600 hover:to-purple-700"
       >
         <TierIcon className="h-4 w-4 mr-2" />
         {cta.buttonText}
@@ -132,7 +132,7 @@ export function LockedFeature({
       {showPrice && cta.betaPrice > 0 && (
         <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
           <span className="line-through mr-2">€{cta.price}</span>
-          <span className="text-pink-600 dark:text-pink-400 font-semibold">€{cta.betaPrice}</span>
+          <span className="text-coral-600 dark:text-coral-400 font-semibold">€{cta.betaPrice}</span>
           <span className="text-xs ml-1">(Beta prijs)</span>
         </p>
       )}
@@ -184,7 +184,7 @@ export function UpgradeBadge({ feature, className }: UpgradeBadgeProps) {
     <span
       className={cn(
         'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium',
-        'bg-gradient-to-r from-purple-500 to-pink-500 text-white',
+        'bg-gradient-to-r from-purple-500 to-coral-500 text-white',
         className
       )}
     >
@@ -261,9 +261,9 @@ function getTierColors(tier: ProgramTier) {
     case 'vip':
       return 'bg-gradient-to-r from-yellow-500 to-amber-500 text-white';
     case 'transformatie':
-      return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
+      return 'bg-gradient-to-r from-purple-500 to-coral-500 text-white';
     case 'kickstart':
-      return 'bg-gradient-to-r from-pink-500 to-rose-500 text-white';
+      return 'bg-gradient-to-r from-coral-500 to-rose-500 text-white';
     default:
       return 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
   }

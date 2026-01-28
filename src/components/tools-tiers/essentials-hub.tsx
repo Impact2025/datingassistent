@@ -46,7 +46,7 @@ export function EssentialsHub() {
       title: 'Personal Recommendations',
       description: 'AI-driven aanbevelingen voor jou',
       icon: <Sparkles className="w-6 h-6" />,
-      gradient: 'from-purple-500 to-pink-500',
+      gradient: 'from-purple-500 to-coral-500',
     },
     {
       id: 'stats',

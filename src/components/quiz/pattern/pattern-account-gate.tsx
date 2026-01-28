@@ -126,7 +126,7 @@ export function PatternAccountGate({
                 'Toegang tot je persoonlijke dashboard',
               ].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm text-gray-600">
-                  <Check className="w-4 h-4 text-pink-500" />
+                  <Check className="w-4 h-4 text-coral-500" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -144,7 +144,7 @@ export function PatternAccountGate({
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="Je voornaam"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
                   autoComplete="given-name"
                 />
               </div>
@@ -159,7 +159,7 @@ export function PatternAccountGate({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="jouw@email.nl"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
                   autoComplete="email"
                 />
               </div>
@@ -175,7 +175,7 @@ export function PatternAccountGate({
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Minimaal 8 karakters"
-                    className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 transition-colors"
+                    className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
                     autoComplete="new-password"
                   />
                   <button
@@ -211,7 +211,7 @@ export function PatternAccountGate({
                   type="checkbox"
                   checked={acceptsMarketing}
                   onChange={(e) => setAcceptsMarketing(e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded border-gray-300 text-pink-500 focus:ring-pink-500"
+                  className="mt-1 w-4 h-4 rounded border-gray-300 text-coral-500 focus:ring-coral-500"
                 />
                 <span className="text-sm text-gray-500">
                   Ontvang ook mijn beste dating inzichten per mail
@@ -232,7 +232,7 @@ export function PatternAccountGate({
               <button
                 type="submit"
                 disabled={!canSubmit}
-                className="w-full px-6 py-4 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                className="w-full px-6 py-4 bg-coral-500 text-white rounded-full font-semibold hover:bg-coral-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
               >
                 {isCreatingAccount || isSubmitting ? (
                   <>
@@ -257,7 +257,7 @@ export function PatternAccountGate({
             {/* Login link */}
             <p className="mt-4 text-center text-sm text-gray-500">
               Al een account?{' '}
-              <a href="/login" className="text-pink-600 hover:text-pink-700 font-medium">
+              <a href="/login" className="text-coral-600 hover:text-coral-700 font-medium">
                 Log in
               </a>
             </p>

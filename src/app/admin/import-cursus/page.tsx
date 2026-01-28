@@ -181,7 +181,7 @@ export default function ImportCursusPage() {
         <div className="mt-8 flex gap-4">
           <a
             href="/cursussen/dating-fundament-pro"
-            className="text-pink-600 hover:text-pink-700 font-medium"
+            className="text-coral-600 hover:text-coral-700 font-medium"
           >
             → Bekijk cursus pagina
           </a>

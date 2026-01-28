@@ -35,7 +35,7 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
   const hasFoutGoed = content.fout && content.goed;
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -152,8 +152,8 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
 
         {/* Tip / Formule */}
         {(content.tip || content.formule) && (
-          <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 border-l-4 border-pink-500 mb-6">
-            <p className="text-sm font-semibold text-pink-900 dark:text-pink-300 mb-2">💡 Tip:</p>
+          <div className="p-5 rounded-lg bg-gradient-to-r from-coral-100 to-coral-200 dark:from-coral-900/40 dark:to-coral-800/40 border-l-4 border-coral-500 mb-6">
+            <p className="text-sm font-semibold text-coral-900 dark:text-coral-300 mb-2">💡 Tip:</p>
             <p className="text-gray-900 dark:text-white leading-relaxed">{content.tip || content.formule}</p>
           </div>
         )}
@@ -162,7 +162,7 @@ export function ExamplesSectie({ sectie, isCompleted, onComplete }: ExamplesSect
         {!isCompleted && (
           <PrimaryButton
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
             Voorbeelden bekeken!

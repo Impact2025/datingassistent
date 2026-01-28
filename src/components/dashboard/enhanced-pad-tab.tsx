@@ -143,9 +143,9 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
       title: 'Fundament',
       subtitle: 'Ken jezelf',
       icon: User,
-      color: 'text-pink-600',
-      bgColor: 'bg-pink-50',
-      borderColor: 'border-pink-200',
+      color: 'text-coral-600',
+      bgColor: 'bg-coral-50',
+      borderColor: 'border-coral-200',
       status: currentPhase >= 1 ? (currentPhase > 1 ? 'completed' : 'in_progress') : 'locked',
       progress: currentPhase > 1 ? 100 : (currentPhase === 1 ? 60 : 0),
       tools: [
@@ -254,7 +254,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-pink-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-coral-500 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Je programma's laden...</p>
         </div>
       </div>
@@ -264,12 +264,12 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
   // Show Transformatie when in transformatie mode - premium cursus ervaring
   if (viewMode === 'transformatie' && hasTransformatie) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white p-4 lg:p-8">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white p-4 lg:p-8">
         <div className="max-w-6xl mx-auto">
           {/* Quick navigation header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center shadow-md">
                 <span className="text-white font-bold text-lg">T</span>
               </div>
               <div>
@@ -311,7 +311,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
           className="text-center space-y-4"
         >
           <div className="flex items-center justify-center gap-3">
-            <Sparkles className="w-8 h-8 text-pink-500" />
+            <Sparkles className="w-8 h-8 text-coral-500" />
             <h1 className="text-3xl font-bold text-gray-900">Jouw Dating Reis</h1>
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -326,7 +326,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
                   variant="default"
                   size="sm"
                   onClick={() => setViewMode('transformatie')}
-                  className="bg-gradient-to-r from-pink-500 to-rose-500"
+                  className="bg-gradient-to-r from-coral-500 to-rose-500"
                 >
                   <Sparkles className="w-4 h-4 mr-2" />
                   Ga naar Transformatie
@@ -337,7 +337,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
                   variant="default"
                   size="sm"
                   onClick={() => setViewMode('kickstart')}
-                  className="bg-gradient-to-r from-pink-500 to-pink-600"
+                  className="bg-gradient-to-r from-coral-500 to-coral-600"
                 >
                   <Rocket className="w-4 h-4 mr-2" />
                   Ga naar Kickstart
@@ -350,7 +350,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
           <div className="max-w-md mx-auto space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Totale voortgang</span>
-              <span className="font-medium text-pink-600">{overallProgress}%</span>
+              <span className="font-medium text-coral-600">{overallProgress}%</span>
             </div>
             <Progress value={overallProgress} className="h-3" />
             <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
@@ -378,7 +378,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
                 <Card
                   className={cn(
                     "border-2 transition-all cursor-pointer",
-                    isActive && "ring-4 ring-pink-100 shadow-lg",
+                    isActive && "ring-4 ring-coral-100 shadow-lg",
                     isCompleted && "border-green-300 bg-green-50/30",
                     isLocked && "opacity-50 cursor-not-allowed",
                     !isLocked && "hover:shadow-md",
@@ -411,7 +411,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
                             Fase {phase.id}: {phase.title}
                           </h3>
                           {isActive && (
-                            <Badge className="bg-pink-500 text-white">
+                            <Badge className="bg-coral-500 text-white">
                               <Zap className="w-3 h-3 mr-1" />
                               Actief
                             </Badge>
@@ -439,7 +439,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
                               <span className="text-gray-600">Voortgang</span>
                               <span className={cn(
                                 "font-medium",
-                                isCompleted ? "text-green-600" : "text-pink-600"
+                                isCompleted ? "text-green-600" : "text-coral-600"
                               )}>
                                 {phase.progress}%
                               </span>
@@ -458,13 +458,13 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
                                   e.stopPropagation();
                                   handleToolClick(tool);
                                 }}
-                                className="flex items-center gap-2 p-3 bg-white rounded-lg border border-gray-200 hover:border-pink-300 hover:shadow-sm transition-all text-left group"
+                                className="flex items-center gap-2 p-3 bg-white rounded-lg border border-gray-200 hover:border-coral-300 hover:shadow-sm transition-all text-left group"
                               >
-                                <Circle className="w-4 h-4 text-gray-400 group-hover:text-pink-500" />
-                                <span className="text-sm font-medium text-gray-700 group-hover:text-pink-600 flex-1">
+                                <Circle className="w-4 h-4 text-gray-400 group-hover:text-coral-500" />
+                                <span className="text-sm font-medium text-gray-700 group-hover:text-coral-600 flex-1">
                                   {tool.name}
                                 </span>
-                                <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-pink-500" />
+                                <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-coral-500" />
                               </button>
                             ))}
                           </div>
@@ -507,9 +507,9 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+          <Card className="bg-gradient-to-r from-coral-50 to-coral-100 border-coral-200">
             <CardContent className="p-6 text-center">
-              <Sparkles className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+              <Sparkles className="w-12 h-12 text-coral-500 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-gray-900 mb-2">
                 Klaar voor de volgende stap?
               </h3>
@@ -518,7 +518,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
               </p>
               <Button
                 onClick={() => onTabChange?.('coach')}
-                className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+                className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Start Gesprek met Iris

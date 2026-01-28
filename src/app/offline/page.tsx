@@ -51,7 +51,7 @@ export default function OfflinePage() {
 
   if (isOnline) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-white to-rose-50 flex items-center justify-center p-4">
         <div className="text-center animate-pulse">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
             <Heart className="w-8 h-8 text-green-500" />
@@ -68,14 +68,14 @@ export default function OfflinePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-white to-rose-50 flex flex-col">
       {/* Header */}
-      <header className="p-4 flex items-center justify-center border-b border-pink-100">
+      <header className="p-4 flex items-center justify-center border-b border-coral-100">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center">
             <Heart className="w-6 h-6 text-white" />
           </div>
-          <span className="font-bold text-xl bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
+          <span className="font-bold text-xl bg-gradient-to-r from-coral-600 to-rose-600 bg-clip-text text-transparent">
             DatingAssistent
           </span>
         </div>
@@ -106,32 +106,32 @@ export default function OfflinePage() {
         <button
           onClick={handleRetry}
           disabled={isRetrying}
-          className="group mb-8 px-8 py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-2xl font-semibold shadow-lg shadow-pink-500/25 hover:shadow-xl hover:shadow-pink-500/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+          className="group mb-8 px-8 py-4 bg-gradient-to-r from-coral-500 to-rose-500 text-white rounded-2xl font-semibold shadow-lg shadow-coral-500/25 hover:shadow-xl hover:shadow-coral-500/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
         >
           <RefreshCw className={`w-5 h-5 ${isRetrying ? "animate-spin" : "group-hover:rotate-180 transition-transform duration-500"}`} />
           {isRetrying ? "Verbinden..." : "Opnieuw proberen"}
         </button>
 
         {/* Offline Features */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 max-w-md w-full shadow-xl border border-pink-100">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 max-w-md w-full shadow-xl border border-coral-100">
           <h2 className="font-semibold text-gray-800 mb-4 flex items-center justify-center gap-2">
             <span className="text-lg">Wat je offline kunt doen:</span>
           </h2>
           <ul className="space-y-3 text-left">
             <li className="flex items-start gap-3 text-gray-600">
-              <span className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="w-6 h-6 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span className="text-sm">1</span>
               </span>
               <span>Eerder geladen pagina&apos;s bekijken uit de cache</span>
             </li>
             <li className="flex items-start gap-3 text-gray-600">
-              <span className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="w-6 h-6 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span className="text-sm">2</span>
               </span>
               <span>Je berichten worden automatisch verstuurd zodra je weer online bent</span>
             </li>
             <li className="flex items-start gap-3 text-gray-600">
-              <span className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="w-6 h-6 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span className="text-sm">3</span>
               </span>
               <span>Gebruik de app shortcuts voor snelle toegang</span>
@@ -141,25 +141,25 @@ export default function OfflinePage() {
       </main>
 
       {/* Bottom Navigation (cached pages) */}
-      <nav className="p-4 border-t border-pink-100 bg-white/50 backdrop-blur-sm">
+      <nav className="p-4 border-t border-coral-100 bg-white/50 backdrop-blur-sm">
         <div className="flex justify-center gap-4">
           <Link
             href="/"
-            className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl hover:bg-pink-50 transition-colors"
+            className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl hover:bg-coral-50 transition-colors"
           >
             <Home className="w-6 h-6 text-gray-500" />
             <span className="text-xs text-gray-500">Home</span>
           </Link>
           <Link
             href="/dashboard"
-            className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl hover:bg-pink-50 transition-colors"
+            className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl hover:bg-coral-50 transition-colors"
           >
             <Heart className="w-6 h-6 text-gray-500" />
             <span className="text-xs text-gray-500">Dashboard</span>
           </Link>
           <Link
             href="/chat"
-            className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl hover:bg-pink-50 transition-colors"
+            className="flex flex-col items-center gap-1 px-4 py-2 rounded-xl hover:bg-coral-50 transition-colors"
           >
             <MessageCircle className="w-6 h-6 text-gray-500" />
             <span className="text-xs text-gray-500">Chat</span>

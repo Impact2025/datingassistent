@@ -128,10 +128,10 @@ export function PaymentSuccessClientComponent() {
   // Show loading or success state
   if (isVerifying) {
     return (
-      <main className="min-h-screen bg-gradient-to-b from-pink-50 via-white to-white flex items-center justify-center p-4">
-        <Card className="w-full max-w-md border-2 border-pink-100 shadow-xl">
+      <main className="min-h-screen bg-gradient-to-b from-coral-50 via-white to-white flex items-center justify-center p-4">
+        <Card className="w-full max-w-md border-2 border-coral-100 shadow-xl">
           <CardContent className="pt-8 pb-8 text-center space-y-6">
-            <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+            <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-coral-100 to-coral-200 flex items-center justify-center">
               <LoadingSpinner />
             </div>
             <div>
@@ -145,15 +145,15 @@ export function PaymentSuccessClientComponent() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-pink-50 via-white to-white">
+    <main className="min-h-screen bg-gradient-to-b from-coral-50 via-white to-white">
       {/* Header with Logo */}
       <div className="pt-8 pb-4 text-center">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center">
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <span className="text-2xl font-bold">
-            <span className="text-pink-500">Dating</span>
+            <span className="text-coral-500">Dating</span>
             <span className="text-gray-800">Assistent</span>
           </span>
         </div>
@@ -162,7 +162,7 @@ export function PaymentSuccessClientComponent() {
       <div className="flex items-center justify-center p-4">
         <div className="w-full max-w-lg space-y-6">
           {/* Main Success Card */}
-          <Card className="border-2 border-pink-200 shadow-xl bg-white overflow-hidden">
+          <Card className="border-2 border-coral-200 shadow-xl bg-white overflow-hidden">
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 pt-8 pb-6 text-center">
               <div className="mx-auto mb-4 w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg">
                 <CheckCircle className="w-10 h-10 text-white" />
@@ -189,10 +189,10 @@ export function PaymentSuccessClientComponent() {
               )}
 
               {/* What's Next */}
-              <div className="bg-gradient-to-r from-pink-50 to-pink-100 rounded-xl p-5 border border-pink-100">
+              <div className="bg-gradient-to-r from-coral-50 to-coral-100 rounded-xl p-5 border border-coral-100">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
-                    <Rocket className="w-4 h-4 text-pink-600" />
+                  <div className="w-8 h-8 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0">
+                    <Rocket className="w-4 h-4 text-coral-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-2">Wat gebeurt er nu?</h3>
@@ -226,7 +226,7 @@ export function PaymentSuccessClientComponent() {
               {/* Support */}
               <p className="text-center text-sm text-gray-500">
                 Vragen? Mail ons op{' '}
-                <a href="mailto:support@datingassistent.nl" className="text-pink-600 hover:underline">
+                <a href="mailto:support@datingassistent.nl" className="text-coral-600 hover:underline">
                   support@datingassistent.nl
                 </a>
               </p>

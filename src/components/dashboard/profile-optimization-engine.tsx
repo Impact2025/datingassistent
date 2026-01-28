@@ -305,7 +305,7 @@ function ProfileOptimizationEngineInner() {
           {analysis ? (
             <>
               {/* Overall Score */}
-              <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+              <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
                 <CardContent className="pt-6">
                   <div className="text-center space-y-4">
                     <div className="w-24 h-24 mx-auto rounded-full bg-white flex items-center justify-center shadow-lg">

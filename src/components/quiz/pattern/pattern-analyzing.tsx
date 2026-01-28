@@ -53,7 +53,7 @@ export function PatternAnalyzing({ onComplete, firstName }: PatternAnalyzingProp
         {/* Spinner */}
         <div className="mb-8">
           <motion.div
-            className="w-12 h-12 mx-auto border-2 border-gray-200 border-t-pink-500 rounded-full"
+            className="w-12 h-12 mx-auto border-2 border-gray-200 border-t-coral-500 rounded-full"
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
           />
@@ -71,7 +71,7 @@ export function PatternAnalyzing({ onComplete, firstName }: PatternAnalyzingProp
         <div className="mb-6">
           <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-pink-500"
+              className="h-full bg-coral-500"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
             />
@@ -88,12 +88,12 @@ export function PatternAnalyzing({ onComplete, firstName }: PatternAnalyzingProp
               className="flex items-center justify-center gap-2 text-sm"
             >
               {index < currentStep ? (
-                <span className="text-pink-500">✓</span>
+                <span className="text-coral-500">✓</span>
               ) : index === currentStep ? (
                 <motion.span
                   animate={{ opacity: [1, 0.5, 1] }}
                   transition={{ duration: 1, repeat: Infinity }}
-                  className="text-pink-500"
+                  className="text-coral-500"
                 >
                   •
                 </motion.span>

@@ -198,7 +198,7 @@ export function LeadAccountStep({ onComplete }: LeadAccountStepProps) {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
+            className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
           >
             {isSubmitting ? (
               <>
@@ -224,7 +224,7 @@ export function LeadAccountStep({ onComplete }: LeadAccountStepProps) {
       {/* Login Link */}
       <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
         Al een account?{' '}
-        <a href="/login" className="text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300 font-medium">
+        <a href="/login" className="text-coral-600 hover:text-coral-700 dark:text-coral-400 dark:hover:text-coral-300 font-medium">
           Log in
         </a>
       </div>

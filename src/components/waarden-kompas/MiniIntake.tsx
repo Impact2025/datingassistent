@@ -38,7 +38,7 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
       id: 'valuesImportance',
       title: 'Hoe belangrijk zijn gedeelde waarden voor jou in een relatie?',
       subtitle: 'Dit bepaalt hoe we de resultaten interpreteren.',
-      icon: <Heart className="w-6 h-6 text-pink-500" />,
+      icon: <Heart className="w-6 h-6 text-coral-500" />,
       options: [
         { value: 'niet_belangrijk', label: 'Niet zo belangrijk', description: 'Andere dingen wegen zwaarder' },
         { value: 'best_belangrijk', label: 'Best belangrijk', description: 'Goede basis voor connectie' },
@@ -117,7 +117,7 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
   return (
     <Card className="bg-white border-0 shadow-sm rounded-xl max-w-2xl mx-auto">
       <CardHeader className="text-center p-10">
-        <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
+        <div className="w-16 h-16 bg-coral-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
           {currentQ.icon}
         </div>
         <CardTitle className="text-2xl font-bold text-gray-900 mb-4">
@@ -135,7 +135,7 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
-              className="bg-pink-500 h-3 rounded-full transition-all duration-300"
+              className="bg-coral-500 h-3 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -174,7 +174,7 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
           <Button
             onClick={handleNext}
             disabled={!canProceed || submitting}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all py-4 text-lg"
+            className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all py-4 text-lg"
             size="lg"
           >
             {submitting ? (

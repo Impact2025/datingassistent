@@ -273,21 +273,21 @@ export function SubscriptionTab() {
     return (
       <div className="space-y-6">
         {/* Current Subscription Status */}
-        <Card className="border-pink-200 dark:border-pink-800 bg-pink-50/50 dark:bg-pink-900/20">
+        <Card className="border-coral-200 dark:border-coral-800 bg-coral-50/50 dark:bg-coral-900/20">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-pink-100 dark:bg-pink-900/50 rounded-full flex items-center justify-center">
-                  <CheckIcon className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                <div className="w-10 h-10 bg-coral-100 dark:bg-coral-900/50 rounded-full flex items-center justify-center">
+                  <CheckIcon className="w-5 h-5 text-coral-600 dark:text-coral-400" />
                 </div>
                 <div>
-                  <CardTitle className="text-pink-900 dark:text-pink-100">Actief Abonnement</CardTitle>
-                  <CardDescription className="text-pink-700 dark:text-pink-300">
+                  <CardTitle className="text-coral-900 dark:text-coral-100">Actief Abonnement</CardTitle>
+                  <CardDescription className="text-coral-700 dark:text-coral-300">
                     Je hebt toegang tot alle {pkgInfo.name} features
                   </CardDescription>
                 </div>
               </div>
-              <Badge className="bg-pink-100 dark:bg-pink-900/50 text-pink-800 dark:text-pink-200 border-pink-200 dark:border-pink-700">
+              <Badge className="bg-coral-100 dark:bg-coral-900/50 text-coral-800 dark:text-coral-200 border-coral-200 dark:border-coral-700">
                 {currentSubscription.billingPeriod === 'yearly' ? 'Jaarlijks' : 'Maandelijks'}
               </Badge>
             </div>
@@ -394,7 +394,7 @@ export function SubscriptionTab() {
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
                     <div
-                      className="bg-pink-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-coral-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${usageStats.usage.icebreakersDaily.percentage}%` }}
                     />
                   </div>
@@ -562,7 +562,7 @@ export function SubscriptionTab() {
       >
         {isFeatured && (
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-            <Badge className="bg-gradient-to-r from-pink-500 to-pink-600 text-white px-3 py-1">
+            <Badge className="bg-gradient-to-r from-coral-500 to-coral-600 text-white px-3 py-1">
               Meest Populair
             </Badge>
           </div>
@@ -710,8 +710,8 @@ export function SubscriptionTab() {
 
       {/* Header */}
       <div className="text-center space-y-4">
-        <div className="mx-auto w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center">
-          <CreditCard className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+        <div className="mx-auto w-12 h-12 bg-gradient-to-br from-coral-100 to-coral-200 dark:from-coral-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center">
+          <CreditCard className="w-6 h-6 text-coral-600 dark:text-coral-400" />
         </div>
         <div>
           <h2 className="text-2xl font-bold">Upgrade je abonnement</h2>

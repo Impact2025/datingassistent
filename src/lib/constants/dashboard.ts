@@ -119,7 +119,7 @@ export const FEATURED_TOOL_IDS = {
 
 // Color mappings for consistent styling
 export const COLOR_MAP: Record<string, string> = {
-  pink: 'bg-pink-100 text-pink-600',
+  pink: 'bg-coral-100 text-coral-600',
   blue: 'bg-blue-100 text-blue-600',
   purple: 'bg-purple-100 text-purple-600',
   green: 'bg-green-100 text-green-600',
@@ -129,11 +129,11 @@ export const COLOR_MAP: Record<string, string> = {
   rose: 'bg-rose-100 text-rose-600',
   yellow: 'bg-yellow-100 text-yellow-600',
   gold: 'bg-yellow-100 text-yellow-600',
-  'purple-pink': 'bg-gradient-to-br from-purple-500 to-pink-500 text-white',
+  'purple-pink': 'bg-gradient-to-br from-purple-500 to-coral-500 text-white',
 };
 
 export const BORDER_COLOR_MAP: Record<string, string> = {
-  pink: 'border-pink-200 hover:border-pink-300',
+  pink: 'border-coral-200 hover:border-coral-300',
   blue: 'border-blue-200 hover:border-blue-300',
   purple: 'border-purple-200 hover:border-purple-300',
   green: 'border-green-200 hover:border-green-300',
@@ -143,7 +143,7 @@ export const BORDER_COLOR_MAP: Record<string, string> = {
   rose: 'border-rose-200 hover:border-rose-300',
   yellow: 'border-yellow-200 hover:border-yellow-300',
   gold: 'border-yellow-200 hover:border-yellow-300',
-  'purple-pink': 'border-purple-300 hover:border-pink-400',
+  'purple-pink': 'border-purple-300 hover:border-coral-400',
 };
 
 // Cache keys for localStorage

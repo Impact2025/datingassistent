@@ -265,7 +265,7 @@ export function VimeoPlayer({
               }}
             >
               <div
-                className="h-full bg-pink-500 rounded-full transition-all group-hover:bg-pink-400"
+                className="h-full bg-coral-500 rounded-full transition-all group-hover:bg-coral-400"
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>

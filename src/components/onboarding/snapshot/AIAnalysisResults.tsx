@@ -47,7 +47,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', bounce: 0.5, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-100 to-purple-100 rounded-full text-pink-700 text-sm font-medium mb-4"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-coral-100 to-purple-100 rounded-full text-coral-700 text-sm font-medium mb-4"
         >
           <Sparkles className="w-4 h-4" />
           AI Analyse Compleet
@@ -244,10 +244,10 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
-            className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-5 sm:p-6 border border-pink-200"
+            className="bg-gradient-to-br from-coral-50 to-purple-50 rounded-2xl p-5 sm:p-6 border border-coral-200"
           >
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-pink-200">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-coral-500 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-coral-200">
                 <Lightbulb className="w-5 h-5" />
               </div>
               <div>
@@ -263,14 +263,14 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.5 + i * 0.1 }}
-                  className="bg-white/80 backdrop-blur rounded-xl p-4 border border-pink-100"
+                  className="bg-white/80 backdrop-blur rounded-xl p-4 border border-coral-100"
                 >
                   {/* Factors tags */}
                   <div className="flex flex-wrap gap-1.5 mb-2">
                     {insight.factors.map((factor, j) => (
                       <span
                         key={j}
-                        className="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full"
+                        className="text-xs bg-coral-100 text-coral-700 px-2 py-0.5 rounded-full"
                       >
                         {factor}
                       </span>
@@ -279,7 +279,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
 
                   <p className="text-gray-800 font-medium mb-1.5">{insight.insight}</p>
                   <p className="text-sm text-gray-600 mb-2">{insight.implication}</p>
-                  <p className="text-sm text-pink-700 font-medium flex items-start gap-1.5">
+                  <p className="text-sm text-coral-700 font-medium flex items-start gap-1.5">
                     <Sparkles className="w-4 h-4 flex-shrink-0 mt-0.5" />
                     {insight.recommendation}
                   </p>
@@ -297,7 +297,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
           className="bg-gray-900 text-white rounded-2xl p-5 sm:p-6"
         >
           <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-pink-400" />
+            <Sparkles className="w-5 h-5 text-coral-400" />
             Waar we aan gaan werken
           </h3>
 
@@ -308,7 +308,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
               <ul className="space-y-1.5">
                 {coachingPreview.whatIrisNoticed.map((notice, i) => (
                   <li key={i} className="text-gray-300 flex items-start gap-2 text-sm">
-                    <CheckCircle className="w-4 h-4 text-pink-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-4 h-4 text-coral-400 flex-shrink-0 mt-0.5" />
                     {notice}
                   </li>
                 ))}
@@ -323,7 +323,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
               <ul className="space-y-1.5">
                 {coachingPreview.focusAreasForProgram.map((area, i) => (
                   <li key={i} className="text-gray-300 flex items-center gap-2 text-sm">
-                    <ArrowRight className="w-4 h-4 text-pink-400 flex-shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-coral-400 flex-shrink-0" />
                     {area}
                   </li>
                 ))}
@@ -334,13 +334,13 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
           {/* Expected breakthroughs */}
           {coachingPreview.expectedBreakthroughs.length > 0 && (
             <div className="bg-white/10 rounded-xl p-4 mb-4">
-              <p className="text-sm font-medium text-pink-300 mb-2">
+              <p className="text-sm font-medium text-coral-300 mb-2">
                 Doorbraken die je kunt verwachten:
               </p>
               <ul className="space-y-1">
                 {coachingPreview.expectedBreakthroughs.map((breakthrough, i) => (
                   <li key={i} className="text-gray-300 text-sm flex items-start gap-2">
-                    <span className="text-pink-400">•</span>
+                    <span className="text-coral-400">•</span>
                     {breakthrough}
                   </li>
                 ))}
@@ -366,7 +366,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
       >
         <Button
           onClick={onContinue}
-          className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-pink-200/50 touch-manipulation active:scale-[0.98] transition-transform"
+          className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50 touch-manipulation active:scale-[0.98] transition-transform"
         >
           Start Module 1
           <ArrowRight className="w-5 h-5 ml-2" />

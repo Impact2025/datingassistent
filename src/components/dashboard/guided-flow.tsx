@@ -281,8 +281,8 @@ export function GuidedFlow({ onComplete, onClose, className }: GuidedFlowProps) 
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-pink-600" />
+                <div className="w-10 h-10 bg-coral-100 rounded-full flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-coral-600" />
                 </div>
                 <div>
                   <CardTitle className="text-xl">Je Persoonlijke Dating Coach</CardTitle>
@@ -437,7 +437,7 @@ function AssessmentStep({ user, userProfile, onComplete }: {
               className={cn(
                 "p-3 text-left rounded-lg border transition-all",
                 assessment.currentGoals.includes(goal)
-                  ? "border-pink-500 bg-pink-50 text-pink-700"
+                  ? "border-coral-500 bg-coral-50 text-coral-700"
                   : "border-gray-200 hover:border-gray-300"
               )}
             >
@@ -462,7 +462,7 @@ function AssessmentStep({ user, userProfile, onComplete }: {
               className={cn(
                 "p-3 text-center rounded-lg border transition-all",
                 assessment.skillLevel === level.value
-                  ? "border-pink-500 bg-pink-50 text-pink-700"
+                  ? "border-coral-500 bg-coral-50 text-coral-700"
                   : "border-gray-200 hover:border-gray-300"
               )}
             >
@@ -488,7 +488,7 @@ function AssessmentStep({ user, userProfile, onComplete }: {
               className={cn(
                 "p-3 text-center rounded-lg border transition-all",
                 assessment.timeAvailable === time.value
-                  ? "border-pink-500 bg-pink-50 text-pink-700"
+                  ? "border-coral-500 bg-coral-50 text-coral-700"
                   : "border-gray-200 hover:border-gray-300"
               )}
             >
@@ -515,7 +515,7 @@ function AssessmentStep({ user, userProfile, onComplete }: {
               className={cn(
                 "p-3 text-center rounded-lg border transition-all",
                 assessment.preferredFocus === focus.value
-                  ? "border-pink-500 bg-pink-50 text-pink-700"
+                  ? "border-coral-500 bg-coral-50 text-coral-700"
                   : "border-gray-200 hover:border-gray-300"
               )}
             >
@@ -528,7 +528,7 @@ function AssessmentStep({ user, userProfile, onComplete }: {
 
       <Button
         onClick={() => onComplete(assessment)}
-        className="w-full bg-pink-500 hover:bg-pink-600"
+        className="w-full bg-coral-500 hover:bg-coral-600"
         disabled={assessment.currentGoals.length === 0}
       >
         Start mijn persoonlijke plan
@@ -561,12 +561,12 @@ function PrioritiesStep({ assessment, onComplete, onBack }: {
       </div>
 
       <div className="space-y-4">
-        <Card className="border-pink-200 bg-pink-50">
+        <Card className="border-coral-200 bg-coral-50">
           <CardContent className="p-4">
-            <h4 className="font-medium text-pink-800 mb-2">Je doelen:</h4>
+            <h4 className="font-medium text-coral-800 mb-2">Je doelen:</h4>
             <div className="flex flex-wrap gap-2">
               {assessment.currentGoals.map((goal) => (
-                <Badge key={goal} variant="secondary" className="bg-pink-100 text-pink-700">
+                <Badge key={goal} variant="secondary" className="bg-coral-100 text-coral-700">
                   {goal}
                 </Badge>
               ))}
@@ -606,7 +606,7 @@ function PrioritiesStep({ assessment, onComplete, onBack }: {
           <ArrowLeft className="w-4 h-4 mr-2" />
           Terug
         </Button>
-        <Button onClick={onComplete} className="flex-1 bg-pink-500 hover:bg-pink-600">
+        <Button onClick={onComplete} className="flex-1 bg-coral-500 hover:bg-coral-600">
           Bekijk aanbevelingen
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
@@ -646,7 +646,7 @@ function RecommendationsStep({ recommendations, selectedTools, onToolSelect, onC
             className={cn(
               "cursor-pointer transition-all",
               selectedTools.includes(tool.id)
-                ? "border-pink-500 bg-pink-50"
+                ? "border-coral-500 bg-coral-50"
                 : "border-gray-200 hover:border-gray-300"
             )}
             onClick={() => onToolSelect(tool.id)}
@@ -655,7 +655,7 @@ function RecommendationsStep({ recommendations, selectedTools, onToolSelect, onC
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 mt-1">
                   {selectedTools.includes(tool.id) ? (
-                    <CheckCircle className="w-5 h-5 text-pink-500" />
+                    <CheckCircle className="w-5 h-5 text-coral-500" />
                   ) : (
                     tool.icon
                   )}
@@ -665,7 +665,7 @@ function RecommendationsStep({ recommendations, selectedTools, onToolSelect, onC
                     <h4 className="font-medium text-gray-900">{tool.name}</h4>
                     <Badge
                       variant={tool.priority === 'high' ? 'default' : 'secondary'}
-                      className={tool.priority === 'high' ? 'bg-pink-500' : ''}
+                      className={tool.priority === 'high' ? 'bg-coral-500' : ''}
                     >
                       {tool.estimatedTime}min
                     </Badge>
@@ -696,7 +696,7 @@ function RecommendationsStep({ recommendations, selectedTools, onToolSelect, onC
         </Button>
         <Button
           onClick={onComplete}
-          className="flex-1 bg-pink-500 hover:bg-pink-600"
+          className="flex-1 bg-coral-500 hover:bg-coral-600"
           disabled={selectedTools.length === 0}
         >
           Maak actieplan
@@ -733,14 +733,14 @@ function ActionPlanStep({ selectedTools, recommendations, onComplete, onBack }: 
         </p>
       </div>
 
-      <Card className="border-pink-200 bg-pink-50">
+      <Card className="border-coral-200 bg-coral-50">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <h4 className="font-medium text-pink-800">Geselecteerde tools</h4>
-              <p className="text-sm text-pink-700">{selectedTools.length} tools • {totalTime} minuten totaal</p>
+              <h4 className="font-medium text-coral-800">Geselecteerde tools</h4>
+              <p className="text-sm text-coral-700">{selectedTools.length} tools • {totalTime} minuten totaal</p>
             </div>
-            <Target className="w-8 h-8 text-pink-500" />
+            <Target className="w-8 h-8 text-coral-500" />
           </div>
         </CardContent>
       </Card>
@@ -750,8 +750,8 @@ function ActionPlanStep({ selectedTools, recommendations, onComplete, onBack }: 
           <Card key={tool.id} className="border-gray-200">
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-bold text-pink-600">{index + 1}</span>
+                <div className="flex-shrink-0 w-8 h-8 bg-coral-100 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-bold text-coral-600">{index + 1}</span>
                 </div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900 mb-1">{tool.name}</h4>
@@ -777,7 +777,7 @@ function ActionPlanStep({ selectedTools, recommendations, onComplete, onBack }: 
           <ArrowLeft className="w-4 h-4 mr-2" />
           Terug
         </Button>
-        <Button onClick={onComplete} className="flex-1 bg-pink-500 hover:bg-pink-600">
+        <Button onClick={onComplete} className="flex-1 bg-coral-500 hover:bg-coral-600">
           Start implementatie
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
@@ -859,7 +859,7 @@ function ImplementationStep({ selectedTools, recommendations, completedSteps, on
                       <Button
                         size="sm"
                         onClick={() => onImplementTool(tool)}
-                        className="bg-pink-500 hover:bg-pink-600"
+                        className="bg-coral-500 hover:bg-coral-600"
                       >
                         Start nu
                         <ArrowRight className="w-3 h-3 ml-1" />
@@ -968,7 +968,7 @@ function FollowUpStep({ completedSteps, onComplete }: {
         </Card>
       </div>
 
-      <Button onClick={onComplete} className="w-full bg-pink-500 hover:bg-pink-600">
+      <Button onClick={onComplete} className="w-full bg-coral-500 hover:bg-coral-600">
         Terug naar dashboard
         <CheckCircle className="w-4 h-4 ml-2" />
       </Button>

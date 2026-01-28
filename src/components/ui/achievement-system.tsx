@@ -260,7 +260,7 @@ export function AchievementSystem({ toolId, className }: AchievementSystemProps)
         id: 'values-discoverer',
         title: 'Waarden Ontdekker',
         description: 'Waarden Kompas volledig doorlopen',
-        icon: <Gift className="w-5 h-5 text-pink-500" />,
+        icon: <Gift className="w-5 h-5 text-coral-500" />,
         unlocked: tools.some(t => t.toolName === 'waarden-kompas' && t.progressPercentage >= 100),
         rarity: 'epic',
         toolName: 'Waarden Kompas'

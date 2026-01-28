@@ -67,7 +67,7 @@ const categoryColors: Record<string, { bg: string; text: string; border: string;
     bg: 'bg-purple-50 dark:bg-purple-950/30',
     text: 'text-purple-700 dark:text-purple-400',
     border: 'border-purple-200 dark:border-purple-800',
-    gradient: 'from-purple-500 to-pink-500',
+    gradient: 'from-purple-500 to-coral-500',
   },
   'hechtingsstijlen': {
     bg: 'bg-blue-50 dark:bg-blue-950/30',
@@ -82,10 +82,10 @@ const categoryColors: Record<string, { bg: string; text: string; border: string;
     gradient: 'from-green-500 to-emerald-500',
   },
   'opnieuw-daten': {
-    bg: 'bg-pink-50 dark:bg-pink-950/30',
-    text: 'text-pink-700 dark:text-pink-400',
-    border: 'border-pink-200 dark:border-pink-800',
-    gradient: 'from-pink-500 to-rose-500',
+    bg: 'bg-coral-50 dark:bg-coral-950/30',
+    text: 'text-coral-700 dark:text-coral-400',
+    border: 'border-coral-200 dark:border-coral-800',
+    gradient: 'from-coral-500 to-rose-500',
   },
   'profiel-optimaliseren': {
     bg: 'bg-cyan-50 dark:bg-cyan-950/30',

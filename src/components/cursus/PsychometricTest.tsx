@@ -210,7 +210,7 @@ export function PsychometricTest({
         {/* Resultaten Header */}
         <Card className="text-center">
           <CardContent className="pt-8 pb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <Brain className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -288,7 +288,7 @@ export function PsychometricTest({
           <CardContent className="pt-6">
             <Button
               onClick={() => onComplete(resultaten)}
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+              className="w-full bg-gradient-to-r from-purple-500 to-coral-500 hover:from-purple-600 hover:to-coral-600 text-white"
               size="lg"
             >
               Resultaten Opslaan & Doorgaan
@@ -374,7 +374,7 @@ export function PsychometricTest({
             <Button
               onClick={handleVolgende}
               disabled={!antwoorden[huidigeVraagData.id]}
-              className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+              className="flex-1 bg-gradient-to-r from-purple-500 to-coral-500 hover:from-purple-600 hover:to-coral-600 text-white"
             >
               {huidigeVraag === vragen.length - 1 ? (
                 <>

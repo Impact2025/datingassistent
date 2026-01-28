@@ -177,7 +177,7 @@ export default function AdminQASessionsPage() {
     return (
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="max-w-4xl mx-auto">
-          <Loader2 className="w-8 h-8 text-pink-500 animate-spin mx-auto" />
+          <Loader2 className="w-8 h-8 text-coral-500 animate-spin mx-auto" />
         </div>
       </div>
     );
@@ -190,7 +190,7 @@ export default function AdminQASessionsPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-              <Calendar className="w-8 h-8 text-pink-600" />
+              <Calendar className="w-8 h-8 text-coral-600" />
               Q&A Sessies Beheer
             </h1>
             <p className="text-gray-600 mt-1">
@@ -202,7 +202,7 @@ export default function AdminQASessionsPage() {
               resetForm();
               setShowForm(true);
             }}
-            className="bg-pink-600 hover:bg-pink-700 text-white"
+            className="bg-coral-600 hover:bg-coral-700 text-white"
           >
             <Plus className="w-4 h-4 mr-2" />
             Nieuwe Sessie
@@ -221,8 +221,8 @@ export default function AdminQASessionsPage() {
 
         {/* Form */}
         {showForm && (
-          <Card className="mb-6 border-pink-200 shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-pink-50 to-white">
+          <Card className="mb-6 border-coral-200 shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-coral-50 to-white">
               <CardTitle className="flex items-center justify-between">
                 <span>{editingId ? 'Sessie Bewerken' : 'Nieuwe Sessie'}</span>
                 <Button
@@ -385,7 +385,7 @@ export default function AdminQASessionsPage() {
             </Card>
           ) : (
             sessions.map((session) => (
-              <Card key={session.id} className="border-gray-200 hover:border-pink-300 transition-colors">
+              <Card key={session.id} className="border-gray-200 hover:border-coral-300 transition-colors">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">

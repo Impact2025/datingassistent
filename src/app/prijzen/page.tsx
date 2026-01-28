@@ -145,15 +145,15 @@ export default function PrijzenPage() {
       <PublicHeader />
 
       {/* Hero Section - Value Framing */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-coral-50 via-cream to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            <Badge variant="outline" className="border-pink-200 dark:border-pink-700 text-pink-600 dark:text-pink-400 px-4 py-1">
+            <Badge variant="outline" className="border-coral-200 dark:border-coral-700 text-coral-600 dark:text-coral-400 px-4 py-1">
               Investeer in jezelf
             </Badge>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-50 leading-tight">
               Investeer in jezelf,{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-pink-600">
+              <span className="text-[#B76E79]">
                 niet in eindeloos swipen
               </span>
             </h1>
@@ -178,14 +178,14 @@ export default function PrijzenPage() {
                   key={program.id}
                   className={`relative flex flex-col h-full transition-all duration-300 hover:shadow-xl ${
                     program.popular
-                      ? 'border-2 border-pink-500 dark:border-pink-400 shadow-lg lg:scale-105 lg:-my-4 z-10'
+                      ? 'border-2 border-coral-500 dark:border-coral-400 shadow-lg lg:scale-105 lg:-my-4 z-10'
                       : 'border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
                   {/* Popular Badge */}
                   {program.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <Badge className="bg-pink-500 hover:bg-pink-500 text-white px-4 py-1 text-sm font-semibold shadow-lg">
+                      <Badge className="bg-coral-500 hover:bg-coral-500 text-white px-4 py-1 text-sm font-semibold shadow-lg">
                         Onze Aanrader
                       </Badge>
                     </div>
@@ -196,12 +196,12 @@ export default function PrijzenPage() {
                     <div className="text-center mb-6">
                       <div className={`w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-4 ${
                         program.popular
-                          ? 'bg-pink-100 dark:bg-pink-900/30'
+                          ? 'bg-coral-100 dark:bg-coral-900/30'
                           : 'bg-gray-100 dark:bg-gray-800'
                       }`}>
                         <Icon className={`w-7 h-7 ${
                           program.popular
-                            ? 'text-pink-600 dark:text-pink-400'
+                            ? 'text-coral-600 dark:text-coral-400'
                             : 'text-gray-600 dark:text-gray-400'
                         }`} />
                       </div>
@@ -239,7 +239,7 @@ export default function PrijzenPage() {
                     {/* Features */}
                     <div className="flex-grow mb-6">
                       {program.includesFrom && (
-                        <p className="text-sm font-semibold text-pink-600 dark:text-pink-400 mb-3">
+                        <p className="text-sm font-semibold text-coral-600 dark:text-coral-400 mb-3">
                           {program.includesFrom}
                         </p>
                       )}
@@ -254,7 +254,7 @@ export default function PrijzenPage() {
                             {feature.included ? (
                               <CheckCircle className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
                                 feature.highlight
-                                  ? 'text-pink-500 dark:text-pink-400'
+                                  ? 'text-coral-500 dark:text-coral-400'
                                   : 'text-green-500 dark:text-green-400'
                               }`} />
                             ) : (
@@ -280,7 +280,7 @@ export default function PrijzenPage() {
                         onClick={() => handleSelectProgram(program.id)}
                         className={`w-full py-6 text-base font-semibold rounded-xl transition-all ${
                           program.popular
-                            ? 'bg-pink-500 hover:bg-pink-600 text-white shadow-lg hover:shadow-xl'
+                            ? 'bg-coral-500 hover:bg-coral-600 text-white shadow-lg hover:shadow-xl'
                             : 'bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-white text-white dark:text-gray-900'
                         }`}
                       >
@@ -325,14 +325,14 @@ export default function PrijzenPage() {
                   <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">
                     Relatiebureau
                   </th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-900/20">
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-coral-600 dark:text-coral-400 bg-coral-50 dark:bg-coral-900/20">
                     DatingAssistent
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {comparisonData.map((row, index) => (
-                  <tr key={index} className={row.highlight ? 'bg-pink-50/50 dark:bg-pink-900/10' : ''}>
+                  <tr key={index} className={row.highlight ? 'bg-coral-50/50 dark:bg-coral-900/10' : ''}>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
                       {row.feature}
                     </td>
@@ -342,9 +342,9 @@ export default function PrijzenPage() {
                     <td className="px-6 py-4 text-sm text-center text-gray-600 dark:text-gray-400">
                       {row.agency}
                     </td>
-                    <td className={`px-6 py-4 text-sm text-center font-semibold bg-pink-50 dark:bg-pink-900/20 ${
+                    <td className={`px-6 py-4 text-sm text-center font-semibold bg-coral-50 dark:bg-coral-900/20 ${
                       row.highlight
-                        ? 'text-pink-600 dark:text-pink-400'
+                        ? 'text-coral-600 dark:text-coral-400'
                         : 'text-gray-900 dark:text-gray-100'
                     }`}>
                       {row.datingassistent}
@@ -373,8 +373,8 @@ export default function PrijzenPage() {
                       <span className="text-gray-700 dark:text-gray-300">{row.agency}</span>
                     </div>
                     <div className="flex justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
-                      <span className="text-pink-600 dark:text-pink-400 font-medium">DatingAssistent</span>
-                      <span className="text-pink-600 dark:text-pink-400 font-semibold">{row.datingassistent}</span>
+                      <span className="text-coral-600 dark:text-coral-400 font-medium">DatingAssistent</span>
+                      <span className="text-coral-600 dark:text-coral-400 font-semibold">{row.datingassistent}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -410,8 +410,8 @@ export default function PrijzenPage() {
               <p className="text-xs text-gray-500 dark:text-gray-400">Bewezen resultaten</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 mx-auto rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center mb-3">
-                <Star className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+              <div className="w-12 h-12 mx-auto rounded-full bg-coral-100 dark:bg-coral-900/30 flex items-center justify-center mb-3">
+                <Star className="w-6 h-6 text-coral-600 dark:text-coral-400" />
               </div>
               <p className="text-sm font-medium text-gray-900 dark:text-gray-100">10+ Jaar ervaring</p>
               <p className="text-xs text-gray-500 dark:text-gray-400">Bekend van The Undateables</p>
@@ -433,7 +433,7 @@ export default function PrijzenPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 transition-colors">
+            <Card className="border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 transition-colors">
               <CardContent className="p-6">
                 <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">
                   Waarom eenmalige betaling?
@@ -445,7 +445,7 @@ export default function PrijzenPage() {
               </CardContent>
             </Card>
 
-            <Card className="border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 transition-colors">
+            <Card className="border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 transition-colors">
               <CardContent className="p-6">
                 <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">
                   Wat als het niet werkt voor mij?
@@ -457,7 +457,7 @@ export default function PrijzenPage() {
               </CardContent>
             </Card>
 
-            <Card className="border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 transition-colors">
+            <Card className="border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 transition-colors">
               <CardContent className="p-6">
                 <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">
                   Kan ik later upgraden?
@@ -469,7 +469,7 @@ export default function PrijzenPage() {
               </CardContent>
             </Card>
 
-            <Card className="border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 transition-colors">
+            <Card className="border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 transition-colors">
               <CardContent className="p-6">
                 <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">
                   Welk programma past bij mij?
@@ -481,7 +481,7 @@ export default function PrijzenPage() {
               </CardContent>
             </Card>
 
-            <Card className="border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 transition-colors">
+            <Card className="border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 transition-colors">
               <CardContent className="p-6">
                 <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">
                   Zijn er verborgen kosten?
@@ -493,7 +493,7 @@ export default function PrijzenPage() {
               </CardContent>
             </Card>
 
-            <Card className="border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 transition-colors">
+            <Card className="border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 transition-colors">
               <CardContent className="p-6">
                 <h4 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">
                   Hoe snel zie ik resultaten?
@@ -507,7 +507,7 @@ export default function PrijzenPage() {
           </div>
 
           <div className="text-center mt-8">
-            <Link href="/faq" className="text-pink-500 dark:text-pink-400 hover:text-pink-600 dark:hover:text-pink-300 font-medium">
+            <Link href="/faq" className="text-coral-500 dark:text-coral-400 hover:text-coral-600 dark:hover:text-coral-300 font-medium">
               Bekijk alle veelgestelde vragen →
             </Link>
           </div>
@@ -515,19 +515,19 @@ export default function PrijzenPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-16 md:py-24 px-4 bg-gradient-to-r from-pink-500 to-pink-600">
+      <section className="py-16 md:py-24 px-4 bg-gradient-to-r from-coral-500 to-coral-600">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
             Klaar om te investeren in jezelf?
           </h2>
-          <p className="text-lg text-pink-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-coral-100 mb-8 max-w-2xl mx-auto">
             Start vandaag nog met De Transformatie en leer het hele dating spel beheersen.
             Of kies het programma dat het beste bij jou past.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
               onClick={() => handleSelectProgram('transformatie')}
-              className="bg-white hover:bg-gray-100 text-pink-600 px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all font-semibold"
+              className="bg-white hover:bg-gray-100 text-coral-600 px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all font-semibold"
             >
               Start De Transformatie - €147
             </Button>
@@ -537,7 +537,7 @@ export default function PrijzenPage() {
               </Button>
             </Link>
           </div>
-          <p className="text-sm text-pink-100 mt-6">
+          <p className="text-sm text-coral-100 mt-6">
             30 dagen niet-goed-geld-terug garantie • Geen verborgen kosten • Direct toegang
           </p>
         </div>

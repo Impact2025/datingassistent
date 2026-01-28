@@ -37,7 +37,7 @@ export function JourneyTimeline({ phases, currentPhase }: JourneyTimelineProps) 
   };
 
   const colorMap: Record<string, { bg: string; text: string; border: string }> = {
-    pink: { bg: 'bg-pink-500', text: 'text-pink-600', border: 'border-pink-500' },
+    coral: { bg: 'bg-coral-500', text: 'text-coral-600', border: 'border-coral-500' },
     purple: { bg: 'bg-purple-500', text: 'text-purple-600', border: 'border-purple-500' },
     blue: { bg: 'bg-blue-500', text: 'text-blue-600', border: 'border-blue-500' },
     orange: { bg: 'bg-orange-500', text: 'text-orange-600', border: 'border-orange-500' },
@@ -51,7 +51,7 @@ export function JourneyTimeline({ phases, currentPhase }: JourneyTimelineProps) 
 
       {/* Active Progress Line */}
       <motion.div
-        className="absolute left-8 top-10 w-0.5 bg-gradient-to-b from-pink-500 to-pink-600"
+        className="absolute left-8 top-10 w-0.5 bg-gradient-to-b from-coral-500 to-coral-600"
         initial={{ height: 0 }}
         animate={{ height: `${(currentPhase / 5) * 100}%` }}
         transition={{ duration: 1, ease: 'easeOut' }}
@@ -61,7 +61,7 @@ export function JourneyTimeline({ phases, currentPhase }: JourneyTimelineProps) 
       <div className="space-y-8">
         {phases.map((phase, index) => {
           const Icon = iconMap[phase.id] || Circle;
-          const colors = colorMap[phase.color] || colorMap.pink;
+          const colors = colorMap[phase.color] || colorMap.coral;
           const isCompleted = phase.status === 'completed';
           const isCurrent = phase.status === 'current';
           const isLocked = phase.status === 'locked';
@@ -79,7 +79,7 @@ export function JourneyTimeline({ phases, currentPhase }: JourneyTimelineProps) 
                 className={cn(
                   "relative z-10 w-16 h-16 rounded-full flex items-center justify-center border-4 border-white shadow-lg",
                   isCompleted && colors.bg,
-                  isCurrent && `${colors.bg} ring-4 ring-pink-100`,
+                  isCurrent && `${colors.bg} ring-4 ring-coral-100`,
                   isLocked && "bg-gray-300"
                 )}
                 whileHover={{ scale: 1.05 }}

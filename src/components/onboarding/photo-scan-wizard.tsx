@@ -134,7 +134,7 @@ export function PhotoScanWizard({
             />
             {/* Scanning overlay */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-b from-pink-500/20 to-transparent"
+              className="absolute inset-0 bg-gradient-to-b from-coral-500/20 to-transparent"
               animate={{
                 y: ['0%', '100%', '0%'],
               }}
@@ -145,7 +145,7 @@ export function PhotoScanWizard({
               }}
             />
             {/* Corner brackets */}
-            <div className="absolute inset-2 border-2 border-pink-500/50 rounded-lg" />
+            <div className="absolute inset-2 border-2 border-coral-500/50 rounded-lg" />
           </div>
         )}
 
@@ -153,9 +153,9 @@ export function PhotoScanWizard({
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-          className="w-16 h-16 rounded-full bg-pink-50 flex items-center justify-center mx-auto mb-6"
+          className="w-16 h-16 rounded-full bg-coral-50 flex items-center justify-center mx-auto mb-6"
         >
-          <Sparkles className="w-8 h-8 text-pink-500" />
+          <Sparkles className="w-8 h-8 text-coral-500" />
         </motion.div>
 
         {/* Scanning Text */}
@@ -176,7 +176,7 @@ export function PhotoScanWizard({
         </AnimatePresence>
 
         {/* Loading indicator */}
-        <div className="flex items-center justify-center gap-2 text-pink-600">
+        <div className="flex items-center justify-center gap-2 text-coral-600">
           <Loader2 className="w-4 h-4 animate-spin" />
           <span className="text-sm">Even geduld (10 sec)</span>
         </div>
@@ -211,7 +211,7 @@ export function PhotoScanWizard({
           onClick={() => fileInputRef.current?.click()}
           className={cn(
             'border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all',
-            'border-gray-300 hover:border-pink-400 hover:bg-pink-50/50'
+            'border-gray-300 hover:border-coral-400 hover:bg-coral-50/50'
           )}
         >
           <input
@@ -267,7 +267,7 @@ export function PhotoScanWizard({
           {/* Analyze Button */}
           <Button
             onClick={handleStartScan}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
+            className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
           >
             <Camera className="w-5 h-5 mr-2" />
             Analyseer mijn foto

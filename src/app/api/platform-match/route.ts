@@ -3,6 +3,7 @@ import { chatCompletion } from '@/lib/ai-service';
 import { verifyToken } from '@/lib/auth';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
 import { trackFeatureUsage } from '@/lib/usage-tracking';
+import { getAgeRange } from '@/lib/ai-privacy';
 import { sql } from '@vercel/postgres';
 
 interface PlatformRecommendation {
@@ -103,13 +104,15 @@ export async function POST(request: Request) {
       );
     }
 
+    // Privacy: Use age ranges instead of exact age, no name, no specific location
+    const ageRange = userProfile?.age ? getAgeRange(userProfile.age) : 'Niet bekend';
+
     const systemPrompt = `Je bent een professionele dating platform consultant met expertise in Nederlandse en internationale dating apps.
 
-**GEBRUIKERSPROFIEL (van registratie):**
-- Leeftijd: ${userProfile?.age || 'Niet bekend'}
+**GEBRUIKERSPROFIEL (geanonimiseerd):**
+- Leeftijdsgroep: ${ageRange}
 - Geslacht: ${userProfile?.gender || 'Niet bekend'}
-- Locatie: ${userProfile?.location || 'Niet bekend'}
-- Naam: ${userProfile?.name || 'Niet bekend'}
+- Land: Nederland
 
 **GEBRUIKERSVOORKEUREN (van vragenlijst):**
 - Relatie doel: ${preferences.relationshipGoal}

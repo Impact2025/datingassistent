@@ -113,7 +113,7 @@ export function PatternResultWithOTO({
   // Render OTO modals
   if (otoState === 'oto') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-pink-50 to-white flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-b from-coral-50 to-white flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -162,7 +162,7 @@ export function PatternResultWithOTO({
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">
             {result.title}
           </h1>
-          <p className="text-lg text-pink-500 font-medium">
+          <p className="text-lg text-coral-500 font-medium">
             {result.subtitle}
           </p>
 
@@ -175,7 +175,7 @@ export function PatternResultWithOTO({
               </div>
               <div className="h-2 bg-gray-100 rounded-full">
                 <motion.div
-                  className="h-full bg-pink-500 rounded-full"
+                  className="h-full bg-coral-500 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${anxietyScore}%` }}
                   transition={{ duration: 0.8, delay: 0.2 }}
@@ -189,7 +189,7 @@ export function PatternResultWithOTO({
               </div>
               <div className="h-2 bg-gray-100 rounded-full">
                 <motion.div
-                  className="h-full bg-pink-300 rounded-full"
+                  className="h-full bg-coral-300 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${avoidanceScore}%` }}
                   transition={{ duration: 0.8, delay: 0.3 }}
@@ -220,7 +220,7 @@ export function PatternResultWithOTO({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="p-6 bg-pink-50 rounded-2xl"
+            className="p-6 bg-coral-50 rounded-2xl"
           >
             <h2 className="text-xl font-bold text-gray-900 mb-3">
               {result.nuance.headline}
@@ -247,11 +247,11 @@ export function PatternResultWithOTO({
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start gap-3 text-gray-600">
-                  <Check className="w-4 h-4 text-pink-500 mt-1 flex-shrink-0" />
+                  <Check className="w-4 h-4 text-coral-500 mt-1 flex-shrink-0" />
                   <span>Verborgen inzicht over je gedrag...</span>
                 </li>
                 <li className="flex items-start gap-3 text-gray-600">
-                  <Check className="w-4 h-4 text-pink-500 mt-1 flex-shrink-0" />
+                  <Check className="w-4 h-4 text-coral-500 mt-1 flex-shrink-0" />
                   <span>Waarom je aangetrokken wordt tot...</span>
                 </li>
               </ul>
@@ -319,7 +319,7 @@ export function PatternResultWithOTO({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className="p-8 bg-gradient-to-br from-pink-500 to-pink-600 text-white rounded-2xl"
+                className="p-8 bg-gradient-to-br from-coral-500 to-coral-600 text-white rounded-2xl"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <Sparkles className="w-6 h-6" />
@@ -327,7 +327,7 @@ export function PatternResultWithOTO({
                     Ontgrendel je volledige analyse
                   </h2>
                 </div>
-                <p className="text-pink-100 mb-6">
+                <p className="text-coral-100 mb-6">
                   Je hebt de eerste stap gezet. Nu is het tijd om echt te begrijpen
                   hoe dit patroon je dating beïnvloedt — en hoe je het doorbreekt.
                 </p>
@@ -339,7 +339,7 @@ export function PatternResultWithOTO({
                     'Persoonlijk 21-dagen actieplan',
                     'AI coaching op jouw situatie',
                   ].map((item, index) => (
-                    <li key={index} className="flex items-center gap-3 text-pink-100">
+                    <li key={index} className="flex items-center gap-3 text-coral-100">
                       <Check className="w-4 h-4 text-white flex-shrink-0" />
                       <span>{item}</span>
                     </li>
@@ -348,13 +348,13 @@ export function PatternResultWithOTO({
 
                 <button
                   onClick={handleShowOTO}
-                  className="w-full px-8 py-4 bg-white text-pink-600 rounded-full font-semibold hover:bg-pink-50 transition-colors flex items-center justify-center gap-2"
+                  className="w-full px-8 py-4 bg-white text-coral-600 rounded-full font-semibold hover:bg-coral-50 transition-colors flex items-center justify-center gap-2"
                 >
                   Bekijk Mijn Opties
                   <ArrowRight className="w-5 h-5" />
                 </button>
 
-                <p className="text-pink-200 text-sm mt-4 text-center">
+                <p className="text-coral-200 text-sm mt-4 text-center">
                   Eenmalige aanbieding • 30 dagen garantie
                 </p>
               </motion.section>
@@ -375,7 +375,7 @@ export function PatternResultWithOTO({
             >
               {copied ? (
                 <>
-                  <CheckCircle className="w-4 h-4 text-pink-500" />
+                  <CheckCircle className="w-4 h-4 text-coral-500" />
                   Gekopieerd
                 </>
               ) : (

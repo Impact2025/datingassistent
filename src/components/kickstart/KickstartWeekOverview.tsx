@@ -141,7 +141,7 @@ export function KickstartWeekOverview({ onBack }: KickstartWeekOverviewProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 text-pink-500 animate-spin" />
+        <Loader2 className="w-8 h-8 text-coral-500 animate-spin" />
       </div>
     );
   }

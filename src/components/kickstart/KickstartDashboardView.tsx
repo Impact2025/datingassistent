@@ -264,7 +264,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
     return (
       <div className="flex items-center justify-center min-h-[600px]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-pink-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 text-coral-500 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Kickstart laden...</p>
         </div>
       </div>
@@ -369,7 +369,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
       <div className="flex-1 min-w-0">
         {loadingDay ? (
           <div className="flex items-center justify-center h-[400px]">
-            <Loader2 className="w-8 h-8 text-pink-500 animate-spin" />
+            <Loader2 className="w-8 h-8 text-coral-500 animate-spin" />
           </div>
         ) : currentDay ? (
           <div className="space-y-6">
@@ -471,7 +471,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                     ) : currentDay.video_script ? (
                       <div className="space-y-6">
                         {/* Hook */}
-                        <div className="bg-pink-50 p-4 lg:p-6 rounded-lg border border-pink-200">
+                        <div className="bg-coral-50 p-4 lg:p-6 rounded-lg border border-coral-200">
                           <p className="text-base lg:text-lg font-medium text-gray-900 italic">
                             "{currentDay.video_script.hook}"
                           </p>
@@ -492,7 +492,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
 
                         {/* Opdracht */}
                         {currentDay.video_script.opdracht && (
-                          <div className="bg-pink-50 p-4 lg:p-6 rounded-lg border border-pink-200">
+                          <div className="bg-coral-50 p-4 lg:p-6 rounded-lg border border-coral-200">
                             <h3 className="font-semibold text-gray-900 mb-2">
                               Opdracht van vandaag
                             </h3>
@@ -568,8 +568,8 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                                           ? 'bg-red-100 border-red-500 border-2'
                                           : 'bg-gray-50 border-gray-200 border'
                                       : isSelected
-                                        ? 'bg-pink-100 border-pink-500 border-2'
-                                        : 'bg-white border-gray-200 border hover:border-pink-300'
+                                        ? 'bg-coral-100 border-coral-500 border-2'
+                                        : 'bg-white border-gray-200 border hover:border-coral-300'
                                   )}
                                 >
                                   {optie.tekst}
@@ -640,7 +640,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                           return (
                             <div key={index} className="space-y-3 p-4 rounded-xl border border-gray-200 bg-white">
                               <div className="flex items-start gap-3">
-                                <Badge className="bg-pink-100 text-pink-700 text-xs border-0 shrink-0">
+                                <Badge className="bg-coral-100 text-coral-700 text-xs border-0 shrink-0">
                                   {typeLabel}
                                 </Badge>
                                 <div className="flex-1">
@@ -670,7 +670,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                       ) : (
                         /* Legacy single question format */
                         <>
-                          <div className="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                          <div className="bg-coral-50 p-4 rounded-lg border border-coral-200">
                             <p className="font-medium text-gray-900">
                               {currentDay.reflectie.vraag}
                             </p>
@@ -715,20 +715,20 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                             className={cn(
                               'flex items-start gap-3 p-3 rounded-xl border transition-all cursor-pointer hover:shadow-sm',
                               item.completed
-                                ? 'bg-pink-50 border-pink-200'
-                                : 'bg-white border-pink-100 hover:border-pink-300'
+                                ? 'bg-coral-50 border-coral-200'
+                                : 'bg-white border-coral-100 hover:border-coral-300'
                             )}
                             onClick={() => handleWerkboekToggle(index)}
                           >
                             <Checkbox
                               checked={item.completed}
                               onCheckedChange={() => handleWerkboekToggle(index)}
-                              className="mt-0.5 data-[state=checked]:bg-pink-500 data-[state=checked]:border-pink-500"
+                              className="mt-0.5 data-[state=checked]:bg-coral-500 data-[state=checked]:border-coral-500"
                             />
                             <span
                               className={cn(
                                 'text-sm',
-                                item.completed ? 'text-pink-700 line-through' : 'text-gray-700'
+                                item.completed ? 'text-coral-700 line-through' : 'text-gray-700'
                               )}
                             >
                               {item.stap}
@@ -737,7 +737,7 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
                         ))}
                       </div>
 
-                      <div className="mt-4 p-3 bg-pink-50 rounded-xl border border-pink-100">
+                      <div className="mt-4 p-3 bg-coral-50 rounded-xl border border-coral-100">
                         <div className="flex justify-between text-sm mb-1">
                           <span>Voortgang</span>
                           <span>

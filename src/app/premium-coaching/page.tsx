@@ -286,7 +286,7 @@ export default function PremiumCoachingPage() {
 
             <Button
               onClick={() => router.push('/dashboard?tab=leren-ontwikkelen')}
-              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-purple-500 to-coral-600 hover:from-purple-600 hover:to-coral-700"
             >
               <Trophy className="w-6 h-6" />
               <span className="font-medium">VIP Learning Path</span>

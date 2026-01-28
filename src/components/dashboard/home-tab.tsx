@@ -33,10 +33,10 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
           <a
             href="/coach"
             className="bg-white p-6 rounded-xl shadow-sm border border-gray-200
-                     hover:shadow-md hover:border-pink-300 transition-all group"
+                     hover:shadow-md hover:border-coral-300 transition-all group"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
@@ -51,10 +51,10 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
           <a
             href="/cursussen"
             className="bg-white p-6 rounded-xl shadow-sm border border-gray-200
-                     hover:shadow-md hover:border-pink-300 transition-all group"
+                     hover:shadow-md hover:border-coral-300 transition-all group"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
@@ -69,10 +69,10 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
           <button
             onClick={() => onTabChange?.('pad')}
             className="bg-white p-6 rounded-xl shadow-sm border border-gray-200
-                     hover:shadow-md hover:border-pink-300 transition-all group text-left"
+                     hover:shadow-md hover:border-coral-300 transition-all group text-left"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <TrendingUp className="w-5 h-5 text-white" />
               </div>
@@ -87,10 +87,10 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
           <button
             onClick={() => onTabChange?.('profiel')}
             className="bg-white p-6 rounded-xl shadow-sm border border-gray-200
-                     hover:shadow-md hover:border-pink-300 transition-all group text-left"
+                     hover:shadow-md hover:border-coral-300 transition-all group text-left"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <Target className="w-5 h-5 text-white" />
               </div>
@@ -105,10 +105,10 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
           <a
             href="/analytics"
             className="bg-white p-6 rounded-xl shadow-sm border border-gray-200
-                     hover:shadow-md hover:border-pink-300 transition-all group"
+                     hover:shadow-md hover:border-coral-300 transition-all group"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
@@ -134,13 +134,13 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
           className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
         >
           <div className="flex items-center gap-2 mb-4">
-            <Calendar className="w-5 h-5 text-pink-500" />
+            <Calendar className="w-5 h-5 text-coral-500" />
             <h2 className="text-lg font-semibold text-gray-900">Vandaag</h2>
           </div>
 
           <div className="space-y-3">
             <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-pink-500 rounded-full mt-2"></div>
+              <div className="w-2 h-2 bg-coral-500 rounded-full mt-2"></div>
               <div>
                 <p className="text-sm font-medium text-gray-900">Verbeter je profiel</p>
                 <p className="text-xs text-gray-600">Upload een nieuwe foto en laat Iris feedback geven</p>

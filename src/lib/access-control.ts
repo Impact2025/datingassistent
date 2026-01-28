@@ -334,9 +334,9 @@ export function getTierBadgeClass(tier: ProgramTier): string {
     case 'vip':
       return 'bg-gradient-to-r from-yellow-500 to-amber-500 text-white';
     case 'transformatie':
-      return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
+      return 'bg-gradient-to-r from-purple-500 to-coral-500 text-white';
     case 'kickstart':
-      return 'bg-gradient-to-r from-pink-500 to-rose-500 text-white';
+      return 'bg-gradient-to-r from-coral-500 to-rose-500 text-white';
     default:
       return 'bg-gray-200 text-gray-700';
   }

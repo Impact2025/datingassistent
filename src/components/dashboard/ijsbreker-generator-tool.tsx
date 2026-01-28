@@ -85,7 +85,7 @@ export function IJsbrekerGeneratorTool() {
       'diepgaand': 'bg-purple-100 text-purple-800 border-purple-300',
       'licht': 'bg-blue-100 text-blue-800 border-blue-300',
       'creatief': 'bg-green-100 text-green-800 border-green-300',
-      'persoonlijk': 'bg-pink-100 text-pink-800 border-pink-300',
+      'persoonlijk': 'bg-coral-100 text-coral-800 border-coral-300',
       'speels': 'bg-orange-100 text-orange-800 border-orange-300'
     };
     return colors[category.toLowerCase()] || 'bg-gray-100 text-gray-800 border-gray-300';
@@ -299,7 +299,7 @@ export function IJsbrekerGeneratorTool() {
             </Card>
           ))}
 
-          <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+          <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
             <CardContent className="p-4">
               <h5 className="font-semibold text-purple-800 mb-2">🎯 IJsbreker Strategie</h5>
               <div className="grid md:grid-cols-2 gap-4 text-sm text-purple-700">

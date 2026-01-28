@@ -121,7 +121,7 @@ export function TutorialModal({
               <div className="mb-4">
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-pink-500 h-2 rounded-full transition-all duration-1000 ease-linear"
+                    className="bg-coral-500 h-2 rounded-full transition-all duration-1000 ease-linear"
                     style={{
                       width: '100%',
                       animation: `shrink ${step.duration}s linear forwards`
@@ -164,7 +164,7 @@ export function TutorialModal({
 
                 <Button
                   onClick={handlePrimaryAction}
-                  className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white flex items-center space-x-2"
+                  className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white flex items-center space-x-2"
                 >
                   <span>{isLast ? 'Voltooien' : 'Volgende'}</span>
                   <ArrowRight className="w-4 h-4" />

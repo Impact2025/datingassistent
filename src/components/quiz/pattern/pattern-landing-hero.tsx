@@ -67,7 +67,7 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-pink-500 tracking-tight leading-[1.1] mb-6"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#B76E79] tracking-tight leading-[1.1] mb-6"
           >
             Het is een patroon.
           </motion.h1>
@@ -101,7 +101,7 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
           >
             <button
               onClick={onStartQuiz}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600 transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-coral-500 text-white rounded-full font-semibold hover:bg-coral-600 transition-colors"
             >
               Start De Quiz
               <ArrowRight className="w-5 h-5" />
@@ -134,7 +134,7 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
                 'Eén concrete tip om het te doorbreken',
               ].map((item) => (
                 <div key={item} className="flex items-center gap-3 text-gray-600">
-                  <Check className="w-4 h-4 text-pink-500" />
+                  <Check className="w-4 h-4 text-coral-500" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -157,11 +157,11 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
           <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
             <span>© {new Date().getFullYear()} DatingAssistent</span>
             <span>•</span>
-            <Link href="/privacyverklaring" className="hover:text-pink-500 transition-colors">
+            <Link href="/privacyverklaring" className="hover:text-coral-500 transition-colors">
               Privacy
             </Link>
             <span>•</span>
-            <Link href="/algemene-voorwaarden" className="hover:text-pink-500 transition-colors">
+            <Link href="/algemene-voorwaarden" className="hover:text-coral-500 transition-colors">
               Voorwaarden
             </Link>
           </div>

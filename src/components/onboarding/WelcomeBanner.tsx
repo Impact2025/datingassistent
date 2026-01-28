@@ -51,7 +51,7 @@ export function WelcomeBanner({
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
           transition={{ duration: 0.3 }}
           className={cn(
-            "relative bg-gradient-to-r from-violet-500 to-pink-500 rounded-2xl p-6 shadow-lg overflow-hidden",
+            "relative bg-gradient-to-r from-violet-500 to-coral-500 rounded-2xl p-6 shadow-lg overflow-hidden",
             className
           )}
         >

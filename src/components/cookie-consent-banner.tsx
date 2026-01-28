@@ -85,7 +85,7 @@ export function CookieConsentBanner() {
               <Button
                 size="sm"
                 onClick={acceptAllCookies}
-                className="text-sm bg-pink-500 hover:bg-pink-600"
+                className="text-sm bg-coral-500 hover:bg-coral-600"
               >
                 Alles accepteren
               </Button>
@@ -153,7 +153,7 @@ export function CookieConsentBanner() {
               <Button variant="outline" onClick={() => setShowSettings(false)}>
                 Annuleren
               </Button>
-              <Button onClick={saveSettings} className="bg-pink-500 hover:bg-pink-600">
+              <Button onClick={saveSettings} className="bg-coral-500 hover:bg-coral-600">
                 Voorkeuren opslaan
               </Button>
             </div>

@@ -127,7 +127,7 @@ export function TransformatieOnboardingFlow({
             {/* Card */}
             <div className="bg-white rounded-3xl shadow-2xl shadow-gray-200/50 border border-gray-100 overflow-visible relative">
               {/* Video Section */}
-              <div className="relative bg-pink-500 rounded-t-3xl overflow-visible">
+              <div className="relative bg-coral-500 rounded-t-3xl overflow-visible">
                 <div className="aspect-video relative overflow-visible">
                   {/* Video */}
                   <video
@@ -146,7 +146,7 @@ export function TransformatieOnboardingFlow({
 
                   {/* Thumbnail Overlay */}
                   <div className={cn(
-                    "absolute inset-0 bg-gradient-to-b from-pink-500 via-pink-500 to-pink-600 flex flex-col items-center justify-between text-white transition-opacity duration-300 rounded-t-3xl overflow-visible",
+                    "absolute inset-0 bg-gradient-to-b from-coral-500 via-coral-500 to-coral-600 flex flex-col items-center justify-between text-white transition-opacity duration-300 rounded-t-3xl overflow-visible",
                     videoPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
                   )}>
                     {/* Avatar positioned outside container */}
@@ -167,7 +167,7 @@ export function TransformatieOnboardingFlow({
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.4, type: 'spring', bounce: 0.5 }}
                         onClick={handlePlayVideo}
-                        className="w-20 h-20 rounded-full bg-white text-pink-500 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform mb-6"
+                        className="w-20 h-20 rounded-full bg-white text-coral-500 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform mb-6"
                       >
                         <Play className="w-9 h-9 ml-1" fill="currentColor" />
                       </motion.button>
@@ -227,8 +227,8 @@ export function TransformatieOnboardingFlow({
                       transition={{ delay: 0.7 + index * 0.1 }}
                       className="flex items-center gap-3"
                     >
-                      <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center flex-shrink-0">
-                        <item.icon className="w-4 h-4 text-pink-500" />
+                      <div className="w-8 h-8 rounded-full bg-coral-50 flex items-center justify-center flex-shrink-0">
+                        <item.icon className="w-4 h-4 text-coral-500" />
                       </div>
                       <span className="text-gray-700 font-medium">{item.text}</span>
                     </motion.div>
@@ -243,7 +243,7 @@ export function TransformatieOnboardingFlow({
                 >
                   <Button
                     onClick={() => setCurrentStep('chat')}
-                    className="w-full bg-pink-500 hover:bg-pink-600 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-pink-200/50 hover:shadow-xl transition-all group"
+                    className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50 hover:shadow-xl transition-all group"
                   >
                     Laten we beginnen
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -292,7 +292,7 @@ export function TransformatieOnboardingFlow({
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                 className="mb-8"
               >
-                <IrisAvatar size="xl" showGlow className="mx-auto ring-4 ring-pink-100" />
+                <IrisAvatar size="xl" showGlow className="mx-auto ring-4 ring-coral-100" />
               </motion.div>
 
               <h2 className="text-xl font-bold text-gray-900 mb-2">
@@ -317,14 +317,14 @@ export function TransformatieOnboardingFlow({
                       className={cn(
                         'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300',
                         isComplete && 'bg-emerald-50',
-                        isCurrent && 'bg-pink-50',
+                        isCurrent && 'bg-coral-50',
                         !isComplete && !isCurrent && 'bg-gray-50'
                       )}
                     >
                       <div className={cn(
                         'w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300',
                         isComplete && 'bg-emerald-500 text-white',
-                        isCurrent && 'bg-pink-500 text-white',
+                        isCurrent && 'bg-coral-500 text-white',
                         !isComplete && !isCurrent && 'bg-gray-200 text-gray-400'
                       )}>
                         {isComplete ? (
@@ -336,7 +336,7 @@ export function TransformatieOnboardingFlow({
                       <span className={cn(
                         'text-sm font-medium transition-colors duration-300',
                         isComplete && 'text-emerald-700',
-                        isCurrent && 'text-pink-700',
+                        isCurrent && 'text-coral-700',
                         !isComplete && !isCurrent && 'text-gray-400'
                       )}>
                         {step.text}

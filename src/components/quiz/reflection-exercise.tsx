@@ -126,7 +126,7 @@ export function ReflectionExercise({ onComplete, initialAnswers = {} }: Reflecti
 
             <div className="mt-6 p-4 bg-background rounded-lg border">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <Heart className="h-5 w-5 text-pink-500" />
+                <Heart className="h-5 w-5 text-coral-500" />
                 Waarom reflecteren belangrijk is
               </h4>
               <ul className="text-sm text-muted-foreground space-y-1 text-left">

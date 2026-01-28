@@ -12,7 +12,7 @@ export function SplitSlideTemplate({ slide }: SplitSlideTemplateProps) {
       {/* Main content card */}
       <div className="w-full max-w-5xl bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
         {/* Title */}
-        <h2 className="text-2xl md:text-3xl font-bold text-pink-600 mb-6 text-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-coral-600 mb-6 text-center">
           {slide.title}
         </h2>
 

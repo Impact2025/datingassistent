@@ -283,7 +283,7 @@ export function IrisSupportChat({
         )}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-500 to-pink-600 p-4 flex-shrink-0">
+        <div className="bg-gradient-to-r from-coral-500 to-coral-600 p-4 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
@@ -341,7 +341,7 @@ export function IrisSupportChat({
                     )}>
                       {/* Avatar */}
                       {message.type === 'iris' && (
-                        <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center flex-shrink-0">
                           <Sparkles className="w-4 h-4 text-white" />
                         </div>
                       )}
@@ -355,7 +355,7 @@ export function IrisSupportChat({
                       <div className={cn(
                         'px-4 py-3 rounded-2xl',
                         message.type === 'user'
-                          ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white'
+                          ? 'bg-gradient-to-r from-coral-500 to-coral-600 text-white'
                           : message.type === 'system'
                           ? 'bg-blue-50 text-blue-900 border border-blue-200'
                           : 'bg-gray-100 text-gray-900'
@@ -403,14 +403,14 @@ export function IrisSupportChat({
                   className="flex justify-start"
                 >
                   <div className="flex gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center">
                       <Sparkles className="w-4 h-4 text-white" />
                     </div>
                     <div className="px-4 py-3 bg-gray-100 rounded-2xl">
                       <div className="flex gap-1">
-                        <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <span className="w-2 h-2 bg-coral-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-2 h-2 bg-coral-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-2 h-2 bg-coral-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                       </div>
                     </div>
                   </div>
@@ -469,7 +469,7 @@ export function IrisSupportChat({
                   <button
                     key={reply.id}
                     onClick={() => handleQuickReply(reply.id)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-pink-100 hover:text-pink-700 rounded-full text-sm text-gray-700 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-coral-100 hover:text-coral-700 rounded-full text-sm text-gray-700 transition-colors"
                   >
                     <span>{reply.icon}</span>
                     <span>{reply.label}</span>
@@ -491,7 +491,7 @@ export function IrisSupportChat({
                   disabled={isTyping}
                   className={cn(
                     'flex-1 px-4 py-3 bg-gray-50 rounded-xl',
-                    'border border-gray-200 focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20',
+                    'border border-gray-200 focus:border-coral-400 focus:ring-2 focus:ring-coral-500/20',
                     'text-sm text-gray-900 placeholder:text-gray-400',
                     'transition-all outline-none',
                     'disabled:opacity-50 disabled:cursor-not-allowed'
@@ -500,7 +500,7 @@ export function IrisSupportChat({
                 <Button
                   onClick={() => handleSendMessage()}
                   disabled={!input.trim() || isTyping}
-                  className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-4 rounded-xl"
+                  className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-4 rounded-xl"
                 >
                   {isTyping ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

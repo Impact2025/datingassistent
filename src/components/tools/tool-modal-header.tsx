@@ -107,9 +107,9 @@ export function ToolModalHeader({
                     className={cn(
                       "w-1.5 h-1.5 rounded-full transition-all duration-300",
                       i < currentStep
-                        ? "bg-pink-500 w-2 h-2" // Completed
+                        ? "bg-coral-500 w-2 h-2" // Completed
                         : i === currentStep
-                        ? "bg-pink-500 w-2.5 h-2.5" // Current
+                        ? "bg-coral-500 w-2.5 h-2.5" // Current
                         : "bg-gray-300 dark:bg-gray-600" // Upcoming
                     )}
                   />

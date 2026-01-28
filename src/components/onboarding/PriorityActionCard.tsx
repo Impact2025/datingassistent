@@ -32,12 +32,12 @@ export function PriorityActionCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
       className={cn(
-        "relative bg-gradient-to-r from-violet-50 to-pink-50 rounded-2xl overflow-hidden border-2 border-pink-200 shadow-lg",
+        "relative bg-gradient-to-r from-violet-50 to-coral-50 rounded-2xl overflow-hidden border-2 border-coral-200 shadow-lg",
         className
       )}
     >
       {/* Recommended Badge */}
-      <div className="absolute top-0 right-0 bg-pink-500 text-white text-xs font-semibold px-3 py-1 rounded-bl-xl">
+      <div className="absolute top-0 right-0 bg-coral-500 text-white text-xs font-semibold px-3 py-1 rounded-bl-xl">
         <div className="flex items-center gap-1">
           <Star className="w-3 h-3 fill-current" />
           <span>Aanbevolen</span>
@@ -68,7 +68,7 @@ export function PriorityActionCard({
 
         {/* CTA */}
         <Link href={`/tools/${toolSlug}`}>
-          <Button className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded-xl shadow-md hover:shadow-lg transition-all group">
+          <Button className="w-full bg-coral-500 hover:bg-coral-600 text-white font-semibold py-3 rounded-xl shadow-md hover:shadow-lg transition-all group">
             Start nu
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>

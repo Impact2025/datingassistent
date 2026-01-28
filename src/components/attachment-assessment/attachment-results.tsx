@@ -111,7 +111,7 @@ export function AttachmentResults({ data, onRestart, onClose, styleIcon, styleCo
 
         <TabsContent value="overview" className="space-y-6">
           {/* Primary Result Card */}
-          <Card className="border-2 border-pink-200 bg-gradient-to-br from-pink-50 to-pink-100">
+          <Card className="border-2 border-coral-200 bg-gradient-to-br from-coral-50 to-coral-100">
             <CardContent className="p-8">
               <div className="text-center">
                 <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${styleColor(data.primaryStyle)}`}>
@@ -144,7 +144,7 @@ export function AttachmentResults({ data, onRestart, onClose, styleIcon, styleCo
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Target className="w-5 h-5 text-pink-600" />
+                    <Target className="w-5 h-5 text-coral-600" />
                     Gedetailleerde Scores
                   </CardTitle>
                 </CardHeader>
@@ -188,7 +188,7 @@ export function AttachmentResults({ data, onRestart, onClose, styleIcon, styleCo
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Heart className="w-5 h-5 text-pink-600" />
+                    <Heart className="w-5 h-5 text-coral-600" />
                     In Dating Context
                   </CardTitle>
                 </CardHeader>
@@ -241,10 +241,10 @@ export function AttachmentResults({ data, onRestart, onClose, styleIcon, styleCo
               </div>
     
               {/* Tool Integrations */}
-              <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+              <Card className="bg-gradient-to-r from-coral-50 to-coral-100 border-coral-200">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <MessageCircle className="w-5 h-5 text-pink-600" />
+                    <MessageCircle className="w-5 h-5 text-coral-600" />
                     Geïntegreerde Tools
                   </CardTitle>
                 </CardHeader>
@@ -257,7 +257,7 @@ export function AttachmentResults({ data, onRestart, onClose, styleIcon, styleCo
                         className="h-auto p-4 flex flex-col items-center gap-2 hover:bg-white"
                         onClick={() => window.location.href = tool.url || '#'}
                       >
-                        <MessageCircle className="w-6 h-6 text-pink-600" />
+                        <MessageCircle className="w-6 h-6 text-coral-600" />
                         <span className="font-semibold">{tool.name || 'Tool'}</span>
                         <span className="text-sm text-gray-600">{tool.reason || 'Integratie'}</span>
                       </Button>
@@ -295,7 +295,7 @@ export function AttachmentResults({ data, onRestart, onClose, styleIcon, styleCo
 
         <Button
           variant="outline"
-          className="flex-1 flex items-center gap-2 border-pink-200 text-pink-600 hover:bg-pink-50"
+          className="flex-1 flex items-center gap-2 border-coral-200 text-coral-600 hover:bg-coral-50"
           onClick={() => {
             const url = `/api/hechtingsstijl/pdf?assessmentId=${data.assessmentId}&userId=${data.userId || '1'}`;
             window.open(url, '_blank');
@@ -306,7 +306,7 @@ export function AttachmentResults({ data, onRestart, onClose, styleIcon, styleCo
         </Button>
 
         <Button
-          className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white flex items-center gap-2"
+          className="flex-1 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white flex items-center gap-2"
           onClick={() => {
             // Share functionality
             if (navigator.share) {

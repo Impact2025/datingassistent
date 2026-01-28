@@ -142,7 +142,7 @@ function VibeCheckContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pink-50/50 to-white dark:from-gray-900 dark:to-gray-900 pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-coral-50/50 to-white dark:from-gray-900 dark:to-gray-900 pb-24">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4">
@@ -157,7 +157,7 @@ function VibeCheckContent() {
             </Button>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center">
                   <Camera className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -166,7 +166,7 @@ function VibeCheckContent() {
                 </div>
               </div>
             </div>
-            <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0">
+            <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-0">
               Transformatie
             </Badge>
           </div>
@@ -176,11 +176,11 @@ function VibeCheckContent() {
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Intro Card */}
         {!selectedImage && !analysis && (
-          <Card className="border-pink-200 dark:border-pink-700 bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/30 dark:to-rose-900/30">
+          <Card className="border-coral-200 dark:border-coral-700 bg-gradient-to-r from-coral-50 to-rose-50 dark:from-coral-900/30 dark:to-rose-900/30">
             <CardContent className="p-6">
               <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full bg-pink-100 dark:bg-pink-900/50 flex items-center justify-center flex-shrink-0">
-                  <Info className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                <div className="w-12 h-12 rounded-full bg-coral-100 dark:bg-coral-900/50 flex items-center justify-center flex-shrink-0">
+                  <Info className="w-6 h-6 text-coral-600 dark:text-coral-400" />
                 </div>
                 <div>
                   <h3 className="font-medium text-gray-900 dark:text-white mb-1">Hoe werkt het?</h3>
@@ -210,8 +210,8 @@ function VibeCheckContent() {
                   className={cn(
                     'border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer',
                     dragActive
-                      ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30'
-                      : 'border-gray-200 dark:border-gray-600 hover:border-pink-300 dark:hover:border-pink-600 hover:bg-pink-50/50 dark:hover:bg-pink-900/20'
+                      ? 'border-coral-500 bg-coral-50 dark:bg-coral-900/30'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-coral-300 dark:hover:border-coral-600 hover:bg-coral-50/50 dark:hover:bg-coral-900/20'
                   )}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
@@ -226,8 +226,8 @@ function VibeCheckContent() {
                     onChange={handleFileSelect}
                     className="hidden"
                   />
-                  <div className="w-16 h-16 rounded-full bg-pink-100 dark:bg-pink-900/50 flex items-center justify-center mx-auto mb-4">
-                    <ImageIcon className="w-8 h-8 text-pink-500" />
+                  <div className="w-16 h-16 rounded-full bg-coral-100 dark:bg-coral-900/50 flex items-center justify-center mx-auto mb-4">
+                    <ImageIcon className="w-8 h-8 text-coral-500" />
                   </div>
                   <p className="text-gray-900 dark:text-white font-medium mb-1">
                     Sleep je foto hierheen
@@ -235,7 +235,7 @@ function VibeCheckContent() {
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                     of klik om te selecteren
                   </p>
-                  <Button variant="outline" className="border-pink-300 dark:border-pink-600 text-pink-700 dark:text-pink-400 hover:bg-pink-50 dark:hover:bg-pink-900/30">
+                  <Button variant="outline" className="border-coral-300 dark:border-coral-600 text-coral-700 dark:text-coral-400 hover:bg-coral-50 dark:hover:bg-coral-900/30">
                     Kies foto
                   </Button>
                 </div>
@@ -258,7 +258,7 @@ function VibeCheckContent() {
                   <Button
                     onClick={analyzeImage}
                     disabled={isAnalyzing}
-                    className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white py-6"
+                    className="w-full bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 text-white py-6"
                   >
                     {isAnalyzing ? (
                       <>
@@ -301,19 +301,19 @@ function VibeCheckContent() {
               <Card className="dark:bg-gray-800 dark:border-gray-700">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center gap-2 dark:text-white">
-                    <Eye className="w-5 h-5 text-pink-500" />
+                    <Eye className="w-5 h-5 text-coral-500" />
                     Eerste Indruk
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="p-4 bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-900/30 dark:to-rose-900/30 rounded-xl border border-pink-100 dark:border-pink-700">
+                  <div className="p-4 bg-gradient-to-r from-coral-50 to-rose-50 dark:from-coral-900/30 dark:to-rose-900/30 rounded-xl border border-coral-100 dark:border-coral-700">
                     <p className="text-lg font-medium text-gray-900 dark:text-white italic">
                       "{analysis.eersteGedachte}"
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0 px-3 py-1">
+                    <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-0 px-3 py-1">
                       <Heart className="w-3 h-3 mr-1" />
                       {analysis.eersteEmotie}
                     </Badge>
@@ -390,12 +390,12 @@ function VibeCheckContent() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Spiegel */}
-                  <div className="p-4 rounded-xl border-2 border-pink-200 dark:border-pink-700 bg-pink-50/50 dark:bg-pink-900/20">
+                  <div className="p-4 rounded-xl border-2 border-coral-200 dark:border-coral-700 bg-coral-50/50 dark:bg-coral-900/20">
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-full bg-coral-500 flex items-center justify-center">
                         <Eye className="w-3 h-3 text-white" />
                       </div>
-                      <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0 text-xs">
+                      <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-0 text-xs">
                         Spiegel
                       </Badge>
                     </div>
@@ -445,7 +445,7 @@ function VibeCheckContent() {
                 </Button>
                 <Button
                   onClick={() => router.push('/transformatie')}
-                  className="flex-1 bg-pink-500 hover:bg-pink-600 text-white"
+                  className="flex-1 bg-coral-500 hover:bg-coral-600 text-white"
                 >
                   Terug naar cursus
                 </Button>
@@ -464,7 +464,7 @@ export default function VibeCheckPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center dark:bg-gray-900">
-        <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-coral-500" />
       </div>
     }>
       <VibeCheckContent />

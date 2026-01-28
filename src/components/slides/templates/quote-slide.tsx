@@ -13,7 +13,7 @@ export function QuoteSlideTemplate({ slide }: QuoteSlideTemplateProps) {
       {/* Main content card */}
       <div className="w-full max-w-3xl bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 text-center">
         <div className="mb-4">
-          <Lucide.Quote className="h-10 w-10 text-pink-400 mx-auto" />
+          <Lucide.Quote className="h-10 w-10 text-coral-400 mx-auto" />
         </div>
 
         <blockquote className="text-xl md:text-2xl font-semibold text-gray-800 italic max-w-2xl leading-relaxed mb-6">

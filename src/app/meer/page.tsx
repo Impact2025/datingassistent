@@ -324,7 +324,7 @@ function MeerPageContent() {
 
       <div className="p-4 space-y-6">
         {/* User Profile Card */}
-        <Card className="border-0 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-950/30 dark:to-pink-900/20 shadow-sm">
+        <Card className="border-0 bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-950/30 dark:to-coral-900/20 shadow-sm">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
@@ -349,7 +349,7 @@ function MeerPageContent() {
                       : userTier === 'transformatie'
                       ? 'bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-700 border-indigo-200'
                       : userTier === 'kickstart'
-                      ? 'bg-gradient-to-r from-pink-100 to-pink-200 text-pink-700 border-pink-200'
+                      ? 'bg-gradient-to-r from-coral-100 to-coral-200 text-coral-700 border-coral-200'
                       : 'bg-gray-100 text-gray-700 border-gray-200'
                   }`}>
                     {userTier === 'vip' ? 'VIP'
@@ -369,7 +369,7 @@ function MeerPageContent() {
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
-                      className="bg-gradient-to-r from-pink-400 to-pink-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-coral-400 to-coral-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${getUserProgress()}%` }}
                     ></div>
                   </div>
@@ -416,7 +416,7 @@ function MeerPageContent() {
                                 {item.title}
                               </h4>
                               {item.badge && (
-                                <Badge className="bg-pink-100 text-pink-700 text-xs">
+                                <Badge className="bg-coral-100 text-coral-700 text-xs">
                                   {item.badge}
                                 </Badge>
                               )}
@@ -518,7 +518,7 @@ export default function MeerPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500" />
       </div>
     }>
       <MeerPageContent />

@@ -287,7 +287,7 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
             <CardContent className="p-6">
               <div className="flex items-start justify-between mb-4">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
-                {isCompleted && <CheckCircle className="w-6 h-6 text-pink-500" />}
+                {isCompleted && <CheckCircle className="w-6 h-6 text-coral-500" />}
               </div>
               <p className="text-gray-500 dark:text-gray-400 mb-4">Onbekend sectie type: {sectie.sectie_type}</p>
               {!isCompleted && (
@@ -363,7 +363,7 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
               <span className="text-gray-600 dark:text-gray-300">
                 {voltooideSecties} van {totalSecties} secties voltooid
               </span>
-              <span className="font-medium text-pink-600 dark:text-pink-400">{Math.round(progress)}%</span>
+              <span className="font-medium text-coral-600 dark:text-coral-400">{Math.round(progress)}%</span>
             </div>
             <Progress value={progress} className="h-2" />
           </div>
@@ -377,7 +377,7 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
 
       {/* Complete Lesson Button */}
       {!isLesVoltooid && voltooideSecties === totalSecties && (
-        <Card className="border-0 shadow-sm bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30">
+        <Card className="border-0 shadow-sm bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30">
           <CardContent className="p-6 text-center">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Les voltooid!</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
@@ -385,7 +385,7 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
             </p>
             <Button
               onClick={markeerLesAlsVoltooid}
-              className="bg-gradient-to-r from-pink-500 to-pink-600"
+              className="bg-gradient-to-r from-coral-500 to-coral-600"
             >
               <CheckCircle className="w-4 h-4 mr-2" />
               Les voltooien

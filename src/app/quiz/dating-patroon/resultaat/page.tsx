@@ -56,7 +56,7 @@ function ResultContent() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-8 h-8 border-2 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Je resultaat laden...</p>
         </div>
       </div>
@@ -74,7 +74,7 @@ function ResultContent() {
           <p className="text-gray-600">{error || 'Resultaat niet gevonden'}</p>
           <a
             href="/quiz/dating-patroon"
-            className="inline-block px-6 py-3 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 transition-colors"
+            className="inline-block px-6 py-3 bg-coral-500 text-white rounded-full font-medium hover:bg-coral-600 transition-colors"
           >
             Doe de quiz opnieuw
           </a>
@@ -100,7 +100,7 @@ export default function DatingPatroonResultaatPage() {
       fallback={
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex items-center justify-center">
           <div className="text-center">
-            <div className="w-8 h-8 border-2 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-8 h-8 border-2 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-gray-600">Laden...</p>
           </div>
         </div>

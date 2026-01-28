@@ -68,7 +68,7 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
       <div className="max-w-4xl mx-auto">
         <Card>
           <CardContent className="pt-12 pb-12 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+            <div className="w-16 h-16 bg-gradient-to-br from-coral-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -78,9 +78,9 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
               We combineren je waarden om jouw persoonlijke Waarden Kompas te creëren
             </p>
             <div className="flex justify-center space-x-2">
-              <div className="w-3 h-3 bg-pink-500 rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-coral-500 rounded-full animate-bounce"></div>
               <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-              <div className="w-3 h-3 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-3 h-3 bg-coral-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
             </div>
           </CardContent>
         </Card>
@@ -131,7 +131,7 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-3">
-            <Heart className="w-6 h-6 text-pink-500" />
+            <Heart className="w-6 h-6 text-coral-500" />
             Jouw Kernwaarden (Top 5-7)
           </CardTitle>
           <p className="text-gray-600">
@@ -141,9 +141,9 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {results.coreValues.map((value, index) => (
-              <div key={value.key} className="border border-pink-200 bg-pink-50/50 rounded-lg p-4">
+              <div key={value.key} className="border border-coral-200 bg-coral-50/50 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-2">
-                  <Badge variant="secondary" className="bg-pink-100 text-pink-800">
+                  <Badge variant="secondary" className="bg-coral-100 text-coral-800">
                     #{index + 1}
                   </Badge>
                   <h3 className="font-semibold text-gray-900">{value.name}</h3>
@@ -165,7 +165,7 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           {results.coreValues.slice(0, 5).map((value) => (
-            <div key={value.key} className="border-l-4 border-l-pink-500 pl-4 bg-gray-50 p-4 rounded-r-lg">
+            <div key={value.key} className="border-l-4 border-l-coral-500 pl-4 bg-gray-50 p-4 rounded-r-lg">
               <h3 className="font-semibold text-gray-900 mb-2">{value.name}</h3>
               <p className="text-gray-700">{results.valuesMeaning[value.key]}</p>
             </div>
@@ -245,7 +245,7 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
       </Card>
 
       {/* Next Steps */}
-      <Card className="bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200">
+      <Card className="bg-gradient-to-r from-coral-50 to-purple-50 border-coral-200">
         <CardContent className="pt-6">
           <div className="text-center">
             <h3 className="text-xl font-bold text-gray-900 mb-4">
@@ -257,7 +257,7 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
             </p>
             <Button
               onClick={onComplete}
-              className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold px-8 py-3"
+              className="bg-gradient-to-r from-coral-500 to-purple-500 hover:from-coral-600 hover:to-purple-600 text-white font-semibold px-8 py-3"
               size="lg"
             >
               Integreer in Mijn Tools

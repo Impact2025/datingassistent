@@ -136,9 +136,9 @@ const questions: Question[] = [
 ];
 
 const colorMap: Record<string, string> = {
-  pink: "from-pink-500 to-rose-500",
+  pink: "from-coral-500 to-rose-500",
   purple: "from-purple-500 to-indigo-500",
-  rose: "from-rose-500 to-pink-500",
+  rose: "from-rose-500 to-coral-500",
   blue: "from-blue-500 to-cyan-500",
   yellow: "from-yellow-500 to-orange-500",
   green: "from-green-500 to-emerald-500",
@@ -146,7 +146,7 @@ const colorMap: Record<string, string> = {
 };
 
 const bgColorMap: Record<string, string> = {
-  pink: "bg-pink-100 text-pink-700",
+  pink: "bg-coral-100 text-coral-700",
   purple: "bg-purple-100 text-purple-700",
   rose: "bg-rose-100 text-rose-700",
   blue: "bg-blue-100 text-blue-700",
@@ -216,7 +216,7 @@ export function DatingDNAAssessment({ onComplete }: DatingDNAAssessmentProps) {
   return (
     <div className="space-y-6">
       {/* Progress Header */}
-      <Card className="border-2 border-pink-200 shadow-lg">
+      <Card className="border-2 border-coral-200 shadow-lg">
         <CardContent className="p-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -274,15 +274,15 @@ export function DatingDNAAssessment({ onComplete }: DatingDNAAssessmentProps) {
                         className={cn(
                           "w-full text-left p-4 rounded-lg border-2 transition-all",
                           isSelected
-                            ? "border-pink-500 bg-pink-50 shadow-md scale-[1.02]"
-                            : "border-gray-200 hover:border-pink-300 hover:bg-gray-50"
+                            ? "border-coral-500 bg-coral-50 shadow-md scale-[1.02]"
+                            : "border-gray-200 hover:border-coral-300 hover:bg-gray-50"
                         )}
                       >
                         <div className="flex items-start gap-3">
                           <div className={cn(
                             "w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5",
                             isSelected
-                              ? "border-pink-500 bg-pink-500"
+                              ? "border-coral-500 bg-coral-500"
                               : "border-gray-300"
                           )}>
                             {isSelected && (
@@ -292,7 +292,7 @@ export function DatingDNAAssessment({ onComplete }: DatingDNAAssessmentProps) {
                           <div className="flex-1">
                             <p className={cn(
                               "font-semibold mb-1",
-                              isSelected ? "text-pink-700" : "text-gray-900"
+                              isSelected ? "text-coral-700" : "text-gray-900"
                             )}>
                               {option.label}
                             </p>
@@ -332,7 +332,7 @@ export function DatingDNAAssessment({ onComplete }: DatingDNAAssessmentProps) {
               className={cn(
                 "w-2 h-2 rounded-full transition-all",
                 index === currentQuestion
-                  ? "bg-pink-500 w-8"
+                  ? "bg-coral-500 w-8"
                   : index < currentQuestion
                   ? "bg-green-500"
                   : "bg-gray-300"
@@ -348,7 +348,7 @@ export function DatingDNAAssessment({ onComplete }: DatingDNAAssessmentProps) {
             "w-32 transition-all",
             isLastQuestion
               ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
-              : "bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+              : "bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
           )}
         >
           {isLastQuestion ? "Voltooien" : "Volgende"}

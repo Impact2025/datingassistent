@@ -120,8 +120,8 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
   // =========================================================================
 
   const colorPresets = [
-    { name: 'Roze', value: '#ec4899', gradient: 'from-pink-400 to-pink-600' },
-    { name: 'Licht Roze', value: '#f472b6', gradient: 'from-pink-300 to-pink-500' },
+    { name: 'Warm Coral', value: '#FF7B54', gradient: 'from-orange-400 to-orange-600' },
+    { name: 'Licht Coral', value: '#FFB49D', gradient: 'from-orange-300 to-orange-500' },
     { name: 'Blauw', value: '#3b82f6', gradient: 'from-blue-400 to-blue-600' },
     { name: 'Groen', value: '#10b981', gradient: 'from-emerald-400 to-emerald-600' },
   ];
@@ -133,7 +133,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
   return (
     <div className="space-y-6">
       {/* Artikel Instellingen Card */}
-      <Card className="border-pink-100 shadow-lg">
+      <Card className="border-coral-100 shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg font-semibold">
             Artikel Instellingen
@@ -153,7 +153,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
               value={blogData.category || 'Online Dating Tips'}
               onValueChange={(value) => updateBlogData({ category: value })}
             >
-              <SelectTrigger className="w-full md:w-1/2 border-gray-300 focus:ring-pink-500">
+              <SelectTrigger className="w-full md:w-1/2 border-gray-300 focus:ring-coral-500">
                 <SelectValue placeholder="Selecteer categorie" />
               </SelectTrigger>
               <SelectContent>
@@ -176,7 +176,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
               placeholder="LEGO Serious Play, Teams, Facilitatie, Creativiteit"
               value={blogData.tags?.join(', ') || ''}
               onChange={(e) => handleTagsChange(e.target.value)}
-              className="border-gray-300 focus:ring-pink-500"
+              className="border-gray-300 focus:ring-coral-500"
             />
             <p className="text-xs text-gray-500">Komma-gescheiden</p>
           </div>
@@ -198,7 +198,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
                 const dateValue = e.target.value ? new Date(e.target.value) : undefined;
                 updateBlogData({ published_at: dateValue });
               }}
-              className="border-gray-300 focus:ring-pink-500 w-full md:w-1/2"
+              className="border-gray-300 focus:ring-coral-500 w-full md:w-1/2"
             />
             <p className="text-xs text-gray-500">
               Laat leeg voor huidige datum/tijd bij publiceren
@@ -208,7 +208,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
       </Card>
 
       {/* Header Afbeelding Card */}
-      <Card className="border-pink-100 shadow-lg">
+      <Card className="border-coral-100 shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg font-semibold">
             Header Afbeelding
@@ -254,7 +254,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
               className={cn(
                 'flex-1 h-12',
                 blogData.header_type === 'color'
-                  ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white hover:from-pink-600 hover:to-pink-700'
+                  ? 'bg-gradient-to-r from-coral-500 to-coral-600 text-white hover:from-coral-600 hover:to-coral-700'
                   : 'border-gray-300 hover:bg-gray-50'
               )}
               onClick={() => updateBlogData({ header_type: 'color' })}
@@ -279,7 +279,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
                       className={cn(
                         'relative h-20 rounded-lg border-2 transition-all overflow-hidden',
                         blogData.header_color === preset.value
-                          ? 'border-pink-500 ring-4 ring-pink-200'
+                          ? 'border-coral-500 ring-4 ring-coral-200'
                           : 'border-gray-200 hover:border-gray-300'
                       )}
                     >
@@ -304,7 +304,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
                   placeholder="Eigen titel voor de header..."
                   value={blogData.header_title || ''}
                   onChange={(e) => updateBlogData({ header_title: e.target.value })}
-                  className="border-gray-300 focus:ring-pink-500"
+                  className="border-gray-300 focus:ring-coral-500"
                 />
                 <p className="text-xs text-gray-500">
                   Laat leeg om de artikel titel te gebruiken
@@ -330,10 +330,10 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
       </Card>
 
       {/* Preview Card */}
-      <Card className="border-pink-100 shadow-lg">
+      <Card className="border-coral-100 shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg font-semibold flex items-center">
-            <Eye className="w-5 h-5 mr-2 text-pink-500" />
+            <Eye className="w-5 h-5 mr-2 text-coral-500" />
             Preview
           </CardTitle>
         </CardHeader>
@@ -345,7 +345,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
                 <div
                   className="absolute inset-0 flex items-center justify-center"
                   style={{
-                    background: `linear-gradient(135deg, ${blogData.header_color || '#ec4899'}, ${adjustColor(blogData.header_color || '#ec4899', -20)})`,
+                    background: `linear-gradient(135deg, ${blogData.header_color || '#FF7B54'}, ${adjustColor(blogData.header_color || '#FF7B54', -20)})`,
                   }}
                 >
                   <h1 className="text-4xl font-bold text-white drop-shadow-2xl px-8 text-center">
@@ -368,7 +368,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
             {/* Metadata Preview */}
             <div className="space-y-2 p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-2">
-                <span className="px-2 py-1 bg-pink-100 text-pink-700 text-xs font-medium rounded">
+                <span className="px-2 py-1 bg-coral-100 text-coral-700 text-xs font-medium rounded">
                   {blogData.category || 'Categorie'}
                 </span>
                 {blogData.tags && blogData.tags.length > 0 && (
@@ -376,7 +376,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
                     {blogData.tags.slice(0, 3).map((tag, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-1 bg-pink-100 text-pink-700 text-xs rounded"
+                        className="px-2 py-1 bg-coral-100 text-coral-700 text-xs rounded"
                       >
                         {tag}
                       </span>

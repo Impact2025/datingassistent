@@ -72,7 +72,7 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
         transition={{ type: 'spring', duration: 0.6, bounce: 0.3 }}
         className="mb-6"
       >
-        <Card className="relative overflow-hidden border-2 border-purple-200 bg-gradient-to-br from-purple-50 via-pink-50 to-pink-100 shadow-lg">
+        <Card className="relative overflow-hidden border-2 border-purple-200 bg-gradient-to-br from-purple-50 via-coral-50 to-coral-100 shadow-lg">
           {/* Animated Background Effect */}
           <div className="absolute inset-0 opacity-30">
             <motion.div
@@ -85,7 +85,7 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                 repeat: Infinity,
                 ease: 'linear',
               }}
-              className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-purple-300 to-pink-300 blur-3xl"
+              className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-purple-300 to-coral-300 blur-3xl"
             />
             <motion.div
               animate={{
@@ -97,7 +97,7 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                 repeat: Infinity,
                 ease: 'linear',
               }}
-              className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-300 to-purple-300 blur-3xl"
+              className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-coral-300 to-purple-300 blur-3xl"
             />
           </div>
 
@@ -114,7 +114,7 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center shadow-md"
+                  className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-coral-400 flex items-center justify-center shadow-md"
                 >
                   <Sparkles className="w-6 h-6 text-white" />
                 </motion.div>

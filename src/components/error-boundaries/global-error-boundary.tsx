@@ -42,7 +42,7 @@ export class GlobalErrorBoundary extends Component<Props, State> {
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 text-center">
-            <AlertTriangle className="w-16 h-16 text-pink-500 mx-auto mb-4" />
+            <AlertTriangle className="w-16 h-16 text-coral-500 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Er ging iets mis
             </h1>
@@ -57,7 +57,7 @@ export class GlobalErrorBoundary extends Component<Props, State> {
             <div className="space-y-2">
               <Button
                 onClick={() => window.location.reload()}
-                className="w-full bg-pink-500 hover:bg-pink-600"
+                className="w-full bg-coral-500 hover:bg-coral-600"
               >
                 Pagina Herladen
               </Button>

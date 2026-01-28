@@ -473,7 +473,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 text-pink-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-10 h-10 text-coral-500 animate-spin mx-auto mb-4" />
           <p className="text-sm text-gray-600">Je programma laden...</p>
         </div>
       </div>
@@ -555,7 +555,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center gap-2 mb-4">
-                <Keyboard className="w-5 h-5 text-pink-500" />
+                <Keyboard className="w-5 h-5 text-coral-500" />
                 <h3 className="text-lg font-semibold text-gray-900">Sneltoetsen</h3>
               </div>
               <div className="space-y-3 text-sm">
@@ -612,7 +612,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                     className={cn(
                       "w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-all",
                       lesson.id === currentLesson?.id
-                        ? "bg-pink-500 text-white"
+                        ? "bg-coral-500 text-white"
                         : lesson.progress?.status === 'completed'
                           ? "bg-green-100 text-green-700 hover:bg-green-200"
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -811,7 +811,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
 
                 {/* Mindset Hook */}
                 {currentModule?.mindset_hook && (
-                  <div className="mt-4 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg border border-pink-200">
+                  <div className="mt-4 p-4 bg-gradient-to-r from-coral-50 to-rose-50 rounded-lg border border-coral-200">
                     <p className="text-sm font-medium text-gray-800 italic">
                       "{currentModule.mindset_hook}"
                     </p>
@@ -846,7 +846,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                     {/* Video Progress Bar */}
                     <div className="h-1 bg-gray-200 rounded-full overflow-hidden mb-4">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-pink-500 to-rose-500"
+                        className="h-full bg-gradient-to-r from-coral-500 to-rose-500"
                         initial={{ width: 0 }}
                         animate={{ width: `${videoProgress}%` }}
                         transition={{ duration: 0.1 }}
@@ -987,11 +987,11 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
 
             {/* AI Tool Recommendation */}
             {currentModule?.ai_tool_name && (
-              <Card className="border-pink-200 bg-gradient-to-r from-pink-50 to-rose-50">
+              <Card className="border-coral-200 bg-gradient-to-r from-coral-50 to-rose-50">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
-                      <Sparkles className="w-5 h-5 text-pink-600" />
+                    <div className="w-10 h-10 rounded-full bg-coral-100 flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-coral-600" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-900">
@@ -1004,7 +1004,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-pink-300 text-pink-700 hover:bg-pink-100"
+                      className="border-coral-300 text-coral-700 hover:bg-coral-100"
                       onClick={() => {
                         const toolRoute = AI_TOOL_ROUTES[currentModule.ai_tool_name || ''];
                         if (toolRoute) {
@@ -1083,7 +1083,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                   className={cn(
                     "w-2.5 h-2.5 rounded-full transition-all",
                     lesson.id === currentLesson?.id
-                      ? "bg-pink-500 w-4"
+                      ? "bg-coral-500 w-4"
                       : lesson.progress?.status === 'completed'
                         ? "bg-green-500"
                         : "bg-gray-300"
@@ -1110,7 +1110,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
               variant="ghost"
               size="sm"
               onClick={handleNextLesson}
-              className="flex-1 h-12 bg-pink-50 text-pink-600"
+              className="flex-1 h-12 bg-coral-50 text-coral-600"
             >
               <ChevronRight className="w-5 h-5" />
             </Button>

@@ -136,7 +136,7 @@ export function DatingWeekNotificationModal({
           {/* Status Card */}
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-pink-500" />
+              <Calendar className="w-5 h-5 text-coral-500" />
               <div className="flex-1">
                 <div className="text-sm font-medium text-gray-900">
                   Maandag Check-in
@@ -148,7 +148,7 @@ export function DatingWeekNotificationModal({
                   }
                 </div>
               </div>
-              <Badge variant="secondary" className="bg-pink-50 text-pink-700 border-pink-200">
+              <Badge variant="secondary" className="bg-coral-50 text-coral-700 border-coral-200">
                 PRO
               </Badge>
             </div>
@@ -161,15 +161,15 @@ export function DatingWeekNotificationModal({
             </h4>
             <div className="space-y-3 text-sm text-gray-600">
               <div className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-pink-500 mt-2 flex-shrink-0"></div>
+                <div className="w-1.5 h-1.5 rounded-full bg-coral-500 mt-2 flex-shrink-0"></div>
                 <span>Persoonlijke AI inzichten van Iris</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-pink-500 mt-2 flex-shrink-0"></div>
+                <div className="w-1.5 h-1.5 rounded-full bg-coral-500 mt-2 flex-shrink-0"></div>
                 <span>Patronen ontdekken in je dating gedrag</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-pink-500 mt-2 flex-shrink-0"></div>
+                <div className="w-1.5 h-1.5 rounded-full bg-coral-500 mt-2 flex-shrink-0"></div>
                 <span>30 seconden voor betere resultaten</span>
               </div>
             </div>
@@ -179,7 +179,7 @@ export function DatingWeekNotificationModal({
           <div className="flex gap-3 pt-2">
             <Button
               onClick={handleStartLogger}
-              className="flex-1 bg-pink-500 hover:bg-pink-600 text-white"
+              className="flex-1 bg-coral-500 hover:bg-coral-600 text-white"
               disabled={isLoading}
             >
               Start Mijn Week

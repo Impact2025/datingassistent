@@ -64,7 +64,7 @@ function TransformatieContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
           <div className="flex justify-center mb-8 animate-pulse">
             <Image
@@ -77,7 +77,7 @@ function TransformatieContent() {
               unoptimized
             />
           </div>
-          <Loader2 className="w-8 h-8 animate-spin text-pink-500 mx-auto mb-4" />
+          <Loader2 className="w-8 h-8 animate-spin text-coral-500 mx-auto mb-4" />
           <p className="text-lg font-semibold text-gray-900 dark:text-white">Transformatie laden...</p>
           <p className="text-sm text-gray-500 dark:text-gray-400">Even geduld...</p>
         </div>
@@ -99,7 +99,7 @@ function TransformatieContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
         <div className="space-y-6">
           {/* Header - Consistent with Dashboard */}
@@ -174,7 +174,7 @@ function TransformatieContent() {
             {/* Transformatie Title Bar */}
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-gray-700">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-md">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center shadow-md">
                   <span className="text-white font-bold text-lg">T</span>
                 </div>
                 <div>
@@ -215,7 +215,7 @@ export default function TransformatiePage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-coral-500" />
       </div>
     }>
       <TransformatieContent />

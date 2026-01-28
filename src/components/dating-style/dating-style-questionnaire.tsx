@@ -150,7 +150,7 @@ export function DatingStyleQuestionnaire({ onComplete, onBack }: DatingStyleQues
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-coral-50 flex items-center justify-center">
         <Card className="p-8 text-center">
           <div className="animate-spin w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full mx-auto mb-4"></div>
           <p className="text-gray-600">Vragen laden...</p>
@@ -162,7 +162,7 @@ export function DatingStyleQuestionnaire({ onComplete, onBack }: DatingStyleQues
   // Micro-intake screen
   if (currentQuestionIndex === 0 && !microIntake.huidigeDatingStatus) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-coral-50">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
             <Card className="border-2 border-purple-200 bg-white/90 backdrop-blur-sm">
@@ -247,7 +247,7 @@ export function DatingStyleQuestionnaire({ onComplete, onBack }: DatingStyleQues
                   <Button
                     onClick={() => setCurrentQuestionIndex(1)}
                     disabled={!microIntake.huidigeDatingStatus || !microIntake.gewensteRelatieType || !microIntake.appGebruik}
-                    className="flex-1 bg-gradient-to-r from-purple-500 to-pink-600"
+                    className="flex-1 bg-gradient-to-r from-purple-500 to-coral-600"
                   >
                     Start Vragen
                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -263,7 +263,7 @@ export function DatingStyleQuestionnaire({ onComplete, onBack }: DatingStyleQues
 
   if (!currentQuestion) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-coral-50 flex items-center justify-center">
         <Card className="p-8 text-center">
           <AlertCircle className="w-8 h-8 text-red-600 mx-auto mb-4" />
           <p className="text-gray-600">Geen vragen beschikbaar</p>
@@ -273,7 +273,7 @@ export function DatingStyleQuestionnaire({ onComplete, onBack }: DatingStyleQues
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-coral-50">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           {/* Progress Header */}
@@ -374,7 +374,7 @@ export function DatingStyleQuestionnaire({ onComplete, onBack }: DatingStyleQues
                 <Button
                   onClick={handleNext}
                   disabled={!responses[currentQuestion.id] || submitting}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-coral-600 hover:from-purple-600 hover:to-coral-700"
                 >
                   {submitting ? (
                     <>

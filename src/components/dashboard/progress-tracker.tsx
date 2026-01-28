@@ -440,17 +440,17 @@ interface MetricCardProps {
 
 function MetricCard({ title, value, icon, color, description, isMainMetric }: MetricCardProps) {
   return (
-    <Card className={`${color} ${isMainMetric ? 'ring-2 ring-pink-300' : ''}`}>
+    <Card className={`${color} ${isMainMetric ? 'ring-2 ring-coral-300' : ''}`}>
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-2">
-          <div className={`p-2 rounded-full ${isMainMetric ? 'bg-pink-100' : 'bg-white/50'}`}>
+          <div className={`p-2 rounded-full ${isMainMetric ? 'bg-coral-100' : 'bg-white/50'}`}>
             {icon}
           </div>
-          <div className={`text-2xl font-bold ${isMainMetric ? 'text-pink-700' : 'text-gray-900'}`}>
+          <div className={`text-2xl font-bold ${isMainMetric ? 'text-coral-700' : 'text-gray-900'}`}>
             {value}
           </div>
         </div>
-        <h3 className={`font-semibold text-sm ${isMainMetric ? 'text-pink-800' : 'text-gray-900'}`}>
+        <h3 className={`font-semibold text-sm ${isMainMetric ? 'text-coral-800' : 'text-gray-900'}`}>
           {title}
         </h3>
         <p className="text-xs text-gray-600 mt-1">{description}</p>

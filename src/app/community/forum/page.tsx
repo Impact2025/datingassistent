@@ -110,17 +110,17 @@ export default function ForumPage() {
           <div className="mt-6">
             <div className="space-y-6">
               {/* Hero Section - Compact version */}
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-pink-500/5 to-purple-500/10 p-6 border border-primary/10">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-coral-500/5 to-purple-500/10 p-6 border border-primary/10">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary via-pink-600 to-purple-600 bg-clip-text text-transparent">
+                    <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary via-coral-600 to-purple-600 bg-clip-text text-transparent">
                       Community Forum
                     </h1>
                     <p className="text-muted-foreground mt-1">
                       Ontdek verhalen, deel ervaringen en vind steun bij anderen
                     </p>
                   </div>
-                  <Button asChild size="sm" className="bg-gradient-to-r from-primary to-pink-600 hover:from-primary/90 hover:to-pink-600/90">
+                  <Button asChild size="sm" className="bg-gradient-to-r from-primary to-coral-600 hover:from-primary/90 hover:to-coral-600/90">
                     <a href="/dashboard/community">
                       <Lucide.LayoutDashboard className="h-4 w-4 mr-2" />
                       Dashboard

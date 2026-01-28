@@ -20,11 +20,11 @@ export function VideoSectie({ sectie, isCompleted, onComplete }: VideoSectieProp
   };
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center">
               <Play className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -87,7 +87,7 @@ export function VideoSectie({ sectie, isCompleted, onComplete }: VideoSectieProp
         {/* Transcript or notes */}
         {content.transcript && (
           <details className="mb-6">
-            <summary className="cursor-pointer text-pink-600 dark:text-pink-400 font-medium hover:text-pink-700 dark:hover:text-pink-300">
+            <summary className="cursor-pointer text-coral-600 dark:text-coral-400 font-medium hover:text-coral-700 dark:hover:text-coral-300">
               Transcript
             </summary>
             <div className="mt-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -98,12 +98,12 @@ export function VideoSectie({ sectie, isCompleted, onComplete }: VideoSectieProp
 
         {/* Key takeaways */}
         {content.takeaways && Array.isArray(content.takeaways) && (
-          <div className="mb-6 p-4 bg-pink-50 dark:bg-pink-900/30 rounded-lg border-2 border-pink-200 dark:border-pink-700">
-            <h4 className="font-semibold text-pink-900 dark:text-pink-300 mb-3">Belangrijkste punten:</h4>
+          <div className="mb-6 p-4 bg-coral-50 dark:bg-coral-900/30 rounded-lg border-2 border-coral-200 dark:border-coral-700">
+            <h4 className="font-semibold text-coral-900 dark:text-coral-300 mb-3">Belangrijkste punten:</h4>
             <ul className="space-y-2">
               {content.takeaways.map((takeaway: string, index: number) => (
-                <li key={index} className="text-sm text-pink-800 dark:text-pink-200 flex items-start gap-2">
-                  <span className="text-pink-500 dark:text-pink-400 mt-1">•</span>
+                <li key={index} className="text-sm text-coral-800 dark:text-coral-200 flex items-start gap-2">
+                  <span className="text-coral-500 dark:text-coral-400 mt-1">•</span>
                   <span>{takeaway}</span>
                 </li>
               ))}
@@ -121,7 +121,7 @@ export function VideoSectie({ sectie, isCompleted, onComplete }: VideoSectieProp
             )}
             <PrimaryButton
               onClick={onComplete}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+              className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
             >
               <CheckCircle className="w-4 h-4 mr-2" />
               {hasWatched ? 'Video bekeken!' : 'Markeer als bekeken'}

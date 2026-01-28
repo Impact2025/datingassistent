@@ -41,9 +41,9 @@ function ResultContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-16 h-16 border-4 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600">Je resultaten laden...</p>
         </div>
       </div>
@@ -52,14 +52,14 @@ function ResultContent() {
 
   if (!datingStyle) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center p-4">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center space-y-4">
             <AlertCircle className="w-16 h-16 mx-auto text-gray-400" />
             <h2 className="text-2xl font-bold text-gray-900">Resultaat niet gevonden</h2>
             <p className="text-gray-600">Check je e-mail voor de link naar je resultaten.</p>
             <Link href="/quiz">
-              <Button className="bg-gradient-to-r from-pink-500 to-pink-600">
+              <Button className="bg-gradient-to-r from-coral-500 to-coral-600">
                 Doe de quiz opnieuw
               </Button>
             </Link>
@@ -70,7 +70,7 @@ function ResultContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <ResultReveal datingStyle={datingStyle} />
       </div>
@@ -81,9 +81,9 @@ function ResultContent() {
 export default function QuizResultPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-16 h-16 border-4 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600">Laden...</p>
         </div>
       </div>

@@ -83,7 +83,7 @@ export function UserAnalyticsDashboard({ userId }: UserAnalyticsDashboardProps) 
   if (loading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <div className="w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-coral-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -116,10 +116,10 @@ export function UserAnalyticsDashboard({ userId }: UserAnalyticsDashboardProps) 
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="border-2 border-pink-200 hover:border-pink-300 transition-colors">
+          <Card className="border-2 border-coral-200 hover:border-coral-300 transition-colors">
             <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center">
                   <CheckCircle className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -226,7 +226,7 @@ export function UserAnalyticsDashboard({ userId }: UserAnalyticsDashboardProps) 
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-700">Voltooiingspercentage</span>
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-pink-600">
+                <span className="text-lg font-bold text-coral-600">
                   {overview.completion_rate}%
                 </span>
                 {weeklyTrend !== null && (
@@ -301,7 +301,7 @@ export function UserAnalyticsDashboard({ userId }: UserAnalyticsDashboardProps) 
                   transition={{ delay: index * 0.1 }}
                   className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                 >
-                  <div className="w-2 h-2 bg-pink-500 rounded-full mt-2" />
+                  <div className="w-2 h-2 bg-coral-500 rounded-full mt-2" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate">
                       {activity.title}

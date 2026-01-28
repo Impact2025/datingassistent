@@ -20,7 +20,7 @@ interface ChatWidgetWrapperProps {
 export function ChatWidgetWrapper({
   apiUrl = '/api/chatbot',
   position = 'bottom-right',
-  primaryColor = '#E14874',
+  primaryColor = '#FF7B54',
   companyName = 'DatingAssistent',
   welcomeMessage = 'Hallo! Ik ben je AI-assistent voor dating advies. Ik kan je helpen met vragen over daten, relaties en persoonlijke ontwikkeling. Stel je vraag gerust!',
   enableProactiveInvites = true,

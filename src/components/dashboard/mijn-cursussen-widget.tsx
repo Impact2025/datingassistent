@@ -119,7 +119,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm">
+              <div className="w-12 h-12 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm">
                 <GraduationCap className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -129,7 +129,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
             </div>
             <Button
               variant="ghost"
-              className="text-pink-500 hover:text-pink-600 hover:bg-pink-50"
+              className="text-coral-500 hover:text-coral-600 hover:bg-coral-50"
               onClick={() => onTabChange?.('cursussen')}
             >
               Alles bekijken
@@ -141,7 +141,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
               <div className="flex items-center justify-center mb-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center shadow-sm">
+                <div className="w-8 h-8 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center shadow-sm">
                   <CheckCircle className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -151,7 +151,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
 
             <div className="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
               <div className="flex items-center justify-center mb-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center shadow-sm">
+                <div className="w-8 h-8 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center shadow-sm">
                   <Play className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -161,7 +161,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
 
             <div className="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
               <div className="flex items-center justify-center mb-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center shadow-sm">
+                <div className="w-8 h-8 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center shadow-sm">
                   <Clock className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -177,7 +177,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
         <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
           <CardContent className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Play className="w-5 h-5 text-pink-500" />
+              <Play className="w-5 h-5 text-coral-500" />
               <h3 className="text-base font-semibold text-gray-900 dark:text-white">Ga verder waar je was gebleven</h3>
             </div>
 
@@ -188,17 +188,17 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
                   onClick={() => onTabChange?.('cursussen')}
                   className="cursor-pointer"
                 >
-                  <div className="p-4 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-500 hover:bg-pink-50/30 dark:hover:bg-pink-900/20 transition-all group">
+                  <div className="p-4 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-coral-300 dark:hover:border-coral-500 hover:bg-coral-50/30 dark:hover:bg-coral-900/20 transition-all group">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-pink-600 transition-colors mb-1">
+                        <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-coral-600 transition-colors mb-1">
                           {cursus.titel}
                         </h4>
                         <p className="text-xs text-gray-600 dark:text-gray-300">
                           {cursus.user_progress?.voltooide_lessen} van {cursus.user_progress?.totaal_lessen} lessen
                         </p>
                       </div>
-                      <Badge className="bg-gradient-to-br from-pink-500 to-pink-600 text-white border-0">
+                      <Badge className="bg-gradient-to-br from-coral-500 to-coral-600 text-white border-0">
                         {cursus.user_progress?.percentage}%
                       </Badge>
                     </div>
@@ -212,7 +212,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
                         <span className="text-gray-600 dark:text-gray-300">
                           {cursus.user_progress?.laatste_les_titel && `Laatst: ${cursus.user_progress.laatste_les_titel}`}
                         </span>
-                        <span className="text-pink-600 font-medium group-hover:underline flex items-center gap-1">
+                        <span className="text-coral-600 font-medium group-hover:underline flex items-center gap-1">
                           Verder gaan
                           <ArrowRight className="w-3 h-3" />
                         </span>
@@ -231,7 +231,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
         <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
           <CardContent className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="w-5 h-5 text-pink-500" />
+              <Sparkles className="w-5 h-5 text-coral-500" />
               <h3 className="text-base font-semibold text-gray-900 dark:text-white">Aanbevolen voor jou</h3>
             </div>
 
@@ -242,13 +242,13 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
                   onClick={() => onTabChange?.('cursussen')}
                   className="cursor-pointer"
                 >
-                  <div className="p-4 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-500 hover:bg-pink-50/30 dark:hover:bg-pink-900/20 transition-all group h-full">
+                  <div className="p-4 rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-coral-300 dark:hover:border-coral-500 hover:bg-coral-50/30 dark:hover:bg-coral-900/20 transition-all group h-full">
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
+                      <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
                         <BookOpen className="w-5 h-5 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-pink-600 transition-colors text-sm mb-1 line-clamp-2">
+                        <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-coral-600 transition-colors text-sm mb-1 line-clamp-2">
                           {cursus.titel}
                         </h4>
                         <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
@@ -260,7 +260,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
                     <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">
                       {cursus.beschrijving}
                     </p>
-                    <div className="flex items-center gap-2 text-xs text-pink-600 font-medium group-hover:underline">
+                    <div className="flex items-center gap-2 text-xs text-coral-600 font-medium group-hover:underline">
                       <span>Start cursus</span>
                       <ArrowRight className="w-3 h-3" />
                     </div>
@@ -276,7 +276,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
       {activeCursussen.length === 0 && aanbevolenCursussen.length === 0 && (
         <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
           <CardContent className="p-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <div className="w-16 h-16 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
               <GraduationCap className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Start je leertraject</h3>
@@ -284,7 +284,7 @@ export function MijnCursussenWidget({ onTabChange }: MijnCursussenWidgetProps) {
               Begin met een van onze cursussen om je dating vaardigheden te verbeteren
             </p>
             <Button
-              className="bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white"
+              className="bg-gradient-to-br from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white"
               onClick={() => onTabChange?.('cursussen')}
             >
               Bekijk alle cursussen

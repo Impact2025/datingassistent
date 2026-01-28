@@ -490,7 +490,7 @@ Geef terug in dit EXACTE JSON formaat:
   "readingTime": number,
   "headerSuggestion": {
     "type": "color",
-    "colorHex": "#ec4899",
+    "colorHex": "#FF7B54",
     "headerTitle": "string"
   }
 }

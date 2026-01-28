@@ -657,25 +657,25 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
 
   return (
     <div className={cn(
-      "flex flex-col bg-gradient-to-b from-pink-50/30 to-white",
+      "flex flex-col bg-gradient-to-b from-coral-50/30 to-white",
       // Use parent's height if provided via className, otherwise full viewport
       className?.includes('h-full') ? '' : 'h-[100dvh] max-h-[100dvh]',
       className
     )}>
       {/* Compact Progress Header - MOBILE OPTIMIZED */}
-      <div className="flex-shrink-0 px-3 py-2 sm:px-4 sm:py-3 bg-white/95 backdrop-blur-sm border-b border-pink-100/50 safe-area-top">
+      <div className="flex-shrink-0 px-3 py-2 sm:px-4 sm:py-3 bg-white/95 backdrop-blur-sm border-b border-coral-100/50 safe-area-top">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
             <IrisAvatar size="xs" />
             <span className="text-xs sm:text-sm font-medium text-gray-600 truncate">Iris leert je kennen</span>
           </div>
-          <span className="flex-shrink-0 text-xs font-bold text-pink-600 bg-pink-100 px-2 py-1 rounded-full">
+          <span className="flex-shrink-0 text-xs font-bold text-coral-600 bg-coral-100 px-2 py-1 rounded-full">
             {currentStep}/{totalSteps}
           </span>
         </div>
-        <div className="w-full bg-pink-100 rounded-full h-1 mt-2 overflow-hidden">
+        <div className="w-full bg-coral-100 rounded-full h-1 mt-2 overflow-hidden">
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-pink-500 to-pink-600"
+            className="h-full rounded-full bg-gradient-to-r from-coral-500 to-coral-600"
             initial={{ width: 0 }}
             animate={{ width: `${progressPercentage}%` }}
             transition={{ duration: 0.5, ease: "easeOut" }}
@@ -699,7 +699,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
               <motion.span
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="inline-block bg-pink-500 text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full mb-2"
+                className="inline-block bg-coral-500 text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full mb-2"
               >
                 Vraag {currentStep > 0 ? currentStep : 1}
               </motion.span>
@@ -723,7 +723,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="bg-pink-100/80 text-pink-700 text-[11px] px-2 py-1 rounded-full max-w-[100px] truncate"
+                    className="bg-coral-100/80 text-coral-700 text-[11px] px-2 py-1 rounded-full max-w-[100px] truncate"
                   >
                     {answer.content}
                   </motion.span>
@@ -741,7 +741,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-center"
             >
-              <div className="flex items-center gap-3 bg-gradient-to-r from-pink-50 to-white rounded-2xl px-4 py-3 shadow-sm border border-pink-100 max-w-[90%]">
+              <div className="flex items-center gap-3 bg-gradient-to-r from-coral-50 to-white rounded-2xl px-4 py-3 shadow-sm border border-coral-100 max-w-[90%]">
                 <IrisAvatar size="sm" />
                 <div className="flex-1">
                   {irisReaction ? (
@@ -755,17 +755,17 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
                   ) : (
                     <div className="flex items-center gap-1">
                       <motion.span
-                        className="w-2 h-2 bg-pink-400 rounded-full"
+                        className="w-2 h-2 bg-coral-400 rounded-full"
                         animate={{ scale: [1, 1.4, 1] }}
                         transition={{ duration: 0.5, repeat: Infinity, delay: 0 }}
                       />
                       <motion.span
-                        className="w-2 h-2 bg-pink-400 rounded-full"
+                        className="w-2 h-2 bg-coral-400 rounded-full"
                         animate={{ scale: [1, 1.4, 1] }}
                         transition={{ duration: 0.5, repeat: Infinity, delay: 0.1 }}
                       />
                       <motion.span
-                        className="w-2 h-2 bg-pink-400 rounded-full"
+                        className="w-2 h-2 bg-coral-400 rounded-full"
                         animate={{ scale: [1, 1.4, 1] }}
                         transition={{ duration: 0.5, repeat: Infinity, delay: 0.2 }}
                       />
@@ -784,7 +784,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
       </div>
 
       {/* Input Area - MOBILE OPTIMIZED with safe area */}
-      <div className="flex-shrink-0 bg-white border-t border-pink-100/50 px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4 safe-area-bottom">
+      <div className="flex-shrink-0 bg-white border-t border-coral-100/50 px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4 safe-area-bottom">
         {/* Text Input (Name, Frustration, Fear, Ideal Outcome) - MOBILE OPTIMIZED */}
         {getCurrentInputType() === "text" && currentStep < 16 && (
           <motion.div
@@ -805,7 +805,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
                 }
               }}
               placeholder={getCurrentPlaceholder()}
-              className="w-full px-4 py-3 sm:px-5 sm:py-4 text-base sm:text-lg rounded-xl sm:rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-100 transition-all bg-white"
+              className="w-full px-4 py-3 sm:px-5 sm:py-4 text-base sm:text-lg rounded-xl sm:rounded-2xl border-2 border-coral-200 focus:outline-none focus:border-coral-500 focus:ring-2 focus:ring-coral-100 transition-all bg-white"
               autoFocus
             />
             <Button
@@ -816,7 +816,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
                 else if (currentStep === 15) handleIdealOutcomeSubmit();
               }}
               disabled={!inputValue.trim()}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-pink-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
+              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-coral-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
             >
               Volgende
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1" />
@@ -841,13 +841,13 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
               placeholder={getCurrentPlaceholder()}
               min="18"
               max="99"
-              className="w-full px-4 py-3 sm:px-5 sm:py-4 text-xl sm:text-2xl text-center font-bold rounded-xl sm:rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-100 transition-all bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              className="w-full px-4 py-3 sm:px-5 sm:py-4 text-xl sm:text-2xl text-center font-bold rounded-xl sm:rounded-2xl border-2 border-coral-200 focus:outline-none focus:border-coral-500 focus:ring-2 focus:ring-coral-100 transition-all bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               autoFocus
             />
             <Button
               onClick={handleAgeSubmit}
               disabled={!numberValue || parseInt(numberValue) < 18 || parseInt(numberValue) > 99}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-pink-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
+              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-coral-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
             >
               Volgende
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1" />
@@ -894,8 +894,8 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
                     "min-h-[44px] px-3 py-2.5 rounded-xl border-2 font-medium transition-all",
                     "active:scale-[0.97] flex items-center justify-start gap-2",
                     selectedChips.includes(option.value)
-                      ? "border-pink-600 bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-md"
-                      : "border-gray-200 bg-white text-gray-700 active:border-pink-300"
+                      ? "border-coral-600 bg-gradient-to-br from-coral-500 to-coral-600 text-white shadow-md"
+                      : "border-gray-200 bg-white text-gray-700 active:border-coral-300"
                   )}
                 >
                   <span className="text-base sm:text-lg">{option.icon}</span>
@@ -909,7 +909,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
             <Button
               onClick={handleDatingAppsConfirm}
               disabled={selectedChips.length === 0}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl py-3 text-sm sm:text-base font-semibold"
+              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 rounded-xl py-3 text-sm sm:text-base font-semibold"
             >
               Bevestig ({selectedChips.length})
             </Button>
@@ -930,7 +930,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
             />
             <Button
               onClick={handleConfidenceLevelConfirm}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 rounded-xl py-3 text-sm sm:text-base font-semibold"
+              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 rounded-xl py-3 text-sm sm:text-base font-semibold"
             >
               Bevestig
             </Button>

@@ -36,21 +36,21 @@ export function DatingStyleIntro({
           <h3 className="text-sm font-semibold text-gray-900 mb-4 text-center">Wat je krijgt</h3>
           <div className="space-y-3">
             <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-coral-500 rounded-full mt-2 flex-shrink-0"></div>
               <div>
                 <p className="font-medium text-gray-900">Jouw Dating Archetype</p>
                 <p className="text-sm text-gray-600">Initiator, Planner, Avonturier of 5 andere stijlen</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-coral-500 rounded-full mt-2 flex-shrink-0"></div>
               <div>
                 <p className="font-medium text-gray-900">Blinde Vlekken</p>
                 <p className="text-sm text-gray-600">Patronen die je succes onbewust saboteren</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-coral-500 rounded-full mt-2 flex-shrink-0"></div>
               <div>
                 <p className="font-medium text-gray-900">Praktische Strategieën</p>
                 <p className="text-sm text-gray-600">Chat scripts, micro-interventies en date tips</p>
@@ -77,7 +77,7 @@ export function DatingStyleIntro({
             onClick={onStart}
             disabled={loading || (!canRetake && hasPreviousAssessment)}
             size="lg"
-            className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+            className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
           >
             {loading ? (
               <>

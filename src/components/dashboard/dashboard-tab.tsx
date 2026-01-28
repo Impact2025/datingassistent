@@ -100,7 +100,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
       title: "Jouw profiel",
       description: "Bekijk en optimaliseer",
       action: "profiel-analyse",
-      color: "from-pink-500 to-rose-500"
+      color: "from-coral-500 to-rose-500"
     },
     {
       icon: MessageCircle,
@@ -149,14 +149,14 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
       title: "Hechtingsstijl Test",
       description: "Ontdek je relatiepatronen",
       action: "hechtingsstijl",
-      color: "from-purple-500 to-pink-500"
+      color: "from-purple-500 to-coral-500"
     },
     {
       icon: Sparkles,
       title: "Dating Stijl Scan",
       description: "Stijl & blinde vlekken",
       action: "datingstijl",
-      color: "from-pink-500 to-rose-500"
+      color: "from-coral-500 to-rose-500"
     },
     {
       icon: BookOpen,
@@ -209,7 +209,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
               <Button
                 onClick={() => onTabChange?.('doelen')}
                 size="sm"
-                className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+                className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
               >
                 Bekijk leertraject
               </Button>

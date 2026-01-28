@@ -75,9 +75,9 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
 
   const getCursusTypeBadge = (type: string) => {
     if (type === 'gratis') {
-      return <Badge className="bg-gradient-to-br from-pink-500 to-pink-600 text-white border-0">Gratis</Badge>;
+      return <Badge className="bg-gradient-to-br from-coral-500 to-coral-600 text-white border-0">Gratis</Badge>;
     }
-    return <Badge className="bg-gradient-to-br from-pink-500 to-pink-600 text-white border-0">Premium</Badge>;
+    return <Badge className="bg-gradient-to-br from-coral-500 to-coral-600 text-white border-0">Premium</Badge>;
   };
 
   if (loading) {
@@ -125,7 +125,7 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
               <select
                 value={selectedLevel}
                 onChange={(e) => setSelectedLevel(e.target.value)}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-pink-500"
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-coral-500"
               >
                 <option value="all">Alle niveaus</option>
                 <option value="beginner">Beginner</option>
@@ -137,7 +137,7 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-pink-500"
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:ring-2 focus:ring-coral-500"
               >
                 <option value="all">Alle types</option>
                 <option value="gratis">Gratis</option>
@@ -183,7 +183,7 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
                 className={cn(
                   "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full relative",
                   isCompleted && "border-green-500 border-2",
-                  isStarted && !isCompleted && "border-pink-300",
+                  isStarted && !isCompleted && "border-coral-300",
                   isLocked && "opacity-90"
                 )}
               >
@@ -191,14 +191,14 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
                   <CardHeader>
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div className="flex-1">
-                        <CardTitle className="text-lg leading-tight group-hover:text-pink-600 transition-colors">
+                        <CardTitle className="text-lg leading-tight group-hover:text-coral-600 transition-colors">
                           {cursus.titel}
                         </CardTitle>
                       </div>
                       <div className="flex flex-col gap-2">
                         {getCursusTypeBadge(cursus.cursus_type)}
                         {isCompleted && (
-                          <Badge className="bg-gradient-to-br from-pink-500 to-pink-600 text-white border-0 flex items-center gap-1">
+                          <Badge className="bg-gradient-to-br from-coral-500 to-coral-600 text-white border-0 flex items-center gap-1">
                             <CheckCircle className="w-3 h-3" />
                             Voltooid
                           </Badge>
@@ -240,7 +240,7 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
                       <div className="space-y-2 pt-2">
                         <div className="flex justify-between text-xs">
                           <span className="text-muted-foreground">Voortgang</span>
-                          <span className="font-semibold text-pink-600">
+                          <span className="font-semibold text-coral-600">
                             {progress.voltooide_lessen} / {progress.totaal_lessen} lessen
                           </span>
                         </div>
@@ -255,7 +255,7 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
                         <ul className="space-y-1">
                           {cursus.doelen.slice(0, 2).map((doel, idx) => (
                             <li key={idx} className="text-xs flex items-start gap-2">
-                              <CheckCircle className="w-3 h-3 text-pink-500 shrink-0 mt-0.5" />
+                              <CheckCircle className="w-3 h-3 text-coral-500 shrink-0 mt-0.5" />
                               <span className="line-clamp-1">{doel}</span>
                             </li>
                           ))}
@@ -270,7 +270,7 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
                         "w-full rounded-full shadow-lg hover:shadow-xl transition-all",
                         isLocked
                           ? "bg-gradient-to-br from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white"
-                          : "bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white"
+                          : "bg-gradient-to-br from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white"
                       )}
                     >
                       {isLocked ? (

@@ -124,7 +124,7 @@ export function MainNav({ activeTab, onTabChange }: MainNavProps) {
           className={cn(
             "h-auto p-4 flex flex-col gap-2 transition-all",
             activeTab === 'dashboard'
-              ? "bg-pink-50 text-pink-600 border-pink-200 dark:bg-pink-950/20 dark:text-pink-400"
+              ? "bg-coral-50 text-coral-600 border-coral-200 dark:bg-coral-950/20 dark:text-coral-400"
               : "hover:bg-muted text-muted-foreground hover:text-foreground"
           )}
         >
@@ -146,7 +146,7 @@ export function MainNav({ activeTab, onTabChange }: MainNavProps) {
               className={cn(
                 "h-auto p-4 flex flex-col gap-2 transition-all",
                 isActive
-                  ? "bg-pink-50 text-pink-600 border-pink-200 dark:bg-pink-950/20 dark:text-pink-400"
+                  ? "bg-coral-50 text-coral-600 border-coral-200 dark:bg-coral-950/20 dark:text-coral-400"
                   : "hover:bg-muted text-muted-foreground hover:text-foreground"
               )}
             >

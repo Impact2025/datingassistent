@@ -8,14 +8,14 @@ export const profileTextModule1Slides: SlideDeck = {
       title: 'MODULE 1: Zelfkennis',
       subtitle: 'Het Fundament van Authenticiteit',
       emoji: '🎭',
-      backgroundColor: 'from-purple-600 to-pink-600'
+      backgroundColor: 'from-purple-600 to-coral-600'
     },
     {
       type: 'quote',
       quote: 'Authenticiteit is de enige valuta die echt werkt in dating.',
       author: 'DatingAssistent',
       emoji: '💎',
-      backgroundColor: 'bg-gradient-to-br from-purple-100 to-pink-100'
+      backgroundColor: 'bg-gradient-to-br from-purple-100 to-coral-100'
     },
     {
       type: 'content',
@@ -90,7 +90,7 @@ export const profileTextModule1Slides: SlideDeck = {
         'Kwetsbaarheid & Diepgang: Welke overtuiging heeft u recent veranderd?',
         'Toon proces, niet alleen het eindresultaat'
       ],
-      backgroundColor: 'bg-gradient-to-br from-pink-50 to-rose-50',
+      backgroundColor: 'bg-gradient-to-br from-coral-50 to-rose-50',
       highlightColor: 'text-rose-700'
     },
     {

@@ -1,34 +1,40 @@
 /* ===========================================
    DATINGASSISTENT BUTTON SYSTEM
-   Comprehensive hierarchical button design system
-   Created: 2025-11-26
+   "Warm Vertrouwen" Design System
+   Updated: 2026-01
    =========================================== */
 
 /* ===========================================
-   COLOR SYSTEM VARIABLES
+   COLOR SYSTEM VARIABLES - WARM VERTROUWEN
    =========================================== */
 
 :root {
-  /* Primary Magenta/Pink Colors */
-  --button-primary: #FF4081;
-  --button-primary-hover: #E03071;
-  --button-primary-active: #D02061;
+  /* Primary - Warm Coral (CTA buttons) */
+  --button-primary: var(--color-warm-coral, #FF7B54);
+  --button-primary-hover: var(--color-warm-coral-hover, #E66A43);
+  --button-primary-active: #CC5A36;
+  --button-primary-shadow: var(--color-warm-coral-shadow, rgba(255, 123, 84, 0.25));
 
-  /* Secondary Colors */
+  /* Secondary - Deep Purple (outline buttons) */
   --button-secondary-bg: #FFFFFF;
-  --button-secondary-text: #FF4081;
-  --button-secondary-border: #FF4081;
-  --button-secondary-hover-bg: #FFF0F5;
-  --button-secondary-active-bg: #FFE0EB;
+  --button-secondary-text: var(--color-deep-purple, #722F37);
+  --button-secondary-border: var(--color-deep-purple, #722F37);
+  --button-secondary-hover-bg: var(--color-soft-blush, #F5E6E8);
+  --button-secondary-active-bg: #E8D5D8;
 
-  /* Tertiary Colors */
-  --button-tertiary-text: #FF4081;
-  --button-tertiary-hover: #C03061;
-  --button-tertiary-active: #902041;
+  /* Tertiary - Deep Purple (link buttons) */
+  --button-tertiary-text: var(--color-deep-purple, #722F37);
+  --button-tertiary-hover: #5C262D;
+  --button-tertiary-active: #4A1E24;
+
+  /* VIP - Royal Purple */
+  --button-vip: var(--color-royal-purple, #6B4D8A);
+  --button-vip-hover: #5A3F75;
+  --button-vip-active: #4A3362;
 
   /* Supporting Colors */
   --button-white: #FFFFFF;
-  --button-text-dark: #333333;
+  --button-text-dark: var(--color-charcoal, #2D3142);
 
   /* Common Properties */
   --button-border-radius: 10px;
@@ -43,8 +49,8 @@
    =========================================== */
 
 .btn-primary {
-  /* Base Styles */
-  background: linear-gradient(90deg, #b065ec, #ff4081);
+  /* Base Styles - Warm Coral */
+  background: var(--button-primary);
   color: var(--button-white);
   border: none;
   border-radius: var(--button-border-radius);
@@ -59,28 +65,28 @@
   justify-content: center;
   gap: 8px;
   transition: var(--button-transition);
-  box-shadow: 0 2px 4px rgba(255, 64, 129, 0.2);
+  box-shadow: 0 4px 12px var(--button-primary-shadow);
 
   /* Focus Styles */
   outline: none;
 }
 
 .btn-primary:focus-visible {
-  box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.3);
+  box-shadow: 0 0 0 3px var(--button-primary-shadow);
 }
 
 /* Hover State */
 .btn-primary:hover {
-  background: linear-gradient(90deg, #a055db, #e03071);
+  background: var(--button-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(255, 64, 129, 0.3);
+  box-shadow: 0 6px 16px var(--button-primary-shadow);
 }
 
 /* Active/Pressed State */
 .btn-primary:active {
-  background: linear-gradient(90deg, #9045ca, #d02061);
+  background: var(--button-primary-active);
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(255, 64, 129, 0.2);
+  box-shadow: 0 4px 12px var(--button-primary-shadow);
 }
 
 /* Disabled State */

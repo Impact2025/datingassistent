@@ -37,7 +37,7 @@ export function ProgressBar({
             <span className="text-sm font-medium text-gray-700">{label}</span>
           )}
           {showPercentage && (
-            <span className="text-sm font-semibold text-pink-600">
+            <span className="text-sm font-semibold text-coral-600">
               {Math.round(clampedProgress)}%
             </span>
           )}
@@ -58,9 +58,9 @@ export function ProgressBar({
           transition={{ duration: 0.5, ease: "easeOut" }}
           className={cn(
             "h-full rounded-full",
-            variant === "default" && "bg-pink-500",
+            variant === "default" && "bg-coral-500",
             variant === "gradient" &&
-              "bg-gradient-to-r from-violet-500 to-pink-500"
+              "bg-gradient-to-r from-violet-500 to-coral-500"
           )}
         />
       </div>
@@ -95,9 +95,9 @@ export function StepProgress({
               className={cn(
                 "w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm transition-colors",
                 index < currentStep &&
-                  "bg-pink-500 text-white",
+                  "bg-coral-500 text-white",
                 index === currentStep &&
-                  "bg-pink-500 text-white ring-4 ring-pink-200",
+                  "bg-coral-500 text-white ring-4 ring-coral-200",
                 index > currentStep &&
                   "bg-gray-200 text-gray-500"
               )}
@@ -128,7 +128,7 @@ export function StepProgress({
                     width: index < currentStep ? "100%" : "0%",
                   }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="absolute inset-y-0 left-0 bg-pink-500"
+                  className="absolute inset-y-0 left-0 bg-coral-500"
                 />
               </div>
             )}
@@ -144,7 +144,7 @@ export function StepProgress({
               key={index}
               className={cn(
                 "text-xs font-medium",
-                index <= currentStep ? "text-pink-600" : "text-gray-400"
+                index <= currentStep ? "text-coral-600" : "text-gray-400"
               )}
               style={{ width: `${100 / totalSteps}%`, textAlign: "center" }}
             >

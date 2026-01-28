@@ -15,11 +15,11 @@ export function IrisInlineFeedback({ feedback, isLoading }: IrisInlineFeedbackPr
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30
-                 rounded-xl p-4 border border-pink-100 dark:border-pink-800"
+      className="mt-4 bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30
+                 rounded-xl p-4 border border-coral-100 dark:border-coral-800"
     >
       <div className="flex gap-3">
-        <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-pink-600
+        <div className="w-8 h-8 bg-gradient-to-r from-coral-500 to-coral-600
                         rounded-full flex items-center justify-center flex-shrink-0">
           <Sparkles className="w-4 h-4 text-white" />
         </div>
@@ -27,9 +27,9 @@ export function IrisInlineFeedback({ feedback, isLoading }: IrisInlineFeedbackPr
           {isLoading ? (
             <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
               <div className="flex gap-1">
-                <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" />
-                <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce delay-100" />
-                <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce delay-200" />
+                <span className="w-2 h-2 bg-coral-400 rounded-full animate-bounce" />
+                <span className="w-2 h-2 bg-coral-400 rounded-full animate-bounce delay-100" />
+                <span className="w-2 h-2 bg-coral-400 rounded-full animate-bounce delay-200" />
               </div>
               <span className="text-sm">Iris denkt na...</span>
             </div>

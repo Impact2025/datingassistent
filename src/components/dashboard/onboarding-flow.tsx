@@ -52,10 +52,10 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant="secondary" className="bg-pink-50 text-pink-700 border-pink-200">
+                <Badge variant="secondary" className="bg-coral-50 text-coral-700 border-coral-200">
                   PRO
                 </Badge>
-                <Badge variant="outline" className="text-pink-600 border-pink-200 bg-pink-50">
+                <Badge variant="outline" className="text-coral-600 border-coral-200 bg-coral-50">
                   {Math.round(progress)}% compleet
                 </Badge>
               </div>
@@ -63,7 +63,7 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
 
             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-pink-500 transition-all duration-300 ease-in-out"
+                className="h-full bg-coral-500 transition-all duration-300 ease-in-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -132,8 +132,8 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
                 <div className="grid md:grid-cols-3 gap-4">
                   <Card className="border border-gray-200 bg-white">
                     <CardContent className="p-4 text-center">
-                      <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center mx-auto mb-2">
-                        <span className="text-sm font-bold text-pink-600">7</span>
+                      <div className="w-8 h-8 rounded-full bg-coral-100 flex items-center justify-center mx-auto mb-2">
+                        <span className="text-sm font-bold text-coral-600">7</span>
                       </div>
                       <h3 className="font-semibold text-gray-900 mb-1">Coach Vragen</h3>
                       <p className="text-sm text-gray-600">Vertel over je situatie</p>
@@ -162,7 +162,7 @@ export function OnboardingFlow({ journeyState, userName, handlers }: OnboardingF
                 <Button
                   onClick={handlers.handleWelcomeComplete}
                   size="lg"
-                  className="px-8 bg-pink-500 hover:bg-pink-600 text-white"
+                  className="px-8 bg-coral-500 hover:bg-coral-600 text-white"
                 >
                   Start Coach Scan
                 </Button>

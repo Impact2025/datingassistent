@@ -70,7 +70,7 @@ export function SubscriptionWidget({ userId }: SubscriptionWidgetProps) {
 
   if (loadingPrograms || loadingSubscription) {
     return (
-      <Card className="border-pink-100 dark:border-pink-800">
+      <Card className="border-coral-100 dark:border-coral-800">
         <CardContent className="flex items-center justify-center py-8">
           <LoadingSpinner />
         </CardContent>
@@ -166,15 +166,15 @@ export function SubscriptionWidget({ userId }: SubscriptionWidgetProps) {
 
       {/* Active Subscription Section */}
       {hasActiveSubscription && (
-        <Card className="border-pink-200 dark:border-pink-800 bg-gradient-to-br from-pink-50/50 to-rose-50/50 dark:from-pink-900/20 dark:to-rose-900/20">
+        <Card className="border-coral-200 dark:border-coral-800 bg-gradient-to-br from-coral-50/50 to-rose-50/50 dark:from-coral-900/20 dark:to-rose-900/20">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-pink-100 dark:bg-pink-900/50 rounded-full flex items-center justify-center">
-                <CheckIcon className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+              <div className="w-10 h-10 bg-coral-100 dark:bg-coral-900/50 rounded-full flex items-center justify-center">
+                <CheckIcon className="w-5 h-5 text-coral-600 dark:text-coral-400" />
               </div>
               <div className="flex-1">
-                <CardTitle className="text-pink-900 dark:text-pink-100">Abonnement</CardTitle>
-                <CardDescription className="text-pink-700 dark:text-pink-300">
+                <CardTitle className="text-coral-900 dark:text-coral-100">Abonnement</CardTitle>
+                <CardDescription className="text-coral-700 dark:text-coral-300">
                   Je hebt toegang tot alle premium features
                 </CardDescription>
               </div>
@@ -182,7 +182,7 @@ export function SubscriptionWidget({ userId }: SubscriptionWidgetProps) {
                 variant="ghost"
                 size="sm"
                 onClick={() => router.push('/dashboard?tab=subscription')}
-                className="text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300"
+                className="text-coral-600 hover:text-coral-700 dark:text-coral-400 dark:hover:text-coral-300"
               >
                 Details
               </Button>
@@ -191,7 +191,7 @@ export function SubscriptionWidget({ userId }: SubscriptionWidgetProps) {
           <CardContent>
             <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-700">
               <div className="flex items-center gap-3">
-                <CreditCard className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                <CreditCard className="w-5 h-5 text-coral-600 dark:text-coral-400" />
                 <div>
                   <h3 className="font-semibold dark:text-white">{currentSubscription.packageType} Abonnement</h3>
                   <p className="text-sm text-muted-foreground">
@@ -216,14 +216,14 @@ export function SubscriptionWidget({ userId }: SubscriptionWidgetProps) {
       {!hasActiveSubscription && hasEnrolledPrograms && (
         <Card className="border-dashed border-2 border-gray-300 dark:border-gray-700 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
           <CardContent className="text-center py-6">
-            <Heart className="w-8 h-8 mx-auto mb-3 text-pink-500" />
+            <Heart className="w-8 h-8 mx-auto mb-3 text-coral-500" />
             <h3 className="font-semibold mb-2 dark:text-white">Voeg een abonnement toe</h3>
             <p className="text-sm text-muted-foreground mb-4">
               Krijg toegang tot AI coaching, profiel analyse en meer
             </p>
             <Button
               onClick={() => router.push('/dashboard?tab=subscription')}
-              className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
+              className="bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600"
             >
               Bekijk Abonnementen
             </Button>

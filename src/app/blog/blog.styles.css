@@ -23,7 +23,7 @@
   font-size: 3rem;
   margin-top: 2.5rem;
   margin-bottom: 2rem;
-  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  background: linear-gradient(135deg, #FF7B54, #8b5cf6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -40,7 +40,7 @@
   font-size: 1.875rem;
   margin-top: 2rem;
   margin-bottom: 1rem;
-  color: #db2777;
+  color: #FF7B54;
 }
 
 .blog-content p {
@@ -51,7 +51,7 @@
 }
 
 .blog-content a {
-  color: #ec4899;
+  color: #FF7B54;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -59,8 +59,8 @@
 }
 
 .blog-content a:hover {
-  color: #db2777;
-  border-bottom-color: #db2777;
+  color: #FF7B54;
+  border-bottom-color: #FF7B54;
 }
 
 .blog-content ul,
@@ -81,10 +81,10 @@
 }
 
 .blog-content blockquote {
-  border-left: 4px solid #ec4899;
+  border-left: 4px solid #FF7B54;
   padding: 1.5rem 2rem;
   margin: 2rem 0;
-  background: linear-gradient(135deg, #fdf2f8, #faf5ff);
+  background: linear-gradient(135deg, #ffe8dd, #fff4f0);
   border-radius: 0 0.5rem 0.5rem 0;
   font-style: italic;
   color: #374151;
@@ -94,7 +94,7 @@
 .blog-content blockquote::before {
   content: '"';
   font-size: 4rem;
-  color: #ec4899;
+  color: #FF7B54;
   position: absolute;
   top: -10px;
   left: 10px;
@@ -222,13 +222,13 @@
 
 /* Call to action styling */
 .blog-content .cta {
-  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  background: linear-gradient(135deg, #FF7B54, #8b5cf6);
   color: white;
   padding: 2rem;
   border-radius: 1rem;
   text-align: center;
   margin: 2rem 0;
-  box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+  box-shadow: 0 10px 25px rgba(255, 123, 84, 0.3);
 }
 
 .blog-content .cta h3 {

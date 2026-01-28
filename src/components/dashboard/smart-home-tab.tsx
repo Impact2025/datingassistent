@@ -117,7 +117,7 @@ const TransformatieHeroCard = React.memo(function TransformatieHeroCard({
     >
       <div
         onClick={onClick}
-        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500 via-rose-500 to-pink-600 p-5 cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-coral-500 via-rose-500 to-coral-600 p-5 cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
       >
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
@@ -316,7 +316,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Dashboard laden...</p>
         </div>
       </div>
@@ -386,13 +386,13 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
               {/* Pro */}
               <button
                 onClick={() => router.push('/pro-arsenal')}
-                className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-pink-200 dark:border-pink-800 hover:border-pink-300 dark:hover:border-pink-700 hover:shadow-sm transition-all text-left"
+                className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-coral-200 dark:border-coral-800 hover:border-coral-300 dark:hover:border-coral-700 hover:shadow-sm transition-all text-left"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
-                    <Crown className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+                  <div className="w-8 h-8 rounded-lg bg-coral-100 dark:bg-coral-900/30 flex items-center justify-center">
+                    <Crown className="w-4 h-4 text-coral-600 dark:text-coral-400" />
                   </div>
-                  <span className="text-xs text-pink-600 dark:text-pink-400 font-medium">Premium</span>
+                  <span className="text-xs text-coral-600 dark:text-coral-400 font-medium">Premium</span>
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white text-sm">Pro Arsenal</h3>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Alle tools</p>
@@ -427,7 +427,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                   </div>
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white text-sm">Badges & Achievements</p>
-                    <p className="text-xs text-pink-500">Open Tool →</p>
+                    <p className="text-xs text-coral-500">Open Tool →</p>
                   </div>
                 </button>
 
@@ -440,7 +440,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                   </div>
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white text-sm">Dating Activity Logger</p>
-                    <p className="text-xs text-pink-500">Open Tool →</p>
+                    <p className="text-xs text-coral-500">Open Tool →</p>
                   </div>
                 </button>
 
@@ -448,12 +448,12 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                   onClick={() => router.push('/essentials?tab=recommendations')}
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-pink-50 dark:bg-pink-900/30 flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+                  <div className="w-9 h-9 rounded-lg bg-coral-50 dark:bg-coral-900/30 flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-4 h-4 text-coral-600 dark:text-coral-400" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white text-sm">Personal Recommendations</p>
-                    <p className="text-xs text-pink-500">Open Tool →</p>
+                    <p className="text-xs text-coral-500">Open Tool →</p>
                   </div>
                 </button>
 
@@ -466,7 +466,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                   </div>
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white text-sm">Stats & Voortgang</p>
-                    <p className="text-xs text-pink-500">Open Tool →</p>
+                    <p className="text-xs text-coral-500">Open Tool →</p>
                   </div>
                 </button>
               </div>
@@ -523,7 +523,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
               BORDER_COLOR_MAP[nextAction.color] || BORDER_COLOR_MAP.pink
             )}>
               <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
-                <Badge className="bg-pink-500 text-white text-xs">Aanbevolen</Badge>
+                <Badge className="bg-coral-500 text-white text-xs">Aanbevolen</Badge>
               </div>
               <CardContent className="p-4 sm:p-6 pt-10 sm:pt-6">
                 <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
@@ -550,7 +550,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                     </p>
                     <Button
                       onClick={() => handleSuggestionClick(nextAction)}
-                      className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+                      className="w-full sm:w-auto bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
                       size="default"
                     >
                       {nextAction.actionText}
@@ -578,7 +578,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                 variant="ghost"
                 size="sm"
                 onClick={() => onTabChange?.('pad')}
-                className="text-pink-600 hover:text-pink-700 self-start sm:self-auto"
+                className="text-coral-600 hover:text-coral-700 self-start sm:self-auto"
               >
                 Bekijk je Pad
                 <ArrowRight className="w-4 h-4 ml-1" />
@@ -597,7 +597,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                     transition={{ delay: 0.1 + index * 0.05 }}
                   >
                     <Card
-                      className="hover:shadow-md transition-all cursor-pointer border-2 hover:border-pink-200"
+                      className="hover:shadow-md transition-all cursor-pointer border-2 hover:border-coral-200"
                       onClick={() => handleQuickActionClick(action)}
                     >
                       <CardContent className="p-4 sm:p-6">
@@ -631,7 +631,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
           className="space-y-4"
         >
           <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-coral-500" />
             <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Vandaag voor jou</h2>
           </div>
 

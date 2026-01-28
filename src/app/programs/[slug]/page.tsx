@@ -90,9 +90,9 @@ export default function ProgramDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-16 h-16 border-4 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600 font-medium">Programma laden...</p>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function ProgramDashboardPage() {
 
   if (error || !programData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center p-4">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center space-y-4">
             <div className="text-red-500 text-5xl">⚠️</div>
@@ -122,7 +122,7 @@ export default function ProgramDashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-pink-500 to-pink-600 text-white">
+      <div className="bg-gradient-to-r from-coral-500 to-coral-600 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -165,7 +165,7 @@ export default function ProgramDashboardPage() {
               <div className="ml-8">
                 <Button
                   onClick={handleContinue}
-                  className="bg-white text-pink-600 hover:bg-gray-100 shadow-lg"
+                  className="bg-white text-coral-600 hover:bg-gray-100 shadow-lg"
                   size="lg"
                 >
                   <Play className="w-5 h-5 mr-2" />
@@ -210,7 +210,7 @@ export default function ProgramDashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card>
               <CardContent className="p-6 text-center">
-                <TrendingUp className="w-8 h-8 mx-auto text-pink-500 mb-2" />
+                <TrendingUp className="w-8 h-8 mx-auto text-coral-500 mb-2" />
                 <p className="text-2xl font-bold text-gray-900">{overallProgress}%</p>
                 <p className="text-sm text-gray-600">Voortgang</p>
               </CardContent>
@@ -297,7 +297,7 @@ export default function ProgramDashboardPage() {
                               </div>
                               <div className="w-full bg-gray-200 rounded-full h-2">
                                 <div
-                                  className="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full transition-all"
+                                  className="bg-gradient-to-r from-coral-500 to-coral-600 h-2 rounded-full transition-all"
                                   style={{ width: `${moduleProgress}%` }}
                                 />
                               </div>
@@ -335,12 +335,12 @@ export default function ProgramDashboardPage() {
                               onClick={() => handleLessonClick(lesson)}
                               className={`flex items-center justify-between p-4 rounded-lg border transition-all ${
                                 lesson.is_unlocked
-                                  ? 'hover:border-pink-500 hover:bg-pink-50 cursor-pointer'
+                                  ? 'hover:border-coral-500 hover:bg-coral-50 cursor-pointer'
                                   : 'bg-gray-50 cursor-not-allowed'
                               }`}
                             >
                               <div className="flex items-center gap-4 flex-1">
-                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-pink-600 text-white">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-coral-500 to-coral-600 text-white">
                                   {lesson.is_completed ? (
                                     <CheckCircle className="w-5 h-5" />
                                   ) : (

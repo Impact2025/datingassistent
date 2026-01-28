@@ -18,7 +18,7 @@ export default function CursussenPage() {
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm">
+            <div className="w-12 h-12 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -35,7 +35,7 @@ export default function CursussenPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
             <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
               <CardContent className="p-4 text-center">
-                <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm">
+                <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <div className="text-xl font-semibold text-gray-900 dark:text-white">2+</div>
@@ -45,7 +45,7 @@ export default function CursussenPage() {
 
             <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
               <CardContent className="p-4 text-center">
-                <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm">
+                <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm">
                   <GraduationCap className="w-5 h-5 text-white" />
                 </div>
                 <div className="text-xl font-semibold text-gray-900 dark:text-white">∞</div>
@@ -55,7 +55,7 @@ export default function CursussenPage() {
 
             <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
               <CardContent className="p-4 text-center">
-                <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm">
+                <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm">
                   <TrendingUp className="w-5 h-5 text-white" />
                 </div>
                 <div className="text-xl font-semibold text-gray-900 dark:text-white">3</div>
@@ -65,7 +65,7 @@ export default function CursussenPage() {
 
             <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
               <CardContent className="p-4 text-center">
-                <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm">
+                <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm">
                   <Award className="w-5 h-5 text-white" />
                 </div>
                 <div className="text-xl font-semibold text-gray-900 dark:text-white">Pro</div>

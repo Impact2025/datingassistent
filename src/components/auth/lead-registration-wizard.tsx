@@ -353,7 +353,7 @@ export function LeadRegistrationWizard({
           height={windowSize.height}
           recycle={false}
           numberOfPieces={200}
-          colors={['#ec4899', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b']}
+          colors={['#FF7B54', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b']}
         />
       )}
 
@@ -370,9 +370,9 @@ export function LeadRegistrationWizard({
                   transition={{ delay: index * 0.1 }}
                   className={cn(
                     'w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm transition-colors',
-                    index < currentStepIndex && 'bg-pink-500 text-white',
+                    index < currentStepIndex && 'bg-coral-500 text-white',
                     index === currentStepIndex &&
-                      'bg-pink-500 text-white ring-4 ring-pink-200 dark:ring-pink-800',
+                      'bg-coral-500 text-white ring-4 ring-coral-200 dark:ring-coral-800',
                     index > currentStepIndex && 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
                   )}
                 >
@@ -402,7 +402,7 @@ export function LeadRegistrationWizard({
                         width: index < currentStepIndex ? '100%' : '0%',
                       }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="absolute inset-y-0 left-0 bg-pink-500"
+                      className="absolute inset-y-0 left-0 bg-coral-500"
                     />
                   </div>
                 )}
@@ -417,7 +417,7 @@ export function LeadRegistrationWizard({
                 key={step.key}
                 className={cn(
                   'text-xs font-medium text-center',
-                  index <= currentStepIndex ? 'text-pink-600 dark:text-pink-400' : 'text-gray-400 dark:text-gray-500'
+                  index <= currentStepIndex ? 'text-coral-600 dark:text-coral-400' : 'text-gray-400 dark:text-gray-500'
                 )}
                 style={{ width: `${100 / steps.length}%` }}
               >
@@ -590,8 +590,8 @@ export function LeadRegistrationWizard({
                     : 'Je wordt doorgestuurd naar je dashboard...'}
                 </p>
 
-                <div className="flex items-center justify-center gap-2 text-pink-600">
-                  <div className="w-4 h-4 border-2 border-pink-500 border-t-transparent rounded-full animate-spin" />
+                <div className="flex items-center justify-center gap-2 text-coral-600">
+                  <div className="w-4 h-4 border-2 border-coral-500 border-t-transparent rounded-full animate-spin" />
                   <span className="text-sm">Even geduld</span>
                 </div>
               </div>

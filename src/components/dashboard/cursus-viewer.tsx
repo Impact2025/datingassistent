@@ -52,9 +52,9 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'afgerond':
-        return <CheckCircle className="w-5 h-5 text-pink-500" />;
+        return <CheckCircle className="w-5 h-5 text-coral-500" />;
       case 'bezig':
-        return <Play className="w-5 h-5 text-pink-500" />;
+        return <Play className="w-5 h-5 text-coral-500" />;
       default:
         return <Lock className="w-5 h-5 text-gray-400 dark:text-gray-500" />;
     }
@@ -133,7 +133,7 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{cursus.titel}</h1>
-                <Badge className="bg-pink-100 text-pink-800 border-0">
+                <Badge className="bg-coral-100 text-coral-800 border-0">
                   {cursus.cursus_type === 'gratis' ? 'Gratis' : `EUR ${cursus.prijs}`}
                 </Badge>
               </div>
@@ -146,15 +146,15 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
           {/* Meta Info */}
           <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 dark:text-gray-300 mb-6">
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-pink-500" />
+              <Clock className="w-4 h-4 text-coral-500" />
               <span>{cursus.duur_minuten} minuten</span>
             </div>
             <div className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-pink-500" />
+              <BookOpen className="w-4 h-4 text-coral-500" />
               <span>{totalLessons} lessen</span>
             </div>
             <div className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-pink-500" />
+              <Award className="w-4 h-4 text-coral-500" />
               <span>{cursus.niveau}</span>
             </div>
           </div>
@@ -164,7 +164,7 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-700 dark:text-gray-200 font-medium">Je voortgang</span>
-                <span className="text-pink-600 dark:text-pink-400 font-semibold">{progressPercentage}%</span>
+                <span className="text-coral-600 dark:text-coral-400 font-semibold">{progressPercentage}%</span>
               </div>
               <Progress value={progressPercentage} className="h-2" />
               <p className="text-xs text-gray-600 dark:text-gray-400">
@@ -196,7 +196,7 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
                 <div
                   key={les.id}
                   onClick={() => handleLesClick(les.slug)}
-                  className="p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-pink-300 hover:bg-pink-50/30 dark:hover:bg-pink-900/20 transition-all cursor-pointer group"
+                  className="p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-coral-300 hover:bg-coral-50/30 dark:hover:bg-coral-900/20 transition-all cursor-pointer group"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
@@ -204,7 +204,7 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
                         {getStatusIcon(status)}
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-pink-600 transition-colors">
+                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-coral-600 transition-colors">
                           Les {index + 1}: {les.titel}
                         </h3>
                         {les.subtitel && (

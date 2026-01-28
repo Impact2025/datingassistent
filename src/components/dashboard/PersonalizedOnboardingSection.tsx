@@ -91,7 +91,7 @@ export function PersonalizedOnboardingSection({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 text-pink-500 animate-spin" />
+        <Loader2 className="w-8 h-8 text-coral-500 animate-spin" />
       </div>
     );
   }
@@ -172,10 +172,10 @@ export function PersonalizedOnboardingSection({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gradient-to-r from-violet-50 to-pink-50 rounded-2xl p-4 border border-pink-100"
+          className="bg-gradient-to-r from-violet-50 to-coral-50 rounded-2xl p-4 border border-coral-100"
         >
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-coral-500 flex items-center justify-center text-white font-bold flex-shrink-0">
               I
             </div>
             <div>

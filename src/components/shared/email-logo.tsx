@@ -31,8 +31,8 @@ export const EmailLogo = ({ size = 'md' }: EmailLogoProps) => {
         {/* Heart shape */}
         <path
           d="M100 180C100 180 20 120 20 70C20 50 30 30 50 30C70 30 85 45 100 60C115 45 130 30 150 30C170 30 180 50 180 70C180 120 100 180 100 180Z"
-          fill="#E14874"
-          stroke="#E14874"
+          fill="#FF7B54"
+          stroke="#FF7B54"
           strokeWidth="8"
           strokeLinejoin="round"
         />
@@ -45,7 +45,7 @@ export const EmailLogo = ({ size = 'md' }: EmailLogoProps) => {
             y1="50"
             x2="120"
             y2="50"
-            stroke="#E14874"
+            stroke="#FF7B54"
             strokeWidth="12"
             strokeLinecap="round"
           />
@@ -54,7 +54,7 @@ export const EmailLogo = ({ size = 'md' }: EmailLogoProps) => {
           <path
             d="M115 35 L135 50 L115 65"
             fill="none"
-            stroke="#E14874"
+            stroke="#FF7B54"
             strokeWidth="12"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -64,7 +64,7 @@ export const EmailLogo = ({ size = 'md' }: EmailLogoProps) => {
           <path
             d="M35 40 L25 50 L35 60"
             fill="none"
-            stroke="#E14874"
+            stroke="#FF7B54"
             strokeWidth="12"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -79,7 +79,7 @@ export const EmailLogo = ({ size = 'md' }: EmailLogoProps) => {
         lineHeight: '1',
         fontFamily: 'Arial, Helvetica, sans-serif'
       }}>
-        <span style={{ color: '#E14874' }}>Dating</span>
+        <span style={{ color: '#FF7B54' }}>Dating</span>
         <span style={{ color: '#1a1a1a' }}>Assistent</span>
       </span>
     </div>

@@ -65,8 +65,8 @@ export function BottomNavigation() {
         label: 'Mijn Reis',
         active: currentTab === 'pad' || isOnTransformatiePage,
         color: 'text-gray-600 dark:text-gray-400',
-        activeColor: 'text-pink-500',
-        gradient: 'from-pink-500 to-rose-500',
+        activeColor: 'text-coral-500',
+        gradient: 'from-coral-500 to-dusty-rose',
       };
     }
 
@@ -106,7 +106,7 @@ export function BottomNavigation() {
       label: 'Home',
       active: pathname === '/' || (pathname === '/dashboard' && !currentTab) || currentTab === 'home',
       color: 'text-gray-600 dark:text-gray-400',
-      activeColor: 'text-pink-500',
+      activeColor: 'text-coral-500',
       isLogo: true,
     },
     programNavItem, // Dynamic: Mijn Reis / Kickstart / Ontdek
@@ -201,7 +201,7 @@ export function BottomNavigation() {
                 <div
                   className={cn(
                     "absolute -bottom-0.5 w-1 h-1 rounded-full",
-                    item.activeColor?.replace('text-', 'bg-') || 'bg-pink-500'
+                    item.activeColor?.replace('text-', 'bg-') || 'bg-coral-500'
                   )}
                   aria-hidden="true"
                 />

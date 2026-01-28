@@ -27,7 +27,7 @@ export function RoadmapTimeline({
   return (
     <div className={cn("relative", className)}>
       {/* Vertical Line */}
-      <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-pink-500 via-violet-500 to-gray-200" />
+      <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-coral-500 via-violet-500 to-gray-200" />
 
       {/* Phases */}
       <div className="space-y-8">
@@ -73,7 +73,7 @@ function PhaseCard({
         className={cn(
           "absolute left-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-10",
           isCompleted && "bg-green-500",
-          isActive && "bg-pink-500 ring-4 ring-pink-200",
+          isActive && "bg-coral-500 ring-4 ring-coral-200",
           isLocked && "bg-gray-300"
         )}
       >
@@ -91,7 +91,7 @@ function PhaseCard({
         className={cn(
           "rounded-2xl p-6 transition-all",
           isActive &&
-            "bg-gradient-to-r from-violet-50 to-pink-50 border-2 border-pink-200 shadow-lg",
+            "bg-gradient-to-r from-violet-50 to-coral-50 border-2 border-coral-200 shadow-lg",
           isCompleted && "bg-green-50 border border-green-200",
           isLocked && "bg-gray-50 border border-gray-200 opacity-60"
         )}
@@ -102,7 +102,7 @@ function PhaseCard({
             <span
               className={cn(
                 "text-xs font-semibold uppercase tracking-wide",
-                isActive ? "text-pink-500" : "text-gray-400"
+                isActive ? "text-coral-500" : "text-gray-400"
               )}
             >
               Week {phase.week}
@@ -125,7 +125,7 @@ function PhaseCard({
             </p>
           </div>
           {isActive && (
-            <span className="bg-pink-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+            <span className="bg-coral-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
               Nu actief
             </span>
           )}

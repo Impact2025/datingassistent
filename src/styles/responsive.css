@@ -5,8 +5,8 @@
 /* CSS Custom Properties for Responsive Design */
 :root {
   /* Colors - optimized for mobile readability */
-  --color-primary: #ec4899;
-  --color-primary-dark: #db2777;
+  --color-primary: #FF7B54;
+  --color-primary-dark: #FF7B54;
   --color-secondary: #6366f1;
   --color-success: #10b981;
   --color-warning: #f59e0b;
@@ -104,7 +104,7 @@ html {
 @media (hover: none) and (pointer: coarse) {
   /* Remove hover effects on touch devices */
   .hover\:bg-gray-100:hover,
-  .hover\:bg-pink-50:hover,
+  .hover\:bg-coral-50:hover,
   .hover\:scale-105:hover {
     background-color: transparent !important;
     transform: none !important;

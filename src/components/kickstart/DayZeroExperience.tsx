@@ -143,7 +143,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
             className="text-center"
           >
             <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-4">
-              <Sparkles className="w-7 h-7 sm:w-10 sm:h-10 text-pink-600" />
+              <Sparkles className="w-7 h-7 sm:w-10 sm:h-10 text-coral-600" />
               <h1 className="text-xl sm:text-3xl font-bold text-gray-900">
                 Welkom bij Kickstart
               </h1>
@@ -160,9 +160,9 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                 key={step}
                 className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
                   step === currentStep
-                    ? 'w-10 sm:w-12 bg-pink-600'
+                    ? 'w-10 sm:w-12 bg-coral-600'
                     : step < currentStep
-                    ? 'w-6 sm:w-8 bg-pink-400'
+                    ? 'w-6 sm:w-8 bg-coral-400'
                     : 'w-6 sm:w-8 bg-gray-300'
                 }`}
               />
@@ -187,8 +187,8 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                 {currentStep === 1 && (
                   <div className="space-y-6">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center">
-                        <Target className="w-5 h-5 text-pink-600" />
+                      <div className="w-10 h-10 rounded-lg bg-coral-100 flex items-center justify-center">
+                        <Target className="w-5 h-5 text-coral-600" />
                       </div>
                       <div>
                         <h2 className="text-xl font-bold text-gray-900">Jouw Visie</h2>
@@ -196,7 +196,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                       </div>
                     </div>
 
-                    <div className="bg-gray-50 border-l-4 border-pink-600 p-4 rounded">
+                    <div className="bg-gray-50 border-l-4 border-coral-600 p-4 rounded">
                       <p className="text-gray-900 font-medium">
                         Stel je voor... 3 maanden later.
                       </p>
@@ -219,7 +219,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
 
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                       <div className="flex items-start gap-3">
-                        <Sparkles className="w-5 h-5 text-pink-600 mt-1 flex-shrink-0" />
+                        <Sparkles className="w-5 h-5 text-coral-600 mt-1 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-medium text-gray-900">
                             Deze visie wordt je kompas
@@ -237,8 +237,8 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                 {currentStep === 2 && (
                   <div className="space-y-6">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center">
-                        <Calendar className="w-5 h-5 text-pink-600" />
+                      <div className="w-10 h-10 rounded-lg bg-coral-100 flex items-center justify-center">
+                        <Calendar className="w-5 h-5 text-coral-600" />
                       </div>
                       <div>
                         <h2 className="text-xl font-bold text-gray-900">Jouw Reis</h2>
@@ -251,74 +251,74 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                     </p>
 
                     {/* Week 1 */}
-                    <div className="border-l-4 border-pink-500 pl-6 py-4 bg-pink-50 rounded-r">
+                    <div className="border-l-4 border-coral-500 pl-6 py-4 bg-coral-50 rounded-r">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-3xl">📸</span>
-                        <h3 className="text-xl font-bold text-pink-900">Week 1: Fundament</h3>
+                        <h3 className="text-xl font-bold text-coral-900">Week 1: Fundament</h3>
                       </div>
                       <ul className="space-y-2 text-gray-700">
                         <li className="flex items-start gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-coral-600 mt-0.5 flex-shrink-0" />
                           <span>Je foto's: leer wat werkt en waarom</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-coral-600 mt-0.5 flex-shrink-0" />
                           <span>Eerste indruk: zie jezelf door de ogen van matches</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-coral-600 mt-0.5 flex-shrink-0" />
                           <span>Profiel audit: ontdek je sterke punten én verbeterpunten</span>
                         </li>
                       </ul>
                     </div>
 
                     {/* Week 2 */}
-                    <div className="border-l-4 border-pink-400 pl-6 py-4 bg-gray-50 rounded-r">
+                    <div className="border-l-4 border-coral-400 pl-6 py-4 bg-gray-50 rounded-r">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-3xl">✍️</span>
                         <h3 className="text-xl font-bold text-gray-900">Week 2: Connectie</h3>
                       </div>
                       <ul className="space-y-2 text-gray-700">
                         <li className="flex items-start gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-coral-600 mt-0.5 flex-shrink-0" />
                           <span>Bio's die converteren: schrijf teksten die matchen</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-coral-600 mt-0.5 flex-shrink-0" />
                           <span>Jouw verhaal: ontdek wat je uniek maakt</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-coral-600 mt-0.5 flex-shrink-0" />
                           <span>Authentiek aantrekkelijk zijn: geen masker nodig</span>
                         </li>
                       </ul>
                     </div>
 
                     {/* Week 3 */}
-                    <div className="border-l-4 border-pink-300 pl-6 py-4 bg-gray-50 rounded-r">
+                    <div className="border-l-4 border-coral-300 pl-6 py-4 bg-gray-50 rounded-r">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-3xl">💬</span>
                         <h3 className="text-xl font-bold text-gray-900">Week 3: Groei</h3>
                       </div>
                       <ul className="space-y-2 text-gray-700">
                         <li className="flex items-start gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-coral-600 mt-0.5 flex-shrink-0" />
                           <span>Gesprekken die boeien: van opener tot eerste date</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-coral-600 mt-0.5 flex-shrink-0" />
                           <span>Date strategie: van match naar ontmoeting</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-pink-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-coral-600 mt-0.5 flex-shrink-0" />
                           <span>Jouw dating succes systeem: blijvende resultaten</span>
                         </li>
                       </ul>
                     </div>
 
-                    <div className="bg-gray-50 border-l-4 border-pink-600 p-4 rounded">
+                    <div className="bg-gray-50 border-l-4 border-coral-600 p-4 rounded">
                       <div className="flex items-start gap-3">
-                        <Zap className="w-5 h-5 text-pink-600 mt-1 flex-shrink-0" />
+                        <Zap className="w-5 h-5 text-coral-600 mt-1 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-medium text-gray-900">
                             Dagelijks 15-20 minuten
@@ -336,8 +336,8 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                 {currentStep === 3 && (
                   <div className="space-y-6">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center">
-                        <Heart className="w-5 h-5 text-pink-600" />
+                      <div className="w-10 h-10 rounded-lg bg-coral-100 flex items-center justify-center">
+                        <Heart className="w-5 h-5 text-coral-600" />
                       </div>
                       <div>
                         <h2 className="text-xl font-bold text-gray-900">Jouw Commitment</h2>
@@ -375,7 +375,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                               aspect-square rounded-xl font-bold text-lg transition-all duration-200
                               border-2 active:scale-95 relative
                               ${commitmentLevel === num
-                                ? 'border-pink-500 bg-pink-500 text-white shadow-lg scale-105'
+                                ? 'border-coral-500 bg-coral-500 text-white shadow-lg scale-105'
                                 : num >= 7
                                   ? 'border-green-200 bg-green-50 text-green-700 hover:border-green-400 hover:bg-green-100'
                                   : 'border-gray-200 bg-white text-gray-400 hover:border-gray-300'
@@ -442,7 +442,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                       <label className={`flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${
                         commitmentChecklist.daily_time
                           ? 'border-green-400 bg-green-50'
-                          : 'border-gray-200 hover:border-pink-300'
+                          : 'border-gray-200 hover:border-coral-300'
                       }`}>
                         <Checkbox
                           checked={commitmentChecklist.daily_time}
@@ -464,7 +464,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                       <label className={`flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${
                         commitmentChecklist.honest_reflections
                           ? 'border-green-400 bg-green-50'
-                          : 'border-gray-200 hover:border-pink-300'
+                          : 'border-gray-200 hover:border-coral-300'
                       }`}>
                         <Checkbox
                           checked={commitmentChecklist.honest_reflections}
@@ -486,7 +486,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                       <label className={`flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all ${
                         commitmentChecklist.do_exercises
                           ? 'border-green-400 bg-green-50'
-                          : 'border-gray-200 hover:border-pink-300'
+                          : 'border-gray-200 hover:border-coral-300'
                       }`}>
                         <Checkbox
                           checked={commitmentChecklist.do_exercises}
@@ -513,10 +513,10 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                         <motion.div
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          className="bg-pink-50 border-l-4 border-pink-600 p-4 rounded"
+                          className="bg-coral-50 border-l-4 border-coral-600 p-4 rounded"
                         >
                           <div className="flex items-center gap-3">
-                            <CheckCircle2 className="w-6 h-6 text-pink-600 flex-shrink-0" />
+                            <CheckCircle2 className="w-6 h-6 text-coral-600 flex-shrink-0" />
                             <div>
                               <p className="font-medium text-gray-900">Perfect! Je bent klaar voor de volgende stap 🎉</p>
                               <p className="text-sm text-gray-600">
@@ -533,8 +533,8 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                 {currentStep === 4 && (
                   <div className="space-y-6">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center">
-                        <Zap className="w-5 h-5 text-pink-600" />
+                      <div className="w-10 h-10 rounded-lg bg-coral-100 flex items-center justify-center">
+                        <Zap className="w-5 h-5 text-coral-600" />
                       </div>
                       <div>
                         <h2 className="text-xl font-bold text-gray-900">Je Eerste Stap</h2>
@@ -542,7 +542,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                       </div>
                     </div>
 
-                    <div className="bg-gray-50 border-l-4 border-pink-600 p-6 rounded">
+                    <div className="bg-gray-50 border-l-4 border-coral-600 p-6 rounded">
                       <p className="text-lg font-medium text-gray-900 mb-2">
                         🎯 Mini-opdracht voor Dag 1
                       </p>
@@ -565,7 +565,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
 
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                       <div className="flex items-start gap-3">
-                        <Sparkles className="w-5 h-5 text-pink-600 mt-1 flex-shrink-0" />
+                        <Sparkles className="w-5 h-5 text-coral-600 mt-1 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-medium text-gray-900">
                             Klaar voor de start! 🚀
@@ -577,9 +577,9 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
                       </div>
                     </div>
 
-                    <div className="bg-pink-600 p-6 rounded-lg text-white">
+                    <div className="bg-coral-600 p-6 rounded-lg text-white">
                       <p className="text-lg font-bold mb-2">🎉 Je bent klaar om te beginnen!</p>
-                      <p className="text-pink-50">
+                      <p className="text-coral-50">
                         Klik op "Ik doe mee" om je Kickstart reis te starten. Iris zal je elke dag begeleiden met persoonlijke inzichten.
                       </p>
                     </div>
@@ -608,7 +608,7 @@ export function DayZeroExperience({ onComplete, embedded = false }: DayZeroExper
             <Button
               onClick={handleNext}
               disabled={!isStepValid() || loading}
-              className="bg-pink-600 hover:bg-pink-700 text-white gap-1 sm:gap-2 text-sm sm:text-base flex-1 max-w-[200px] sm:max-w-none sm:flex-none"
+              className="bg-coral-600 hover:bg-coral-700 text-white gap-1 sm:gap-2 text-sm sm:text-base flex-1 max-w-[200px] sm:max-w-none sm:flex-none"
             >
               {loading ? (
                 'Bezig...'

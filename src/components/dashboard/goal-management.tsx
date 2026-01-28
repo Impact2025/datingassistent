@@ -209,8 +209,8 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
           <Card className="bg-white border-0 shadow-sm">
             <CardContent className="p-8">
               <div className="text-center">
-                <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                  <Target className="w-8 h-8 text-pink-500" />
+                <div className="w-16 h-16 bg-coral-50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <Target className="w-8 h-8 text-coral-500" />
                 </div>
 
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
@@ -229,8 +229,8 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
             <Card className="bg-white border-0 shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <TrendingUp className="w-6 h-6 text-pink-500" />
+                  <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-6 h-6 text-coral-500" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2">Stel Slimme Doelen</h4>
@@ -245,8 +245,8 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
             <Card className="bg-white border-0 shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-6 h-6 text-pink-500" />
+                  <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-6 h-6 text-coral-500" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2">Track Voortgang</h4>
@@ -261,8 +261,8 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
             <Card className="bg-white border-0 shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <MessageCircle className="w-6 h-6 text-pink-500" />
+                  <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-6 h-6 text-coral-500" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2">Krijg Ondersteuning</h4>
@@ -287,7 +287,7 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
                   <Button
                     onClick={() => setShowAddGoal(true)}
                     size="lg"
-                    className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3"
+                    className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-3"
                   >
                     <Plus className="w-5 h-5 mr-2" />
                     Start met je Eerste Doel
@@ -389,7 +389,7 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
                       {goal.tool_link && (
                         <Button
                           size="sm"
-                          className="bg-pink-500 hover:bg-pink-600"
+                          className="bg-coral-500 hover:bg-coral-600"
                           onClick={() => onTabChange?.(goal.tool_link!)}
                         >
                           Open Tool
@@ -470,7 +470,7 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
                       {goal.tool_link && (
                         <Button
                           size="sm"
-                          className="bg-pink-500 hover:bg-pink-600"
+                          className="bg-coral-500 hover:bg-coral-600"
                           onClick={() => onTabChange?.(goal.tool_link!)}
                         >
                           Open Tool
@@ -552,7 +552,7 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
             <div>
               <label className="text-sm font-medium text-gray-600">Type doel</label>
               <Select value={newGoal.goal_type} onValueChange={(value) => setNewGoal(prev => ({ ...prev, goal_type: value }))}>
-                <SelectTrigger className="bg-pink-50/50 border-pink-200 focus:border-pink-300 focus:ring-pink-300">
+                <SelectTrigger className="bg-coral-50/50 border-coral-200 focus:border-coral-300 focus:ring-coral-300">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -566,7 +566,7 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
             <div>
               <label className="text-sm font-medium text-gray-600">Categorie</label>
               <Select value={newGoal.category} onValueChange={(value) => setNewGoal(prev => ({ ...prev, category: value }))}>
-                <SelectTrigger className="bg-pink-50/50 border-pink-200 focus:border-pink-300 focus:ring-pink-300">
+                <SelectTrigger className="bg-coral-50/50 border-coral-200 focus:border-coral-300 focus:ring-coral-300">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -586,7 +586,7 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
                 value={newGoal.title}
                 onChange={(e) => setNewGoal(prev => ({ ...prev, title: e.target.value }))}
                 placeholder="Bijv: 3 professionele foto's uploaden"
-                className="bg-pink-50/50 border-pink-200 focus:border-pink-300 focus:ring-pink-300"
+                className="bg-coral-50/50 border-coral-200 focus:border-coral-300 focus:ring-coral-300"
               />
             </div>
 
@@ -596,7 +596,7 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
                 value={newGoal.description}
                 onChange={(e) => setNewGoal(prev => ({ ...prev, description: e.target.value }))}
                 placeholder="Waarom is dit doel belangrijk voor jou?"
-                className="bg-pink-50/50 border-pink-200 focus:border-pink-300 focus:ring-pink-300"
+                className="bg-coral-50/50 border-coral-200 focus:border-coral-300 focus:ring-coral-300"
               />
             </div>
 
@@ -607,7 +607,7 @@ export function GoalManagement({ onTabChange }: GoalManagementProps) {
                 value={newGoal.target_value}
                 onChange={(e) => setNewGoal(prev => ({ ...prev, target_value: parseInt(e.target.value) || 0 }))}
                 placeholder="Bijv: 3 (voor 3 foto's)"
-                className="bg-pink-50/50 border-pink-200 focus:border-pink-300 focus:ring-pink-300"
+                className="bg-coral-50/50 border-coral-200 focus:border-coral-300 focus:ring-coral-300"
               />
             </div>
 

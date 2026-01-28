@@ -99,7 +99,7 @@ function LerenPageContent() {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'beginner': return 'bg-gray-100 text-gray-700';
-      case 'intermediate': return 'bg-pink-100 text-pink-700';
+      case 'intermediate': return 'bg-coral-100 text-coral-700';
       case 'advanced': return 'bg-gray-100 text-gray-700';
       default: return 'bg-gray-100 text-gray-700';
     }
@@ -148,8 +148,8 @@ function LerenPageContent() {
         <Card className="border border-gray-200 bg-white">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 mb-2">
-              <Star className="w-5 h-5 text-pink-600" />
-              <Badge className="bg-pink-100 text-pink-700">Aanbevolen voor vandaag</Badge>
+              <Star className="w-5 h-5 text-coral-600" />
+              <Badge className="bg-coral-100 text-coral-700">Aanbevolen voor vandaag</Badge>
             </div>
             <CardTitle className="text-lg">{todayLesson.title}</CardTitle>
             <p className="text-sm text-gray-600">{todayLesson.description}</p>
@@ -167,7 +167,7 @@ function LerenPageContent() {
                 </div>
               </div>
             </div>
-            <Button className="w-full bg-pink-500 hover:bg-pink-600">
+            <Button className="w-full bg-coral-500 hover:bg-coral-600">
               <Play className="w-4 h-4 mr-2" />
               Start Les
             </Button>
@@ -190,7 +190,7 @@ function LerenPageContent() {
                       <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-semibold text-gray-900">{course.title}</h3>
                         {course.isRecommended && (
-                          <Badge className="bg-pink-100 text-pink-700 text-xs">
+                          <Badge className="bg-coral-100 text-coral-700 text-xs">
                             🔥 Populair
                           </Badge>
                         )}
@@ -227,7 +227,7 @@ function LerenPageContent() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full border-pink-200 text-pink-700 hover:bg-pink-50"
+                      className="w-full border-coral-200 text-coral-700 hover:bg-coral-50"
                       onClick={(e) => {
                         e.stopPropagation();
                         router.push(`/courses/${course.id}`);
@@ -253,7 +253,7 @@ function LerenPageContent() {
                 <div className="text-xs text-gray-600">Lessen voltooid</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-pink-600">8</div>
+                <div className="text-2xl font-bold text-coral-600">8</div>
                 <div className="text-xs text-gray-600">Cursussen</div>
               </div>
               <div>
@@ -273,7 +273,7 @@ export default function LerenPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500" />
       </div>
     }>
       <LerenPageContent />

@@ -203,10 +203,10 @@ export function PilarenScore({
         </Card>
 
         {/* Iris Feedback */}
-        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+        <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-coral-600 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-white text-sm">🤖</span>
               </div>
               <div>
@@ -252,7 +252,7 @@ export function PilarenScore({
           <Card key={pilaar.id}>
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-coral-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
                   {index + 1}
                 </div>
                 <div>

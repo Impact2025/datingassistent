@@ -64,7 +64,7 @@ const scenarios: JourneyScenario[] = [
     emoji: '💫',
     title: 'Ik heb iemand ontmoet!',
     description: 'Het gaat goed, ik wil het goed doen',
-    color: 'from-pink-500 to-rose-600',
+    color: 'from-coral-500 to-rose-600',
   },
   {
     id: 'in_relationship',
@@ -215,7 +215,7 @@ export function PostKickstartJourney({ userName, completedDays, className }: Pro
                   className={cn(
                     'w-full group relative overflow-hidden rounded-xl p-4 text-left transition-all',
                     'hover:shadow-lg hover:scale-[1.02]',
-                    'border-2 border-transparent hover:border-pink-200',
+                    'border-2 border-transparent hover:border-coral-200',
                     'bg-gradient-to-r',
                     scenario.color
                   )}
@@ -259,7 +259,7 @@ export function PostKickstartJourney({ userName, completedDays, className }: Pro
             </Button>
 
             {/* Selected scenario recap */}
-            <Card className="border-pink-200 bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950/20 dark:to-rose-950/20">
+            <Card className="border-coral-200 bg-gradient-to-r from-coral-50 to-rose-50 dark:from-coral-950/20 dark:to-rose-950/20">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">
@@ -290,8 +290,8 @@ export function PostKickstartJourney({ userName, completedDays, className }: Pro
                     className={cn(
                       'group cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1',
                       rec.type === 'primary'
-                        ? 'border-2 border-pink-300 bg-gradient-to-br from-pink-50 to-white dark:from-pink-950/30 dark:to-background'
-                        : 'border-gray-200 hover:border-pink-200'
+                        ? 'border-2 border-coral-300 bg-gradient-to-br from-coral-50 to-white dark:from-coral-950/30 dark:to-background'
+                        : 'border-gray-200 hover:border-coral-200'
                     )}
                   >
                     <CardContent className="p-6">
@@ -300,7 +300,7 @@ export function PostKickstartJourney({ userName, completedDays, className }: Pro
                           className={cn(
                             'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl shadow-sm',
                             rec.type === 'primary'
-                              ? 'bg-gradient-to-br from-pink-500 to-rose-600 text-white'
+                              ? 'bg-gradient-to-br from-coral-500 to-rose-600 text-white'
                               : 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white'
                           )}
                         >
@@ -315,11 +315,11 @@ export function PostKickstartJourney({ userName, completedDays, className }: Pro
                           <div className="flex items-start justify-between gap-2 mb-2">
                             <div>
                               <div className="flex items-center gap-2 flex-wrap">
-                                <h3 className="font-bold text-lg group-hover:text-pink-600 transition-colors">
+                                <h3 className="font-bold text-lg group-hover:text-coral-600 transition-colors">
                                   {rec.title}
                                 </h3>
                                 {rec.type === 'primary' && (
-                                  <Badge className="bg-pink-100 text-pink-700">
+                                  <Badge className="bg-coral-100 text-coral-700">
                                     Aanbevolen
                                   </Badge>
                                 )}
@@ -346,7 +346,7 @@ export function PostKickstartJourney({ userName, completedDays, className }: Pro
                               size="sm"
                               className={cn(
                                 rec.type === 'primary'
-                                  ? 'bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700'
+                                  ? 'bg-gradient-to-r from-coral-500 to-rose-600 hover:from-coral-600 hover:to-rose-700'
                                   : 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
                               )}
                             >

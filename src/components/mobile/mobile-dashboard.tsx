@@ -56,8 +56,8 @@ const TABS: Tab[] = [
     label: 'Home',
     icon: Home,
     color: 'text-gray-500',
-    activeColor: 'text-pink-600',
-    bgGradient: 'from-pink-500 to-rose-500',
+    activeColor: 'text-coral-600',
+    bgGradient: 'from-coral-500 to-rose-500',
   },
   {
     id: 'tools',
@@ -230,7 +230,7 @@ function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
       {/* Sliding Indicator */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gray-100">
         <div
-          className="h-full bg-gradient-to-r from-pink-500 to-pink-600 transition-all duration-300 ease-out"
+          className="h-full bg-gradient-to-r from-coral-500 to-coral-600 transition-all duration-300 ease-out"
           style={{
             width: `${100 / TABS.length}%`,
             transform: `translateX(${activeIndex * 100}%)`,
@@ -252,7 +252,7 @@ function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
               }}
               className={cn(
                 "flex flex-col items-center justify-center px-4 py-2 rounded-xl transition-all duration-200 min-w-[70px] relative",
-                "active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2",
+                "active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-coral-500 focus-visible:ring-offset-2",
                 isActive ? "scale-105" : "hover:bg-gray-50"
               )}
               aria-label={tab.label}
@@ -261,7 +261,7 @@ function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
             >
               {/* Background glow for active tab */}
               {isActive && (
-                <div className="absolute inset-0 bg-gradient-to-t from-pink-50 to-transparent rounded-xl opacity-50" />
+                <div className="absolute inset-0 bg-gradient-to-t from-coral-50 to-transparent rounded-xl opacity-50" />
               )}
 
               {/* Icon */}
@@ -278,7 +278,7 @@ function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
                 />
                 {/* Active dot indicator */}
                 {isActive && (
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-pink-500 rounded-full" />
+                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-coral-500 rounded-full" />
                 )}
               </div>
 
@@ -315,12 +315,12 @@ function PullToRefreshIndicator({ distance, isRefreshing }: { distance: number; 
       )}>
         {isRefreshing ? (
           <>
-            <div className="w-4 h-4 border-2 border-pink-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-4 h-4 border-2 border-coral-500 border-t-transparent rounded-full animate-spin" />
             <span className="text-xs font-medium text-gray-700">Verversen...</span>
           </>
         ) : distance > 60 ? (
           <>
-            <Sparkles className="w-4 h-4 text-pink-500" />
+            <Sparkles className="w-4 h-4 text-coral-500" />
             <span className="text-xs font-medium text-gray-700">Loslaten om te verversen</span>
           </>
         ) : (
@@ -340,7 +340,7 @@ function PullToRefreshIndicator({ distance, isRefreshing }: { distance: number; 
 
 function LoadingScreen() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-pink-50">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-coral-50">
       <div className="text-center space-y-4">
         <div className="w-16 h-16 mx-auto relative">
           <Image
@@ -362,12 +362,12 @@ function LoadingScreen() {
 
 function AccessDeniedScreen({ onLogin, onRegister }: { onLogin: () => void; onRegister: () => void }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-pink-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-coral-50 flex items-center justify-center p-4">
       <Card className="max-w-md w-full shadow-xl border-0 bg-white/80 backdrop-blur-sm">
         <CardContent className="p-8">
           <div className="text-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-pink-100 to-pink-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
-              <Shield className="w-10 h-10 text-pink-500" />
+            <div className="w-20 h-20 bg-gradient-to-br from-coral-100 to-coral-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner">
+              <Shield className="w-10 h-10 text-coral-500" />
             </div>
 
             <CardTitle className="text-2xl font-bold text-gray-900 mb-3">
@@ -381,7 +381,7 @@ function AccessDeniedScreen({ onLogin, onRegister }: { onLogin: () => void; onRe
             <div className="space-y-3">
               <Button
                 onClick={onLogin}
-                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600 text-white py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
                 size="lg"
               >
                 <LogIn className="w-5 h-5 mr-2" />

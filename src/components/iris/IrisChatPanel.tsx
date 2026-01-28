@@ -174,11 +174,11 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
       }}
     >
       {/* Header with Mode Indicator - Dashboard Style */}
-      <div className="bg-pink-500 p-3 sm:p-4 flex-shrink-0 rounded-t-2xl">
+      <div className="bg-coral-500 p-3 sm:p-4 flex-shrink-0 rounded-t-2xl">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-full flex items-center justify-center">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-coral-500" />
             </div>
             <div>
               <h3 className="font-semibold text-white text-sm sm:text-base">Iris</h3>
@@ -247,7 +247,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
               <div className={`flex gap-3 max-w-[80%] ${bericht.type === 'gebruiker' && 'flex-row-reverse'}`}>
                 {/* Avatar - Dashboard Style */}
                 {bericht.type === 'iris' && (
-                  <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 bg-coral-500 rounded-full flex items-center justify-center flex-shrink-0">
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
                 )}
@@ -255,7 +255,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
                 <div
                   className={`px-4 py-3 rounded-2xl ${
                     bericht.type === 'gebruiker'
-                      ? 'bg-pink-500 text-white'
+                      ? 'bg-coral-500 text-white'
                       : 'bg-white dark:bg-gray-700 shadow-sm border border-gray-100 dark:border-gray-600 text-gray-800 dark:text-gray-100'
                   }`}
                 >
@@ -265,7 +265,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
                   {bericht.type === 'iris' && (bericht.topics?.length > 0 || bericht.sentiment) && (
                     <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600 flex flex-wrap gap-1.5">
                       {bericht.topics?.map((topic, i) => (
-                        <span key={i} className="text-xs bg-pink-50 dark:bg-pink-900/30 px-2 py-0.5 rounded-full text-pink-700 dark:text-pink-300">
+                        <span key={i} className="text-xs bg-coral-50 dark:bg-coral-900/30 px-2 py-0.5 rounded-full text-coral-700 dark:text-coral-300">
                           #{topic}
                         </span>
                       ))}
@@ -286,15 +286,15 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
           <div className="flex justify-start mb-4">
             <div className="flex gap-3 max-w-[80%]">
               {/* Avatar */}
-              <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 bg-coral-500 rounded-full flex items-center justify-center flex-shrink-0">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               {/* Typing Bubble - Dashboard Style */}
               <div className="px-4 py-3 bg-white dark:bg-gray-700 shadow-sm border border-gray-100 dark:border-gray-600 rounded-2xl">
                 <div className="flex gap-1.5">
-                  <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '200ms' }} />
-                  <span className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '400ms' }} />
+                  <span className="w-2 h-2 bg-coral-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2 h-2 bg-coral-400 rounded-full animate-bounce" style={{ animationDelay: '200ms' }} />
+                  <span className="w-2 h-2 bg-coral-400 rounded-full animate-bounce" style={{ animationDelay: '400ms' }} />
                 </div>
               </div>
             </div>
@@ -309,7 +309,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
             className="space-y-2"
           >
             <p className="text-xs text-gray-500 dark:text-gray-400 font-medium flex items-center gap-1">
-              <Lightbulb className="w-3 h-3 text-pink-500" />
+              <Lightbulb className="w-3 h-3 text-coral-500" />
               Misschien kan dit je helpen
             </p>
             {proactiveSuggestions.slice(0, 2).map((suggestion, i) => (
@@ -319,7 +319,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
                 onClick={() => handleQuickQuestion(suggestion.actionText)}
-                className="bg-white dark:bg-gray-700 border border-pink-200 dark:border-pink-700 hover:border-pink-400 dark:hover:border-pink-500 rounded-xl p-3 cursor-pointer hover:shadow-md transition-all"
+                className="bg-white dark:bg-gray-700 border border-coral-200 dark:border-coral-700 hover:border-coral-400 dark:hover:border-coral-500 rounded-xl p-3 cursor-pointer hover:shadow-md transition-all"
               >
                 <div className="flex items-start gap-2">
                   <span className="text-lg">{suggestion.emoji}</span>
@@ -347,7 +347,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
                 onClick={() => handleQuickQuestion(suggestion)}
-                className="text-xs bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:border-pink-300 dark:hover:border-pink-500 hover:bg-pink-50 dark:hover:bg-pink-900/30 px-3 py-1.5 rounded-full transition-all text-gray-700 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400"
+                className="text-xs bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:border-coral-300 dark:hover:border-coral-500 hover:bg-coral-50 dark:hover:bg-coral-900/30 px-3 py-1.5 rounded-full transition-all text-gray-700 dark:text-gray-200 hover:text-coral-600 dark:hover:text-coral-400"
               >
                 {suggestion}
               </motion.button>
@@ -378,7 +378,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
             placeholder={limitReached ? "Limiet bereikt" : "Stel een vraag..."}
             disabled={limitReached}
             className={`flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-50 dark:bg-gray-700 rounded-full
-                       border-2 border-gray-200 dark:border-gray-600 focus:border-pink-400 dark:focus:border-pink-500 focus:bg-white dark:focus:bg-gray-600
+                       border-2 border-gray-200 dark:border-gray-600 focus:border-coral-400 dark:focus:border-coral-500 focus:bg-white dark:focus:bg-gray-600
                        focus:outline-none text-sm text-gray-900 dark:text-white
                        placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all
                        ${limitReached ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -386,7 +386,7 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
           <button
             type="submit"
             disabled={!input.trim() || limitReached}
-            className="w-10 h-10 sm:w-11 sm:h-11 bg-pink-500 hover:bg-pink-600
+            className="w-10 h-10 sm:w-11 sm:h-11 bg-coral-500 hover:bg-coral-600
                        disabled:bg-gray-300 disabled:cursor-not-allowed
                        rounded-full flex items-center justify-center flex-shrink-0
                        transition-all shadow-md hover:shadow-lg active:scale-95"

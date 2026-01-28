@@ -34,14 +34,14 @@ export function KickstartOTOModal({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
       {/* Header - Attention Grabber */}
-      <div className="bg-pink-50 dark:bg-pink-900/30 p-6 text-center border-b border-pink-100 dark:border-pink-800">
+      <div className="bg-coral-50 dark:bg-coral-900/30 p-6 text-center border-b border-coral-100 dark:border-coral-800">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', bounce: 0.5 }}
-          className="w-16 h-16 rounded-full bg-pink-100 dark:bg-pink-900/50 flex items-center justify-center mx-auto mb-4"
+          className="w-16 h-16 rounded-full bg-coral-100 dark:bg-coral-900/50 flex items-center justify-center mx-auto mb-4"
         >
-          <Sparkles className="w-8 h-8 text-pink-500 dark:text-pink-400" />
+          <Sparkles className="w-8 h-8 text-coral-500 dark:text-coral-400" />
         </motion.div>
 
         {/* Headline - Gap Awareness */}
@@ -68,8 +68,8 @@ export function KickstartOTOModal({
       <div className="p-6">
         {/* Program Name */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-pink-100 dark:bg-pink-900/50 flex items-center justify-center">
-            <Rocket className="w-6 h-6 text-pink-500 dark:text-pink-400" />
+          <div className="w-12 h-12 rounded-xl bg-coral-100 dark:bg-coral-900/50 flex items-center justify-center">
+            <Rocket className="w-6 h-6 text-coral-500 dark:text-coral-400" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-gray-50">Het Kickstart Programma</h2>
@@ -119,7 +119,7 @@ export function KickstartOTOModal({
           </div>
 
           {/* Urgency */}
-          <p className="text-sm text-pink-600 dark:text-pink-400 mt-2 font-medium">
+          <p className="text-sm text-coral-600 dark:text-coral-400 mt-2 font-medium">
             Alleen nu voor nieuwe leden
           </p>
         </motion.div>
@@ -135,7 +135,7 @@ export function KickstartOTOModal({
           {/* Primary CTA */}
           <Button
             onClick={onAccept}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
+            className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
           >
             {KICKSTART_OTO.ctaPrimary}
           </Button>

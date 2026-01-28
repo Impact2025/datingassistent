@@ -124,7 +124,7 @@ export default function BlogPostPage() {
           cover_image_url: blogData.cover_image_url || blogData.featured_image || blogData.image,
           cover_image_alt: blogData.cover_image_alt,
           header_type: blogData.header_type || 'image',
-          header_color: blogData.header_color || '#ec4899',
+          header_color: blogData.header_color || '#FF7B54',
           header_title: blogData.header_title,
           seo_title: blogData.seo_title,
           seo_description: blogData.seo_description,
@@ -402,17 +402,17 @@ export default function BlogPostPage() {
 
       {/* Reading Progress Bar */}
       <div
-        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-pink-500 to-pink-600 z-50 transition-all duration-150"
+        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-coral-500 to-coral-600 z-50 transition-all duration-150"
         style={{ width: `${readingProgress}%` }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-pink-50/30 to-pink-50/30">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-coral-50/30 to-coral-50/30">
         {/* Header - Image OR Color */}
         {blog.header_type === 'color' ? (
           <div
             className="relative h-80 flex items-center justify-center overflow-hidden"
             style={{
-              background: `linear-gradient(135deg, ${blog.header_color}, ${adjustColor(blog.header_color || '#ec4899', -20)})`,
+              background: `linear-gradient(135deg, ${blog.header_color}, ${adjustColor(blog.header_color || '#FF7B54', -20)})`,
             }}
           >
             <div className="absolute inset-0 bg-black/20"></div>
@@ -450,7 +450,7 @@ export default function BlogPostPage() {
             {/* Metadata */}
             <div className="flex flex-wrap gap-3 mb-4">
               {blog.category && (
-                <Badge className="bg-pink-100 text-pink-700 hover:bg-pink-200">
+                <Badge className="bg-coral-100 text-coral-700 hover:bg-coral-200">
                   {blog.category}
                 </Badge>
               )}
@@ -495,7 +495,7 @@ export default function BlogPostPage() {
                   <Badge
                     key={idx}
                     variant="outline"
-                    className="text-xs bg-pink-50 text-pink-700 border-pink-200"
+                    className="text-xs bg-coral-50 text-coral-700 border-coral-200"
                   >
                     <Tag className="mr-1 h-3 w-3" />
                     {tag}
@@ -547,7 +547,7 @@ export default function BlogPostPage() {
 
           {/* Article Content */}
           <article
-            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-pink-600 prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700"
+            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-coral-600 prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(blog.content, {
                 ALLOWED_TAGS: [
@@ -568,7 +568,7 @@ export default function BlogPostPage() {
 
           {/* Author Bio */}
           {(blog.author_bio || blog.author_avatar) && (
-            <Card className="mt-12 border-pink-100 bg-gradient-to-br from-pink-50 to-pink-100">
+            <Card className="mt-12 border-coral-100 bg-gradient-to-br from-coral-50 to-coral-100">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   {blog.author_avatar ? (
@@ -578,7 +578,7 @@ export default function BlogPostPage() {
                       className="w-16 h-16 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-r from-pink-400 to-pink-600 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-r from-coral-400 to-coral-600 flex items-center justify-center">
                       <User className="h-8 w-8 text-white" />
                     </div>
                   )}
@@ -614,7 +614,7 @@ export default function BlogPostPage() {
                       />
                     )}
                     <CardContent className="p-4">
-                      <h3 className="font-semibold text-lg mb-2 line-clamp-2 hover:text-pink-600">
+                      <h3 className="font-semibold text-lg mb-2 line-clamp-2 hover:text-coral-600">
                         {post.title}
                       </h3>
                       <p className="text-sm text-gray-600 line-clamp-2">{post.excerpt}</p>

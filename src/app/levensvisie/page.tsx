@@ -11,7 +11,7 @@ function LevensvisieContent() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-coral-50 pb-24">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-md border-b border-indigo-100 px-4 py-3 sticky top-0 z-40">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
@@ -43,7 +43,7 @@ function LevensvisieContent() {
 export default function LevensVisiePage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-coral-50">
         <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
       </div>
     }>

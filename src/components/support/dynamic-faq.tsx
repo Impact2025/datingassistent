@@ -132,7 +132,7 @@ export function DynamicFAQ({
               className={cn(
                 'w-full pl-12 pr-10 py-3',
                 'bg-white border-2 border-gray-200 rounded-xl',
-                'focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20',
+                'focus:border-coral-500 focus:ring-2 focus:ring-coral-500/20',
                 'text-gray-900 placeholder:text-gray-400',
                 'transition-all duration-200'
               )}
@@ -157,7 +157,7 @@ export function DynamicFAQ({
                 'px-4 py-2 rounded-full text-sm font-medium',
                 'transition-all duration-200',
                 !selectedCategory
-                  ? 'bg-pink-500 text-white'
+                  ? 'bg-coral-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               )}
             >
@@ -175,7 +175,7 @@ export function DynamicFAQ({
                     'flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium',
                     'transition-all duration-200',
                     selectedCategory === category.title
-                      ? 'bg-pink-500 text-white'
+                      ? 'bg-coral-500 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   )}
                 >
@@ -195,7 +195,7 @@ export function DynamicFAQ({
             </span>
             <button
               onClick={clearFilters}
-              className="text-sm text-pink-600 hover:text-pink-700 font-medium"
+              className="text-sm text-coral-600 hover:text-coral-700 font-medium"
             >
               Filters wissen
             </button>
@@ -283,7 +283,7 @@ export function DynamicFAQ({
                           {/* Read More Link */}
                           <a
                             href={`/help/artikel/${article.slug}`}
-                            className="inline-flex items-center gap-1 mt-4 text-sm text-pink-600 hover:text-pink-700 font-medium"
+                            className="inline-flex items-center gap-1 mt-4 text-sm text-coral-600 hover:text-coral-700 font-medium"
                           >
                             Lees volledig artikel
                             <ChevronDown className="w-4 h-4 -rotate-90" />
@@ -342,7 +342,7 @@ export function DynamicFAQ({
             </p>
             <button
               onClick={clearFilters}
-              className="text-pink-600 hover:text-pink-700 font-medium"
+              className="text-coral-600 hover:text-coral-700 font-medium"
             >
               Alle vragen bekijken
             </button>

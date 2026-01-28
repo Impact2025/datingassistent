@@ -24,9 +24,9 @@ const pillars = [
     subtitle: "Profiel Suite",
     description: "Presenteer jezelf op de beste manier. Van profielfoto's tot bio - maak een onweerstaanbaar profiel.",
     icon: User,
-    color: "from-pink-500 to-rose-500",
-    bgColor: "bg-pink-50",
-    borderColor: "border-pink-200",
+    color: "from-coral-500 to-rose-500",
+    bgColor: "bg-coral-50",
+    borderColor: "border-coral-200",
     features: [
       "AI Profielfoto Analyse",
       "Bio Generator",
@@ -80,8 +80,8 @@ export function ThreePillarsFramework({ onContinue }: ThreePillarsFrameworkProps
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-4"
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-100 to-pink-200 rounded-full">
-          <Sparkles className="w-4 h-4 text-pink-600" />
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-coral-100 to-coral-200 rounded-full">
+          <Sparkles className="w-4 h-4 text-coral-600" />
           <span className="text-sm font-semibold text-gray-700">Het Framework</span>
         </div>
 
@@ -138,7 +138,7 @@ export function ThreePillarsFramework({ onContinue }: ThreePillarsFrameworkProps
                   <div className="space-y-2 pt-2">
                     {pillar.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
-                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-pink-500 to-pink-600" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-coral-500 to-coral-600" />
                         <span>{feature}</span>
                       </div>
                     ))}
@@ -171,7 +171,7 @@ export function ThreePillarsFramework({ onContinue }: ThreePillarsFrameworkProps
             </h3>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="text-center space-y-2">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 text-white flex items-center justify-center mx-auto font-bold text-lg">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-coral-500 to-rose-500 text-white flex items-center justify-center mx-auto font-bold text-lg">
                   1
                 </div>
                 <h4 className="font-semibold text-gray-900">Jouw Startpunt</h4>
@@ -214,7 +214,7 @@ export function ThreePillarsFramework({ onContinue }: ThreePillarsFrameworkProps
         <Button
           onClick={onContinue}
           size="lg"
-          className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 px-8"
+          className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 px-8"
         >
           Ontdek Jouw Startpunt
           <ArrowRight className="w-5 h-5 ml-2" />

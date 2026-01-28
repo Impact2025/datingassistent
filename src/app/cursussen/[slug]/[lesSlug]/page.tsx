@@ -381,11 +381,11 @@ export default function LesViewerPage() {
               <span className="text-gray-600 dark:text-gray-300">
                 {voltooideSecties} van {totalSecties} secties voltooid
               </span>
-              <span className="font-medium text-pink-600 dark:text-pink-400">{progressPercentage}%</span>
+              <span className="font-medium text-coral-600 dark:text-coral-400">{progressPercentage}%</span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className="bg-pink-500 h-2 rounded-full transition-all duration-300"
+                className="bg-coral-500 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
@@ -405,7 +405,7 @@ export default function LesViewerPage() {
           <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
             <CardContent className="p-8">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-coral-500 rounded-lg flex items-center justify-center">
                   <span className="text-white text-sm font-semibold">AI</span>
                 </div>
                 <div>
@@ -476,7 +476,7 @@ function VideoSectie({ sectie, isCompleted, onComplete }: any) {
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
-          {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
+          {isCompleted && <CheckCircle className="w-5 h-5 text-coral-500" />}
         </div>
 
         {sectie.beschrijving && (
@@ -532,7 +532,7 @@ function VideoSectie({ sectie, isCompleted, onComplete }: any) {
               setWatched(true);
               onComplete();
             }}
-            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
+            className="bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
             Markeer als bekeken
           </button>
@@ -590,7 +590,7 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
         {sectie.titel && (
           <div className="flex items-start justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
-            {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
+            {isCompleted && <CheckCircle className="w-5 h-5 text-coral-500" />}
           </div>
         )}
 
@@ -616,7 +616,7 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
                   <ul className="space-y-2">
                     {cat.voorbeelden.map((vb: string, vidx: number) => (
                       <li key={vidx} className="text-sm text-gray-700 dark:text-gray-200 flex items-start gap-2">
-                        <span className="text-pink-500 mt-1">•</span>
+                        <span className="text-coral-500 mt-1">•</span>
                         <span>{vb}</span>
                       </li>
                     ))}
@@ -639,13 +639,13 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
                   onClick={() => handleOptieClick(idx)}
                   className={`flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
                     isSelected
-                      ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 shadow-sm'
+                      ? 'border-coral-500 bg-coral-50 dark:bg-coral-900/30 shadow-sm'
                       : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
                   } ${isCompleted ? 'cursor-default' : 'cursor-pointer'}`}
                 >
                   <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
                     isSelected
-                      ? 'border-pink-500 bg-pink-500'
+                      ? 'border-coral-500 bg-coral-500'
                       : 'border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-600'
                   }`}>
                     {isSelected && (
@@ -707,7 +707,7 @@ function TekstSectie({ sectie, isCompleted, onComplete }: any) {
         {!isCompleted && (
           <button
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
+            className="bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
             Gelezen
           </button>
@@ -730,7 +730,7 @@ function KernpuntenSectie({ sectie, isCompleted, onComplete }: any) {
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'Kernpunten'}</h3>
-          {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
+          {isCompleted && <CheckCircle className="w-5 h-5 text-coral-500" />}
         </div>
 
         {intro && (
@@ -754,7 +754,7 @@ function KernpuntenSectie({ sectie, isCompleted, onComplete }: any) {
                     {icon}
                   </div>
                 ) : (
-                  <div className="shrink-0 w-7 h-7 rounded-md bg-pink-500 text-white flex items-center justify-center text-xs font-medium">
+                  <div className="shrink-0 w-7 h-7 rounded-md bg-coral-500 text-white flex items-center justify-center text-xs font-medium">
                     {idx + 1}
                   </div>
                 )}
@@ -770,7 +770,7 @@ function KernpuntenSectie({ sectie, isCompleted, onComplete }: any) {
         {!isCompleted && (
           <button
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
+            className="bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
             Begrepen
           </button>
@@ -814,7 +814,7 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'Quiz'}</h3>
-          {submitted && <CheckCircle className="w-5 h-5 text-pink-500" />}
+          {submitted && <CheckCircle className="w-5 h-5 text-coral-500" />}
         </div>
 
         {sectie.beschrijving && (
@@ -846,8 +846,8 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
                             ? 'border-red-500 bg-red-50 dark:bg-red-900/30'
                             : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700'
                           : antwoorden[vraag.id] === optieId
-                          ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30'
-                          : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-pink-300 hover:bg-gray-50 dark:hover:bg-gray-600'
+                          ? 'border-coral-500 bg-coral-50 dark:bg-coral-900/30'
+                          : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-coral-300 hover:bg-gray-50 dark:hover:bg-gray-600'
                       }`}
                     >
                       <input
@@ -857,7 +857,7 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
                         checked={antwoorden[vraag.id] === optieId}
                         onChange={(e) => setAntwoorden({ ...antwoorden, [vraag.id]: e.target.value })}
                         disabled={submitted}
-                        className="text-pink-500"
+                        className="text-coral-500"
                       />
                       <span className={`text-sm dark:text-gray-200 ${submitted && isCorrect ? 'font-semibold' : ''}`}>
                         {optieTekst}
@@ -883,7 +883,7 @@ function QuizSectie({ sectie, isCompleted, onComplete }: any) {
             <button
               onClick={handleSubmit}
               disabled={Object.keys(antwoorden).length !== vragen.length}
-              className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Quiz indienen
             </button>
@@ -912,7 +912,7 @@ function ReflectieSectie({ sectie, isCompleted, onComplete }: any) {
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'Reflectievraag'}</h3>
-          {saved && <CheckCircle className="w-5 h-5 text-pink-500" />}
+          {saved && <CheckCircle className="w-5 h-5 text-coral-500" />}
         </div>
 
         {/* Reflectievraag kan in vragen array zitten of als enkele vraag */}
@@ -921,7 +921,7 @@ function ReflectieSectie({ sectie, isCompleted, onComplete }: any) {
         </p>
 
         <textarea
-          className="w-full min-h-[120px] p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition-all text-gray-900 dark:text-white bg-white dark:bg-gray-700 placeholder:text-gray-400"
+          className="w-full min-h-[120px] p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-coral-400 focus:border-coral-400 transition-all text-gray-900 dark:text-white bg-white dark:bg-gray-700 placeholder:text-gray-400"
           placeholder="Schrijf hier je antwoord..."
           value={antwoord}
           onChange={(e) => setAntwoord(e.target.value)}
@@ -936,7 +936,7 @@ function ReflectieSectie({ sectie, isCompleted, onComplete }: any) {
                 onComplete(antwoord);
               }}
               disabled={antwoord.trim().length === 0}
-              className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Opslaan
             </button>
@@ -966,7 +966,7 @@ function OpdrachtSectie({ sectie, isCompleted, onComplete }: any) {
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'In de Praktijk'}</h3>
-          {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
+          {isCompleted && <CheckCircle className="w-5 h-5 text-coral-500" />}
         </div>
 
         {introTekst && (
@@ -977,14 +977,14 @@ function OpdrachtSectie({ sectie, isCompleted, onComplete }: any) {
           {acties.map((actie: string, idx: number) => (
             <label
               key={idx}
-              className="flex items-start gap-3 p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-pink-50 dark:hover:bg-pink-900/30 hover:border-pink-300 transition-all"
+              className="flex items-start gap-3 p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-coral-50 dark:hover:bg-coral-900/30 hover:border-coral-300 transition-all"
             >
               <input
                 type="checkbox"
                 checked={voltooide.includes(idx)}
                 onChange={() => handleTaakToggle(idx)}
                 disabled={isCompleted}
-                className="mt-1 w-5 h-5 text-pink-500 rounded"
+                className="mt-1 w-5 h-5 text-coral-500 rounded"
               />
               <span className={voltooide.includes(idx) ? 'line-through text-gray-500 dark:text-gray-400' : 'text-gray-800 dark:text-gray-200'}>
                 {actie}
@@ -996,7 +996,7 @@ function OpdrachtSectie({ sectie, isCompleted, onComplete }: any) {
         {!isCompleted && allCompleted && (
           <button
             onClick={() => onComplete(voltooide)}
-            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
+            className="bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
             Opdracht voltooien
           </button>
@@ -1012,7 +1012,7 @@ function ToolSectie({ sectie, isCompleted, onComplete }: any) {
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
-          {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
+          {isCompleted && <CheckCircle className="w-5 h-5 text-coral-500" />}
         </div>
 
         {/* Intro tekst */}
@@ -1029,7 +1029,7 @@ function ToolSectie({ sectie, isCompleted, onComplete }: any) {
         {!isCompleted && (
           <button
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
+            className="bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
           >
             {sectie.inhoud?.ctaTekst || 'Tool gebruikt'}
           </button>
@@ -1041,10 +1041,10 @@ function ToolSectie({ sectie, isCompleted, onComplete }: any) {
 
 function TipSectie({ sectie, isCompleted, onComplete }: any) {
   return (
-    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow border-l-4 border-pink-500">
+    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-shadow border-l-4 border-coral-500">
       <CardContent className="p-8">
         <div className="flex items-start gap-4">
-          <div className="shrink-0 w-8 h-8 rounded-md bg-pink-500 text-white flex items-center justify-center text-sm font-medium">
+          <div className="shrink-0 w-8 h-8 rounded-md bg-coral-500 text-white flex items-center justify-center text-sm font-medium">
             TIP
           </div>
           <div className="flex-1">
@@ -1077,7 +1077,7 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{sectie.titel || 'Actieplan'}</h3>
-          {isCompleted && <CheckCircle className="w-5 h-5 text-pink-500" />}
+          {isCompleted && <CheckCircle className="w-5 h-5 text-coral-500" />}
         </div>
 
         {sectie.beschrijving && (
@@ -1095,7 +1095,7 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
                 className={`flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
                   voltooideActies.includes(idx)
                     ? 'border-green-500 bg-green-50 dark:bg-green-900/30'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-pink-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    : 'border-gray-200 dark:border-gray-600 hover:border-coral-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
                 <input
@@ -1103,7 +1103,7 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
                   checked={voltooideActies.includes(idx)}
                   onChange={() => handleActieToggle(idx)}
                   disabled={isCompleted}
-                  className="mt-1 w-5 h-5 text-pink-500 rounded"
+                  className="mt-1 w-5 h-5 text-coral-500 rounded"
                 />
                   <div className="flex-1">
                     <span className={`text-gray-900 dark:text-white font-medium ${
@@ -1124,14 +1124,14 @@ function ActieplanSectie({ sectie, isCompleted, onComplete }: any) {
 
         <div className="flex items-center justify-between mt-4">
           <div className="text-sm text-gray-600 dark:text-gray-300">
-            <span className="font-semibold text-pink-500">{voltooideActies.length}</span> van{' '}
+            <span className="font-semibold text-coral-500">{voltooideActies.length}</span> van{' '}
             <span className="font-semibold">{acties.length}</span> acties voltooid
           </div>
 
           {!isCompleted && allCompleted && (
             <button
               onClick={() => onComplete(voltooideActies)}
-              className="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
+              className="bg-coral-500 hover:bg-coral-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
             >
               Actieplan voltooien
             </button>

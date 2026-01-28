@@ -60,7 +60,7 @@ export function PatternEmailGate({
                 'Eén concrete tip',
               ].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm text-gray-600">
-                  <Check className="w-4 h-4 text-pink-500" />
+                  <Check className="w-4 h-4 text-coral-500" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -78,7 +78,7 @@ export function PatternEmailGate({
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="Je voornaam"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
                   autoComplete="given-name"
                 />
               </div>
@@ -93,7 +93,7 @@ export function PatternEmailGate({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="jouw@email.nl"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-pink-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
                   autoComplete="email"
                 />
               </div>
@@ -103,7 +103,7 @@ export function PatternEmailGate({
                   type="checkbox"
                   checked={acceptsMarketing}
                   onChange={(e) => setAcceptsMarketing(e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded border-gray-300 text-pink-500 focus:ring-pink-500"
+                  className="mt-1 w-4 h-4 rounded border-gray-300 text-coral-500 focus:ring-coral-500"
                 />
                 <span className="text-sm text-gray-500">
                   Ontvang ook mijn beste dating inzichten per mail
@@ -113,7 +113,7 @@ export function PatternEmailGate({
               <button
                 type="submit"
                 disabled={!canSubmit}
-                className="w-full px-6 py-4 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                className="w-full px-6 py-4 bg-coral-500 text-white rounded-full font-semibold hover:bg-coral-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>

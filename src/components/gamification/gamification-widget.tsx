@@ -95,7 +95,7 @@ export function GamificationWidget({ userId, compact = false, onViewDetails }: G
   if (compact) {
     // Compact view for dashboard sidebar
     return (
-      <Card className="border-2 border-purple-200 dark:border-purple-900/50 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+      <Card className="border-2 border-purple-200 dark:border-purple-900/50 bg-gradient-to-br from-purple-50 to-coral-50 dark:from-purple-900/20 dark:to-coral-900/20">
         <CardContent className="p-4">
           {/* Header */}
           <div className="flex items-center justify-between mb-4">

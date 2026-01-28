@@ -60,7 +60,7 @@ export function CoachInput({
           placeholder={placeholder}
           disabled={disabled}
           className="flex-1 px-6 py-3 bg-gray-50 rounded-full
-                     border-2 border-gray-200 focus:border-pink-400 focus:bg-white
+                     border-2 border-gray-200 focus:border-coral-400 focus:bg-white
                      focus:outline-none text-sm text-gray-900
                      placeholder:text-gray-400 transition-all
                      disabled:bg-gray-100 disabled:cursor-not-allowed"
@@ -70,7 +70,7 @@ export function CoachInput({
         <button
           type="submit"
           disabled={!input.trim() || disabled}
-          className="w-11 h-11 bg-pink-500 hover:bg-pink-600
+          className="w-11 h-11 bg-coral-500 hover:bg-coral-600
                      disabled:bg-gray-300 disabled:cursor-not-allowed
                      rounded-full flex items-center justify-center
                      transition-all shadow-md hover:shadow-lg"

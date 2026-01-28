@@ -32,19 +32,19 @@ export default function FeaturesPage() {
         <div className="container mx-auto px-6 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
-              Ontdek al onze <span className="text-pink-500">10 AI tools</span>
+              Ontdek al onze <span className="text-coral-500">10 AI tools</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Van profiel optimalisatie tot date planning - wij helpen je bij elke stap van je dating reis
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
               <Link href="/register">
-                <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full text-lg">
+                <Button className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-3 rounded-full text-lg">
                   Start gratis
                 </Button>
               </Link>
               <Link href="#tools">
-                <Button variant="outline" className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-pink-500 hover:text-pink-500 px-8 py-3 rounded-full text-lg">
+                <Button variant="outline" className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-coral-500 hover:text-coral-500 px-8 py-3 rounded-full text-lg">
                   Bekijk tools
                 </Button>
               </Link>
@@ -67,9 +67,9 @@ export default function FeaturesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {/* Tool 1: Profiel Coach */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
-              <div className="w-12 h-12 mx-auto rounded-xl bg-pink-50 flex items-center justify-center">
-                <User className="w-6 h-6 text-pink-600" />
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
+              <div className="w-12 h-12 mx-auto rounded-xl bg-coral-50 flex items-center justify-center">
+                <User className="w-6 h-6 text-coral-600" />
               </div>
               <div>
                 <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">Profiel Coach</h3>
@@ -80,7 +80,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Tool 2: Chat Coach */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
               <div className="w-12 h-12 mx-auto rounded-xl bg-blue-50 flex items-center justify-center">
                 <MessageCircle className="w-6 h-6 text-blue-600" />
               </div>
@@ -93,7 +93,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Tool 3: Date Planner */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
               <div className="w-12 h-12 mx-auto rounded-xl bg-green-50 flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-green-600" />
               </div>
@@ -106,7 +106,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Tool 4: Opener Lab */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
               <div className="w-12 h-12 mx-auto rounded-xl bg-purple-50 flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-purple-600" />
               </div>
@@ -119,7 +119,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Tool 5: Match Analyse */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
               <div className="w-12 h-12 mx-auto rounded-xl bg-orange-50 flex items-center justify-center">
                 <TrendingUp className="w-6 h-6 text-orange-600" />
               </div>
@@ -132,7 +132,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Tool 6: Foto Check */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
               <div className="w-12 h-12 mx-auto rounded-xl bg-teal-50 flex items-center justify-center">
                 <Play className="w-6 h-6 text-teal-600" />
               </div>
@@ -145,7 +145,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Tool 7: Voortgang Tracker */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
               <div className="w-12 h-12 mx-auto rounded-xl bg-indigo-50 flex items-center justify-center">
                 <CheckCircle className="w-6 h-6 text-indigo-600" />
               </div>
@@ -158,7 +158,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Tool 8: Veiligheid */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
               <div className="w-12 h-12 mx-auto rounded-xl bg-red-50 flex items-center justify-center">
                 <Shield className="w-6 h-6 text-red-600" />
               </div>
@@ -171,7 +171,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Tool 9: Vaardigheden Assessment */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
               <div className="w-12 h-12 mx-auto rounded-xl bg-yellow-50 flex items-center justify-center">
                 <Heart className="w-6 h-6 text-yellow-600" />
               </div>
@@ -184,7 +184,7 @@ export default function FeaturesPage() {
             </div>
 
             {/* Tool 10: Online Cursus */}
-            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-md transition-all">
+            <div className="text-center space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-700 hover:shadow-md transition-all">
               <div className="w-12 h-12 mx-auto rounded-xl bg-cyan-50 flex items-center justify-center">
                 <BookOpen className="w-6 h-6 text-cyan-600" />
               </div>
@@ -199,7 +199,7 @@ export default function FeaturesPage() {
 
           <div className="text-center mt-12">
             <Link href="/register">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full">
+              <Button className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-3 rounded-full">
                 Start met onze tools
               </Button>
             </Link>
@@ -223,10 +223,10 @@ export default function FeaturesPage() {
             {/* Step 1 */}
             <div className="text-center space-y-6">
               <div className="relative">
-                <div className="w-20 h-20 mx-auto rounded-full bg-pink-100 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-pink-500">1</span>
+                <div className="w-20 h-20 mx-auto rounded-full bg-coral-100 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-coral-500">1</span>
                 </div>
-                <div className="hidden md:block absolute top-10 left-full w-full h-0.5 bg-pink-200 -translate-x-10"></div>
+                <div className="hidden md:block absolute top-10 left-full w-full h-0.5 bg-coral-200 -translate-x-10"></div>
               </div>
               <div className="space-y-3">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Maak je profiel</h3>
@@ -239,10 +239,10 @@ export default function FeaturesPage() {
             {/* Step 2 */}
             <div className="text-center space-y-6">
               <div className="relative">
-                <div className="w-20 h-20 mx-auto rounded-full bg-pink-100 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-pink-500">2</span>
+                <div className="w-20 h-20 mx-auto rounded-full bg-coral-100 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-coral-500">2</span>
                 </div>
-                <div className="hidden md:block absolute top-10 left-full w-full h-0.5 bg-pink-200 -translate-x-10"></div>
+                <div className="hidden md:block absolute top-10 left-full w-full h-0.5 bg-coral-200 -translate-x-10"></div>
               </div>
               <div className="space-y-3">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Krijg AI hulp</h3>
@@ -254,8 +254,8 @@ export default function FeaturesPage() {
 
             {/* Step 3 */}
             <div className="text-center space-y-6">
-              <div className="w-20 h-20 mx-auto rounded-full bg-pink-100 flex items-center justify-center">
-                <span className="text-2xl font-bold text-pink-500">3</span>
+              <div className="w-20 h-20 mx-auto rounded-full bg-coral-100 flex items-center justify-center">
+                <span className="text-2xl font-bold text-coral-500">3</span>
               </div>
               <div className="space-y-3">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Plan je date</h3>
@@ -269,7 +269,7 @@ export default function FeaturesPage() {
           {/* CTA */}
           <div className="mt-16 text-center">
             <Link href="/register">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
+              <Button className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
                 Start je dating succes
               </Button>
             </Link>

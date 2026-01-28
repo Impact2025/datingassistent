@@ -60,7 +60,7 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
   };
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -134,7 +134,7 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
           <div className="mb-6">
             <PrimaryButton
               onClick={handleShowResult}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+              className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
             >
               Bekijk Resultaat
             </PrimaryButton>
@@ -145,9 +145,9 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
         {showResult && (
           <div className="space-y-4 mb-6">
             {/* Score */}
-            <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 border-2 border-pink-300 dark:border-pink-700">
+            <div className="p-5 rounded-lg bg-gradient-to-r from-coral-100 to-coral-200 dark:from-coral-900/40 dark:to-coral-800/40 border-2 border-coral-300 dark:border-coral-700">
               <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">Je score:</p>
-              <p className="text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">
+              <p className="text-3xl font-bold text-coral-600 dark:text-coral-400 mb-1">
                 {yesCount} / {vragen.length}
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -157,8 +157,8 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
 
             {/* Interpretation */}
             {interpretatie && getInterpretation() && (
-              <div className="p-5 rounded-lg bg-white dark:bg-gray-700 border-2 border-pink-200 dark:border-pink-700">
-                <p className="text-sm font-semibold text-pink-900 dark:text-pink-300 mb-2">Wat dit betekent:</p>
+              <div className="p-5 rounded-lg bg-white dark:bg-gray-700 border-2 border-coral-200 dark:border-coral-700">
+                <p className="text-sm font-semibold text-coral-900 dark:text-coral-300 mb-2">Wat dit betekent:</p>
                 <p className="text-gray-800 dark:text-gray-200 leading-relaxed">{getInterpretation()}</p>
               </div>
             )}
@@ -169,7 +169,7 @@ export function InteractiveSectie({ sectie, isCompleted, onComplete }: Interacti
         {showResult && !isCompleted && (
           <PrimaryButton
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
             Check voltooid!

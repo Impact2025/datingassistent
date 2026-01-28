@@ -57,7 +57,7 @@ export function ChatAnalyticsDashboard() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-coral-500"></div>
           </div>
         </CardContent>
       </Card>
@@ -95,7 +95,7 @@ export function ChatAnalyticsDashboard() {
               onClick={() => setDays(d)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 days === d
-                  ? 'bg-pink-500 text-white'
+                  ? 'bg-coral-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -182,7 +182,7 @@ export function ChatAnalyticsDashboard() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-pink-600">
+            <div className="text-3xl font-bold text-coral-600">
               {summary.conversionRate.toFixed(1)}%
             </div>
             <p className="text-xs text-gray-500 mt-2">
@@ -216,7 +216,7 @@ export function ChatAnalyticsDashboard() {
             </div>
             <div>
               <div className="text-sm text-gray-600">Conversie</div>
-              <div className="text-2xl font-bold text-pink-600">
+              <div className="text-2xl font-bold text-coral-600">
                 {clientMetrics.conversionRate.toFixed(1)}%
               </div>
             </div>
@@ -228,7 +228,7 @@ export function ChatAnalyticsDashboard() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-pink-500" />
+            <BarChart3 className="w-5 h-5 text-coral-500" />
             Inzichten & Aanbevelingen
           </CardTitle>
         </CardHeader>

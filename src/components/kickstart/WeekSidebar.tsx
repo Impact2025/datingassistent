@@ -53,11 +53,11 @@ const WEEK_THEMES = [
 
 // Day types with their styling - all pink to match dashboard
 const DAY_TYPE_STYLES: Record<string, { icon: typeof Play; color: string }> = {
-  video: { icon: Play, color: 'text-pink-500' },
-  quiz: { icon: Target, color: 'text-pink-500' },
-  actie: { icon: Zap, color: 'text-pink-500' },
-  reflectie: { icon: Heart, color: 'text-pink-500' },
-  ai_tool: { icon: Sparkles, color: 'text-pink-500' },
+  video: { icon: Play, color: 'text-coral-500' },
+  quiz: { icon: Target, color: 'text-coral-500' },
+  actie: { icon: Zap, color: 'text-coral-500' },
+  reflectie: { icon: Heart, color: 'text-coral-500' },
+  ai_tool: { icon: Sparkles, color: 'text-coral-500' },
 };
 
 export interface DaySummary {
@@ -121,10 +121,10 @@ export function WeekSidebar({ days, currentDay, onSelectDay, className }: WeekSi
       case 'completed':
         return <CheckCircle className="w-4 h-4 text-green-500" />;
       case 'in_progress':
-        return <Play className="w-4 h-4 text-pink-500 fill-pink-500" />;
+        return <Play className="w-4 h-4 text-coral-500 fill-coral-500" />;
       case 'available':
         return isSelected ? (
-          <Circle className="w-4 h-4 text-pink-500 fill-pink-100" />
+          <Circle className="w-4 h-4 text-coral-500 fill-coral-100" />
         ) : (
           <Circle className="w-4 h-4 text-gray-400" />
         );

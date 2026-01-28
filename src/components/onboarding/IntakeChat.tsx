@@ -243,7 +243,7 @@ export function IntakeChat({ onComplete, className }: IntakeChatProps) {
                   "rounded-2xl px-4 py-3 max-w-[80%] shadow-sm",
                   message.type === "iris"
                     ? "bg-gray-100 rounded-tl-none text-gray-800"
-                    : "bg-pink-500 text-white rounded-tr-none"
+                    : "bg-coral-500 text-white rounded-tr-none"
                 )}
               >
                 <p className="leading-relaxed">{message.content}</p>
@@ -293,12 +293,12 @@ export function IntakeChat({ onComplete, className }: IntakeChatProps) {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleTextSubmit()}
               placeholder="Typ je antwoord..."
-              className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100"
+              className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-coral-400 focus:ring-2 focus:ring-coral-100"
             />
             <Button
               onClick={handleTextSubmit}
               disabled={!inputValue.trim()}
-              className="bg-pink-500 hover:bg-pink-600 rounded-xl px-4"
+              className="bg-coral-500 hover:bg-coral-600 rounded-xl px-4"
             >
               <Send className="w-5 h-5" />
             </Button>
@@ -321,7 +321,7 @@ export function IntakeChat({ onComplete, className }: IntakeChatProps) {
             />
             <Button
               onClick={() => handleSliderConfirm(sliderValue)}
-              className="w-full bg-pink-500 hover:bg-pink-600 rounded-xl py-3"
+              className="w-full bg-coral-500 hover:bg-coral-600 rounded-xl py-3"
             >
               Bevestig mijn keuze
             </Button>

@@ -63,9 +63,9 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     description: 'Kies de juiste toon voor je bio gebaseerd op je persoonlijkheid.',
     content: (
       <div className="grid grid-cols-2 gap-3 text-sm">
-        <div className="p-3 bg-pink-50 rounded-lg">
-          <div className="font-medium text-pink-800">🎉 Fun</div>
-          <div className="text-pink-600">Energie, humor, speels</div>
+        <div className="p-3 bg-coral-50 rounded-lg">
+          <div className="font-medium text-coral-800">🎉 Fun</div>
+          <div className="text-coral-600">Energie, humor, speels</div>
         </div>
         <div className="p-3 bg-blue-50 rounded-lg">
           <div className="font-medium text-blue-800">💼 Serious</div>
@@ -252,7 +252,7 @@ export function AiBioGenerator() {
               Handleiding
             </Button>
             {suggestions.length > 0 && (
-              <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-pink-200 dark:border-pink-700">
+              <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-coral-200 dark:border-coral-700">
                 {suggestions.length} bio's gegenereerd
               </Badge>
             )}
@@ -265,8 +265,8 @@ export function AiBioGenerator() {
         <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl">
           <CardHeader className="pb-6">
             <CardTitle className="text-xl flex items-center gap-3 dark:text-white">
-              <div className="w-8 h-8 bg-pink-100 dark:bg-pink-900/50 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+              <div className="w-8 h-8 bg-coral-100 dark:bg-coral-900/50 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-coral-600 dark:text-coral-400" />
               </div>
               Vertel ons over jezelf
             </CardTitle>
@@ -297,7 +297,7 @@ export function AiBioGenerator() {
                     onClick={() => setSelectedStyle(style.value as any)}
                     className={`p-4 text-left rounded-xl border-2 transition-all ${
                       selectedStyle === style.value
-                        ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
+                        ? 'border-coral-500 bg-coral-50 dark:bg-coral-900/30 text-coral-700 dark:text-coral-300'
                         : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-800'
                     }`}
                   >
@@ -324,7 +324,7 @@ export function AiBioGenerator() {
                     onClick={() => setSelectedLength(length.value as any)}
                     className={`p-4 text-center rounded-xl border-2 transition-all ${
                       selectedLength === length.value
-                        ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300'
+                        ? 'border-coral-500 bg-coral-50 dark:bg-coral-900/30 text-coral-700 dark:text-coral-300'
                         : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-800'
                     }`}
                   >
@@ -337,7 +337,7 @@ export function AiBioGenerator() {
             <Button
               onClick={generateBios}
               disabled={!userInput.trim() || isGenerating}
-              className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+              className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
               size="lg"
             >
               {isGenerating ? (
@@ -362,12 +362,12 @@ export function AiBioGenerator() {
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-xl flex items-center gap-3 dark:text-white">
-                    <div className="w-8 h-8 bg-pink-100 dark:bg-pink-900/50 rounded-lg flex items-center justify-center">
-                      <Star className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+                    <div className="w-8 h-8 bg-coral-100 dark:bg-coral-900/50 rounded-lg flex items-center justify-center">
+                      <Star className="w-4 h-4 text-coral-600 dark:text-coral-400" />
                     </div>
                     Jouw Bio Suggesties
                   </CardTitle>
-                  <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-pink-200 dark:border-pink-700">
+                  <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-coral-200 dark:border-coral-700">
                     {getStyleIcon(selectedStyle)} {selectedStyle} • {getLengthLabel(selectedLength)}
                   </Badge>
                 </div>
@@ -417,7 +417,7 @@ export function AiBioGenerator() {
                           </Button>
                           <Button
                             size="sm"
-                            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+                            className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
                           >
                             <Heart className="w-3 h-3 mr-1" />
                             Gebruiken
@@ -454,8 +454,8 @@ export function AiBioGenerator() {
         {suggestions.length === 0 && !isGenerating && (
           <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl">
             <CardContent className="p-12 text-center">
-              <div className="w-20 h-20 bg-pink-100 dark:bg-pink-900/50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Sparkles className="w-10 h-10 text-pink-600 dark:text-pink-400" />
+              <div className="w-20 h-20 bg-coral-100 dark:bg-coral-900/50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Sparkles className="w-10 h-10 text-coral-600 dark:text-coral-400" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">
                 Klaar om je bio te verbeteren?

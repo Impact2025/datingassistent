@@ -96,7 +96,7 @@ export function Ranking({
         {/* Resultaten Header */}
         <Card className="text-center">
           <CardContent className="pt-8 pb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -109,7 +109,7 @@ export function Ranking({
         </Card>
 
         {/* Top Item Highlight */}
-        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+        <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
           <CardContent className="pt-6">
             <div className="text-center">
               <h2 className="text-xl font-bold text-gray-900 mb-2">Jouw #1 Prioriteit</h2>

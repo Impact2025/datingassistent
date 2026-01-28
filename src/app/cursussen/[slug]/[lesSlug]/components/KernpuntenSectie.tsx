@@ -27,7 +27,7 @@ export function KernpuntenSectie({ sectie, isCompleted, onComplete }: Kernpunten
   };
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -44,7 +44,7 @@ export function KernpuntenSectie({ sectie, isCompleted, onComplete }: Kernpunten
           {punten.map((punt: any, index: number) => (
             <div
               key={index}
-              className="p-5 rounded-lg border-2 border-pink-200 dark:border-pink-700 bg-gradient-to-r from-pink-50 to-white dark:from-pink-900/30 dark:to-gray-800 hover:shadow-md transition-shadow"
+              className="p-5 rounded-lg border-2 border-coral-200 dark:border-coral-700 bg-gradient-to-r from-coral-50 to-white dark:from-coral-900/30 dark:to-gray-800 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start gap-4">
                 {/* Icon */}
@@ -83,7 +83,7 @@ export function KernpuntenSectie({ sectie, isCompleted, onComplete }: Kernpunten
 
         {/* Conclusion if available */}
         {content.conclusie && (
-          <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 border-2 border-pink-300 dark:border-pink-700 mb-6">
+          <div className="p-5 rounded-lg bg-gradient-to-r from-coral-100 to-coral-200 dark:from-coral-900/40 dark:to-coral-800/40 border-2 border-coral-300 dark:border-coral-700 mb-6">
             <p className="text-gray-900 dark:text-white font-semibold leading-relaxed">
               {content.conclusie}
             </p>
@@ -94,7 +94,7 @@ export function KernpuntenSectie({ sectie, isCompleted, onComplete }: Kernpunten
         {!isCompleted && (
           <PrimaryButton
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
             Begrepen!

@@ -13,7 +13,7 @@ interface ConfettiCelebrationProps {
 export function ConfettiCelebration({
   duration = 3000,
   pieces = 200,
-  colors = ["#ec4899", "#a855f7", "#8b5cf6", "#f472b6", "#f9a8d4"],
+  colors = ["#FF7B54", "#a855f7", "#8b5cf6", "#FFB49D", "#f9a8d4"],
   onComplete,
 }: ConfettiCelebrationProps) {
   const [windowDimension, setWindowDimension] = useState({

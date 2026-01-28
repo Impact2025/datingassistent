@@ -8,7 +8,7 @@ export const redFlagsIntroSlides: SlideDeck = {
       title: 'De 5 V\'s van Rode Vlaggen',
       subtitle: 'Herken gevaar voordat het te laat is',
       emoji: '🚩',
-      backgroundColor: 'from-red-600 to-pink-600'
+      backgroundColor: 'from-red-600 to-coral-600'
     },
     {
       type: 'content',
@@ -103,7 +103,7 @@ export const redFlagsIntroSlides: SlideDeck = {
         'Praat over toekomst (samenwonen, trouwen) veel te vroeg',
         'Overdreven complimenten en cadeaus'
       ],
-      backgroundColor: 'bg-gradient-to-br from-pink-50 to-rose-50',
+      backgroundColor: 'bg-gradient-to-br from-coral-50 to-rose-50',
       highlightColor: 'text-rose-700'
     },
     {
@@ -118,7 +118,7 @@ export const redFlagsIntroSlides: SlideDeck = {
         'Neemt "nee" niet serieus',
         'Wordt boos, manipulatief of afstandelijk na grens'
       ],
-      backgroundColor: 'bg-gradient-to-br from-red-100 to-pink-100',
+      backgroundColor: 'bg-gradient-to-br from-red-100 to-coral-100',
       highlightColor: 'text-red-800'
     },
     {
@@ -137,7 +137,7 @@ export const redFlagsIntroSlides: SlideDeck = {
       type: 'quote',
       quote: 'Jouw veiligheid is belangrijker dan iemand anders gevoelens.',
       emoji: '💛',
-      backgroundColor: 'bg-gradient-to-br from-purple-100 to-pink-100'
+      backgroundColor: 'bg-gradient-to-br from-purple-100 to-coral-100'
     }
   ]
 };

@@ -54,11 +54,11 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
   };
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center">
               <Lightbulb className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -76,14 +76,14 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
             {content.fases && Array.isArray(content.fases) && (
               <div className="space-y-4 mb-6">
                 {content.fases.map((fase: any, idx: number) => (
-                  <div key={idx} className="p-5 rounded-lg border-2 border-pink-200 dark:border-pink-700 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30">
+                  <div key={idx} className="p-5 rounded-lg border-2 border-coral-200 dark:border-coral-700 bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30">
                     <div className="flex items-start gap-3 mb-2">
-                      <div className="w-8 h-8 rounded-full bg-pink-500 text-white flex items-center justify-center text-sm font-bold shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-coral-500 text-white flex items-center justify-center text-sm font-bold shrink-0">
                         {fase.nummer || idx + 1}
                       </div>
                       <div className="flex-1">
                         <h4 className="font-bold text-gray-900 dark:text-white mb-1">{fase.naam}</h4>
-                        {fase.timing && <p className="text-xs text-pink-600 dark:text-pink-400 mb-2">{fase.timing}</p>}
+                        {fase.timing && <p className="text-xs text-coral-600 dark:text-coral-400 mb-2">{fase.timing}</p>}
                         {fase.basis && <p className="text-sm text-gray-700 dark:text-gray-200 mb-2">{fase.basis}</p>}
                         {fase.probleem && (
                           <p className="text-sm text-amber-700 dark:text-amber-300 mt-2 p-2 bg-amber-50 dark:bg-amber-900/30 rounded border border-amber-200 dark:border-amber-700">
@@ -98,7 +98,7 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
             )}
 
             {content.conclusie && (
-              <div className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 border-2 border-pink-300 dark:border-pink-700 mb-6">
+              <div className="p-5 rounded-lg bg-gradient-to-r from-coral-100 to-coral-200 dark:from-coral-900/40 dark:to-coral-800/40 border-2 border-coral-300 dark:border-coral-700 mb-6">
                 <p className="text-gray-900 dark:text-white font-semibold leading-relaxed">{content.conclusie}</p>
               </div>
             )}
@@ -112,8 +112,8 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
             )}
 
             {content.regel && (
-              <div className="p-5 bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 rounded-lg border-2 border-pink-300 dark:border-pink-700 mb-4">
-                <p className="font-bold text-pink-900 dark:text-pink-300 text-lg mb-2">📜 De Regel:</p>
+              <div className="p-5 bg-gradient-to-r from-coral-100 to-coral-200 dark:from-coral-900/40 dark:to-coral-800/40 rounded-lg border-2 border-coral-300 dark:border-coral-700 mb-4">
+                <p className="font-bold text-coral-900 dark:text-coral-300 text-lg mb-2">📜 De Regel:</p>
                 <p className="text-gray-900 dark:text-white">{content.regel}</p>
               </div>
             )}
@@ -234,7 +234,7 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
               // Kernpunt block (key takeaway)
               if (block.type === 'kernpunt') {
                 return (
-                  <div key={idx} className="p-5 rounded-lg bg-gradient-to-r from-pink-100 to-pink-200 border-l-4 border-pink-500">
+                  <div key={idx} className="p-5 rounded-lg bg-gradient-to-r from-coral-100 to-coral-200 border-l-4 border-coral-500">
                     <p className="text-gray-900 font-bold text-lg mb-2">{block.tekst}</p>
                     {block.toelichting && (
                       <p className="text-gray-700 text-sm leading-relaxed">{block.toelichting}</p>
@@ -266,7 +266,7 @@ export function InsightSectie({ sectie, isCompleted, onComplete }: InsightSectie
         {!isCompleted && (
           <PrimaryButton
             onClick={onComplete}
-            className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
             Begrepen!

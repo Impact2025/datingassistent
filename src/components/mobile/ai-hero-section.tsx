@@ -78,7 +78,7 @@ export function AIHeroSection({ onStartGuidedFlow, className }: AIHeroSectionPro
     <div className="bg-white border border-gray-200 rounded-lg p-6">
       {/* AI Coach Avatar */}
       <div className="flex items-center justify-center mb-6">
-        <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center overflow-hidden">
+        <div className="w-16 h-16 bg-coral-100 rounded-full flex items-center justify-center overflow-hidden">
           <Image
             src="/images/Logo Icon DatingAssistent.png"
             alt="DatingAssistent AI Coach"
@@ -103,7 +103,7 @@ export function AIHeroSection({ onStartGuidedFlow, className }: AIHeroSectionPro
       {/* Daily Objectives */}
       <div className="mb-6">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <Sparkles className="w-4 h-4 text-pink-500" />
+          <Sparkles className="w-4 h-4 text-coral-500" />
           <span className="text-sm font-medium text-gray-700">Vandaag focus op:</span>
         </div>
 
@@ -113,7 +113,7 @@ export function AIHeroSection({ onStartGuidedFlow, className }: AIHeroSectionPro
               key={index}
               className="flex items-center gap-3 bg-gray-50 rounded-lg p-3"
             >
-              <div className="w-2 h-2 bg-pink-500 rounded-full flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-coral-500 rounded-full flex-shrink-0"></div>
               <span className="text-sm text-gray-700">{objective}</span>
             </div>
           ))}
@@ -125,7 +125,7 @@ export function AIHeroSection({ onStartGuidedFlow, className }: AIHeroSectionPro
         <Button
           onClick={onStartGuidedFlow}
           size="sm"
-          className="w-full gap-2 px-3 py-1.5 bg-pink-500 hover:bg-pink-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
+          className="w-full gap-2 px-3 py-1.5 bg-coral-500 hover:bg-coral-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
         >
           <Play className="w-4 h-4 mr-2" />
           Start met mijn advies

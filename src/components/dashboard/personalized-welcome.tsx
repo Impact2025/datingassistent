@@ -345,19 +345,19 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
             {/* Title on same line as icon on mobile */}
             <div className="sm:hidden flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-semibold text-base text-pink-600">{recommendation.title}</h3>
+                <h3 className="font-semibold text-base text-coral-600">{recommendation.title}</h3>
                 {recommendation.urgency === 'high' && (
-                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
+                  <span className="px-2 py-0.5 bg-coral-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
                     Tip
                   </span>
                 )}
                 {recommendation.urgency === 'medium' && (
-                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
+                  <span className="px-2 py-0.5 bg-coral-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
                     Aanbevolen
                   </span>
                 )}
                 {recommendation.urgency === 'low' && (
-                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
+                  <span className="px-2 py-0.5 bg-coral-500 text-white text-xs rounded-xl shadow-lg whitespace-nowrap">
                     Tip
                   </span>
                 )}
@@ -369,19 +369,19 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
           <div className="flex-1 min-w-0">
             {/* Title - hidden on mobile (shown above) */}
             <div className="hidden sm:flex items-center gap-2 mb-2 flex-wrap">
-              <h3 className="font-semibold text-lg text-pink-600">{recommendation.title}</h3>
+              <h3 className="font-semibold text-lg text-coral-600">{recommendation.title}</h3>
               {recommendation.urgency === 'high' && (
-                <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                <span className="px-2 py-0.5 bg-coral-500 text-white text-xs rounded-xl shadow-lg">
                   Tip
                 </span>
               )}
               {recommendation.urgency === 'medium' && (
-                <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                <span className="px-2 py-0.5 bg-coral-500 text-white text-xs rounded-xl shadow-lg">
                   Aanbevolen
                 </span>
               )}
               {recommendation.urgency === 'low' && (
-                <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-xl shadow-lg">
+                <span className="px-2 py-0.5 bg-coral-500 text-white text-xs rounded-xl shadow-lg">
                   Tip
                 </span>
               )}
@@ -395,7 +395,7 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
               <Button
                 onClick={() => handleAction(recommendation.tool)}
                 size="sm"
-                className="gap-2 px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
+                className="gap-2 px-4 py-2 bg-coral-500 hover:bg-coral-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
               >
                 {recommendation.actionLabel}
                 <ArrowRight className="w-4 h-4" />

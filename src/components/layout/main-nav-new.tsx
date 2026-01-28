@@ -76,15 +76,15 @@ export function MainNavNew({ activeTab, onTabChange }: MainNavNewProps) {
                 onClick={() => handleTabClick(tab.id)}
                 className={cn(
                   "flex items-center gap-2 px-6 py-4 border-b-2 transition-all",
-                  "hover:text-pink-600 hover:border-pink-300",
+                  "hover:text-coral-600 hover:border-coral-300",
                   isActive
-                    ? "border-pink-500 text-pink-600 font-medium"
+                    ? "border-coral-500 text-coral-600 font-medium"
                     : "border-transparent text-gray-700"
                 )}
               >
                 <Icon className={cn(
                   "w-5 h-5",
-                  isActive ? "text-pink-500" : "text-gray-700"
+                  isActive ? "text-coral-500" : "text-gray-700"
                 )} />
                 <span>{tab.label}</span>
               </button>

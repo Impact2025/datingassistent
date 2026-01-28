@@ -120,7 +120,7 @@ function generatePDFHTML(result: any): string {
         .logo {
           width: 60px;
           height: 60px;
-          background: linear-gradient(135deg, #ec4899, #f97316);
+          background: linear-gradient(135deg, #FF7B54, #f97316);
           border-radius: 12px;
           display: inline-flex;
           align-items: center;
@@ -142,7 +142,7 @@ function generatePDFHTML(result: any): string {
         }
         .profiel-summary {
           background: linear-gradient(135deg, #fce7f3, #fef3c7);
-          border: 2px solid #ec4899;
+          border: 2px solid #FF7B54;
           border-radius: 12px;
           padding: 20px;
           margin: 20px 0;
@@ -151,7 +151,7 @@ function generatePDFHTML(result: any): string {
         .profiel-text {
           font-size: 18px;
           font-weight: bold;
-          color: #be185d;
+          color: #C85A2E;
           margin-bottom: 10px;
         }
         .interpretatie {
@@ -181,7 +181,7 @@ function generatePDFHTML(result: any): string {
           background: #f9fafb;
           padding: 15px;
           border-radius: 8px;
-          border-left: 4px solid #ec4899;
+          border-left: 4px solid #FF7B54;
         }
         .score-label {
           font-weight: 600;
@@ -197,7 +197,7 @@ function generatePDFHTML(result: any): string {
         }
         .score-fill {
           height: 100%;
-          background: linear-gradient(90deg, #ec4899, #f97316);
+          background: linear-gradient(90deg, #FF7B54, #f97316);
           border-radius: 4px;
         }
         .score-value {

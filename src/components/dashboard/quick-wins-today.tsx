@@ -155,7 +155,7 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
     blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800',
     purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800',
     green: 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800',
-    pink: 'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 border-pink-200 dark:border-pink-800',
+    pink: 'bg-coral-100 dark:bg-coral-900/30 text-coral-600 dark:text-coral-400 border-coral-200 dark:border-coral-800',
     orange: 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-800'
   };
 
@@ -180,12 +180,12 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="shadow-sm border-2 border-pink-100 dark:border-pink-900/50">
+      <Card className="shadow-sm border-2 border-coral-100 dark:border-coral-900/50">
         <CardContent className="p-4 sm:p-6">
           {/* Header - Responsive: Stack on mobile */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-5">
             <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-coral-500" />
               <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Quick Wins Vandaag</h2>
             </div>
             <div className="flex items-center gap-2">
@@ -205,7 +205,7 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
             <div className="mb-4">
               <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-pink-500 to-pink-600"
+                  className="h-full bg-gradient-to-r from-coral-500 to-coral-600"
                   initial={{ width: 0 }}
                   animate={{ width: `${(completedCount / 3) * 100}%` }}
                   transition={{ duration: 0.5 }}
@@ -228,7 +228,7 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
                     "flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg border-2 transition-all",
                     win.completed
                       ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 opacity-75"
-                      : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-500 hover:shadow-sm cursor-pointer"
+                      : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-coral-300 dark:hover:border-coral-500 hover:shadow-sm cursor-pointer"
                   )}
                   onClick={() => {
                     if (!win.completed) {
@@ -281,9 +281,9 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20 rounded-lg border border-pink-200 dark:border-pink-800 text-center"
+              className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/20 dark:to-coral-800/20 rounded-lg border border-coral-200 dark:border-coral-800 text-center"
             >
-              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-pink-500 mx-auto mb-1.5 sm:mb-2" />
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-coral-500 mx-auto mb-1.5 sm:mb-2" />
               <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">
                 Geweldig! Alle Quick Wins voltooid!
               </p>

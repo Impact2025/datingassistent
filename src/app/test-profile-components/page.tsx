@@ -16,7 +16,7 @@ export default function TestProfileComponents() {
   const [profilesCompleted, setProfilesCompleted] = useState(0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-coral-50 p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <Card className="border-2 border-purple-200 bg-gradient-to-r from-purple-100 to-blue-100">

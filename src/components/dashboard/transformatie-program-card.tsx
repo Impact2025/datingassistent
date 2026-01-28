@@ -38,7 +38,7 @@ const PHASES = {
     label: 'Surrender',
     description: 'Geef je over',
     icon: Sun,
-    color: 'from-rose-500 to-pink-600',
+    color: 'from-rose-500 to-coral-600',
     bgColor: 'bg-rose-100',
     textColor: 'text-rose-600',
     modules: [9, 10, 11, 12],
@@ -109,8 +109,8 @@ export function TransformatieProgramCard({ program, index = 0 }: TransformatiePr
       <div className="bg-white rounded-xl border border-gray-200 p-5">
         {/* Header */}
         <div className="flex items-start gap-4 mb-4">
-          <div className="w-11 h-11 bg-pink-100 rounded-xl flex items-center justify-center flex-shrink-0">
-            <Sparkles className="w-5 h-5 text-pink-600" />
+          <div className="w-11 h-11 bg-coral-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-5 h-5 text-coral-600" />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-gray-900">De Transformatie 3.0</h3>
@@ -176,7 +176,7 @@ export function TransformatieProgramCard({ program, index = 0 }: TransformatiePr
         <Button
           onClick={handleContinue}
           size="sm"
-          className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6"
+          className="bg-coral-500 hover:bg-coral-600 text-white rounded-full px-6"
         >
           {isCompleted ? (
             <>Bekijk Overzicht</>

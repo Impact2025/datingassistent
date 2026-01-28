@@ -203,7 +203,7 @@ export function SmartSearch({
       <div className="relative">
         <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
           {isLoading ? (
-            <Loader2 className="h-5 w-5 text-pink-500 animate-spin" />
+            <Loader2 className="h-5 w-5 text-coral-500 animate-spin" />
           ) : (
             <Search className="h-5 w-5 text-gray-400" />
           )}
@@ -220,8 +220,8 @@ export function SmartSearch({
           autoFocus={autoFocus}
           className={cn(
             'w-full pl-12 pr-24 py-4 text-lg',
-            'bg-white border-2 border-pink-200 rounded-2xl',
-            'focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500',
+            'bg-white border-2 border-coral-200 rounded-2xl',
+            'focus:ring-2 focus:ring-coral-500/20 focus:border-coral-500',
             'placeholder:text-gray-400 text-gray-900',
             'transition-all duration-200',
             'shadow-sm hover:shadow-md focus:shadow-lg'
@@ -243,7 +243,7 @@ export function SmartSearch({
             disabled={!query.trim()}
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-xl',
-              'bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium',
+              'bg-coral-500 hover:bg-coral-600 text-white text-sm font-medium',
               'transition-all duration-200',
               'disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed'
             )}
@@ -285,7 +285,7 @@ export function SmartSearch({
                       'w-full flex items-start gap-3 p-3 rounded-xl text-left',
                       'transition-all duration-150',
                       selectedIndex === index
-                        ? 'bg-pink-50 border-pink-200'
+                        ? 'bg-coral-50 border-coral-200'
                         : 'hover:bg-gray-50'
                     )}
                   >
@@ -330,7 +330,7 @@ export function SmartSearch({
                 <p className="text-gray-600 font-medium">Geen resultaten gevonden</p>
                 <p className="text-sm text-gray-500 mt-1">
                   Probeer andere zoektermen of{' '}
-                  <button className="text-pink-600 hover:underline">
+                  <button className="text-coral-600 hover:underline">
                     chat met Iris
                   </button>
                 </p>
@@ -372,16 +372,16 @@ export function SmartSearch({
                       onClick={() => handleSuggestionClick(search)}
                       className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg text-left"
                     >
-                      <TrendingUp className="h-4 w-4 text-pink-400" />
+                      <TrendingUp className="h-4 w-4 text-coral-400" />
                       <span className="text-gray-700">{search}</span>
                     </button>
                   ))}
                 </div>
 
                 {/* AI suggestion */}
-                <div className="p-3 bg-gradient-to-r from-pink-50 to-pink-100">
-                  <button className="w-full flex items-center gap-3 p-3 bg-white rounded-xl hover:shadow-md transition-all border border-pink-200">
-                    <div className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
+                <div className="p-3 bg-gradient-to-r from-coral-50 to-coral-100">
+                  <button className="w-full flex items-center gap-3 p-3 bg-white rounded-xl hover:shadow-md transition-all border border-coral-200">
+                    <div className="w-10 h-10 bg-coral-500 rounded-full flex items-center justify-center">
                       <MessageCircle className="h-5 w-5 text-white" />
                     </div>
                     <div className="text-left">
@@ -390,7 +390,7 @@ export function SmartSearch({
                         Onze AI beantwoordt je vraag direct
                       </div>
                     </div>
-                    <Sparkles className="h-5 w-5 text-pink-500 ml-auto" />
+                    <Sparkles className="h-5 w-5 text-coral-500 ml-auto" />
                   </button>
                 </div>
               </div>

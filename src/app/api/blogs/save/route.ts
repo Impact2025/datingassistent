@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       cover_image_alt,
       cover_image_blob_id,
       header_type = 'image',
-      header_color = '#ec4899',
+      header_color = '#FF7B54',
       header_title,
       seo_title,
       seo_description,

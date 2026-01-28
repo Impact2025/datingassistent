@@ -124,7 +124,7 @@ export function RelatiepatronenQuestionnaire({
   if (loadingQuestions) {
     return (
       <div className="p-8 text-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto mb-4"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-coral-500 mx-auto mb-4"></div>
         <p className="text-gray-600">Vragen laden...</p>
       </div>
     );
@@ -152,7 +152,7 @@ export function RelatiepatronenQuestionnaire({
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div
-            className="bg-pink-500 h-2 rounded-full transition-all duration-300"
+            className="bg-coral-500 h-2 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
@@ -163,8 +163,8 @@ export function RelatiepatronenQuestionnaire({
         <CardContent className="p-8">
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center">
-                <span className="text-sm font-semibold text-pink-600">
+              <div className="w-8 h-8 bg-coral-100 rounded-lg flex items-center justify-center">
+                <span className="text-sm font-semibold text-coral-600">
                   {currentQuestionIndex + 1}
                 </span>
               </div>
@@ -325,7 +325,7 @@ export function RelatiepatronenQuestionnaire({
         <Button
           onClick={handleNext}
           disabled={!canProceed || loading}
-          className="bg-pink-500 hover:bg-pink-600"
+          className="bg-coral-500 hover:bg-coral-600"
         >
           {loading ? (
             <>

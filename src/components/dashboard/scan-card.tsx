@@ -36,10 +36,10 @@ interface ScanCardProps {
 // Minimalist color styles
 const colorStyles = {
   pink: {
-    iconBg: 'bg-pink-50 dark:bg-pink-900/30',
-    iconText: 'text-pink-600 dark:text-pink-400',
-    badge: 'bg-pink-500',
-    button: 'bg-pink-500 hover:bg-pink-600'
+    iconBg: 'bg-coral-50 dark:bg-coral-900/30',
+    iconText: 'text-coral-600 dark:text-coral-400',
+    badge: 'bg-coral-500',
+    button: 'bg-coral-500 hover:bg-coral-600'
   },
   purple: {
     iconBg: 'bg-purple-50 dark:bg-purple-900/30',

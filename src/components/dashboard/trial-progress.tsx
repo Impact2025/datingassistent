@@ -158,7 +158,7 @@ export function TrialProgress({ userId }: TrialProgressProps) {
 
         {/* Next Day Preview */}
         {trialData.nextUnlock && (
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+          <div className="bg-gradient-to-r from-purple-50 to-coral-50 rounded-lg p-4 border border-purple-200">
             <h4 className="font-semibold text-purple-900 mb-2 flex items-center gap-2">
               <ArrowRight className="w-4 h-4" />
               Morgen unlock: {trialData.nextUnlock}

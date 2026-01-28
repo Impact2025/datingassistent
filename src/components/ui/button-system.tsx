@@ -52,7 +52,7 @@ export function PrimaryButton({ className, ...props }: Omit<ButtonProps, 'varian
     <Button
       variant="primary"
       className={cn(
-        'bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all',
+        'bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all',
         className
       )}
       {...props}
@@ -65,7 +65,7 @@ export function SecondaryButton({ className, ...props }: Omit<ButtonProps, 'vari
     <Button
       variant="secondary"
       className={cn(
-        'bg-white hover:bg-pink-50 text-pink-600 border-2 border-pink-200 rounded-full shadow-sm hover:shadow-md transition-all',
+        'bg-white hover:bg-coral-50 text-coral-600 border-2 border-coral-200 rounded-full shadow-sm hover:shadow-md transition-all',
         className
       )}
       {...props}
@@ -184,7 +184,7 @@ USAGE EXAMPLES:
 </TertiaryButton>
 
 // Full width primary button
-<PrimaryButton fullWidth onClick={handleIntegrate} className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all">
+<PrimaryButton fullWidth onClick={handleIntegrate} className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all">
   Bekijken & Integreren
 </PrimaryButton>
 

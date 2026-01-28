@@ -22,11 +22,11 @@ export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
 
         <div className="flex items-center justify-center gap-4 mb-8">
           <Badge variant="outline" className="px-4 py-2 border-gray-200">
-            <Clock className="w-4 h-4 mr-2 text-pink-500" />
+            <Clock className="w-4 h-4 mr-2 text-coral-500" />
             3-5 minuten
           </Badge>
           <Badge variant="outline" className="px-4 py-2 border-gray-200">
-            <Target className="w-4 h-4 mr-2 text-pink-500" />
+            <Target className="w-4 h-4 mr-2 text-coral-500" />
             12 vragen
           </Badge>
         </div>
@@ -42,8 +42,8 @@ export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
           <Card className="bg-white border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Heart className="w-6 h-6 text-pink-500" />
+                <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Heart className="w-6 h-6 text-coral-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">Veilig (Secure)</h4>
@@ -59,8 +59,8 @@ export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
           <Card className="bg-white border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Flame className="w-6 h-6 text-pink-500" />
+                <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Flame className="w-6 h-6 text-coral-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">Angstig (Anxious)</h4>
@@ -76,8 +76,8 @@ export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
           <Card className="bg-white border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Shield className="w-6 h-6 text-pink-500" />
+                <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Shield className="w-6 h-6 text-coral-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">Vermijdend (Avoidant)</h4>
@@ -93,8 +93,8 @@ export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
           <Card className="bg-white border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Zap className="w-6 h-6 text-pink-500" />
+                <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Zap className="w-6 h-6 text-coral-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">Angstig-Vermijdend</h4>
@@ -119,8 +119,8 @@ export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
           <Card className="bg-white border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Target className="w-6 h-6 text-pink-500" />
+                <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Target className="w-6 h-6 text-coral-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Concrete Inzichten</h4>
@@ -135,8 +135,8 @@ export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
           <Card className="bg-white border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-6 h-6 text-pink-500" />
+                <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-6 h-6 text-coral-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Praktische Tips</h4>
@@ -151,8 +151,8 @@ export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
           <Card className="bg-white border-0 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-pink-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Heart className="w-6 h-6 text-pink-500" />
+                <div className="w-12 h-12 bg-coral-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Heart className="w-6 h-6 text-coral-500" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Tool Integratie</h4>
@@ -173,7 +173,7 @@ export function AttachmentIntro({ onStart, loading }: AttachmentIntroProps) {
             <Button
               onClick={onStart}
               disabled={loading}
-              className="w-full bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 text-base rounded-full shadow-lg hover:shadow-xl transition-all mb-4"
+              className="w-full bg-coral-500 hover:bg-coral-600 text-white px-6 py-2.5 text-base rounded-full shadow-lg hover:shadow-xl transition-all mb-4"
             >
               {loading ? (
                 <>

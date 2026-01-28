@@ -109,7 +109,7 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
           <div className="relative aspect-[16/9] bg-black rounded-xl overflow-hidden shadow-inner max-w-2xl mx-auto">
             {videoError ? (
               // Error fallback UI
-              <div className="w-full h-full bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+              <div className="w-full h-full bg-gradient-to-br from-coral-100 to-coral-200 flex items-center justify-center">
                 <div className="text-center p-8 max-w-md">
                   <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
                     <span className="text-2xl">⚠️</span>
@@ -122,7 +122,7 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
                   </p>
                   <Button
                     onClick={skipVideo}
-                    className="bg-pink-500 hover:bg-pink-600 text-white"
+                    className="bg-coral-500 hover:bg-coral-600 text-white"
                   >
                     Doorgaan zonder video
                   </Button>
@@ -163,7 +163,7 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
               <div className="absolute inset-0 flex items-center justify-center bg-black/50">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 mx-auto bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                    <Play className="w-8 h-8 text-pink-500 ml-1" />
+                    <Play className="w-8 h-8 text-coral-500 ml-1" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-white mb-1">Welkomstvideo van Iris</h3>
@@ -206,7 +206,7 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
             <div className="text-center">
               <Button
                 onClick={handlePlay}
-                className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 text-base rounded-full shadow-lg hover:shadow-xl transition-all"
+                className="bg-coral-500 hover:bg-coral-600 text-white px-6 py-2.5 text-base rounded-full shadow-lg hover:shadow-xl transition-all"
               >
                 <Play className="w-5 h-5 mr-2" />
                 Start Welkomstvideo

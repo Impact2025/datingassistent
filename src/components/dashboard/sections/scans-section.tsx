@@ -78,7 +78,7 @@ export const ScansSection = React.memo(function ScansSection({
         animate={{ opacity: 1, y: 0 }}
       >
         <Card
-          className="border-2 border-purple-200 dark:border-purple-800 hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-900/20 dark:to-pink-900/20"
+          className="border-2 border-purple-200 dark:border-purple-800 hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-purple-50/50 to-coral-50/50 dark:from-purple-900/20 dark:to-coral-900/20"
           onClick={() => setShowMijnScans(!showMijnScans)}
         >
           <CardContent className="p-6">

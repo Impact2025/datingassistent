@@ -34,8 +34,8 @@ export function RelatiepatronenIntro({
     <div className="p-8">
       {/* Main Intro */}
       <div className="text-center mb-8">
-        <div className="w-20 h-20 bg-pink-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <Sparkles className="w-10 h-10 text-pink-500" />
+        <div className="w-20 h-20 bg-coral-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <Sparkles className="w-10 h-10 text-coral-500" />
         </div>
 
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -48,7 +48,7 @@ export function RelatiepatronenIntro({
         </p>
 
         <div className="flex items-center justify-center gap-2 mb-6">
-          <Badge variant="secondary" className="bg-pink-100 text-pink-700">
+          <Badge variant="secondary" className="bg-coral-100 text-coral-700">
             <Clock className="w-3 h-3 mr-1" />
             4-7 minuten
           </Badge>
@@ -64,7 +64,7 @@ export function RelatiepatronenIntro({
       </div>
 
       {/* What you'll discover */}
-      <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200 mb-8">
+      <Card className="bg-gradient-to-r from-coral-50 to-coral-100 border-coral-200 mb-8">
         <CardContent className="p-6">
           <h3 className="font-semibold text-lg text-gray-900 mb-4 text-center">
             Wat je gaat ontdekken
@@ -72,8 +72,8 @@ export function RelatiepatronenIntro({
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Target className="w-4 h-4 text-pink-600" />
+              <div className="w-8 h-8 bg-coral-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Target className="w-4 h-4 text-coral-600" />
               </div>
               <div>
                 <h4 className="font-medium text-gray-900 mb-1">Primaire patroon</h4>
@@ -82,8 +82,8 @@ export function RelatiepatronenIntro({
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Shield className="w-4 h-4 text-pink-600" />
+              <div className="w-8 h-8 bg-coral-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Shield className="w-4 h-4 text-coral-600" />
               </div>
               <div>
                 <h4 className="font-medium text-gray-900 mb-1">Triggers & oorzaken</h4>
@@ -92,8 +92,8 @@ export function RelatiepatronenIntro({
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Heart className="w-4 h-4 text-pink-600" />
+              <div className="w-8 h-8 bg-coral-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Heart className="w-4 h-4 text-coral-600" />
               </div>
               <div>
                 <h4 className="font-medium text-gray-900 mb-1">Concrete interventies</h4>
@@ -102,8 +102,8 @@ export function RelatiepatronenIntro({
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-4 h-4 text-pink-600" />
+              <div className="w-8 h-8 bg-coral-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-4 h-4 text-coral-600" />
               </div>
               <div>
                 <h4 className="font-medium text-gray-900 mb-1">Tool integraties</h4>
@@ -184,7 +184,7 @@ export function RelatiepatronenIntro({
           onClick={onStart}
           disabled={loading || (hasPreviousAssessment && !canRetake)}
           size="lg"
-          className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all"
+          className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all"
         >
           {loading ? (
             <>

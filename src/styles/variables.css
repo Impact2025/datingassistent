@@ -1,0 +1,415 @@
+/**
+ * ============================================================================
+ * DATINGASSISTENT KLEURENPALET v2.0 - "Warm Vertrouwen"
+ * ============================================================================
+ *
+ * Psychologisch onderbouwd kleurenpalet voor dating coaching platform.
+ * Geoptimaliseerd voor de doelgroep: introvertierten, post-divorce vrouwen,
+ * neurodivergente singles.
+ *
+ * Implementatie: Januari 2026
+ * Gebaseerd op: Attachment theory, kleurpsychologie onderzoek
+ *
+ * ============================================================================
+ */
+
+:root {
+  /* ==========================================================================
+   * PRIMAIRE KLEUREN
+   * ==========================================================================
+   * Deze kleuren vormen de basis van de visuele identiteit.
+   */
+
+  /**
+   * Deep Purple - #722F37
+   * ---------------------
+   * GEBRUIK:
+   * - Headers (H1, H2)
+   * - Logo tekst
+   * - Navigatie links (actief)
+   * - Pricing card titels
+   * - VIP pakket titels
+   * - Links
+   * - Secondary button borders
+   *
+   * PSYCHOLOGIE:
+   * - Straalt premium & exclusiviteit uit
+   * - Triggert dopamine (anticipatie van beloning)
+   * - Vertrouwenwekkend zonder koud te zijn
+   */
+  --color-deep-purple: #722F37;
+
+  /**
+   * Dusty Rose - #E3867D
+   * --------------------
+   * GEBRUIK:
+   * - Secundaire accenten
+   * - Card borders (reviews)
+   * - Sectie dividers
+   * - Hover states op links
+   * - Decoratieve elementen
+   *
+   * PSYCHOLOGIE:
+   * - Verlaagt dating-angst bij doelgroep
+   * - Warm en uitnodigend
+   * - Niet te "girly" of overweldigend
+   */
+  --color-dusty-rose: #E3867D;
+
+  /**
+   * Soft Blush - #F5E6E8
+   * --------------------
+   * GEBRUIK:
+   * - Card achtergronden
+   * - Sectie achtergronden (afwisselend)
+   * - Input field achtergronden
+   * - Badge achtergronden (subtiel)
+   * - Borders (subtiel)
+   *
+   * PSYCHOLOGIE:
+   * - Creëert zachte, veilige omgeving
+   * - Vermindert visuele stress
+   * - Maakt content toegankelijker
+   */
+  --color-soft-blush: #F5E6E8;
+
+  /**
+   * Cream - #FFF8F3
+   * ---------------
+   * GEBRUIK:
+   * - Hoofdachtergrond van de pagina
+   * - Hero sectie achtergrond
+   * - Grote content areas
+   *
+   * PSYCHOLOGIE:
+   * - Rust en ruimte
+   * - Warmer dan wit, minder steriel
+   * - Vermindert eye strain bij lang lezen
+   */
+  --color-cream: #FFF8F3;
+
+
+  /* ==========================================================================
+   * ACCENT KLEUREN
+   * ==========================================================================
+   * Kleuren voor interactieve elementen en visuele hierarchie.
+   */
+
+  /**
+   * Warm Coral - #FF7B54
+   * --------------------
+   * GEBRUIK:
+   * - PRIMARY CTA BUTTONS (belangrijkste actie!)
+   * - Prijzen in pricing cards
+   * - "Tip" badges
+   * - Belangrijke highlights
+   * - Transformatie pakket accent
+   *
+   * PSYCHOLOGIE:
+   * - 21-34% hogere conversie dan blauw/groen CTAs
+   * - Urgentie zonder agressiviteit
+   * - Energie en actie-georiënteerd
+   *
+   * HOVER STATE: #E66A43 (10% donkerder)
+   * SHADOW: rgba(255, 123, 84, 0.25)
+   */
+  --color-warm-coral: #FF7B54;
+  --color-warm-coral-hover: #E66A43;
+  --color-warm-coral-shadow: rgba(255, 123, 84, 0.25);
+
+  /**
+   * Sage Green - #A8B5A0
+   * --------------------
+   * GEBRUIK:
+   * - Success states
+   * - Checkmarks in lijsten
+   * - "Earlybird" badges
+   * - Bevestigingsmeldingen
+   * - Vertrouwen/veiligheid indicators
+   *
+   * PSYCHOLOGIE:
+   * - Groei en vooruitgang
+   * - Kalmte en balans
+   * - Vertrouwen zonder commercieel te voelen
+   */
+  --color-sage-green: #A8B5A0;
+
+  /**
+   * Charcoal - #2D3142
+   * ------------------
+   * GEBRUIK:
+   * - Hoofdtekst (body text)
+   * - H3 headers
+   * - Prijzen (niet-highlighted)
+   * - Video player achtergrond
+   *
+   * PSYCHOLOGIE:
+   * - Zachter dan zwart (#000)
+   * - Minder intimiderend
+   * - Professioneel maar toegankelijk
+   *
+   * BELANGRIJK: Vervang ALLE #000000 door deze kleur!
+   */
+  --color-charcoal: #2D3142;
+
+  /**
+   * Medium Gray - #6B6B6B
+   * ---------------------
+   * GEBRUIK:
+   * - Secundaire tekst
+   * - Subtitles
+   * - Timestamps
+   * - Meta informatie
+   * - Placeholder tekst
+   *
+   * PSYCHOLOGIE:
+   * - Ondersteunend, niet afleidend
+   * - Creëert visuele hierarchie
+   */
+  --color-medium-gray: #6B6B6B;
+
+
+  /* ==========================================================================
+   * ICON SYSTEEM - Kleur als Betekenis
+   * ==========================================================================
+   * Elke icon-categorie heeft een eigen kleur om functie visueel te communiceren.
+   * Dit helpt gebruikers snel te begrijpen wat een feature doet.
+   */
+
+  /**
+   * Icon Orange - #FF7B54 (= Warm Coral)
+   * ------------------------------------
+   * CATEGORIE: Analyse & Inzicht
+   *
+   * FEATURES:
+   * - Profiel Coach
+   * - Match Analyse
+   * - AI Foto Check
+   * - Match-Droogte probleem card
+   * - Fase 1: "Analyse & Inzicht" in journey
+   *
+   * BETEKENIS: "We analyseren en geven inzicht"
+   */
+  --icon-analysis: #FF7B54;
+  --icon-orange: #FF7B54;
+
+  /**
+   * Icon Rose - #E3867D (= Dusty Rose)
+   * ----------------------------------
+   * CATEGORIE: Emotioneel & Gesprekken
+   *
+   * FEATURES:
+   * - 24/7 Chat Coach
+   * - Opener Lab
+   * - Gespreks-Dood probleem card
+   * - Emotionele support features
+   *
+   * BETEKENIS: "We helpen met communicatie en gevoel"
+   */
+  --icon-emotional: #E3867D;
+  --icon-rose: #E3867D;
+
+  /**
+   * Icon Purple - #8B7BA8
+   * ---------------------
+   * CATEGORIE: Strategie & Actie
+   *
+   * FEATURES:
+   * - Veiligheid Check
+   * - AI Foto Check
+   * - Situationship probleem card
+   * - Fase 2: "Trainen & Toepassen" in journey
+   *
+   * BETEKENIS: "We helpen met strategie en acties"
+   */
+  --icon-strategy: #8B7BA8;
+  --icon-purple: #8B7BA8;
+
+  /**
+   * Icon Mint - #A8B5A0 (= Sage Green)
+   * ----------------------------------
+   * CATEGORIE: Groei & Progressie
+   *
+   * FEATURES:
+   * - Date Planner
+   * - Voortgang Tracker
+   * - Fase 3: "Zelfvertrouwen & Succes" in journey
+   * - Success indicators
+   *
+   * BETEKENIS: "We tonen groei en vooruitgang"
+   */
+  --icon-growth: #A8B5A0;
+  --icon-mint: #A8B5A0;
+
+
+  /* ==========================================================================
+   * LUXE ACCENTEN
+   * ==========================================================================
+   * Speciale kleuren voor premium elementen en VIP features.
+   */
+
+  /**
+   * Rose Gold - #B76E79
+   * -------------------
+   * GEBRUIK:
+   * - "Het is een patroon" hero tekst
+   * - Premium/luxe elementen
+   * - Video player gradient border
+   * - Speciale highlights
+   *
+   * PSYCHOLOGIE:
+   * - Luxe en exclusiviteit
+   * - Warmte gecombineerd met premium
+   * - Onderscheidt zich van standaard roze
+   */
+  --color-rose-gold: #B76E79;
+
+  /**
+   * Royal Purple - #6B4D8A
+   * ----------------------
+   * GEBRUIK:
+   * - VIP pakket titel
+   * - VIP pakket prijs
+   * - VIP CTA button
+   * - VIP badge
+   * - "Beperkte plekken" waarschuwing
+   *
+   * PSYCHOLOGIE:
+   * - Exclusiviteit en prestige
+   * - Onderscheidt VIP duidelijk van andere pakketten
+   * - Koninklijk gevoel
+   */
+  --color-royal-purple: #6B4D8A;
+
+  /**
+   * Terracotta - #E07A5F (OPTIONEEL)
+   * --------------------------------
+   * GEBRUIK:
+   * - Alternatieve CTA optie
+   * - Seizoensgebonden acties
+   * - Warme accenten
+   *
+   * PSYCHOLOGIE:
+   * - Aards en betrouwbaar
+   * - Alternatief voor coral als meer warmte nodig
+   */
+  --color-terracotta: #E07A5F;
+
+
+  /* ==========================================================================
+   * BACKWARDS COMPATIBILITY / SEMANTIC ALIASES
+   * ==========================================================================
+   * Mapping naar generieke namen voor makkelijker gebruik.
+   */
+
+  /* Generieke namen */
+  --primary-color: var(--color-deep-purple);
+  --secondary-color: var(--color-dusty-rose);
+  --accent-color: var(--color-warm-coral);
+  --background-color: var(--color-cream);
+  --surface-color: var(--color-soft-blush);
+  --text-color: var(--color-charcoal);
+  --text-muted: var(--color-medium-gray);
+  --success-color: var(--color-sage-green);
+
+  /* Button specifiek */
+  --btn-primary-bg: var(--color-warm-coral);
+  --btn-primary-hover: var(--color-warm-coral-hover);
+  --btn-primary-shadow: var(--color-warm-coral-shadow);
+  --btn-secondary-border: var(--color-deep-purple);
+  --btn-secondary-text: var(--color-deep-purple);
+  --btn-vip-bg: var(--color-royal-purple);
+
+  /* Borders */
+  --border-subtle: var(--color-soft-blush);
+  --border-accent: var(--color-dusty-rose);
+
+
+  /* ==========================================================================
+   * LEGACY KLEUREN (NIET GEBRUIKEN - ALLEEN VOOR REFERENTIE)
+   * ==========================================================================
+   * Deze kleuren waren in gebruik voor de "Warm Vertrouwen" update.
+   * NIET gebruiken in nieuwe code!
+   */
+
+  /* DEPRECATED - Vervang door --color-charcoal */
+  --color-legacy-black: #000000;
+
+  /* DEPRECATED - Vervang door --color-rose-gold of --color-dusty-rose */
+  --color-legacy-magenta: #FF1F7D;
+
+  /* DEPRECATED - Vervang door --color-charcoal */
+  --color-legacy-navy: #1A1F3A;
+}
+
+
+/* ============================================================================
+ * UTILITY CLASSES
+ * ============================================================================
+ * Optionele utility classes voor snelle styling.
+ */
+
+/* Text colors */
+.text-deep-purple { color: var(--color-deep-purple); }
+.text-dusty-rose { color: var(--color-dusty-rose); }
+.text-warm-coral { color: var(--color-warm-coral); }
+.text-charcoal { color: var(--color-charcoal); }
+.text-medium-gray { color: var(--color-medium-gray); }
+.text-rose-gold { color: var(--color-rose-gold); }
+.text-royal-purple { color: var(--color-royal-purple); }
+
+/* Background colors */
+.bg-cream { background-color: var(--color-cream); }
+.bg-soft-blush { background-color: var(--color-soft-blush); }
+.bg-warm-coral { background-color: var(--color-warm-coral); }
+.bg-deep-purple { background-color: var(--color-deep-purple); }
+.bg-sage-green { background-color: var(--color-sage-green); }
+
+/* Icon backgrounds (20% opacity) */
+.icon-bg-analysis { background-color: rgba(255, 123, 84, 0.2); }
+.icon-bg-emotional { background-color: rgba(227, 134, 125, 0.2); }
+.icon-bg-strategy { background-color: rgba(139, 123, 168, 0.2); }
+.icon-bg-growth { background-color: rgba(168, 181, 160, 0.2); }
+
+
+/* ============================================================================
+ * CTA BUTTON STYLES
+ * ============================================================================
+ * Kant-en-klare button styling voor consistente CTAs.
+ */
+
+.btn-cta-primary {
+  background-color: var(--color-warm-coral);
+  color: white;
+  box-shadow: 0 4px 12px var(--color-warm-coral-shadow);
+  transition: all 0.2s ease;
+}
+
+.btn-cta-primary:hover {
+  background-color: var(--color-warm-coral-hover);
+  box-shadow: 0 6px 16px var(--color-warm-coral-shadow);
+}
+
+.btn-cta-secondary {
+  background-color: transparent;
+  border: 2px solid var(--color-deep-purple);
+  color: var(--color-deep-purple);
+  transition: all 0.2s ease;
+}
+
+.btn-cta-secondary:hover {
+  background-color: var(--color-deep-purple);
+  color: white;
+}
+
+.btn-cta-vip {
+  background-color: var(--color-royal-purple);
+  color: white;
+  box-shadow: 0 4px 12px rgba(107, 77, 138, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-cta-vip:hover {
+  background-color: #5A3F75; /* 10% donkerder */
+  box-shadow: 0 6px 16px rgba(107, 77, 138, 0.3);
+}

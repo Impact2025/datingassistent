@@ -41,7 +41,7 @@ const programIcons: Record<string, any> = {
 
 const programColors: Record<string, string> = {
   kickstart: 'from-blue-500 to-blue-600',
-  transformatie: 'from-pink-500 to-pink-600',
+  transformatie: 'from-coral-500 to-coral-600',
   'vip-reis': 'from-purple-500 to-indigo-600'
 };
 
@@ -134,9 +134,9 @@ export default function AssessmentResultPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-purple-50 to-blue-50 flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-16 h-16 border-4 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600 font-medium">Berekenen van jouw perfecte programma...</p>
         </div>
       </div>
@@ -145,7 +145,7 @@ export default function AssessmentResultPage() {
 
   if (error || !program || !recommendation) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-purple-50 to-blue-50 flex items-center justify-center p-4">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center space-y-4">
             <div className="text-red-500 text-5xl">⚠️</div>
@@ -161,11 +161,11 @@ export default function AssessmentResultPage() {
   }
 
   const Icon = programIcons[program.tier] || Sparkles;
-  const gradientColor = programColors[program.tier] || 'from-pink-500 to-pink-600';
+  const gradientColor = programColors[program.tier] || 'from-coral-500 to-coral-600';
   const showBetaPrice = program.price_beta && program.price_beta < program.price_regular;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-purple-50 to-blue-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Success Animation */}
         <motion.div
@@ -199,12 +199,12 @@ export default function AssessmentResultPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <Card className="border-2 border-pink-500 shadow-2xl bg-white relative overflow-hidden">
+          <Card className="border-2 border-coral-500 shadow-2xl bg-white relative overflow-hidden">
             {/* Blur overlay for non-authenticated users */}
             {!isAuthenticated && (
               <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center">
                 <div className="text-center p-8 max-w-md">
-                  <Lock className="w-16 h-16 mx-auto text-pink-500 mb-4" />
+                  <Lock className="w-16 h-16 mx-auto text-coral-500 mb-4" />
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">
                     🎉 Bijna klaar!
                   </h3>
@@ -214,7 +214,7 @@ export default function AssessmentResultPage() {
                   <div className="space-y-3">
                     <Button
                       onClick={handleRegister}
-                      className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-lg shadow-lg"
+                      className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg shadow-lg"
                     >
                       <UserPlus className="w-5 h-5 mr-2" />
                       Gratis account maken
@@ -229,7 +229,7 @@ export default function AssessmentResultPage() {
 
             <CardHeader className="text-center pb-4">
               <div className="inline-flex items-center justify-center mx-auto mb-4">
-                <Badge className="bg-gradient-to-r from-pink-500 to-pink-600 text-white px-4 py-2">
+                <Badge className="bg-gradient-to-r from-coral-500 to-coral-600 text-white px-4 py-2">
                   ⭐ Aanbevolen voor jou
                 </Badge>
               </div>
@@ -275,9 +275,9 @@ export default function AssessmentResultPage() {
               </div>
 
               {/* Transformation Promise */}
-              <div className="bg-gradient-to-r from-pink-50 to-pink-100 rounded-xl p-6 border border-pink-100">
+              <div className="bg-gradient-to-r from-coral-50 to-coral-100 rounded-xl p-6 border border-coral-100">
                 <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-pink-500" />
+                  <Sparkles className="w-5 h-5 text-coral-500" />
                   Jouw transformatie:
                 </h3>
                 <p className="text-gray-700 font-medium">
@@ -326,7 +326,7 @@ export default function AssessmentResultPage() {
                   <Button
                     onClick={() => router.push('/#programmas')}
                     variant="outline"
-                    className="w-full border-2 border-gray-300 hover:border-pink-500 hover:text-pink-500"
+                    className="w-full border-2 border-gray-300 hover:border-coral-500 hover:text-coral-500"
                   >
                     Bekijk andere programma's
                   </Button>

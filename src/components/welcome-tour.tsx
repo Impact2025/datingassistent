@@ -20,7 +20,7 @@ const TOUR_STEPS: TourStep[] = [
     id: 'welcome',
     title: 'Welkom bij je DatingAssistent Dashboard!',
     description: 'Gefeliciteerd met je eerste stap! Dit dashboard is je centrale hub voor dating succes. Laten we je rondleiden door de belangrijkste features.',
-    icon: <Sparkles className="w-8 h-8 text-pink-500" />,
+    icon: <Sparkles className="w-8 h-8 text-coral-500" />,
     position: 'center'
   },
   {
@@ -152,9 +152,9 @@ export function WelcomeTour({ onComplete }: WelcomeTourProps) {
                     key={index}
                     className={`w-2 h-2 rounded-full transition-colors ${
                       index === currentStep
-                        ? 'bg-pink-500'
+                        ? 'bg-coral-500'
                         : index < currentStep
-                        ? 'bg-pink-300'
+                        ? 'bg-coral-300'
                         : 'bg-gray-300'
                     }`}
                   />
@@ -203,7 +203,7 @@ export function WelcomeTour({ onComplete }: WelcomeTourProps) {
 
                 <Button
                   onClick={handleNext}
-                  className="bg-pink-500 hover:bg-pink-600 text-white flex items-center space-x-2"
+                  className="bg-coral-500 hover:bg-coral-600 text-white flex items-center space-x-2"
                 >
                   <span>{isLastStep ? 'Start je journey!' : 'Volgende'}</span>
                   <ArrowRight className="w-4 h-4" />

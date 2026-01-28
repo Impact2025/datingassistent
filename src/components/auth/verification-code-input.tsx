@@ -181,7 +181,7 @@ export function VerificationCodeInput({
               value={digit}
               onChange={(e) => handleInputChange(index, e.target.value)}
               onKeyDown={(e) => handleInputKeyDown(index, e)}
-              className="w-11 h-12 sm:w-12 sm:h-14 text-center focus:border-pink-500 focus:ring-pink-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-11 h-12 sm:w-12 sm:h-14 text-center focus:border-coral-500 focus:ring-coral-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               disabled={isVerifying}
             />
           ))}
@@ -192,7 +192,7 @@ export function VerificationCodeInput({
           <Button
             onClick={() => handleVerifyCode(fullCode)}
             disabled={isVerifying || fullCode.length !== 6}
-            className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold rounded-full shadow-lg"
+            className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white font-semibold rounded-full shadow-lg"
           >
             {isVerifying ? (
               <>

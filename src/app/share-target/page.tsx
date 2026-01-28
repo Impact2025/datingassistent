@@ -40,10 +40,10 @@ function ShareTargetContent() {
   }, [title, text, url, router]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-white to-rose-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
         {/* Header */}
-        <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center">
           <Share2 className="w-8 h-8 text-white" />
         </div>
 
@@ -58,8 +58,8 @@ function ShareTargetContent() {
         <div className="bg-gray-50 rounded-xl p-4 mb-6 text-left space-y-3">
           {title && (
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center flex-shrink-0">
-                <MessageCircle className="w-4 h-4 text-pink-500" />
+              <div className="w-8 h-8 rounded-lg bg-coral-100 flex items-center justify-center flex-shrink-0">
+                <MessageCircle className="w-4 h-4 text-coral-500" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-gray-500 mb-1">Titel</p>
@@ -70,8 +70,8 @@ function ShareTargetContent() {
 
           {text && (
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center flex-shrink-0">
-                <Image className="w-4 h-4 text-pink-500" />
+              <div className="w-8 h-8 rounded-lg bg-coral-100 flex items-center justify-center flex-shrink-0">
+                <Image className="w-4 h-4 text-coral-500" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-gray-500 mb-1">Tekst</p>
@@ -82,12 +82,12 @@ function ShareTargetContent() {
 
           {url && (
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center flex-shrink-0">
-                <LinkIcon className="w-4 h-4 text-pink-500" />
+              <div className="w-8 h-8 rounded-lg bg-coral-100 flex items-center justify-center flex-shrink-0">
+                <LinkIcon className="w-4 h-4 text-coral-500" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-gray-500 mb-1">Link</p>
-                <p className="text-sm text-pink-600 truncate">{url}</p>
+                <p className="text-sm text-coral-600 truncate">{url}</p>
               </div>
             </div>
           )}
@@ -115,8 +115,8 @@ export default function ShareTargetPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 flex items-center justify-center">
-          <Loader2 className="w-8 h-8 text-pink-500 animate-spin" />
+        <div className="min-h-screen bg-gradient-to-br from-coral-50 via-white to-rose-50 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-coral-500 animate-spin" />
         </div>
       }
     >

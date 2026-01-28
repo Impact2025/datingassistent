@@ -143,7 +143,7 @@ export function DailyEngagement({ userId, onEngagementComplete }: DailyEngagemen
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-pink-25 to-white p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-coral-25 to-white p-4">
       <div className="max-w-4xl mx-auto space-y-6">
 
         {/* Header */}
@@ -201,8 +201,8 @@ export function DailyEngagement({ userId, onEngagementComplete }: DailyEngagemen
 
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-1 mb-2">
-                    <Heart className="w-5 h-5 text-pink-500" />
-                    <span className="text-2xl font-bold text-pink-600">{stats.engagementRate}%</span>
+                    <Heart className="w-5 h-5 text-coral-500" />
+                    <span className="text-2xl font-bold text-coral-600">{stats.engagementRate}%</span>
                   </div>
                   <p className="text-sm text-gray-600">Betrokkenheid</p>
                 </div>
@@ -327,16 +327,16 @@ export function DailyEngagement({ userId, onEngagementComplete }: DailyEngagemen
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-pink-500 to-pink-600 text-white">
+          <Card className="border-0 shadow-lg bg-gradient-to-r from-coral-500 to-coral-600 text-white">
             <CardContent className="p-6 text-center">
               <h3 className="text-xl font-bold mb-2">
                 Klaar voor meer momentum?
               </h3>
-              <p className="text-pink-100 mb-4">
+              <p className="text-coral-100 mb-4">
                 Bekijk je doelen of start een nieuwe challenge
               </p>
               <div className="flex gap-3 justify-center">
-                <Button variant="secondary" className="bg-white text-pink-600 hover:bg-gray-100">
+                <Button variant="secondary" className="bg-white text-coral-600 hover:bg-gray-100">
                   📊 Mijn Doelen
                 </Button>
                 <Button variant="secondary" className="bg-white text-purple-600 hover:bg-gray-100">

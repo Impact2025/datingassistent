@@ -38,7 +38,7 @@ export function PatternQuestionComponent({
       {/* Progress bar */}
       <div className="h-1 bg-gray-100">
         <motion.div
-          className="h-full bg-pink-500"
+          className="h-full bg-coral-500"
           initial={{ width: 0 }}
           animate={{ width: `${progressPercentage}%` }}
           transition={{ duration: 0.3 }}
@@ -81,15 +81,15 @@ export function PatternQuestionComponent({
                   transition={{ delay: index * 0.05 }}
                   className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
                     isSelected
-                      ? 'border-pink-500 bg-pink-50'
-                      : 'border-gray-200 hover:border-pink-300'
+                      ? 'border-coral-500 bg-coral-50'
+                      : 'border-gray-200 hover:border-coral-300'
                   }`}
                 >
                   <div className="flex items-start gap-3">
                     <div
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
                         isSelected
-                          ? 'border-pink-500 bg-pink-500'
+                          ? 'border-coral-500 bg-coral-500'
                           : 'border-gray-300'
                       }`}
                     >
@@ -128,7 +128,7 @@ export function PatternQuestionComponent({
           <button
             onClick={onNext}
             disabled={!currentAnswer}
-            className="flex items-center gap-2 px-4 py-2 text-pink-500 hover:text-pink-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 px-4 py-2 text-coral-500 hover:text-coral-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <span className="text-sm">Volgende</span>
             <ArrowRight className="w-4 h-4" />

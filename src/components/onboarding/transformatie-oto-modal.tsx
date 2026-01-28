@@ -38,11 +38,11 @@ export function TransformatieOTOModal({
   );
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border-2 border-pink-200 dark:border-pink-700 overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border-2 border-coral-200 dark:border-coral-700 overflow-hidden">
       {/* Header - Attention Grabber */}
-      <div className="bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 p-6 text-center border-b border-pink-100 dark:border-pink-700 relative">
+      <div className="bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30 p-6 text-center border-b border-coral-100 dark:border-coral-700 relative">
         {/* ONZE AANRADER Badge */}
-        <Badge className="absolute top-4 right-4 bg-pink-500 dark:bg-pink-600 text-white px-3 py-1 text-xs font-bold shadow-md">
+        <Badge className="absolute top-4 right-4 bg-coral-500 dark:bg-coral-600 text-white px-3 py-1 text-xs font-bold shadow-md">
           ONZE AANRADER
         </Badge>
 
@@ -50,7 +50,7 @@ export function TransformatieOTOModal({
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', bounce: 0.5 }}
-          className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center mx-auto mb-4 shadow-lg"
+          className="w-16 h-16 rounded-full bg-gradient-to-br from-coral-400 to-coral-600 flex items-center justify-center mx-auto mb-4 shadow-lg"
         >
           <Trophy className="w-8 h-8 text-white" />
         </motion.div>
@@ -79,8 +79,8 @@ export function TransformatieOTOModal({
       <div className="p-6">
         {/* Program Name */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900/50 dark:to-pink-800/50 flex items-center justify-center">
-            <Sparkles className="w-6 h-6 text-pink-500 dark:text-pink-400" />
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-coral-100 to-coral-200 dark:from-coral-900/50 dark:to-coral-800/50 flex items-center justify-center">
+            <Sparkles className="w-6 h-6 text-coral-500 dark:text-coral-400" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-gray-50">Het Transformatie Programma</h2>
@@ -109,7 +109,7 @@ export function TransformatieOTOModal({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 rounded-xl p-4 mb-6 text-center border border-pink-100 dark:border-pink-700"
+          className="bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30 rounded-xl p-4 mb-6 text-center border border-coral-100 dark:border-coral-700"
         >
           {/* Original Price */}
           <div className="flex items-center justify-center gap-2 mb-1">
@@ -123,14 +123,14 @@ export function TransformatieOTOModal({
 
           {/* Discounted Price */}
           <div className="flex items-baseline justify-center gap-1">
-            <span className="text-4xl font-bold text-pink-600 dark:text-pink-400">
+            <span className="text-4xl font-bold text-coral-600 dark:text-coral-400">
               €{TRANSFORMATIE_OTO.discountedPrice}
             </span>
             <span className="text-gray-500 dark:text-gray-400">eenmalig</span>
           </div>
 
           {/* Urgency */}
-          <p className="text-sm text-pink-600 dark:text-pink-400 mt-2 font-medium">
+          <p className="text-sm text-coral-600 dark:text-coral-400 mt-2 font-medium">
             Alleen nu voor nieuwe leden
           </p>
         </motion.div>
@@ -146,7 +146,7 @@ export function TransformatieOTOModal({
           {/* Primary CTA */}
           <Button
             onClick={onAccept}
-            className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-base rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+            className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-base rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
           >
             {TRANSFORMATIE_OTO.ctaPrimary}
             <ArrowRight className="w-5 h-5" />

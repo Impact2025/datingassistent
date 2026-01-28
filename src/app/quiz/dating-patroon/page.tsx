@@ -85,9 +85,9 @@ export default function DatingPatroonQuizPage() {
       {/* Quiz Component with Suspense for useSearchParams */}
       <Suspense
         fallback={
-          <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50 flex items-center justify-center">
+          <div className="min-h-screen bg-gradient-to-br from-coral-50 via-white to-coral-50 flex items-center justify-center">
             <div className="text-center">
-              <div className="w-8 h-8 border-2 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <div className="w-8 h-8 border-2 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
               <p className="text-gray-600">Laden...</p>
             </div>
           </div>

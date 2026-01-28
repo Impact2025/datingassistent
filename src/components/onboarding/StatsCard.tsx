@@ -17,7 +17,7 @@ interface StatsCardProps {
 
 export function StatsCard({ stats, className }: StatsCardProps) {
   const colorMap = {
-    pink: "text-pink-500",
+    pink: "text-coral-500",
     violet: "text-violet-500",
     amber: "text-amber-500",
     green: "text-green-500",

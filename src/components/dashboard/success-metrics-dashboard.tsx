@@ -241,7 +241,7 @@ function SuccessMetricsDashboardInner() {
                 value: metrics.keyMetrics.responseRate,
                 icon: Heart,
                 suffix: '%',
-                color: 'text-pink-600'
+                color: 'text-coral-600'
               },
               {
                 label: 'Match rate',

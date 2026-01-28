@@ -406,7 +406,7 @@ export function GesprekStarterTab() {
           onChange={(e) => setProfileText(e.target.value)}
           rows={5}
           placeholder="'Reislustige fotograaf met een liefde voor Italiaans eten en slechte woordgrappen...'"
-          className="mb-4 bg-pink-50/50 border-pink-200 focus:border-pink-300 focus:ring-pink-300"
+          className="mb-4 bg-coral-50/50 border-coral-200 focus:border-coral-300 focus:ring-coral-300"
         />
         <Button onClick={handleGenerateOpeners} disabled={isGeneratingOpeners} className="w-full">
           {isGeneratingOpeners ? <LoadingSpinner /> : "Genereer Openingszinnen"}
@@ -428,7 +428,7 @@ export function GesprekStarterTab() {
           value={icebreakerTopic}
           onChange={(e) => setIcebreakerTopic(e.target.value)}
           placeholder="Bijvoorbeeld: ze houdt van boulderen en specialty coffee"
-          className="mb-4 bg-pink-50/50 border-pink-200 focus:border-pink-300 focus:ring-pink-300"
+          className="mb-4 bg-coral-50/50 border-coral-200 focus:border-coral-300 focus:ring-coral-300"
         />
         <Button onClick={handleGenerateIcebreakers} disabled={isGeneratingIcebreakers} className="w-full">
           {isGeneratingIcebreakers ? <LoadingSpinner /> : "Genereer ijsbrekers"}
@@ -451,7 +451,7 @@ export function GesprekStarterTab() {
           onChange={(e) => setConversationLog(e.target.value)}
           rows={5}
           placeholder="Kopieer hier het (deel van het) gesprek dat je wilt laten checken..."
-          className="mb-4 bg-pink-50/50 border-pink-200 focus:border-pink-300 focus:ring-pink-300"
+          className="mb-4 bg-coral-50/50 border-coral-200 focus:border-coral-300 focus:ring-coral-300"
         />
         <Button onClick={handleAnalyzeConversation} disabled={isAnalyzing} className="w-full bg-amber-600 hover:bg-amber-700">
           {isAnalyzing ? <LoadingSpinner /> : "Analyseer Gesprek"}

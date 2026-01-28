@@ -104,7 +104,7 @@ export const cognitiveRestructuringSlides: SlideDeck = {
       title: 'Cognitive Restructuring',
       subtitle: 'Herschrijf je innerlijke dialoog voor permanente verandering',
       emoji: '🧠',
-      backgroundColor: 'from-purple-600 to-pink-600'
+      backgroundColor: 'from-purple-600 to-coral-600'
     },
     {
       type: 'content',
@@ -135,8 +135,8 @@ export const cognitiveRestructuringSlides: SlideDeck = {
         'Magnification: "Deze ene afwijzing betekent alles"',
         'Personalization: "Het ligt aan mij dat de date niet leuk was"'
       ],
-      backgroundColor: 'bg-gradient-to-br from-purple-50 to-pink-50',
-      highlightColor: 'text-pink-700'
+      backgroundColor: 'bg-gradient-to-br from-purple-50 to-coral-50',
+      highlightColor: 'text-coral-700'
     },
     {
       type: 'split',
@@ -345,7 +345,7 @@ export const resilienceMasterySlides: SlideDeck = {
         'Self-Compassion Exercises: Vriendelijkheid naar jezelf',
         'Antifragility Drills: Opzettelijke uitdagingen aangaan'
       ],
-      backgroundColor: 'bg-gradient-to-br from-red-50 to-pink-50',
+      backgroundColor: 'bg-gradient-to-br from-red-50 to-coral-50',
       highlightColor: 'text-red-700'
     },
     {
@@ -392,7 +392,7 @@ export const strategicRelationshipSlides: SlideDeck = {
       title: 'Strategic Relationship Building',
       subtitle: 'Langetermijn succes door strategische visie',
       emoji: '🎯',
-      backgroundColor: 'from-rose-600 to-pink-600'
+      backgroundColor: 'from-rose-600 to-coral-600'
     },
     {
       type: 'content',
@@ -420,8 +420,8 @@ export const strategicRelationshipSlides: SlideDeck = {
         'Time Management: Efficiënte allocatie van dating energie',
         'Success Metrics: Meetbare doelen voor voortgang'
       ],
-      backgroundColor: 'bg-gradient-to-br from-rose-50 to-pink-50',
-      highlightColor: 'text-pink-700'
+      backgroundColor: 'bg-gradient-to-br from-rose-50 to-coral-50',
+      highlightColor: 'text-coral-700'
     },
     {
       type: 'split',
@@ -632,7 +632,7 @@ export const executiveMasterySlides: SlideDeck = {
         'Philanthropic Impact: Gebruik je skills voor groter goed',
         'Generational Transfer: Geef wijsheid door aan volgende generatie'
       ],
-      backgroundColor: 'bg-gradient-to-br from-purple-50 to-pink-50',
+      backgroundColor: 'bg-gradient-to-br from-purple-50 to-coral-50',
       highlightColor: 'text-purple-700'
     },
     {

@@ -62,8 +62,8 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
       subtitle: 'Openingszinnen',
       route: '/opener',
       priority: 'high',
-      color: 'text-pink-600',
-      bgColor: 'bg-pink-50 hover:bg-pink-100',
+      color: 'text-coral-600',
+      bgColor: 'bg-coral-50 hover:bg-coral-100',
     },
     // Voice notes tool - commented out until voice analysis feature is implemented
     {
@@ -157,7 +157,7 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
       {quickActions.map((action) => (
         <div
           key={action.id}
-          className="bg-gray-50 border border-gray-200 rounded-xl p-4 cursor-pointer transition-all duration-200 hover:border-pink-300 hover:bg-pink-50/50 hover:shadow-sm active:scale-95"
+          className="bg-gray-50 border border-gray-200 rounded-xl p-4 cursor-pointer transition-all duration-200 hover:border-coral-300 hover:bg-coral-50/50 hover:shadow-sm active:scale-95"
           onClick={() => handleActionClick(action)}
         >
           <div className="flex flex-col items-center text-center space-y-3">
@@ -180,7 +180,7 @@ export function QuickActionsGrid({ className }: QuickActionsGridProps) {
 
             {/* Priority indicator */}
             {action.priority === 'high' && (
-              <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-coral-500 rounded-full"></div>
             )}
           </div>
         </div>

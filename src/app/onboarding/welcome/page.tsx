@@ -90,7 +90,7 @@ export default function WelcomePage() {
 
         {/* Video Card */}
         <Card className="p-0 rounded-2xl shadow-sm overflow-hidden mb-6">
-          <div className="relative aspect-video bg-gradient-to-br from-pink-100 to-pink-200">
+          <div className="relative aspect-video bg-gradient-to-br from-coral-100 to-coral-200">
             {!videoError ? (
               <>
                 <video
@@ -112,7 +112,7 @@ export default function WelcomePage() {
                     className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors"
                   >
                     <div className="w-16 h-16 rounded-full bg-white/95 flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
-                      <Play className="w-7 h-7 text-pink-500 ml-1" />
+                      <Play className="w-7 h-7 text-coral-500 ml-1" />
                     </div>
                   </button>
                 )}
@@ -143,7 +143,7 @@ export default function WelcomePage() {
               /* Fallback als video niet laadt */
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center p-6">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center mx-auto mb-3">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center mx-auto mb-3">
                     <span className="text-2xl font-bold text-white">I</span>
                   </div>
                   <p className="text-gray-600 text-sm">Iris, je persoonlijke coach</p>
@@ -169,8 +169,8 @@ export default function WelcomePage() {
 
           <div className="space-y-3">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-pink-600 text-xs font-bold">1</span>
+              <div className="w-8 h-8 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0">
+                <span className="text-coral-600 text-xs font-bold">1</span>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">Korte kennismaking</p>
@@ -210,7 +210,7 @@ export default function WelcomePage() {
         <button
           onClick={handleStart}
           disabled={isStarting}
-          className="w-full py-4 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+          className="w-full py-4 bg-coral-500 hover:bg-coral-600 text-white font-semibold rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
         >
           {isStarting ? (
             <>

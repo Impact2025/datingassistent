@@ -124,7 +124,7 @@ export function PadTab({ onTabChange }: PadTabProps) {
                 transition={{ delay: index * 0.1 }}
                 className={`bg-white rounded-2xl p-6 shadow-sm border-2 transition-all ${
                   isActive
-                    ? 'border-pink-300 shadow-md'
+                    ? 'border-coral-300 shadow-md'
                     : isCompleted
                     ? 'border-green-300'
                     : 'border-gray-200'
@@ -134,7 +134,7 @@ export function PadTab({ onTabChange }: PadTabProps) {
                   {/* Icon */}
                   <div className={`w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 ${
                     isActive
-                      ? 'bg-pink-100'
+                      ? 'bg-coral-100'
                       : isCompleted
                       ? 'bg-green-100'
                       : 'bg-gray-100'
@@ -144,7 +144,7 @@ export function PadTab({ onTabChange }: PadTabProps) {
                     ) : (
                       <Icon className={`w-6 h-6 ${
                         isActive
-                          ? 'text-pink-500'
+                          ? 'text-coral-500'
                           : isCompleted
                           ? 'text-green-500'
                           : 'text-gray-400'
@@ -179,7 +179,7 @@ export function PadTab({ onTabChange }: PadTabProps) {
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div
-                            className="bg-pink-500 h-2 rounded-full transition-all"
+                            className="bg-coral-500 h-2 rounded-full transition-all"
                             style={{ width: `${phase.progress}%` }}
                           />
                         </div>
@@ -200,11 +200,11 @@ export function PadTab({ onTabChange }: PadTabProps) {
                             <Component
                               key={tool.name}
                               {...props}
-                              className="flex items-center gap-2 px-3 py-2 bg-gray-50 hover:bg-pink-50
-                                       rounded-lg text-sm text-gray-700 hover:text-pink-600
+                              className="flex items-center gap-2 px-3 py-2 bg-gray-50 hover:bg-coral-50
+                                       rounded-lg text-sm text-gray-700 hover:text-coral-600
                                        transition-all group"
                             >
-                              <Circle className="w-3 h-3 text-gray-400 group-hover:text-pink-500" />
+                              <Circle className="w-3 h-3 text-gray-400 group-hover:text-coral-500" />
                               <span>{tool.name}</span>
                               <ChevronRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                             </Component>
@@ -228,7 +228,7 @@ export function PadTab({ onTabChange }: PadTabProps) {
         >
           <p className="text-sm text-gray-500">
             Niet zeker waar te beginnen?{' '}
-            <a href="/coach" className="text-pink-600 hover:text-pink-700 font-medium">
+            <a href="/coach" className="text-coral-600 hover:text-coral-700 font-medium">
               Vraag Iris om hulp
             </a>
           </p>

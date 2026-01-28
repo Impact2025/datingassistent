@@ -699,7 +699,7 @@ function DashboardPageContent() {
   // This prevents the flash where dashboard is shown before onboarding
   if (isLoading || kickstartState.isChecking || !kickstartState.checkComplete || transformatieState.isChecking || !transformatieState.checkComplete) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center">
         <div className="text-center">
           {/* Logo */}
           <div className="flex justify-center mb-8 animate-pulse">
@@ -785,7 +785,7 @@ function DashboardPageContent() {
         // Mobile layout
         isFullScreenOnboarding ? (
           // FULL-SCREEN ONBOARDING MODE - No header, no bottom nav, full viewport
-          <div className="fixed inset-0 bg-gradient-to-br from-pink-50 via-white to-pink-50 z-50 overflow-hidden">
+          <div className="fixed inset-0 bg-gradient-to-br from-coral-50 via-white to-coral-50 z-50 overflow-hidden">
             {showKickstartOnboarding ? (
               <KickstartOnboardingFlow
                 userName={user?.name?.split(' ')[0]}
@@ -805,13 +805,13 @@ function DashboardPageContent() {
           </div>
         ) : (
           // NORMAL MOBILE DASHBOARD - With header and bottom nav
-          <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white pb-24 safe-area-inset">
+          <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white pb-24 safe-area-inset">
             {/* Mobile Header - Sticky with enhanced design */}
-            <div className="bg-white/95 backdrop-blur-md border-b border-pink-100 px-4 py-3 sticky top-0 z-40 shadow-sm">
+            <div className="bg-white/95 backdrop-blur-md border-b border-coral-100 px-4 py-3 sticky top-0 z-40 shadow-sm">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   {/* Logo with gradient border */}
-                  <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md ring-2 ring-pink-100">
+                  <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md ring-2 ring-coral-100">
                     <Image
                       src="/images/LogoDatingAssistent.png"
                       alt="DatingAssistent Logo"
@@ -844,7 +844,7 @@ function DashboardPageContent() {
                   variant="ghost"
                   size="sm"
                   onClick={() => handleTabChange('settings')}
-                  className="p-2.5 rounded-full hover:bg-pink-50 transition-all active:scale-95"
+                  className="p-2.5 rounded-full hover:bg-coral-50 transition-all active:scale-95"
                   aria-label="Instellingen"
                 >
                   <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -873,7 +873,7 @@ function DashboardPageContent() {
         )
       ) : (
         // Desktop layout
-        <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white">
+        <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white">
           <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
             <div className="space-y-6">
               <Header

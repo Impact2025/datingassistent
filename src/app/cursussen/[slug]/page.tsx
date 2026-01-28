@@ -72,9 +72,9 @@ export default function CursusDetailPage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'afgerond':
-        return <CheckCircle className="w-5 h-5 text-pink-500" />;
+        return <CheckCircle className="w-5 h-5 text-coral-500" />;
       case 'bezig':
-        return <Play className="w-5 h-5 text-pink-500" />;
+        return <Play className="w-5 h-5 text-coral-500" />;
       default:
         return <Lock className="w-5 h-5 text-gray-400 dark:text-gray-500" />;
     }
@@ -149,8 +149,8 @@ export default function CursusDetailPage() {
                 <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{cursus.titel}</h1>
                 <Badge className={
                   cursus.cursus_type === 'gratis'
-                    ? 'bg-pink-100 text-pink-800 border-0'
-                    : 'bg-pink-100 text-pink-800 border-0'
+                    ? 'bg-coral-100 text-coral-800 border-0'
+                    : 'bg-coral-100 text-coral-800 border-0'
                 }>
                   {cursus.cursus_type === 'gratis' ? 'Gratis' : `EUR ${cursus.prijs}`}
                 </Badge>
@@ -164,11 +164,11 @@ export default function CursusDetailPage() {
           {/* Meta Info */}
           <div className="flex flex-wrap items-center gap-6 mt-6 text-sm text-gray-600 dark:text-gray-300">
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-pink-500" />
+              <Clock className="w-4 h-4 text-coral-500" />
               <span>{cursus.duur_minuten} minuten</span>
             </div>
             <div className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-pink-500" />
+              <BookOpen className="w-4 h-4 text-coral-500" />
               <span>{totalLessons} lessen</span>
             </div>
             <div className="flex items-center gap-2">
@@ -181,11 +181,11 @@ export default function CursusDetailPage() {
             <div className="mt-6">
               <div className="flex justify-between text-sm mb-2">
                 <span className="text-gray-600 dark:text-gray-300">Jouw voortgang</span>
-                <span className="font-medium text-pink-600 dark:text-pink-400">{progressPercentage}%</span>
+                <span className="font-medium text-coral-600 dark:text-coral-400">{progressPercentage}%</span>
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                 <div
-                  className="bg-gradient-to-r from-pink-500 to-pink-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-coral-500 to-coral-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progressPercentage}%` }}
                 />
               </div>
@@ -214,7 +214,7 @@ export default function CursusDetailPage() {
               <ul className="space-y-3">
                 {cursus.doelen.map((doel, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-pink-500 shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-coral-500 shrink-0 mt-0.5" />
                     <span className="text-gray-600 dark:text-gray-300">{doel}</span>
                   </li>
                 ))}
@@ -241,7 +241,7 @@ export default function CursusDetailPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-start gap-4 flex-1">
-                        <div className="shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-base font-semibold text-white shadow-sm">
+                        <div className="shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center text-base font-semibold text-white shadow-sm">
                           {les.volgorde}
                         </div>
 
@@ -255,7 +255,7 @@ export default function CursusDetailPage() {
                           <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                             {les.video_duur && (
                               <span className="flex items-center gap-1">
-                                <Clock className="w-4 h-4 text-pink-500" />
+                                <Clock className="w-4 h-4 text-coral-500" />
                                 {les.video_duur}
                               </span>
                             )}
@@ -273,7 +273,7 @@ export default function CursusDetailPage() {
                           <PrimaryButton
                             size="sm"
                             disabled={!canStart}
-                            className={!canStart ? 'opacity-50 cursor-not-allowed' : 'bg-gradient-to-br from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700'}
+                            className={!canStart ? 'opacity-50 cursor-not-allowed' : 'bg-gradient-to-br from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700'}
                           >
                             {getStatusLabel(status)}
                           </PrimaryButton>
@@ -297,7 +297,7 @@ export default function CursusDetailPage() {
               </p>
               <div className="flex flex-wrap gap-2">
                 {cursus.gekoppelde_tools.map((toolId, idx) => (
-                  <Badge key={idx} className="bg-pink-100 text-pink-800 border-0">
+                  <Badge key={idx} className="bg-coral-100 text-coral-800 border-0">
                     {toolId.replace('-', ' ')}
                   </Badge>
                 ))}

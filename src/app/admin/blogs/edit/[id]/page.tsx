@@ -68,7 +68,7 @@ export default function BlogEditorPage() {
     category: 'Online Dating Tips',
     tags: [],
     header_type: 'image',
-    header_color: '#ec4899',
+    header_color: '#FF7B54',
     published: false,
     author: 'DatingAssistent',
   });
@@ -435,7 +435,7 @@ export default function BlogEditorPage() {
         tags: blog.keywords?.slice(0, 5) || [],
         reading_time: blog.readingTime,
         header_type: blog.headerSuggestion?.type || 'color',
-        header_color: blog.headerSuggestion?.colorHex || '#ec4899',
+        header_color: blog.headerSuggestion?.colorHex || '#FF7B54',
         header_title: blog.headerSuggestion?.headerTitle || '',
       };
 
@@ -470,9 +470,9 @@ export default function BlogEditorPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-pink-50/30 to-pink-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-coral-50/30 to-coral-50/30">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Blog laden...</p>
         </div>
       </div>
@@ -484,7 +484,7 @@ export default function BlogEditorPage() {
   // =========================================================================
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-pink-50/30 to-pink-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-coral-50/30 to-coral-50/30">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -495,13 +495,13 @@ export default function BlogEditorPage() {
                 variant="ghost"
                 size="sm"
                 onClick={() => router.push('/admin/blogs')}
-                className="hover:bg-pink-50"
+                className="hover:bg-coral-50"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Terug
               </Button>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-pink-600 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-coral-500 to-coral-600 bg-clip-text text-transparent">
                   {isNewBlog ? 'Nieuwe Blog Post' : 'Bewerk Blog Post'}
                 </h1>
                 <p className="text-sm text-gray-500">
@@ -525,7 +525,7 @@ export default function BlogEditorPage() {
                 variant="outline"
                 size="sm"
                 onClick={handleMetadataOnly}
-                className="border-pink-200 text-pink-700 hover:bg-pink-50"
+                className="border-coral-200 text-coral-700 hover:bg-coral-50"
               >
                 <Wand2 className="w-4 h-4 mr-2" />
                 Metadata Only
@@ -554,7 +554,7 @@ export default function BlogEditorPage() {
                 size="sm"
                 onClick={() => handleSave(true)}
                 disabled={saving}
-                className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white"
+                className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white"
               >
                 <Eye className="w-4 h-4 mr-2" />
                 Publiceren
@@ -571,28 +571,28 @@ export default function BlogEditorPage() {
           <TabsList className="grid w-full grid-cols-4 bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
             <TabsTrigger
               value="editor"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-coral-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
             >
               <FileText className="w-4 h-4 mr-2" />
               Editor
             </TabsTrigger>
             <TabsTrigger
               value="seo"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-coral-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
             >
               <Search className="w-4 h-4 mr-2" />
               SEO
             </TabsTrigger>
             <TabsTrigger
               value="social"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-coral-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
             >
               <Share2 className="w-4 h-4 mr-2" />
               Social Media
             </TabsTrigger>
             <TabsTrigger
               value="instellingen"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-coral-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
             >
               <Settings className="w-4 h-4 mr-2" />
               Instellingen

@@ -51,11 +51,11 @@ export function LocationDistanceSlider({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-pink-500" />
+          <MapPin className="w-4 h-4 text-coral-500" />
           <span className="text-sm font-medium">Maximale afstand</span>
         </div>
         <div className="text-right">
-          <span className="text-lg font-bold text-pink-600">{value} km</span>
+          <span className="text-lg font-bold text-coral-600">{value} km</span>
           {showLocation && userProfile?.location && (
             <div className="text-xs text-muted-foreground">
               vanaf {userProfile.location}
@@ -81,13 +81,13 @@ export function LocationDistanceSlider({
         />
 
         {/* Custom styling overlay */}
-        <div className="absolute top-0 left-0 h-2 bg-gradient-to-r from-pink-400 to-pink-500 rounded-lg pointer-events-none"
+        <div className="absolute top-0 left-0 h-2 bg-gradient-to-r from-coral-400 to-coral-500 rounded-lg pointer-events-none"
              style={{ width: `${percentage}%` }}>
         </div>
 
         {/* Thumb indicator */}
         <div
-          className={`absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-white border-2 border-pink-500 rounded-full shadow-lg transition-transform duration-150 ${
+          className={`absolute top-1/2 transform -translate-y-1/2 w-6 h-6 bg-white border-2 border-coral-500 rounded-full shadow-lg transition-transform duration-150 ${
             isDragging ? 'scale-110' : 'scale-100'
           }`}
           style={{
@@ -95,7 +95,7 @@ export function LocationDistanceSlider({
             boxShadow: '0 2px 8px rgba(236, 72, 153, 0.3)'
           }}
         >
-          <div className="absolute inset-0 rounded-full bg-pink-500 opacity-20"></div>
+          <div className="absolute inset-0 rounded-full bg-coral-500 opacity-20"></div>
         </div>
       </div>
 

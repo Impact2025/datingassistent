@@ -117,11 +117,11 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
   return (
     <div className="space-y-8">
       {/* Header with gradient */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-pink-500/5 to-purple-500/10 p-8">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-coral-500/5 to-purple-500/10 p-8">
         <div className="relative">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-pink-600 bg-clip-text text-transparent">
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-coral-600 bg-clip-text text-transparent">
                 Discussies
               </h2>
               <p className="text-muted-foreground mt-1">
@@ -131,7 +131,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
             <Button
               onClick={() => setShowNewPostForm(!showNewPostForm)}
               size="lg"
-              className="bg-gradient-to-r from-primary to-pink-600 hover:from-primary/90 hover:to-pink-600/90 shadow-lg"
+              className="bg-gradient-to-r from-primary to-coral-600 hover:from-primary/90 hover:to-coral-600/90 shadow-lg"
             >
               <Lucide.Plus className="h-5 w-5 mr-2" />
               Nieuwe Discussie
@@ -150,7 +150,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
         <Card className="border-2 border-primary/20 shadow-xl bg-gradient-to-br from-card to-card/50">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-primary to-pink-600 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-primary to-coral-600 flex items-center justify-center">
                 <Lucide.Edit className="h-5 w-5 text-white" />
               </div>
               <div>
@@ -186,7 +186,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
               <Button
                 onClick={handleCreatePost}
                 disabled={!newPost.title.trim() || !newPost.content.trim()}
-                className="bg-gradient-to-r from-primary to-pink-600 hover:from-primary/90 hover:to-pink-600/90"
+                className="bg-gradient-to-r from-primary to-coral-600 hover:from-primary/90 hover:to-coral-600/90"
               >
                 <Lucide.Send className="h-4 w-4 mr-2" />
                 Publiceren
@@ -209,7 +209,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
           <Card className="border-2 border-dashed border-muted-foreground/25 bg-gradient-to-br from-muted/20 to-muted/5">
             <CardContent className="py-16 text-center">
               <div className="space-y-4">
-                <div className="h-20 w-20 rounded-full bg-gradient-to-r from-primary/10 to-pink-600/10 flex items-center justify-center mx-auto">
+                <div className="h-20 w-20 rounded-full bg-gradient-to-r from-primary/10 to-coral-600/10 flex items-center justify-center mx-auto">
                   <Lucide.MessageSquare className="h-10 w-10 text-muted-foreground" />
                 </div>
                 <div>
@@ -221,7 +221,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
                 </div>
                 <Button
                   onClick={() => setShowNewPostForm(true)}
-                  className="mt-4 bg-gradient-to-r from-primary to-pink-600"
+                  className="mt-4 bg-gradient-to-r from-primary to-coral-600"
                 >
                   <Lucide.Plus className="h-4 w-4 mr-2" />
                   Start de eerste discussie
@@ -250,7 +250,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
                         className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/10 group-hover:ring-primary/30 transition-all"
                       />
                     ) : (
-                      <div className="h-12 w-12 rounded-full bg-gradient-to-r from-primary/10 to-pink-600/10 flex items-center justify-center ring-2 ring-primary/10 group-hover:ring-primary/30 transition-all">
+                      <div className="h-12 w-12 rounded-full bg-gradient-to-r from-primary/10 to-coral-600/10 flex items-center justify-center ring-2 ring-primary/10 group-hover:ring-primary/30 transition-all">
                         <Lucide.User className="h-6 w-6 text-primary" />
                       </div>
                     )}

@@ -185,7 +185,7 @@ export function ProgressInsightsDashboard() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg border border-purple-200"
+                className="p-4 bg-gradient-to-br from-purple-50 to-coral-50 rounded-lg border border-purple-200"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
@@ -280,12 +280,12 @@ export function ProgressInsightsDashboard() {
                 </div>
               </div>
 
-              <div className="p-4 bg-pink-50 rounded-lg">
+              <div className="p-4 bg-coral-50 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <Star className="w-4 h-4 text-pink-600" />
-                  <span className="text-sm font-semibold text-pink-900">Favoriete Content</span>
+                  <Star className="w-4 h-4 text-coral-600" />
+                  <span className="text-sm font-semibold text-coral-900">Favoriete Content</span>
                 </div>
-                <p className="text-lg font-bold text-pink-700 capitalize">{patterns.preferred_content_type}</p>
+                <p className="text-lg font-bold text-coral-700 capitalize">{patterns.preferred_content_type}</p>
               </div>
             </div>
           </CardContent>
@@ -377,10 +377,10 @@ export function ProgressInsightsDashboard() {
 
         {/* Learning Tips */}
         {tips && tips.length > 0 && (
-          <Card className="border-2 border-pink-200">
+          <Card className="border-2 border-coral-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="w-5 h-5 text-pink-600" />
+                <Lightbulb className="w-5 h-5 text-coral-600" />
                 Persoonlijke Tips
               </CardTitle>
             </CardHeader>
@@ -392,14 +392,14 @@ export function ProgressInsightsDashboard() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                   className={`p-3 rounded-lg border ${
-                    tip.priority === 'high' ? 'bg-pink-50 border-pink-200' :
+                    tip.priority === 'high' ? 'bg-coral-50 border-coral-200' :
                     tip.priority === 'medium' ? 'bg-purple-50 border-purple-200' :
                     'bg-gray-50 border-gray-200'
                   }`}
                 >
                   <div className="flex items-start gap-2">
                     <div className={`p-1.5 rounded ${
-                      tip.priority === 'high' ? 'bg-pink-200 text-pink-700' :
+                      tip.priority === 'high' ? 'bg-coral-200 text-coral-700' :
                       tip.priority === 'medium' ? 'bg-purple-200 text-purple-700' :
                       'bg-gray-200 text-gray-700'
                     }`}>

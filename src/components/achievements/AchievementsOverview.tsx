@@ -84,7 +84,7 @@ export function AchievementsOverview({ userId }: AchievementsOverviewProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-coral-500"></div>
       </div>
     );
   }
@@ -93,7 +93,7 @@ export function AchievementsOverview({ userId }: AchievementsOverviewProps) {
     <div className="space-y-6">
       {/* Stats Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+        <Card className="bg-gradient-to-br from-purple-50 to-coral-50 border-purple-200">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
@@ -211,7 +211,7 @@ export function AchievementsOverview({ userId }: AchievementsOverviewProps) {
                 return (
                   <div
                     key={unlock.achievement_slug}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-purple-50 to-coral-50 border border-purple-100"
                   >
                     <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${getTierColor(achievement.tier)} flex items-center justify-center shadow-sm`}>
                       <span className="text-2xl">{achievement.icon}</span>

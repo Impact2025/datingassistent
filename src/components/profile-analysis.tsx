@@ -400,7 +400,7 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
       {isLoadingHistory && !savedAnalysis && (
         <Card>
           <CardContent className="p-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-coral-500 mx-auto mb-4"></div>
             <p className="text-gray-600">Analyse geschiedenis laden...</p>
           </CardContent>
         </Card>
@@ -508,7 +508,7 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
             <Button
               onClick={analyzeProfile}
               disabled={isAnalyzing || !profileData.bio.trim()}
-              className="w-full bg-pink-500 hover:bg-pink-600"
+              className="w-full bg-coral-500 hover:bg-coral-600"
               size="lg"
             >
               {isAnalyzing ? (
@@ -531,7 +531,7 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
       {results && (
         <div className="space-y-6">
           {/* Overall Score */}
-          <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+          <Card className="bg-gradient-to-r from-coral-50 to-coral-100 border-coral-200">
             <CardContent className="p-8 text-center">
               <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-lg">
                 <div className="text-center">
@@ -640,7 +640,7 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
             >
               Nieuwe Analyse
             </Button>
-            <Button className="flex-1 bg-pink-500 hover:bg-pink-600">
+            <Button className="flex-1 bg-coral-500 hover:bg-coral-600">
               <Award className="w-4 h-4 mr-2" />
               Upgrade voor meer tips
             </Button>

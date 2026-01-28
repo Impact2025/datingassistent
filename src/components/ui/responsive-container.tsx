@@ -136,7 +136,7 @@ export const TouchButton: React.FC<TouchButtonProps> = ({
   };
 
   const variantClasses = {
-    primary: 'bg-pink-600 hover:bg-pink-700 text-white font-medium shadow-sm',
+    primary: 'bg-coral-600 hover:bg-coral-700 text-white font-medium shadow-sm',
     secondary: 'bg-gray-100 hover:bg-gray-200 text-gray-900 font-medium',
     outline: 'border border-gray-300 hover:border-gray-400 text-gray-700 font-medium',
     ghost: 'text-gray-700 hover:bg-gray-100 font-medium',
@@ -146,7 +146,7 @@ export const TouchButton: React.FC<TouchButtonProps> = ({
     <button
       className={cn(
         'inline-flex items-center justify-center rounded-lg transition-colors duration-200',
-        'focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
+        'focus:outline-none focus:ring-2 focus:ring-coral-500 focus:ring-offset-2',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         'active:scale-95 transform transition-transform duration-100',
         sizeClasses[size],

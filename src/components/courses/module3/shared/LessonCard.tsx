@@ -12,7 +12,7 @@ export function LessonCard({ title, emoji, children, className }: LessonCardProp
       className
     )}>
       <CardHeader className="text-center pb-8">
-        <div className="w-16 h-16 mx-auto mb-6 bg-pink-100 rounded-2xl flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto mb-6 bg-coral-100 rounded-2xl flex items-center justify-center">
           <span className="text-2xl">{emoji}</span>
         </div>
         <CardTitle className="text-2xl font-bold text-gray-900">

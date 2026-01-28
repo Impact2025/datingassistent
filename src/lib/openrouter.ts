@@ -92,8 +92,9 @@ export class OpenRouterClient {
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:9002',
-          'X-Title': 'DatingAssistent',
+          // Privacy: Use generic headers to minimize identifying information
+          'HTTP-Referer': 'https://app.example.com',
+          'X-Title': 'App',
         },
         body: JSON.stringify(requestBody),
       });

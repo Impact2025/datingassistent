@@ -81,7 +81,7 @@ export default function HelpContent() {
       title: "Community Forum",
       description: "Stel vragen aan andere gebruikers en experts",
       href: "/community",
-      color: "bg-pink-50 border-pink-200"
+      color: "bg-coral-50 border-coral-200"
     },
     {
       icon: Zap,

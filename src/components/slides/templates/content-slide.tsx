@@ -7,7 +7,7 @@ interface ContentSlideTemplateProps {
 
 export function ContentSlideTemplate({ slide }: ContentSlideTemplateProps) {
   const bgColor = slide.backgroundColor || 'bg-gray-50';
-  const highlightColor = slide.highlightColor || 'text-pink-600';
+  const highlightColor = slide.highlightColor || 'text-coral-600';
 
   return (
     <div className={`w-full h-full ${bgColor} flex flex-col items-center justify-center p-6`}>
@@ -37,7 +37,7 @@ export function ContentSlideTemplate({ slide }: ContentSlideTemplateProps) {
                 key={index}
                 className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100"
               >
-                <div className={`flex-shrink-0 mt-0.5 p-1.5 rounded-full ${highlightColor} bg-pink-50`}>
+                <div className={`flex-shrink-0 mt-0.5 p-1.5 rounded-full ${highlightColor} bg-coral-50`}>
                   <Lucide.Check className="h-3.5 w-3.5" />
                 </div>
                 <p className="text-sm text-gray-800 leading-relaxed flex-1">

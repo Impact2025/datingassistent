@@ -122,10 +122,10 @@ export function RecommendedContent({
 
   if (loading) {
     return (
-      <Card className={compact ? 'border-gray-200' : 'border-2 border-pink-200'}>
+      <Card className={compact ? 'border-gray-200' : 'border-2 border-coral-200'}>
         <CardContent className="p-8">
           <div className="flex items-center justify-center">
-            <div className="w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-4 border-coral-500 border-t-transparent rounded-full animate-spin" />
           </div>
         </CardContent>
       </Card>
@@ -149,7 +149,7 @@ export function RecommendedContent({
     <div className="space-y-6">
       {/* Learning Insights */}
       {showInsights && insights && !compact && (
-        <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
+        <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-coral-50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Brain className="w-5 h-5 text-purple-600" />
@@ -209,10 +209,10 @@ export function RecommendedContent({
       )}
 
       {/* Recommendations */}
-      <Card className={compact ? 'border-gray-200' : 'border-2 border-pink-200'}>
+      <Card className={compact ? 'border-gray-200' : 'border-2 border-coral-200'}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-pink-600" />
+            <Sparkles className="w-5 h-5 text-coral-600" />
             {compact ? 'Aanbevolen' : 'Speciaal voor jou aanbevolen'}
           </CardTitle>
         </CardHeader>
@@ -241,11 +241,11 @@ export function RecommendedContent({
                     transition={{ delay: index * 0.1 }}
                   >
                     <Link href={getRecommendationLink(rec)}>
-                      <Card className="h-full hover:shadow-lg hover:border-pink-300 transition-all group cursor-pointer">
+                      <Card className="h-full hover:shadow-lg hover:border-coral-300 transition-all group cursor-pointer">
                         <CardContent className="p-4">
                           {/* Icon & Type */}
                           <div className="flex items-center justify-between mb-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-white">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center text-white">
                               {getRecommendationIcon(rec.type)}
                             </div>
                             <Badge
@@ -257,12 +257,12 @@ export function RecommendedContent({
                           </div>
 
                           {/* Title */}
-                          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-pink-600 transition-colors">
+                          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-coral-600 transition-colors">
                             {rec.title}
                           </h3>
 
                           {/* Reason */}
-                          <p className="text-sm text-pink-600 mb-2 flex items-center gap-1">
+                          <p className="text-sm text-coral-600 mb-2 flex items-center gap-1">
                             <Sparkles className="w-3 h-3" />
                             {rec.reason}
                           </p>
@@ -290,7 +290,7 @@ export function RecommendedContent({
                           </div>
 
                           {/* Arrow Icon */}
-                          <div className="mt-3 flex items-center text-pink-600 group-hover:translate-x-1 transition-transform">
+                          <div className="mt-3 flex items-center text-coral-600 group-hover:translate-x-1 transition-transform">
                             <span className="text-sm font-medium">Bekijk</span>
                             <ArrowRight className="w-4 h-4 ml-1" />
                           </div>

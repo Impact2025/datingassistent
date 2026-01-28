@@ -27,9 +27,9 @@ const userTypes = {
   A: {
     title: "De Starter",
     description: "Je staat aan het begin van je dating journey. Perfect! We beginnen met sterke fundamenten.",
-    color: "from-pink-500 to-rose-500",
-    bgColor: "bg-pink-50",
-    borderColor: "border-pink-200",
+    color: "from-coral-500 to-rose-500",
+    bgColor: "bg-coral-50",
+    borderColor: "border-coral-200",
     icon: Sparkles,
     leadMagnet: {
       title: "De Perfecte Profielfoto",
@@ -362,7 +362,7 @@ export function PersonalizedRoadmap({ userType, userName, onContinue }: Personal
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
       >
-        <Card className="border-2 border-pink-200">
+        <Card className="border-2 border-coral-200">
           <CardContent className="p-6 text-center space-y-4">
             <h3 className="text-lg font-semibold text-gray-900">
               Klaar om te beginnen? 🚀
@@ -374,7 +374,7 @@ export function PersonalizedRoadmap({ userType, userName, onContinue }: Personal
             <Button
               onClick={onContinue}
               size="lg"
-              className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+              className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
             >
               Ga naar Dashboard
               <ArrowRight className="w-5 h-5 ml-2" />

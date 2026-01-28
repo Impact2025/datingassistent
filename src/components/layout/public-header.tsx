@@ -98,7 +98,7 @@ export function PublicHeader() {
                   Inloggen
                 </Link>
                 <Link href="/register">
-                  <Button size="sm" className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-lg shadow-pink-500/25 hover:shadow-xl hover:shadow-pink-500/30 transition-all duration-300">
+                  <Button size="sm" className="bg-coral-500 hover:bg-coral-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-lg shadow-coral-500/25 hover:shadow-xl hover:shadow-coral-500/30 transition-all duration-300">
                     Start Nu
                   </Button>
                 </Link>
@@ -161,7 +161,7 @@ export function PublicHeader() {
                       Inloggen
                     </Link>
                     <Link href="/register" onClick={() => setIsMenuOpen(false)}>
-                      <Button className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-lg shadow-pink-500/25">
+                      <Button className="bg-coral-500 hover:bg-coral-600 text-white font-semibold px-6 py-2.5 rounded-full shadow-lg shadow-coral-500/25">
                         Start Nu
                       </Button>
                     </Link>

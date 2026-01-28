@@ -92,7 +92,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
       description: "Genereer effectieve openingsberichten",
       component: <OpeningszinnenTool />,
       badge: "Persoonlijk",
-      color: "bg-pink-500"
+      color: "bg-coral-500"
     },
     {
       id: "icebreakers",
@@ -199,8 +199,8 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
                   className={cn(
                     "cursor-pointer transition-all duration-200 hover:shadow-md border-2",
                     isActive
-                      ? "border-pink-500 bg-pink-50/50 dark:bg-pink-950/20 ring-2 ring-pink-500/20"
-                      : "border-border hover:border-pink-300 hover:bg-pink-50/30 dark:hover:bg-pink-950/10"
+                      ? "border-coral-500 bg-coral-50/50 dark:bg-coral-950/20 ring-2 ring-coral-500/20"
+                      : "border-border hover:border-coral-300 hover:bg-coral-50/30 dark:hover:bg-coral-950/10"
                   )}
                   onClick={() => setActiveTab(tool.id)}
                 >
@@ -209,7 +209,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
                       <div className={cn(
                         "w-12 h-12 mx-auto rounded-full flex items-center justify-center transition-colors",
                         isActive
-                          ? "bg-pink-500 text-white"
+                          ? "bg-coral-500 text-white"
                           : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white"
                       )}>
                         <Icon className="w-6 h-6" />
@@ -219,7 +219,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
                         <div className="flex items-center justify-center gap-1 relative">
                           <h4 className={cn(
                             "font-semibold text-xs leading-tight",
-                            isActive ? "text-pink-700 dark:text-pink-300" : "text-foreground"
+                            isActive ? "text-coral-700 dark:text-coral-300" : "text-foreground"
                           )}>
                             {tool.label}
                           </h4>

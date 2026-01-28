@@ -114,7 +114,7 @@ export function getTierDisplayName(tier: IrisUsageStatus['tier']): string {
 export function getTierColorClasses(tier: IrisUsageStatus['tier']): string {
   const colors: Record<IrisUsageStatus['tier'], string> = {
     free: 'bg-gray-100 text-gray-700 border-gray-200',
-    kickstart: 'bg-pink-50 text-pink-700 border-pink-200',
+    kickstart: 'bg-coral-50 text-coral-700 border-coral-200',
     transformatie: 'bg-purple-50 text-purple-700 border-purple-200',
     vip: 'bg-amber-50 text-amber-700 border-amber-200',
   };

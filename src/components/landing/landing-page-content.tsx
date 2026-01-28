@@ -190,7 +190,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {/* Pijn Blok 1: De Match-Droogte */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-600 hover:shadow-xl transition-all space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-coral-300 dark:hover:border-coral-600 hover:shadow-xl transition-all space-y-4">
               <div className="w-16 h-16 mx-auto rounded-full bg-red-500 flex items-center justify-center shadow-lg">
                 <AlertCircle className="w-8 h-8 text-white" />
               </div>
@@ -201,7 +201,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             </div>
 
             {/* Pijn Blok 2: De Gespreks-Dood */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-600 hover:shadow-xl transition-all space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-coral-300 dark:hover:border-coral-600 hover:shadow-xl transition-all space-y-4">
               <div className="w-16 h-16 mx-auto rounded-full bg-orange-500 flex items-center justify-center shadow-lg">
                 <MessageCircle className="w-8 h-8 text-white" />
               </div>
@@ -212,7 +212,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             </div>
 
             {/* Pijn Blok 3: De 'Situationship' */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-600 hover:shadow-xl transition-all space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-coral-300 dark:hover:border-coral-600 hover:shadow-xl transition-all space-y-4">
               <div className="w-16 h-16 mx-auto rounded-full bg-purple-600 flex items-center justify-center shadow-lg">
                 <Heart className="w-8 h-8 text-white" />
               </div>
@@ -242,9 +242,9 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-pink-300 dark:hover:border-pink-600 hover:shadow-lg transition-all group">
-              <div className="w-12 h-12 mx-auto rounded-xl bg-pink-50 dark:bg-pink-900/30 flex items-center justify-center group-hover:bg-pink-100 dark:group-hover:bg-pink-900/50 transition-colors">
-                <User className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+            <div className="space-y-4 p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-coral-300 dark:hover:border-coral-600 hover:shadow-lg transition-all group">
+              <div className="w-12 h-12 mx-auto rounded-xl bg-coral-50 dark:bg-coral-900/30 flex items-center justify-center group-hover:bg-coral-100 dark:group-hover:bg-coral-900/50 transition-colors">
+                <User className="w-6 h-6 text-coral-600 dark:text-coral-400" />
               </div>
               <div className="text-center">
                 <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-gray-50">Profiel Coach</h3>
@@ -376,12 +376,12 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="relative">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-pink-200 dark:border-pink-700 hover:border-pink-300 dark:hover:border-pink-600 hover:shadow-xl transition-all space-y-6">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-coral-200 dark:border-coral-700 hover:border-coral-300 dark:hover:border-coral-600 hover:shadow-xl transition-all space-y-6">
                 <div className="flex items-start justify-between">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center flex-shrink-0 shadow-lg">
                     <span className="text-2xl font-bold text-white">1</span>
                   </div>
-                  <span className="text-xs font-semibold text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-900/30 px-3 py-1 rounded-full">Het Fundament</span>
+                  <span className="text-xs font-semibold text-coral-600 dark:text-coral-400 bg-coral-50 dark:bg-coral-900/30 px-3 py-1 rounded-full">Het Fundament</span>
                 </div>
 
                 <div className="space-y-3">
@@ -392,13 +392,13 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                     <p>✓ Profiel Reset: We bouwen een nieuw profiel op basis van data, niet op de gok.</p>
                   </div>
                   <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
-                    <p className="text-xs font-semibold text-pink-600 dark:text-pink-400">
+                    <p className="text-xs font-semibold text-coral-600 dark:text-coral-400">
                       Je weet precies wat je valkuilen zijn en hoe je ze fixt.
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="hidden md:block absolute top-12 left-full w-8 h-0.5 bg-gradient-to-r from-pink-300 to-transparent -translate-x-4"></div>
+              <div className="hidden md:block absolute top-12 left-full w-8 h-0.5 bg-gradient-to-r from-coral-300 to-transparent -translate-x-4"></div>
             </div>
 
             <div className="relative">
@@ -430,7 +430,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             <div className="relative">
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-purple-200 dark:border-purple-700 hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-xl transition-all space-y-6">
                 <div className="flex items-start justify-between">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-coral-600 flex items-center justify-center flex-shrink-0 shadow-lg">
                     <span className="text-2xl font-bold text-white">3</span>
                   </div>
                   <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-3 py-1 rounded-full">Meesterschap</span>
@@ -453,12 +453,12 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             </div>
           </div>
 
-          <div className="mt-16 text-center bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 rounded-2xl p-8 border border-pink-100 dark:border-pink-700">
+          <div className="mt-16 text-center bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30 rounded-2xl p-8 border border-coral-100 dark:border-coral-700">
             <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg">
               <strong>Klaar om te beginnen?</strong> Het kost letterlijk 60 seconden om je account aan te maken
             </p>
             <Link href="/register">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all font-semibold text-lg">
+              <Button className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all font-semibold text-lg">
                 Start gratis →
               </Button>
             </Link>
@@ -516,7 +516,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 rounded-xl p-6 border border-pink-100 dark:border-pink-700">
+              <div className="bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30 rounded-xl p-6 border border-coral-100 dark:border-coral-700">
                 <p className="text-gray-800 dark:text-gray-100 leading-relaxed italic">
                   &quot;AI vervangt jou niet, het laat je bloeien. Het geeft je de woorden en het inzicht, zodat jij zelfverzekerd de connectie maakt. Uiteindelijk doe je het zelf, maar je staat er niet alleen voor.&quot;
                 </p>
@@ -550,7 +550,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
               <div className="pt-4">
                 <Link href="/register">
-                  <Button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all font-semibold">
+                  <Button className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all font-semibold">
                     Start je transformatie gratis →
                   </Button>
                 </Link>
@@ -570,19 +570,19 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                   />
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 text-center flex flex-col justify-center">
-                  <div className="text-lg font-bold text-pink-500 dark:text-pink-400 mb-2">Bekend van</div>
+                  <div className="text-lg font-bold text-coral-500 dark:text-coral-400 mb-2">Bekend van</div>
                   <div className="text-sm text-gray-700 dark:text-gray-400 font-medium">The Undateables</div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 text-center">
-                  <div className="text-3xl font-bold text-pink-500 dark:text-pink-400 mb-2">2009</div>
+                  <div className="text-3xl font-bold text-coral-500 dark:text-coral-400 mb-2">2009</div>
                   <div className="text-sm text-gray-700 dark:text-gray-400">Sinds</div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 text-center">
-                  <div className="text-3xl font-bold text-pink-500 dark:text-pink-400 mb-2">15+</div>
+                  <div className="text-3xl font-bold text-coral-500 dark:text-coral-400 mb-2">15+</div>
                   <div className="text-sm text-gray-700 dark:text-gray-400">Jaar expertise</div>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 text-center">
-                  <div className="text-3xl font-bold text-pink-500 dark:text-pink-400 mb-2">24/7</div>
+                  <div className="text-3xl font-bold text-coral-500 dark:text-coral-400 mb-2">24/7</div>
                   <div className="text-sm text-gray-700 dark:text-gray-400">Beschikbaar</div>
                 </div>
               </div>
@@ -603,7 +603,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Review 1 */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-pink-200 dark:border-pink-700 hover:shadow-xl transition-all space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-coral-200 dark:border-coral-700 hover:shadow-xl transition-all space-y-4">
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -619,7 +619,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             </div>
 
             {/* Review 2 */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-pink-200 dark:border-pink-700 hover:shadow-xl transition-all space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-coral-200 dark:border-coral-700 hover:shadow-xl transition-all space-y-4">
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -635,7 +635,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             </div>
 
             {/* Review 3 */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-pink-200 dark:border-pink-700 hover:shadow-xl transition-all space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-coral-200 dark:border-coral-700 hover:shadow-xl transition-all space-y-4">
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -653,7 +653,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
         </div>
       </section>
 
-      <section className="py-24 px-4 bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <section className="py-24 px-4 bg-gradient-to-br from-coral-50 via-coral-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="max-w-6xl mx-auto">
           {/* FAQ Section */}
           <FAQSection />
@@ -661,7 +661,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
           {/* Start vandaag - Logout page style */}
           <div className="max-w-2xl mx-auto space-y-8">
             {/* Main Card */}
-            <Card className="border-2 border-pink-200 dark:border-pink-700 shadow-xl bg-white dark:bg-gray-800">
+            <Card className="border-2 border-coral-200 dark:border-coral-700 shadow-xl bg-white dark:bg-gray-800">
               <CardContent className="p-8 text-center space-y-6">
                 <div className="space-y-3">
                   <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50">
@@ -671,8 +671,8 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
                 {/* Quick Stats - 3 colored boxes */}
                 <div className="grid grid-cols-3 gap-4 pt-4">
-                  <div className="text-center p-3 bg-pink-50 dark:bg-pink-900/30 rounded-lg">
-                    <Heart className="w-5 h-5 mx-auto mb-1 text-pink-600 dark:text-pink-400" />
+                  <div className="text-center p-3 bg-coral-50 dark:bg-coral-900/30 rounded-lg">
+                    <Heart className="w-5 h-5 mx-auto mb-1 text-coral-600 dark:text-coral-400" />
                     <p className="text-xs text-gray-700 dark:text-gray-400">Gratis starten</p>
                   </div>
                   <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/30 rounded-lg">
@@ -690,25 +690,25 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             {/* Action Cards - 2 column grid */}
             <div className="grid md:grid-cols-2 gap-4">
               {/* Quiz Card */}
-              <Card className="border-2 border-pink-200 dark:border-pink-700 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 transition-all cursor-pointer hover:shadow-lg relative">
+              <Card className="border-2 border-coral-200 dark:border-coral-700 bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30 transition-all cursor-pointer hover:shadow-lg relative">
                 <Link href="/quiz">
                   <CardContent className="p-6 text-center">
-                    <Badge className="absolute top-3 right-3 bg-pink-500 dark:bg-pink-600 text-white text-xs px-3 py-1 rounded-full shadow-md font-medium">
+                    <Badge className="absolute top-3 right-3 bg-coral-500 dark:bg-coral-600 text-white text-xs px-3 py-1 rounded-full shadow-md font-medium">
                       Tip
                     </Badge>
-                    <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-100 dark:bg-pink-900/50 flex items-center justify-center">
-                      <Sparkles className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                    <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-coral-100 dark:bg-coral-900/50 flex items-center justify-center">
+                      <Sparkles className="w-6 h-6 text-coral-600 dark:text-coral-400" />
                     </div>
-                    <h3 className="font-semibold text-lg text-pink-600 dark:text-pink-400 mb-2">
+                    <h3 className="font-semibold text-lg text-coral-600 dark:text-coral-400 mb-2">
                       Doe de Quiz
                     </h3>
                     <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
                       Ontdek je dating stijl
                     </p>
-                    <p className="text-xs text-pink-700 dark:text-pink-400 italic mb-4">
+                    <p className="text-xs text-coral-700 dark:text-coral-400 italic mb-4">
                       "Krijg binnen 2 minuten inzicht in jouw valkuilen"
                     </p>
-                    <Button className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all">
+                    <Button className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all">
                       Gratis Starten
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
@@ -758,7 +758,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {blogs.map((blog) => (
                 <Link key={blog.id} href={`/blog/${blog.slug}`} className="block group">
-                  <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-pink-200 dark:hover:border-pink-600 hover:shadow-lg transition-all h-full">
+                  <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-coral-200 dark:hover:border-coral-600 hover:shadow-lg transition-all h-full">
                     <div className="relative h-48 overflow-hidden">
                       <Image
                         src={blog.featured_image || '/images/hero-dating.jpg.png'}
@@ -774,7 +774,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                       <p className="text-sm text-gray-700 dark:text-gray-400 line-clamp-3 leading-relaxed">{blog.excerpt}</p>
                       <div className="flex items-center justify-between pt-2">
                         <span className="text-xs text-gray-700 dark:text-gray-400">5 min lezen</span>
-                        <span className="text-sm text-pink-500 dark:text-pink-400 group-hover:translate-x-1 transition-transform">Lees meer →</span>
+                        <span className="text-sm text-coral-500 dark:text-coral-400 group-hover:translate-x-1 transition-transform">Lees meer →</span>
                       </div>
                     </div>
                   </div>
@@ -793,7 +793,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
 
           <div className="mt-12 text-center">
             <Link href="/blog">
-              <Button variant="outline" className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-pink-500 dark:hover:border-pink-400 hover:text-pink-500 dark:hover:text-pink-400 px-6 py-2.5 rounded-full transition-all shadow-lg hover:shadow-xl">
+              <Button variant="outline" className="border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-coral-500 dark:hover:border-coral-400 hover:text-coral-500 dark:hover:text-coral-400 px-6 py-2.5 rounded-full transition-all shadow-lg hover:shadow-xl">
                 Bekijk alle blogs
               </Button>
             </Link>
@@ -811,7 +811,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
         <ChatWidgetWrapper
           apiUrl="/api/chatbot"
           position="bottom-right"
-          primaryColor="#E14874"
+          primaryColor="#FF7B54"
           companyName="DatingAssistent"
           welcomeMessage="Hoi! 👋 Heb je vragen over DatingAssistent? Ik help je graag!"
           enableProactiveInvites={false}

@@ -516,7 +516,7 @@ export default function AdminAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Heart className="h-5 w-5 text-pink-600" />
+                  <Heart className="h-5 w-5 text-coral-600" />
                   <span>Emotional Readiness</span>
                 </CardTitle>
               </CardHeader>

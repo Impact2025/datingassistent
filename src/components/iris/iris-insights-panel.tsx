@@ -157,7 +157,7 @@ export function IrisInsightsPanel({ currentTab, userId, onTabChange }: IrisInsig
   const Icon = currentInsight.icon;
 
   const colorClasses: Record<string, string> = {
-    pink: 'bg-pink-500',
+    pink: 'bg-coral-500',
     purple: 'bg-purple-500',
     blue: 'bg-blue-500',
     indigo: 'bg-indigo-500',
@@ -174,11 +174,11 @@ export function IrisInsightsPanel({ currentTab, userId, onTabChange }: IrisInsig
         exit={{ opacity: 0, x: 20 }}
         className="fixed right-6 bottom-6 z-50 w-80"
       >
-        <Card className="border-2 border-pink-200 shadow-2xl overflow-hidden">
+        <Card className="border-2 border-coral-200 shadow-2xl overflow-hidden">
           {/* Header */}
           <div className={cn(
             "p-4 text-white flex items-center justify-between",
-            colorClasses[currentInsight.color] || 'bg-pink-500'
+            colorClasses[currentInsight.color] || 'bg-coral-500'
           )}>
             <div className="flex items-center gap-2">
               <Icon className="w-5 h-5" />
@@ -229,7 +229,7 @@ export function IrisInsightsPanel({ currentTab, userId, onTabChange }: IrisInsig
                   onClick={() => handleAction(currentInsight)}
                   className={cn(
                     "w-full text-white",
-                    colorClasses[currentInsight.color] || 'bg-pink-500'
+                    colorClasses[currentInsight.color] || 'bg-coral-500'
                   )}
                   size="sm"
                 >

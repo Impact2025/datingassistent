@@ -108,7 +108,7 @@ export function ConversationScripts({ scripts, onScriptUsed }: ConversationScrip
       script: 'Ik vind dit leuk, maar laten we een rustig tempo kiezen zodat we het echt goed leren kennen.',
       categorie: 'veiligheid',
       icoon: <Heart className="w-5 h-5" />,
-      kleur: 'text-pink-600 bg-pink-50 border-pink-200',
+      kleur: 'text-coral-600 bg-coral-50 border-coral-200',
       tips: [
         'Erken wat je leuk vindt',
         'Stel een alternatief tempo voor',
@@ -240,9 +240,9 @@ export function ConversationScripts({ scripts, onScriptUsed }: ConversationScrip
         })}
       </div>
 
-      <div className="bg-gradient-to-r from-pink-50 to-pink-100 border border-pink-200 rounded-lg p-6">
+      <div className="bg-gradient-to-r from-coral-50 to-coral-100 border border-coral-200 rounded-lg p-6">
         <div className="flex items-start gap-4">
-          <Heart className="w-6 h-6 text-pink-600 mt-1 flex-shrink-0" />
+          <Heart className="w-6 h-6 text-coral-600 mt-1 flex-shrink-0" />
           <div>
             <h4 className="font-semibold text-gray-900 mb-2">
               Scripts als Bouwstenen

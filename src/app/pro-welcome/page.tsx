@@ -195,7 +195,7 @@ export default function ProWelcomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Progress Bar */}
       {currentStep !== 'video' && currentStep !== 'complete' && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
@@ -219,7 +219,7 @@ export default function ProWelcomePage() {
             <Card className="border-0 shadow-2xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
               <CardContent className="p-8 text-center space-y-6">
                 <div className="space-y-4">
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent">
                     Welkom bij DatingAssistent Pro! 🎉
                   </h1>
                   <p className="text-lg text-muted-foreground">
@@ -251,7 +251,7 @@ export default function ProWelcomePage() {
                   </Button>
                   <Button
                     onClick={handleVideoComplete}
-                    className="gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
+                    className="gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
                   >
                     <Play className="w-4 h-4" />
                     Verder naar vragen
@@ -305,10 +305,10 @@ export default function ProWelcomePage() {
                     </Label>
                   </div>
 
-                  <div className="flex items-center space-x-3 p-4 rounded-lg border-2 border-pink-200 dark:border-pink-700 bg-pink-50/50 dark:bg-pink-900/20">
+                  <div className="flex items-center space-x-3 p-4 rounded-lg border-2 border-coral-200 dark:border-coral-700 bg-coral-50/50 dark:bg-coral-900/20">
                     <RadioGroupItem value="neutraal" id="neutraal" />
                     <Label htmlFor="neutraal" className="flex-1 cursor-pointer">
-                      <div className="font-medium">Neutraal <span className="text-xs text-pink-600">(aanbevolen)</span></div>
+                      <div className="font-medium">Neutraal <span className="text-xs text-coral-600">(aanbevolen)</span></div>
                       <div className="text-sm text-muted-foreground">Balans tussen alle stijlen, past zich aan</div>
                     </Label>
                   </div>
@@ -326,7 +326,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleNext}
                     disabled={!canProceed()}
-                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
                   >
                     Volgende
                     <ArrowRight className="w-4 h-4" />
@@ -387,7 +387,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleNext}
                     disabled={!canProceed()}
-                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
                   >
                     Volgende
                     <ArrowRight className="w-4 h-4" />
@@ -444,7 +444,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleNext}
                     disabled={!canProceed()}
-                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
                   >
                     Volgende
                     <ArrowRight className="w-4 h-4" />
@@ -503,7 +503,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleComplete}
                     disabled={!canProceed() || isLoading}
-                    className="flex-1 gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
                   >
                     {isLoading ? (
                       <>
@@ -531,7 +531,7 @@ export default function ProWelcomePage() {
                 </div>
 
                 <div className="space-y-4">
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent">
                     Perfect! Je setup is compleet 🎉
                   </h2>
                   <p className="text-lg text-muted-foreground">
@@ -544,7 +544,7 @@ export default function ProWelcomePage() {
 
                 <Button
                   onClick={() => router.push('/dashboard')}
-                  className="gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600"
+                  className="gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
                 >
                   Direct naar Dashboard
                   <ArrowRight className="w-4 h-4" />

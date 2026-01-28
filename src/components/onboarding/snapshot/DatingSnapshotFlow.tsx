@@ -622,7 +622,7 @@ export function DatingSnapshotFlow({
 
     return (
       <div className={cn(
-        'min-h-[100dvh] bg-gradient-to-b from-pink-50/50 to-white',
+        'min-h-[100dvh] bg-gradient-to-b from-coral-50/50 to-white',
         'overflow-y-auto overscroll-y-none',
         'flex flex-col items-center justify-start sm:justify-center',
         'py-4 px-4 safe-area-top safe-area-bottom',
@@ -633,8 +633,8 @@ export function DatingSnapshotFlow({
           animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-md my-auto sm:my-0"
         >
-          <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 overflow-hidden">
-            <div className="bg-gradient-to-br from-pink-500 to-pink-600 p-6 text-center text-white">
+          <div className="bg-white rounded-3xl shadow-2xl shadow-coral-200/30 border border-coral-100/50 overflow-hidden">
+            <div className="bg-gradient-to-br from-coral-500 to-coral-600 p-6 text-center text-white">
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -643,7 +643,7 @@ export function DatingSnapshotFlow({
                 <RotateCcw className="w-12 h-12 mx-auto mb-3 opacity-90" />
               </motion.div>
               <h2 className="text-xl font-bold mb-1">Welkom terug!</h2>
-              <p className="text-pink-100 text-sm">Je hebt onafgemaakte voortgang</p>
+              <p className="text-coral-100 text-sm">Je hebt onafgemaakte voortgang</p>
             </div>
 
             <div className="p-6">
@@ -661,7 +661,7 @@ export function DatingSnapshotFlow({
               <div className="space-y-3">
                 <Button
                   onClick={handleRestoreProgress}
-                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-5 rounded-xl font-semibold"
+                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-5 rounded-xl font-semibold"
                 >
                   Doorgaan waar ik was
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -712,7 +712,7 @@ export function DatingSnapshotFlow({
     return (
       <div
         className={cn(
-          'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+          'fixed inset-0 bg-gradient-to-b from-coral-50/50 to-white',
           'flex flex-col',
           'overflow-hidden', // Prevent body scroll
           className
@@ -729,9 +729,9 @@ export function DatingSnapshotFlow({
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-lg"
         >
-          <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 overflow-hidden">
+          <div className="bg-white rounded-3xl shadow-2xl shadow-coral-200/30 border border-coral-100/50 overflow-hidden">
             {/* Header with Iris */}
-            <div className="bg-gradient-to-br from-pink-500 to-pink-600 p-8 text-center text-white relative overflow-visible">
+            <div className="bg-gradient-to-br from-coral-500 to-coral-600 p-8 text-center text-white relative overflow-visible">
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -752,7 +752,7 @@ export function DatingSnapshotFlow({
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="text-pink-100"
+                className="text-coral-100"
               >
                 Laten we je eerst leren kennen
               </motion.p>
@@ -775,8 +775,8 @@ export function DatingSnapshotFlow({
                     transition={{ delay: 0.5 + index * 0.1 }}
                     className="flex items-center gap-3"
                   >
-                    <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
-                      <item.icon className="w-4 h-4 text-pink-600" />
+                    <div className="w-8 h-8 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-4 h-4 text-coral-600" />
                     </div>
                     <span className="text-gray-700">{item.text}</span>
                   </motion.div>
@@ -812,7 +812,7 @@ export function DatingSnapshotFlow({
               >
                 <Button
                   onClick={handleStart}
-                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-pink-200/50"
+                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50"
                 >
                   Start de Dating Snapshot
                   <ArrowRight className="w-5 h-5 ml-2" />
@@ -857,7 +857,7 @@ export function DatingSnapshotFlow({
             aria-label={`Voortgang: ${Math.round(overallProgress)}%`}
           >
             <motion.div
-              className="h-full bg-gradient-to-r from-pink-500 to-pink-600"
+              className="h-full bg-gradient-to-r from-coral-500 to-coral-600"
               initial={{ width: 0 }}
               animate={{ width: `${overallProgress}%` }}
               transition={{ duration: 0.3 }}
@@ -865,8 +865,8 @@ export function DatingSnapshotFlow({
           </div>
           <div className="max-w-2xl mx-auto px-4 py-2.5 sm:py-3 flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
-                <SectionIcon className="w-4 h-4 text-pink-600" />
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0">
+                <SectionIcon className="w-4 h-4 text-coral-600" />
               </div>
               <div className="min-w-0">
                 <div className="text-sm font-medium text-gray-900 truncate">{currentSection.title}</div>
@@ -948,7 +948,7 @@ export function DatingSnapshotFlow({
             <Button
               onClick={handleNext}
               disabled={isSubmitting}
-              className="flex-1 min-h-[48px] bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white touch-manipulation active:scale-[0.98] transition-transform"
+              className="flex-1 min-h-[48px] bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white touch-manipulation active:scale-[0.98] transition-transform"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">
@@ -974,7 +974,7 @@ export function DatingSnapshotFlow({
   if (step === 'processing') {
     return (
       <div className={cn(
-        'min-h-[100dvh] bg-gradient-to-b from-pink-50/50 to-white',
+        'min-h-[100dvh] bg-gradient-to-b from-coral-50/50 to-white',
         'overflow-y-auto overscroll-y-none',
         'flex flex-col items-center justify-start sm:justify-center',
         'py-4 px-4 safe-area-top safe-area-bottom',
@@ -985,13 +985,13 @@ export function DatingSnapshotFlow({
           animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-md my-auto sm:my-0"
         >
-          <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 p-8 text-center">
+          <div className="bg-white rounded-3xl shadow-2xl shadow-coral-200/30 border border-coral-100/50 p-8 text-center">
             <motion.div
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
               className="mb-8"
             >
-              <IrisAvatar size="xl" showGlow className="mx-auto ring-4 ring-pink-100" />
+              <IrisAvatar size="xl" showGlow className="mx-auto ring-4 ring-coral-100" />
             </motion.div>
 
             <h2 className="text-xl font-bold text-gray-900 mb-2">
@@ -1013,14 +1013,14 @@ export function DatingSnapshotFlow({
                     className={cn(
                       'flex items-center gap-3 px-4 py-3 rounded-xl transition-all',
                       isComplete && 'bg-green-50',
-                      isCurrent && 'bg-pink-50',
+                      isCurrent && 'bg-coral-50',
                       !isComplete && !isCurrent && 'bg-gray-50'
                     )}
                   >
                     <div className={cn(
                       'w-8 h-8 rounded-full flex items-center justify-center transition-all',
                       isComplete && 'bg-green-500 text-white',
-                      isCurrent && 'bg-pink-500 text-white',
+                      isCurrent && 'bg-coral-500 text-white',
                       !isComplete && !isCurrent && 'bg-gray-200 text-gray-400'
                     )}>
                       {isComplete ? (
@@ -1032,7 +1032,7 @@ export function DatingSnapshotFlow({
                     <span className={cn(
                       'text-sm font-medium',
                       isComplete && 'text-green-700',
-                      isCurrent && 'text-pink-700',
+                      isCurrent && 'text-coral-700',
                       !isComplete && !isCurrent && 'text-gray-400'
                     )}>
                       {item.text}
@@ -1056,7 +1056,7 @@ export function DatingSnapshotFlow({
       return (
         <div
           className={cn(
-            'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+            'fixed inset-0 bg-gradient-to-b from-coral-50/50 to-white',
             'flex flex-col',
             'overflow-hidden',
             className
@@ -1082,7 +1082,7 @@ export function DatingSnapshotFlow({
     return (
       <div
         className={cn(
-          'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+          'fixed inset-0 bg-gradient-to-b from-coral-50/50 to-white',
           'flex flex-col',
           'overflow-hidden',
           className
@@ -1142,7 +1142,7 @@ export function DatingSnapshotFlow({
       return (
         <div
           className={cn(
-            'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+            'fixed inset-0 bg-gradient-to-b from-coral-50/50 to-white',
             'flex flex-col',
             'overflow-hidden',
             className
@@ -1178,7 +1178,7 @@ export function DatingSnapshotFlow({
     return (
       <div
         className={cn(
-          'fixed inset-0 bg-gradient-to-b from-pink-50/50 to-white',
+          'fixed inset-0 bg-gradient-to-b from-coral-50/50 to-white',
           'flex flex-col',
           'overflow-hidden', // Prevent body scroll
           className
@@ -1216,7 +1216,7 @@ export function DatingSnapshotFlow({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow-lg shadow-pink-100/50 border border-pink-100"
+              className="bg-white rounded-2xl p-6 shadow-lg shadow-coral-100/50 border border-coral-100"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
@@ -1225,7 +1225,7 @@ export function DatingSnapshotFlow({
                 <h3 className="font-semibold text-gray-900">Je Energie Profiel</h3>
               </div>
               <p className="text-gray-700">
-                Je bent een <strong className="text-pink-600">{ENERGY_PROFILE_TEXTS[calculatedScores.energyProfile]}</strong> met
+                Je bent een <strong className="text-coral-600">{ENERGY_PROFILE_TEXTS[calculatedScores.energyProfile]}</strong> met
                 een introvert score van <strong>{calculatedScores.introvertScore}%</strong>.
               </p>
               <p className="text-sm text-gray-500 mt-2">
@@ -1242,7 +1242,7 @@ export function DatingSnapshotFlow({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-2xl p-6 shadow-lg shadow-pink-100/50 border border-pink-100"
+              className="bg-white rounded-2xl p-6 shadow-lg shadow-coral-100/50 border border-coral-100"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
@@ -1251,7 +1251,7 @@ export function DatingSnapshotFlow({
                 <h3 className="font-semibold text-gray-900">Je Hechtingsstijl (voorlopig)</h3>
               </div>
               <p className="text-gray-700">
-                Je hechtingsstijl lijkt <strong className="text-pink-600">{ATTACHMENT_STYLE_TEXTS[calculatedScores.attachmentStyle]}</strong> te zijn.
+                Je hechtingsstijl lijkt <strong className="text-coral-600">{ATTACHMENT_STYLE_TEXTS[calculatedScores.attachmentStyle]}</strong> te zijn.
               </p>
               <p className="text-sm text-gray-500 mt-2">
                 Dit is een eerste indicatie — in Module 2 krijg je de volledige analyse.
@@ -1263,7 +1263,7 @@ export function DatingSnapshotFlow({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-white rounded-2xl p-6 shadow-lg shadow-pink-100/50 border border-pink-100"
+              className="bg-white rounded-2xl p-6 shadow-lg shadow-coral-100/50 border border-coral-100"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
@@ -1272,7 +1272,7 @@ export function DatingSnapshotFlow({
                 <h3 className="font-semibold text-gray-900">Waar We Op Focussen</h3>
               </div>
               <p className="text-gray-700">
-                Je grootste uitdaging is <strong className="text-pink-600">{PAIN_POINT_TEXTS[calculatedScores.primaryPainPoint]}</strong>.
+                Je grootste uitdaging is <strong className="text-coral-600">{PAIN_POINT_TEXTS[calculatedScores.primaryPainPoint]}</strong>.
               </p>
               <p className="text-sm text-gray-500 mt-2">
                 De modules en AI tools zijn hierop afgestemd.
@@ -1285,7 +1285,7 @@ export function DatingSnapshotFlow({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-6 border border-pink-200"
+                className="bg-gradient-to-br from-coral-50 to-purple-50 rounded-2xl p-6 border border-coral-200"
               >
                 <h3 className="font-semibold text-gray-900 mb-3">Dit heb ik voor je ingesteld:</h3>
                 <div className="space-y-2">
@@ -1308,7 +1308,7 @@ export function DatingSnapshotFlow({
           >
             <Button
               onClick={handleComplete}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-pink-200/50"
+              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50"
             >
               Start Module 1
               <ArrowRight className="w-5 h-5 ml-2" />

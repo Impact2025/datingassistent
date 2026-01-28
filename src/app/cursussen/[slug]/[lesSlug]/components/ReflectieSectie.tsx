@@ -24,11 +24,11 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
   const allAnswered = vragen.length > 0 && vragen.every((_: any, i: number) => answers[i]?.trim().length > 0);
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center">
               <MessageSquare className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -47,7 +47,7 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
             <div key={index} className="space-y-3">
               <label className="block">
                 <span className="text-gray-900 dark:text-white font-medium flex items-center gap-2">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 flex items-center justify-center text-sm font-bold">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-coral-100 dark:bg-coral-900/40 text-coral-600 dark:text-coral-400 flex items-center justify-center text-sm font-bold">
                     {index + 1}
                   </span>
                   {vraag}
@@ -56,7 +56,7 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
                   value={answers[index] || ''}
                   onChange={(e) => handleAnswerChange(index, e.target.value)}
                   disabled={isCompleted}
-                  className="mt-3 w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:border-pink-500 focus:ring-2 focus:ring-pink-200 dark:focus:ring-pink-800 transition-all resize-none disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  className="mt-3 w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:border-coral-500 focus:ring-2 focus:ring-coral-200 dark:focus:ring-coral-800 transition-all resize-none disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   rows={4}
                   placeholder={isCompleted ? 'Al ingevuld' : 'Schrijf je antwoord hier...'}
                 />
@@ -82,13 +82,13 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
           <div className="mb-6">
             <div className="flex justify-between text-sm mb-2">
               <span className="text-gray-600 dark:text-gray-400">Beantwoorde vragen</span>
-              <span className="font-medium text-pink-600 dark:text-pink-400">
+              <span className="font-medium text-coral-600 dark:text-coral-400">
                 {Object.keys(answers).filter(k => answers[parseInt(k)]?.trim().length > 0).length} / {vragen.length}
               </span>
             </div>
             <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-pink-500 to-pink-600 transition-all duration-300"
+                className="h-full bg-gradient-to-r from-coral-500 to-coral-600 transition-all duration-300"
                 style={{
                   width: `${(Object.keys(answers).filter(k => answers[parseInt(k)]?.trim().length > 0).length / vragen.length) * 100}%`
                 }}
@@ -104,7 +104,7 @@ export function ReflectieSectie({ sectie, isCompleted, onComplete }: ReflectieSe
             disabled={!allAnswered}
             className={`rounded-full shadow-lg hover:shadow-xl transition-all ${
               allAnswered
-                ? 'bg-pink-500 hover:bg-pink-600 text-white'
+                ? 'bg-coral-500 hover:bg-coral-600 text-white'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >

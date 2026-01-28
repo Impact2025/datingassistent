@@ -616,7 +616,7 @@ export function ChatCoachTab() {
                       onChange={(e) => setCurrentMessage(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && !isResponding && handleSendMessage()}
                       placeholder="Stel je vraag aan de dating coach..."
-                      className={`w-full resize-none border-0 shadow-none focus:ring-0 bg-pink-50/50 border-pink-200/50 text-base leading-relaxed placeholder:text-muted-foreground/70 rounded-2xl px-4 ${
+                      className={`w-full resize-none border-0 shadow-none focus:ring-0 bg-coral-50/50 border-coral-200/50 text-base leading-relaxed placeholder:text-muted-foreground/70 rounded-2xl px-4 ${
                         messages.length <= 1 ? 'min-h-[80px] py-3' : 'min-h-[60px] py-2'
                       }`}
                       disabled={isResponding}
@@ -698,7 +698,7 @@ export function ChatCoachTab() {
                     onChange={(e) => setCurrentMessage(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && !isResponding && handleSendMessage()}
                     placeholder="Stel je vraag aan de dating coach..."
-                    className="min-h-[60px] max-h-[200px] resize-none border-0 shadow-none focus:ring-0 bg-pink-50/50 border-pink-200/50 text-base leading-relaxed placeholder:text-muted-foreground/70"
+                    className="min-h-[60px] max-h-[200px] resize-none border-0 shadow-none focus:ring-0 bg-coral-50/50 border-coral-200/50 text-base leading-relaxed placeholder:text-muted-foreground/70"
                     disabled={isResponding}
                     rows={1}
                   />

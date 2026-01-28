@@ -311,7 +311,7 @@ export function TransformatieIntakeChat({ onComplete, className }: Transformatie
       {/* Progress bar - Minimalist pink */}
       <div className="h-1 bg-gray-100">
         <motion.div
-          className="h-full bg-pink-500"
+          className="h-full bg-coral-500"
           initial={{ width: 0 }}
           animate={{ width: `${(currentStep / totalSteps) * 100}%` }}
           transition={{ duration: 0.3 }}
@@ -341,7 +341,7 @@ export function TransformatieIntakeChat({ onComplete, className }: Transformatie
                 className={cn(
                   "max-w-[80%] rounded-2xl px-4 py-3",
                   message.type === "user"
-                    ? "bg-pink-500 text-white rounded-br-md"
+                    ? "bg-coral-500 text-white rounded-br-md"
                     : "bg-gray-100 text-gray-900 rounded-bl-md"
                 )}
               >
@@ -379,7 +379,7 @@ export function TransformatieIntakeChat({ onComplete, className }: Transformatie
               className="flex gap-2"
             >
               <IrisAvatar size="xs" />
-              <div className="bg-pink-50 text-pink-600 rounded-full px-3 py-1 text-sm font-medium">
+              <div className="bg-coral-50 text-coral-600 rounded-full px-3 py-1 text-sm font-medium">
                 {irisReaction}
               </div>
             </motion.div>
@@ -409,8 +409,8 @@ export function TransformatieIntakeChat({ onComplete, className }: Transformatie
                     className={cn(
                       "px-4 py-2 rounded-full border text-sm font-medium transition-all",
                       isSelected
-                        ? "bg-pink-500 text-white border-pink-500"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-pink-300 hover:bg-pink-50"
+                        ? "bg-coral-500 text-white border-coral-500"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-coral-300 hover:bg-coral-50"
                     )}
                   >
                     {option.icon && <span className="mr-1">{option.icon}</span>}
@@ -429,7 +429,7 @@ export function TransformatieIntakeChat({ onComplete, className }: Transformatie
               >
                 <Button
                   onClick={handleMultiChipSubmit}
-                  className="bg-pink-500 hover:bg-pink-600 text-white rounded-full px-6"
+                  className="bg-coral-500 hover:bg-coral-600 text-white rounded-full px-6"
                 >
                   Bevestig ({selectedChips.length})
                   <ChevronRight className="w-4 h-4 ml-1" />
@@ -462,13 +462,13 @@ export function TransformatieIntakeChat({ onComplete, className }: Transformatie
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={currentMessage?.placeholder || "Type hier..."}
-              className="flex-1 px-4 py-3 rounded-full border border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 focus:border-pink-500 focus:outline-none text-sm"
+              className="flex-1 px-4 py-3 rounded-full border border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 focus:border-coral-500 focus:outline-none text-sm"
               style={{ colorScheme: 'light' }}
             />
             <Button
               type="submit"
               disabled={!inputValue.trim()}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full w-12 h-12 p-0"
+              className="bg-coral-500 hover:bg-coral-600 text-white rounded-full w-12 h-12 p-0"
             >
               <Send className="w-5 h-5" />
             </Button>

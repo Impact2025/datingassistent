@@ -130,7 +130,7 @@ export function KernkwaliteitenSelector({
         {/* Resultaten Header */}
         <Card className="text-center">
           <CardContent className="pt-8 pb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -143,7 +143,7 @@ export function KernkwaliteitenSelector({
         </Card>
 
         {/* Essentieel Highlight */}
-        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+        <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
           <CardContent className="pt-6">
             <div className="text-center">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Jouw Essentiële Kwaliteiten</h2>
@@ -297,7 +297,7 @@ export function KernkwaliteitenSelector({
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className={`text-lg ${
-                      categorie.color === 'pink' ? 'text-pink-700' :
+                      categorie.color === 'pink' ? 'text-coral-700' :
                       categorie.color === 'gray' ? 'text-gray-700' : 'text-gray-700'
                     }`}>
                       {categorie.label}
@@ -320,7 +320,7 @@ export function KernkwaliteitenSelector({
                       <div
                         key={item}
                         className={`p-2 rounded border ${
-                          categorie.color === 'pink' ? 'bg-pink-50 border-pink-200' :
+                          categorie.color === 'pink' ? 'bg-coral-50 border-coral-200' :
                           categorie.color === 'gray' ? 'bg-gray-50 border-gray-200' : 'bg-gray-50 border-gray-200'
                         }`}
                       >

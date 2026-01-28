@@ -307,7 +307,7 @@ export function CoachDashboard() {
       </Card>
 
       {/* Email Control */}
-      <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+      <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>

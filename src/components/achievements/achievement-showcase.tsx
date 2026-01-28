@@ -73,7 +73,7 @@ export function AchievementShowcase({ userId, compact = false }: AchievementShow
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-coral-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -81,7 +81,7 @@ export function AchievementShowcase({ userId, compact = false }: AchievementShow
   if (compact) {
     // Compact view voor in dashboard
     return (
-      <Card className="border-2 border-pink-200">
+      <Card className="border-2 border-coral-200">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
@@ -97,7 +97,7 @@ export function AchievementShowcase({ userId, compact = false }: AchievementShow
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Totaal</span>
-                <span className="font-medium text-pink-600">{progress.percentage}%</span>
+                <span className="font-medium text-coral-600">{progress.percentage}%</span>
               </div>
               <Progress value={progress.percentage} className="h-2" />
             </div>
@@ -149,7 +149,7 @@ export function AchievementShowcase({ userId, compact = false }: AchievementShow
               <span className="font-medium text-gray-700">
                 {achievements.length} van {progress.total} ontgrendeld
               </span>
-              <span className="font-bold text-pink-600">{progress.percentage}%</span>
+              <span className="font-bold text-coral-600">{progress.percentage}%</span>
             </div>
             <Progress value={progress.percentage} className="h-4" />
             <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
@@ -299,7 +299,7 @@ export function AchievementShowcase({ userId, compact = false }: AchievementShow
 
                       <Button
                         onClick={() => setSelectedAchievement(null)}
-                        className="w-full bg-gradient-to-r from-pink-500 to-pink-600"
+                        className="w-full bg-gradient-to-r from-coral-500 to-coral-600"
                       >
                         Sluiten
                       </Button>

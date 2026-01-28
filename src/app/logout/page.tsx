@@ -23,7 +23,7 @@ const motivationalMessages = [
     icon: Heart,
     title: "Succes met je dating journey!",
     message: "Blijf jezelf en blijf groeien. We zien je graag snel terug!",
-    color: "from-pink-500 to-rose-500"
+    color: "from-coral-500 to-rose-500"
   },
   {
     icon: Sparkles,
@@ -88,9 +88,9 @@ export default function LogoutPage() {
 
   if (isLoggingOut) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-16 h-16 border-4 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-gray-600">Uitloggen...</p>
         </div>
       </div>
@@ -98,7 +98,7 @@ export default function LogoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center p-4">
       <div className="max-w-2xl w-full space-y-8">
         {/* Logo */}
         <motion.div
@@ -117,7 +117,7 @@ export default function LogoutPage() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="border-2 border-pink-200 shadow-xl">
+          <Card className="border-2 border-coral-200 shadow-xl">
             <CardContent className="p-8 text-center space-y-6">
               {/* Message */}
               <div className="space-y-3">
@@ -131,8 +131,8 @@ export default function LogoutPage() {
 
               {/* Quick Stats (motivational) */}
               <div className="grid grid-cols-3 gap-4 pt-4">
-                <div className="text-center p-3 bg-pink-50 rounded-lg">
-                  <Heart className="w-5 h-5 mx-auto mb-1 text-pink-600" />
+                <div className="text-center p-3 bg-coral-50 rounded-lg">
+                  <Heart className="w-5 h-5 mx-auto mb-1 text-coral-600" />
                   <p className="text-xs text-gray-600">Authentiek blijven</p>
                 </div>
                 <div className="text-center p-3 bg-purple-50 rounded-lg">
@@ -156,13 +156,13 @@ export default function LogoutPage() {
           className="grid md:grid-cols-2 gap-4"
         >
           {/* Login Again Button */}
-          <Card className="border-2 hover:border-pink-300 transition-all cursor-pointer hover:shadow-lg">
+          <Card className="border-2 hover:border-coral-300 transition-all cursor-pointer hover:shadow-lg">
             <CardContent
               className="p-6 text-center"
               onClick={() => router.push('/login')}
             >
-              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-pink-100 flex items-center justify-center">
-                <LogIn className="w-6 h-6 text-pink-600" />
+              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-coral-100 flex items-center justify-center">
+                <LogIn className="w-6 h-6 text-coral-600" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-1">
                 Opnieuw Inloggen
@@ -172,7 +172,7 @@ export default function LogoutPage() {
               </p>
               <Button
                 variant="outline"
-                className="w-full border-pink-300 hover:bg-pink-50"
+                className="w-full border-coral-300 hover:bg-coral-50"
                 onClick={(e) => {
                   e.stopPropagation();
                   router.push('/login');

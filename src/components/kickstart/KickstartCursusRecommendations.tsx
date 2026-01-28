@@ -98,7 +98,7 @@ const typeLabels = {
 const typeColors = {
   deepDive: 'from-blue-500 to-blue-600',
   bonus: 'from-purple-500 to-purple-600',
-  nextStep: 'from-pink-500 to-pink-600',
+  nextStep: 'from-coral-500 to-coral-600',
   tool: 'from-emerald-500 to-emerald-600',
 };
 
@@ -189,7 +189,7 @@ export function KickstartCursusRecommendations({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-xl bg-pink-500 p-6 text-white shadow-sm"
+          className="relative overflow-hidden rounded-xl bg-coral-500 p-6 text-white shadow-sm"
         >
           {/* Background decoration */}
           <div className="absolute inset-0 bg-[url('/images/confetti-pattern.svg')] opacity-10"></div>
@@ -200,7 +200,7 @@ export function KickstartCursusRecommendations({
               <Trophy className="h-8 w-8 text-yellow-300" />
               <div>
                 <h3 className="text-xl font-bold">{weekRecommendation.title}</h3>
-                <p className="text-pink-100 text-sm">{weekRecommendation.description}</p>
+                <p className="text-coral-100 text-sm">{weekRecommendation.description}</p>
               </div>
             </div>
 
@@ -244,17 +244,17 @@ export function KickstartCursusRecommendations({
 
       {/* Day Recommendations */}
       {recommendations.length > 0 && (
-        <Card className="border-pink-200 bg-gradient-to-br from-pink-50/50 to-white dark:from-pink-950/20 dark:to-background">
+        <Card className="border-coral-200 bg-gradient-to-br from-coral-50/50 to-white dark:from-coral-950/20 dark:to-background">
           <CardHeader
             className={cn(
-              'cursor-pointer transition-colors hover:bg-pink-50/50 dark:hover:bg-pink-950/30',
+              'cursor-pointer transition-colors hover:bg-coral-50/50 dark:hover:bg-coral-950/30',
               compact && 'pb-2'
             )}
             onClick={() => compact && setExpanded(!expanded)}
           >
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2 text-lg">
-                <GraduationCap className="h-5 w-5 text-pink-600" />
+                <GraduationCap className="h-5 w-5 text-coral-600" />
                 <span>Dieper Leren</span>
                 {recommendations.some(r => !r.isPremium) && (
                   <Badge variant="secondary" className="text-xs bg-emerald-100 text-emerald-700">
@@ -320,7 +320,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
         whileTap={{ scale: 0.99 }}
         className={cn(
           'group relative overflow-hidden rounded-lg border p-4 transition-all',
-          'hover:border-pink-300 hover:shadow-md',
+          'hover:border-coral-300 hover:shadow-md',
           isCompleted && 'border-emerald-300 bg-emerald-50/50 dark:bg-emerald-950/20',
           !hasAccess && 'border-amber-200 bg-gradient-to-r from-amber-50/50 to-orange-50/30 dark:from-amber-950/20 dark:to-orange-950/10'
         )}
@@ -354,7 +354,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
                 <div className="flex items-center gap-2 flex-wrap">
                   <h4 className={cn(
                     "font-semibold transition-colors",
-                    hasAccess ? "text-foreground group-hover:text-pink-600" : "text-amber-900 dark:text-amber-100"
+                    hasAccess ? "text-foreground group-hover:text-coral-600" : "text-amber-900 dark:text-amber-100"
                   )}>
                     {recommendation.lesData?.titel || recommendation.title}
                   </h4>
@@ -388,7 +388,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
                 </span>
               )}
               {recommendation.discount && !hasAccess && (
-                <Badge className="bg-pink-500 text-white text-xs font-semibold animate-pulse">
+                <Badge className="bg-coral-500 text-white text-xs font-semibold animate-pulse">
                   {recommendation.discount}% Kickstart korting
                 </Badge>
               )}
@@ -404,7 +404,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
           </div>
 
           {/* Arrow */}
-          <ChevronRight className="h-5 w-5 text-muted-foreground shrink-0 group-hover:text-pink-500 group-hover:translate-x-1 transition-all" />
+          <ChevronRight className="h-5 w-5 text-muted-foreground shrink-0 group-hover:text-coral-500 group-hover:translate-x-1 transition-all" />
         </div>
 
         {/* Premium locked state - prominent CTA */}
@@ -419,7 +419,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
                 <div className="flex items-center gap-2">
                   {recommendation.cursusData.discountedPrijs ? (
                     <>
-                      <span className="text-lg font-bold text-pink-600">
+                      <span className="text-lg font-bold text-coral-600">
                         €{recommendation.cursusData.discountedPrijs}
                       </span>
                       <span className="text-sm text-muted-foreground line-through">
@@ -433,7 +433,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
                   )}
                 </div>
               </div>
-              <Button size="sm" className="bg-pink-500 hover:bg-pink-600 text-white shadow-sm">
+              <Button size="sm" className="bg-coral-500 hover:bg-coral-600 text-white shadow-sm">
                 <Unlock className="h-4 w-4 mr-1.5" />
                 Bekijk
               </Button>

@@ -15,7 +15,7 @@ export default function ProfileAnalysisPage() {
       <PublicHeader />
 
       {/* Hero Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-pink-50 to-pink-100">
+      <section className="py-20 px-4 bg-gradient-to-br from-coral-50 to-coral-100">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Profiel Analyse met AI
@@ -72,7 +72,7 @@ export default function ProfileAnalysisPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-coral-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🎯</span>
               </div>
               <h3 className="text-xl font-semibold mb-3">Data-gedreven</h3>
@@ -108,7 +108,7 @@ export default function ProfileAnalysisPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white">
+      <section className="py-16 px-4 bg-gradient-to-r from-coral-500 to-coral-600 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Klaar voor meer matches?
@@ -119,13 +119,13 @@ export default function ProfileAnalysisPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/register"
-              className="bg-white text-pink-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-50 transition-colors"
+              className="bg-white text-coral-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-50 transition-colors"
             >
               Start gratis proefperiode
             </a>
             <a
               href="/#prijzen"
-              className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-pink-600 transition-colors"
+              className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-coral-600 transition-colors"
             >
               Bekijk prijzen
             </a>

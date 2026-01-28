@@ -46,7 +46,7 @@ export function TransformationProgress({
       <div className="mt-6 pt-4 border-t border-gray-100">
         <div className="flex items-center justify-between text-sm mb-2">
           <span className="text-gray-500">Totale voortgang</span>
-          <span className="font-semibold text-pink-600">
+          <span className="font-semibold text-coral-600">
             {Math.round(
               phases.reduce((acc, p) => acc + p.progress, 0) / phases.length
             )}%
@@ -61,7 +61,7 @@ export function TransformationProgress({
               )}%`,
             }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="h-full bg-gradient-to-r from-violet-500 to-pink-500 rounded-full"
+            className="h-full bg-gradient-to-r from-violet-500 to-coral-500 rounded-full"
           />
         </div>
       </div>
@@ -86,7 +86,7 @@ function PhaseRow({ phase, index, isLast }: PhaseRowProps) {
         <div
           className={cn(
             "absolute left-4 top-8 bottom-0 w-0.5",
-            isComplete ? "bg-pink-200" : "bg-gray-200"
+            isComplete ? "bg-coral-200" : "bg-gray-200"
           )}
         />
       )}
@@ -96,8 +96,8 @@ function PhaseRow({ phase, index, isLast }: PhaseRowProps) {
         <div
           className={cn(
             "relative z-10 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
-            isComplete && "bg-pink-500",
-            isActive && "bg-pink-500 ring-4 ring-pink-100",
+            isComplete && "bg-coral-500",
+            isActive && "bg-coral-500 ring-4 ring-coral-100",
             phase.isLocked && "bg-gray-200"
           )}
         >
@@ -125,7 +125,7 @@ function PhaseRow({ phase, index, isLast }: PhaseRowProps) {
               <span
                 className={cn(
                   "text-sm font-medium",
-                  isComplete ? "text-pink-500" : "text-gray-500"
+                  isComplete ? "text-coral-500" : "text-gray-500"
                 )}
               >
                 {phase.progress}%
@@ -152,8 +152,8 @@ function PhaseRow({ phase, index, isLast }: PhaseRowProps) {
                 className={cn(
                   "h-full rounded-full",
                   isComplete
-                    ? "bg-pink-500"
-                    : "bg-gradient-to-r from-violet-400 to-pink-400"
+                    ? "bg-coral-500"
+                    : "bg-gradient-to-r from-violet-400 to-coral-400"
                 )}
               />
             </div>

@@ -120,7 +120,7 @@ function GroeiPageContent() {
     switch (category) {
       case 'profile': return 'bg-gray-100 text-gray-700';
       case 'communication': return 'bg-gray-100 text-gray-700';
-      case 'dates': return 'bg-pink-100 text-pink-700';
+      case 'dates': return 'bg-coral-100 text-coral-700';
       case 'personal': return 'bg-gray-100 text-gray-700';
       default: return 'bg-gray-100 text-gray-700';
     }
@@ -129,9 +129,9 @@ function GroeiPageContent() {
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case 'common': return 'border-gray-200';
-      case 'rare': return 'border-pink-200';
-      case 'epic': return 'border-pink-300';
-      case 'legendary': return 'border-pink-400';
+      case 'rare': return 'border-coral-200';
+      case 'epic': return 'border-coral-300';
+      case 'legendary': return 'border-coral-400';
       default: return 'border-gray-200';
     }
   };
@@ -168,7 +168,7 @@ function GroeiPageContent() {
           <TabsContent value="goals" className="space-y-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900">Jouw Doelen</h2>
-              <Button size="sm" className="bg-pink-500 hover:bg-pink-600">
+              <Button size="sm" className="bg-coral-500 hover:bg-coral-600">
                 <Plus className="w-4 h-4 mr-1" />
                 Nieuw Doel
               </Button>
@@ -188,7 +188,7 @@ function GroeiPageContent() {
                       <p className="text-sm text-gray-600">{goal.description}</p>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-pink-600">
+                      <div className="text-lg font-bold text-coral-600">
                         {goal.progress}{goal.target > 1 ? `/${goal.target}` : '%'}
                       </div>
                       <div className="text-xs text-gray-500">
@@ -217,7 +217,7 @@ function GroeiPageContent() {
             <Card className="border border-gray-200 bg-white">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-pink-600" />
+                  <TrendingUp className="w-5 h-5 text-coral-600" />
                   Deze Week
                 </CardTitle>
               </CardHeader>
@@ -232,7 +232,7 @@ function GroeiPageContent() {
                     <div className="text-xs text-gray-600">Nieuwe matches</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-pink-600">{weeklyStats.dates}</div>
+                    <div className="text-2xl font-bold text-coral-600">{weeklyStats.dates}</div>
                     <div className="text-xs text-gray-600">Dates gepland</div>
                   </div>
                   <div className="text-center">
@@ -299,9 +299,9 @@ function GroeiPageContent() {
                       {achievement.description}
                     </p>
                     <Badge className={`text-xs ${
-                      achievement.rarity === 'legendary' ? 'bg-pink-100 text-pink-700' :
-                      achievement.rarity === 'epic' ? 'bg-pink-100 text-pink-700' :
-                      achievement.rarity === 'rare' ? 'bg-pink-100 text-pink-700' :
+                      achievement.rarity === 'legendary' ? 'bg-coral-100 text-coral-700' :
+                      achievement.rarity === 'epic' ? 'bg-coral-100 text-coral-700' :
+                      achievement.rarity === 'rare' ? 'bg-coral-100 text-coral-700' :
                       'bg-gray-100 text-gray-700'
                     }`}>
                       {achievement.rarity}
@@ -317,7 +317,7 @@ function GroeiPageContent() {
             {/* Achievement Progress */}
             <Card className="border border-gray-200 bg-white">
               <CardContent className="p-4 text-center">
-                <Flame className="w-8 h-8 text-pink-600 mx-auto mb-2" />
+                <Flame className="w-8 h-8 text-coral-600 mx-auto mb-2" />
                 <h3 className="font-semibold text-gray-900 mb-1">Streak: 7 dagen</h3>
                 <p className="text-sm text-gray-600 mb-3">
                   Nog 3 dagen voor de "Week Warrior" badge!
@@ -337,7 +337,7 @@ export default function GroeiPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500" />
       </div>
     }>
       <GroeiPageContent />

@@ -210,7 +210,7 @@ export function AchievementToast({
 
           {/* Progress bar */}
           <motion.div
-            className="h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500"
+            className="h-1 bg-gradient-to-r from-coral-500 via-purple-500 to-blue-500"
             initial={{ scaleX: 1 }}
             animate={{ scaleX: 0 }}
             transition={{ duration: duration / 1000, ease: 'linear' }}

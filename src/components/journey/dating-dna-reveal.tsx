@@ -100,7 +100,7 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
             <Card className="border-0 shadow-lg bg-white/90 backdrop-blur-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3 text-lg">
-                  <div className="p-2 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full">
+                  <div className="p-2 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full">
                     <IconComponent className="w-5 h-5 text-white" />
                   </div>
                   {item.label}
@@ -121,7 +121,7 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
       case 'personalityType':
         return (
           <div className="text-center py-4">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent mb-2">
               {dna.personalityType}
             </h3>
             <p className="text-gray-600">
@@ -226,7 +226,7 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-coral-50 to-blue-50 p-4">
       <div className="max-w-2xl mx-auto py-8">
 
         {/* Header */}
@@ -235,10 +235,10 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full mb-6">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent mb-4">
             Jouw Dating DNA
           </h1>
           <p className="text-lg text-gray-600">
@@ -264,18 +264,18 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
               transition={{ duration: 0.5 }}
               className="text-center"
             >
-              <Card className="border-0 shadow-xl bg-gradient-to-r from-pink-500 to-pink-600 text-white">
+              <Card className="border-0 shadow-xl bg-gradient-to-r from-coral-500 to-coral-600 text-white">
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold mb-4">
                     Klaar voor de volgende stap?
                   </h3>
-                  <p className="text-pink-100 mb-6">
+                  <p className="text-coral-100 mb-6">
                     Nu gaan we je doelen stellen en direct actie ondernemen
                   </p>
                   <Button
                     onClick={onContinue}
                     size="lg"
-                    className="bg-white text-pink-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
+                    className="bg-white text-coral-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
                   >
                     Start met Doelen Stellen
                     <ArrowRight className="w-5 h-5 ml-2" />
@@ -294,7 +294,7 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
                 key={index}
                 className={`w-3 h-3 rounded-full transition-all duration-500 ${
                   index < currentReveal
-                    ? 'bg-pink-500 scale-125'
+                    ? 'bg-coral-500 scale-125'
                     : 'bg-gray-300'
                 }`}
               />

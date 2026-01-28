@@ -85,7 +85,7 @@ export function IrisVideoScreen({
     <div
       className={cn(
         'min-h-[100dvh] flex flex-col items-center justify-start sm:justify-center',
-        'bg-gradient-to-b from-pink-50/50 to-white',
+        'bg-gradient-to-b from-coral-50/50 to-white',
         'overflow-y-auto overscroll-y-none', // Enable scrolling on mobile
         'py-4 px-4 safe-area-top safe-area-bottom',
         className

@@ -687,10 +687,10 @@ function InteractiveProfileCoachInner() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Professional Header */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-pink-50 to-pink-100 p-6 rounded-xl border border-pink-100">
+      <div className="flex items-center justify-between bg-gradient-to-r from-coral-50 to-coral-100 p-6 rounded-xl border border-coral-100">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-pink-100 rounded-full">
-            <UserCircle2 className="w-8 h-8 text-pink-600" />
+          <div className="p-3 bg-coral-100 rounded-full">
+            <UserCircle2 className="w-8 h-8 text-coral-600" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">AI Profiel Architect</h1>
@@ -701,7 +701,7 @@ function InteractiveProfileCoachInner() {
           variant="outline"
           size="sm"
           onClick={startTutorial}
-          className="gap-2 text-pink-600 border-pink-200 hover:bg-pink-50"
+          className="gap-2 text-coral-600 border-coral-200 hover:bg-coral-50"
         >
           <HelpCircle className="w-4 h-4" />
           Handleiding
@@ -754,7 +754,7 @@ function InteractiveProfileCoachInner() {
       )}
 
       {/* Progress Section */}
-      <Card className="border-2 border-pink-100">
+      <Card className="border-2 border-coral-100">
         <CardContent className="p-6">
           <div className="flex justify-between items-center mb-4">
             <div>
@@ -771,7 +771,7 @@ function InteractiveProfileCoachInner() {
               </span>
             </div>
           </div>
-          <Progress value={progress} className="h-3 bg-pink-50" />
+          <Progress value={progress} className="h-3 bg-coral-50" />
           <div className="flex justify-between mt-2 text-xs text-gray-500">
             <span>Persoonlijkheid</span>
             <span>Relatie Psychologie</span>
@@ -783,7 +783,7 @@ function InteractiveProfileCoachInner() {
 
       {/* Question Card */}
       <Card className="border-2 border-purple-100 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
+        <CardHeader className="bg-gradient-to-r from-purple-50 to-coral-50">
           <div className="flex-1">
             <CardTitle className="text-xl text-gray-900 mb-2">{currentQuestion.question}</CardTitle>
             <p className="text-sm text-gray-600">{currentQuestion.subtitle}</p>
@@ -802,8 +802,8 @@ function InteractiveProfileCoachInner() {
                     onClick={() => handleAnswer(option.id, option.label)}
                     className={`p-4 border-2 rounded-lg text-left transition-all ${
                       isSelected
-                        ? 'border-pink-500 bg-pink-50 shadow-sm'
-                        : 'border-gray-200 hover:border-pink-300'
+                        ? 'border-coral-500 bg-coral-50 shadow-sm'
+                        : 'border-gray-200 hover:border-coral-300'
                     }`}
                   >
                     <div className="flex items-start gap-3">
@@ -812,7 +812,7 @@ function InteractiveProfileCoachInner() {
                         <p className="text-sm text-gray-600 mt-1">{option.description}</p>
                       </div>
                       {isSelected && (
-                        <CheckCircle className="w-5 h-5 text-pink-500 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="w-5 h-5 text-coral-500 flex-shrink-0 mt-0.5" />
                       )}
                     </div>
                   </button>
@@ -855,7 +855,7 @@ function InteractiveProfileCoachInner() {
                       <label className="text-sm font-medium text-gray-700">
                         {slider.label}
                       </label>
-                      <span className="text-sm font-bold text-pink-600 bg-pink-50 px-2 py-1 rounded-full">
+                      <span className="text-sm font-bold text-coral-600 bg-coral-50 px-2 py-1 rounded-full">
                         {sliderValue}
                       </span>
                     </div>
@@ -928,7 +928,7 @@ function InteractiveProfileCoachInner() {
                           <div className="space-y-2">
                             <div className="flex justify-between text-xs text-gray-500">
                               <span>Oneens</span>
-                              <span className="font-medium text-pink-600">{currentValue}/5</span>
+                              <span className="font-medium text-coral-600">{currentValue}/5</span>
                               <span>Eens</span>
                             </div>
                             <div className="px-2">
@@ -1002,8 +1002,8 @@ function InteractiveProfileCoachInner() {
                       key={language.id}
                       className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
                         isSelected
-                          ? 'border-pink-500 bg-pink-50 shadow-sm'
-                          : 'border-gray-200 hover:border-pink-300'
+                          ? 'border-coral-500 bg-coral-50 shadow-sm'
+                          : 'border-gray-200 hover:border-coral-300'
                       }`}
                       onClick={() => {
                         const newFields = {
@@ -1015,7 +1015,7 @@ function InteractiveProfileCoachInner() {
                     >
                       <div className="flex items-start gap-3">
                         <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                          isSelected ? 'border-pink-500 bg-pink-500' : 'border-gray-300'
+                          isSelected ? 'border-coral-500 bg-coral-500' : 'border-gray-300'
                         }`}>
                           {isSelected && (
                             <CheckCircle className="w-3 h-3 text-white" />
@@ -1029,7 +1029,7 @@ function InteractiveProfileCoachInner() {
                             {language.description}
                           </p>
                           {isSelected && (
-                            <Badge className="bg-pink-100 text-pink-700 text-xs">
+                            <Badge className="bg-coral-100 text-coral-700 text-xs">
                               Geselecteerd
                             </Badge>
                           )}
@@ -1040,13 +1040,13 @@ function InteractiveProfileCoachInner() {
                 })}
               </div>
 
-              <div className="bg-pink-50 border border-pink-200 rounded-lg p-4">
+              <div className="bg-coral-50 border border-coral-200 rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-5 h-5 bg-coral-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-white text-xs">💑</span>
                   </div>
                   <div>
-                    <p className="text-sm text-pink-800">
+                    <p className="text-sm text-coral-800">
                       <strong>Partners met aligned liefdestalen:</strong> Hebben gemiddeld 25% sterkere relaties. We gebruiken dit om mensen aan te trekken die op dezelfde manier van jou houden.
                     </p>
                   </div>
@@ -1543,13 +1543,13 @@ function InteractiveProfileCoachInner() {
           {/* Vulnerability Scale */}
           {currentQuestion.type === 'vulnerability_scale' && (
             <div className="space-y-4 mb-6">
-              <div className="bg-pink-50 border border-pink-200 rounded-lg p-4 mb-4">
+              <div className="bg-coral-50 border border-coral-200 rounded-lg p-4 mb-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-5 h-5 bg-coral-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-white text-xs">💝</span>
                   </div>
                   <div>
-                    <p className="text-sm text-pink-800">
+                    <p className="text-sm text-coral-800">
                       <strong>Beoordeel je comfort met kwetsbaarheid:</strong> Dit bepaalt hoe open je bent in je profiel en relaties. Schuif per aspect naar waar jij je het meest thuis voelt.
                     </p>
                   </div>
@@ -1575,7 +1575,7 @@ function InteractiveProfileCoachInner() {
                           <div className="space-y-2">
                             <div className="flex justify-between text-xs text-gray-500">
                               <span>Zeer oncomfortabel</span>
-                              <span className="font-medium text-pink-600">{currentValue}/5</span>
+                              <span className="font-medium text-coral-600">{currentValue}/5</span>
                               <span>Zeer comfortabel</span>
                             </div>
                             <div className="px-2">
@@ -1602,13 +1602,13 @@ function InteractiveProfileCoachInner() {
                 })}
               </div>
 
-              <div className="bg-pink-50 border border-pink-200 rounded-lg p-4">
+              <div className="bg-coral-50 border border-coral-200 rounded-lg p-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-5 h-5 bg-coral-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-white text-xs">💖</span>
                   </div>
                   <div>
-                    <p className="text-sm text-pink-800">
+                    <p className="text-sm text-coral-800">
                       <strong>Kwetsbare mensen trekken 40% meer quality matches aan:</strong> {currentQuestion.interactive?.tip}
                     </p>
                   </div>
@@ -2006,7 +2006,7 @@ function InteractiveProfileCoachInner() {
                 <Button
                   onClick={handleNext}
                   disabled={!canProceed()}
-                  className="gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+                  className="gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
                 >
                   <Target className="w-4 h-4" />
                   Genereer Profielen
@@ -2030,13 +2030,13 @@ function InteractiveProfileCoachInner() {
       {state.isGenerating && (
         <Card className="border-2 border-purple-100">
           <CardContent className="p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500 mx-auto mb-4"></div>
             <h3 className="text-xl font-semibold mb-2">AI Analyse Wordt Uitgevoerd...</h3>
             <p className="text-gray-600 mb-4">
               We verwerken je antwoorden en genereren professionele profiel opties met behulp van geavanceerde psychologie.
             </p>
             <div className="flex justify-center gap-2">
-              <Badge variant="secondary" className="bg-pink-100 text-pink-700">Persoonlijkheid Analyse</Badge>
+              <Badge variant="secondary" className="bg-coral-100 text-coral-700">Persoonlijkheid Analyse</Badge>
               <Badge variant="secondary" className="bg-purple-100 text-purple-700">AI Optimalisatie</Badge>
               <Badge variant="secondary" className="bg-green-100 text-green-700">Psychologie</Badge>
             </div>

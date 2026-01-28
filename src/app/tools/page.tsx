@@ -283,7 +283,7 @@ function ToolsPageContent() {
       case 'communication': return 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300';
       case 'analysis': return 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300';
       case 'safety': return 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300';
-      case 'transformatie': return 'bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300';
+      case 'transformatie': return 'bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300';
       default: return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
     }
   };
@@ -316,7 +316,7 @@ function ToolsPageContent() {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
                   selectedCategory === category.id
-                    ? 'bg-pink-500 text-white'
+                    ? 'bg-coral-500 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
@@ -327,7 +327,7 @@ function ToolsPageContent() {
 
           <Button
             onClick={() => setShowGuidedFlow(true)}
-            className="ml-4 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white shadow-lg"
+            className="ml-4 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white shadow-lg"
             size="sm"
           >
             <Sparkles className="w-4 h-4 mr-2" />
@@ -379,7 +379,7 @@ function ToolsPageContent() {
 
           {/* Pro Arsenal - Premium Tier */}
           <Card
-            className="cursor-pointer overflow-hidden border-2 border-purple-300 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 hover:shadow-lg transition-all"
+            className="cursor-pointer overflow-hidden border-2 border-purple-300 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-coral-50 dark:from-purple-900/30 dark:to-coral-900/30 hover:shadow-lg transition-all"
             onClick={() => router.push('/pro-arsenal')}
           >
             <CardContent className="p-4">
@@ -390,7 +390,7 @@ function ToolsPageContent() {
               <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
                 Premium tools + unlimited access
               </p>
-              <Button size="sm" className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white w-full">
+              <Button size="sm" className="bg-gradient-to-r from-purple-500 to-coral-500 hover:from-purple-600 hover:to-coral-600 text-white w-full">
                 Ontdek →
               </Button>
             </CardContent>
@@ -398,11 +398,11 @@ function ToolsPageContent() {
         </div>
 
         {/* Transformatie 3.0 Tools Highlight */}
-        <Card className="mb-6 border-2 border-pink-300 dark:border-pink-700 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/30 dark:to-rose-900/30 overflow-hidden">
+        <Card className="mb-6 border-2 border-coral-300 dark:border-coral-700 bg-gradient-to-br from-coral-50 to-rose-50 dark:from-coral-900/30 dark:to-rose-900/30 overflow-hidden">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <Badge className="bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 mb-2">
+                <Badge className="bg-gradient-to-r from-coral-500 to-rose-500 text-white border-0 mb-2">
                   ✨ TRANSFORMATIE 3.0
                 </Badge>
                 <h3 className="font-bold text-gray-900 dark:text-white mb-1">4 Nieuwe AI Tools</h3>
@@ -413,7 +413,7 @@ function ToolsPageContent() {
               <Button
                 size="sm"
                 onClick={() => setSelectedCategory('transformatie')}
-                className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white"
+                className="bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 text-white"
               >
                 Bekijk →
               </Button>
@@ -431,8 +431,8 @@ function ToolsPageContent() {
               <CardContent className="p-4">
                 <div className="flex flex-col items-center text-center space-y-3">
                   {/* Icon */}
-                  <div className="w-12 h-12 bg-pink-50 dark:bg-pink-900/30 rounded-xl flex items-center justify-center">
-                    <div className="text-pink-600 dark:text-pink-400">
+                  <div className="w-12 h-12 bg-coral-50 dark:bg-coral-900/30 rounded-xl flex items-center justify-center">
+                    <div className="text-coral-600 dark:text-coral-400">
                       {tool.icon}
                     </div>
                   </div>
@@ -444,7 +444,7 @@ function ToolsPageContent() {
                         {tool.title}
                       </h3>
                       {tool.popular && (
-                        <Badge className="text-xs bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300">
+                        <Badge className="text-xs bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300">
                           🔥
                         </Badge>
                       )}
@@ -503,7 +503,7 @@ function ToolsPageContent() {
               fallback={
                 <div className="flex items-center justify-center min-h-[400px]">
                   <div className="text-center space-y-4">
-                    <div className="w-12 h-12 border-3 border-gray-300 dark:border-gray-600 border-t-pink-500 rounded-full animate-spin mx-auto" />
+                    <div className="w-12 h-12 border-3 border-gray-300 dark:border-gray-600 border-t-coral-500 rounded-full animate-spin mx-auto" />
                     <p className="text-sm text-gray-600 dark:text-gray-300">Tool laden...</p>
                   </div>
                 </div>

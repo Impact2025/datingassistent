@@ -128,7 +128,7 @@ export function KickstartOnboardingFlow({
       currentStep === 'chat'
         ? 'h-[100dvh] w-full'
         : 'min-h-[100dvh] sm:min-h-[600px] flex items-center justify-center',
-      'bg-gradient-to-b from-pink-50/50 to-white',
+      'bg-gradient-to-b from-coral-50/50 to-white',
       className
     )}>
       {/* Confetti effect */}
@@ -138,7 +138,7 @@ export function KickstartOnboardingFlow({
           height={windowSize.height}
           recycle={false}
           numberOfPieces={300}
-          colors={['#ec4899', '#f472b6', '#fb7185', '#fda4af', '#fecdd3']}
+          colors={['#ff6b6b', '#ff8787', '#ff9999', '#ffabab', '#ffbdbd']}
           gravity={0.3}
         />
       )}
@@ -155,9 +155,9 @@ export function KickstartOnboardingFlow({
             className="w-full max-w-lg mx-auto px-4 py-8 pt-16"
           >
             {/* Premium Card - overflow-visible for avatar to extend above */}
-            <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 overflow-visible relative">
+            <div className="bg-white rounded-3xl shadow-2xl shadow-coral-200/30 border border-coral-100/50 overflow-visible relative">
               {/* Video Section - rounded top, overflow visible for avatar */}
-              <div className="relative bg-gradient-to-br from-pink-500 to-pink-600 rounded-t-3xl overflow-visible">
+              <div className="relative bg-gradient-to-br from-coral-500 to-coral-600 rounded-t-3xl overflow-visible">
                 <div className="aspect-video relative overflow-visible">
                   {/* Video - Always loaded, visibility controlled */}
                   <video
@@ -177,7 +177,7 @@ export function KickstartOnboardingFlow({
 
                   {/* Thumbnail Overlay - Hidden when playing */}
                   <div className={cn(
-                    "absolute inset-0 bg-gradient-to-b from-pink-500 via-pink-500 to-pink-600 flex flex-col items-center justify-between text-white transition-opacity duration-300 rounded-t-3xl overflow-visible",
+                    "absolute inset-0 bg-gradient-to-b from-coral-500 via-coral-500 to-coral-600 flex flex-col items-center justify-between text-white transition-opacity duration-300 rounded-t-3xl overflow-visible",
                     videoPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
                   )}>
                     {/* Top section: Avatar positioned outside container */}
@@ -198,7 +198,7 @@ export function KickstartOnboardingFlow({
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.4, type: 'spring', bounce: 0.5 }}
                         onClick={handlePlayVideo}
-                        className="w-20 h-20 rounded-full bg-white text-pink-500 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform mb-6"
+                        className="w-20 h-20 rounded-full bg-white text-coral-500 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform mb-6"
                       >
                         <Play className="w-9 h-9 ml-1" fill="currentColor" />
                       </motion.button>
@@ -258,8 +258,8 @@ export function KickstartOnboardingFlow({
                       transition={{ delay: 0.7 + index * 0.1 }}
                       className="flex items-center gap-3"
                     >
-                      <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
-                        <item.icon className="w-4 h-4 text-pink-600" />
+                      <div className="w-8 h-8 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0">
+                        <item.icon className="w-4 h-4 text-coral-600" />
                       </div>
                       <span className="text-gray-700 font-medium">{item.text}</span>
                     </motion.div>
@@ -274,7 +274,7 @@ export function KickstartOnboardingFlow({
                 >
                   <Button
                     onClick={() => setCurrentStep('chat')}
-                    className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-pink-200/50 hover:shadow-xl hover:shadow-pink-300/50 transition-all group"
+                    className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50 hover:shadow-xl hover:shadow-coral-300/50 transition-all group"
                   >
                     Laten we beginnen
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -301,7 +301,7 @@ export function KickstartOnboardingFlow({
             className="w-full h-full sm:max-w-2xl sm:mx-auto sm:h-auto sm:px-4 sm:py-6 sm:flex sm:items-center"
           >
             {/* Chat Container - FULL SCREEN mobile, card desktop */}
-            <div className="bg-white h-full w-full sm:h-auto sm:rounded-3xl sm:shadow-2xl sm:shadow-pink-200/20 sm:border sm:border-pink-100/50 sm:overflow-hidden">
+            <div className="bg-white h-full w-full sm:h-auto sm:rounded-3xl sm:shadow-2xl sm:shadow-coral-200/20 sm:border sm:border-coral-100/50 sm:overflow-hidden">
               {/* Chat - FULL HEIGHT on mobile */}
               <div className="h-full sm:h-[min(calc(100vh-150px),700px)] sm:min-h-[550px]">
                 <KickstartIntakeChat onComplete={handleChatComplete} className="h-full" />
@@ -319,7 +319,7 @@ export function KickstartOnboardingFlow({
             exit={{ opacity: 0, scale: 0.95 }}
             className="w-full max-w-md mx-auto px-4"
           >
-            <div className="bg-white rounded-3xl shadow-2xl shadow-pink-200/30 border border-pink-100/50 p-8 text-center">
+            <div className="bg-white rounded-3xl shadow-2xl shadow-coral-200/30 border border-coral-100/50 p-8 text-center">
               {/* Animated Iris Avatar */}
               <motion.div
                 animate={{
@@ -328,7 +328,7 @@ export function KickstartOnboardingFlow({
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                 className="mb-8"
               >
-                <IrisAvatar size="xl" showGlow className="mx-auto ring-4 ring-pink-100" />
+                <IrisAvatar size="xl" showGlow className="mx-auto ring-4 ring-coral-100" />
               </motion.div>
 
               <h2 className="text-xl font-bold text-gray-900 mb-2">
@@ -353,14 +353,14 @@ export function KickstartOnboardingFlow({
                       className={cn(
                         'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300',
                         isComplete && 'bg-green-50',
-                        isCurrent && 'bg-pink-50',
+                        isCurrent && 'bg-coral-50',
                         !isComplete && !isCurrent && 'bg-gray-50'
                       )}
                     >
                       <div className={cn(
                         'w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300',
                         isComplete && 'bg-green-500 text-white',
-                        isCurrent && 'bg-pink-500 text-white',
+                        isCurrent && 'bg-coral-500 text-white',
                         !isComplete && !isCurrent && 'bg-gray-200 text-gray-400'
                       )}>
                         {isComplete ? (
@@ -372,7 +372,7 @@ export function KickstartOnboardingFlow({
                       <span className={cn(
                         'text-sm font-medium transition-colors duration-300',
                         isComplete && 'text-green-700',
-                        isCurrent && 'text-pink-700',
+                        isCurrent && 'text-coral-700',
                         !isComplete && !isCurrent && 'text-gray-400'
                       )}>
                         {step.text}

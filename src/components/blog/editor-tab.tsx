@@ -67,7 +67,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: 'text-pink-600 hover:text-pink-700 underline',
+          class: 'text-coral-600 hover:text-coral-700 underline',
         },
       }),
       Image.configure({
@@ -188,7 +188,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
   if (!editor) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-coral-500"></div>
       </div>
     );
   }
@@ -196,7 +196,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
   return (
     <div className="space-y-6">
       {/* Title & Metadata Card */}
-      <Card className="border-pink-100 shadow-lg">
+      <Card className="border-coral-100 shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg font-semibold">
             Titel & Metadata
@@ -214,7 +214,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               placeholder="Schrijf een pakkende titel..."
               value={blogData.title || ''}
               onChange={(e) => handleTitleChange(e.target.value)}
-              className="text-xl font-semibold border-gray-300 focus:ring-pink-500"
+              className="text-xl font-semibold border-gray-300 focus:ring-coral-500"
             />
           </div>
 
@@ -231,7 +231,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
                 placeholder="url-vriendelijke-slug"
                 value={blogData.slug || ''}
                 onChange={(e) => updateBlogData({ slug: e.target.value })}
-                className="flex-1 border-gray-300 focus:ring-pink-500"
+                className="flex-1 border-gray-300 focus:ring-coral-500"
               />
             </div>
             <p className="text-xs text-gray-500">
@@ -250,7 +250,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               placeholder="Korte samenvatting van je artikel (1-2 zinnen)..."
               value={blogData.excerpt || ''}
               onChange={(e) => updateBlogData({ excerpt: e.target.value })}
-              className="border-gray-300 focus:ring-pink-500 min-h-[80px]"
+              className="border-gray-300 focus:ring-coral-500 min-h-[80px]"
             />
             <p className="text-xs text-gray-500">
               {blogData.excerpt?.length || 0} karakters
@@ -260,7 +260,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
       </Card>
 
       {/* Content Editor Card */}
-      <Card className="border-pink-100 shadow-lg">
+      <Card className="border-coral-100 shadow-lg">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-semibold">
@@ -284,7 +284,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('heading', { level: 1 }) && 'bg-pink-100 text-pink-700'
+                editor.isActive('heading', { level: 1 }) && 'bg-coral-100 text-coral-700'
               )}
               title="Heading 1"
             >
@@ -297,7 +297,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('heading', { level: 2 }) && 'bg-pink-100 text-pink-700'
+                editor.isActive('heading', { level: 2 }) && 'bg-coral-100 text-coral-700'
               )}
               title="Heading 2"
             >
@@ -310,7 +310,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('heading', { level: 3 }) && 'bg-pink-100 text-pink-700'
+                editor.isActive('heading', { level: 3 }) && 'bg-coral-100 text-coral-700'
               )}
               title="Heading 3"
             >
@@ -327,7 +327,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={() => editor.chain().focus().toggleBold().run()}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('bold') && 'bg-pink-100 text-pink-700'
+                editor.isActive('bold') && 'bg-coral-100 text-coral-700'
               )}
               title="Bold"
             >
@@ -340,7 +340,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={() => editor.chain().focus().toggleItalic().run()}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('italic') && 'bg-pink-100 text-pink-700'
+                editor.isActive('italic') && 'bg-coral-100 text-coral-700'
               )}
               title="Italic"
             >
@@ -353,7 +353,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={() => editor.chain().focus().toggleCode().run()}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('code') && 'bg-pink-100 text-pink-700'
+                editor.isActive('code') && 'bg-coral-100 text-coral-700'
               )}
               title="Code"
             >
@@ -370,7 +370,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={() => editor.chain().focus().toggleBulletList().run()}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('bulletList') && 'bg-pink-100 text-pink-700'
+                editor.isActive('bulletList') && 'bg-coral-100 text-coral-700'
               )}
               title="Bullet List"
             >
@@ -383,7 +383,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('orderedList') && 'bg-pink-100 text-pink-700'
+                editor.isActive('orderedList') && 'bg-coral-100 text-coral-700'
               )}
               title="Numbered List"
             >
@@ -396,7 +396,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('blockquote') && 'bg-pink-100 text-pink-700'
+                editor.isActive('blockquote') && 'bg-coral-100 text-coral-700'
               )}
               title="Quote"
             >
@@ -413,7 +413,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               onClick={addLink}
               className={cn(
                 'h-8 w-8 p-0',
-                editor.isActive('link') && 'bg-pink-100 text-pink-700'
+                editor.isActive('link') && 'bg-coral-100 text-coral-700'
               )}
               title="Add Link"
             >
@@ -464,7 +464,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               size="sm"
               variant="ghost"
               onClick={addKennisbankLinks}
-              className="h-8 px-2 gap-1 text-pink-600 hover:bg-pink-100 hover:text-pink-700"
+              className="h-8 px-2 gap-1 text-coral-600 hover:bg-coral-100 hover:text-coral-700"
               title="AI: Voeg automatisch interne links naar kennisbank artikelen toe"
             >
               <Sparkles className="w-4 h-4" />

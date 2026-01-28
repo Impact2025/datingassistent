@@ -128,15 +128,15 @@ export function LeadIntakeQuestions({
     let options: OptionConfig[];
 
     if (step === 1) {
-      icon = <User className="w-6 h-6 text-pink-500" />;
+      icon = <User className="w-6 h-6 text-coral-500" />;
       question = 'Voor wie zoek je?';
       options = lookingForOptions;
     } else if (step === 2) {
-      icon = <Heart className="w-6 h-6 text-pink-500" />;
+      icon = <Heart className="w-6 h-6 text-coral-500" />;
       question = 'Wat is je huidige status?';
       options = datingStatusOptions;
     } else {
-      icon = <Target className="w-6 h-6 text-pink-500" />;
+      icon = <Target className="w-6 h-6 text-coral-500" />;
       question = 'Wat is je grootste dating-obstakel?';
       options = obstacleOptions;
     }
@@ -151,7 +151,7 @@ export function LeadIntakeQuestions({
       >
         {/* Question Header */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-full bg-pink-50 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-coral-50 flex items-center justify-center">
             {icon}
           </div>
           <div>
@@ -171,8 +171,8 @@ export function LeadIntakeQuestions({
               className={cn(
                 'w-full p-4 rounded-xl border-2 text-left transition-all',
                 getCurrentValue() === option.value
-                  ? 'border-pink-500 bg-pink-50'
-                  : 'border-gray-200 hover:border-pink-300 hover:bg-gray-50'
+                  ? 'border-coral-500 bg-coral-50'
+                  : 'border-gray-200 hover:border-coral-300 hover:bg-gray-50'
               )}
             >
               <span className="font-medium text-gray-900">{option.label}</span>
@@ -209,9 +209,9 @@ export function LeadIntakeQuestions({
             className={cn(
               'w-2 h-2 rounded-full transition-all',
               s === step
-                ? 'w-6 bg-pink-500'
+                ? 'w-6 bg-coral-500'
                 : s < step
-                ? 'bg-pink-500'
+                ? 'bg-coral-500'
                 : 'bg-gray-200'
             )}
           />

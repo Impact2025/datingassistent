@@ -54,7 +54,7 @@ export const WelcomeVideoCard = React.memo(function WelcomeVideoCard({
       animate={{ opacity: 1, y: 0 }}
     >
       <Card className="p-0 rounded-2xl shadow-sm overflow-hidden">
-        <div className="relative aspect-video bg-gradient-to-br from-pink-100 to-pink-200">
+        <div className="relative aspect-video bg-gradient-to-br from-coral-100 to-coral-200">
           {!videoError ? (
             <>
               <video
@@ -79,7 +79,7 @@ export const WelcomeVideoCard = React.memo(function WelcomeVideoCard({
                   aria-label="Play video"
                 >
                   <div className="w-16 h-16 rounded-full bg-white/95 flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
-                    <Play className="w-7 h-7 text-pink-500 ml-1" />
+                    <Play className="w-7 h-7 text-coral-500 ml-1" />
                   </div>
                 </button>
               )}
@@ -112,7 +112,7 @@ export const WelcomeVideoCard = React.memo(function WelcomeVideoCard({
             /* Fallback when video doesn't load */
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center p-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center mx-auto mb-3">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center mx-auto mb-3">
                   <span className="text-2xl font-bold text-white">I</span>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">Iris, je persoonlijke coach</p>

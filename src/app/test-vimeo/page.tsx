@@ -58,7 +58,7 @@ export default function TestVimeoPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-purple-50 to-blue-50 p-8">
       <div className="max-w-6xl mx-auto space-y-6">
         <Card>
           <CardHeader>

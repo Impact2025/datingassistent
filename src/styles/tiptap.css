@@ -87,13 +87,13 @@
 
 /* Links */
 .ProseMirror a {
-  color: #ec4899;
+  color: #FF7B54;
   text-decoration: underline;
   cursor: pointer;
 }
 
 .ProseMirror a:hover {
-  color: #db2777;
+  color: #FF7B54;
 }
 
 /* Bold & Italic */
@@ -108,7 +108,7 @@
 /* Code */
 .ProseMirror code {
   background-color: #f3f4f6;
-  color: #db2777;
+  color: #FF7B54;
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
   font-size: 0.875em;
@@ -172,7 +172,7 @@
 
 /* Blockquotes */
 .ProseMirror blockquote {
-  border-left: 4px solid #ec4899;
+  border-left: 4px solid #FF7B54;
   padding-left: 1rem;
   margin-left: 0;
   margin-right: 0;

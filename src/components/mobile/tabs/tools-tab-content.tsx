@@ -91,18 +91,18 @@ function ToolCard({ tool, onClick }: { tool: Tool; onClick: () => void }) {
 function FeaturedCard({ onClick }: { onClick: () => void }) {
   return (
     <Card
-      className="border-2 border-pink-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+      className="border-2 border-coral-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
       onClick={onClick}
     >
       <CardContent className="p-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center flex-shrink-0">
-            <Sparkles className="w-6 h-6 text-pink-500" />
+          <div className="w-12 h-12 bg-coral-50 rounded-xl flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-6 h-6 text-coral-500" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h3 className="font-semibold text-gray-900">AI Dating Coach</h3>
-              <Badge className="bg-pink-500 text-white text-[10px] px-1.5 py-0.5">Populair</Badge>
+              <Badge className="bg-coral-500 text-white text-[10px] px-1.5 py-0.5">Populair</Badge>
             </div>
             <p className="text-sm text-gray-600">Krijg persoonlijk advies van Iris</p>
           </div>
@@ -181,7 +181,7 @@ export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
           title: 'Bio Generator',
           subtitle: 'AI geschreven',
           route: '/tools/ai-bio-generator',
-          color: 'bg-pink-50 text-pink-600',
+          color: 'bg-coral-50 text-coral-600',
         },
       ],
     },
@@ -203,7 +203,7 @@ export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
           title: 'Opener Lab',
           subtitle: 'Eerste berichten',
           route: '/opener',
-          color: 'bg-pink-50 text-pink-600',
+          color: 'bg-coral-50 text-coral-600',
         },
         {
           id: 'voice-notes',
@@ -329,7 +329,7 @@ export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
             placeholder="Zoek tools..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white border-0 rounded-xl shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-white border-0 rounded-xl shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-coral-500 transition-all"
           />
         </div>
 
@@ -357,7 +357,7 @@ export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
               <p className="text-gray-600 text-sm">Geen tools gevonden voor "{searchQuery}"</p>
               <button
                 onClick={() => setSearchQuery('')}
-                className="text-pink-500 text-sm font-medium mt-2"
+                className="text-coral-500 text-sm font-medium mt-2"
               >
                 Wis zoekopdracht
               </button>
@@ -382,7 +382,7 @@ export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
               fallback={
                 <div className="flex items-center justify-center min-h-[400px]">
                   <div className="text-center space-y-4">
-                    <div className="w-12 h-12 border-3 border-gray-300 border-t-pink-500 rounded-full animate-spin mx-auto" />
+                    <div className="w-12 h-12 border-3 border-gray-300 border-t-coral-500 rounded-full animate-spin mx-auto" />
                     <p className="text-sm text-gray-600">Tool laden...</p>
                   </div>
                 </div>

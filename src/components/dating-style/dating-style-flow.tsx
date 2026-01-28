@@ -251,20 +251,20 @@ export function DatingStyleFlow({ onClose }: DatingStyleFlowProps = {}) {
 
   const getStyleIcon = (style: DatingStyle) => {
     switch (style) {
-      case 'initiator': return <Zap className="w-5 h-5 text-pink-500" />;
-      case 'planner': return <Target className="w-5 h-5 text-pink-500" />;
-      case 'adventurer': return <Flame className="w-5 h-5 text-pink-500" />;
-      case 'pleaser': return <Heart className="w-5 h-5 text-pink-500" />;
-      case 'selector': return <Shield className="w-5 h-5 text-pink-500" />;
-      case 'distant': return <User className="w-5 h-5 text-pink-500" />;
-      case 'over_sharer': return <MessageCircle className="w-5 h-5 text-pink-500" />;
-      case 'ghost_prone': return <Sparkles className="w-5 h-5 text-pink-500" />;
-      default: return <Sparkles className="w-5 h-5 text-pink-500" />;
+      case 'initiator': return <Zap className="w-5 h-5 text-coral-500" />;
+      case 'planner': return <Target className="w-5 h-5 text-coral-500" />;
+      case 'adventurer': return <Flame className="w-5 h-5 text-coral-500" />;
+      case 'pleaser': return <Heart className="w-5 h-5 text-coral-500" />;
+      case 'selector': return <Shield className="w-5 h-5 text-coral-500" />;
+      case 'distant': return <User className="w-5 h-5 text-coral-500" />;
+      case 'over_sharer': return <MessageCircle className="w-5 h-5 text-coral-500" />;
+      case 'ghost_prone': return <Sparkles className="w-5 h-5 text-coral-500" />;
+      default: return <Sparkles className="w-5 h-5 text-coral-500" />;
     }
   };
 
   const getStyleColor = (style: DatingStyle) => {
-    return 'text-pink-600 bg-pink-50 border-pink-200';
+    return 'text-coral-600 bg-coral-50 border-coral-200';
   };
 
   return (
@@ -284,8 +284,8 @@ export function DatingStyleFlow({ onClose }: DatingStyleFlowProps = {}) {
           )}
 
           <div className="text-center">
-            <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
-              <Sparkles className="w-8 h-8 text-pink-500" />
+            <div className="w-16 h-16 bg-coral-50 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-8 h-8 text-coral-500" />
             </div>
 
             <h1 className="text-3xl font-bold text-gray-900 mb-3">{getStepTitle()}</h1>

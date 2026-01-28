@@ -70,8 +70,8 @@ export function Les3_1_Authenticiteit({ userProfile, onComplete }: Les3_1_Authen
               <div className="space-y-4">
                 {topMagneetkrachten.map((kracht, index) => (
                   <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200">
-                    <div className="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <span className="text-sm font-bold text-pink-600">{index + 1}</span>
+                    <div className="w-10 h-10 bg-coral-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-bold text-coral-600">{index + 1}</span>
                     </div>
                     <span className="font-medium text-gray-900">{kracht}</span>
                   </div>
@@ -108,7 +108,7 @@ export function Les3_1_Authenticiteit({ userProfile, onComplete }: Les3_1_Authen
                       // This will trigger the validation with mock data
                       handleValidation();
                     }}
-                    className="mt-2 w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+                    className="mt-2 w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
                   >
                     Gebruik Demo Data
                   </Button>
@@ -148,7 +148,7 @@ export function Les3_1_Authenticiteit({ userProfile, onComplete }: Les3_1_Authen
           <Button
             onClick={handleValidation}
             disabled={!isValidated || isSubmitting || topMagneetkrachten.length === 0}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
             size="lg"
           >
             {isSubmitting ? 'Bezig met opslaan...' : 'Authenticiteit Bevestigen'}
@@ -160,7 +160,7 @@ export function Les3_1_Authenticiteit({ userProfile, onComplete }: Les3_1_Authen
           <p className="text-sm text-gray-600 mb-4">
             Niet meer herkenbaar? Herzie je waarden in Module 1
           </p>
-          <Button asChild className="border-gray-300 hover:bg-gray-50 px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all">
+          <Button asChild className="border-gray-300 hover:bg-gray-50 px-6 py-3 bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all">
             <a href="/waarden-kompas">
               <Link className="w-4 h-4 mr-2" />
               Herzie Waarden Kompas

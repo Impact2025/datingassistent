@@ -33,7 +33,7 @@ function RegisterContent() {
 
   // Use new Lead Registration Wizard for standard registrations
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       <LeadRegistrationWizard />
     </div>
   );

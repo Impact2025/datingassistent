@@ -87,7 +87,7 @@ export function PhotoUploader({
           className={cn(
             "relative border-2 border-dashed rounded-xl p-8 transition-all",
             isDragging
-              ? "border-pink-400 bg-pink-50 scale-[1.02]"
+              ? "border-coral-400 bg-coral-50 scale-[1.02]"
               : "border-gray-200 hover:border-gray-300 bg-gray-50/50"
           )}
         >
@@ -103,14 +103,14 @@ export function PhotoUploader({
           <div className="flex flex-col items-center justify-center text-center space-y-3">
             <div className={cn(
               "w-14 h-14 rounded-full flex items-center justify-center transition-colors",
-              isDragging ? "bg-pink-100" : "bg-gray-100"
+              isDragging ? "bg-coral-100" : "bg-gray-100"
             )}>
               {uploading ? (
-                <div className="w-6 h-6 border-2 border-pink-500 border-t-transparent rounded-full animate-spin" />
+                <div className="w-6 h-6 border-2 border-coral-500 border-t-transparent rounded-full animate-spin" />
               ) : (
                 <Upload className={cn(
                   "w-6 h-6",
-                  isDragging ? "text-pink-600" : "text-gray-400"
+                  isDragging ? "text-coral-600" : "text-gray-400"
                 )} />
               )}
             </div>
@@ -121,7 +121,7 @@ export function PhotoUploader({
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-pink-600 hover:text-pink-700 underline underline-offset-2"
+                  className="text-coral-600 hover:text-coral-700 underline underline-offset-2"
                 >
                   browse
                 </button>
@@ -189,7 +189,7 @@ export function PhotoUploader({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-pink-300 hover:bg-pink-50/50 transition-all flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-pink-600"
+              className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-coral-300 hover:bg-coral-50/50 transition-all flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-coral-600"
             >
               <ImageIcon className="w-6 h-6" />
               <span className="text-xs font-medium">Voeg toe</span>

@@ -291,7 +291,7 @@ export default function EmailPreferencesPage() {
           <div className="flex items-start justify-between p-4 border rounded-lg">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <Gift className="w-4 h-4 text-pink-500" />
+                <Gift className="w-4 h-4 text-coral-500" />
                 <Label className="font-semibold">Marketing & Aanbiedingen</Label>
               </div>
               <p className="text-sm text-muted-foreground">

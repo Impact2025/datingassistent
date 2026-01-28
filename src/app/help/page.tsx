@@ -56,8 +56,8 @@ const SUPPORT_CATEGORIES = [
     icon: MessageCircle,
     title: 'Berichten & Chat',
     description: 'Tips voor betere gesprekken',
-    color: 'bg-pink-500',
-    bgColor: 'bg-pink-50',
+    color: 'bg-coral-500',
+    bgColor: 'bg-coral-50',
     articles: 8,
   },
   {

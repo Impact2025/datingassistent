@@ -226,7 +226,7 @@ const footerLinks = {
 };
 
 const footerLink = {
-  color: '#E14874',
+  color: '#FF7B54',
   fontSize: '14px',
   fontFamily: '"Inter", Arial, sans-serif',
   textDecoration: 'none',

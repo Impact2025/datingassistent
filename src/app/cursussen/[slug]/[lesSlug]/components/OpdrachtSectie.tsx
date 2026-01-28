@@ -28,7 +28,7 @@ export function OpdrachtSectie({ sectie, isCompleted, onComplete }: OpdrachtSect
   const allStepsCompleted = stappen.length > 0 && completedSteps.length === stappen.length;
 
   return (
-    <Card className="shadow-lg border-pink-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
+    <Card className="shadow-lg border-coral-100 dark:border-gray-700 dark:bg-gray-800 hover:shadow-xl transition-shadow">
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -62,7 +62,7 @@ export function OpdrachtSectie({ sectie, isCompleted, onComplete }: OpdrachtSect
                 className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
                   isStepCompleted
                     ? 'border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/30'
-                    : 'border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700 hover:border-pink-300 dark:hover:border-pink-600'
+                    : 'border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-700 hover:border-coral-300 dark:hover:border-coral-600'
                 }`}
               >
                 <div className="flex items-start gap-3">
@@ -89,7 +89,7 @@ export function OpdrachtSectie({ sectie, isCompleted, onComplete }: OpdrachtSect
                   </div>
 
                   {/* Step number */}
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 flex items-center justify-center text-sm font-bold">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-coral-100 dark:bg-coral-900/40 text-coral-600 dark:text-coral-400 flex items-center justify-center text-sm font-bold">
                     {index + 1}
                   </div>
                 </div>
@@ -103,13 +103,13 @@ export function OpdrachtSectie({ sectie, isCompleted, onComplete }: OpdrachtSect
           <div className="mb-6">
             <div className="flex justify-between text-sm mb-2">
               <span className="text-gray-600 dark:text-gray-400">Voortgang</span>
-              <span className="font-medium text-pink-600 dark:text-pink-400">
+              <span className="font-medium text-coral-600 dark:text-coral-400">
                 {completedSteps.length} / {stappen.length}
               </span>
             </div>
             <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-pink-500 to-pink-600 transition-all duration-300"
+                className="h-full bg-gradient-to-r from-coral-500 to-coral-600 transition-all duration-300"
                 style={{ width: `${(completedSteps.length / stappen.length) * 100}%` }}
               />
             </div>
@@ -132,7 +132,7 @@ export function OpdrachtSectie({ sectie, isCompleted, onComplete }: OpdrachtSect
             disabled={!allStepsCompleted}
             className={`rounded-full shadow-lg hover:shadow-xl transition-all ${
               allStepsCompleted
-                ? 'bg-pink-500 hover:bg-pink-600 text-white'
+                ? 'bg-coral-500 hover:bg-coral-600 text-white'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >

@@ -360,7 +360,7 @@ function PaymentSuccessContent() {
             >
               <Button
                 onClick={handleContinue}
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white py-6 text-lg shadow-lg hover:shadow-xl transition-all"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg shadow-lg hover:shadow-xl transition-all"
               >
                 {verificationResult?.details?.programName
                   ? `Start met ${verificationResult.details.programName}`

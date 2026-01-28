@@ -37,7 +37,7 @@ export function ProArsenal() {
       title: 'Skills Assessment',
       description: 'Ontdek je dating sterke punten en groei gebieden',
       icon: <Target className="w-6 h-6" />,
-      gradient: 'from-purple-500 to-pink-500',
+      gradient: 'from-purple-500 to-coral-500',
       premium: true,
     },
     {
@@ -45,7 +45,7 @@ export function ProArsenal() {
       title: 'Date Planner',
       description: 'Plan geslaagde dates met checklists en tips',
       icon: <Calendar className="w-6 h-6" />,
-      gradient: 'from-rose-500 to-pink-500',
+      gradient: 'from-rose-500 to-coral-500',
       premium: true,
     },
     {
@@ -69,9 +69,9 @@ export function ProArsenal() {
   if (!hasAccess) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <Card className="border-2 border-purple-300 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30">
+        <Card className="border-2 border-purple-300 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-coral-50 dark:from-purple-900/30 dark:to-coral-900/30">
           <CardContent className="p-8 text-center">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-500 to-coral-500 flex items-center justify-center">
               <Lock className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-2xl font-bold mb-4 dark:text-white">Pro Arsenal</h2>
@@ -115,7 +115,7 @@ export function ProArsenal() {
             <div className="flex gap-3 justify-center">
               <Button
                 onClick={() => router.push('/pricing')}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                className="bg-gradient-to-r from-purple-500 to-coral-500 hover:from-purple-600 hover:to-coral-600 text-white"
               >
                 <Crown className="w-4 h-4 mr-2" />
                 Upgrade naar Transformatie
@@ -146,7 +146,7 @@ export function ProArsenal() {
         </div>
 
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-coral-500 flex items-center justify-center">
             <Crown className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -155,7 +155,7 @@ export function ProArsenal() {
           </div>
         </div>
 
-        <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
+        <Badge className="bg-gradient-to-r from-purple-500 to-coral-500 text-white border-0">
           <Crown className="w-3 h-3 mr-1" />
           Premium Member - Unlimited Access
         </Badge>
@@ -172,7 +172,7 @@ export function ProArsenal() {
 
         {/* Overview */}
         <TabsContent value="overview" className="space-y-6">
-          <Card className="border-2 border-purple-200 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30">
+          <Card className="border-2 border-purple-200 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-coral-50 dark:from-purple-900/30 dark:to-coral-900/30">
             <CardContent className="p-6">
               <h2 className="text-xl font-semibold mb-2 dark:text-white">Premium Dating Arsenal</h2>
               <p className="text-gray-600 dark:text-gray-300 mb-4">

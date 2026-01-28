@@ -104,7 +104,7 @@ export function IrisVideoPlaceholder({
       {/* Video Container */}
       <div
         className={cn(
-          "relative w-full max-w-xs rounded-2xl overflow-hidden bg-gradient-to-br from-violet-100 to-pink-100 flex items-center justify-center",
+          "relative w-full max-w-xs rounded-2xl overflow-hidden bg-gradient-to-br from-violet-100 to-coral-100 flex items-center justify-center",
           aspectRatioClass[aspectRatio]
         )}
         data-video-id={videoId}
@@ -131,7 +131,7 @@ export function IrisVideoPlaceholder({
                   onClick={handlePlayPause}
                   className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
                 >
-                  <Play className="w-8 h-8 text-pink-500 ml-1" />
+                  <Play className="w-8 h-8 text-coral-500 ml-1" />
                 </button>
               )}
             </div>
@@ -170,7 +170,7 @@ export function IrisVideoPlaceholder({
                 className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors group"
               >
                 <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                  <Play className="w-8 h-8 text-pink-500 ml-1" />
+                  <Play className="w-8 h-8 text-coral-500 ml-1" />
                 </div>
               </button>
             )}

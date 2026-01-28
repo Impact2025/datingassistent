@@ -27,14 +27,14 @@ const FEATURED_TOOLS = [
     label: 'Profiel Optimalisatie',
     icon: Target,
     description: 'Bouw een profiel dat werkt',
-    color: 'from-pink-500 to-pink-600',
+    color: 'from-coral-500 to-coral-600',
   },
   {
     id: FEATURED_TOOL_IDS.HECHTINGSSTIJL,
     label: 'Hechtingsstijl',
     icon: Heart,
     description: 'Ontdek je hechtingspatroon',
-    color: 'from-purple-500 to-pink-500',
+    color: 'from-purple-500 to-coral-500',
   },
   {
     id: FEATURED_TOOL_IDS.PHOTO_ANALYSIS,
@@ -67,12 +67,12 @@ export const ToolsGridSection = React.memo(function ToolsGridSection({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: ANIMATION_DELAYS.TOOLS }}
     >
-      <Card className="border-0 shadow-sm bg-gradient-to-br from-white to-pink-50/30 dark:from-gray-800 dark:to-pink-900/10">
+      <Card className="border-0 shadow-sm bg-gradient-to-br from-white to-coral-50/30 dark:from-gray-800 dark:to-coral-900/10">
         <CardContent className="p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="p-2 bg-pink-100 dark:bg-pink-900/30 rounded-lg">
-                <Zap className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+              <div className="p-2 bg-coral-100 dark:bg-coral-900/30 rounded-lg">
+                <Zap className="w-4 h-4 text-coral-600 dark:text-coral-400" />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white">Jouw Tools</h3>
@@ -83,7 +83,7 @@ export const ToolsGridSection = React.memo(function ToolsGridSection({
               variant="ghost"
               size="sm"
               onClick={() => onTabChange?.('profiel')}
-              className="text-pink-600 hover:text-pink-700 text-xs"
+              className="text-coral-600 hover:text-coral-700 text-xs"
             >
               Alle tools
               <ArrowRight className="w-3 h-3 ml-1" />

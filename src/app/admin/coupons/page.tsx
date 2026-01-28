@@ -553,7 +553,7 @@ export default function CouponsPage() {
                                 coupon.package_type === 'core' ? 'bg-green-100 text-green-700' :
                                 coupon.package_type === 'sociaal' ? 'bg-orange-100 text-orange-700' :
                                 coupon.package_type === 'kickstart' ? 'bg-red-100 text-red-700' :
-                                coupon.package_type === 'transformatie' ? 'bg-pink-100 text-pink-700' :
+                                coupon.package_type === 'transformatie' ? 'bg-coral-100 text-coral-700' :
                                 coupon.package_type === 'vip' ? 'bg-yellow-100 text-yellow-700' :
                                 'bg-gray-100 text-gray-700'}
                             `}>

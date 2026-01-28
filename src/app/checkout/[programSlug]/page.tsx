@@ -186,7 +186,7 @@ export default function CheckoutPage() {
   if (loading || userLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-3 border-pink-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-coral-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -203,7 +203,7 @@ export default function CheckoutPage() {
           <p className="text-gray-600 mb-4">{error}</p>
           <button
             onClick={() => router.push('/#programmas')}
-            className="text-pink-500 hover:text-pink-600 font-medium"
+            className="text-coral-500 hover:text-coral-600 font-medium"
           >
             Terug naar programma's
           </button>
@@ -239,7 +239,7 @@ export default function CheckoutPage() {
         <Card className="p-8 rounded-2xl shadow-sm">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="inline-flex items-center gap-2 bg-pink-100 text-pink-600 text-xs font-medium px-3 py-1 rounded-full mb-3">
+            <div className="inline-flex items-center gap-2 bg-coral-100 text-coral-600 text-xs font-medium px-3 py-1 rounded-full mb-3">
               <Sparkles className="w-3 h-3" />
               {program.tier === 'premium' ? 'Premium Programma' : 'Kickstart Programma'}
             </div>
@@ -253,9 +253,9 @@ export default function CheckoutPage() {
 
           {/* Transformation Promise */}
           {program.transformation_promise && (
-            <div className="bg-gradient-to-r from-pink-50 to-pink-100 rounded-xl p-4 mb-6 border border-pink-100">
+            <div className="bg-gradient-to-r from-coral-50 to-coral-100 rounded-xl p-4 mb-6 border border-coral-100">
               <div className="flex items-start gap-3">
-                <Target className="w-5 h-5 text-pink-500 flex-shrink-0 mt-0.5" />
+                <Target className="w-5 h-5 text-coral-500 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-medium text-gray-900 mb-1">Wat je bereikt:</p>
                   <p className="text-sm text-gray-600">{program.transformation_promise}</p>
@@ -337,7 +337,7 @@ export default function CheckoutPage() {
               <button
                 onClick={validateCoupon}
                 disabled={validatingCoupon || !couponCode.trim()}
-                className="px-4 py-2 text-sm font-medium text-pink-500 hover:text-pink-600 disabled:opacity-50"
+                className="px-4 py-2 text-sm font-medium text-coral-500 hover:text-coral-600 disabled:opacity-50"
               >
                 {validatingCoupon ? '...' : 'Toepassen'}
               </button>
@@ -360,7 +360,7 @@ export default function CheckoutPage() {
           {/* Key Benefits */}
           <div className="space-y-2 mb-6">
             <div className="flex items-center gap-3 text-sm text-gray-600">
-              <Clock className="w-4 h-4 text-pink-500 flex-shrink-0" />
+              <Clock className="w-4 h-4 text-coral-500 flex-shrink-0" />
               <span>{program.duration_days} dagen toegang</span>
             </div>
             <div className="flex items-center gap-3 text-sm text-gray-600">
@@ -384,7 +384,7 @@ export default function CheckoutPage() {
           <button
             onClick={handlePayment}
             disabled={processingPayment}
-            className="w-full py-4 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+            className="w-full py-4 bg-coral-500 hover:bg-coral-600 text-white font-semibold rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
           >
             {processingPayment ? (
               <>

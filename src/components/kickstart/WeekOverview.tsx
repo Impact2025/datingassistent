@@ -45,7 +45,7 @@ export function WeekOverview({
           transition={{ delay: weekIndex * 0.1 }}
         >
           <Card className="overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-pink-50 to-pink-100 border-b px-3 py-3 sm:px-6 sm:py-4">
+            <CardHeader className="bg-gradient-to-r from-coral-50 to-coral-100 border-b px-3 py-3 sm:px-6 sm:py-4">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <span className="text-2xl sm:text-3xl">{week.emoji}</span>
@@ -112,7 +112,7 @@ interface DayCardProps {
 function DayCard({ day, status, isCurrentDay, onClick }: DayCardProps) {
   const statusStyles = {
     locked: 'bg-gray-100 text-gray-400 cursor-not-allowed',
-    available: 'bg-white border-pink-300 hover:border-pink-500 hover:shadow-md cursor-pointer',
+    available: 'bg-white border-coral-300 hover:border-coral-500 hover:shadow-md cursor-pointer',
     completed: 'bg-green-50 border-green-300 cursor-pointer',
   };
 
@@ -131,7 +131,7 @@ function DayCard({ day, status, isCurrentDay, onClick }: DayCardProps) {
       className={`
         relative p-2 sm:p-3 rounded-xl border-2 transition-all
         ${statusStyles[status]}
-        ${isCurrentDay ? 'ring-2 ring-pink-500 ring-offset-1 sm:ring-offset-2' : ''}
+        ${isCurrentDay ? 'ring-2 ring-coral-500 ring-offset-1 sm:ring-offset-2' : ''}
       `}
     >
       {/* Day number */}
@@ -160,7 +160,7 @@ function DayCard({ day, status, isCurrentDay, onClick }: DayCardProps) {
             status === 'completed'
               ? 'text-green-500'
               : status === 'available'
-                ? 'text-pink-500'
+                ? 'text-coral-500'
                 : 'text-gray-300'
           }`}
         />
@@ -179,7 +179,7 @@ function DayCard({ day, status, isCurrentDay, onClick }: DayCardProps) {
       {/* Current day indicator */}
       {isCurrentDay && status === 'available' && (
         <motion.div
-          className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-pink-500 rounded-full"
+          className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-coral-500 rounded-full"
           animate={{ scale: [1, 1.2, 1] }}
           transition={{ repeat: Infinity, duration: 2 }}
         />
@@ -205,28 +205,28 @@ export function KickstartStats({
   const percentage = Math.round((completedDays / totalDays) * 100);
 
   return (
-    <Card className="bg-gradient-to-r from-pink-500 to-pink-600 text-white">
+    <Card className="bg-gradient-to-r from-coral-500 to-coral-600 text-white">
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
             <h2 className="text-xl sm:text-2xl font-bold mb-0.5 sm:mb-1">De Kickstart</h2>
-            <p className="text-pink-100 text-sm sm:text-base">21 dagen naar dating succes</p>
+            <p className="text-coral-100 text-sm sm:text-base">21 dagen naar dating succes</p>
           </div>
 
           <div className="text-right shrink-0">
             <div className="text-3xl sm:text-4xl font-bold">{percentage}%</div>
-            <p className="text-pink-100 text-xs sm:text-sm">voltooid</p>
+            <p className="text-coral-100 text-xs sm:text-sm">voltooid</p>
           </div>
         </div>
 
         <div className="mt-4 sm:mt-6">
-          <div className="flex justify-between text-xs sm:text-sm text-pink-100 mb-2">
+          <div className="flex justify-between text-xs sm:text-sm text-coral-100 mb-2">
             <span>Week {currentWeek} - Dag {currentDay}</span>
             <span>
               {completedDays} / {totalDays} dagen
             </span>
           </div>
-          <div className="w-full bg-pink-400/30 rounded-full h-2.5 sm:h-3">
+          <div className="w-full bg-coral-400/30 rounded-full h-2.5 sm:h-3">
             <motion.div
               className="bg-white rounded-full h-2.5 sm:h-3"
               initial={{ width: 0 }}
@@ -236,18 +236,18 @@ export function KickstartStats({
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-pink-400/30">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-coral-400/30">
           <div className="text-center">
             <div className="text-xl sm:text-2xl font-bold">{completedDays}</div>
-            <div className="text-[10px] sm:text-xs text-pink-100">Dagen voltooid</div>
+            <div className="text-[10px] sm:text-xs text-coral-100">Dagen voltooid</div>
           </div>
           <div className="text-center">
             <div className="text-xl sm:text-2xl font-bold">{currentWeek}</div>
-            <div className="text-[10px] sm:text-xs text-pink-100">Huidige week</div>
+            <div className="text-[10px] sm:text-xs text-coral-100">Huidige week</div>
           </div>
           <div className="text-center">
             <div className="text-xl sm:text-2xl font-bold">{totalDays - completedDays}</div>
-            <div className="text-[10px] sm:text-xs text-pink-100">Te gaan</div>
+            <div className="text-[10px] sm:text-xs text-coral-100">Te gaan</div>
           </div>
         </div>
       </CardContent>

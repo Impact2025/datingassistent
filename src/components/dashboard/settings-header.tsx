@@ -32,8 +32,8 @@ export function SettingsHeader({ activeTab, onTabChange }: SettingsHeaderProps) 
 
       {/* Page header */}
       <div className="flex items-center gap-4 mb-4">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 flex items-center justify-center">
-          <Icon className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-coral-100 to-purple-100 dark:from-coral-900/30 dark:to-purple-900/30 flex items-center justify-center">
+          <Icon className="w-6 h-6 text-coral-600 dark:text-coral-400" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{title}</h1>

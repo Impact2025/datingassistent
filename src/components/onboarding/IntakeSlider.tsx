@@ -51,7 +51,7 @@ export function IntakeSlider({
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 text-white text-2xl font-bold shadow-lg"
+          className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 text-white text-2xl font-bold shadow-lg"
         >
           {localValue}
         </motion.div>
@@ -72,8 +72,8 @@ export function IntakeSlider({
                 "transition-all duration-150 active:scale-95",
                 "border-2",
                 localValue === num
-                  ? "bg-gradient-to-br from-pink-500 to-pink-600 text-white shadow-md border-pink-600"
-                  : "bg-white text-gray-800 border-gray-200 hover:border-pink-300"
+                  ? "bg-gradient-to-br from-coral-500 to-coral-600 text-white shadow-md border-coral-600"
+                  : "bg-white text-gray-800 border-gray-200 hover:border-coral-300"
               )}
             >
               {num}
@@ -94,7 +94,7 @@ export function IntakeSlider({
               key={index}
               className={cn(
                 "text-xs font-medium transition-all text-center flex-1 px-1",
-                isActive ? "text-pink-600 font-semibold" : "text-gray-500"
+                isActive ? "text-coral-600 font-semibold" : "text-gray-500"
               )}
             >
               {label}

@@ -31,7 +31,7 @@ export function ProfielOptimalisatie({
         <CardContent className="p-8 md:p-12">
           {/* Header Icon */}
           <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-pink-600 rounded-3xl flex items-center justify-center shadow-lg">
+            <div className="w-20 h-20 bg-gradient-to-br from-coral-500 to-coral-600 rounded-3xl flex items-center justify-center shadow-lg">
               <Target className="w-10 h-10 text-white" />
             </div>
           </div>
@@ -45,7 +45,7 @@ export function ProfielOptimalisatie({
           <p className="text-center text-gray-600 mb-4 text-lg">
             Bouw een profiel dat echt werkt.
           </p>
-          <p className="text-center text-pink-600 font-medium mb-10">
+          <p className="text-center text-coral-600 font-medium mb-10">
             AI-guided, data-driven, authentiek.
           </p>
 
@@ -63,10 +63,10 @@ export function ProfielOptimalisatie({
             </div>
 
             {/* Stat 2: Results */}
-            <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl p-6 text-center border border-pink-200">
+            <div className="bg-gradient-to-br from-coral-50 to-coral-100 rounded-2xl p-6 text-center border border-coral-200">
               <div className="flex justify-center mb-3">
-                <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-pink-600" />
+                <div className="w-12 h-12 bg-coral-100 rounded-xl flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-coral-600" />
                 </div>
               </div>
               <div className="text-3xl font-bold text-gray-900 mb-1">+250%</div>
@@ -90,7 +90,7 @@ export function ProfielOptimalisatie({
             <h2 className="text-xl font-bold text-gray-900 mb-6">Hoe het werkt</h2>
             <p className="text-gray-600 mb-6">
               In 3 stappen begeleid ik je van een leeg of zwak profiel naar een geoptimaliseerd,{' '}
-              <span className="text-pink-600 font-semibold">authentiek</span> dating profiel dat matches genereert.
+              <span className="text-coral-600 font-semibold">authentiek</span> dating profiel dat matches genereert.
             </p>
 
             {/* Steps */}
@@ -98,7 +98,7 @@ export function ProfielOptimalisatie({
               {/* Step 1 */}
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-pink-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                  <div className="w-10 h-10 bg-coral-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
                     1
                   </div>
                 </div>
@@ -108,7 +108,7 @@ export function ProfielOptimalisatie({
                     Upload, analyseer, optimaliseer (15 min)
                   </p>
                   <div className="flex items-center gap-2">
-                    <Camera className="w-4 h-4 text-pink-600" />
+                    <Camera className="w-4 h-4 text-coral-600" />
                     <span className="text-xs text-gray-500">AI-powered foto analyse</span>
                   </div>
                 </div>
@@ -117,7 +117,7 @@ export function ProfielOptimalisatie({
               {/* Step 2 */}
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-pink-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                  <div className="w-10 h-10 bg-coral-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
                     2
                   </div>
                 </div>
@@ -127,7 +127,7 @@ export function ProfielOptimalisatie({
                     AI schrijft je perfecte bio (20 min)
                   </p>
                   <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-pink-600" />
+                    <FileText className="w-4 h-4 text-coral-600" />
                     <span className="text-xs text-gray-500">Persoonlijk & authentiek</span>
                   </div>
                 </div>
@@ -136,7 +136,7 @@ export function ProfielOptimalisatie({
               {/* Step 3 */}
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-pink-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                  <div className="w-10 h-10 bg-coral-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
                     3
                   </div>
                 </div>
@@ -146,7 +146,7 @@ export function ProfielOptimalisatie({
                     Laatste finetuning (10 min)
                   </p>
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-pink-600" />
+                    <Sparkles className="w-4 h-4 text-coral-600" />
                     <span className="text-xs text-gray-500">Perfecte afronding</span>
                   </div>
                 </div>
@@ -157,7 +157,7 @@ export function ProfielOptimalisatie({
           {/* CTA Button */}
           <Button
             onClick={onStartAssessment}
-            className="w-full bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+            className="w-full bg-gradient-to-r from-coral-600 to-coral-700 hover:from-coral-700 hover:to-coral-800 text-white py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
           >
             Start Assessment
             <ArrowRight className="w-5 h-5 ml-2" />
@@ -167,7 +167,7 @@ export function ProfielOptimalisatie({
           {onSkipToDashboard && (
             <button
               onClick={onSkipToDashboard}
-              className="w-full text-center text-sm text-gray-500 hover:text-pink-600 mt-4 transition-colors"
+              className="w-full text-center text-sm text-gray-500 hover:text-coral-600 mt-4 transition-colors"
             >
               Ik heb al een profiel, ga verder →
             </button>

@@ -156,9 +156,9 @@ export function InstallPrompt() {
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
         className="fixed bottom-4 left-4 right-4 z-50 md:left-auto md:right-4 md:max-w-md"
       >
-        <div className="bg-white rounded-2xl shadow-2xl border border-pink-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-2xl border border-coral-100 overflow-hidden">
           {/* Animated gradient header */}
-          <div className="relative bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 p-5 text-white overflow-hidden">
+          <div className="relative bg-gradient-to-r from-coral-500 via-rose-500 to-coral-600 p-5 text-white overflow-hidden">
             {/* Animated background shapes */}
             <div className="absolute inset-0 overflow-hidden">
               <motion.div
@@ -232,9 +232,9 @@ export function InstallPrompt() {
           {/* Benefits with staggered animation */}
           <div className="p-4 space-y-2.5">
             {[
-              { icon: <Zap className="w-4 h-4 text-pink-500" />, text: "Direct openen vanaf je homescreen" },
-              { icon: <Bell className="w-4 h-4 text-pink-500" />, text: "Coaching tips & reminders ontvangen" },
-              { icon: <Wifi className="w-4 h-4 text-pink-500" />, text: "Werkt ook zonder internet" },
+              { icon: <Zap className="w-4 h-4 text-coral-500" />, text: "Direct openen vanaf je homescreen" },
+              { icon: <Bell className="w-4 h-4 text-coral-500" />, text: "Coaching tips & reminders ontvangen" },
+              { icon: <Wifi className="w-4 h-4 text-coral-500" />, text: "Werkt ook zonder internet" },
             ].map((benefit, index) => (
               <motion.div
                 key={index}
@@ -243,7 +243,7 @@ export function InstallPrompt() {
                 transition={{ delay: 0.3 + index * 0.1 }}
                 className="flex items-center gap-3 text-gray-700"
               >
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-50 to-rose-50 flex items-center justify-center flex-shrink-0 border border-pink-100">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-coral-50 to-rose-50 flex items-center justify-center flex-shrink-0 border border-coral-100">
                   {benefit.icon}
                 </div>
                 <span className="text-sm font-medium">{benefit.text}</span>
@@ -268,7 +268,7 @@ export function InstallPrompt() {
               transition={{ delay: 0.6 }}
               onClick={handleInstall}
               disabled={isInstalling}
-              className="flex-1 py-3 px-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-xl hover:shadow-pink-500/30 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-2"
+              className="flex-1 py-3 px-4 bg-gradient-to-r from-coral-500 to-rose-500 text-white font-semibold rounded-xl shadow-lg shadow-coral-500/25 hover:shadow-xl hover:shadow-coral-500/30 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-2"
             >
               {isInstalling ? (
                 <motion.div
@@ -324,7 +324,7 @@ export function InstallButton() {
       animate={{ opacity: 1, scale: 1 }}
       onClick={handleInstall}
       disabled={isInstalling}
-      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-sm font-medium rounded-xl hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50"
+      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-coral-500 to-rose-500 text-white text-sm font-medium rounded-xl hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50"
     >
       {isInstalling ? (
         <motion.div

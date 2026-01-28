@@ -87,10 +87,10 @@ export default function CookiesContent() {
   return (
     <main className="flex-grow">
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-pink-50 via-pink-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+      <section className="py-16 bg-gradient-to-br from-coral-50 via-coral-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-pink-100 to-pink-200 dark:from-pink-900/50 dark:to-pink-800/50 text-pink-700 dark:text-pink-300 text-sm font-medium mb-6 border border-pink-200 dark:border-pink-700">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-coral-100 to-coral-200 dark:from-coral-900/50 dark:to-coral-800/50 text-coral-700 dark:text-coral-300 text-sm font-medium mb-6 border border-coral-200 dark:border-coral-700">
               <Cookie className="w-4 h-4 mr-2" />
               Cookiebeleid
             </div>
@@ -105,11 +105,11 @@ export default function CookiesContent() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="px-8 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700">
+              <Button size="lg" className="px-8 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700">
                 <Settings className="mr-2 w-5 h-5" />
                 Cookie Voorkeuren
               </Button>
-              <Button variant="outline" size="lg" className="px-8 border-pink-200 text-pink-700 hover:bg-pink-50">
+              <Button variant="outline" size="lg" className="px-8 border-coral-200 text-coral-700 hover:bg-coral-50">
                 <Shield className="mr-2 w-5 h-5" />
                 Privacyverklaring
               </Button>
@@ -132,7 +132,7 @@ export default function CookiesContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Card className="dark:bg-gray-800">
                 <CardContent className="p-6">
-                  <Info className="w-12 h-12 text-pink-600 mb-4" />
+                  <Info className="w-12 h-12 text-coral-600 mb-4" />
                   <h3 className="font-semibold mb-3 dark:text-white">Hoe werken cookies?</h3>
                   <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                     Cookies bevatten informatie over uw browsegedrag en voorkeuren. Ze helpen ons om:
@@ -324,7 +324,7 @@ export default function CookiesContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Card className="dark:bg-gray-700">
                 <CardContent className="p-6">
-                  <Settings className="w-12 h-12 text-pink-600 mb-4" />
+                  <Settings className="w-12 h-12 text-coral-600 mb-4" />
                   <h3 className="font-semibold mb-3 dark:text-white">Cookie Instellingen</h3>
                   <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
                     Pas uw cookievoorkeuren aan via onze cookie banner of instellingenpagina.
@@ -396,7 +396,7 @@ export default function CookiesContent() {
                   <h3 className="font-semibold mb-4 dark:text-white">Contact voor Privacy Vragen</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex items-start gap-3">
-                      <Mail className="w-5 h-5 text-pink-600 mt-1" />
+                      <Mail className="w-5 h-5 text-coral-600 mt-1" />
                       <div>
                         <p className="font-medium dark:text-white">E-mail</p>
                         <p className="text-gray-600 dark:text-gray-300 text-sm">privacy@datingassistent.nl</p>
@@ -410,8 +410,8 @@ export default function CookiesContent() {
                       </div>
                     </div>
                   </div>
-                  <div className="mt-4 p-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-pink-900/30 dark:to-pink-800/30 rounded-lg border border-pink-100 dark:border-pink-800">
-                    <p className="text-sm text-pink-800 dark:text-pink-200">
+                  <div className="mt-4 p-4 bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30 rounded-lg border border-coral-100 dark:border-coral-800">
+                    <p className="text-sm text-coral-800 dark:text-coral-200">
                       <strong>Functionaris Gegevensbescherming:</strong> Voor complexe privacy vragen kunt u contact opnemen met onze Functionaris Gegevensbescherming via bovenstaande contactgegevens.
                     </p>
                   </div>
@@ -436,7 +436,7 @@ export default function CookiesContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-pink-500 via-purple-600 to-pink-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-coral-500 via-purple-600 to-coral-600 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-4">Vragen over Cookies?</h2>
@@ -446,13 +446,13 @@ export default function CookiesContent() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
-                <Button size="lg" variant="secondary" className="px-8 bg-white text-pink-600 hover:bg-gray-50">
+                <Button size="lg" variant="secondary" className="px-8 bg-white text-coral-600 hover:bg-gray-50">
                   <Mail className="mr-2 w-5 h-5" />
                   Contact Opnemen
                 </Button>
               </Link>
               <Link href="/privacyverklaring">
-                <Button size="lg" variant="outline" className="px-8 border-white text-white hover:bg-white hover:text-pink-600">
+                <Button size="lg" variant="outline" className="px-8 border-white text-white hover:bg-white hover:text-coral-600">
                   <Shield className="mr-2 w-5 h-5" />
                   Privacyverklaring
                 </Button>

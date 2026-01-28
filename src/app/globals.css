@@ -1,4 +1,5 @@
-/* Import responsive design system and button system */
+/* Import design systems */
+@import url('../styles/variables.css');  /* Warm Vertrouwen kleurenpalet */
 @import url('../styles/responsive.css');
 @import url('../styles/button-system.css');
 
@@ -8,44 +9,86 @@
 
 @layer base {
   :root {
-    /* DatingAssistent Design System - Exact kleuren uit specificaties */
+    /* =========================================================================
+     * DATINGASSISTENT "WARM VERTROUWEN" DESIGN SYSTEM
+     * =========================================================================
+     * Psychologisch onderbouwd kleurenpalet voor dating coaching platform.
+     * Geoptimaliseerd voor conversie en emotionele resonantie.
+     * =========================================================================
+     */
 
-    /* Primary - Roze/Magenta */
-    --primary-50: #FDF2F8;
-    --primary-100: #FCE7F3;
-    --primary-200: #FBCFE8;
-    --primary-300: #F9A8D4;
-    --primary-400: #F472B6;
-    --primary-500: #EC4899;  /* Hoofdkleur buttons */
-    --primary-600: #DB2777;
-    --primary-700: #BE185D;
+    /* -------------------------------------------------------------------------
+     * PRIMARY COLORS - "Warm Vertrouwen" Palette
+     * -------------------------------------------------------------------------
+     */
 
-    /* Accent - Paars (voor gradients) */
-    --accent-500: #8B5CF6;
-    --accent-600: #7C3AED;
+    /* Warm Coral - PRIMARY CTA COLOR (21-34% hogere conversie!) */
+    --primary-50: #FFF5F2;
+    --primary-100: #FFE8E1;
+    --primary-200: #FFD4C8;
+    --primary-300: #FFB59E;
+    --primary-400: #FF9676;
+    --primary-500: #FF7B54;  /* Hoofdkleur buttons - Warm Coral */
+    --primary-600: #E66A43;  /* Hover state */
+    --primary-700: #CC5A36;
 
-    /* Neutrals */
-    --gray-50: #FAFAFA;   /* Page background */
-    --gray-100: #F5F5F5;  /* Card backgrounds */
-    --gray-200: #E5E5E5;  /* Borders */
-    --gray-300: #D4D4D4;
-    --gray-400: #A3A3A3;
-    --gray-500: #737373;  /* Secondary text */
+    /* Deep Purple - SECONDARY / HEADERS */
+    --accent-500: #722F37;   /* Deep Purple - Headers, Logo */
+    --accent-600: #5C262D;   /* Darker variant */
+
+    /* Royal Purple - VIP ACCENT */
+    --royal-purple: #6B4D8A;
+
+    /* Rose Gold - LUXURY ACCENT */
+    --rose-gold: #B76E79;
+
+    /* -------------------------------------------------------------------------
+     * NEUTRAL COLORS - Warmer than pure grays
+     * -------------------------------------------------------------------------
+     */
+    --gray-50: #FFF8F3;    /* Cream - Page background */
+    --gray-100: #F5E6E8;   /* Soft Blush - Card backgrounds */
+    --gray-200: #E8D5D8;   /* Borders - warm tint */
+    --gray-300: #D4C0C3;
+    --gray-400: #A89598;
+    --gray-500: #6B6B6B;   /* Medium Gray - Secondary text */
     --gray-600: #525252;
     --gray-700: #404040;
-    --gray-800: #262626;  /* Primary text */
-    --gray-900: #171717;
+    --gray-800: #2D3142;   /* Charcoal - Primary text (NOT black!) */
+    --gray-900: #1F2028;
 
-    /* Status */
-    --success: #10B981;
+    /* -------------------------------------------------------------------------
+     * SEMANTIC COLORS
+     * -------------------------------------------------------------------------
+     */
+    --success: #A8B5A0;    /* Sage Green - Softer, trustworthy */
     --warning: #F59E0B;
     --error: #EF4444;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
-    --gradient-soft: linear-gradient(135deg, #FDF2F8 0%, #F3E8FF 100%);
+    /* Dusty Rose - Secondary accent */
+    --dusty-rose: #E3867D;
 
-    /* Typography */
+    /* -------------------------------------------------------------------------
+     * ICON SYSTEM - Color as Meaning
+     * -------------------------------------------------------------------------
+     */
+    --icon-analysis: #FF7B54;   /* Orange - Analyse & Inzicht */
+    --icon-emotional: #E3867D;  /* Rose - Emotioneel & Gesprekken */
+    --icon-strategy: #8B7BA8;   /* Purple - Strategie & Actie */
+    --icon-growth: #A8B5A0;     /* Mint - Groei & Progressie */
+
+    /* -------------------------------------------------------------------------
+     * GRADIENTS - Updated to Warm Vertrouwen
+     * -------------------------------------------------------------------------
+     */
+    --gradient-primary: linear-gradient(135deg, #FF7B54 0%, #722F37 100%);
+    --gradient-soft: linear-gradient(135deg, #FFF8F3 0%, #F5E6E8 100%);
+    --gradient-rose: linear-gradient(135deg, #E3867D 0%, #B76E79 100%);
+
+    /* -------------------------------------------------------------------------
+     * TYPOGRAPHY
+     * -------------------------------------------------------------------------
+     */
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
@@ -62,7 +105,10 @@
     --leading-normal: 1.5;
     --leading-relaxed: 1.625;
 
-    /* Spacing */
+    /* -------------------------------------------------------------------------
+     * SPACING
+     * -------------------------------------------------------------------------
+     */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
     --space-3: 0.75rem;
@@ -74,7 +120,10 @@
     --space-12: 3rem;
     --space-16: 4rem;
 
-    /* Border Radius */
+    /* -------------------------------------------------------------------------
+     * BORDER RADIUS
+     * -------------------------------------------------------------------------
+     */
     --radius-sm: 0.375rem;
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
@@ -82,102 +131,118 @@
     --radius-2xl: 1.5rem;
     --radius-full: 9999px;
 
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    /* -------------------------------------------------------------------------
+     * SHADOWS - Warm tinted
+     * -------------------------------------------------------------------------
+     */
+    --shadow-sm: 0 1px 2px 0 rgb(114 47 55 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(114 47 55 / 0.08);
+    --shadow-lg: 0 10px 15px -3px rgb(114 47 55 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(114 47 55 / 0.1);
+    --shadow-coral: 0 4px 12px rgba(255, 123, 84, 0.25);
 
-    /* Container */
+    /* -------------------------------------------------------------------------
+     * CONTAINER
+     * -------------------------------------------------------------------------
+     */
     --container-max: 1200px;
     --container-padding: 1.5rem;
 
-    /* Legacy shadcn variables - mapped to new system */
-    --background: 0 0% 100%;
-    --foreground: 220 10% 15%;
-    --muted: 220 15% 95%;
-    --muted-foreground: 220 10% 40%;
+    /* -------------------------------------------------------------------------
+     * SHADCN VARIABLES - Mapped to Warm Vertrouwen
+     * -------------------------------------------------------------------------
+     */
+    --background: 30 100% 99%;           /* Cream #FFF8F3 */
+    --foreground: 225 18% 22%;           /* Charcoal #2D3142 */
+    --muted: 350 33% 93%;                /* Soft Blush #F5E6E8 */
+    --muted-foreground: 0 0% 42%;        /* Medium Gray #6B6B6B */
     --popover: 0 0% 100%;
-    --popover-foreground: 220 10% 15%;
-    --border: 220 15% 90%;
-    --input: 220 15% 98%;
+    --popover-foreground: 225 18% 22%;
+    --border: 350 20% 88%;               /* Warm border */
+    --input: 350 20% 96%;
     --card: 0 0% 100%;
-    --card-foreground: 220 10% 15%;
-    --primary: 350 80% 50%;
+    --card-foreground: 225 18% 22%;
+    --primary: 15 100% 66%;              /* Warm Coral #FF7B54 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 15% 95%;
-    --secondary-foreground: 220 10% 15%;
-    --accent: 220 15% 90%;
-    --accent-foreground: 220 10% 15%;
+    --secondary: 350 33% 93%;            /* Soft Blush */
+    --secondary-foreground: 225 18% 22%;
+    --accent: 350 20% 88%;
+    --accent-foreground: 225 18% 22%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --ring: 350 80% 50%;
+    --ring: 15 100% 66%;                 /* Warm Coral for focus */
     --radius: 0.75rem;
   }
 
   .dark {
-    /* Enhanced Dark Mode - DatingAssistent wereldklasse design */
+    /* =========================================================================
+     * DARK MODE - "Warm Vertrouwen" Palette
+     * =========================================================================
+     * Warme donkere tinten die aansluiten bij het lichte thema
+     * =========================================================================
+     */
 
-    /* Main backgrounds - Diepere, rijkere tinten */
-    --background: 222 47% 8%;        /* Rijk donkerblauw-grijs */
-    --foreground: 210 40% 98%;       /* Bijna wit voor perfecte leesbaarheid */
+    /* Main backgrounds - Warm dark tones */
+    --background: 225 20% 10%;       /* Warm charcoal */
+    --foreground: 30 20% 95%;        /* Warm white */
 
     /* Muted/Secondary backgrounds */
-    --muted: 217 33% 14%;            /* Subtiel lichter dan achtergrond */
-    --muted-foreground: 215 20% 65%; /* Medium grijs voor secundaire tekst */
+    --muted: 225 18% 15%;
+    --muted-foreground: 30 10% 65%;
 
     /* Accent colors */
-    --accent: 217 33% 17%;           /* Voor hover states */
-    --accent-foreground: 210 40% 98%;
+    --accent: 225 18% 18%;
+    --accent-foreground: 30 20% 95%;
 
     /* Popover/Dropdown backgrounds */
-    --popover: 222 47% 11%;          /* Iets lichter dan main background */
-    --popover-foreground: 210 40% 98%;
+    --popover: 225 20% 12%;
+    --popover-foreground: 30 20% 95%;
 
-    /* Borders - Subtiel maar zichtbaar */
-    --border: 217 33% 20%;           /* Duidelijke maar niet opdringerige borders */
-    --input: 217 33% 17%;            /* Input field achtergronden */
+    /* Borders */
+    --border: 225 15% 22%;
+    --input: 225 18% 18%;
 
-    /* Cards - Perfect contrast */
-    --card: 222 47% 11%;             /* Card backgrounds met subtiel contrast */
-    --card-foreground: 210 40% 98%;
+    /* Cards */
+    --card: 225 20% 12%;
+    --card-foreground: 30 20% 95%;
 
-    /* Primary - Pink blijft levendig in dark mode */
-    --primary: 340 82% 62%;          /* Levendiger pink voor dark mode (#ED5F8F) */
+    /* Primary - Warm Coral stays vibrant */
+    --primary: 15 100% 66%;          /* Warm Coral #FF7B54 */
     --primary-foreground: 0 0% 100%;
 
     /* Secondary */
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 225 18% 18%;
+    --secondary-foreground: 30 20% 95%;
 
     /* Destructive */
-    --destructive: 0 63% 50%;        /* Helderder rood voor dark mode */
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 63% 55%;
+    --destructive-foreground: 30 20% 95%;
 
-    /* Focus ring */
-    --ring: 340 82% 62%;
+    /* Focus ring - Warm Coral */
+    --ring: 15 100% 66%;
 
-    /* DatingAssistent Custom Variables voor Dark Mode */
-    --gray-50: #1a1d29;    /* Darkest */
-    --gray-100: #22262f;   /* Very dark */
-    --gray-200: #2d323e;   /* Dark borders */
-    --gray-300: #3d4452;   /* Borders */
-    --gray-400: #6b7280;   /* Medium */
-    --gray-500: #9ca3af;   /* Light text */
-    --gray-600: #d1d5db;   /* Lighter text */
-    --gray-700: #e5e7eb;   /* Very light text */
-    --gray-800: #f3f4f6;   /* Almost white */
-    --gray-900: #f9fafb;   /* White text */
+    /* Custom Variables voor Dark Mode - Inverted warm grays */
+    --gray-50: #1C1E26;    /* Darkest - warm undertone */
+    --gray-100: #252830;   /* Very dark */
+    --gray-200: #32363F;   /* Dark borders */
+    --gray-300: #454A55;   /* Borders */
+    --gray-400: #6B7280;   /* Medium */
+    --gray-500: #9CA3AF;   /* Light text */
+    --gray-600: #D1D5DB;   /* Lighter text */
+    --gray-700: #E5E7EB;   /* Very light text */
+    --gray-800: #F3F4F6;   /* Almost white */
+    --gray-900: #F9FAFB;   /* White text */
 
-    /* Gradients voor dark mode */
-    --gradient-primary: linear-gradient(135deg, #ED5F8F 0%, #A855F7 100%);
-    --gradient-soft: linear-gradient(135deg, #2d1f30 0%, #2d2440 100%);
+    /* Gradients voor dark mode - Warm tones */
+    --gradient-primary: linear-gradient(135deg, #FF7B54 0%, #8B4D5A 100%);
+    --gradient-soft: linear-gradient(135deg, #2A2530 0%, #302535 100%);
 
-    /* Shadows voor dark mode - Subtiele glows */
+    /* Shadows voor dark mode */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4);
+    --shadow-coral: 0 4px 12px rgba(255, 123, 84, 0.15);
 
     --radius: 0.5rem;
   }
@@ -289,29 +354,46 @@
     @apply shadow-md border-border/80 transform -translate-y-1;
   }
 
-  /* Gradient backgrounds - Removed for cleaner look */
-  .bg-gradient-pink {
-    background: #EC4899;
+  /* Gradient backgrounds - Warm Vertrouwen palette */
+  .bg-gradient-coral {
+    background: var(--primary-500, #FF7B54);  /* Warm Coral */
   }
 
-  .bg-gradient-pink-purple {
-    background: #EC4899;
+  .bg-gradient-coral-purple {
+    background: linear-gradient(135deg, #FF7B54 0%, #722F37 100%);
   }
 
-  .bg-gradient-pastel-pink {
-    background: #FCE7F3;
+  .bg-gradient-pastel-coral {
+    background: var(--gray-100, #F5E6E8);  /* Soft Blush */
   }
 
   .bg-gradient-pastel-blue {
-    background: #DBEAFE;
+    background: #E8F4F8;  /* Soft blue-gray */
   }
 
   .bg-gradient-pastel-green {
-    background: #DCFCE7;
+    background: rgba(168, 181, 160, 0.2);  /* Sage Green tint */
   }
 
   .bg-gradient-pastel-purple {
-    background: #F3E8FF;
+    background: rgba(107, 77, 138, 0.15);  /* Royal Purple tint */
+  }
+
+  /* Warm Vertrouwen specific backgrounds */
+  .bg-cream {
+    background: var(--gray-50, #FFF8F3);
+  }
+
+  .bg-soft-blush {
+    background: var(--gray-100, #F5E6E8);
+  }
+
+  .bg-warm-coral {
+    background: var(--primary-500, #FF7B54);
+  }
+
+  .bg-deep-purple {
+    background: var(--accent-500, #722F37);
   }
 
   /* Icon containers with pastel backgrounds - Larger and more rounded */
@@ -381,7 +463,7 @@
   }
 
   .nav-item.active {
-    @apply text-pink-500;
+    @apply text-coral-500;
   }
 
   .nav-icon {

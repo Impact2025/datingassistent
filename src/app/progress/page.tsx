@@ -24,7 +24,7 @@ export default function ProgressPage() {
   const { user } = useUser();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-coral-50 to-blue-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -45,7 +45,7 @@ export default function ProgressPage() {
             </div>
 
             <Link href="/leaderboard">
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+              <Button className="bg-gradient-to-r from-purple-600 to-coral-600 hover:from-purple-700 hover:to-coral-700">
                 <Trophy className="w-4 h-4 mr-2" />
                 Leaderboard
               </Button>

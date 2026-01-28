@@ -231,7 +231,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="p-6 border-b border-slate-700/50">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-pink-250 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-coral-250 to-coral-500 rounded-xl flex items-center justify-center shadow-lg">
                   <Shield className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -266,7 +266,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   className={cn(
                     "w-full flex items-center space-x-3 px-4 py-3 text-left rounded-xl transition-all duration-200 group",
                     isActive
-                      ? "bg-gradient-to-r from-blue-600 to-pink-600 text-white shadow-lg shadow-blue-500/20"
+                      ? "bg-gradient-to-r from-blue-600 to-coral-600 text-white shadow-lg shadow-blue-500/20"
                       : "text-slate-300 hover:bg-slate-700/50 hover:text-white"
                   )}
                 >
@@ -283,7 +283,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                         {item.name}
                       </div>
                       {(item as any).badge && (
-                        <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white text-[10px] px-1.5 py-0 h-4">
+                        <Badge className="bg-gradient-to-r from-coral-500 to-purple-500 text-white text-[10px] px-1.5 py-0 h-4">
                           {(item as any).badge}
                         </Badge>
                       )}
@@ -328,7 +328,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-pink-100/30">
+      <div className="flex-1 flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-coral-100/30">
         {/* Top bar */}
         <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-lg border-b border-gray-200 shadow-sm lg:hidden">
           <div className="flex items-center justify-between px-4 py-3">
@@ -340,7 +340,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             >
               <Menu className="w-5 h-5" />
             </Button>
-            <h1 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent">
+            <h1 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-coral-600 bg-clip-text text-transparent">
               Admin Dashboard
             </h1>
             <div className="w-10" /> {/* Spacer */}

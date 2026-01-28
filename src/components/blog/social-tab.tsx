@@ -54,7 +54,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
   // DISPLAY DATA
   // =========================================================================
 
-  const displayImage = blogData.cover_image_url || 'https://placehold.co/1200x630/ec4899/ffffff?text=DatingAssistent';
+  const displayImage = blogData.cover_image_url || 'https://placehold.co/1200x630/FF7B54/ffffff?text=DatingAssistent';
   const displayTitle = blogData.social_title || blogData.title || 'Blog Titel';
   const displayDescription = blogData.social_description || blogData.excerpt || 'Beschrijving van je blog artikel...';
   const displayUrl = `datingassistent.nl/blog/${blogData.slug || 'artikel'}`;
@@ -66,12 +66,12 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
   return (
     <div className="space-y-6">
       {/* Social Media Meta Tags Card */}
-      <Card className="border-pink-100 shadow-lg">
+      <Card className="border-coral-100 shadow-lg">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-lg font-semibold flex items-center">
-                <Share2 className="w-5 h-5 mr-2 text-pink-500" />
+                <Share2 className="w-5 h-5 mr-2 text-coral-500" />
                 Social Media Tags
               </CardTitle>
               <p className="text-sm text-gray-500 mt-1">
@@ -83,7 +83,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
               size="sm"
               variant="outline"
               onClick={autoFillSocial}
-              className="border-pink-200 text-pink-700 hover:bg-pink-50"
+              className="border-coral-200 text-coral-700 hover:bg-coral-50"
             >
               <Sparkles className="w-4 h-4 mr-2" />
               Auto-vullen
@@ -102,7 +102,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
               value={blogData.social_title || ''}
               onChange={(e) => updateBlogData({ social_title: e.target.value })}
               className={cn(
-                'border-gray-300 focus:ring-pink-500',
+                'border-gray-300 focus:ring-coral-500',
                 titleStatus === 'warning' && 'border-orange-300 focus:ring-orange-500'
               )}
             />
@@ -150,7 +150,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
               value={blogData.social_description || ''}
               onChange={(e) => updateBlogData({ social_description: e.target.value })}
               className={cn(
-                'border-gray-300 focus:ring-pink-500 min-h-[100px]',
+                'border-gray-300 focus:ring-coral-500 min-h-[100px]',
                 descriptionStatus === 'warning' && 'border-orange-300 focus:ring-orange-500'
               )}
             />
@@ -212,7 +212,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
                 <div
                   className="w-full aspect-[1.91/1] flex items-center justify-center"
                   style={{
-                    background: `linear-gradient(135deg, ${blogData.header_color || '#ec4899'}, ${adjustColor(blogData.header_color || '#ec4899', -20)})`,
+                    background: `linear-gradient(135deg, ${blogData.header_color || '#FF7B54'}, ${adjustColor(blogData.header_color || '#FF7B54', -20)})`,
                   }}
                 >
                   <h1 className="text-3xl font-bold text-white drop-shadow-2xl px-8 text-center">
@@ -220,7 +220,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
                   </h1>
                 </div>
               ) : (
-                <div className="w-full aspect-[1.91/1] bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+                <div className="w-full aspect-[1.91/1] bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
                   <p className="text-gray-400">Geen afbeelding</p>
                 </div>
               )}
@@ -259,7 +259,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
                 <div
                   className="w-full aspect-[2/1] flex items-center justify-center"
                   style={{
-                    background: `linear-gradient(135deg, ${blogData.header_color || '#ec4899'}, ${adjustColor(blogData.header_color || '#ec4899', -20)})`,
+                    background: `linear-gradient(135deg, ${blogData.header_color || '#FF7B54'}, ${adjustColor(blogData.header_color || '#FF7B54', -20)})`,
                   }}
                 >
                   <h1 className="text-2xl font-bold text-white drop-shadow-2xl px-8 text-center">
@@ -267,7 +267,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
                   </h1>
                 </div>
               ) : (
-                <div className="w-full aspect-[2/1] bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+                <div className="w-full aspect-[2/1] bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
                   <p className="text-gray-400">Geen afbeelding</p>
                 </div>
               )}
@@ -308,7 +308,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
                 <div
                   className="w-full aspect-[1.91/1] flex items-center justify-center"
                   style={{
-                    background: `linear-gradient(135deg, ${blogData.header_color || '#ec4899'}, ${adjustColor(blogData.header_color || '#ec4899', -20)})`,
+                    background: `linear-gradient(135deg, ${blogData.header_color || '#FF7B54'}, ${adjustColor(blogData.header_color || '#FF7B54', -20)})`,
                   }}
                 >
                   <h1 className="text-3xl font-bold text-white drop-shadow-2xl px-8 text-center">
@@ -316,7 +316,7 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
                   </h1>
                 </div>
               ) : (
-                <div className="w-full aspect-[1.91/1] bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center">
+                <div className="w-full aspect-[1.91/1] bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
                   <p className="text-gray-400">Geen afbeelding</p>
                 </div>
               )}
@@ -333,10 +333,10 @@ export function SocialMediaTab({ blogData, updateBlogData }: SocialMediaTabProps
       </div>
 
       {/* Social Media Tips Card */}
-      <Card className="border-pink-100 shadow-lg bg-gradient-to-br from-pink-50 to-pink-100">
+      <Card className="border-coral-100 shadow-lg bg-gradient-to-br from-coral-50 to-coral-100">
         <CardHeader>
           <CardTitle className="text-lg font-semibold flex items-center">
-            <Sparkles className="w-5 h-5 mr-2 text-pink-600" />
+            <Sparkles className="w-5 h-5 mr-2 text-coral-600" />
             Social Media Tips
           </CardTitle>
         </CardHeader>

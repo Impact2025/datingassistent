@@ -25,7 +25,7 @@ export async function POST() {
         ('Gesprekken', 'Tips voor het starten en voeren van gesprekken', 'message-circle', '#8b5cf6', 3),
         ('Dates & Activiteiten', 'Ideeën voor dates en activiteiten', 'calendar', '#f59e0b', 4),
         ('Veiligheid & Privacy', 'Vragen over veiligheid en privacy', 'shield', '#ef4444', 5),
-        ('Succesverhalen', 'Deel je successen en ervaringen', 'heart', '#ec4899', 6)
+        ('Succesverhalen', 'Deel je successen en ervaringen', 'heart', '#FF7B54', 6)
       ON CONFLICT DO NOTHING
     `;
 

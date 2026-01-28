@@ -74,7 +74,7 @@ export default function NotFoundPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-25 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center p-4">
       <div className="max-w-2xl w-full space-y-8">
         {/* Logo */}
         <motion.div
@@ -93,7 +93,7 @@ export default function NotFoundPage() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="border-2 border-pink-200 shadow-xl">
+          <Card className="border-2 border-coral-200 shadow-xl">
             <CardContent className="p-8 text-center space-y-6">
               {/* 404 Large Display */}
               <div className="relative">
@@ -117,8 +117,8 @@ export default function NotFoundPage() {
 
               {/* Quick Tips */}
               <div className="grid grid-cols-3 gap-4 pt-4">
-                <div className="text-center p-3 bg-pink-50 rounded-lg">
-                  <Heart className="w-5 h-5 mx-auto mb-1 text-pink-600" />
+                <div className="text-center p-3 bg-coral-50 rounded-lg">
+                  <Heart className="w-5 h-5 mx-auto mb-1 text-coral-600" />
                   <p className="text-xs text-gray-600">Blijf positief</p>
                 </div>
                 <div className="text-center p-3 bg-purple-50 rounded-lg">
@@ -143,16 +143,16 @@ export default function NotFoundPage() {
         >
           {quickActions.map((action, index) => {
             const Icon = action.icon;
-            const borderColor = action.color === 'pink' ? 'border-pink-300' :
+            const borderColor = action.color === 'pink' ? 'border-coral-300' :
                                action.color === 'purple' ? 'border-purple-300' :
                                'border-blue-300';
-            const bgColor = action.color === 'pink' ? 'bg-pink-100' :
+            const bgColor = action.color === 'pink' ? 'bg-coral-100' :
                            action.color === 'purple' ? 'bg-purple-100' :
                            'bg-blue-100';
-            const iconColor = action.color === 'pink' ? 'text-pink-600' :
+            const iconColor = action.color === 'pink' ? 'text-coral-600' :
                              action.color === 'purple' ? 'text-purple-600' :
                              'text-blue-600';
-            const hoverColor = action.color === 'pink' ? 'hover:border-pink-400 hover:bg-pink-50' :
+            const hoverColor = action.color === 'pink' ? 'hover:border-coral-400 hover:bg-coral-50' :
                               action.color === 'purple' ? 'hover:border-purple-400 hover:bg-purple-50' :
                               'hover:border-blue-400 hover:bg-blue-50';
 
@@ -198,7 +198,7 @@ export default function NotFoundPage() {
               <div className="grid grid-cols-2 gap-3">
                 <Button
                   variant="outline"
-                  className="w-full border-pink-200 hover:bg-pink-50"
+                  className="w-full border-coral-200 hover:bg-coral-50"
                   onClick={() => router.push('/')}
                 >
                   Homepage
@@ -240,7 +240,7 @@ export default function NotFoundPage() {
             Heb je hulp nodig? Neem contact op met ons{' '}
             <button
               onClick={() => router.push('/help')}
-              className="text-pink-600 hover:text-pink-700 underline"
+              className="text-coral-600 hover:text-coral-700 underline"
             >
               support team
             </button>

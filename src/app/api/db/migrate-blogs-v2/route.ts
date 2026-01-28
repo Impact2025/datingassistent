@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
 
       await sql`
         ALTER TABLE blogs
-        ADD COLUMN IF NOT EXISTS header_color VARCHAR(50) DEFAULT '#ec4899'
+        ADD COLUMN IF NOT EXISTS header_color VARCHAR(50) DEFAULT '#FF7B54'
       `;
       changes.push('✅ Added header_color column');
 

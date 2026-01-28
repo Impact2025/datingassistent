@@ -1279,7 +1279,7 @@ function CourseSectionCard({
 
         {/* Interactive Profile Coach for STAP 5 - AI Bio Generator with 3 variants */}
         {isHydrated && isBioCourse && ((section?.id === 'stap-5-ai') || (dbModule?.title?.toLowerCase().includes('ai') && dbModule?.title?.toLowerCase().includes('optimalisatie'))) && interactiveCoach && (
-          <div key="interactive-coach" className="rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 p-6">
+          <div key="interactive-coach" className="rounded-lg bg-gradient-to-r from-purple-50 to-coral-50 border border-purple-200 p-6">
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-purple-900">
                 <Lucide.Sparkles className="h-6 w-6" />

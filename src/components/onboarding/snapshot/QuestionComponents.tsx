@@ -51,7 +51,7 @@ export function ScaleQuestion({ question, value, onChange, error }: ScaleQuestio
         className="block text-base font-medium text-gray-900"
       >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="text-coral-500 ml-1" aria-hidden="true">*</span>}
         {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
@@ -81,10 +81,10 @@ export function ScaleQuestion({ question, value, onChange, error }: ScaleQuestio
               'flex-1 py-3 sm:py-4 px-1 sm:px-2 rounded-lg sm:rounded-xl border-2',
               'text-center transition-all min-h-[56px] sm:min-h-[60px] min-w-[44px]',
               'flex flex-col items-center justify-center touch-manipulation',
-              'focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
+              'focus:outline-none focus:ring-2 focus:ring-coral-500 focus:ring-offset-2',
               value === num
-                ? 'border-pink-500 bg-pink-50 text-pink-700'
-                : 'border-gray-200 hover:border-pink-200 hover:bg-pink-50/50'
+                ? 'border-coral-500 bg-coral-50 text-coral-700'
+                : 'border-gray-200 hover:border-coral-200 hover:bg-coral-50/50'
             )}
           >
             <span className="text-base sm:text-lg font-semibold">{num}</span>
@@ -150,7 +150,7 @@ export function SliderQuestion({ question, value, onChange, error }: SliderQuest
         className="block text-base font-medium text-gray-900"
       >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="text-coral-500 ml-1" aria-hidden="true">*</span>}
         {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
@@ -162,7 +162,7 @@ export function SliderQuestion({ question, value, onChange, error }: SliderQuest
 
       {/* Value display */}
       <div className="text-center" aria-live="polite" aria-atomic="true">
-        <span className="text-3xl sm:text-4xl font-bold text-pink-600">
+        <span className="text-3xl sm:text-4xl font-bold text-coral-600">
           {localValue}
           {question.unit && <span className="text-xl sm:text-2xl ml-1">{question.unit}</span>}
         </span>
@@ -173,7 +173,7 @@ export function SliderQuestion({ question, value, onChange, error }: SliderQuest
         {/* Track background */}
         <div className="relative h-3 sm:h-4 bg-gray-100 rounded-full overflow-hidden">
           <motion.div
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full"
+            className="absolute inset-y-0 left-0 bg-gradient-to-r from-coral-400 to-coral-500 rounded-full"
             style={{ width: `${percentage}%` }}
             initial={false}
             animate={{ width: `${percentage}%` }}
@@ -204,7 +204,7 @@ export function SliderQuestion({ question, value, onChange, error }: SliderQuest
           className={cn(
             'absolute top-1/2 -translate-y-1/2 pointer-events-none',
             'w-7 h-7 sm:w-6 sm:h-6',
-            'bg-white border-4 border-pink-500 rounded-full shadow-lg'
+            'bg-white border-4 border-coral-500 rounded-full shadow-lg'
           )}
           style={{ left: `calc(${percentage}% - 14px)` }}
           initial={false}
@@ -300,7 +300,7 @@ export function RankingQuestion({ question, value, onChange, error }: RankingQue
     <div className="space-y-4">
       <label id={`${question.id}-label`} className="block text-base font-medium text-gray-900">
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1">*</span>}
+        {question.required && <span className="text-coral-500 ml-1">*</span>}
       </label>
 
       {question.instruction && (
@@ -341,9 +341,9 @@ export function RankingQuestion({ question, value, onChange, error }: RankingQue
               className={cn(
                 'flex items-center gap-3 p-4 bg-white rounded-xl border-2 transition-colors',
                 index === 0
-                  ? 'border-pink-300 bg-pink-50'
+                  ? 'border-coral-300 bg-coral-50'
                   : 'border-gray-200 hover:border-gray-300',
-                focusedIndex === index && 'ring-2 ring-pink-500 ring-offset-2'
+                focusedIndex === index && 'ring-2 ring-coral-500 ring-offset-2'
               )}
             >
               <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
@@ -364,7 +364,7 @@ export function RankingQuestion({ question, value, onChange, error }: RankingQue
               <span
                 className={cn(
                   'w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0',
-                  index === 0 ? 'bg-pink-500 text-white' : 'bg-gray-100 text-gray-600'
+                  index === 0 ? 'bg-coral-500 text-white' : 'bg-gray-100 text-gray-600'
                 )}
                 aria-hidden="true"
               >
@@ -372,7 +372,7 @@ export function RankingQuestion({ question, value, onChange, error }: RankingQue
               </span>
               <span className="flex-1 text-gray-900">{item.label}</span>
               {index === 0 && (
-                <span className="text-xs text-pink-600 font-medium hidden sm:block">
+                <span className="text-xs text-coral-600 font-medium hidden sm:block">
                   Meest frustrerend
                 </span>
               )}
@@ -428,7 +428,7 @@ export function MultiSelectQuestion({
         className="block text-base font-medium text-gray-900"
       >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="text-coral-500 ml-1" aria-hidden="true">*</span>}
         {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
@@ -466,12 +466,12 @@ export function MultiSelectQuestion({
                 // Base styles with minimum touch target
                 'relative p-4 rounded-xl border-2 text-left transition-all',
                 'min-h-[56px] touch-manipulation',
-                'focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
+                'focus:outline-none focus:ring-2 focus:ring-coral-500 focus:ring-offset-2',
                 isSelected
-                  ? 'border-pink-500 bg-pink-50'
+                  ? 'border-coral-500 bg-coral-50'
                   : isDisabled
                     ? 'border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed'
-                    : 'border-gray-200 hover:border-pink-200 active:bg-pink-50/50'
+                    : 'border-gray-200 hover:border-coral-200 active:bg-coral-50/50'
               )}
             >
               <div className="flex items-start gap-3">
@@ -479,7 +479,7 @@ export function MultiSelectQuestion({
                   className={cn(
                     'w-6 h-6 rounded flex-shrink-0 flex items-center justify-center border-2 mt-0.5',
                     isSelected
-                      ? 'bg-pink-500 border-pink-500'
+                      ? 'bg-coral-500 border-coral-500'
                       : 'border-gray-300'
                   )}
                   aria-hidden="true"
@@ -539,7 +539,7 @@ export function SelectQuestion({ question, value, onChange, error }: SelectQuest
           className="block text-base font-medium text-gray-900"
         >
           {question.label}
-          {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+          {question.required && <span className="text-coral-500 ml-1" aria-hidden="true">*</span>}
           {question.required && <span className="sr-only">(verplicht)</span>}
         </label>
 
@@ -568,10 +568,10 @@ export function SelectQuestion({ question, value, onChange, error }: SelectQuest
                 // Base styles with minimum touch target
                 'w-full p-4 rounded-xl border-2 text-left transition-all',
                 'min-h-[56px] touch-manipulation',
-                'focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
+                'focus:outline-none focus:ring-2 focus:ring-coral-500 focus:ring-offset-2',
                 value === option.value
-                  ? 'border-pink-500 bg-pink-50'
-                  : 'border-gray-200 hover:border-pink-200 active:bg-pink-50/50'
+                  ? 'border-coral-500 bg-coral-50'
+                  : 'border-gray-200 hover:border-coral-200 active:bg-coral-50/50'
               )}
             >
               <div className="flex items-center gap-3">
@@ -579,7 +579,7 @@ export function SelectQuestion({ question, value, onChange, error }: SelectQuest
                   className={cn(
                     'w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center border-2',
                     value === option.value
-                      ? 'bg-pink-500 border-pink-500'
+                      ? 'bg-coral-500 border-coral-500'
                       : 'border-gray-300'
                   )}
                   aria-hidden="true"
@@ -616,7 +616,7 @@ export function SelectQuestion({ question, value, onChange, error }: SelectQuest
         className="block text-base font-medium text-gray-900"
       >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="text-coral-500 ml-1" aria-hidden="true">*</span>}
         {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
@@ -635,12 +635,12 @@ export function SelectQuestion({ question, value, onChange, error }: SelectQuest
           aria-invalid={!!error}
           className={cn(
             'w-full p-4 pr-10 rounded-xl border-2 bg-white appearance-none cursor-pointer transition-all',
-            'focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20',
+            'focus:outline-none focus:border-coral-500 focus:ring-2 focus:ring-coral-500/20',
             // Mobile: 16px font prevents iOS zoom on focus
             'text-base',
             'touch-manipulation',
             'min-h-[56px]',
-            value ? 'border-pink-500' : error ? 'border-red-300' : 'border-gray-200'
+            value ? 'border-coral-500' : error ? 'border-red-300' : 'border-gray-200'
           )}
         >
           <option value="" disabled>
@@ -687,7 +687,7 @@ export function TextQuestion({ question, value, onChange, error }: TextQuestionP
         className="block text-base font-medium text-gray-900"
       >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="text-coral-500 ml-1" aria-hidden="true">*</span>}
         {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
@@ -709,7 +709,7 @@ export function TextQuestion({ question, value, onChange, error }: TextQuestionP
           aria-invalid={!!error}
           className={cn(
             'w-full p-4 rounded-xl border-2 bg-white transition-all resize-none',
-            'focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20',
+            'focus:outline-none focus:border-coral-500 focus:ring-2 focus:ring-coral-500/20',
             'placeholder:text-gray-400',
             // Mobile: 16px font prevents iOS zoom on focus
             'text-base sm:text-sm',
@@ -732,7 +732,7 @@ export function TextQuestion({ question, value, onChange, error }: TextQuestionP
           autoCapitalize="words"
           className={cn(
             'w-full p-4 rounded-xl border-2 bg-white transition-all',
-            'focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20',
+            'focus:outline-none focus:border-coral-500 focus:ring-2 focus:ring-coral-500/20',
             'placeholder:text-gray-400',
             // Mobile: 16px font prevents iOS zoom on focus
             'text-base sm:text-sm',
@@ -779,7 +779,7 @@ export function NumberQuestion({ question, value, onChange, error }: NumberQuest
         className="block text-base font-medium text-gray-900"
       >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="text-coral-500 ml-1" aria-hidden="true">*</span>}
         {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
@@ -803,7 +803,7 @@ export function NumberQuestion({ question, value, onChange, error }: NumberQuest
         aria-invalid={!!error}
         className={cn(
           'w-full p-4 rounded-xl border-2 bg-white transition-all',
-          'focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20',
+          'focus:outline-none focus:border-coral-500 focus:ring-2 focus:ring-coral-500/20',
           'placeholder:text-gray-400',
           // Mobile: 16px font prevents iOS zoom on focus
           'text-base sm:text-sm',
@@ -843,7 +843,7 @@ export function BooleanQuestion({ question, value, onChange, error }: BooleanQue
         className="block text-base font-medium text-gray-900"
       >
         {question.label}
-        {question.required && <span className="text-pink-500 ml-1" aria-hidden="true">*</span>}
+        {question.required && <span className="text-coral-500 ml-1" aria-hidden="true">*</span>}
         {question.required && <span className="sr-only">(verplicht)</span>}
       </label>
 
@@ -871,11 +871,11 @@ export function BooleanQuestion({ question, value, onChange, error }: BooleanQue
               // Base styles with minimum touch target
               'flex-1 p-4 rounded-xl border-2 font-medium transition-all',
               'min-h-[56px] touch-manipulation',
-              'focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2',
+              'focus:outline-none focus:ring-2 focus:ring-coral-500 focus:ring-offset-2',
               'text-base',
               value === option.value
-                ? 'border-pink-500 bg-pink-50 text-pink-700'
-                : 'border-gray-200 hover:border-pink-200 active:bg-pink-50/50 text-gray-700'
+                ? 'border-coral-500 bg-coral-50 text-coral-700'
+                : 'border-gray-200 hover:border-coral-200 active:bg-coral-50/50 text-gray-700'
             )}
           >
             {option.label}

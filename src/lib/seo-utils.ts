@@ -188,7 +188,7 @@ export function addKennisbankLinksToContent(content: string): {
     }
 
     // Create the link
-    const link = `<a href="${suggestion.url}" class="text-pink-600 hover:text-pink-700 underline" title="${suggestion.title}">${keyword}</a>`;
+    const link = `<a href="${suggestion.url}" class="text-coral-600 hover:text-coral-700 underline" title="${suggestion.title}">${keyword}</a>`;
     modifiedContent = before + link + after;
   });
 

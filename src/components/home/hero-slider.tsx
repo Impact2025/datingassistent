@@ -39,7 +39,7 @@ const SLIDES: Slide[] = [
     subtitle: 'Professioneel Daten met AI Coaching',
     description: 'Sinds 2013 helpen we duizenden mensen succesvol te daten. Nu gecombineerd met AI voor de ultieme dating ervaring.',
     icon: Award,
-    gradient: 'from-blue-600 via-purple-600 to-pink-600',
+    gradient: 'from-blue-600 via-purple-600 to-coral-600',
     stats: [
       { value: '25K+', label: 'Gebruikers' },
       { value: '89%', label: 'Meer matches' },
@@ -67,7 +67,7 @@ const SLIDES: Slide[] = [
     subtitle: 'Van onzichtbaar naar onweerstaanbaar',
     description: 'AI-gedreven profiel analyse en foto checks. Verhoog je matches met 89% door professionele optimalisatie.',
     icon: User,
-    gradient: 'from-orange-500 via-red-500 to-pink-500',
+    gradient: 'from-orange-500 via-red-500 to-coral-500',
     stats: [
       { value: '50', label: 'Foto checks' },
       { value: '15', label: 'Bio rewrites' },
@@ -81,7 +81,7 @@ const SLIDES: Slide[] = [
     subtitle: 'Jouw veiligheid staat voorop',
     description: 'AI detecteert rode vlaggen en waarschuwt voor risico\'s. 50 veiligheid checks per dag voor zorgeloos daten.',
     icon: Shield,
-    gradient: 'from-indigo-500 via-purple-500 to-pink-500',
+    gradient: 'from-indigo-500 via-purple-500 to-coral-500',
     stats: [
       { value: '50', label: 'Checks/dag' },
       { value: '100%', label: 'Privacy' },
@@ -141,10 +141,10 @@ export function HeroSlider() {
   const Icon = slide.icon;
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-pink-500/10">
+    <section className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-coral-500/10">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -right-1/2 w-[800px] h-[800px] bg-gradient-to-br from-primary/20 to-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -top-1/2 -right-1/2 w-[800px] h-[800px] bg-gradient-to-br from-primary/20 to-coral-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-1/2 -left-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-purple-500/20 to-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
@@ -158,7 +158,7 @@ export function HeroSlider() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-full px-4 py-2 mb-6 border border-primary/20 shadow-lg">
               <Icon className="w-4 h-4 text-primary animate-pulse" />
-              <span className="text-sm font-medium bg-gradient-to-r from-primary to-pink-600 bg-clip-text text-transparent">
+              <span className="text-sm font-medium bg-gradient-to-r from-primary to-coral-600 bg-clip-text text-transparent">
                 10+ Jaar Ervaring • AI-Powered • 25K+ Gebruikers
               </span>
             </div>

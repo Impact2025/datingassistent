@@ -130,8 +130,8 @@ export function TutorialModal({
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                    <BookOpen className="w-5 h-5 text-pink-600" />
+                  <div className="w-10 h-10 bg-coral-100 rounded-full flex items-center justify-center">
+                    <BookOpen className="w-5 h-5 text-coral-600" />
                   </div>
                   <div>
                     <CardTitle className="text-xl flex items-center gap-2">
@@ -165,9 +165,9 @@ export function TutorialModal({
                       key={index}
                       className={`w-2 h-2 rounded-full transition-colors ${
                         index === currentStep
-                          ? 'bg-pink-500'
+                          ? 'bg-coral-500'
                           : completedSteps.has(index)
-                          ? 'bg-pink-300'
+                          ? 'bg-coral-300'
                           : 'bg-gray-300'
                       }`}
                     />
@@ -291,7 +291,7 @@ export function TutorialModal({
 
                   <Button
                     onClick={handleNext}
-                    className="bg-pink-500 hover:bg-pink-600 text-white flex items-center gap-2"
+                    className="bg-coral-500 hover:bg-coral-600 text-white flex items-center gap-2"
                   >
                     {isLastStep ? (
                       <>

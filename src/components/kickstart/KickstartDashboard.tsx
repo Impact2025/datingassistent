@@ -320,7 +320,7 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
                 className={cn(
                   'w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all',
                   isSelected
-                    ? 'bg-pink-50 border-2 border-pink-200'
+                    ? 'bg-coral-50 border-2 border-coral-200'
                     : 'bg-white border border-gray-100 hover:border-gray-200',
                   isLocked && 'opacity-50 cursor-not-allowed'
                 )}
@@ -328,7 +328,7 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
                 {/* Status icon */}
                 <div className={cn(
                   'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
-                  isCompleted ? 'bg-green-100' : isSelected ? 'bg-pink-100' : 'bg-gray-100'
+                  isCompleted ? 'bg-green-100' : isSelected ? 'bg-coral-100' : 'bg-gray-100'
                 )}>
                   {isCompleted ? (
                     <CheckCircle className="w-4 h-4 text-green-600" />
@@ -350,7 +350,7 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
                     </p>
                     {/* AI Badge - Subtle indicator */}
                     {day.ai_tool && !isLocked && (
-                      <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-pink-50 text-pink-500 text-[10px] font-medium">
+                      <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-coral-50 text-coral-500 text-[10px] font-medium">
                         <Sparkles className="w-2.5 h-2.5" />
                         AI
                       </span>
@@ -363,7 +363,7 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
                 {!isLocked && (
                   <ChevronRight className={cn(
                     'w-4 h-4 flex-shrink-0',
-                    isSelected ? 'text-pink-500' : 'text-gray-300'
+                    isSelected ? 'text-coral-500' : 'text-gray-300'
                   )} />
                 )}
               </button>
@@ -440,7 +440,7 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
                   <Button
                     onClick={handleVideoComplete}
                     disabled={saving}
-                    className="w-full bg-pink-500 hover:bg-pink-600 text-white"
+                    className="w-full bg-coral-500 hover:bg-coral-600 text-white"
                   >
                     <CheckCircle className="w-4 h-4 mr-2" />
                     Markeer als bekeken
@@ -478,7 +478,7 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
                                           ? 'bg-red-50 border-red-200'
                                           : 'bg-gray-50 border-gray-100'
                                       : isSelected
-                                        ? 'bg-pink-50 border-pink-200'
+                                        ? 'bg-coral-50 border-coral-200'
                                         : 'bg-white border-gray-100 hover:border-gray-200'
                                   )}
                                 >
@@ -646,7 +646,7 @@ export function KickstartDashboard({ onBack }: KickstartDashboardProps) {
                       }
                     }}
                     disabled={!selectedDay || selectedDay >= 21 || days.find(d => d.dag_nummer === (selectedDay || 0) + 1)?.status === 'locked'}
-                    className="bg-pink-500 hover:bg-pink-600 text-white"
+                    className="bg-coral-500 hover:bg-coral-600 text-white"
                   >
                     Volgende
                     <ChevronRight className="w-4 h-4 ml-1" />

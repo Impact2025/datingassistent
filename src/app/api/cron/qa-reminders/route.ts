@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
           subject: `Morgen: ${session.title}`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #E61E63;">Herinnering: Q&A Sessie Morgen!</h2>
+              <h2 style="color: #FF7B54;">Herinnering: Q&A Sessie Morgen!</h2>
 
               <p>Hoi ${user.name || 'daar'},</p>
 

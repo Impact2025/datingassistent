@@ -240,7 +240,7 @@ export function WeeklyReflection({ userId, weekStart, onComplete, onSkip }: Week
                     <div className="text-sm text-gray-600">Response Rate</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-pink-600 mb-1">
+                    <div className="text-2xl font-bold text-coral-600 mb-1">
                       {weekStats.currentStreak}
                     </div>
                     <div className="text-sm text-gray-600">Streak</div>
@@ -452,7 +452,7 @@ export function WeeklyReflection({ userId, weekStart, onComplete, onSkip }: Week
           transition={{ delay: 0.5 }}
           className="mt-8"
         >
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-pink-500 to-pink-600 text-white">
+          <Card className="border-0 shadow-lg bg-gradient-to-r from-coral-500 to-coral-600 text-white">
             <CardContent className="p-6 text-center">
               <h3 className="text-lg font-bold mb-2">Deze Week</h3>
               <div className="flex justify-center gap-6 text-sm">

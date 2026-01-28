@@ -74,7 +74,7 @@ export function ProToolsHub() {
       description: 'Ontdek je sterke punten en groei gebieden met personalized feedback',
       icon: <Target className="w-6 h-6" />,
       badge: 'Personalization',
-      gradient: 'from-purple-500 to-pink-500',
+      gradient: 'from-purple-500 to-coral-500',
       value: 'Custom Path'
     },
     {
@@ -83,7 +83,7 @@ export function ProToolsHub() {
       description: 'AI-driven aanbevelingen specifiek voor jouw dating journey',
       icon: <Sparkles className="w-6 h-6" />,
       badge: 'Smart AI',
-      gradient: 'from-pink-500 to-rose-500',
+      gradient: 'from-coral-500 to-rose-500',
       value: 'Personalized'
     },
     {
@@ -114,7 +114,7 @@ export function ProToolsHub() {
         </div>
 
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-coral-500 flex items-center justify-center">
             <Crown className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -123,7 +123,7 @@ export function ProToolsHub() {
           </div>
         </div>
 
-        <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">
+        <Badge className="bg-gradient-to-r from-purple-500 to-coral-500 text-white border-0">
           <Zap className="w-3 h-3 mr-1" />
           6 Premium Tools Beschikbaar
         </Badge>
@@ -156,7 +156,7 @@ export function ProToolsHub() {
 
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
-          <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
+          <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-coral-50">
             <CardContent className="p-6">
               <h2 className="text-xl font-semibold mb-2">Welkom bij Pro Tools</h2>
               <p className="text-gray-600 mb-4">

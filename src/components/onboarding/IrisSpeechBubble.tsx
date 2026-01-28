@@ -34,7 +34,7 @@ export function IrisSpeechBubble({
           "rounded-2xl rounded-tl-none px-4 py-3 max-w-md shadow-sm",
           variant === "default" && "bg-gray-100",
           variant === "highlight" &&
-            "bg-gradient-to-r from-violet-50 to-pink-50 border border-pink-200"
+            "bg-gradient-to-r from-violet-50 to-coral-50 border border-coral-200"
         )}
       >
         <p className="text-gray-800">{message}</p>

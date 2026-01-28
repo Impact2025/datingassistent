@@ -161,7 +161,7 @@ export function AttachmentQuestionnaire({
     return (
       <div className="flex items-center justify-center py-16">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Vragen laden...</p>
         </div>
       </div>
@@ -198,8 +198,8 @@ export function AttachmentQuestionnaire({
           <Card className="border-0 shadow-sm bg-gradient-to-br from-white to-gray-50">
             <CardContent className="p-8">
               <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-pink-100 to-pink-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl font-bold text-pink-600">
+                <div className="w-16 h-16 bg-gradient-to-br from-coral-100 to-coral-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-2xl font-bold text-coral-600">
                     {currentQuestionIndex + 1}
                   </span>
                 </div>
@@ -217,11 +217,11 @@ export function AttachmentQuestionnaire({
                         key={scenario.id}
                         onClick={() => handleAnswer(index + 1)}
                         disabled={loading}
-                        className="w-full p-4 text-left rounded-xl border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full p-4 text-left rounded-xl border-2 border-gray-200 hover:border-coral-300 hover:bg-coral-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <div className="flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <span className="text-sm font-semibold text-pink-600">{index + 1}</span>
+                          <div className="w-8 h-8 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-sm font-semibold text-coral-600">{index + 1}</span>
                           </div>
                           <p className="text-gray-700 leading-relaxed">{scenario.option_text}</p>
                         </div>
@@ -237,7 +237,7 @@ export function AttachmentQuestionnaire({
                           key={value}
                           onClick={() => handleAnswer(value)}
                           disabled={loading}
-                          className="aspect-square rounded-xl border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50 transition-all duration-200 flex items-center justify-center text-lg font-semibold text-gray-700 hover:text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="aspect-square rounded-xl border-2 border-gray-200 hover:border-coral-300 hover:bg-coral-50 transition-all duration-200 flex items-center justify-center text-lg font-semibold text-gray-700 hover:text-coral-600 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {value}
                         </button>
@@ -294,7 +294,7 @@ export function AttachmentQuestionnaire({
         <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="text-center max-w-md px-6">
             <div className="relative mb-6">
-              <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-pink-500 mx-auto"></div>
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-coral-500 mx-auto"></div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="animate-pulse text-2xl">💭</div>
               </div>
@@ -306,15 +306,15 @@ export function AttachmentQuestionnaire({
 
             <div className="space-y-2 text-sm text-gray-600">
               <p className="flex items-center justify-center gap-2">
-                <span className="inline-block w-2 h-2 bg-pink-500 rounded-full animate-pulse"></span>
+                <span className="inline-block w-2 h-2 bg-coral-500 rounded-full animate-pulse"></span>
                 Antwoorden verwerken
               </p>
               <p className="flex items-center justify-center gap-2">
-                <span className="inline-block w-2 h-2 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></span>
+                <span className="inline-block w-2 h-2 bg-coral-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></span>
                 Hechtingsstijl berekenen
               </p>
               <p className="flex items-center justify-center gap-2">
-                <span className="inline-block w-2 h-2 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></span>
+                <span className="inline-block w-2 h-2 bg-coral-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></span>
                 AI inzichten genereren
               </p>
             </div>

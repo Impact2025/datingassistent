@@ -1,7 +1,7 @@
 // Email Design System - Colors & Theming
 export const emailColors = {
   // Primary Brand Colors
-  primary: '#E14874',           // Roze/Magenta - Primary CTA
+  primary: '#FF7B54',           // Roze/Magenta - Primary CTA
   secondary: '#8B5CF6',         // Paars - Secondary elements
 
   // Semantic Colors

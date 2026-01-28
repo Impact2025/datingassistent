@@ -260,7 +260,7 @@ export function getTierColor(tier: AchievementTier): string {
     case 'gold':
       return 'from-yellow-400 to-yellow-600';
     case 'platinum':
-      return 'from-purple-500 to-pink-600';
+      return 'from-purple-500 to-coral-600';
     default:
       return 'from-gray-400 to-gray-600';
   }
@@ -275,7 +275,7 @@ export function getTierBgColor(tier: AchievementTier): string {
     case 'gold':
       return 'bg-yellow-50';
     case 'platinum':
-      return 'bg-purple-50';
+      return 'bg-coral-50';
     default:
       return 'bg-gray-50';
   }

@@ -252,7 +252,7 @@ export function NotificationSettings() {
       </Card>
 
       {/* Benefits */}
-      <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+      <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
         <CardContent className="p-6">
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 text-purple-600 mt-1" />
@@ -287,7 +287,7 @@ export function NotificationSettings() {
           <Button
             onClick={savePreferences}
             disabled={isSaving}
-            className="bg-pink-500 hover:bg-pink-600"
+            className="bg-coral-500 hover:bg-coral-600"
           >
             {isSaving ? (
               <>

@@ -23,15 +23,15 @@ export default function CursusPage() {
         <div className="mt-16 bg-white rounded-2xl p-8 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-pink-500 mb-2">500+</div>
+              <div className="text-3xl font-bold text-coral-500 mb-2">500+</div>
               <div className="text-gray-600">Gebruikers volgden onze cursussen</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-pink-500 mb-2">89%</div>
+              <div className="text-3xl font-bold text-coral-500 mb-2">89%</div>
               <div className="text-gray-600">Meer matches na cursus</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-pink-500 mb-2">4.8/5</div>
+              <div className="text-3xl font-bold text-coral-500 mb-2">4.8/5</div>
               <div className="text-gray-600">Gemiddelde beoordeling</div>
             </div>
           </div>

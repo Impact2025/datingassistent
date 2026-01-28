@@ -87,10 +87,10 @@ export function ProgramCards() {
         </Card>
 
         {/* Plan 2: Transformatie (HERO) */}
-        <Card className="relative border-4 border-[#E61E63] dark:border-pink-600 h-full flex flex-col transition-all hover:shadow-2xl bg-white dark:bg-gray-800 md:scale-105 shadow-xl">
+        <Card className="relative border-4 border-coral-500 dark:border-coral-600 h-full flex flex-col transition-all hover:shadow-2xl bg-white dark:bg-gray-800 md:scale-105 shadow-xl">
           {/* "ONZE AANRADER" Badge */}
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className="bg-[#E61E63] dark:bg-pink-600 text-white px-4 py-2 text-sm font-bold shadow-lg">
+            <Badge className="bg-coral-500 dark:bg-coral-600 text-white px-4 py-2 text-sm font-bold shadow-lg">
               ONZE AANRADER
             </Badge>
           </div>
@@ -113,7 +113,7 @@ export function ProgramCards() {
                 <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
                   €297
                 </span>
-                <span className="text-5xl font-bold text-[#E61E63] dark:text-pink-400">
+                <span className="text-5xl font-bold text-coral-500 dark:text-coral-400">
                   €147
                 </span>
               </div>
@@ -123,7 +123,7 @@ export function ProgramCards() {
             <div className="space-y-3 flex-grow">
               <ul className="space-y-3">
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
-                  <Sparkles className="w-5 h-5 mt-0.5 flex-shrink-0 text-[#E61E63] dark:text-pink-400" />
+                  <Sparkles className="w-5 h-5 mt-0.5 flex-shrink-0 text-coral-500 dark:text-coral-400" />
                   <span className="font-medium">Alles uit Kickstart, plus:</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
@@ -148,7 +148,7 @@ export function ProgramCards() {
             {/* CTA */}
             <Button
               onClick={() => handleSelectProgram('transformatie')}
-              className="w-full bg-[#E61E63] hover:bg-[#c51a56] dark:bg-pink-600 dark:hover:bg-pink-700 text-white font-semibold text-lg py-6 shadow-lg hover:shadow-xl transition-all"
+              className="w-full bg-coral-500 hover:bg-coral-600 dark:bg-coral-600 dark:hover:bg-coral-700 text-white font-semibold text-lg py-6 shadow-lg hover:shadow-xl transition-all"
             >
               Kies dit programma
             </Button>

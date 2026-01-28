@@ -38,7 +38,7 @@ export function WaardenOnderzoek({ sessionId, onComplete }: WaardenOnderzoekProp
     {
       id: 'liefde_relatie',
       name: 'Liefde & Relatie',
-      icon: <Heart className="w-6 h-6 text-pink-500" />,
+      icon: <Heart className="w-6 h-6 text-coral-500" />,
       description: 'Wat zoek je in emotionele verbinding en partnerschap?',
       waarden: [
         { key: 'emotionele_verbinding', name: 'Emotionele Verbinding', description: 'Diepe gevoelens delen en begrijpen' },
@@ -210,7 +210,7 @@ export function WaardenOnderzoek({ sessionId, onComplete }: WaardenOnderzoekProp
             </div>
             <div className="text-right">
               <div className="text-sm text-gray-500">Voortgang</div>
-              <div className="text-lg font-bold text-pink-600">{totalResponses}/{totalPossible}</div>
+              <div className="text-lg font-bold text-coral-600">{totalResponses}/{totalPossible}</div>
             </div>
           </div>
 
@@ -221,7 +221,7 @@ export function WaardenOnderzoek({ sessionId, onComplete }: WaardenOnderzoekProp
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <div
-                className="bg-gradient-to-r from-pink-500 to-purple-500 h-3 rounded-full transition-all duration-300"
+                className="bg-gradient-to-r from-coral-500 to-purple-500 h-3 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -250,7 +250,7 @@ export function WaardenOnderzoek({ sessionId, onComplete }: WaardenOnderzoekProp
                   <p className="text-sm text-gray-600 mt-1">{waarde.description}</p>
                 </div>
                 {responses[waarde.key] && (
-                  <div className="text-sm font-medium text-pink-600 bg-pink-50 px-3 py-1 rounded-full">
+                  <div className="text-sm font-medium text-coral-600 bg-coral-50 px-3 py-1 rounded-full">
                     {getRatingLabel(responses[waarde.key])}
                   </div>
                 )}
@@ -289,7 +289,7 @@ export function WaardenOnderzoek({ sessionId, onComplete }: WaardenOnderzoekProp
             <Button
               onClick={handleNext}
               disabled={!isCategoryComplete || submitting}
-              className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
+              className="flex-1 bg-gradient-to-r from-coral-500 to-purple-500 hover:from-coral-600 hover:to-purple-600 text-white"
             >
               {submitting ? (
                 'Opslaan...'

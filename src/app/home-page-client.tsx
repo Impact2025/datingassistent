@@ -1,9 +1,9 @@
 "use client";
 
-import { LandingPageContent } from '@/components/landing/landing-page-content';
+// Import the homepage-v4 content (Warm Vertrouwen - Wereldklasse Editie)
+import HomepageV4 from './homepage-v4/page';
 
 export function HomePageClient() {
-  // Show landing page for all users (logged in or not)
-  // Logged-in users can navigate to dashboard via header button
-  return <LandingPageContent />;
+  // Use the new homepage-v4 design with Warm Vertrouwen styling
+  return <HomepageV4 />;
 }

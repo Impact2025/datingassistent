@@ -299,7 +299,7 @@ export function DatingWeekLogger({ onComplete, onCancel }: DatingWeekLoggerProps
         <Button
           onClick={currentStep === 4 ? handleComplete : handleNext}
           disabled={!canProceed() || isGeneratingInsight}
-          className="bg-pink-500 hover:bg-pink-600"
+          className="bg-coral-500 hover:bg-coral-600"
         >
           {currentStep === 4 ? (
             <>✨ Week registreren</>
@@ -506,8 +506,8 @@ function DateForm({ details, onUpdate }: { details: any; onUpdate: (data: any) =
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-3">
-        <Coffee className="w-4 h-4 text-pink-600" />
-        <span className="font-medium text-pink-900">Date Details</span>
+        <Coffee className="w-4 h-4 text-coral-600" />
+        <span className="font-medium text-coral-900">Date Details</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -699,7 +699,7 @@ function ActivityDetailCard({
     switch (activityId) {
       case 'new_match': return 'border-l-yellow-500';
       case 'conversation': return 'border-l-blue-500';
-      case 'date': return 'border-l-pink-500';
+      case 'date': return 'border-l-coral-500';
       case 'ghosting': return 'border-l-gray-500';
       case 'no_activity': return 'border-l-green-500';
       default: return 'border-l-blue-500';
@@ -743,7 +743,7 @@ function IrisInsightStep({
   const formattedInsight = formatMarkdownToHtml(insight);
 
   return (
-    <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+    <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-purple-600" />

@@ -104,7 +104,7 @@ export default function EmailAnalyticsPage() {
     return (
       <div className="min-h-screen bg-gray-50 p-8">
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500"></div>
         </div>
       </div>
     );
@@ -131,7 +131,7 @@ export default function EmailAnalyticsPage() {
         <select
           value={period}
           onChange={(e) => setPeriod(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
+          className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-coral-500"
         >
           <option value="7d">Laatste 7 dagen</option>
           <option value="30d">Laatste 30 dagen</option>

@@ -51,7 +51,7 @@ export function PatternResult({
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">
             {result.title}
           </h1>
-          <p className="text-lg text-pink-500 font-medium">
+          <p className="text-lg text-coral-500 font-medium">
             {result.subtitle}
           </p>
 
@@ -64,7 +64,7 @@ export function PatternResult({
               </div>
               <div className="h-2 bg-gray-100 rounded-full">
                 <motion.div
-                  className="h-full bg-pink-500 rounded-full"
+                  className="h-full bg-coral-500 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${anxietyScore}%` }}
                   transition={{ duration: 0.8, delay: 0.2 }}
@@ -78,7 +78,7 @@ export function PatternResult({
               </div>
               <div className="h-2 bg-gray-100 rounded-full">
                 <motion.div
-                  className="h-full bg-pink-300 rounded-full"
+                  className="h-full bg-coral-300 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${avoidanceScore}%` }}
                   transition={{ duration: 0.8, delay: 0.3 }}
@@ -109,7 +109,7 @@ export function PatternResult({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="p-6 bg-pink-50 rounded-2xl"
+            className="p-6 bg-coral-50 rounded-2xl"
           >
             <h2 className="text-xl font-bold text-gray-900 mb-3">
               {result.nuance.headline}
@@ -134,7 +134,7 @@ export function PatternResult({
             <ul className="space-y-2">
               {result.patternExplained.bullets.map((bullet, index) => (
                 <li key={index} className="flex items-start gap-3 text-gray-600">
-                  <Check className="w-4 h-4 text-pink-500 mt-1 flex-shrink-0" />
+                  <Check className="w-4 h-4 text-coral-500 mt-1 flex-shrink-0" />
                   <span>{bullet}</span>
                 </li>
               ))}
@@ -188,7 +188,7 @@ export function PatternResult({
               <ul className="space-y-2 mb-6">
                 {result.ctaSection.bullets.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-3 text-gray-300">
-                    <Check className="w-4 h-4 text-pink-400 mt-1 flex-shrink-0" />
+                    <Check className="w-4 h-4 text-coral-400 mt-1 flex-shrink-0" />
                     <span>{bullet}</span>
                   </li>
                 ))}
@@ -198,7 +198,7 @@ export function PatternResult({
             {/* Primary CTA - Kickstart */}
             <Link
               href="/prijzen"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600 transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-coral-500 text-white rounded-full font-semibold hover:bg-coral-600 transition-colors"
             >
               {result.ctaSection.buttonText}
               <ArrowRight className="w-5 h-5" />
@@ -210,7 +210,7 @@ export function PatternResult({
               <div className="mt-4 pt-4 border-t border-gray-700">
                 <Link
                   href="/prijzen"
-                  className="text-pink-400 hover:text-pink-300 transition-colors text-sm font-medium"
+                  className="text-coral-400 hover:text-coral-300 transition-colors text-sm font-medium"
                 >
                   {result.ctaSection.buttonTextSecondary} Transformatie (€147)
                 </Link>
@@ -243,7 +243,7 @@ export function PatternResult({
             >
               {copied ? (
                 <>
-                  <CheckCircle className="w-4 h-4 text-pink-500" />
+                  <CheckCircle className="w-4 h-4 text-coral-500" />
                   Gekopieerd
                 </>
               ) : (

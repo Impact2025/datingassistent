@@ -99,8 +99,8 @@ export function RelatiepatronenResults({
 
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-pink-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <Sparkles className="w-8 h-8 text-pink-500" />
+        <div className="w-16 h-16 bg-coral-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <Sparkles className="w-8 h-8 text-coral-500" />
         </div>
 
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -114,10 +114,10 @@ export function RelatiepatronenResults({
       </div>
 
       {/* Primary Pattern */}
-      <Card className="mb-8 border-2 border-pink-200">
+      <Card className="mb-8 border-2 border-coral-200">
         <CardContent className="p-8">
           <div className="text-center">
-            <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-coral-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
               {patternIcon(data.primaryPattern)}
             </div>
 
@@ -130,7 +130,7 @@ export function RelatiepatronenResults({
             </p>
 
             <div className="flex items-center justify-center gap-4">
-              <Badge variant="secondary" className="bg-pink-100 text-pink-700">
+              <Badge variant="secondary" className="bg-coral-100 text-coral-700">
                 Primair: {getPatternName(data.primaryPattern)}
               </Badge>
               {data.secondaryPatterns.length > 0 && (
@@ -147,7 +147,7 @@ export function RelatiepatronenResults({
       <Card className="mb-8">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Target className="w-5 h-5 text-pink-500" />
+            <Target className="w-5 h-5 text-coral-500" />
             Jouw Patroon Scores
           </CardTitle>
         </CardHeader>
@@ -429,7 +429,7 @@ export function RelatiepatronenResults({
               }
             }
           }}
-          className="bg-pink-500 hover:bg-pink-600 flex items-center gap-2"
+          className="bg-coral-500 hover:bg-coral-600 flex items-center gap-2"
         >
           <Download className="w-4 h-4" />
           Resultaat Downloaden (PDF)

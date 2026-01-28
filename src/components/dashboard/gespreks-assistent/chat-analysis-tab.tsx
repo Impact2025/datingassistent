@@ -235,7 +235,7 @@ export function ChatAnalysisTab({ onTabChange }: ChatAnalysisTabProps) {
             onClick={analyzeChat}
             disabled={isAnalyzing || !chatContent.trim() || !platform}
             size="lg"
-            className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white shadow-sm"
+            className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white shadow-sm"
           >
             {isAnalyzing ? (
               <>
@@ -311,7 +311,7 @@ export function ChatAnalysisTab({ onTabChange }: ChatAnalysisTabProps) {
             <Card className="bg-white border-0 shadow-sm">
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Heart className="w-5 h-5 text-pink-500" />
+                  <Heart className="w-5 h-5 text-coral-500" />
                   Vibe Analyse
                 </CardTitle>
               </CardHeader>
@@ -494,7 +494,7 @@ export function ChatAnalysisTab({ onTabChange }: ChatAnalysisTabProps) {
                 </Button>
                 <Button
                   onClick={() => onTabChange?.('strategy-advisor')}
-                  className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white shadow-sm"
+                  className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white shadow-sm"
                 >
                   <Zap className="w-4 h-4 mr-2" />
                   Strategie Tips

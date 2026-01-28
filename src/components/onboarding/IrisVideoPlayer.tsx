@@ -330,8 +330,8 @@ export function IrisVideoPlayer({
       className={cn(
         'relative w-full max-w-2xl mx-auto',
         'rounded-2xl sm:rounded-3xl overflow-hidden',
-        'bg-gradient-to-br from-pink-900 to-purple-900',
-        'shadow-2xl shadow-pink-900/30',
+        'bg-gradient-to-br from-coral-900 to-purple-900',
+        'shadow-2xl shadow-coral-900/30',
         className
       )}
       onMouseMove={resetControlsTimer}
@@ -391,7 +391,7 @@ export function IrisVideoPlayer({
         {videoState === 'loading' && (
           <motion.div
             {...fadeIn}
-            className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-pink-900 to-purple-900"
+            className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-coral-900 to-purple-900"
           >
             <motion.div
               animate={{ scale: [1, 1.05, 1] }}
@@ -412,7 +412,7 @@ export function IrisVideoPlayer({
         {videoState === 'error' && (
           <motion.div
             {...fadeIn}
-            className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-pink-900 to-purple-900 p-6"
+            className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-coral-900 to-purple-900 p-6"
           >
             <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mb-4">
               <AlertCircle className="w-8 h-8 text-red-400" />
@@ -432,7 +432,7 @@ export function IrisVideoPlayer({
               {showSkip && (
                 <Button
                   onClick={handleSkip}
-                  className="bg-white text-pink-600 hover:bg-white/90"
+                  className="bg-white text-coral-600 hover:bg-white/90"
                 >
                   {skipText}
                   <SkipForward className="w-4 h-4 ml-2" />
@@ -452,7 +452,7 @@ export function IrisVideoPlayer({
             className={cn(
               'absolute inset-0 flex items-center justify-center',
               'bg-black/30 hover:bg-black/40 transition-colors',
-              'focus:outline-none focus:ring-4 focus:ring-pink-500/50'
+              'focus:outline-none focus:ring-4 focus:ring-coral-500/50'
             )}
             aria-label={videoState === 'ended' ? 'Opnieuw afspelen' : 'Afspelen'}
           >
@@ -462,9 +462,9 @@ export function IrisVideoPlayer({
               className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-2xl"
             >
               {videoState === 'ended' ? (
-                <RotateCcw className="w-8 h-8 sm:w-10 sm:h-10 text-pink-600" />
+                <RotateCcw className="w-8 h-8 sm:w-10 sm:h-10 text-coral-600" />
               ) : (
-                <Play className="w-8 h-8 sm:w-10 sm:h-10 text-pink-600 ml-1" />
+                <Play className="w-8 h-8 sm:w-10 sm:h-10 text-coral-600 ml-1" />
               )}
             </motion.div>
           </motion.button>
@@ -494,7 +494,7 @@ export function IrisVideoPlayer({
             >
               {/* Buffered progress would go here */}
               <motion.div
-                className="absolute inset-y-0 left-0 bg-pink-500 rounded-full"
+                className="absolute inset-y-0 left-0 bg-coral-500 rounded-full"
                 style={{ width: `${progress}%` }}
               />
               {/* Scrubber handle */}
@@ -571,7 +571,7 @@ export function IrisVideoPlayer({
                   className={cn(
                     'flex items-center gap-2 px-4 py-2 rounded-full font-medium text-sm transition-all touch-manipulation',
                     canSkip
-                      ? 'bg-white text-pink-600 hover:bg-white/90 cursor-pointer'
+                      ? 'bg-white text-coral-600 hover:bg-white/90 cursor-pointer'
                       : 'bg-white/20 text-white/60 cursor-not-allowed'
                   )}
                   aria-label={skipText}

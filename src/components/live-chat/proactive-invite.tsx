@@ -91,13 +91,13 @@ export function ProactiveInvite({
 
   return (
     <div className={`fixed ${positionClasses[position]} z-40`}>
-      <Card className={`w-80 shadow-2xl border-2 border-pink-100 transition-all duration-300 overflow-hidden ${
+      <Card className={`w-80 shadow-2xl border-2 border-coral-100 transition-all duration-300 overflow-hidden ${
         isAnimating
           ? 'opacity-100 translate-y-0 scale-100'
           : 'opacity-0 translate-y-4 scale-95'
       }`}>
         {/* Iris branded header */}
-        <div className="bg-gradient-to-r from-pink-500 to-pink-600 px-4 py-3">
+        <div className="bg-gradient-to-r from-coral-500 to-coral-600 px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -135,9 +135,9 @@ export function ProactiveInvite({
           {/* Typing indicator */}
           <div className="flex items-center gap-2 mb-4 bg-gray-50 rounded-lg px-3 py-2">
             <div className="flex space-x-1">
-              <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce"></div>
-              <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-              <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-2 h-2 bg-coral-400 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-coral-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-coral-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
             </div>
             <span className="text-xs text-gray-500">Iris is aan het typen...</span>
           </div>
@@ -146,7 +146,7 @@ export function ProactiveInvite({
           <div className="flex gap-2">
             <Button
               onClick={handleAccept}
-              className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white shadow-md"
+              className="flex-1 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white shadow-md"
               size="sm"
             >
               <Heart className="w-4 h-4 mr-2" />
@@ -156,7 +156,7 @@ export function ProactiveInvite({
               variant="outline"
               onClick={handleDismiss}
               size="sm"
-              className="px-4 border-pink-200 text-pink-600 hover:bg-pink-50"
+              className="px-4 border-coral-200 text-coral-600 hover:bg-coral-50"
             >
               Later
             </Button>
@@ -165,7 +165,7 @@ export function ProactiveInvite({
           {/* Footer */}
           <div className="mt-3 pt-3 border-t border-gray-100">
             <p className="text-xs text-muted-foreground text-center">
-              <Sparkles className="w-3 h-3 inline mr-1 text-pink-500" />
+              <Sparkles className="w-3 h-3 inline mr-1 text-coral-500" />
               AI Dating Coach • Direct beschikbaar
             </p>
           </div>
@@ -178,7 +178,7 @@ export function ProactiveInvite({
           <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white"></div>
           <div className={`absolute top-0 ${
             position.includes('right') ? 'right-1' : 'left-1'
-          } w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-pink-100`}></div>
+          } w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-coral-100`}></div>
         </div>
       </Card>
     </div>

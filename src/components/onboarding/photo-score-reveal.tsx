@@ -224,7 +224,7 @@ export function PhotoScoreReveal({ result, onContinue }: PhotoScoreRevealProps) 
       >
         <Button
           onClick={onContinue}
-          className="w-full bg-pink-500 hover:bg-pink-600 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
+          className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-base rounded-xl shadow-md hover:shadow-lg transition-all"
         >
           Bekijk hoe je verbetert
           <ChevronRight className="w-5 h-5 ml-2" />

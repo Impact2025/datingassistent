@@ -242,16 +242,16 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
 
   const getStyleIcon = (style: AttachmentStyle) => {
     switch (style) {
-      case 'veilig': return <Heart className="w-5 h-5 text-pink-500" />;
-      case 'angstig': return <Flame className="w-5 h-5 text-pink-500" />;
-      case 'vermijdend': return <Shield className="w-5 h-5 text-pink-500" />;
-      case 'angstig_vermijdend': return <Zap className="w-5 h-5 text-pink-500" />;
-      default: return <Sparkles className="w-5 h-5 text-pink-500" />;
+      case 'veilig': return <Heart className="w-5 h-5 text-coral-500" />;
+      case 'angstig': return <Flame className="w-5 h-5 text-coral-500" />;
+      case 'vermijdend': return <Shield className="w-5 h-5 text-coral-500" />;
+      case 'angstig_vermijdend': return <Zap className="w-5 h-5 text-coral-500" />;
+      default: return <Sparkles className="w-5 h-5 text-coral-500" />;
     }
   };
 
   const getStyleColor = (style: AttachmentStyle) => {
-    return 'text-pink-600 bg-pink-50 border-pink-200';
+    return 'text-coral-600 bg-coral-50 border-coral-200';
   };
 
   return (
@@ -271,8 +271,8 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
           )}
 
           <div className="text-center">
-            <div className="w-16 h-16 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-6">
-              <Sparkles className="w-8 h-8 text-pink-500" />
+            <div className="w-16 h-16 bg-coral-50 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-8 h-8 text-coral-500" />
             </div>
 
             <h1 className="text-3xl font-bold text-gray-900 mb-3">{getStepTitle()}</h1>
@@ -314,7 +314,7 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
           {loading && currentStep === 'questionnaire' && (
             <div className="p-12 text-center">
               <div className="mb-8">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full animate-pulse mb-6">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-coral-500 rounded-full animate-pulse mb-6">
                   <Sparkles className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">

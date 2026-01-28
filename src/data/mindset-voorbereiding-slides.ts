@@ -21,7 +21,7 @@ export const mindsetVoorbereidingSlides: SlideDeck = {
         'Voorkomt dat je tijd verspilt aan mensen die niet bij je passen.',
         'Vormt de basis voor een profiel dat écht opvalt.'
       ],
-      highlightColor: 'text-pink-500'
+      highlightColor: 'text-coral-500'
     },
     {
       type: 'content',
@@ -106,7 +106,7 @@ export const mindsetVoorbereidingSlides: SlideDeck = {
       title: 'Module 1 Voltooid',
       subtitle: 'Je hebt het fundament gelegd. In Module 2 gaan we hierop bouwen en je profiel onweerstaanbaar maken.',
       emoji: '🎉',
-      backgroundColor: 'from-pink-500 to-rose-500'
+      backgroundColor: 'from-coral-500 to-rose-500'
     }
   ]
 };

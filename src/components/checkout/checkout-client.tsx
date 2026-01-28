@@ -204,7 +204,7 @@ export function CheckoutClientComponent() {
   if (!planKey || !billing || !planData) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="w-8 h-8 border-3 border-pink-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-coral-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -284,7 +284,7 @@ export function CheckoutClientComponent() {
               <button
                 onClick={validateCoupon}
                 disabled={isValidatingCoupon || !couponCode.trim()}
-                className="px-4 py-2 text-sm font-medium text-pink-500 hover:text-pink-600 disabled:opacity-50"
+                className="px-4 py-2 text-sm font-medium text-coral-500 hover:text-coral-600 disabled:opacity-50"
               >
                 {isValidatingCoupon ? "..." : "Toepassen"}
               </button>
@@ -312,7 +312,7 @@ export function CheckoutClientComponent() {
           <button
             onClick={handlePayment}
             disabled={isProcessing}
-            className="w-full py-4 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-4 bg-coral-500 hover:bg-coral-600 text-white font-semibold rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isProcessing ? (
               <>

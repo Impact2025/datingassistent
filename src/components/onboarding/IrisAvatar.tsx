@@ -29,7 +29,7 @@ export function IrisAvatar({
       className={cn(
         "rounded-full overflow-hidden shadow-lg relative flex-shrink-0",
         sizeMap[size],
-        showGlow && "ring-4 ring-pink-300/50 ring-offset-2 ring-offset-white",
+        showGlow && "ring-4 ring-coral-300/50 ring-offset-2 ring-offset-white",
         animated && "animate-pulse",
         className
       )}

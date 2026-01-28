@@ -87,11 +87,11 @@ const CHANNEL_ICONS = {
 // Color schemes
 const CHANNEL_COLORS = {
   live_chat: {
-    bg: 'bg-gradient-to-br from-pink-500 to-pink-600',
-    bgHover: 'hover:from-pink-600 hover:to-pink-700',
-    light: 'bg-pink-50',
-    border: 'border-pink-200 hover:border-pink-400',
-    text: 'text-pink-600',
+    bg: 'bg-gradient-to-br from-coral-500 to-coral-600',
+    bgHover: 'hover:from-coral-600 hover:to-coral-700',
+    light: 'bg-coral-50',
+    border: 'border-coral-200 hover:border-coral-400',
+    text: 'text-coral-600',
   },
   email: {
     bg: 'bg-gradient-to-br from-blue-500 to-indigo-600',

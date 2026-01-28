@@ -56,7 +56,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
     {
       id: 'date_planner',
       name: 'Date Planner',
-      icon: <Heart className="w-6 h-6 text-pink-500" />,
+      icon: <Heart className="w-6 h-6 text-coral-500" />,
       description: 'Date ideeën die passen bij je lifestyle voorkeuren',
       benefits: [
         'Activiteiten die je energie geven',
@@ -119,7 +119,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
       {/* Header */}
       <Card className="text-center">
         <CardContent className="pt-8 pb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-6">
             <Target className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -143,7 +143,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
-              className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all duration-300"
+              className="bg-gradient-to-r from-purple-500 to-coral-500 h-3 rounded-full transition-all duration-300"
               style={{ width: `${(completedCount / totalCount) * 100}%` }}
             />
           </div>
@@ -192,7 +192,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
                   className={`w-full rounded-full shadow-lg hover:shadow-xl transition-all ${
                     isCompleted
                       ? 'bg-green-600 hover:bg-green-700 text-white'
-                      : 'bg-pink-500 hover:bg-pink-600 text-white'
+                      : 'bg-coral-500 hover:bg-coral-600 text-white'
                   }`}
                   disabled={isCompleted}
                 >
@@ -242,7 +242,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
 
             <Button
               onClick={handleComplete}
-              className="bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all px-8 py-4 text-lg"
+              className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all px-8 py-4 text-lg"
               size="lg"
             >
               Start met Waarde-Gedreven Dating

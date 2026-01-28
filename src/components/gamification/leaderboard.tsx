@@ -190,7 +190,7 @@ export function Leaderboard({ userId, period = 'week', compact = false }: Leader
                 className={cn(
                   "flex items-center gap-4 p-4 rounded-lg border-2 transition-all",
                   entry.isCurrentUser
-                    ? "bg-gradient-to-r from-purple-50 to-pink-50 border-purple-300 shadow-md"
+                    ? "bg-gradient-to-r from-purple-50 to-coral-50 border-purple-300 shadow-md"
                     : isTopThree
                     ? `${rankStyles.bg} ${rankStyles.border}`
                     : "bg-white border-gray-200 hover:border-purple-200"

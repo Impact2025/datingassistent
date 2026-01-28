@@ -20,8 +20,8 @@ export function FeatureBlocks() {
           {/* Block 1: Quiz */}
           <Card className="border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all group bg-white dark:bg-gray-800">
             <CardContent className="p-8 sm:p-10 text-center space-y-6">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-pink-50 dark:bg-pink-900/30 flex items-center justify-center group-hover:bg-pink-100 dark:group-hover:bg-pink-900/50 transition-colors">
-                <Sparkles className="w-7 h-7 text-pink-600 dark:text-pink-400" />
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-coral-50 dark:bg-coral-900/30 flex items-center justify-center group-hover:bg-coral-100 dark:group-hover:bg-coral-900/50 transition-colors">
+                <Sparkles className="w-7 h-7 text-coral-600 dark:text-coral-400" />
               </div>
 
               <div className="space-y-3">
@@ -109,7 +109,7 @@ export function FeatureBlocks() {
               </div>
 
               <Link href="/register">
-                <Button className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-md hover:shadow-lg transition-all">
+                <Button className="bg-coral-500 hover:bg-coral-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-md hover:shadow-lg transition-all">
                   Start Gratis
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>

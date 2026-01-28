@@ -195,11 +195,11 @@ function ProgressBar({ current, total }: ProgressBarProps) {
         <span className="text-sm font-medium text-gray-600">
           Stap {current} van {total}
         </span>
-        <span className="text-sm font-bold text-pink-600">{percentage}%</span>
+        <span className="text-sm font-bold text-coral-600">{percentage}%</span>
       </div>
       <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full"
+          className="h-full bg-gradient-to-r from-coral-500 to-coral-600 rounded-full"
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -246,14 +246,14 @@ function OptionButton({ icon, label, selected, onClick, delay = 0 }: OptionButto
         'flex items-center gap-4 text-left',
         'active:scale-[0.98]',
         selected
-          ? 'border-pink-500 bg-pink-50 shadow-md'
-          : 'border-gray-200 bg-white hover:border-pink-300 hover:bg-pink-50/50'
+          ? 'border-coral-500 bg-coral-50 shadow-md'
+          : 'border-gray-200 bg-white hover:border-coral-300 hover:bg-coral-50/50'
       )}
     >
       <span className="text-2xl">{icon}</span>
       <span className={cn(
         'font-medium text-base',
-        selected ? 'text-pink-700' : 'text-gray-800'
+        selected ? 'text-coral-700' : 'text-gray-800'
       )}>
         {label}
       </span>
@@ -263,7 +263,7 @@ function OptionButton({ icon, label, selected, onClick, delay = 0 }: OptionButto
           animate={{ scale: 1 }}
           className="ml-auto"
         >
-          <Check className="w-5 h-5 text-pink-600" />
+          <Check className="w-5 h-5 text-coral-600" />
         </motion.div>
       )}
     </motion.button>
@@ -290,8 +290,8 @@ function MultiSelectButton({ icon, label, selected, onClick, delay = 0 }: MultiS
         'flex items-center gap-2',
         'active:scale-[0.97]',
         selected
-          ? 'border-pink-500 bg-pink-500 text-white shadow-md'
-          : 'border-gray-200 bg-white text-gray-800 hover:border-pink-300'
+          ? 'border-coral-500 bg-coral-500 text-white shadow-md'
+          : 'border-gray-200 bg-white text-gray-800 hover:border-coral-300'
       )}
     >
       <span className="text-lg">{icon}</span>
@@ -436,7 +436,7 @@ export function KickstartStepOnboarding({
                 {['21 Dagen', 'Persoonlijke coaching', 'Op maat'].map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1.5 bg-pink-50 text-pink-700 rounded-full text-sm font-medium border border-pink-100"
+                    className="px-3 py-1.5 bg-coral-50 text-coral-700 rounded-full text-sm font-medium border border-coral-100"
                   >
                     {tag}
                   </span>
@@ -446,7 +446,7 @@ export function KickstartStepOnboarding({
               {/* CTA */}
               <Button
                 onClick={nextStep}
-                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white py-6 text-lg rounded-xl shadow-lg"
+                className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg rounded-xl shadow-lg"
               >
                 Start intake gesprek
                 <ChevronRight className="w-5 h-5 ml-2" />
@@ -472,14 +472,14 @@ export function KickstartStepOnboarding({
               value={formData.preferredName || ''}
               onChange={(e) => updateForm('preferredName', e.target.value)}
               placeholder="Bijv. Mark"
-              className="w-full px-5 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-2 focus:ring-pink-100 outline-none transition-all mb-6"
+              className="w-full px-5 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-coral-400 focus:ring-2 focus:ring-coral-100 outline-none transition-all mb-6"
               autoFocus
             />
 
             <Button
               onClick={nextStep}
               disabled={!formData.preferredName?.trim()}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
             >
               Volgende
               <ChevronRight className="w-5 h-5 ml-2" />
@@ -533,7 +533,7 @@ export function KickstartStepOnboarding({
                 </div>
                 <button
                   onClick={() => updateForm('gender', undefined as any)}
-                  className="mt-4 text-gray-500 text-sm hover:text-pink-600 flex items-center gap-1"
+                  className="mt-4 text-gray-500 text-sm hover:text-coral-600 flex items-center gap-1"
                 >
                   <ChevronLeft className="w-4 h-4" /> Terug
                 </button>
@@ -566,8 +566,8 @@ export function KickstartStepOnboarding({
                         'p-3 rounded-xl border-2 transition-all',
                         'flex items-center gap-2',
                         formData.region === opt.value
-                          ? 'border-pink-500 bg-pink-50'
-                          : 'border-gray-200 hover:border-pink-300'
+                          ? 'border-coral-500 bg-coral-50'
+                          : 'border-gray-200 hover:border-coral-300'
                       )}
                     >
                       <span>{opt.icon}</span>
@@ -590,21 +590,21 @@ export function KickstartStepOnboarding({
                   placeholder="Bijv. 28"
                   min={18}
                   max={99}
-                  className="w-full px-5 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-2 focus:ring-pink-100 outline-none transition-all mb-6"
+                  className="w-full px-5 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-coral-400 focus:ring-2 focus:ring-coral-100 outline-none transition-all mb-6"
                   autoFocus
                 />
 
                 <Button
                   onClick={nextStep}
                   disabled={!formData.age || formData.age < 18}
-                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                 >
                   Volgende
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </Button>
                 <button
                   onClick={() => updateForm('region', undefined as any)}
-                  className="mt-4 text-gray-500 text-sm hover:text-pink-600 flex items-center gap-1 mx-auto"
+                  className="mt-4 text-gray-500 text-sm hover:text-coral-600 flex items-center gap-1 mx-auto"
                 >
                   <ChevronLeft className="w-4 h-4" /> Terug
                 </button>
@@ -662,7 +662,7 @@ export function KickstartStepOnboarding({
                 </div>
                 <button
                   onClick={() => setDatingStatusStep(1)}
-                  className="mt-4 text-gray-500 text-sm hover:text-pink-600 flex items-center gap-1"
+                  className="mt-4 text-gray-500 text-sm hover:text-coral-600 flex items-center gap-1"
                 >
                   <ChevronLeft className="w-4 h-4" /> Terug
                 </button>
@@ -711,7 +711,7 @@ export function KickstartStepOnboarding({
                     }
                   }}
                   disabled={!formData.datingApps?.length}
-                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                 >
                   Volgende
                   <ChevronRight className="w-5 h-5 ml-2" />
@@ -739,7 +739,7 @@ export function KickstartStepOnboarding({
                 </div>
                 <button
                   onClick={() => setAppsStep(1)}
-                  className="mt-4 text-gray-500 text-sm hover:text-pink-600 flex items-center gap-1"
+                  className="mt-4 text-gray-500 text-sm hover:text-coral-600 flex items-center gap-1"
                 >
                   <ChevronLeft className="w-4 h-4" /> Terug
                 </button>
@@ -767,7 +767,7 @@ export function KickstartStepOnboarding({
                     onChange={(e) => updateForm('biggestFrustration', e.target.value)}
                     placeholder="Bijv. Gesprekken lopen altijd dood na een paar berichten..."
                     rows={4}
-                    className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-2 focus:ring-pink-100 outline-none transition-all resize-none mb-6"
+                    className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:border-coral-400 focus:ring-2 focus:ring-coral-100 outline-none transition-all resize-none mb-6"
                     autoFocus
                   />
 
@@ -779,7 +779,7 @@ export function KickstartStepOnboarding({
                       }
                     }}
                     disabled={!formData.biggestFrustration?.trim()}
-                    className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                    className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                   >
                     Volgende
                     <ChevronRight className="w-5 h-5 ml-2" />
@@ -807,7 +807,7 @@ export function KickstartStepOnboarding({
                   </div>
                   <button
                     onClick={() => updateForm('biggestFrustration', undefined as any)}
-                    className="mt-4 text-gray-500 text-sm hover:text-pink-600 flex items-center gap-1"
+                    className="mt-4 text-gray-500 text-sm hover:text-coral-600 flex items-center gap-1"
                   >
                     <ChevronLeft className="w-4 h-4" /> Terug
                   </button>
@@ -866,7 +866,7 @@ export function KickstartStepOnboarding({
                 </div>
                 <button
                   onClick={() => setDifficultyGoalStep(1)}
-                  className="mt-4 text-gray-500 text-sm hover:text-pink-600 flex items-center gap-1"
+                  className="mt-4 text-gray-500 text-sm hover:text-coral-600 flex items-center gap-1"
                 >
                   <ChevronLeft className="w-4 h-4" /> Terug
                 </button>
@@ -891,7 +891,7 @@ export function KickstartStepOnboarding({
               key={formData.confidenceLevel}
               initial={{ scale: 1.2 }}
               animate={{ scale: 1 }}
-              className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg"
+              className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg"
             >
               {formData.confidenceLevel || 5}
             </motion.div>
@@ -906,8 +906,8 @@ export function KickstartStepOnboarding({
                     'aspect-square rounded-xl font-semibold text-lg transition-all',
                     'border-2 active:scale-95',
                     formData.confidenceLevel === num
-                      ? 'border-pink-500 bg-pink-500 text-white shadow-md'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-pink-300'
+                      ? 'border-coral-500 bg-coral-500 text-white shadow-md'
+                      : 'border-gray-200 bg-white text-gray-700 hover:border-coral-300'
                   )}
                 >
                   {num}
@@ -918,7 +918,7 @@ export function KickstartStepOnboarding({
             <Button
               onClick={nextStep}
               disabled={!formData.confidenceLevel}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
             >
               Volgende
               <ChevronRight className="w-5 h-5 ml-2" />
@@ -944,14 +944,14 @@ export function KickstartStepOnboarding({
                   onChange={(e) => updateForm('biggestFear', e.target.value)}
                   placeholder="Bijv. Dat ik niet goed genoeg ben, afwijzing..."
                   rows={4}
-                  className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-2 focus:ring-pink-100 outline-none transition-all resize-none mb-6"
+                  className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:border-coral-400 focus:ring-2 focus:ring-coral-100 outline-none transition-all resize-none mb-6"
                   autoFocus
                 />
 
                 <Button
                   onClick={() => setDeepStep(2)}
                   disabled={!formData.biggestFear?.trim()}
-                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                 >
                   Volgende
                   <ChevronRight className="w-5 h-5 ml-2" />
@@ -969,21 +969,21 @@ export function KickstartStepOnboarding({
                   onChange={(e) => updateForm('idealOutcome', e.target.value)}
                   placeholder="Bijv. Leuke dates, zelfverzekerd, misschien wel verliefd..."
                   rows={4}
-                  className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-2 focus:ring-pink-100 outline-none transition-all resize-none mb-6"
+                  className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:border-coral-400 focus:ring-2 focus:ring-coral-100 outline-none transition-all resize-none mb-6"
                   autoFocus
                 />
 
                 <Button
                   onClick={handleComplete}
                   disabled={!formData.idealOutcome?.trim()}
-                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                 >
                   Afronden
                   <Sparkles className="w-5 h-5 ml-2" />
                 </Button>
                 <button
                   onClick={() => setDeepStep(1)}
-                  className="mt-4 text-gray-500 text-sm hover:text-pink-600 flex items-center gap-1 mx-auto"
+                  className="mt-4 text-gray-500 text-sm hover:text-coral-600 flex items-center gap-1 mx-auto"
                 >
                   <ChevronLeft className="w-4 h-4" /> Terug
                 </button>
@@ -1010,9 +1010,9 @@ export function KickstartStepOnboarding({
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center"
+                className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-coral-100 to-coral-200 flex items-center justify-center"
               >
-                <Sparkles className="w-10 h-10 text-pink-600" />
+                <Sparkles className="w-10 h-10 text-coral-600" />
               </motion.div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 Iris maakt je plan...
@@ -1057,7 +1057,7 @@ export function KickstartStepOnboarding({
                 <span className="px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium border border-green-100">
                   ✓ Plan gemaakt
                 </span>
-                <span className="px-3 py-1.5 bg-pink-50 text-pink-700 rounded-full text-sm font-medium border border-pink-100">
+                <span className="px-3 py-1.5 bg-coral-50 text-coral-700 rounded-full text-sm font-medium border border-coral-100">
                   ♡ Iris wacht op je
                 </span>
               </div>
@@ -1115,7 +1115,7 @@ export function KickstartStepOnboarding({
           height={windowSize.height}
           recycle={false}
           numberOfPieces={200}
-          colors={['#ec4899', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b']}
+          colors={['#ff6b6b', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b']}
         />
       )}
 

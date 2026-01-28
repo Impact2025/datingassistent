@@ -63,7 +63,7 @@ export function EmotionalReadinessResults({ data, onRestart, onClose }: Emotiona
   const ReadinessIcon = readinessInfo.icon;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 to-coral-100">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Save & Close Card */}
@@ -105,7 +105,7 @@ export function EmotionalReadinessResults({ data, onRestart, onClose }: Emotiona
 
             <TabsContent value="overview" className="space-y-6">
               {/* Main Result Card */}
-              <Card className="border-2 border-pink-200 bg-gradient-to-br from-pink-50 to-pink-100">
+              <Card className="border-2 border-coral-200 bg-gradient-to-br from-coral-50 to-coral-100">
                 <CardContent className="p-8">
                   <div className="text-center">
                     <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${readinessInfo.color.split(' ')[1]}`}>
@@ -136,7 +136,7 @@ export function EmotionalReadinessResults({ data, onRestart, onClose }: Emotiona
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Target className="w-5 h-5 text-pink-600" />
+                    <Target className="w-5 h-5 text-coral-600" />
                     Gedetailleerde Analyse
                   </CardTitle>
                 </CardHeader>
@@ -216,10 +216,10 @@ export function EmotionalReadinessResults({ data, onRestart, onClose }: Emotiona
               </Card>
 
               {/* Tool Integrations */}
-              <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+              <Card className="bg-gradient-to-r from-coral-50 to-coral-100 border-coral-200">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <MessageCircle className="w-5 h-5 text-pink-600" />
+                    <MessageCircle className="w-5 h-5 text-coral-600" />
                     Aanbevolen Tools
                   </CardTitle>
                 </CardHeader>
@@ -232,7 +232,7 @@ export function EmotionalReadinessResults({ data, onRestart, onClose }: Emotiona
                         className="h-auto p-4 flex flex-col items-center gap-2 hover:bg-white"
                         onClick={() => window.location.href = tool.url || '#'}
                       >
-                        <MessageCircle className="w-6 h-6 text-pink-600" />
+                        <MessageCircle className="w-6 h-6 text-coral-600" />
                         <span className="font-semibold">{tool.name || 'Tool'}</span>
                         <span className="text-sm text-gray-600">{tool.reason || 'Integratie'}</span>
                       </Button>
@@ -256,7 +256,7 @@ export function EmotionalReadinessResults({ data, onRestart, onClose }: Emotiona
                         <div className="space-y-1">
                           {intervention.stappen?.map((stap: string, stapIndex: number) => (
                             <div key={stapIndex} className="flex items-start gap-2 text-sm">
-                              <span className="text-pink-600 font-semibold">{stapIndex + 1}.</span>
+                              <span className="text-coral-600 font-semibold">{stapIndex + 1}.</span>
                               <span>{stap}</span>
                             </div>
                           ))}
@@ -308,7 +308,7 @@ export function EmotionalReadinessResults({ data, onRestart, onClose }: Emotiona
 
             <Button
               variant="outline"
-              className="flex-1 flex items-center gap-2 border-pink-200 text-pink-600 hover:bg-pink-50"
+              className="flex-1 flex items-center gap-2 border-coral-200 text-coral-600 hover:bg-coral-50"
               onClick={() => {
                 // PDF generation would go here
                 alert('PDF functionaliteit wordt binnenkort toegevoegd!');
@@ -319,7 +319,7 @@ export function EmotionalReadinessResults({ data, onRestart, onClose }: Emotiona
             </Button>
 
             <Button
-              className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white flex items-center gap-2"
+              className="flex-1 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white flex items-center gap-2"
               onClick={() => {
                 if (navigator.share) {
                   navigator.share({

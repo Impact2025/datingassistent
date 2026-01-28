@@ -92,7 +92,7 @@ export const DATING_STYLES: Record<string, DatingStyle> = {
     title: 'De Goudzoeker',
     subtitle: 'Wacht op de perfecte match',
     emoji: '💎',
-    color: '#ec4899', // Pink
+    color: '#FF7B54', // Warm Coral
     description: 'Jij bent selectief en neemt de tijd om de juiste persoon te vinden. Je waardeert authenticiteit boven kwantiteit en wilt een connectie die echt voelt.',
     strengths: [
       'Trouw aan je waarden',

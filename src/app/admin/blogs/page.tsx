@@ -209,7 +209,7 @@ export default function BlogManagement() {
             <Button onClick={() => router.push('/admin')} variant="outline">
               Terug naar Dashboard
             </Button>
-            <Button onClick={() => router.push('/admin/blogs/edit/new')} className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white">
+            <Button onClick={() => router.push('/admin/blogs/edit/new')} className="bg-gradient-to-r from-coral-500 to-purple-600 hover:from-coral-600 hover:to-purple-700 text-white">
               ✨ Nieuw Blog (Pro Editor)
             </Button>
           </div>

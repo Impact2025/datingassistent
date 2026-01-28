@@ -170,9 +170,9 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 to-coral-100 flex items-center justify-center">
         <Card className="p-8 text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-pink-200 border-t-pink-600 rounded-full mx-auto mb-4"></div>
+          <div className="animate-spin w-8 h-8 border-4 border-coral-200 border-t-coral-600 rounded-full mx-auto mb-4"></div>
           <p className="text-gray-600">Vragen laden...</p>
         </Card>
       </div>
@@ -182,13 +182,13 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
   // Micro-intake screen
   if (currentQuestionIndex === 0 && !microIntake.laatsteRelatie) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 to-coral-100">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
-            <Card className="border-2 border-pink-200 bg-white/90 backdrop-blur-sm">
+            <Card className="border-2 border-coral-200 bg-white/90 backdrop-blur-sm">
               <CardHeader className="text-center">
                 <CardTitle className="flex items-center justify-center gap-2 text-2xl">
-                  <Heart className="w-6 h-6 text-pink-600" />
+                  <Heart className="w-6 h-6 text-coral-600" />
                   Voorbereiding
                 </CardTitle>
                 <p className="text-gray-600 mt-2">
@@ -266,7 +266,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
                   <Button
                     onClick={() => setCurrentQuestionIndex(1)}
                     disabled={!microIntake.laatsteRelatie}
-                    className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600"
+                    className="flex-1 bg-gradient-to-r from-coral-500 to-coral-600"
                   >
                     Start Vragen
                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -282,7 +282,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
 
   if (!currentQuestion) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 to-coral-100 flex items-center justify-center">
         <Card className="p-8 text-center">
           <AlertCircle className="w-8 h-8 text-red-600 mx-auto mb-4" />
           <p className="text-gray-600">Geen vragen beschikbaar</p>
@@ -292,7 +292,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100">
+    <div className="min-h-screen bg-gradient-to-br from-coral-50 to-coral-100">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           {/* Progress Header */}
@@ -302,7 +302,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
                 <ArrowLeft className="w-4 h-4" />
                 Terug
               </Button>
-              <Badge className="px-3 py-1 bg-pink-100 text-pink-800">
+              <Badge className="px-3 py-1 bg-coral-100 text-coral-800">
                 {currentQuestionIndex + 1} van {questions.length}
               </Badge>
             </div>
@@ -314,7 +314,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
           </div>
 
           {/* Question Card */}
-          <Card className="border-2 border-pink-200 bg-white/90 backdrop-blur-sm shadow-xl">
+          <Card className="border-2 border-coral-200 bg-white/90 backdrop-blur-sm shadow-xl">
             <CardHeader>
               <CardTitle className="text-xl leading-relaxed">
                 {currentQuestion.question_text}
@@ -334,7 +334,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
                   className="space-y-4"
                 >
                   {currentQuestion.scenarios.map((scenario) => (
-                    <div key={scenario.id} className="flex items-start space-x-3 p-4 border border-gray-200 rounded-lg hover:border-pink-300 transition-colors">
+                    <div key={scenario.id} className="flex items-start space-x-3 p-4 border border-gray-200 rounded-lg hover:border-coral-300 transition-colors">
                       <RadioGroupItem
                         value={scenario.order_position.toString()}
                         id={`scenario-${scenario.id}`}
@@ -362,7 +362,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
                     { value: 4, label: 'Eens', color: 'text-blue-600' },
                     { value: 5, label: 'Helemaal eens', color: 'text-green-600' }
                   ].map((option) => (
-                    <div key={option.value} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:border-pink-300 transition-colors">
+                    <div key={option.value} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:border-coral-300 transition-colors">
                       <RadioGroupItem
                         value={option.value.toString()}
                         id={`option-${option.value}`}
@@ -393,7 +393,7 @@ export function EmotionalReadinessQuestionnaire({ onComplete, onBack }: Emotiona
                 <Button
                   onClick={handleNext}
                   disabled={!responses[currentQuestion.id] || submitting}
-                  className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+                  className="flex-1 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
                 >
                   {submitting ? (
                     <>

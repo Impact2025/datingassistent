@@ -376,12 +376,12 @@ function EnergieBatterijContent() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Spiegel - Dating Advies */}
-                  <div className="p-4 rounded-xl border-2 border-pink-200 dark:border-pink-700 bg-pink-50/50 dark:bg-pink-900/20">
+                  <div className="p-4 rounded-xl border-2 border-coral-200 dark:border-coral-700 bg-coral-50/50 dark:bg-coral-900/20">
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-full bg-coral-500 flex items-center justify-center">
                         <Heart className="w-3 h-3 text-white" />
                       </div>
-                      <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300 border-0 text-xs">
+                      <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-0 text-xs">
                         Spiegel
                       </Badge>
                     </div>

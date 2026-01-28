@@ -91,10 +91,10 @@ function MobileSubscriptionPageContent() {
       <div className="p-4 space-y-6">
         {currentSubscription && currentSubscription.status === 'active' ? (
           // Current Subscription Display
-          <Card className="border-0 bg-gradient-to-r from-pink-50 to-pink-100 shadow-sm">
+          <Card className="border-0 bg-gradient-to-r from-coral-50 to-coral-100 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center">
                   <CheckIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -112,7 +112,7 @@ function MobileSubscriptionPageContent() {
                     {currentSubscription.packageType === 'sociaal' && <Users className="w-5 h-5 text-gray-500" />}
                     <span className="font-semibold capitalize">{currentSubscription.packageType}</span>
                   </div>
-                  <Badge className="bg-pink-100 text-pink-700">
+                  <Badge className="bg-coral-100 text-coral-700">
                     {currentSubscription.billingPeriod === 'yearly' ? 'Jaarlijks' : 'Maandelijks'}
                   </Badge>
                 </div>
@@ -152,7 +152,7 @@ function MobileSubscriptionPageContent() {
 
               <Button
                 onClick={() => router.push('/select-package')}
-                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white"
+                className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600 text-white"
                 size="lg"
               >
                 <Crown className="w-5 h-5 mr-2" />
@@ -208,7 +208,7 @@ export default function MobileSubscriptionPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-coral-500" />
       </div>
     }>
       <MobileSubscriptionPageContent />

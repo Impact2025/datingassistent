@@ -55,7 +55,7 @@ function IrisVideoPlayer() {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         {/* Decorative gradient border */}
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 rounded-3xl p-[3px] -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-coral-500 via-deep-purple to-coral-500 rounded-3xl p-[3px] -z-10" />
 
         {/* Video wrapper with aspect ratio */}
         <div className="relative aspect-video bg-gray-900 rounded-3xl overflow-hidden">
@@ -84,7 +84,7 @@ function IrisVideoPlayer() {
             >
               <div className="flex flex-col items-center gap-3">
                 <motion.div
-                  className="w-12 h-12 border-4 border-pink-500/30 border-t-pink-500 rounded-full"
+                  className="w-12 h-12 border-4 border-coral-500/30 border-t-coral-500 rounded-full"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 />
@@ -111,11 +111,11 @@ function IrisVideoPlayer() {
                 >
                   {/* Pulsing ring */}
                   <motion.div
-                    className="absolute inset-0 bg-pink-500/30 rounded-full"
+                    className="absolute inset-0 bg-coral-500/30 rounded-full"
                     animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
-                  <div className="relative w-20 h-20 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-pink-500/50 transition-shadow">
+                  <div className="relative w-20 h-20 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-coral-500/50 transition-shadow">
                     <Play className="w-8 h-8 text-white ml-1" fill="white" />
                   </div>
                 </motion.div>
@@ -178,7 +178,7 @@ function IrisVideoPlayer() {
           >
             <div className="text-center px-4">
               <Link href="/quiz/dating-patroon">
-                <Button className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-10 py-6 text-xl font-semibold shadow-xl hover:shadow-2xl hover:shadow-pink-500/25 transition-all rounded-full flex items-center justify-center gap-3">
+                <Button className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-10 py-6 text-xl font-semibold shadow-xl hover:shadow-2xl hover:shadow-coral-500/25 transition-all rounded-full flex items-center justify-center gap-3">
                   Ontdek Je Dating Patroon
                   <ArrowRight className="w-6 h-6" />
                 </Button>
@@ -213,10 +213,10 @@ export function HeroSection() {
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-gray-900 dark:text-white leading-[0.95] mb-8">
                 <span className="block mb-3">Daten is</span>
                 <span className="block mb-3">geen geluk.</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600 animate-gradient">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-rose-gold via-coral-500 to-deep-purple animate-gradient">
                   Het is een
                 </span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600 animate-gradient">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-rose-gold via-coral-500 to-deep-purple animate-gradient">
                   patroon.
                 </span>
               </h1>
@@ -250,7 +250,7 @@ export function HeroSection() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <Link href="/quiz/dating-patroon">
-                <Button className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-8 py-6 text-lg font-semibold shadow-xl hover:shadow-2xl hover:shadow-pink-500/25 transition-all rounded-full flex items-center justify-center gap-2">
+                <Button className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-6 text-lg font-semibold shadow-xl hover:shadow-2xl hover:shadow-coral-500/25 transition-all rounded-full flex items-center justify-center gap-2">
                   Start de Gratis Quiz
                   <ArrowRight className="w-5 h-5" />
                 </Button>
@@ -281,7 +281,7 @@ export function HeroSection() {
         >
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12">
             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-              <Tv className="w-5 h-5 text-pink-500" />
+              <Tv className="w-5 h-5 text-coral-500" />
               <span className="text-sm font-medium">10+ Jaar ervaring (Bekend van TV)</span>
             </div>
             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">

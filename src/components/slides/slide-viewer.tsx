@@ -110,11 +110,11 @@ export default function SlideViewer({ deck, onComplete }: SlideViewerProps) {
           <span className="text-sm font-medium text-gray-600">
             Slide {currentSlide + 1} van {totalSlides}
           </span>
-          <span className="text-sm text-pink-600 font-medium">{deck.title}</span>
+          <span className="text-sm text-coral-600 font-medium">{deck.title}</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-1.5">
           <div
-            className="bg-pink-500 h-1.5 rounded-full transition-all duration-300"
+            className="bg-coral-500 h-1.5 rounded-full transition-all duration-300"
             style={{ width: `${progressPercentage}%` }}
           />
         </div>
@@ -175,7 +175,7 @@ export default function SlideViewer({ deck, onComplete }: SlideViewerProps) {
               onClick={() => setCurrentSlide(index)}
               className={`h-1.5 rounded-full transition-all ${
                 index === currentSlide
-                  ? 'w-5 bg-pink-500'
+                  ? 'w-5 bg-coral-500'
                   : 'w-1.5 bg-gray-300 hover:bg-gray-400'
               }`}
               aria-label={`Ga naar slide ${index + 1}`}
@@ -185,7 +185,7 @@ export default function SlideViewer({ deck, onComplete }: SlideViewerProps) {
 
         <Button
           onClick={goToNextSlide}
-          className="gap-1.5 px-4 py-2 h-9 bg-pink-500 hover:bg-pink-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all text-sm"
+          className="gap-1.5 px-4 py-2 h-9 bg-coral-500 hover:bg-coral-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all text-sm"
         >
           {isLastSlide ? (
             <>

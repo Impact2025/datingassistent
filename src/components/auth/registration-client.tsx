@@ -949,9 +949,9 @@ export function RegistrationClientComponent() {
                 )}
 
                 {/* Security Note */}
-                <Alert className="border-pink-200 dark:border-pink-800 bg-pink-50 dark:bg-pink-900/30">
-                  <AlertCircle className="h-4 w-4 text-pink-600" />
-                  <AlertDescription className="text-pink-800 dark:text-pink-200">
+                <Alert className="border-coral-200 dark:border-coral-800 bg-coral-50 dark:bg-coral-900/30">
+                  <AlertCircle className="h-4 w-4 text-coral-600" />
+                  <AlertDescription className="text-coral-800 dark:text-coral-200">
                     <strong>Veilig en Vertrouwelijk:</strong> Je gegevens zijn veilig versleuteld en worden alleen gebruikt voor je DatingAssistent account. We verkopen of delen je persoonlijke informatie nooit met derden.
                   </AlertDescription>
                 </Alert>

@@ -31,7 +31,7 @@ export default function PrivacyPage() {
         <PublicHeader />
 
         <main className="flex-grow">
-          <section className="bg-gradient-to-br from-primary/5 to-pink-600/5 py-16 sm:py-20">
+          <section className="bg-gradient-to-br from-primary/5 to-coral-600/5 py-16 sm:py-20">
             <div className="container mx-auto px-4 sm:px-6 text-center">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
                 PRIVACYVERKLARING – DatingAssistent (WeAreImpact)

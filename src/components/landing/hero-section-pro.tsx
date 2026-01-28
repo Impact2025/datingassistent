@@ -7,7 +7,7 @@ export function HeroSectionPro() {
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
       <div className="absolute inset-0">
         <div className="absolute top-16 left-1/3 w-96 h-96 bg-primary/30 blur-3xl opacity-70" />
-        <div className="absolute -bottom-24 right-0 w-[32rem] h-[32rem] bg-pink-500/20 blur-3xl opacity-80" />
+        <div className="absolute -bottom-24 right-0 w-[32rem] h-[32rem] bg-coral-500/20 blur-3xl opacity-80" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 py-24 lg:py-32">
@@ -53,7 +53,7 @@ export function HeroSectionPro() {
                 { icon: CheckCircle2, label: 'Klaar voor high-end matches' },
               ].map((item, index) => (
                 <div key={item.label} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <item.icon className={`h-5 w-5 ${index === 0 ? 'text-pink-300' : index === 1 ? 'text-blue-300' : 'text-emerald-300'}`} />
+                  <item.icon className={`h-5 w-5 ${index === 0 ? 'text-coral-300' : index === 1 ? 'text-blue-300' : 'text-emerald-300'}`} />
                   <p className="text-sm text-white/80">{item.label}</p>
                 </div>
               ))}
@@ -74,7 +74,7 @@ export function HeroSectionPro() {
                   <span>Gerealiseerd</span>
                 </div>
                 <div className="h-2 rounded-full bg-white/10">
-                  <div className="h-full rounded-full bg-gradient-to-r from-primary to-pink-500" style={{ width: '86%' }} />
+                  <div className="h-full rounded-full bg-gradient-to-r from-primary to-coral-500" style={{ width: '86%' }} />
                 </div>
               </div>
 

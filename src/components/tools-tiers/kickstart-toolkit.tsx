@@ -47,7 +47,7 @@ export function KickstartToolkit() {
       title: 'AI Profile Builder',
       description: 'Genereer complete dating profielen met AI',
       icon: <Wand2 className="w-6 h-6" />,
-      gradient: 'from-purple-500 to-pink-500',
+      gradient: 'from-purple-500 to-coral-500',
       limit: '1x gebruik (Kickstart)',
     },
     {
@@ -63,7 +63,7 @@ export function KickstartToolkit() {
       title: 'Chat Coach',
       description: '24/7 AI dating coach voor al je vragen',
       icon: <Bot className="w-6 h-6" />,
-      gradient: 'from-pink-500 to-rose-500',
+      gradient: 'from-coral-500 to-rose-500',
       limit: '10x per dag (Kickstart)',
     },
     {
@@ -71,7 +71,7 @@ export function KickstartToolkit() {
       title: 'Hechtingsstijl Scan',
       description: 'Ontdek je hechtingsstijl voor betere relaties',
       icon: <Heart className="w-6 h-6" />,
-      gradient: 'from-red-500 to-pink-500',
+      gradient: 'from-red-500 to-coral-500',
       limit: 'Unlimited',
     },
   ];
@@ -95,7 +95,7 @@ export function KickstartToolkit() {
               </div>
               <div className="flex items-center justify-center gap-2 text-sm">
                 <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">Photo Analysis</Badge>
-                <Badge className="bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300">24/7 Chat Coach</Badge>
+                <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300">24/7 Chat Coach</Badge>
               </div>
             </div>
             <div className="flex gap-3 justify-center">
@@ -198,7 +198,7 @@ export function KickstartToolkit() {
           </div>
 
           {/* Upgrade CTA */}
-          <Card className="border-2 border-purple-200 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30">
+          <Card className="border-2 border-purple-200 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-coral-50 dark:from-purple-900/30 dark:to-coral-900/30">
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -211,7 +211,7 @@ export function KickstartToolkit() {
                   </p>
                   <Button
                     onClick={() => router.push('/pro-arsenal')}
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                    className="bg-gradient-to-r from-purple-500 to-coral-500 hover:from-purple-600 hover:to-coral-600 text-white"
                   >
                     <Crown className="w-4 h-4 mr-2" />
                     Bekijk Pro Arsenal

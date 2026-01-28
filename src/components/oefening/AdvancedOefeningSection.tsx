@@ -224,7 +224,7 @@ export function AdvancedOefeningSection({
 
   return (
     <Card className={`transition-all duration-300 ${
-      isActive ? 'ring-2 ring-pink-500 shadow-lg' : ''
+      isActive ? 'ring-2 ring-coral-500 shadow-lg' : ''
     }`}>
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
@@ -233,7 +233,7 @@ export function AdvancedOefeningSection({
             {isCompleted ? (
               <CheckCircle className="w-6 h-6 text-green-500" />
             ) : (
-              <div className="w-6 h-6 rounded-full border-2 border-pink-500" />
+              <div className="w-6 h-6 rounded-full border-2 border-coral-500" />
             )}
           </div>
 

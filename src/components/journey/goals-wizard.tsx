@@ -227,7 +227,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
             key={goal.id}
             className={`cursor-pointer transition-all duration-200 ${
               selectedYearGoal === goal.id
-                ? 'ring-2 ring-pink-500 bg-pink-50'
+                ? 'ring-2 ring-coral-500 bg-coral-50'
                 : 'hover:shadow-md'
             }`}
             onClick={() => handleYearGoalSelect(goal.id)}
@@ -244,7 +244,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
                   </p>
                 </div>
                 {selectedYearGoal === goal.id && (
-                  <CheckCircle className="w-6 h-6 text-pink-500" />
+                  <CheckCircle className="w-6 h-6 text-coral-500" />
                 )}
               </div>
             </CardContent>
@@ -276,7 +276,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
         </Button>
         <Button
           onClick={handleYearGoalSubmit}
-          className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+          className="flex items-center gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
         >
           Genereer Maand Doelen
           <ArrowRight className="w-4 h-4" />
@@ -307,7 +307,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
       {isGenerating ? (
         <div className="text-center py-12">
           <div className="inline-flex items-center gap-3">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-coral-500"></div>
             <span className="text-gray-600">AI genereert persoonlijke maand doelen...</span>
           </div>
         </div>
@@ -595,7 +595,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-pink-25 to-white p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-coral-25 to-white p-4">
       <div className="max-w-2xl mx-auto py-8">
 
         {/* Progress Indicator */}

@@ -28,7 +28,7 @@ export const CoachTab = memo(function CoachTab({ onTabChange, userId }: CoachTab
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">{LOADING_MESSAGES.COACH}</p>
         </div>
       </div>
@@ -38,12 +38,12 @@ export const CoachTab = memo(function CoachTab({ onTabChange, userId }: CoachTab
   return (
     <div className="h-full bg-gray-50">
       {/* Header Card */}
-      <Card className="mb-6 border-0 shadow-sm bg-gradient-to-r from-pink-50 via-purple-50 to-blue-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800">
+      <Card className="mb-6 border-0 shadow-sm bg-gradient-to-r from-coral-50 via-purple-50 to-blue-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-pink-500" />
+                <Sparkles className="w-6 h-6 text-coral-500" />
                 Iris AI Coach
               </CardTitle>
               <p className="text-sm text-muted-foreground mt-1">
@@ -59,7 +59,7 @@ export const CoachTab = memo(function CoachTab({ onTabChange, userId }: CoachTab
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-900 rounded-lg">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center flex-shrink-0">
                 <MessageCircle className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -69,7 +69,7 @@ export const CoachTab = memo(function CoachTab({ onTabChange, userId }: CoachTab
             </div>
 
             <div className="flex items-start gap-3 p-3 bg-white dark:bg-gray-900 rounded-lg">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-coral-500 flex items-center justify-center flex-shrink-0">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div>

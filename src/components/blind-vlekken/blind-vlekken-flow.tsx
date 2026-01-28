@@ -62,7 +62,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-700">Blindvlekken Analyse laden...</p>
         </div>
       </div>
@@ -116,10 +116,10 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
       )}
 
       {/* Header */}
-      <Card className="bg-gradient-to-r from-pink-50 via-purple-50 to-blue-50 border-0 shadow-sm">
+      <Card className="bg-gradient-to-r from-coral-50 via-purple-50 to-blue-50 border-0 shadow-sm">
         <CardContent className="p-8 text-center">
-          <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Eye className="w-8 h-8 text-pink-600" />
+          <div className="w-16 h-16 bg-coral-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <Eye className="w-8 h-8 text-coral-600" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-3">
             Dating Blindvlekken Analyse

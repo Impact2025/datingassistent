@@ -139,7 +139,7 @@ export function InteractiveProfileBuilder({ onComplete, initialProfile = '' }: P
   return (
     <div className="space-y-6">
       {/* Header with Score */}
-      <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+      <Card className="bg-gradient-to-r from-purple-50 to-coral-50 border-purple-200">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -420,7 +420,7 @@ export function InteractiveProfileBuilder({ onComplete, initialProfile = '' }: P
         <Button
           onClick={completeProfile}
           disabled={!finalProfile}
-          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+          className="bg-gradient-to-r from-purple-600 to-coral-600 hover:from-purple-700 hover:to-coral-700"
         >
           <CheckCircle className="w-4 h-4 mr-2" />
           Profiel Opslaan ({profileScore} punten)
