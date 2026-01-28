@@ -132,7 +132,7 @@ export default function RootLayout({
           }}
         />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-        <meta name="theme-color" content="#FF6B9D" />
+        <meta name="theme-color" content="#FF7B54" />
         {/* CSS Loading Fallback - DISABLED to debug ERR_FAILED */}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -149,7 +149,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="msapplication-TileColor" content="#FF6B9D" />
+        <meta name="msapplication-TileColor" content="#FF7B54" />
         <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
 
         <link rel="canonical" href="https://datingassistent.nl" />
