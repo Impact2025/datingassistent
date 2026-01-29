@@ -27,3 +27,4 @@ export { default as PasswordResetEmail } from './password-reset-email';
 export { default as PaymentConfirmationEmail } from './payment-confirmation-email';
 export { default as SubscriptionCancelledEmail } from './subscription-cancelled-email';
 export { default as ProgramEnrollmentEmail } from './program-enrollment-email';
+export { default as AdminDailyReportEmail } from './admin-daily-report-email';
