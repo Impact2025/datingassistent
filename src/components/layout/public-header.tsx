@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/shared/logo';
+import { ThemeToggleSimple } from '@/components/ui/theme-toggle';
 import { useState, useEffect } from 'react';
 import { useUser } from '@/providers/user-provider';
 
@@ -47,6 +48,7 @@ export function PublicHeader() {
           
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-3" suppressHydrationWarning>
+            <ThemeToggleSimple />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-md text-foreground/80 hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
@@ -86,6 +88,7 @@ export function PublicHeader() {
           </div>
           
           <div className="hidden md:flex items-center space-x-3 lg:space-x-4" suppressHydrationWarning>
+            <ThemeToggleSimple />
             {user ? (
               <Link href="/dashboard">
                 <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm px-3 py-2">

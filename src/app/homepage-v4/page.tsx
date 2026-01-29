@@ -36,6 +36,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRef } from 'react';
+import { ThemeToggleSimple } from '@/components/ui/theme-toggle';
 
 /**
  * HOMEPAGE V4 - "Warm Vertrouwen" - Wereldklasse Editie
@@ -1231,6 +1232,7 @@ export default function HomePageV4() {
           </nav>
 
           <div className="flex items-center gap-4">
+            <ThemeToggleSimple />
             <Link href="/login" className="text-sm transition-colors hover:opacity-80" style={{ color: colors.charcoal }}>
               Inloggen
             </Link>
