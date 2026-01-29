@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
@@ -14,72 +15,31 @@ export default function OverOnsPage() {
     <div className="min-h-screen flex flex-col">
       <PublicHeader />
 
-      {/* Hero Section */}
-      <section className="relative py-12 sm:py-16 md:py-20 px-4 overflow-hidden min-h-[500px] sm:min-h-[550px] flex items-center">
-        {/* Full-width Background Image */}
-        <Image
-          src="/images/DatingAssistent.png"
-          alt="DatingAssistent - Dé dating coach die altijd beschikbaar is"
-          fill
-          priority
-          className="object-cover object-center"
-          quality={85}
-          sizes="100vw"
-          unoptimized
-        />
-
-        {/* Dark overlay for better contrast */}
-        <div className="absolute inset-0 bg-black/60 sm:bg-black/50" />
-
-        <div className="relative z-10 w-full max-w-6xl mx-auto text-center">
-          {/* Semi-transparent background behind text - adapts to theme */}
-          <div className="inline-block bg-white/90 dark:bg-gray-800/90 sm:bg-white/85 dark:sm:bg-gray-800/85 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 shadow-2xl max-w-4xl mx-auto w-full">
-
-            {/* Tagline */}
-            <div className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-coral-100 dark:bg-coral-900/30 text-coral-700 dark:text-coral-300 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-              👨‍💻 De oprichter achter DatingAssistent
-            </div>
-
-            {/* Main Title */}
-            <div className="space-y-2 sm:space-y-4 mb-4 sm:mb-6">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-50 leading-tight px-2">
-                Het verhaal achter DatingAssistent
-                <span className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-gray-600 dark:text-gray-300 mt-2">
-                  10+ jaar expertise in één platform
-                </span>
-              </h1>
-            </div>
-
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto px-2">
-              Van datingcoach naar AI-architect – waar praktijkervaring en innovatie samenkomen in één platform.
+      {/* Hero Section - Clean style matching Prijzen page */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-coral-50 via-cream to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="container mx-auto px-4 sm:px-6 text-center">
+          <div className="max-w-4xl mx-auto space-y-6">
+            <Badge variant="outline" className="border-coral-200 dark:border-coral-700 text-coral-600 dark:text-coral-400 px-4 py-1">
+              Ons verhaal
+            </Badge>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-50 leading-tight">
+              Het verhaal achter{' '}
+              <span className="text-[#B76E79]">
+                DatingAssistent
+              </span>
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+              Van datingcoach naar AI-architect – waar{' '}
+              <strong className="text-gray-900 dark:text-gray-100">10+ jaar praktijkervaring en innovatie</strong>{' '}
+              samenkomen in één platform.
             </p>
-
-            {/* CTA Button */}
-            <div className="flex justify-center mb-6 sm:mb-8 px-2">
-              <Link href="#missie" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto bg-coral-500 hover:bg-coral-600 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
+            <div className="flex justify-center pt-4">
+              <Link href="#missie">
+                <Button className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all">
                   Ontdek ons verhaal →
                 </Button>
               </Link>
             </div>
-
-            {/* Trust Bullets */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 px-2">
-              <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600 dark:text-gray-300">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
-                <span className="text-xs sm:text-sm">Sinds 2014 actief in dating</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600 dark:text-gray-300">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
-                <span className="text-xs sm:text-sm">Innovatieve dating technologie</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 sm:gap-3 text-gray-600 dark:text-gray-300">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
-                <span className="text-xs sm:text-sm">100% Nederlandse expertise</span>
-              </div>
-            </div>
-
           </div>
         </div>
       </section>

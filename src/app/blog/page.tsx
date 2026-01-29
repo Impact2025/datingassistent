@@ -170,44 +170,41 @@ function BlogContent() {
         />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white">
-        {/* Hero Section */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-coral-500 via-coral-250 to-indigo-600 text-white">
-          <div className="absolute inset-0 bg-black/30"></div>
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-25"
-            style={{
-              backgroundImage: `url('/uploads/images/Dating Blog.png')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          ></div>
-          <div className="relative container mx-auto px-4 py-16 md:py-24">
-            <div className="max-w-4xl mx-auto text-center">
-
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-coral-100 bg-clip-text text-transparent drop-shadow-lg">
-                Dating Blog
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-cream to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        {/* Hero Section - Clean style matching Prijzen page */}
+        <section className="py-16 md:py-24 bg-gradient-to-br from-coral-50 via-cream to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+          <div className="container mx-auto px-4 sm:px-6 text-center">
+            <div className="max-w-4xl mx-auto space-y-6">
+              <Badge variant="outline" className="border-coral-200 dark:border-coral-700 text-coral-600 dark:text-coral-400 px-4 py-1">
+                Dating Tips & Advies
+              </Badge>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-50 leading-tight">
+                Dating Blog{' '}
+                <span className="text-[#B76E79]">
+                  & Inspiratie
+                </span>
               </h1>
-              <p className="text-xl md:text-2xl text-white/95 mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-md font-medium">
-                Ontdek de beste tips, tricks en verhalen voor succesvol online daten
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                Ontdek de beste{' '}
+                <strong className="text-gray-900 dark:text-gray-100">tips, tricks en verhalen</strong>{' '}
+                voor succesvol online daten.
               </p>
 
               {/* Search Bar */}
-              <div className="relative max-w-2xl mx-auto">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-white/60" />
+              <div className="relative max-w-2xl mx-auto pt-4">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 mt-2 h-5 w-5 text-gray-400" />
                 <Input
                   type="text"
                   placeholder="Zoek artikelen over dating..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 pr-12 py-4 text-lg bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:bg-white/15 h-14 rounded-full"
+                  className="pl-12 pr-12 py-4 text-lg bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 h-14 rounded-full shadow-sm focus:ring-2 focus:ring-coral-500 focus:border-transparent"
                 />
                 {searchQuery && (
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 text-white/60 hover:text-white hover:bg-white/10"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 mt-2 h-10 w-10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                     onClick={() => setSearchQuery('')}
                   >
                     <X className="h-5 w-5" />
@@ -216,12 +213,7 @@ function BlogContent() {
               </div>
             </div>
           </div>
-
-          {/* Decorative elements */}
-          <div className="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
-          <div className="absolute bottom-20 right-10 w-32 h-32 bg-coral-300/20 rounded-full blur-2xl"></div>
-          <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-coral-300/20 rounded-full blur-lg"></div>
-        </div>
+        </section>
 
         {/* Content Section */}
         <div className="container mx-auto px-4 py-12">
