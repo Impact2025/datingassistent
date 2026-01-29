@@ -5,18 +5,18 @@ import { PublicFooter } from '@/components/layout/public-footer';
 
 export const metadata: Metadata = {
   title: 'Contact | Neem Contact Op | DatingAssistent',
-  description: 'Neem contact op met DatingAssistent. Live chat, email support, telefonisch contact. We helpen je graag verder met je dating vragen. Response binnen 24 uur.',
+  description: 'Neem contact op met DatingAssistent. Live chat en email support. We helpen je graag verder met je dating vragen. Response binnen 24 uur.',
   keywords: ['contact', 'support', 'klantenservice', 'help', 'dating hulp', 'customer service'],
   openGraph: {
     title: 'Contact | Neem Contact Op | DatingAssistent',
-    description: 'Neem contact op met DatingAssistent. Live chat, email support, telefonisch contact. We helpen je graag verder met je dating vragen.',
+    description: 'Neem contact op met DatingAssistent. Live chat en email support. We helpen je graag verder met je dating vragen.',
     type: 'website',
     url: 'https://datingassistent.nl/contact',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Contact | Neem Contact Op | DatingAssistent',
-    description: 'Neem contact op met DatingAssistent. Live chat, email support, telefonisch contact.',
+    description: 'Neem contact op met DatingAssistent. Live chat en email support.',
   },
 };
 

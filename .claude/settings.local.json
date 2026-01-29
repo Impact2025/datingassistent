@@ -287,7 +287,14 @@
       "Bash(npm run lint:*)",
       "Bash(wsl ls:*)",
       "Bash(git cat-file:*)",
-      "Bash(npm run start)"
+      "Bash(npm run start)",
+      "Bash(if [ -f .env ])",
+      "Bash(then grep -E \"MULTISAFEPAY|MSP_TEST\" .env)",
+      "Bash(else echo \"Geen .env bestand gevonden\")",
+      "Bash(copy \"C:\\\\Users\\\\v_mun\\\\Downloads\\\\Gemini_Generated_Image_gb8nidgb8nidgb8n-removebg-preview.png\" \"D:\\\\apps\\\\datingassistent\\\\datingassistentapp\\\\public\\\\images\\\\pureliefde-logo.png\")",
+      "Bash(magick:*)",
+      "Bash(convert:*)",
+      "Bash(npx --version:*)"
     ],
     "deny": [],
     "ask": []

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { NewsletterForm } from '@/components/newsletter/newsletter-form';
 import {
   Mail,
   Phone,
@@ -104,15 +105,6 @@ export default function ContactForm() {
       action: "E-mail sturen",
       href: "mailto:support@datingassistent.nl",
       color: "bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800"
-    },
-    {
-      icon: Phone,
-      title: "Telefonisch Contact",
-      description: "Persoonlijk contact voor urgente zaken",
-      availability: "Ma-Vr 9:00-17:00",
-      action: "020 - 123 45 67",
-      href: "tel:+31201234567",
-      color: "bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-800"
     }
   ];
 
@@ -151,7 +143,7 @@ export default function ContactForm() {
             </p>
 
             {/* Quick Contact Options */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
               {contactMethods.map((method, index) => {
                 const Icon = method.icon;
                 return (
@@ -426,10 +418,6 @@ export default function ContactForm() {
                       <span className="text-sm dark:text-blue-100">E-mail</span>
                       <span className="text-sm font-medium dark:text-blue-100">{"<"} 24 uur</span>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm dark:text-blue-100">Telefoon</span>
-                      <span className="text-sm font-medium dark:text-blue-100">{"<"} 1 uur</span>
-                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -453,14 +441,7 @@ export default function ContactForm() {
                   </p>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex gap-3">
-                    <input
-                      type="email"
-                      placeholder="jouw@email.nl"
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-white"
-                    />
-                    <Button>Abonneren</Button>
-                  </div>
+                  <NewsletterForm source="contact-page" showIcon={true} />
                 </CardContent>
               </Card>
 
