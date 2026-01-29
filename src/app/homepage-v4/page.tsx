@@ -33,10 +33,12 @@ import {
   Eye,
   Brain,
   Rocket,
+  Menu,
+  X,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRef } from 'react';
-import { ThemeToggleSimple } from '@/components/ui/theme-toggle';
+import { useUser } from '@/providers/user-provider';
 
 /**
  * HOMEPAGE V4 - "Warm Vertrouwen" - Wereldklasse Editie
@@ -1196,11 +1198,22 @@ function Footer() {
 // ============================================================================
 
 export default function HomePageV4() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user } = useUser();
+
+  const navLinks = [
+    { href: '/over-ons', label: 'Over Ons' },
+    { href: '/prijzen', label: 'Prijzen' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/kennisbank', label: 'Kennisbank' },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: colors.cream }}>
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur" style={{ borderColor: colors.softBlush }}>
+      {/* Header - Wereldklasse Editie */}
+      <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur-md" style={{ borderColor: colors.softBlush }}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+          {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <Image
               src="/images/LogoDA.png"
@@ -1217,32 +1230,126 @@ export default function HomePageV4() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link href="/over-ons" className="px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100" style={{ color: colors.charcoal }}>
-              Over Ons
-            </Link>
-            <Link href="/prijzen" className="px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100" style={{ color: colors.charcoal }}>
-              Prijzen
-            </Link>
-            <Link href="/blog" className="px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100" style={{ color: colors.charcoal }}>
-              Blog
-            </Link>
-            <Link href="/kennisbank" className="px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100" style={{ color: colors.charcoal }}>
-              Kennisbank
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="px-4 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-gray-100"
+                style={{ color: colors.charcoal }}
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
-          <div className="flex items-center gap-4">
-            <ThemeToggleSimple />
-            <Link href="/login" className="text-sm transition-colors hover:opacity-80" style={{ color: colors.charcoal }}>
-              Inloggen
-            </Link>
-            <Link href="/dashboard">
-              <Button size="sm" className="text-white font-semibold px-5 py-2 rounded-full" style={{ backgroundColor: colors.warmCoral }}>
-                Dashboard
-              </Button>
-            </Link>
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center gap-4">
+            {user ? (
+              <Link href="/dashboard">
+                <Button size="sm" className="text-white font-semibold px-6 py-2 rounded-full shadow-lg" style={{ backgroundColor: colors.warmCoral }}>
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <Button size="sm" className="text-white font-semibold px-6 py-2 rounded-full shadow-lg" style={{ backgroundColor: colors.warmCoral }}>
+                  Inloggen
+                </Button>
+              </Link>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex md:hidden items-center gap-2">
+            <motion.button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg transition-colors hover:bg-gray-100"
+              aria-label={mobileMenuOpen ? 'Menu sluiten' : 'Menu openen'}
+              whileTap={{ scale: 0.95 }}
+            >
+              <AnimatePresence mode="wait">
+                {mobileMenuOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X className="w-6 h-6" style={{ color: colors.charcoal }} />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu className="w-6 h-6" style={{ color: colors.charcoal }} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
           </div>
         </div>
+
+        {/* Mobile Menu - Slide Down */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="md:hidden overflow-hidden border-t"
+              style={{ borderColor: colors.softBlush, backgroundColor: 'white' }}
+            >
+              <nav className="px-4 py-4 space-y-1">
+                {navLinks.map((link, index) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block px-4 py-3 text-base font-medium rounded-xl transition-colors hover:bg-gray-50"
+                      style={{ color: colors.charcoal }}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+
+                {/* Mobile CTA */}
+                <motion.div
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: navLinks.length * 0.05 }}
+                  className="pt-4 mt-4 border-t"
+                  style={{ borderColor: colors.softBlush }}
+                >
+                  {user ? (
+                    <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                      <Button className="w-full text-white font-semibold py-3 rounded-full shadow-lg" style={{ backgroundColor: colors.warmCoral }}>
+                        Naar Dashboard
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                      <Button className="w-full text-white font-semibold py-3 rounded-full shadow-lg" style={{ backgroundColor: colors.warmCoral }}>
+                        Inloggen
+                      </Button>
+                    </Link>
+                  )}
+                </motion.div>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <HeroSection />
