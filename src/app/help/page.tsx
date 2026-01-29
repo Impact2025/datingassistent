@@ -11,7 +11,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   MessageCircle,
   Mail,
-  Phone,
   Search,
   HelpCircle,
   BookOpen,
@@ -189,7 +188,7 @@ function HelpPageContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="grid md:grid-cols-3 gap-6 mb-12"
+            className="grid md:grid-cols-2 gap-6 mb-12 max-w-4xl mx-auto"
           >
             {/* Chat with Iris */}
             <Card
@@ -260,43 +259,6 @@ function HelpPageContent() {
                 >
                   Stuur Bericht
                   <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Phone Support */}
-            <Card
-              className="border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all cursor-pointer hover:shadow-md group bg-white dark:bg-gray-800"
-              onClick={() => (window.location.href = 'tel:+31201234567')}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 dark:text-white text-base mb-1">
-                      Bel Ons
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-3">
-                      Persoonlijk contact met ons team
-                    </p>
-                    <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-sm">
-                      <Clock className="w-4 h-4" />
-                      Ma-Vr 9:00-17:00
-                    </div>
-                  </div>
-                </div>
-                <Button
-                  variant="outline"
-                  className="w-full mt-4 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.location.href = 'tel:+31201234567';
-                  }}
-                >
-                  +31 20 123 4567
-                  <Phone className="w-4 h-4 ml-2" />
                 </Button>
               </CardContent>
             </Card>

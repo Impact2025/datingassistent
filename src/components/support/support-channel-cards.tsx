@@ -55,16 +55,6 @@ const SUPPORT_CHANNELS: SupportChannelConfig[] = [
     isAvailable: true,
   },
   {
-    channel: 'phone',
-    title: 'Telefonisch Contact',
-    description: 'Spreek direct met een medewerker',
-    availability: 'Ma-Vr 9:00-17:00',
-    responseTime: '< 5 min',
-    isAvailable: true, // Would check actual hours
-    queueLength: 2,
-    estimatedWait: '~5 min',
-  },
-  {
     channel: 'video_call',
     title: 'Video Support',
     description: 'Persoonlijke 1-op-1 sessie met screensharing',
