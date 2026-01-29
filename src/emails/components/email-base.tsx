@@ -73,7 +73,7 @@ export const styles = {
   },
   heroGradient: {
     background: 'linear-gradient(135deg, #FF7B54 0%, #722F37 100%)',
-    padding: '48px 32px',
+    padding: '32px 32px 28px 32px', // Compact header
     textAlign: 'center' as const,
   },
   content: {
@@ -251,19 +251,40 @@ interface HeroHeaderProps {
 
 export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
   return (
-    <Section style={styles.heroGradient}>
-      <Img
-        src="https://datingassistent.nl/images/LogoDA.png"
-        alt="DatingAssistent"
-        width={56}
-        height={56}
-        style={{ margin: '0 auto', display: 'block' }}
-      />
-      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '20px' }}>
+    <Section style={{
+      ...styles.heroGradient,
+      padding: '32px 32px 28px 32px', // Reduced padding
+    }}>
+      {/* Logo with brand text */}
+      <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto' }}>
+        <tr>
+          <td style={{ verticalAlign: 'middle' }}>
+            <Img
+              src="https://datingassistent.nl/images/LogoDA.png"
+              alt="DatingAssistent"
+              width={44}
+              height={44}
+              style={{ display: 'block' }}
+            />
+          </td>
+          <td style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>
+            <span style={{
+              fontSize: '22px',
+              fontFamily: '"Inter", Arial, sans-serif',
+              fontWeight: '700',
+              letterSpacing: '-0.02em',
+              color: colors.white,
+            }}>
+              DatingAssistent
+            </span>
+          </td>
+        </tr>
+      </table>
+      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '16px', marginBottom: '0' }}>
         {title}
       </Text>
       {subtitle && (
-        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '0', fontSize: '16px' }}>
+        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '8px 0 0 0', fontSize: '15px' }}>
           {subtitle}
         </Text>
       )}
@@ -281,21 +302,39 @@ export function PinkHeader({ title, subtitle }: PinkHeaderProps) {
   return (
     <Section style={{
       backgroundColor: colors.primary,
-      padding: '48px 32px',
+      padding: '32px 32px 28px 32px', // Reduced padding
       textAlign: 'center' as const,
     }}>
-      <Img
-        src="https://datingassistent.nl/images/LogoDA.png"
-        alt="DatingAssistent"
-        width={56}
-        height={56}
-        style={{ margin: '0 auto', display: 'block' }}
-      />
-      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '20px' }}>
+      {/* Logo with brand text */}
+      <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto' }}>
+        <tr>
+          <td style={{ verticalAlign: 'middle' }}>
+            <Img
+              src="https://datingassistent.nl/images/LogoDA.png"
+              alt="DatingAssistent"
+              width={44}
+              height={44}
+              style={{ display: 'block' }}
+            />
+          </td>
+          <td style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>
+            <span style={{
+              fontSize: '22px',
+              fontFamily: '"Inter", Arial, sans-serif',
+              fontWeight: '700',
+              letterSpacing: '-0.02em',
+              color: colors.white,
+            }}>
+              DatingAssistent
+            </span>
+          </td>
+        </tr>
+      </table>
+      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '16px', marginBottom: '0' }}>
         {title}
       </Text>
       {subtitle && (
-        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '0', fontSize: '16px' }}>
+        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '8px 0 0 0', fontSize: '15px' }}>
           {subtitle}
         </Text>
       )}
