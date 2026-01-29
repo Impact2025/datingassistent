@@ -1,9 +1,9 @@
 /**
  * Email Service - World-Class Email System for DatingAssistent
- * Uses React Email templates for beautiful, responsive emails
+ * Uses Resend + React Email templates for beautiful, responsive emails
  */
 
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 import { render } from '@react-email/components';
 import WelcomeEmail from '@/emails/welcome-email';
 import VerificationEmail from '@/emails/verification-email';
@@ -19,13 +19,13 @@ import type { AttachmentPattern } from '@/lib/quiz/pattern/pattern-types';
 
 type NurtureDay = 1 | 3 | 5 | 7;
 
-// Initialize SendGrid
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-}
+// Initialize Resend
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
-const FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL || 'noreply@datingassistent.nl';
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@datingassistent.nl';
 const SUPPORT_EMAIL = 'support@datingassistent.nl';
 const BILLING_EMAIL = 'billing@datingassistent.nl';
 
@@ -38,31 +38,35 @@ interface EmailData {
 }
 
 /**
- * Send an email using SendGrid
+ * Send an email using Resend
  */
 export async function sendEmail(emailData: EmailData): Promise<boolean> {
   try {
-    if (!process.env.SENDGRID_API_KEY || process.env.SENDGRID_API_KEY === 'your_actual_sendgrid_api_key_here') {
-      console.warn('SendGrid API key not configured. Email not sent.');
-      console.log('📧 EMAIL NOT SENT (SendGrid not configured) - Email content:');
+    if (!resend || !process.env.RESEND_API_KEY) {
+      console.warn('🔧 Resend API key not configured. Email logged instead of sent.');
+      console.log('📧 EMAIL NOT SENT (Resend not configured) - Email content:');
       console.log('To:', emailData.to);
+      console.log('From:', emailData.from || FROM_EMAIL);
       console.log('Subject:', emailData.subject);
-      console.log('Text:', emailData.text?.substring(0, 200) + '...');
+      console.log('Text preview:', emailData.text?.substring(0, 200) + '...');
       console.log('---');
-      return true; // Return true to indicate "success" for testing purposes
+      return true; // Return true for development/testing
     }
 
-    const mailData = {
-      to: emailData.to,
+    const result = await resend.emails.send({
       from: emailData.from || FROM_EMAIL,
+      to: emailData.to,
       subject: emailData.subject,
-      ...(emailData.text && { text: emailData.text }),
       ...(emailData.html && { html: emailData.html }),
-    };
+      ...(emailData.text && { text: emailData.text }),
+    });
 
-    await sgMail.send(mailData);
+    if (result.error) {
+      console.error('❌ Resend error:', result.error);
+      return false;
+    }
 
-    console.log(`✅ Email sent successfully to ${emailData.to}`);
+    console.log(`✅ Email sent successfully to ${emailData.to} (ID: ${result.data?.id})`);
     return true;
   } catch (error) {
     console.error('❌ Error sending email:', error);
@@ -660,14 +664,14 @@ export async function sendTextEmail(
   subject: string,
   text: string
 ): Promise<boolean> {
-  // If SendGrid is not configured, log the email content instead of sending
-  if (!process.env.SENDGRID_API_KEY || process.env.SENDGRID_API_KEY === 'your_actual_sendgrid_api_key_here') {
-    console.log('📧 EMAIL NOT SENT (SendGrid not configured) - Email content:');
+  // If Resend is not configured, log the email content instead of sending
+  if (!resend || !process.env.RESEND_API_KEY) {
+    console.log('📧 EMAIL NOT SENT (Resend not configured) - Email content:');
     console.log('To:', to);
     console.log('Subject:', subject);
     console.log('Text:', text.substring(0, 200) + '...');
     console.log('---');
-    return true; // Return true to indicate "success" for testing purposes
+    return true; // Return true for development/testing
   }
 
   return sendEmail({
