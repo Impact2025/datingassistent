@@ -55,6 +55,15 @@ interface DailyStats {
   pageViewsToday?: number;
   uniqueVisitorsToday?: number;
   topTrafficSources?: Array<{ source: string; count: number }>;
+  // Technical metrics
+  apiErrorsToday: number;
+  apiErrorsYesterday: number;
+  apiCallsToday: number;
+  aiCostToday: number;
+  aiCostThisMonth: number;
+  avgResponseTimeMs: number;
+  slowestEndpoint?: string;
+  topErrors?: Array<{ endpoint: string; count: number; lastError: string }>;
 }
 
 async function safeQuery<T>(query: Promise<T>, defaultValue: T): Promise<T> {
@@ -94,6 +103,8 @@ async function gatherDailyStats(): Promise<DailyStats> {
     otoResult,
     emailResult,
     churnResult,
+    techStatsResult,
+    topErrorsResult,
   ] = await Promise.all([
     // New users query
     safeQuery(sql`
@@ -173,6 +184,33 @@ async function gatherDailyStats(): Promise<DailyStats> {
       WHERE subscription_status = 'active'
         AND last_login < NOW() - INTERVAL '7 days'
     `, emptyResult),
+
+    // Technical: API errors and performance from api_usage table
+    safeQuery(sql`
+      SELECT
+        COUNT(*) FILTER (WHERE (status_code >= 400 OR error_message IS NOT NULL) AND created_at >= ${todayISO}) as errors_today,
+        COUNT(*) FILTER (WHERE (status_code >= 400 OR error_message IS NOT NULL) AND created_at >= ${yesterdayISO} AND created_at < ${todayISO}) as errors_yesterday,
+        COUNT(*) FILTER (WHERE created_at >= ${todayISO}) as calls_today,
+        COALESCE(SUM(cost_cents) FILTER (WHERE created_at >= ${todayISO}), 0) as cost_today,
+        COALESCE(SUM(cost_cents) FILTER (WHERE created_at >= ${monthStartISO}), 0) as cost_month,
+        COALESCE(AVG(request_duration_ms) FILTER (WHERE created_at >= ${todayISO}), 0) as avg_response_ms
+      FROM api_usage
+    `, emptyResult),
+
+    // Technical: Top errors by endpoint
+    safeQuery(sql`
+      SELECT
+        endpoint,
+        COUNT(*) as error_count,
+        MAX(error_message) as last_error
+      FROM api_usage
+      WHERE (status_code >= 400 OR error_message IS NOT NULL)
+        AND created_at >= ${todayISO}
+        AND endpoint IS NOT NULL
+      GROUP BY endpoint
+      ORDER BY error_count DESC
+      LIMIT 5
+    `, emptyResult),
   ]);
 
   return {
@@ -212,6 +250,19 @@ async function gatherDailyStats(): Promise<DailyStats> {
 
     // Churn
     highChurnRiskUsers: parseInt(churnResult.rows[0]?.high_risk || '0'),
+
+    // Technical metrics
+    apiErrorsToday: parseInt(techStatsResult.rows[0]?.errors_today || '0'),
+    apiErrorsYesterday: parseInt(techStatsResult.rows[0]?.errors_yesterday || '0'),
+    apiCallsToday: parseInt(techStatsResult.rows[0]?.calls_today || '0'),
+    aiCostToday: parseInt(techStatsResult.rows[0]?.cost_today || '0'),
+    aiCostThisMonth: parseInt(techStatsResult.rows[0]?.cost_month || '0'),
+    avgResponseTimeMs: parseFloat(techStatsResult.rows[0]?.avg_response_ms || '0'),
+    topErrors: topErrorsResult.rows.map((row: any) => ({
+      endpoint: row.endpoint || 'unknown',
+      count: parseInt(row.error_count || '0'),
+      lastError: row.last_error || 'Unknown error',
+    })),
   };
 }
 

@@ -58,6 +58,16 @@ interface DailyStats {
 
   // Churn risk
   highChurnRiskUsers: number;
+
+  // Technical metrics
+  apiErrorsToday: number;
+  apiErrorsYesterday: number;
+  apiCallsToday: number;
+  aiCostToday: number;
+  aiCostThisMonth: number;
+  avgResponseTimeMs: number;
+  slowestEndpoint?: string;
+  topErrors?: Array<{ endpoint: string; count: number; lastError: string }>;
 }
 
 interface AdminDailyReportEmailProps {
@@ -487,10 +497,92 @@ export default function AdminDailyReportEmail({
           </>
         )}
 
+        {/* Technical / System Health */}
+        <SectionTitle>Techniek & Systeem</SectionTitle>
+
+        <table width="100%" cellPadding="8" cellSpacing="8" style={{ borderCollapse: 'separate' }}>
+          <tbody>
+            <tr>
+              <StatCard
+                title="API Errors"
+                value={stats.apiErrorsToday}
+                trend={getTrendIndicator(stats.apiErrorsYesterday, stats.apiErrorsToday)}
+                highlight={stats.apiErrorsToday > 10}
+              />
+              <StatCard
+                title="API Calls"
+                value={stats.apiCallsToday}
+                subtitle="Vandaag"
+              />
+              <StatCard
+                title="Gem. Response"
+                value={`${Math.round(stats.avgResponseTimeMs)}ms`}
+                highlight={stats.avgResponseTimeMs > 2000}
+              />
+              <StatCard
+                title="AI Kosten"
+                value={`$${(stats.aiCostToday / 100).toFixed(2)}`}
+                subtitle={`MTD: $${(stats.aiCostThisMonth / 100).toFixed(2)}`}
+              />
+            </tr>
+          </tbody>
+        </table>
+
+        {/* Top Errors */}
+        {stats.topErrors && stats.topErrors.length > 0 && (
+          <Section style={{
+            backgroundColor: '#fef2f2',
+            border: `2px solid ${colors.error}`,
+            borderRadius: '12px',
+            padding: '16px',
+            margin: '16px 0',
+          }}>
+            <Text style={{
+              fontSize: '14px',
+              fontWeight: '700',
+              color: colors.error,
+              margin: '0 0 12px 0',
+            }}>
+              🚨 Top Errors Vandaag
+            </Text>
+            <table width="100%" cellPadding="4" cellSpacing="0">
+              <tbody>
+                {stats.topErrors.slice(0, 5).map((error, index) => (
+                  <tr key={index}>
+                    <td style={{
+                      color: colors.dark,
+                      fontSize: '12px',
+                      padding: '4px 0',
+                      borderBottom: index < stats.topErrors!.length - 1 ? `1px solid #fecaca` : 'none',
+                    }}>
+                      <strong>{error.endpoint}</strong>
+                      <br />
+                      <span style={{ color: colors.gray, fontSize: '11px' }}>
+                        {error.lastError.substring(0, 80)}{error.lastError.length > 80 ? '...' : ''}
+                      </span>
+                    </td>
+                    <td style={{
+                      color: colors.error,
+                      fontSize: '14px',
+                      fontWeight: '700',
+                      textAlign: 'right',
+                      padding: '4px 0',
+                      borderBottom: index < stats.topErrors!.length - 1 ? `1px solid #fecaca` : 'none',
+                      verticalAlign: 'top',
+                    }}>
+                      {error.count}x
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Section>
+        )}
+
         <Hr style={styles.divider} />
 
         {/* Action Items */}
-        {(stats.highChurnRiskUsers > 5 || stats.hotLeadsToday > 0 || stats.cancelledToday > 2) && (
+        {(stats.highChurnRiskUsers > 5 || stats.hotLeadsToday > 0 || stats.cancelledToday > 2 || stats.apiErrorsToday > 10) && (
           <Section style={{
             backgroundColor: '#fef3c7',
             border: `2px solid ${colors.warning}`,
@@ -522,6 +614,12 @@ export default function AdminDailyReportEmail({
             {stats.cancelledToday > 2 && (
               <Text style={{ fontSize: '14px', color: colors.dark, margin: '8px 0' }}>
                 • <strong>{stats.cancelledToday} annuleringen</strong> vandaag - check exit survey feedback
+              </Text>
+            )}
+
+            {stats.apiErrorsToday > 10 && (
+              <Text style={{ fontSize: '14px', color: colors.dark, margin: '8px 0' }}>
+                • <strong>{stats.apiErrorsToday} API errors</strong> vandaag - check logs en monitoring
               </Text>
             )}
           </Section>
