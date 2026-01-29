@@ -20,21 +20,33 @@ import {
   Preview,
 } from '@react-email/components';
 
-// Brand Colors
+// Brand Colors - "Warm Vertrouwen" Design System
 export const colors = {
+  // Primary - Warm Coral
   primary: '#FF7B54',
-  primaryDark: '#c73d64',
-  secondary: '#f97316',
-  gradient: 'linear-gradient(135deg, #FF7B54 0%, #f97316 100%)',
-  success: '#10b981',
+  primaryDark: '#E66A43',
+  primaryLight: '#FF9676',
+  // Secondary - Deep Purple (Headers, Logo)
+  secondary: '#722F37',
+  secondaryLight: '#8B4249',
+  secondaryDark: '#5C262D',
+  // Gradient - Brand consistent
+  gradient: 'linear-gradient(135deg, #FF7B54 0%, #722F37 100%)',
+  gradientSoft: 'linear-gradient(135deg, #FFF8F3 0%, #F5E6E8 100%)',
+  // Status Colors
+  success: '#A8B5A0', // Sage Green
   warning: '#f59e0b',
   error: '#ef4444',
   info: '#3b82f6',
-  dark: '#1a1a1a',
+  // Text Colors
+  dark: '#2D3142', // Charcoal (not pure black)
   gray: '#6b7280',
-  lightGray: '#f3f4f6',
+  grayLight: '#9ca3af',
+  // Background Colors - Warm tinted
+  lightGray: '#F5E6E8', // Soft Blush
+  cream: '#FFF8F3',
   white: '#ffffff',
-  background: '#f8f9fa',
+  background: '#FFF8F3', // Cream background
 };
 
 // Shared Styles
@@ -60,7 +72,7 @@ export const styles = {
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   heroGradient: {
-    background: 'linear-gradient(135deg, #FF7B54 0%, #f97316 100%)',
+    background: 'linear-gradient(135deg, #FF7B54 0%, #722F37 100%)',
     padding: '48px 32px',
     textAlign: 'center' as const,
   },
@@ -68,7 +80,7 @@ export const styles = {
     padding: '32px',
   },
   footer: {
-    backgroundColor: '#fafafa',
+    backgroundColor: colors.cream, // Cream - brand consistent
     padding: '24px 32px',
     textAlign: 'center' as const,
     borderTop: `1px solid ${colors.lightGray}`,
@@ -190,25 +202,48 @@ export function BaseEmail({ preview, children }: BaseEmailProps) {
   );
 }
 
-// Logo Component
+// Logo Component - Updated to new brand logo
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
+  showText?: boolean;
 }
 
-export function EmailLogo({ size = 'md' }: LogoProps) {
-  const sizes = { sm: 40, md: 60, lg: 80 };
+export function EmailLogo({ size = 'md', showText = false }: LogoProps) {
+  const sizes = { sm: 32, md: 48, lg: 64 };
+  const textSizes = { sm: '16px', md: '20px', lg: '24px' };
+  const logoSize = sizes[size];
+
   return (
-    <Img
-      src="https://datingassistent.nl/images/LogoDatingAssistent.png"
-      alt="DatingAssistent"
-      width={sizes[size]}
-      height={sizes[size]}
-      style={{ margin: '0 auto' }}
-    />
+    <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto' }}>
+      <tr>
+        <td style={{ verticalAlign: 'middle' }}>
+          <Img
+            src="https://datingassistent.nl/images/LogoDA.png"
+            alt="DatingAssistent"
+            width={logoSize}
+            height={logoSize}
+            style={{ display: 'block' }}
+          />
+        </td>
+        {showText && (
+          <td style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>
+            <span style={{
+              fontSize: textSizes[size],
+              fontFamily: '"Inter", Arial, sans-serif',
+              fontWeight: '700',
+              letterSpacing: '-0.02em',
+            }}>
+              <span style={{ color: colors.secondary }}>Dating</span>
+              <span style={{ color: colors.dark }}>Assistent</span>
+            </span>
+          </td>
+        )}
+      </tr>
+    </table>
   );
 }
 
-// Header with gradient background
+// Header with gradient background - Brand "Warm Vertrouwen" gradient
 interface HeroHeaderProps {
   title: string;
   subtitle?: string;
@@ -217,12 +252,18 @@ interface HeroHeaderProps {
 export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
   return (
     <Section style={styles.heroGradient}>
-      <EmailLogo size="md" />
-      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '16px' }}>
+      <Img
+        src="https://datingassistent.nl/images/LogoDA.png"
+        alt="DatingAssistent"
+        width={56}
+        height={56}
+        style={{ margin: '0 auto', display: 'block' }}
+      />
+      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '20px' }}>
         {title}
       </Text>
       {subtitle && (
-        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '0' }}>
+        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '0', fontSize: '16px' }}>
           {subtitle}
         </Text>
       )}
@@ -230,7 +271,7 @@ export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
   );
 }
 
-// Header with solid pink background (brand style - no gradient)
+// Header with solid Warm Coral background (brand style - no gradient)
 interface PinkHeaderProps {
   title: string;
   subtitle?: string;
@@ -243,12 +284,18 @@ export function PinkHeader({ title, subtitle }: PinkHeaderProps) {
       padding: '48px 32px',
       textAlign: 'center' as const,
     }}>
-      <EmailLogo size="md" />
-      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '16px' }}>
+      <Img
+        src="https://datingassistent.nl/images/LogoDA.png"
+        alt="DatingAssistent"
+        width={56}
+        height={56}
+        style={{ margin: '0 auto', display: 'block' }}
+      />
+      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '20px' }}>
         {title}
       </Text>
       {subtitle && (
-        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '0' }}>
+        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '0', fontSize: '16px' }}>
           {subtitle}
         </Text>
       )}
@@ -256,13 +303,20 @@ export function PinkHeader({ title, subtitle }: PinkHeaderProps) {
   );
 }
 
-// Simple header with logo
+// Simple header with logo and brand text
 export function SimpleHeader() {
   return (
     <Section style={styles.header}>
-      <EmailLogo size="md" />
-      <Text style={{ color: colors.gray, fontSize: '14px', margin: '12px 0 0 0' }}>
-        De dating coach die altijd beschikbaar is
+      <EmailLogo size="md" showText={true} />
+      <Text style={{
+        color: colors.gray,
+        fontSize: '12px',
+        margin: '12px 0 0 0',
+        textTransform: 'uppercase',
+        letterSpacing: '0.05em',
+        fontWeight: '500',
+      }}>
+        Durf te daten, durf jezelf te zijn
       </Text>
     </Section>
   );
@@ -399,7 +453,7 @@ export function ProgressBar({ progress, label }: ProgressBarProps) {
             height: '10px',
           }}>
             <div style={{
-              background: 'linear-gradient(135deg, #FF7B54 0%, #f97316 100%)',
+              background: 'linear-gradient(135deg, #FF7B54 0%, #722F37 100%)',
               borderRadius: '10px',
               height: '10px',
               width: `${Math.min(100, Math.max(0, progress))}%`,
@@ -411,7 +465,7 @@ export function ProgressBar({ progress, label }: ProgressBarProps) {
   );
 }
 
-// Email Footer
+// Email Footer - Updated with brand styling
 interface EmailFooterProps {
   unsubscribeUrl?: string;
   preferencesUrl?: string;
@@ -421,14 +475,18 @@ export function EmailFooter({ unsubscribeUrl, preferencesUrl }: EmailFooterProps
   const baseUrl = 'https://datingassistent.nl';
 
   return (
-    <Section style={styles.footer}>
-      <EmailLogo size="sm" />
+    <Section style={{
+      ...styles.footer,
+      backgroundColor: colors.cream,
+      borderTop: `1px solid ${colors.lightGray}`,
+    }}>
+      <EmailLogo size="sm" showText={true} />
 
-      <Text style={{ ...styles.footerText, marginTop: '16px' }}>
+      <Text style={{ ...styles.footerText, marginTop: '20px', color: colors.gray }}>
         © {new Date().getFullYear()} DatingAssistent. Alle rechten voorbehouden.
       </Text>
 
-      <Text style={styles.footerText}>
+      <Text style={{ ...styles.footerText, marginTop: '12px' }}>
         <Link href={`${baseUrl}/privacy`} style={styles.footerLink}>Privacy</Link>
         {' | '}
         <Link href={`${baseUrl}/algemene-voorwaarden`} style={styles.footerLink}>Voorwaarden</Link>
@@ -437,22 +495,22 @@ export function EmailFooter({ unsubscribeUrl, preferencesUrl }: EmailFooterProps
       </Text>
 
       {(unsubscribeUrl || preferencesUrl) && (
-        <Text style={{ ...styles.footerText, marginTop: '16px', fontSize: '12px', color: '#9ca3af' }}>
+        <Text style={{ ...styles.footerText, marginTop: '16px', fontSize: '12px', color: colors.grayLight }}>
           {preferencesUrl && (
-            <Link href={preferencesUrl} style={{ ...styles.footerLink, fontSize: '12px', color: '#9ca3af' }}>
+            <Link href={preferencesUrl} style={{ ...styles.footerLink, fontSize: '12px', color: colors.grayLight }}>
               Email voorkeuren aanpassen
             </Link>
           )}
           {preferencesUrl && unsubscribeUrl && ' | '}
           {unsubscribeUrl && (
-            <Link href={unsubscribeUrl} style={{ ...styles.footerLink, fontSize: '12px', color: '#9ca3af' }}>
+            <Link href={unsubscribeUrl} style={{ ...styles.footerLink, fontSize: '12px', color: colors.grayLight }}>
               Uitschrijven
             </Link>
           )}
         </Text>
       )}
 
-      <Text style={{ ...styles.footerText, marginTop: '16px', fontSize: '11px', color: '#9ca3af' }}>
+      <Text style={{ ...styles.footerText, marginTop: '16px', fontSize: '11px', color: colors.grayLight }}>
         DatingAssistent B.V. - Nederland
       </Text>
     </Section>
@@ -491,7 +549,7 @@ export function StepsList({ steps }: StepsListProps) {
             <table cellPadding="0" cellSpacing="0">
               <tr>
                 <td style={{
-                  background: 'linear-gradient(135deg, #FF7B54 0%, #f97316 100%)',
+                  background: 'linear-gradient(135deg, #FF7B54 0%, #722F37 100%)',
                   borderRadius: '50%',
                   width: '32px',
                   height: '32px',

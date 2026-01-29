@@ -37,9 +37,9 @@ export function BaseEmailTemplate({
   );
 }
 
-// Modern DatingAssistent Email Template Styles
+// "Warm Vertrouwen" Design System - Email Styles
 const main = {
-  backgroundColor: '#f8f9fa', // Light gray background like dashboard
+  backgroundColor: '#FFF8F3', // Cream background - brand consistent
   fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   margin: '0',
   padding: '20px 0',
@@ -54,8 +54,8 @@ const container = {
   maxWidth: '600px',
   borderRadius: '16px', // More rounded like dashboard cards
   overflow: 'hidden',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)', // Subtle shadow like dashboard
-  border: '1px solid #f3f4f6', // Light border like dashboard
+  boxShadow: '0 4px 12px rgba(114, 47, 55, 0.08)', // Warm shadow - brand consistent
+  border: '1px solid #F5E6E8', // Soft Blush border - brand consistent
 };
 
 // Header component for emails
@@ -98,7 +98,7 @@ export function EmailContent({ children }: EmailContentProps) {
   );
 }
 
-// Footer component
+// Footer component - "Warm Vertrouwen" styled
 interface EmailFooterProps {
   showLinks?: boolean;
 }
@@ -106,16 +106,19 @@ interface EmailFooterProps {
 export function EmailFooter({ showLinks = true }: EmailFooterProps) {
   return (
     <Section style={footerSection}>
-      <Text style={footerText}>
-        © 2025 DatingAssistent. Alle rechten voorbehouden.
+      {/* Logo in footer */}
+      <EmailLogo size="sm" showText={true} />
+
+      <Text style={{ ...footerText, marginTop: '20px' }}>
+        © {new Date().getFullYear()} DatingAssistent. Alle rechten voorbehouden.
       </Text>
       {showLinks && (
         <div style={footerLinks}>
-          <a href="https://datingassistent.nl/privacy" style={footerLink}>Privacy Policy</a>
+          <a href="https://datingassistent.nl/privacy" style={footerLink}>Privacy</a>
           <span style={footerSeparator}>|</span>
-          <a href="https://datingassistent.nl/algemene-voorwaarden" style={footerLink}>Algemene Voorwaarden</a>
+          <a href="https://datingassistent.nl/algemene-voorwaarden" style={footerLink}>Voorwaarden</a>
           <span style={footerSeparator}>|</span>
-          <a href="mailto:support@datingassistent.nl" style={footerLink}>Support</a>
+          <a href="https://datingassistent.nl/help" style={footerLink}>Help</a>
         </div>
       )}
 
@@ -125,11 +128,11 @@ export function EmailFooter({ showLinks = true }: EmailFooterProps) {
   );
 }
 
-// Styles
+// "Warm Vertrouwen" Design System - Component Styles
 const headerSection = {
   backgroundColor: '#FFFFFF',
   padding: '24px 32px',
-  borderBottom: '1px solid #f3f4f6',
+  borderBottom: '1px solid #F5E6E8', // Soft Blush border
 };
 
 const headerTop = {
@@ -154,7 +157,7 @@ const heroSection = {
 const logoContainer = {
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
+  gap: '10px',
 };
 
 const brandText = {
@@ -180,7 +183,7 @@ const brandSlogan = {
 };
 
 const headerTitle = {
-  color: '#1a1a1a',
+  color: '#2D3142', // Charcoal - brand consistent
   fontSize: '32px',
   fontWeight: '700',
   fontFamily: '"Inter", Arial, sans-serif',
@@ -203,10 +206,10 @@ const contentSection = {
 };
 
 const footerSection = {
-  backgroundColor: '#fafafa',
+  backgroundColor: '#FFF8F3', // Cream background - brand consistent
   padding: '24px 32px',
   textAlign: 'center' as const,
-  borderTop: '1px solid #f3f4f6',
+  borderTop: '1px solid #F5E6E8', // Soft Blush border
 };
 
 const footerText = {
@@ -226,7 +229,7 @@ const footerLinks = {
 };
 
 const footerLink = {
-  color: '#FF7B54',
+  color: '#FF7B54', // Warm Coral - brand consistent
   fontSize: '14px',
   fontFamily: '"Inter", Arial, sans-serif',
   textDecoration: 'none',
@@ -234,7 +237,7 @@ const footerLink = {
 };
 
 const footerSeparator = {
-  color: '#d1d5db',
+  color: '#D4C0C3', // Warm border color
   fontSize: '14px',
   fontFamily: '"Inter", Arial, sans-serif',
 };

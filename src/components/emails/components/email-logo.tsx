@@ -14,9 +14,9 @@ export function EmailLogo({
   showText = true
 }: EmailLogoProps) {
   const sizeStyles = {
-    sm: { iconSize: 24, fontSize: emailTypography.fontSize.sm },
-    md: { iconSize: 32, fontSize: emailTypography.fontSize.base },
-    lg: { iconSize: 40, fontSize: emailTypography.fontSize.lg },
+    sm: { iconSize: 32, fontSize: emailTypography.fontSize.sm },
+    md: { iconSize: 48, fontSize: emailTypography.fontSize.base },
+    lg: { iconSize: 64, fontSize: emailTypography.fontSize.lg },
   };
 
   const { iconSize, fontSize } = sizeStyles[size];
@@ -25,31 +25,17 @@ export function EmailLogo({
     <div style={{
       display: 'flex',
       alignItems: 'center',
-      gap: '8px',
+      gap: '10px',
       ...style,
     }}>
-      {/* SVG Logo Icon */}
-      <svg
+      {/* New Logo Image */}
+      <img
+        src="https://datingassistent.nl/images/LogoDA.png"
+        alt="DatingAssistent"
         width={iconSize}
         height={iconSize}
-        viewBox="0 0 200 200"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ flexShrink: 0 }}
-      >
-        <path
-          d="M100 180C100 180 20 120 20 70C20 50 30 30 50 30C70 30 85 45 100 60C115 45 130 30 150 30C170 30 180 50 180 70C180 120 100 180 100 180Z"
-          fill={emailColors.primary}
-          stroke={emailColors.primary}
-          strokeWidth="8"
-          strokeLinejoin="round"
-        />
-        <g transform="translate(60, 60) rotate(-45 50 50)">
-          <line x1="30" y1="50" x2="120" y2="50" stroke="white" strokeWidth="12" strokeLinecap="round"/>
-          <path d="M115 35 L135 50 L115 65" fill="none" stroke="white" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M35 40 L25 50 L35 60" fill="none" stroke="white" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round"/>
-        </g>
-      </svg>
+        style={{ flexShrink: 0, display: 'block' }}
+      />
 
       {/* Brand Text */}
       {showText && (
@@ -65,7 +51,7 @@ export function EmailLogo({
             letterSpacing: '-0.02em',
           }}>
             <span style={{
-              color: emailColors.primary,
+              color: emailColors.secondary,
               fontWeight: '700'
             }}>
               Dating
