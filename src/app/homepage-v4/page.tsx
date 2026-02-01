@@ -52,6 +52,10 @@ import { useUser } from '@/providers/user-provider';
  * @see /src/styles/variables.css voor kleur documentatie
  */
 
+// Early bird configuration
+const EARLY_BIRD_DEADLINE = '14 februari 2026';
+const EARLY_BIRD_END_DATE = new Date('2026-02-14T23:59:59');
+
 const colors = {
   deepPurple: 'var(--color-deep-purple, #722F37)',
   dustyRose: 'var(--color-dusty-rose, #E3867D)',
@@ -712,6 +716,18 @@ function PricingSection() {
     <section className="py-24 px-4" style={{ backgroundColor: colors.cream }}>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
+          {/* Early Bird Badge */}
+          <motion.div
+            className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full shadow-lg text-white"
+            style={{ background: 'linear-gradient(135deg, #f59e0b, #ea580c)' }}
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <Zap className="w-4 h-4" />
+            <span className="font-semibold text-sm">Early Bird Actie - Geldig tot {EARLY_BIRD_DEADLINE}</span>
+          </motion.div>
+
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ color: colors.deepPurple }}>
             Kies jouw route
           </h2>
@@ -744,8 +760,13 @@ function PricingSection() {
                 <h3 className="text-2xl font-bold mb-1" style={{ color: colors.deepPurple }}>{plan.name}</h3>
                 <p className="text-sm mb-4" style={{ color: colors.mediumGray }}>{plan.subtitle}</p>
 
-                <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-lg line-through" style={{ color: colors.mediumGray }}>{plan.oldPrice}</span>
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-lg line-through" style={{ color: colors.mediumGray }}>{plan.oldPrice}</span>
+                    <Badge className="bg-green-500 hover:bg-green-500 text-white text-xs">
+                      Bespaar €{parseInt(plan.oldPrice.replace('€', '')) - parseInt(plan.price.replace('€', ''))}
+                    </Badge>
+                  </div>
                   <span className="text-4xl font-bold" style={{ color: plan.color }}>{plan.price}</span>
                 </div>
 
