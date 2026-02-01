@@ -23,8 +23,13 @@ import {
   FileText,
   Infinity,
   ArrowRight,
-  Star
+  Star,
+  Zap
 } from 'lucide-react';
+
+// Early bird configuration
+const EARLY_BIRD_DEADLINE = '14 februari 2026';
+const EARLY_BIRD_END_DATE = new Date('2026-02-14T23:59:59');
 
 // Program data based on Value Stack strategy
 const programs = [
@@ -33,6 +38,7 @@ const programs = [
     name: 'De Kickstart',
     tagline: 'Voor de snelle start',
     price: 47,
+    originalPrice: 97,
     duration: '21 dagen toegang',
     icon: Rocket,
     popular: false,
@@ -53,6 +59,7 @@ const programs = [
     name: 'De Transformatie',
     tagline: 'De complete opleiding tot succesvol daten',
     price: 147,
+    originalPrice: 297,
     duration: '90 dagen toegang',
     icon: Sparkles,
     popular: true,
@@ -76,6 +83,7 @@ const programs = [
     name: 'De VIP Reis',
     tagline: 'Persoonlijke 1-op-1 begeleiding',
     price: 797,
+    originalPrice: 997,
     duration: '180 dagen toegang',
     icon: Crown,
     popular: false,
@@ -148,6 +156,11 @@ export default function PrijzenPage() {
       <section className="py-16 md:py-24 bg-gradient-to-br from-coral-50 via-cream to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
+            {/* Early Bird Badge */}
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-2 rounded-full shadow-lg">
+              <Zap className="w-4 h-4" />
+              <span className="font-semibold text-sm">Early Bird Actie - Geldig tot {EARLY_BIRD_DEADLINE}</span>
+            </div>
             <Badge variant="outline" className="border-coral-200 dark:border-coral-700 text-coral-600 dark:text-coral-400 px-4 py-1">
               Investeer in jezelf
             </Badge>
@@ -215,6 +228,16 @@ export default function PrijzenPage() {
 
                     {/* Price */}
                     <div className="text-center mb-6 pb-6 border-b border-gray-100 dark:border-gray-700">
+                      {program.originalPrice && (
+                        <div className="mb-2 flex items-center justify-center gap-2">
+                          <span className="text-lg text-gray-400 dark:text-gray-500 line-through">
+                            €{program.originalPrice}
+                          </span>
+                          <Badge className="bg-green-500 hover:bg-green-500 text-white text-xs">
+                            Bespaar €{program.originalPrice - program.price}
+                          </Badge>
+                        </div>
+                      )}
                       <div className="flex items-baseline justify-center gap-1">
                         <span className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-gray-50">
                           €{program.price}
