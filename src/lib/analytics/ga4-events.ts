@@ -1,8 +1,13 @@
 /**
- * GA4 Analytics Events - Professional Event Tracking
+ * GA4 Analytics Events - Professional Event Tracking (AVG Compliant)
  *
  * Centralized GA4 event tracking for DatingAssistent.
  * Follows Google Analytics 4 recommended events and parameters.
+ *
+ * PRIVACY:
+ * - Analytics events require analytics consent
+ * - E-commerce/marketing events require marketing consent
+ * - Authentication events always allowed (necessary for functionality)
  *
  * @see https://developers.google.com/analytics/devguides/collection/ga4/reference/events
  */
@@ -72,6 +77,44 @@ export interface GA4EcommerceItem {
 }
 
 // ============================================================================
+// CONSENT CHECKING
+// ============================================================================
+
+/**
+ * Check if analytics consent is given
+ */
+function hasAnalyticsConsent(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  try {
+    const stored = localStorage.getItem('cookie-consent');
+    if (!stored) return false;
+
+    const consent = JSON.parse(stored);
+    return consent.analytics === true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Check if marketing consent is given
+ */
+function hasMarketingConsent(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  try {
+    const stored = localStorage.getItem('cookie-consent');
+    if (!stored) return false;
+
+    const consent = JSON.parse(stored);
+    return consent.marketing === true;
+  } catch {
+    return false;
+  }
+}
+
+// ============================================================================
 // CORE TRACKING FUNCTION
 // ============================================================================
 
@@ -82,10 +125,31 @@ function isGtagAvailable(): boolean {
   return typeof window !== 'undefined' && typeof window.gtag === 'function';
 }
 
+type EventCategory = 'necessary' | 'analytics' | 'marketing';
+
 /**
- * Send event to GA4
+ * Send event to GA4 with consent checking
  */
-function sendEvent(eventName: string, parameters?: Record<string, any>): void {
+function sendEvent(
+  eventName: string,
+  parameters?: Record<string, any>,
+  category: EventCategory = 'analytics'
+): void {
+  // Check consent based on category
+  if (category === 'analytics' && !hasAnalyticsConsent()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[GA4] ❌ ${eventName} blocked - Analytics consent required`);
+    }
+    return;
+  }
+
+  if (category === 'marketing' && !hasMarketingConsent()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[GA4] ❌ ${eventName} blocked - Marketing consent required`);
+    }
+    return;
+  }
+
   if (!isGtagAvailable()) {
     if (process.env.NODE_ENV === 'development') {
       console.log(`[GA4 Event] ${eventName}`, parameters);
@@ -100,7 +164,7 @@ function sendEvent(eventName: string, parameters?: Record<string, any>): void {
     });
 
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[GA4] Event sent: ${eventName}`, parameters);
+      console.log(`[GA4] ✅ Event sent: ${eventName}`, parameters);
     }
   } catch (error) {
     console.error('[GA4] Error sending event:', error);
@@ -108,9 +172,16 @@ function sendEvent(eventName: string, parameters?: Record<string, any>): void {
 }
 
 /**
- * Set user properties
+ * Set user properties (requires analytics consent)
  */
 export function setUserProperties(properties: GA4UserProperties): void {
+  if (!hasAnalyticsConsent()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[GA4] ❌ User properties blocked - Analytics consent required');
+    }
+    return;
+  }
+
   if (!isGtagAvailable()) return;
 
   try {
@@ -131,7 +202,7 @@ export function setUserProperties(properties: GA4UserProperties): void {
 // ============================================================================
 
 /**
- * Track user sign up
+ * Track user sign up (necessary for functionality)
  */
 export function trackSignUp(params: {
   method: 'email' | 'google' | 'apple';
@@ -142,11 +213,11 @@ export function trackSignUp(params: {
     method: params.method,
     user_id: params.user_id,
     selected_plan: params.plan,
-  });
+  }, 'necessary');
 }
 
 /**
- * Track user login
+ * Track user login (necessary for functionality)
  */
 export function trackLogin(params: {
   method: 'email' | 'google' | 'apple' | 'magic_link';
@@ -155,14 +226,14 @@ export function trackLogin(params: {
   sendEvent('login', {
     method: params.method,
     user_id: params.user_id,
-  });
+  }, 'necessary');
 }
 
 /**
- * Track user logout
+ * Track user logout (necessary for functionality)
  */
 export function trackLogout(): void {
-  sendEvent('logout');
+  sendEvent('logout', {}, 'necessary');
 }
 
 // ============================================================================
@@ -217,7 +288,7 @@ export function trackOnboardingStep(params: {
 // ============================================================================
 
 /**
- * Track viewing a product/plan
+ * Track viewing a product/plan (marketing event)
  */
 export function trackViewItem(params: {
   item_id: string;
@@ -234,11 +305,11 @@ export function trackViewItem(params: {
       price: params.price,
       quantity: 1,
     }],
-  });
+  }, 'marketing');
 }
 
 /**
- * Track checkout start
+ * Track checkout start (marketing event)
  */
 export function trackBeginCheckout(params: {
   plan_id: string;
@@ -260,11 +331,11 @@ export function trackBeginCheckout(params: {
       price: params.price,
       quantity: 1,
     }],
-  });
+  }, 'marketing');
 }
 
 /**
- * Track successful purchase
+ * Track successful purchase (marketing event)
  */
 export function trackPurchase(params: {
   transaction_id: string;
@@ -290,7 +361,7 @@ export function trackPurchase(params: {
       price: params.price,
       quantity: 1,
     }],
-  });
+  }, 'marketing');
 }
 
 /**
@@ -514,7 +585,7 @@ export function trackGoalCompleted(params: {
 // ============================================================================
 
 /**
- * Track upgrade prompt shown
+ * Track upgrade prompt shown (marketing event)
  */
 export function trackUpgradePromptShown(params: {
   prompt_location: string;
@@ -525,11 +596,11 @@ export function trackUpgradePromptShown(params: {
     prompt_location: params.prompt_location,
     current_plan: params.current_plan,
     suggested_plan: params.suggested_plan,
-  });
+  }, 'marketing');
 }
 
 /**
- * Track upgrade prompt clicked
+ * Track upgrade prompt clicked (marketing event)
  */
 export function trackUpgradePromptClicked(params: {
   prompt_location: string;
@@ -540,7 +611,7 @@ export function trackUpgradePromptClicked(params: {
     prompt_location: params.prompt_location,
     current_plan: params.current_plan,
     target_plan: params.target_plan,
-  });
+  }, 'marketing');
 }
 
 // ============================================================================

@@ -1,7 +1,8 @@
 'use client';
 
 import { useReportWebVitals } from 'next/web-vitals';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { hasAnalyticsConsent } from '@/components/cookie-consent';
 
 declare global {
   interface Window {
@@ -10,10 +11,28 @@ declare global {
 }
 
 export function WebVitals() {
+  const [hasConsent, setHasConsent] = useState(false);
+
+  useEffect(() => {
+    const checkConsent = () => {
+      setHasConsent(hasAnalyticsConsent());
+    };
+
+    checkConsent();
+
+    window.addEventListener('consentUpdated', checkConsent);
+    return () => window.removeEventListener('consentUpdated', checkConsent);
+  }, []);
+
   useReportWebVitals((metric) => {
     // Log metrics in development
     if (process.env.NODE_ENV === 'development') {
       console.log('Web Vitals:', metric);
+    }
+
+    // Only send with consent
+    if (!hasConsent) {
+      return;
     }
 
     // Send to Google Analytics 4
@@ -72,6 +91,11 @@ async function sendToAnalyticsEndpoint(metric: any) {
 export function usePerformanceObserver() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    // Only track with consent
+    if (!hasAnalyticsConsent()) {
+      return;
+    }
 
     // Observe navigation timing
     const observer = new PerformanceObserver((list) => {

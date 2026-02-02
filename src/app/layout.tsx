@@ -17,6 +17,8 @@ import { IrisFloatingButton } from "@/components/iris/IrisFloatingButton";
 import { TutorialEngine } from "@/components/onboarding/tutorial-engine/tutorial-engine";
 import { ToastProvider as AchievementToastProvider } from "@/components/notifications/toast-container";
 import { MicrosoftClarity } from "@/components/analytics/microsoft-clarity";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { ConsentProvider, CookieUI } from "@/components/cookie-consent";
 import { Toaster as SonnerToaster } from "sonner";
 
 export const metadata: Metadata = {
@@ -77,36 +79,8 @@ export const metadata: Metadata = {
   },
 };
 
-// Google Analytics component
-function GoogleAnalytics() {
-  const gaId = process.env.NEXT_PUBLIC_GA4_PROPERTY_ID || 'G-CLGV5SLPFW';
-
-  return (
-    <>
-      <script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-      />
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gaId}', {
-              page_path: window.location.pathname,
-              custom_map: {
-                dimension1: 'metric_id',
-                metric1: 'metric_value',
-                metric2: 'metric_delta'
-              }
-            });
-          `,
-        }}
-      />
-    </>
-  );
-}
+// Google Analytics is now imported as a client component from @/components/analytics/google-analytics
+// It will only load with user consent
 
 export default function RootLayout({
   children,
@@ -163,18 +137,19 @@ export default function RootLayout({
 
         {/* Preload LCP image - video poster for hero section */}
         <link rel="preload" as="image" href="/images/iris-video-poster.jpg" />
-
-        <GoogleAnalytics />
       </head>
       <body className="font-body bg-background text-foreground antialiased" suppressHydrationWarning>
-        <MicrosoftClarity />
         <StructuredData />
         <SkipLinks />
         <ScreenReaderAnnouncer />
         <ErrorBoundary>
-          <ThemeProvider>
-            <QueryProvider>
-              <PWAProvider>
+          <ConsentProvider>
+            {/* Analytics scripts - loaded only with consent */}
+            <GoogleAnalytics />
+            <MicrosoftClarity />
+            <ThemeProvider>
+              <QueryProvider>
+                <PWAProvider>
                 <WebVitals />
                 {/* SW components wrapped in error boundary for graceful degradation */}
                 <ServiceWorkerErrorBoundary>
@@ -197,8 +172,11 @@ export default function RootLayout({
                 </UserProvider>
               </PWAProvider>
             </QueryProvider>
+            {/* Cookie Consent System - AVG Compliant */}
+            <CookieUI />
           </ThemeProvider>
-        </ErrorBoundary>
+        </ConsentProvider>
+      </ErrorBoundary>
       </body>
     </html>
   );

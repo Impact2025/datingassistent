@@ -1,10 +1,15 @@
 'use client';
 
 /**
- * Microsoft Clarity Integration
+ * Microsoft Clarity Integration - AVG Compliant
  *
  * Provides heatmaps, session recordings, and behavioral analytics.
  * Free alternative to Hotjar with unlimited sessions.
+ *
+ * PRIVACY NOTICE:
+ * - Laadt ALLEEN met analytics consent
+ * - Neemt scherm, muisbewegingen en clicks op
+ * - Verstuurt data naar Microsoft servers
  *
  * Setup:
  * 1. Create account at https://clarity.microsoft.com
@@ -13,7 +18,8 @@
  * 4. Add NEXT_PUBLIC_CLARITY_PROJECT_ID to .env
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { hasAnalyticsConsent } from '@/components/cookie-consent';
 
 declare global {
   interface Window {
@@ -27,6 +33,29 @@ interface ClarityProps {
 
 export function MicrosoftClarity({ projectId }: ClarityProps) {
   const clarityId = projectId || process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    // Check initial consent
+    const checkConsent = () => {
+      const hasConsent = hasAnalyticsConsent();
+      setShouldLoad(hasConsent);
+
+      if (!hasConsent) {
+        console.log('[Clarity] Blocked - Analytics consent required');
+      }
+    };
+
+    checkConsent();
+
+    // Listen for consent changes
+    const handleConsentUpdate = () => {
+      checkConsent();
+    };
+
+    window.addEventListener('consentUpdated', handleConsentUpdate);
+    return () => window.removeEventListener('consentUpdated', handleConsentUpdate);
+  }, []);
 
   useEffect(() => {
     if (!clarityId) {
@@ -42,6 +71,17 @@ export function MicrosoftClarity({ projectId }: ClarityProps) {
       return;
     }
 
+    // Only load if consent is given
+    if (!shouldLoad) {
+      return;
+    }
+
+    // Prevent double initialization
+    if (window.clarity) {
+      console.log('[Clarity] Already initialized');
+      return;
+    }
+
     // Clarity initialization script
     (function(c: any, l: any, a: any, r: any, i: any, t?: any, y?: any) {
       c[a] = c[a] || function(...args: any[]) {
@@ -54,8 +94,8 @@ export function MicrosoftClarity({ projectId }: ClarityProps) {
       y.parentNode.insertBefore(t, y);
     })(window, document, 'clarity', 'script', clarityId);
 
-    console.log('[Clarity] Initialized with project:', clarityId);
-  }, [clarityId]);
+    console.log('[Clarity] ✅ Initialized with consent - Session recording active');
+  }, [clarityId, shouldLoad]);
 
   return null;
 }

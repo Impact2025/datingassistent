@@ -1,5 +1,5 @@
 /**
- * Onboarding Analytics - World-class event tracking
+ * Onboarding Analytics - World-class event tracking (AVG Compliant)
  *
  * Features:
  * - Type-safe event definitions
@@ -7,6 +7,8 @@
  * - Time-on-task metrics
  * - Dropout analysis
  * - Privacy-first (no PII in events)
+ *
+ * PRIVACY: Requires analytics consent to track onboarding events
  */
 
 // =====================================================
@@ -160,6 +162,27 @@ export function endSession(): void {
 }
 
 // =====================================================
+// CONSENT CHECKING
+// =====================================================
+
+/**
+ * Check if analytics consent is given
+ */
+function hasAnalyticsConsent(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  try {
+    const stored = localStorage.getItem('cookie-consent');
+    if (!stored) return false;
+
+    const consent = JSON.parse(stored);
+    return consent.analytics === true;
+  } catch {
+    return false;
+  }
+}
+
+// =====================================================
 // TRACKING FUNCTIONS
 // =====================================================
 
@@ -178,13 +201,21 @@ const config: AnalyticsConfig = {
 };
 
 /**
- * Core tracking function
+ * Core tracking function (requires analytics consent)
  */
 export function trackOnboardingEvent(
   eventName: OnboardingEventName,
   properties: Partial<EventProperties> & { flowType: string }
 ): void {
   if (!config.enabled) return;
+
+  // Check analytics consent
+  if (!hasAnalyticsConsent()) {
+    if (config.debug) {
+      console.log(`[Onboarding Analytics] ❌ ${eventName} blocked - Analytics consent required`);
+    }
+    return;
+  }
 
   const fullProperties: EventProperties = {
     sessionId: getSessionId(),

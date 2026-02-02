@@ -3,6 +3,8 @@
  *
  * Lightweight lead scoring system to identify hot leads based on
  * their interaction patterns with the chat widget.
+ *
+ * PRIVACY: Requires marketing consent to track and store lead scores
  */
 
 export type LeadEngagementLevel = 'cold' | 'warm' | 'hot';
@@ -40,16 +42,25 @@ const LEVEL_THRESHOLDS = {
 
 /**
  * Get current lead score from storage
+ *
+ * PRIVACY: Returns empty score if marketing consent not given
  */
 function getLeadScore(): LeadScore {
+  const emptyScore: LeadScore = {
+    score: 0,
+    level: 'cold',
+    interactions: 0,
+    lastInteraction: Date.now(),
+    highIntentSignals: []
+  };
+
   if (typeof window === 'undefined') {
-    return {
-      score: 0,
-      level: 'cold',
-      interactions: 0,
-      lastInteraction: Date.now(),
-      highIntentSignals: []
-    };
+    return emptyScore;
+  }
+
+  // Only return stored score if marketing consent is given
+  if (!hasMarketingConsent()) {
+    return emptyScore;
   }
 
   const stored = localStorage.getItem('lead-score');
@@ -61,13 +72,7 @@ function getLeadScore(): LeadScore {
     }
   }
 
-  return {
-    score: 0,
-    level: 'cold',
-    interactions: 0,
-    lastInteraction: Date.now(),
-    highIntentSignals: []
-  };
+  return emptyScore;
 }
 
 /**
@@ -99,12 +104,45 @@ function detectHighIntent(message: string): string[] {
 }
 
 /**
+ * Check if marketing consent is given
+ */
+function hasMarketingConsent(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  try {
+    const stored = localStorage.getItem('cookie-consent');
+    if (!stored) return false;
+
+    const consent = JSON.parse(stored);
+    return consent.marketing === true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Track lead engagement event
+ *
+ * PRIVACY: Only tracks if user has given marketing consent
  */
 export function trackLeadEngagement(
   event: 'chat_opened' | 'message_sent' | 'invite_accepted' | 'session_return',
   metadata?: { message?: string }
 ): LeadScore {
+  // Check marketing consent first
+  if (!hasMarketingConsent()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[Lead Scoring] ❌ Blocked - Marketing consent required');
+    }
+    return {
+      score: 0,
+      level: 'cold',
+      interactions: 0,
+      lastInteraction: Date.now(),
+      highIntentSignals: []
+    };
+  }
+
   const currentScore = getLeadScore();
   let pointsToAdd = 0;
   const newHighIntentSignals: string[] = [];
@@ -206,8 +244,18 @@ export function resetLeadScore(): void {
 
 /**
  * Send lead score to analytics endpoint for tracking
+ *
+ * PRIVACY: Only syncs if marketing consent is given
  */
 export async function syncLeadScoreToBackend(): Promise<void> {
+  // Check marketing consent
+  if (!hasMarketingConsent()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[Lead Scoring] ❌ Sync blocked - Marketing consent required');
+    }
+    return;
+  }
+
   const score = getLeadScore();
 
   // Only sync warm/hot leads to save API calls
