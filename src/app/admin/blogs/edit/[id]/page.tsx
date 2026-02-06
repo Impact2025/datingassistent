@@ -72,6 +72,26 @@ export default function BlogEditorPage() {
     published: false,
     author: 'DatingAssistent',
   });
+  const [internalLinks, setInternalLinks] = useState<{
+    knowledgeBase: Array<{
+      title: string;
+      slug: string;
+      url: string;
+      category: string;
+      relevance: string;
+      suggestedAnchorText: string;
+      suggestedPlacement: string;
+    }>;
+    relatedBlogs: Array<{
+      title: string;
+      slug: string;
+      url: string;
+      category: string;
+      relevance: string;
+      suggestedAnchorText: string;
+      suggestedPlacement: string;
+    }>;
+  } | null>(null);
 
   // =========================================================================
   // LOAD EXISTING BLOG
@@ -340,7 +360,7 @@ export default function BlogEditorPage() {
 
     toast({
       title: 'AI Metadata Only',
-      description: 'Bezig met genereren van metadata...',
+      description: 'Bezig met genereren van metadata en interne links...',
     });
 
     try {
@@ -361,6 +381,12 @@ export default function BlogEditorPage() {
         throw new Error(data.error || 'Metadata generatie mislukt');
       }
 
+      console.log('📥 Received metadata response:', {
+        hasInternalLinks: !!data.internalLinks,
+        internalLinks: data.internalLinks,
+        fullData: data
+      });
+
       // Update blog data with metadata
       updateBlogData({
         seo_title: data.seo.title,
@@ -370,10 +396,20 @@ export default function BlogEditorPage() {
         tags: [...(blogData.tags || []), ...data.seo.keywords.slice(0, 3)],
       });
 
-      toast({
-        title: 'Succesvol!',
-        description: 'SEO en social media metadata gegenereerd',
-      });
+      // Store internal links suggestions if available
+      if (data.internalLinks) {
+        setInternalLinks(data.internalLinks);
+        const totalLinks = (data.internalLinks.knowledgeBase?.length || 0) + (data.internalLinks.relatedBlogs?.length || 0);
+        toast({
+          title: 'Succesvol!',
+          description: `SEO metadata + ${totalLinks} interne link suggesties gegenereerd`,
+        });
+      } else {
+        toast({
+          title: 'Succesvol!',
+          description: 'SEO en social media metadata gegenereerd',
+        });
+      }
     } catch (error) {
       console.error('Metadata enhancement error:', error);
       toast({
@@ -457,6 +493,300 @@ export default function BlogEditorPage() {
   };
 
   // =========================================================================
+  // AUTO LINK ALL ARTICLES
+  // =========================================================================
+
+  const handleAutoLinkAll = async () => {
+    if (!blogData.content) {
+      toast({
+        title: 'Geen content',
+        description: 'Voeg eerst content toe aan je blog',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    toast({
+      title: 'Bezig met linken...',
+      description: 'AI-powered fuzzy matching actief...',
+    });
+
+    try {
+      // Fetch all knowledge base articles and blogs
+      const [kbResponse, blogsResponse] = await Promise.all([
+        fetch('/api/knowledge-base/list'),
+        fetch('/api/blogs/list?published=true')
+      ]);
+
+      if (!kbResponse.ok || !blogsResponse.ok) {
+        throw new Error('Kon artikelen niet ophalen');
+      }
+
+      const kbData = await kbResponse.json();
+      const blogsData = await blogsResponse.json();
+
+      const knowledgeBase = kbData.articles || [];
+      const blogs = blogsData.blogs || [];
+
+      let updatedContent = blogData.content;
+      let linksInserted = 0;
+
+      // Helper: Extract significant keywords from text
+      const extractKeywords = (text: string): string[] => {
+        const stopWords = ['de', 'het', 'een', 'en', 'van', 'voor', 'in', 'op', 'met', 'aan', 'je', 'jouw', 'is', 'zijn', 'naar', 'over', 'bij', 'als', 'dat', 'die', 'dit'];
+        return text
+          .toLowerCase()
+          .replace(/[?!:.,]/g, '')
+          .split(/\s+/)
+          .filter(word => word.length > 3 && !stopWords.includes(word));
+      };
+
+      // Helper: Calculate match score between two texts
+      const calculateMatchScore = (text1: string, text2: string): number => {
+        const keywords1 = extractKeywords(text1);
+        const keywords2 = extractKeywords(text2);
+
+        let matches = 0;
+        keywords1.forEach(kw1 => {
+          keywords2.forEach(kw2 => {
+            // Exact match or partial match (contains)
+            if (kw1 === kw2 || kw1.includes(kw2) || kw2.includes(kw1)) {
+              matches++;
+            }
+          });
+        });
+
+        return matches;
+      };
+
+      // Helper: Try to find and replace text with link
+      const tryReplaceWithLink = (textToFind: string, url: string, linkTitle: string): boolean => {
+        // Skip if already linked
+        if (updatedContent.includes(url)) return false;
+
+        const escapedText = textToFind.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(
+          `(?<!<a[^>]*>)${escapedText}(?![^<]*<\/a>)`,
+          'gi'
+        );
+
+        if (regex.test(updatedContent)) {
+          updatedContent = updatedContent.replace(
+            regex,
+            `<a href="${url}" class="text-coral-600 hover:text-coral-700 underline">${linkTitle}</a>`
+          );
+          return true;
+        }
+        return false;
+      };
+
+      // Strategy 1: Exact matching (original behavior)
+      console.log('🔍 Strategy 1: Exact matching...');
+
+      knowledgeBase.forEach((article: any) => {
+        const title = article.title;
+        const url = `/help/${article.slug}`;
+
+        const titleVariations = [
+          title,
+          title.replace(/\?/g, ''),
+          title.replace(/:/g, ''),
+        ];
+
+        for (const variation of titleVariations) {
+          if (tryReplaceWithLink(variation, url, title)) {
+            linksInserted++;
+            console.log(`✅ Exact match: "${title}"`);
+            break;
+          }
+        }
+      });
+
+      blogs.forEach((blog: any) => {
+        if (blog.id === parseInt(blogId)) return;
+
+        const title = blog.title;
+        const url = `/blog/${blog.slug}`;
+
+        const titleVariations = [
+          title,
+          title.replace(/\?/g, ''),
+          title.replace(/:/g, ''),
+        ];
+
+        for (const variation of titleVariations) {
+          if (tryReplaceWithLink(variation, url, title)) {
+            linksInserted++;
+            console.log(`✅ Exact match: "${title}"`);
+            break;
+          }
+        }
+      });
+
+      // Strategy 2: Fuzzy matching - Find sentences/phrases that match article topics
+      console.log('🔍 Strategy 2: Fuzzy matching...');
+
+      // Extract all sentences/list items from content (potential link targets)
+      const contentPhrases = updatedContent
+        .replace(/<[^>]*>/g, ' ') // Strip HTML
+        .split(/[.\n]/) // Split by periods or newlines
+        .map(s => s.trim())
+        .filter(s => s.length > 20 && s.length < 200); // Reasonable length
+
+      // For each phrase, find best matching article
+      contentPhrases.forEach(phrase => {
+        let bestMatch: any = null;
+        let bestScore = 0;
+        let bestType: 'kb' | 'blog' = 'kb';
+
+        // Check knowledge base
+        knowledgeBase.forEach((article: any) => {
+          const score = calculateMatchScore(phrase, article.title);
+          if (score > bestScore && score >= 2) { // Need at least 2 keyword matches
+            bestScore = score;
+            bestMatch = article;
+            bestType = 'kb';
+          }
+        });
+
+        // Check blogs
+        blogs.forEach((blog: any) => {
+          if (blog.id === parseInt(blogId)) return;
+          const score = calculateMatchScore(phrase, blog.title);
+          if (score > bestScore && score >= 2) {
+            bestScore = score;
+            bestMatch = blog;
+            bestType = 'blog';
+          }
+        });
+
+        // If we found a good match, try to link it
+        if (bestMatch && bestScore >= 3) { // Higher threshold for fuzzy matching
+          const url = bestType === 'kb' ? `/help/${bestMatch.slug}` : `/blog/${bestMatch.slug}`;
+
+          if (tryReplaceWithLink(phrase, url, bestMatch.title)) {
+            linksInserted++;
+            console.log(`✨ Fuzzy match (score ${bestScore}): "${phrase}" → "${bestMatch.title}"`);
+          }
+        }
+      });
+
+      updateBlogData({ content: updatedContent });
+
+      toast({
+        title: 'Succesvol! 🎉',
+        description: `${linksInserted} artikel${linksInserted === 1 ? '' : 'en'} automatisch gelinkt met AI`,
+      });
+    } catch (error) {
+      console.error('Auto link error:', error);
+      toast({
+        title: 'Fout',
+        description: error instanceof Error ? error.message : 'Automatisch linken mislukt',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  // =========================================================================
+  // AUTO INSERT INTERNAL LINKS
+  // =========================================================================
+
+  const handleAutoInsertLinks = async () => {
+    if (!internalLinks || !blogData.content) return;
+
+    let updatedContent = blogData.content;
+    let linksInserted = 0;
+
+    // Combine all links from AI suggestions
+    const allLinks = [
+      ...internalLinks.knowledgeBase,
+      ...internalLinks.relatedBlogs
+    ];
+
+    // Strategy 1: Find ALL potential blog/KB titles in content and convert to links
+    // This includes titles in "Gerelateerde artikelen" sections that are just text
+    for (const link of allLinks) {
+      const title = link.title;
+
+      // Create variations of the title to match
+      const titleVariations = [
+        title,
+        title.replace(/\?/g, ''), // Without question mark
+        title.replace(/:/g, ''), // Without colon
+        title.toLowerCase(),
+      ];
+
+      for (const variation of titleVariations) {
+        // Check if this title appears as plain text (not already a link)
+        const escapedTitle = variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        // Match the title if it's NOT already inside an <a> tag
+        const regex = new RegExp(
+          `(?<!<a[^>]*>)${escapedTitle}(?![^<]*<\/a>)`,
+          'gi'
+        );
+
+        if (regex.test(updatedContent)) {
+          // Replace with link
+          updatedContent = updatedContent.replace(
+            regex,
+            `<a href="${link.url}" class="text-coral-600 hover:text-coral-700 underline">${title}</a>`
+          );
+          linksInserted++;
+          break; // Move to next link
+        }
+      }
+    }
+
+    // Strategy 2: Try to find and link based on anchor text
+    allLinks.forEach((link) => {
+      if (updatedContent.includes(link.url)) return; // Skip if already linked
+
+      const anchorText = link.suggestedAnchorText;
+      const escapedAnchor = anchorText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+      // Match anchor text if it's NOT already inside an <a> tag
+      const regex = new RegExp(
+        `(?<!<a[^>]*>)${escapedAnchor}(?![^<]*<\/a>)`,
+        'gi'
+      );
+
+      if (regex.test(updatedContent)) {
+        updatedContent = updatedContent.replace(
+          regex,
+          `<a href="${link.url}" class="text-coral-600 hover:text-coral-700 underline">${anchorText}</a>`
+        );
+        linksInserted++;
+      }
+    });
+
+    // Strategy 3: If we still have unlinked suggestions, add them in a new section
+    const unlinkedLinks = allLinks.filter(link => !updatedContent.includes(link.url));
+
+    if (unlinkedLinks.length > 0 && linksInserted === 0) {
+      const resourcesSection = `
+<h2>Gerelateerde Informatie</h2>
+<p>Voor meer informatie, bekijk ook deze artikelen:</p>
+<ul>
+${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 hover:text-coral-700 underline">${link.title}</a> - ${link.relevance}</li>`).join('\n')}
+</ul>`;
+
+      updatedContent = updatedContent + resourcesSection;
+      linksInserted = unlinkedLinks.length;
+    }
+
+    updateBlogData({ content: updatedContent });
+
+    toast({
+      title: 'Links toegevoegd!',
+      description: `${linksInserted} interne link${linksInserted === 1 ? '' : 's'} automatisch ingevoegd in de content`,
+    });
+
+    // Clear the suggestions after inserting
+    setInternalLinks(null);
+  };
+
+  // =========================================================================
   // UPDATE FUNCTIONS
   // =========================================================================
 
@@ -529,6 +859,15 @@ export default function BlogEditorPage() {
               >
                 <Wand2 className="w-4 h-4 mr-2" />
                 Metadata Only
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleAutoLinkAll}
+                className="border-purple-200 text-purple-700 hover:bg-purple-50"
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                Link Alle Artikelen
               </Button>
               <Button
                 variant="outline"
@@ -630,6 +969,123 @@ export default function BlogEditorPage() {
             </TabsContent>
           </div>
         </Tabs>
+
+        {/* Internal Links Suggestions Section */}
+        {internalLinks && (internalLinks.knowledgeBase.length > 0 || internalLinks.relatedBlogs.length > 0) && (
+          <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <Sparkles className="w-5 h-5 text-coral-500 mr-2" />
+                <h3 className="text-lg font-semibold text-gray-900">
+                  AI Interne Link Suggesties
+                </h3>
+              </div>
+              <Button
+                onClick={() => handleAutoInsertLinks()}
+                className="bg-gradient-to-r from-coral-500 to-purple-600 hover:from-coral-600 hover:to-purple-700 text-white"
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                Automatisch Invoegen
+              </Button>
+            </div>
+            <p className="text-sm text-gray-600 mb-6">
+              De AI heeft relevante interne links gevonden die je kunt toevoegen aan je blog.
+              Klik op "Automatisch Invoegen" om alle links in de content te plaatsen, of kopieer ze handmatig.
+            </p>
+
+            {/* Knowledge Base Links */}
+            {internalLinks.knowledgeBase.length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                  <FileText className="w-4 h-4 mr-2 text-blue-500" />
+                  Kennisbank Artikelen
+                </h4>
+                <div className="space-y-4">
+                  {internalLinks.knowledgeBase.map((link, index) => (
+                    <div key={index} className="border border-blue-100 rounded-lg p-4 bg-blue-50/50 hover:bg-blue-50 transition-colors">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <h5 className="font-medium text-gray-900">{link.title}</h5>
+                          <p className="text-xs text-gray-500 mt-1">Categorie: {link.category}</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(`[${link.suggestedAnchorText}](${link.url})`);
+                            toast({
+                              title: 'Gekopieerd!',
+                              description: 'Link is gekopieerd naar klembord',
+                            });
+                          }}
+                          className="ml-4 px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
+                        >
+                          Kopieer Link
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-2">
+                        <strong>Relevantie:</strong> {link.relevance}
+                      </p>
+                      <p className="text-sm text-gray-700 mb-2">
+                        <strong>Suggestie:</strong> {link.suggestedPlacement}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <strong>Anker tekst:</strong> <code className="bg-white px-2 py-1 rounded text-blue-600">{link.suggestedAnchorText}</code>
+                      </p>
+                      <p className="text-xs text-gray-500 mt-2">
+                        URL: <code className="bg-white px-2 py-1 rounded">{link.url}</code>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Related Blog Links */}
+            {internalLinks.relatedBlogs.length > 0 && (
+              <div>
+                <h4 className="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                  <FileText className="w-4 h-4 mr-2 text-green-500" />
+                  Gerelateerde Blogs
+                </h4>
+                <div className="space-y-4">
+                  {internalLinks.relatedBlogs.map((link, index) => (
+                    <div key={index} className="border border-green-100 rounded-lg p-4 bg-green-50/50 hover:bg-green-50 transition-colors">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <h5 className="font-medium text-gray-900">{link.title}</h5>
+                          <p className="text-xs text-gray-500 mt-1">Categorie: {link.category}</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(`[${link.suggestedAnchorText}](${link.url})`);
+                            toast({
+                              title: 'Gekopieerd!',
+                              description: 'Link is gekopieerd naar klembord',
+                            });
+                          }}
+                          className="ml-4 px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition-colors"
+                        >
+                          Kopieer Link
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-2">
+                        <strong>Relevantie:</strong> {link.relevance}
+                      </p>
+                      <p className="text-sm text-gray-700 mb-2">
+                        <strong>Suggestie:</strong> {link.suggestedPlacement}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <strong>Anker tekst:</strong> <code className="bg-white px-2 py-1 rounded text-green-600">{link.suggestedAnchorText}</code>
+                      </p>
+                      <p className="text-xs text-gray-500 mt-2">
+                        URL: <code className="bg-white px-2 py-1 rounded">{link.url}</code>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

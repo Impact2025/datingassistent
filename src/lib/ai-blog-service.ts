@@ -9,6 +9,8 @@
  */
 
 import { getOpenRouterClient, OPENROUTER_MODELS } from './openrouter';
+import { KB_ARTICLES } from './support/knowledge-base';
+import { sql } from '@vercel/postgres';
 
 // ============================================================================
 // TYPES
@@ -54,6 +56,26 @@ export interface MetadataEnhancementResult {
     facebookPost: string;
     twitterPost: string;
     linkedInPost: string;
+  };
+  internalLinks?: {
+    knowledgeBase: Array<{
+      title: string;
+      slug: string;
+      url: string;
+      category: string;
+      relevance: string;
+      suggestedAnchorText: string;
+      suggestedPlacement: string;
+    }>;
+    relatedBlogs: Array<{
+      title: string;
+      slug: string;
+      url: string;
+      category: string;
+      relevance: string;
+      suggestedAnchorText: string;
+      suggestedPlacement: string;
+    }>;
   };
 }
 
@@ -249,6 +271,90 @@ function parseAIResponse<T>(response: string): T {
   throw new Error(`AI response was not valid JSON. Response starts with: ${response.substring(0, 100)}`);
 }
 
+/**
+ * Find relevant internal content (knowledge base & blogs) for linking
+ */
+async function findRelevantInternalContent(input: {
+  title: string;
+  content: string;
+  keywords?: string[];
+}): Promise<{
+  knowledgeBase: Array<{
+    title: string;
+    slug: string;
+    category: string;
+    tags: string[];
+  }>;
+  blogs: Array<{
+    title: string;
+    slug: string;
+    category: string;
+  }>;
+}> {
+  // 1. Search knowledge base articles by tags/keywords
+  const searchTerms = [
+    ...new Set([
+      ...(input.keywords || []),
+      ...input.title.toLowerCase().split(' ').filter(word => word.length > 3),
+      ...input.content.toLowerCase().match(/\b\w{4,}\b/g)?.slice(0, 20) || []
+    ])
+  ].slice(0, 15);
+
+  const relevantKBArticles = KB_ARTICLES.filter(article => {
+    const articleText = `${article.title} ${article.summary} ${article.tags.join(' ')}`.toLowerCase();
+    return searchTerms.some(term => articleText.includes(term.toLowerCase()));
+  }).slice(0, 8).map(article => ({
+    title: article.title,
+    slug: article.slug,
+    category: article.category,
+    tags: article.tags
+  }));
+
+  // 2. Search related blogs from database
+  let relevantBlogs: Array<{
+    title: string;
+    slug: string;
+    category: string;
+  }> = [];
+
+  try {
+    // Search for published blogs with similar keywords or categories
+    if (searchTerms.length > 0) {
+      // Build regex pattern from search terms (word boundaries for better matching)
+      const searchPattern = searchTerms
+        .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) // Escape special regex chars
+        .join('|');
+
+      const { rows } = await sql`
+        SELECT title, slug, category
+        FROM blogs
+        WHERE published = true
+        AND (
+          title ~* ${searchPattern}
+          OR excerpt ~* ${searchPattern}
+          OR category ~* ${searchPattern}
+        )
+        ORDER BY published_at DESC
+        LIMIT 8
+      `;
+
+      relevantBlogs = rows.map(row => ({
+        title: row.title,
+        slug: row.slug,
+        category: row.category || 'Algemeen'
+      }));
+    }
+  } catch (error) {
+    console.error('Error fetching related blogs:', error);
+    // Continue without blog suggestions if database query fails
+  }
+
+  return {
+    knowledgeBase: relevantKBArticles,
+    blogs: relevantBlogs
+  };
+}
+
 // ============================================================================
 // AI SERVICE FUNCTIONS
 // ============================================================================
@@ -323,6 +429,20 @@ export async function enhanceMetadata(input: {
   focusKeyword?: string;
   category?: string;
 }): Promise<MetadataEnhancementResult> {
+  // Find relevant internal content for linking suggestions
+  const internalContent = await findRelevantInternalContent({
+    title: input.title,
+    content: input.content,
+    keywords: input.focusKeyword ? [input.focusKeyword] : undefined
+  });
+
+  console.log('📚 Found internal content:', {
+    knowledgeBaseCount: internalContent.knowledgeBase.length,
+    blogsCount: internalContent.blogs.length,
+    knowledgeBase: internalContent.knowledgeBase.map(kb => kb.title),
+    blogs: internalContent.blogs.map(b => b.title)
+  });
+
   const prompt = `Genereer geoptimaliseerde SEO en social media metadata voor deze blog:
 
 TITEL: ${input.title}
@@ -333,6 +453,16 @@ ${input.excerpt ? `EXCERPT: ${input.excerpt}` : ''}
 CONTENT:
 ${input.content.substring(0, 1500)}...
 
+${internalContent.knowledgeBase.length > 0 ? `
+BESCHIKBARE KENNISBANK ARTIKELEN VOOR INTERNE LINKS:
+${internalContent.knowledgeBase.map(kb => `- ${kb.title} (/${kb.slug}) [${kb.category}] - Tags: ${kb.tags.join(', ')}`).join('\n')}
+` : ''}
+
+${internalContent.blogs.length > 0 ? `
+BESCHIKBARE GERELATEERDE BLOGS VOOR INTERNE LINKS:
+${internalContent.blogs.map(blog => `- ${blog.title} (/blog/${blog.slug}) [${blog.category}]`).join('\n')}
+` : ''}
+
 Creëer optimale metadata in JSON formaat:
 1. SEO titel (max 60 karakters, met keyword)
 2. SEO omschrijving (max 155 karakters, pakkend)
@@ -341,6 +471,7 @@ Creëer optimale metadata in JSON formaat:
 5. Social media omschrijving (max 200 karakters)
 6. 3-5 hashtags
 7. Platform-specifieke posts (Facebook, Twitter, LinkedIn)
+8. Interne link suggesties - selecteer de MEEST relevante artikelen en blogs (max 5 totaal) en geef concrete suggesties waar en hoe deze links in de content geplaatst kunnen worden
 
 BELANGRIJK: Geef ALLEEN valid JSON terug zonder extra tekst. Escape alle special characters correct.
 
@@ -359,6 +490,30 @@ Formaat:
     "facebookPost": "string",
     "twitterPost": "string (max 280 chars)",
     "linkedInPost": "string"
+  },
+  "internalLinks": {
+    "knowledgeBase": [
+      {
+        "title": "artikel titel",
+        "slug": "artikel-slug",
+        "url": "/help/artikel-slug",
+        "category": "categorie",
+        "relevance": "waarom is dit artikel relevant voor deze blog",
+        "suggestedAnchorText": "gesuggereerde anker tekst voor de link",
+        "suggestedPlacement": "waar in de blog zou deze link geplaatst moeten worden (bijv: 'In de paragraaf over profielfoto's' of 'Bij de sectie over eerste berichten')"
+      }
+    ],
+    "relatedBlogs": [
+      {
+        "title": "blog titel",
+        "slug": "blog-slug",
+        "url": "/blog/blog-slug",
+        "category": "categorie",
+        "relevance": "waarom is deze blog relevant",
+        "suggestedAnchorText": "gesuggereerde anker tekst",
+        "suggestedPlacement": "waar in de blog deze link zou passen"
+      }
+    ]
   }
 }
 \`\`\`
@@ -366,7 +521,15 @@ Formaat:
 Geef ALLEEN de JSON terug, geen extra uitleg.`;
 
   const response = await callAIWithFallback(prompt, OPENROUTER_MODELS.CLAUDE_35_HAIKU);
-  return parseAIResponse<MetadataEnhancementResult>(response);
+  const result = parseAIResponse<MetadataEnhancementResult>(response);
+
+  console.log('🤖 AI metadata result:', {
+    hasInternalLinks: !!result.internalLinks,
+    knowledgeBaseLinksCount: result.internalLinks?.knowledgeBase?.length || 0,
+    relatedBlogsCount: result.internalLinks?.relatedBlogs?.length || 0
+  });
+
+  return result;
 }
 
 /**
