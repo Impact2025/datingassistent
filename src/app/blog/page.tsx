@@ -21,6 +21,9 @@ interface BlogPost {
   excerpt: string;
   featured_image?: string;
   placeholder_text?: string;
+  header_type?: 'image' | 'color';
+  header_color?: string;
+  header_title?: string;
   seo_title: string;
   seo_description: string;
   slug: string;
@@ -57,6 +60,9 @@ function BlogContent() {
           excerpt: blog.excerpt,
           featured_image: blog.featured_image || blog.image,
           placeholder_text: blog.placeholder_text,
+          header_type: blog.header_type,
+          header_color: blog.header_color,
+          header_title: blog.header_title,
           seo_title: blog.seo_title,
           seo_description: blog.seo_description,
           slug: blog.slug,
@@ -300,10 +306,17 @@ function BlogContent() {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-coral-400 via-coral-250 to-indigo-600 flex items-center justify-center relative">
+                        <div
+                          className="w-full h-full flex items-center justify-center relative"
+                          style={{
+                            background: blog.header_color
+                              ? `linear-gradient(135deg, ${blog.header_color}, ${blog.header_color}dd)`
+                              : 'linear-gradient(135deg, #ff7b54, #667eea)'
+                          }}
+                        >
                           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
-                          <span className="text-5xl font-bold text-white relative z-10">
-                            {blog.placeholder_text || blog.title.split(' ')[0] || 'DA'}
+                          <span className="text-4xl md:text-5xl font-bold text-white relative z-10 px-6 text-center leading-tight">
+                            {blog.header_title || blog.placeholder_text || blog.title || 'DA'}
                           </span>
                         </div>
                       )}
