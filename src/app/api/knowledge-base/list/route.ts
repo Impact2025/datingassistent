@@ -2,23 +2,27 @@
  * KNOWLEDGE BASE LIST API
  *
  * Returns all knowledge base articles for internal linking
+ * Uses the REAL markdown-based kennisbank articles, not the support KB_ARTICLES
  *
  * @route GET /api/knowledge-base/list
  * @access Public
  */
 
 import { NextResponse } from 'next/server';
-import { KB_ARTICLES } from '@/lib/support/knowledge-base';
+import { getAllKennisbankArticles } from '@/lib/kennisbank';
 
 export async function GET() {
   try {
-    // Return all KB articles with relevant fields for linking
-    const articles = KB_ARTICLES.map(article => ({
-      id: article.id,
+    // Get all REAL markdown-based kennisbank articles
+    const kennisbankArticles = getAllKennisbankArticles();
+
+    // Return articles with relevant fields for linking
+    const articles = kennisbankArticles.map(article => ({
+      id: article.slug,
       title: article.title,
       slug: article.slug,
-      category: article.category,
-      tags: article.tags,
+      category: article.pillar || 'Algemeen',
+      tags: article.keywords || [],
     }));
 
     return NextResponse.json({

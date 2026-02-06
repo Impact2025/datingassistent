@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
       relevanceScore: score,
       category: article.category,
       type: 'article' as const,
-      url: `/help/artikel/${article.slug}`,
+      url: `/kennisbank/${article.slug}`,
     }));
 
     // Log search for analytics (async, don't wait)

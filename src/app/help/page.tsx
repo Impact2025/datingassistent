@@ -367,7 +367,7 @@ function HelpPageContent() {
                                 ))}
                               </div>
                               <a
-                                href={`/help/artikel/${item.slug}`}
+                                href={`/kennisbank/${item.slug}`}
                                 className="inline-flex items-center gap-1 mt-4 text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 font-medium text-sm"
                               >
                                 Lees meer

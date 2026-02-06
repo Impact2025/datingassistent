@@ -496,7 +496,7 @@ Formaat:
       {
         "title": "artikel titel",
         "slug": "artikel-slug",
-        "url": "/help/artikel-slug",
+        "url": "/kennisbank/artikel-slug",
         "category": "categorie",
         "relevance": "waarom is dit artikel relevant voor deze blog",
         "suggestedAnchorText": "gesuggereerde anker tekst voor de link",

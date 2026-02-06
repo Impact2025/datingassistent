@@ -528,6 +528,16 @@ export default function BlogEditorPage() {
       const knowledgeBase = kbData.articles || [];
       const blogs = blogsData.blogs || [];
 
+      console.log('📊 Auto-linking data:', {
+        kbCount: knowledgeBase.length,
+        kbTitles: knowledgeBase.map((a: any) => a.title).slice(0, 5),
+        blogsCount: blogs.length,
+        blogTitles: blogs.map((b: any) => b.title).slice(0, 5),
+        currentBlogId: blogId,
+        contentLength: blogData.content.length,
+        contentPreview: blogData.content.replace(/<[^>]*>/g, ' ').substring(0, 200) + '...'
+      });
+
       let updatedContent = blogData.content;
       let linksInserted = 0;
 
@@ -585,7 +595,7 @@ export default function BlogEditorPage() {
 
       knowledgeBase.forEach((article: any) => {
         const title = article.title;
-        const url = `/help/${article.slug}`;
+        const url = `/kennisbank/${article.slug}`;
 
         const titleVariations = [
           title,
@@ -633,6 +643,8 @@ export default function BlogEditorPage() {
         .map(s => s.trim())
         .filter(s => s.length > 20 && s.length < 200); // Reasonable length
 
+      console.log(`📝 Found ${contentPhrases.length} phrases to analyze for fuzzy matching`);
+
       // For each phrase, find best matching article
       contentPhrases.forEach(phrase => {
         let bestMatch: any = null;
@@ -642,7 +654,7 @@ export default function BlogEditorPage() {
         // Check knowledge base
         knowledgeBase.forEach((article: any) => {
           const score = calculateMatchScore(phrase, article.title);
-          if (score > bestScore && score >= 2) { // Need at least 2 keyword matches
+          if (score > bestScore && score >= 1) { // Lowered from 2 to 1 - need at least 1 keyword match
             bestScore = score;
             bestMatch = article;
             bestType = 'kb';
@@ -653,7 +665,7 @@ export default function BlogEditorPage() {
         blogs.forEach((blog: any) => {
           if (blog.id === parseInt(blogId)) return;
           const score = calculateMatchScore(phrase, blog.title);
-          if (score > bestScore && score >= 2) {
+          if (score > bestScore && score >= 1) { // Lowered from 2 to 1
             bestScore = score;
             bestMatch = blog;
             bestType = 'blog';
@@ -661,21 +673,25 @@ export default function BlogEditorPage() {
         });
 
         // If we found a good match, try to link it
-        if (bestMatch && bestScore >= 3) { // Higher threshold for fuzzy matching
+        if (bestMatch && bestScore >= 2) { // Lowered from 3 to 2 for linking threshold
           const url = bestType === 'kb' ? `/help/${bestMatch.slug}` : `/blog/${bestMatch.slug}`;
 
           if (tryReplaceWithLink(phrase, url, bestMatch.title)) {
             linksInserted++;
-            console.log(`✨ Fuzzy match (score ${bestScore}): "${phrase}" → "${bestMatch.title}"`);
+            console.log(`✨ Fuzzy match (score ${bestScore}): "${phrase.substring(0, 50)}..." → "${bestMatch.title}"`);
           }
         }
       });
 
+      console.log(`✅ Auto-linking complete: ${linksInserted} links inserted`);
+
       updateBlogData({ content: updatedContent });
 
       toast({
-        title: 'Succesvol! 🎉',
-        description: `${linksInserted} artikel${linksInserted === 1 ? '' : 'en'} automatisch gelinkt met AI`,
+        title: linksInserted > 0 ? 'Succesvol! 🎉' : 'Klaar',
+        description: linksInserted > 0
+          ? `${linksInserted} artikel${linksInserted === 1 ? '' : 'en'} automatisch gelinkt met AI`
+          : 'Geen matches gevonden. Probeer meer specifieke termen in je content te gebruiken die overeenkomen met artikel titels.',
       });
     } catch (error) {
       console.error('Auto link error:', error);

@@ -282,7 +282,7 @@ export function DynamicFAQ({
 
                           {/* Read More Link */}
                           <a
-                            href={`/help/artikel/${article.slug}`}
+                            href={`/kennisbank/${article.slug}`}
                             className="inline-flex items-center gap-1 mt-4 text-sm text-coral-600 hover:text-coral-700 font-medium"
                           >
                             Lees volledig artikel

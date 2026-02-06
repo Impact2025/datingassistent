@@ -4,30 +4,92 @@ import { sql } from '@vercel/postgres';
 /**
  * Get all blog posts from Neon database
  * GET /api/blogs/list
+ *
+ * Query parameters:
+ * - published: Filter by published status (true/false)
  */
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const result = await sql`
-      SELECT
-        id,
-        title,
-        excerpt,
-        content,
-        image,
-        placeholder_text,
-        slug,
-        meta_title,
-        meta_description,
-        keywords,
-        author,
-        published,
-        publish_date,
-        views,
-        created_at,
-        updated_at
-      FROM blogs
-      ORDER BY created_at DESC
-    `;
+    // Parse query parameters
+    const { searchParams } = new URL(request.url);
+    const publishedFilter = searchParams.get('published');
+
+    // Build query with optional published filter
+    let query;
+    if (publishedFilter === 'true') {
+      query = sql`
+        SELECT
+          id,
+          title,
+          excerpt,
+          content,
+          image,
+          placeholder_text,
+          slug,
+          meta_title,
+          meta_description,
+          keywords,
+          author,
+          published,
+          publish_date,
+          views,
+          category,
+          created_at,
+          updated_at
+        FROM blogs
+        WHERE published = true
+        ORDER BY created_at DESC
+      `;
+    } else if (publishedFilter === 'false') {
+      query = sql`
+        SELECT
+          id,
+          title,
+          excerpt,
+          content,
+          image,
+          placeholder_text,
+          slug,
+          meta_title,
+          meta_description,
+          keywords,
+          author,
+          published,
+          publish_date,
+          views,
+          category,
+          created_at,
+          updated_at
+        FROM blogs
+        WHERE published = false
+        ORDER BY created_at DESC
+      `;
+    } else {
+      query = sql`
+        SELECT
+          id,
+          title,
+          excerpt,
+          content,
+          image,
+          placeholder_text,
+          slug,
+          meta_title,
+          meta_description,
+          keywords,
+          author,
+          published,
+          publish_date,
+          views,
+          category,
+          created_at,
+          updated_at
+        FROM blogs
+        ORDER BY created_at DESC
+      `;
+    }
+
+    const result = await query;
 
     const blogs = result.rows.map(row => ({
       id: row.id,
@@ -44,6 +106,7 @@ export async function GET() {
       published: row.published,
       publishDate: row.publish_date,
       views: row.views,
+      category: row.category,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     }));
