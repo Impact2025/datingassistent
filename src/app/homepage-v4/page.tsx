@@ -53,8 +53,9 @@ import { useUser } from '@/providers/user-provider';
  */
 
 // Early bird configuration
-const EARLY_BIRD_DEADLINE = '14 februari 2026';
-const EARLY_BIRD_END_DATE = new Date('2026-02-14T23:59:59');
+const EARLY_BIRD_DEADLINE = '1 maart 2026';
+const EARLY_BIRD_END_DATE = new Date('2026-03-01T23:59:59');
+const isEarlyBirdActive = () => new Date() <= EARLY_BIRD_END_DATE;
 
 const colors = {
   deepPurple: 'var(--color-deep-purple, #722F37)',
@@ -717,16 +718,18 @@ function PricingSection() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           {/* Early Bird Badge */}
-          <motion.div
-            className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full shadow-lg text-white"
-            style={{ background: 'linear-gradient(135deg, #f59e0b, #ea580c)' }}
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <Zap className="w-4 h-4" />
-            <span className="font-semibold text-sm">Early Bird Actie - Geldig tot {EARLY_BIRD_DEADLINE}</span>
-          </motion.div>
+          {isEarlyBirdActive() && (
+            <motion.div
+              className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full shadow-lg text-white"
+              style={{ background: 'linear-gradient(135deg, #f59e0b, #ea580c)' }}
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <Zap className="w-4 h-4" />
+              <span className="font-semibold text-sm">Early Bird Actie - Geldig tot {EARLY_BIRD_DEADLINE}</span>
+            </motion.div>
+          )}
 
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ color: colors.deepPurple }}>
             Kies jouw route

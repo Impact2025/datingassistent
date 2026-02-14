@@ -6,11 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Sparkles, Lock, AlertCircle } from 'lucide-react';
 
+// Early bird configuration
+const EARLY_BIRD_DEADLINE = '1 maart 2026';
+const EARLY_BIRD_END_DATE = new Date('2026-03-01T23:59:59');
+const isEarlyBirdActive = () => new Date() <= EARLY_BIRD_END_DATE;
+
 export function ProgramCards() {
   const router = useRouter();
-
-  // Get current month name in Dutch
-  const currentMonth = new Date().toLocaleDateString('nl-NL', { month: 'long' });
 
   const handleSelectProgram = (slug: string) => {
     router.push(`/register?program=${slug}`);
@@ -106,9 +108,11 @@ export function ProgramCards() {
 
             {/* Pricing */}
             <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
-              <Badge className="bg-green-500 dark:bg-green-600 text-white px-3 py-1 text-xs font-bold mb-2">
-                EARLYBIRD t/m 25 januari
-              </Badge>
+              {isEarlyBirdActive() && (
+                <Badge className="bg-green-500 dark:bg-green-600 text-white px-3 py-1 text-xs font-bold mb-2">
+                  EARLYBIRD t/m {EARLY_BIRD_DEADLINE}
+                </Badge>
+              )}
               <div className="flex items-baseline justify-center gap-3 mb-2">
                 <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
                   €297
@@ -175,9 +179,11 @@ export function ProgramCards() {
 
             {/* Pricing */}
             <div className="text-center py-4 border-y border-amber-100 dark:border-amber-800/30">
-              <Badge className="bg-green-500 dark:bg-green-600 text-white px-3 py-1 text-xs font-bold mb-2">
-                EARLYBIRD t/m 25 januari
-              </Badge>
+              {isEarlyBirdActive() && (
+                <Badge className="bg-green-500 dark:bg-green-600 text-white px-3 py-1 text-xs font-bold mb-2">
+                  EARLYBIRD t/m {EARLY_BIRD_DEADLINE}
+                </Badge>
+              )}
               <div className="flex items-baseline justify-center gap-3 mb-2">
                 <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
                   €997
