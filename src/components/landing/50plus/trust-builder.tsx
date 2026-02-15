@@ -47,8 +47,8 @@ const trustBadges = [
   },
   {
     icon: Shield,
-    title: '10.000+ Tevreden Leden',
-    description: 'Waarvan 35% boven de 50 jaar - jij bent niet alleen',
+    title: 'Groeiende community',
+    description: 'Waarvan een groot deel 50-plussers - jij bent niet alleen',
     color: colors.sageGreen,
   },
 ];
@@ -66,7 +66,7 @@ export function TrustBuilder50Plus() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: colors.deepPurple }}>
-            Waarom 10.000+ mensen ons vertrouwen
+            Waarom mensen ons vertrouwen
           </h2>
           <p className="text-lg" style={{ color: colors.mediumGray }}>
             Veiligheid en privacy staan bij ons voorop
