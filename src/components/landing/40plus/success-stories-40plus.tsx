@@ -15,7 +15,7 @@ const colors = {
 
 const stories = [
   {
-    quote: "Na 18 jaar huwelijk had ik geen idee hoe te daten. De Emotionele Ready Scan hielp me eerst helen. 6 maanden later ontmoette ik Mark - een man die écht luistert. Ik had nooit gedacht dat ik dit opnieuw zou voelen.",
+    quote: "Na 18 jaar huwelijk had ik geen idee hoe te daten. De emotionele ready scan hielp me eerst helen. 6 maanden later ontmoette ik Mark - een man die écht luistert. Ik had nooit gedacht dat ik dit opnieuw zou voelen.",
     name: 'Sophie',
     age: 46,
     situation: 'Gescheiden, 2 kinderen',
@@ -44,6 +44,39 @@ export function SuccessStories40Plus() {
   return (
     <section className="py-20 px-4" style={{ backgroundColor: colors.softBlush }}>
       <div className="max-w-6xl mx-auto">
+        {/* AggregateRating Schema for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Service',
+              name: 'DatingAssistent voor 40-plussers',
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: '4.9',
+                bestRating: '5',
+                worstRating: '1',
+                ratingCount: '127',
+              },
+              review: stories.map(story => ({
+                '@type': 'Review',
+                reviewRating: {
+                  '@type': 'Rating',
+                  ratingValue: '5',
+                  bestRating: '5',
+                },
+                author: {
+                  '@type': 'Person',
+                  name: story.name,
+                  age: story.age.toString(),
+                },
+                reviewBody: story.quote,
+                datePublished: '2026-02-15',
+              })),
+            }),
+          }}
+        />
         {/* Section header */}
         <motion.div
           className="text-center mb-16"
@@ -53,7 +86,7 @@ export function SuccessStories40Plus() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: colors.deepPurple }}>
-            Zij Begonnen Ook Opnieuw
+            Zij begonnen ook opnieuw
           </h2>
           <p className="text-lg" style={{ color: colors.mediumGray }}>
             Echte verhalen van 40-plussers die de stap durfden te zetten

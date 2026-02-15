@@ -73,7 +73,7 @@ export function HeroMature() {
                     boxShadow: '0 4px 16px var(--color-warm-coral-shadow, rgba(255, 123, 84, 0.3))'
                   }}
                 >
-                  Start Gratis Persoonlijkheidsanalyse <ArrowRight className="w-6 h-6" />
+                  Start gratis persoonlijkheidsanalyse <ArrowRight className="w-6 h-6" />
                 </Button>
               </Link>
             </motion.div>
@@ -100,7 +100,7 @@ export function HeroMature() {
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
                   src="/images/40plus-hero.jpg"
-                  alt="Professional 40+ couple enjoying quality time together"
+                  alt="40-plus stel geniet samen van date - daten na 40 jaar met wijsheid en vertrouwen"
                   fill
                   className="object-cover"
                   priority

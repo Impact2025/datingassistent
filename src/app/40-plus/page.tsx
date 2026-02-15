@@ -74,19 +74,19 @@ function ValidationSection() {
   const problems = [
     {
       icon: HelpCircle,
-      title: 'Is Iedereen Al Bezet?',
+      title: 'Is iedereen al bezet?',
       desc: 'Na je scheiding lijkt het alsof alle goede matches al vergeven zijn',
       color: colors.warmCoral
     },
     {
       icon: Smartphone,
-      title: 'Hoe Werkt Dit Allemaal?',
+      title: 'Hoe werkt dit allemaal?',
       desc: 'Tinder, Bumble... Je weet niet waar te beginnen en bent bang fouten te maken',
       color: colors.dustyRose
     },
     {
       icon: Heart,
-      title: 'Ben Ik Wel Klaar?',
+      title: 'Ben ik wel klaar?',
       desc: 'Je vraagt je af: ben ik emotioneel klaar voor iets nieuws?',
       color: colors.sageGreen
     },
@@ -152,32 +152,32 @@ function ValidationSection() {
 }
 
 // ============================================================================
-// TOOLS SECTION - "Waarom 40-Plussers Succesvol Zijn"
+// TOOLS SECTION - "Waarom 40-plussers succesvol zijn"
 // ============================================================================
 
 function ToolsSection40Plus() {
   const tools = [
     {
       icon: User,
-      title: 'Profiel Privacy Coach',
+      title: 'Profiel privacy coach',
       description: 'Foto\'s en bio die professioneel zijn, zonder je privacy op te offeren',
       color: colors.warmCoral,
     },
     {
       icon: Heart,
-      title: 'Emotionele Ready Scan',
+      title: 'Emotionele ready scan',
       description: 'Wetenschappelijke check: ben je echt klaar om opnieuw te daten? Voorkom herhaling van oude patronen',
       color: colors.dustyRose,
     },
     {
       icon: TrendingUp,
-      title: 'Kwaliteit over Kwantiteit Match AI',
+      title: 'Kwaliteit over kwantiteit match AI',
       description: 'Geen eindeloos swipen - focus op lange-termijn potentie. Filters voor levensfase-compatibiliteit',
       color: colors.sageGreen,
     },
     {
       icon: MessageCircle,
-      title: '24/7 Dating Begeleiding',
+      title: '24/7 dating begeleiding',
       description: 'Chat coach die begrijpt dat je 20 jaar uit de datescene bent',
       color: colors.deepPurple,
     },
@@ -188,7 +188,7 @@ function ToolsSection40Plus() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: colors.deepPurple }}>
-            Waarom 40-Plussers Succesvol Zijn
+            Waarom 40-plussers succesvol zijn
           </h2>
           <p className="text-lg" style={{ color: colors.mediumGray }}>
             Tools die écht begrijpen waar jij staat
@@ -316,7 +316,7 @@ function PricingSection40Plus() {
           )}
 
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ color: colors.deepPurple }}>
-            Investeer in Jezelf
+            Investeer in jezelf
           </h2>
           <p className="text-lg" style={{ color: colors.mediumGray }}>
             Van snelle start tot complete transformatie
@@ -449,7 +449,7 @@ function FAQSection40Plus() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: colors.deepPurple }}>
-            Veelgestelde Vragen
+            Veelgestelde vragen
           </h2>
           <p className="text-lg" style={{ color: colors.mediumGray }}>
             Alle antwoorden die 40-plussers willen weten
@@ -502,6 +502,25 @@ function FAQSection40Plus() {
           ))}
         </div>
       </div>
+
+      {/* FAQPage Schema for Rich Results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqs.map(faq => ({
+              '@type': 'Question',
+              name: faq.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.answer,
+              },
+            })),
+          }),
+        }}
+      />
     </section>
   );
 }
@@ -520,7 +539,7 @@ function FinalCTASection() {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight" style={{ color: colors.deepPurple }}>
-            Klaar Voor Je Nieuwe Hoofdstuk?
+            Klaar voor je nieuwe hoofdstuk?
           </h2>
 
           <div className="mb-10 space-y-4">
@@ -621,7 +640,7 @@ function BlogSection40Plus() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: colors.deepPurple }}>
-              Dating Advies voor 40-Plussers
+              Dating advies voor 40-plussers
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -647,7 +666,7 @@ function BlogSection40Plus() {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: colors.deepPurple }}>
-            Dating Advies voor 40-Plussers
+            Dating advies voor 40-plussers
           </h2>
           <p style={{ color: colors.mediumGray }}>Praktische tips voor jouw situatie</p>
         </div>
@@ -818,9 +837,14 @@ function Footer() {
         </div>
 
         <div className="pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderColor: colors.softBlush }}>
-          <p className="text-sm" style={{ color: colors.mediumGray }}>
-            © {new Date().getFullYear()} DatingAssistent.nl. Alle rechten voorbehouden.
-          </p>
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <p className="text-sm" style={{ color: colors.mediumGray }}>
+              © {new Date().getFullYear()} DatingAssistent.nl. Alle rechten voorbehouden.
+            </p>
+            <p className="text-xs" style={{ color: colors.mediumGray }}>
+              Laatst bijgewerkt: 15 februari 2026
+            </p>
+          </div>
         </div>
       </div>
     </footer>

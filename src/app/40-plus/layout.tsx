@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
  */
 
 export const metadata: Metadata = {
-  title: 'Daten na 40 - Begin Opnieuw Met Wijsheid | DatingAssistent',
+  title: 'Daten na 40 - Begin opnieuw met wijsheid | DatingAssistent',
   description:
     'Speciaal voor 40-plussers: ontdek hoe je levenservaring je sterkste troef is bij het daten. Privacy-first coaching, emotionele readiness check en begeleiding bij een nieuwe start. Gemiddelde leeftijd: 42 jaar.',
   keywords: [
@@ -23,9 +23,11 @@ export const metadata: Metadata = {
     'privacy datingapps',
   ],
   openGraph: {
-    title: 'Daten na 40? Jouw Wijsheid is Je Superkracht',
+    title: 'Daten na 40? Jouw wijsheid is je superkracht',
     description:
       'Speciaal voor 40-plussers: begin opnieuw met vertrouwen. Privacy gegarandeerd, emotionele begeleiding, en tools die jouw levensfase begrijpen. Gemiddelde leeftijd leden: 42 jaar.',
+    publishedTime: '2026-02-15T00:00:00.000Z',
+    modifiedTime: '2026-02-15T00:00:00.000Z',
     type: 'website',
     url: 'https://datingassistent.nl/40-plus',
     images: [
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Daten na 40? Jouw Wijsheid is Je Superkracht',
+    title: 'Daten na 40? Jouw wijsheid is je superkracht',
     description:
       'Speciaal voor 40-plussers: privacy-first coaching voor een nieuwe start. Gemiddelde leeftijd: 42 jaar.',
     images: ['/images/40plus-hero.jpg'],
@@ -70,9 +72,11 @@ export const metadata: Metadata = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'DatingAssistent voor 40-Plussers',
+  name: 'DatingAssistent voor 40-plussers',
   description:
     'Dating coaching en begeleiding speciaal voor 40+ singles. Privacy-first approach met emotionele readiness scan.',
+  datePublished: '2026-02-15',
+  dateModified: '2026-02-15',
   provider: {
     '@type': 'Organization',
     name: 'DatingAssistent',

@@ -22,9 +22,9 @@ const journeySteps = [
     color: colors.warmCoral,
     icon: Heart,
     activities: [
-      'Emotionele Ready Scan - ben je klaar?',
-      'Dating Patroon Analyse',
-      'Profiel Privacy Check',
+      'Emotionele ready scan - ben je klaar?',
+      'Dating patroon analyse',
+      'Profiel privacy check',
     ],
     result: 'Je weet precies waar je staat',
   },
@@ -35,9 +35,9 @@ const journeySteps = [
     color: colors.iconPurple,
     icon: User,
     activities: [
-      'Foto Optimalisatie (geen nieuwe foto\'s verplicht!)',
-      'Bio Schrijfhulp voor 40-plussers',
-      'Privacy Instellingen configureren',
+      'Foto optimalisatie (geen nieuwe foto\'s verplicht!)',
+      'Bio schrijfhulp voor 40-plussers',
+      'Privacy instellingen configureren',
     ],
     result: 'Een profiel dat past bij jou',
   },
@@ -48,9 +48,9 @@ const journeySteps = [
     color: colors.sageGreen,
     icon: MessageCircle,
     activities: [
-      'Chat Coach voor echte gesprekken',
-      'Date Voorbereiding & tips',
-      'Patroon Herkenning & feedback',
+      'Chat coach voor echte gesprekken',
+      'Date voorbereiding & tips',
+      'Patroon herkenning & feedback',
     ],
     result: 'Dates met mensen die écht passen',
   },
@@ -69,7 +69,7 @@ export function SimplifiedJourney() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: colors.deepPurple }}>
-            Jouw Reis in 3 Heldere Stappen
+            Jouw reis in 3 heldere stappen
           </h2>
           <p className="text-lg" style={{ color: colors.mediumGray }}>
             Geen ingewikkelde processen - gewoon een duidelijk pad vooruit

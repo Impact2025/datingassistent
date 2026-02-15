@@ -41,7 +41,7 @@ const trustBadges = [
   },
   {
     icon: Heart,
-    title: 'Geen Oordeel Zone',
+    title: 'Geen oordeel zone',
     description: 'Iedereen verdient een tweede kans op liefde',
     color: colors.dustyRose,
   },
@@ -66,7 +66,7 @@ export function TrustBuilder() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: colors.deepPurple }}>
-            Waarom 10.000+ Mensen Ons Vertrouwen
+            Waarom 10.000+ mensen ons vertrouwen
           </h2>
           <p className="text-lg" style={{ color: colors.mediumGray }}>
             Veiligheid en privacy staan bij ons voorop
