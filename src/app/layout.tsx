@@ -105,6 +105,22 @@ export default function RootLayout({
             `,
           }}
         />
+        {/* GA4 Consent Mode v2 - MUST be before gtag.js loads */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                analytics_storage: 'denied',
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                wait_for_update: 500
+              });
+            `,
+          }}
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <meta name="theme-color" content="#FF7B54" />
         {/* CSS Loading Fallback - DISABLED to debug ERR_FAILED */}

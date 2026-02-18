@@ -1,15 +1,19 @@
 'use client';
 
 /**
- * Google Analytics 4 - AVG Compliant
+ * Google Analytics 4 - Consent Mode v2 (AVG Compliant)
  *
- * Laadt ALLEEN met analytics consent
- * Verstuurt data naar Google servers
+ * De GA tag laadt ALTIJD, maar werkt in 'denied' modus totdat
+ * de gebruiker toestemming geeft. Dit is de Google-aanbevolen
+ * aanpak voor AVG-compliance in de EU.
+ *
+ * - Zonder consent: geen cookies, geen persoonlijke data, wel modelering
+ * - Met consent: volledige tracking
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Script from 'next/script';
-import { hasAnalyticsConsent } from '@/components/cookie-consent';
+import { hasAnalyticsConsent, hasMarketingConsent } from '@/components/cookie-consent';
 
 declare global {
   interface Window {
@@ -18,39 +22,37 @@ declare global {
   }
 }
 
+function applyConsent(analytics: boolean, marketing: boolean) {
+  if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
+
+  window.gtag('consent', 'update', {
+    analytics_storage: analytics ? 'granted' : 'denied',
+    ad_storage: marketing ? 'granted' : 'denied',
+    ad_user_data: marketing ? 'granted' : 'denied',
+    ad_personalization: marketing ? 'granted' : 'denied',
+  });
+
+  console.log('[GA4] Consent updated:', { analytics, marketing });
+}
+
 export function GoogleAnalytics() {
   const gaId = process.env.NEXT_PUBLIC_GA4_PROPERTY_ID || 'G-CLGV5SLPFW';
-  const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    // Check initial consent
-    const checkConsent = () => {
-      const hasConsent = hasAnalyticsConsent();
-      setShouldLoad(hasConsent);
+    // Pas direct de bestaande consent toe (als gebruiker al eerder keuze maakte)
+    applyConsent(hasAnalyticsConsent(), hasMarketingConsent());
 
-      if (!hasConsent) {
-        console.log('[GA4] Blocked - Analytics consent required');
-      } else {
-        console.log('[GA4] ✅ Loading with consent');
-      }
-    };
-
-    checkConsent();
-
-    // Listen for consent changes
-    const handleConsentUpdate = () => {
-      checkConsent();
+    // Luister naar toekomstige consent-wijzigingen
+    const handleConsentUpdate = (e: Event) => {
+      const detail = (e as CustomEvent<{ analytics?: boolean; marketing?: boolean }>).detail ?? {};
+      applyConsent(detail.analytics ?? false, detail.marketing ?? false);
     };
 
     window.addEventListener('consentUpdated', handleConsentUpdate);
     return () => window.removeEventListener('consentUpdated', handleConsentUpdate);
   }, []);
 
-  // Don't render scripts without consent
-  if (!shouldLoad) {
-    return null;
-  }
-
+  // GA scripts laden altijd - consent wordt via gtag('consent', 'update') beheerd
   return (
     <>
       <Script
@@ -66,14 +68,8 @@ export function GoogleAnalytics() {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${gaId}', {
-              page_path: window.location.pathname,
-              custom_map: {
-                dimension1: 'metric_id',
-                metric1: 'metric_value',
-                metric2: 'metric_delta'
-              }
+              page_path: window.location.pathname
             });
-            console.log('[GA4] Tracking initialized');
           `,
         }}
       />
