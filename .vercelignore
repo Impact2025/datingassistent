@@ -7,6 +7,7 @@ public/uploads/
 *.old
 backup/
 
-# Development files
+# Development files (exclude loose md files, but keep content directories)
 *.md
 !README.md
+!content/**/*.md
