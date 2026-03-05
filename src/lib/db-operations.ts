@@ -457,15 +457,27 @@ export async function getBlogPostBySlug(slug: string) {
         content,
         image as featured_image,
         placeholder_text,
+        cover_image_url,
+        cover_image_alt,
+        header_type,
+        header_color,
+        header_title,
+        category,
+        tags,
+        keywords,
+        seo_title,
+        seo_description,
+        social_title,
+        social_description,
+        reading_time,
+        author,
+        author_bio,
+        author_avatar,
+        published,
+        views as view_count,
         created_at,
         updated_at,
-        views as view_count,
-        meta_title as seo_title,
-        meta_description as seo_description,
-        keywords,
-        author,
-        published,
-        COALESCE(publish_date, created_at) as published_at
+        COALESCE(published_at, publish_date, created_at) as published_at
       FROM blogs
       WHERE slug = ${slug}
     `;
@@ -473,14 +485,12 @@ export async function getBlogPostBySlug(slug: string) {
     const post = result.rows[0];
     if (!post) return null;
 
-    // Parse keywords if it's a string and fix internal links
-    const fixedPost = {
+    return {
       ...post,
       content: fixInternalLinks(post.content),
-      keywords: typeof post.keywords === 'string' ? JSON.parse(post.keywords) : post.keywords
+      keywords: typeof post.keywords === 'string' ? JSON.parse(post.keywords) : (post.keywords || []),
+      tags: typeof post.tags === 'string' ? JSON.parse(post.tags) : (post.tags || []),
     };
-    
-    return fixedPost;
   } catch (error) {
     console.error('Error getting blog post:', error);
     throw error;
