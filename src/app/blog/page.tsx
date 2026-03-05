@@ -315,7 +315,7 @@ function BlogContent() {
                           }}
                         >
                           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
-                          <span className="text-4xl md:text-5xl font-bold text-white relative z-10 px-6 text-center leading-tight">
+                          <span className="text-xl md:text-2xl font-semibold text-white relative z-10 px-6 text-center leading-snug">
                             {blog.header_title || blog.placeholder_text || blog.title || 'DA'}
                           </span>
                         </div>
