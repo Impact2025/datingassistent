@@ -24,6 +24,8 @@ import {
 import { getKennisbankCategories, getKennisbankIndex, getAllKennisbankArticles } from '@/lib/kennisbank';
 import { KennisbankSearch } from '@/components/kennisbank/kennisbank-search';
 
+export const revalidate = 3600; // ISR: regenerate every hour
+
 export const metadata: Metadata = {
   title: 'Kennisbank | DatingAssistent',
   description: 'Alles over dating, relaties en persoonlijke groei. Evidence-based artikelen over dating burnout, ghosting, hechtingsstijlen en meer.',
