@@ -163,6 +163,12 @@ const nextConfig: NextConfig = {
   // Enable standalone output for Docker deployment
   output: 'standalone',
 
+  // Include content directories in standalone output (needed for fs-based content reading)
+  outputFileTracingIncludes: {
+    '/kennisbank': ['./content/kennisbank/**/*'],
+    '/blog': ['./content/**/*'],
+  },
+
   // Experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
