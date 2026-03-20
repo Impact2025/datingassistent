@@ -2,9 +2,9 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Lock, Tv, Flag } from 'lucide-react';
+import { IrisVideoPlayer } from '@/components/landing/iris-video-player';
 
 const colors = {
   deepPurple: 'var(--color-deep-purple, #722F37)',
@@ -89,31 +89,17 @@ export function HeroMature50Plus() {
             </motion.p>
           </div>
 
-          {/* Right column - Professional image */}
+          {/* Right column - Iris Video */}
           <motion.div
             className="order-1 lg:order-2 flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <div className="relative w-full max-w-lg">
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
-                <Image
-                  src="/images/50plus-hero.jpg"
-                  alt="50-plus stel geniet van quality time samen - daten na 50 jaar met vertrouwen en zelfkennis"
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-
-              {/* Decorative gradient border */}
-              <div
-                className="absolute inset-0 rounded-3xl -z-10 blur-xl opacity-30"
-                style={{
-                  background: `linear-gradient(135deg, ${colors.deepPurple}, ${colors.roseGold})`
-                }}
+            <div className="w-full max-w-lg">
+              <IrisVideoPlayer
+                ctaHref="/quiz/emotionele-readiness-50plus"
+                ctaText="Start Gratis Analyse"
               />
             </div>
           </motion.div>

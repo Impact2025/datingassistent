@@ -2,198 +2,9 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Tv, Lock, Flag, Play, Volume2, VolumeX } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, useRef } from 'react';
-
-function IrisVideoPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [videoEnded, setVideoEnded] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const [showCTA, setShowCTA] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handlePlay = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-      setIsMuted(false);
-      videoRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-
-  const handleVideoEnd = () => {
-    setVideoEnded(true);
-    // Fade to CTA after video ends
-    setTimeout(() => setShowCTA(true), 500);
-  };
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  // Auto-set loaded state if video doesn't load within 3 seconds
-  useEffect(() => {
-    const loadTimer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 3000);
-    return () => clearTimeout(loadTimer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run once on mount
-
-  return (
-    <div className="relative w-full max-w-3xl mx-auto">
-      {/* Video Container with elegant styling */}
-      <motion.div
-        className="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-900 to-gray-800"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: isLoaded ? 1 : 0.3, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        {/* Decorative gradient border */}
-        <div className="absolute inset-0 bg-gradient-to-r from-coral-500 via-deep-purple to-coral-500 rounded-3xl p-[3px] -z-10" />
-
-        {/* Video wrapper with aspect ratio */}
-        <div className="relative aspect-video bg-gray-900 rounded-3xl overflow-hidden">
-          {/* Video element - replace src with actual video URL */}
-          <video
-            ref={videoRef}
-            className="w-full h-full object-cover"
-            poster="/images/iris-video-poster.jpg"
-            muted={isMuted}
-            playsInline
-            onLoadedData={() => setIsLoaded(true)}
-            onEnded={handleVideoEnd}
-            onPlay={() => setIsPlaying(true)}
-          >
-            <source src="/videos/iris-intro.mp4" type="video/mp4" />
-            {/* Fallback for browsers that don't support video */}
-            Je browser ondersteunt geen video.
-          </video>
-
-          {/* Loading state */}
-          {!isLoaded && (
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center bg-gray-900"
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-            >
-              <div className="flex flex-col items-center gap-3">
-                <motion.div
-                  className="w-12 h-12 border-4 border-coral-500/30 border-t-coral-500 rounded-full"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                />
-                <p className="text-gray-400 text-sm">Video laden...</p>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Play button overlay (before playing) */}
-          <AnimatePresence>
-            {!isPlaying && (
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer group"
-                onClick={handlePlay}
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Animated play button */}
-                <motion.div
-                  className="relative"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {/* Pulsing ring */}
-                  <motion.div
-                    className="absolute inset-0 bg-coral-500/30 rounded-full"
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  <div className="relative w-20 h-20 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-coral-500/50 transition-shadow">
-                    <Play className="w-8 h-8 text-white ml-1" fill="white" />
-                  </div>
-                </motion.div>
-
-                {/* "Bekijk de intro" text */}
-                <motion.p
-                  className="absolute bottom-8 text-white text-xl font-semibold drop-shadow-lg"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  Bekijk hoe Iris je helpt
-                </motion.p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Video controls (while playing) */}
-          {isPlaying && !videoEnded && (
-            <motion.div
-              className="absolute bottom-4 right-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <button
-                onClick={toggleMute}
-                className="p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors"
-              >
-                {isMuted ? (
-                  <VolumeX className="w-5 h-5 text-white" />
-                ) : (
-                  <Volume2 className="w-5 h-5 text-white" />
-                )}
-              </button>
-            </motion.div>
-          )}
-
-          {/* Fade overlay when video ends */}
-          <AnimatePresence>
-            {videoEnded && (
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-t from-white via-white/95 to-white/80 dark:from-gray-900 dark:via-gray-900/95 dark:to-gray-900/80"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
-              />
-            )}
-          </AnimatePresence>
-        </div>
-      </motion.div>
-
-      {/* CTA that appears after video or with delay */}
-      <AnimatePresence>
-        {showCTA && (
-          <motion.div
-            className="absolute inset-0 flex flex-col items-center justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="text-center px-4">
-              <Link href="/quiz/dating-patroon">
-                <Button className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-10 py-6 text-xl font-semibold shadow-xl hover:shadow-2xl hover:shadow-coral-500/25 transition-all rounded-full flex items-center justify-center gap-3">
-                  Ontdek Je Dating Patroon
-                  <ArrowRight className="w-6 h-6" />
-                </Button>
-              </Link>
-
-              <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm">
-                2 minuten • 10 vragen • Direct resultaat
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
+import { ArrowRight, Tv, Lock, Flag } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { IrisVideoPlayer } from '@/components/landing/iris-video-player';
 
 export function HeroSection() {
   return (
@@ -268,7 +79,12 @@ export function HeroSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <IrisVideoPlayer />
+            <div className="w-full max-w-3xl">
+              <IrisVideoPlayer
+                ctaHref="/quiz/dating-patroon"
+                ctaText="Ontdek Je Dating Patroon"
+              />
+            </div>
           </motion.div>
         </div>
 
