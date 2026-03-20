@@ -3,7 +3,7 @@
  * Protects against XSS, SQL injection, and other common attacks
  */
 
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 import validator from 'validator';
 
 export interface ValidationResult {
@@ -166,9 +166,9 @@ export class InputValidator {
     switch (rule.type) {
       case 'string':
         // HTML sanitization to prevent XSS
-        return DOMPurify.sanitize(value, {
-          ALLOWED_TAGS: [], // No HTML tags allowed
-          ALLOWED_ATTR: []
+        return sanitizeHtml(value, {
+          allowedTags: [],
+          allowedAttributes: {},
         }).trim();
 
       case 'email':
@@ -176,7 +176,7 @@ export class InputValidator {
 
       case 'array':
         return Array.isArray(value)
-          ? value.map(item => typeof item === 'string' ? DOMPurify.sanitize(item, { ALLOWED_TAGS: [] }) : item)
+          ? value.map(item => typeof item === 'string' ? sanitizeHtml(item, { allowedTags: [], allowedAttributes: {} }) : item)
           : value;
 
       default:
@@ -323,9 +323,9 @@ export class SQLSanitizer {
  */
 export class XSSProtector {
   static sanitizeHTML(html: string): string {
-    return DOMPurify.sanitize(html, {
-      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-      ALLOWED_ATTR: []
+    return sanitizeHtml(html, {
+      allowedTags: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      allowedAttributes: {},
     });
   }
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 import { getBlogPostBySlug, getLatestBlogPosts } from '@/lib/db-operations';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -185,25 +185,25 @@ export default async function BlogPostPage({
     ],
   };
 
-  let safeContent = blog.content || '';
-  try {
-    safeContent = DOMPurify.sanitize(blog.content, {
-      ALLOWED_TAGS: [
-        'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li',
-        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-        'blockquote', 'code', 'pre',
-        'img', 'figure', 'figcaption',
-        'table', 'thead', 'tbody', 'tr', 'th', 'td',
-        'div', 'span', 'section', 'article',
-      ],
-      ALLOWED_ATTR: [
-        'href', 'src', 'alt', 'title', 'class', 'id',
-        'target', 'rel', 'width', 'height', 'style',
-      ],
-    });
-  } catch (error) {
-    console.error(`[BlogPostPage] DOMPurify error for slug "${slug}":`, error);
-  }
+  const safeContent = sanitizeHtml(blog.content || '', {
+    allowedTags: [
+      'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'blockquote', 'code', 'pre',
+      'img', 'figure', 'figcaption',
+      'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'div', 'span', 'section', 'article',
+    ],
+    allowedAttributes: {
+      'a': ['href', 'target', 'rel', 'title', 'class'],
+      'img': ['src', 'alt', 'title', 'width', 'height', 'class', 'style'],
+      '*': ['id', 'class', 'style'],
+    },
+    allowedSchemes: ['http', 'https', 'mailto'],
+    allowedSchemesByTag: {
+      img: ['http', 'https', 'data'],
+    },
+  });
 
   return (
     <>
