@@ -1,7 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Lock, Tv, Flag } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowRight, Lock, Tv, Flag } from 'lucide-react';
 import { IrisVideoPlayer } from '@/components/landing/iris-video-player';
 
 const colors = {
@@ -57,14 +59,33 @@ export function HeroMature() {
               Ontdek hoe je die wijsheid omzet in een nieuwe, gezonde relatie
             </motion.p>
 
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            >
+              <Link href="/quiz/dating-patroon">
+                <Button
+                  className="text-white px-10 py-7 text-xl font-semibold shadow-xl rounded-full flex items-center gap-3"
+                  style={{
+                    backgroundColor: colors.warmCoral,
+                    boxShadow: '0 4px 16px rgba(255, 123, 84, 0.3)'
+                  }}
+                >
+                  Start gratis persoonlijkheidsanalyse <ArrowRight className="w-6 h-6" />
+                </Button>
+              </Link>
+            </motion.div>
+
             <motion.p
               className="text-base self-center text-center lg:text-left"
               style={{ color: colors.mediumGray }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.45 }}
             >
-              Klik op play en ontdek hoe Iris je helpt
+              5 min • Vertrouwelijk • Direct persoonlijk advies
             </motion.p>
           </div>
 
