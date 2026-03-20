@@ -98,7 +98,7 @@ export function HeroMature() {
           >
             <div className="w-full max-w-lg">
               <IrisVideoPlayer
-                ctaHref="/quiz/emotionele-readiness-40plus"
+                ctaHref="/quiz/dating-patroon"
                 ctaText="Start Gratis Analyse"
               />
             </div>
