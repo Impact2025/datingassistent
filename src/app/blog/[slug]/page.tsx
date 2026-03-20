@@ -35,7 +35,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const blog = await getBlogPostBySlug(slug);
+  let blog;
+  try {
+    blog = await getBlogPostBySlug(slug);
+  } catch {
+    return {};
+  }
   if (!blog) return {};
 
   const title = blog.seo_title || blog.title;
@@ -116,7 +121,13 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const blog = await getBlogPostBySlug(slug);
+  let blog;
+  try {
+    blog = await getBlogPostBySlug(slug);
+  } catch (error) {
+    console.error(`[BlogPostPage] DB error for slug "${slug}":`, error);
+    notFound();
+  }
 
   // Gooit automatisch de Next.js 404 pagina — correct HTTP 404 status voor Googlebot
   if (!blog) notFound();
@@ -174,20 +185,25 @@ export default async function BlogPostPage({
     ],
   };
 
-  const safeContent = DOMPurify.sanitize(blog.content, {
-    ALLOWED_TAGS: [
-      'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li',
-      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'blockquote', 'code', 'pre',
-      'img', 'figure', 'figcaption',
-      'table', 'thead', 'tbody', 'tr', 'th', 'td',
-      'div', 'span', 'section', 'article',
-    ],
-    ALLOWED_ATTR: [
-      'href', 'src', 'alt', 'title', 'class', 'id',
-      'target', 'rel', 'width', 'height', 'style',
-    ],
-  });
+  let safeContent = blog.content || '';
+  try {
+    safeContent = DOMPurify.sanitize(blog.content, {
+      ALLOWED_TAGS: [
+        'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li',
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'blockquote', 'code', 'pre',
+        'img', 'figure', 'figcaption',
+        'table', 'thead', 'tbody', 'tr', 'th', 'td',
+        'div', 'span', 'section', 'article',
+      ],
+      ALLOWED_ATTR: [
+        'href', 'src', 'alt', 'title', 'class', 'id',
+        'target', 'rel', 'width', 'height', 'style',
+      ],
+    });
+  } catch (error) {
+    console.error(`[BlogPostPage] DOMPurify error for slug "${slug}":`, error);
+  }
 
   return (
     <>
