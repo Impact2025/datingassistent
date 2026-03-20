@@ -51,15 +51,16 @@ export function IrisVideoPlayer({
   return (
     <div className="relative w-full">
       <motion.div
-        className="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-900 to-gray-800"
+        className="relative rounded-3xl overflow-hidden shadow-2xl"
+        style={{ background: 'linear-gradient(135deg, #F5E6E8, #E3867D)' }}
         initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: isLoaded ? 1 : 0.3, scale: 1 }}
+        animate={{ opacity: isLoaded ? 1 : 0.6, scale: 1 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
         {/* Decorative gradient border */}
         <div className="absolute inset-0 bg-gradient-to-r from-coral-500 via-deep-purple to-coral-500 rounded-3xl p-[3px] -z-10" />
 
-        <div className="relative aspect-video bg-gray-900 rounded-3xl overflow-hidden">
+        <div className="relative aspect-video rounded-3xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #F5E6E8, #E3867D)' }}>
           <video
             ref={videoRef}
             className="w-full h-full object-cover"
@@ -76,14 +77,14 @@ export function IrisVideoPlayer({
 
           {/* Loading state */}
           {!isLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+            <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #F5E6E8, #E3867D)' }}>
               <div className="flex flex-col items-center gap-3">
                 <motion.div
-                  className="w-12 h-12 border-4 border-coral-500/30 border-t-coral-500 rounded-full"
+                  className="w-12 h-12 border-4 border-white/40 border-t-white rounded-full"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                 />
-                <p className="text-gray-400 text-sm">Video laden...</p>
+                <p className="text-white/80 text-sm font-medium">Video laden...</p>
               </div>
             </div>
           )}
@@ -92,7 +93,7 @@ export function IrisVideoPlayer({
           <AnimatePresence>
             {!isPlaying && (
               <motion.div
-                className="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer group"
+                className="absolute inset-0 flex items-center justify-center bg-black/20 cursor-pointer group"
                 onClick={handlePlay}
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

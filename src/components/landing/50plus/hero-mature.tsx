@@ -1,9 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Lock, Tv, Flag } from 'lucide-react';
+import { Lock, Tv, Flag } from 'lucide-react';
 import { IrisVideoPlayer } from '@/components/landing/iris-video-player';
 
 const colors = {
@@ -59,33 +57,14 @@ export function HeroMature50Plus() {
               Vind een partner die bij je levensfase past - met respect voor je privacy en tijd
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-            >
-              <Link href="/quiz/emotionele-readiness-50plus">
-                <Button
-                  className="text-white px-10 py-7 text-xl font-semibold shadow-xl rounded-full flex items-center gap-3"
-                  style={{
-                    backgroundColor: colors.warmCoral,
-                    boxShadow: '0 4px 16px var(--color-warm-coral-shadow, rgba(255, 123, 84, 0.3))'
-                  }}
-                >
-                  Start gratis persoonlijkheidsanalyse <ArrowRight className="w-6 h-6" />
-                </Button>
-              </Link>
-            </motion.div>
-
             <motion.p
               className="text-base self-center text-center lg:text-left"
               style={{ color: colors.mediumGray }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.45 }}
+              transition={{ delay: 0.3 }}
             >
-              5 min • Volledige discretie • Persoonlijk advies
+              Klik op play en ontdek hoe Iris je helpt
             </motion.p>
           </div>
 
