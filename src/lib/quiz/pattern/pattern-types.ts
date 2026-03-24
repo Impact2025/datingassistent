@@ -54,7 +54,8 @@ export interface PatternQuestion {
 export type QuizState =
   | 'landing'      // Landing page with hero
   | 'question'     // Answering questions (1-10)
-  | 'email-gate'   // Email capture step
+  | 'preview'      // Partial results shown BEFORE email gate (curiosity gap)
+  | 'email-gate'   // Email capture step (after user sees preview)
   | 'analyzing'    // Analyzing animation
   | 'result';      // Result display
 

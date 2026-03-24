@@ -13,7 +13,7 @@ interface PatternQuestionProps {
   question: PatternQuestion;
   currentAnswer: string | null;
   onAnswer: (value: string) => void;
-  onNext: () => void;
+  onNext: (lastAnswerValue?: string) => void;
   onBack: () => void;
   canGoBack: boolean;
 }
@@ -30,7 +30,7 @@ export function PatternQuestionComponent({
 
   const handleOptionClick = (value: string) => {
     onAnswer(value);
-    setTimeout(() => onNext(), 300);
+    setTimeout(() => onNext(value), 300);
   };
 
   return (
@@ -126,7 +126,7 @@ export function PatternQuestionComponent({
           </button>
 
           <button
-            onClick={onNext}
+            onClick={() => onNext(currentAnswer ?? undefined)}
             disabled={!currentAnswer}
             className="flex items-center gap-2 px-4 py-2 text-coral-500 hover:text-coral-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >

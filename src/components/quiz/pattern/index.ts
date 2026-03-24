@@ -7,6 +7,7 @@
 export { PatternQuiz } from './pattern-quiz';
 export { PatternLandingHero } from './pattern-landing-hero';
 export { PatternQuestionComponent } from './pattern-question';
+export { PatternPreview } from './pattern-preview';
 export { PatternEmailGate } from './pattern-email-gate';
 export { PatternAccountGate } from './pattern-account-gate';
 export { PatternAnalyzing } from './pattern-analyzing';

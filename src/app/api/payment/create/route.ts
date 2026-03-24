@@ -29,7 +29,10 @@ export async function POST(request: NextRequest) {
 
     const dbUser = userResult.rows[0];
     const body = await request.json();
-    const { programId, programSlug, amount, couponCode } = body;
+    const { programId, programSlug, amount, couponCode, utmSource, utmMedium, utmCampaign } = body;
+
+    // Read affiliate referral code from cookie (set by /api/affiliate/track)
+    const referralCode = request.cookies.get('da_ref')?.value || null;
 
     // Validate required fields (amount can be 0 for free/fully discounted orders)
     if (!programId || !programSlug || amount === undefined || amount === null) {
@@ -81,10 +84,14 @@ export async function POST(request: NextRequest) {
       await sql`
         INSERT INTO payment_transactions (
           order_id, user_id, program_id, amount, currency,
-          status, payment_method, coupon_code, created_at, paid_at
+          status, payment_method, coupon_code,
+          utm_source, utm_medium, utm_campaign, referral_code,
+          created_at, paid_at
         ) VALUES (
           ${orderId}, ${userId}, ${programId}, ${amount}, 'EUR',
-          'completed', 'free', ${normalizedCouponCode}, NOW(), NOW()
+          'completed', 'free', ${normalizedCouponCode},
+          ${utmSource || null}, ${utmMedium || null}, ${utmCampaign || null}, ${referralCode},
+          NOW(), NOW()
         )
       `;
 
@@ -164,7 +171,7 @@ export async function POST(request: NextRequest) {
       custom_info: {
         custom_1: userId.toString(),
         custom_2: programId.toString(),
-        custom_3: programSlug
+        custom_3: [utmSource, utmMedium, utmCampaign].filter(Boolean).join('|') || programSlug
       }
     };
 
@@ -225,10 +232,14 @@ export async function POST(request: NextRequest) {
     await sql`
       INSERT INTO payment_transactions (
         order_id, user_id, program_id, amount, currency,
-        status, payment_method, coupon_code, created_at
+        status, payment_method, coupon_code,
+        utm_source, utm_medium, utm_campaign, referral_code,
+        created_at
       ) VALUES (
         ${orderId}, ${userId}, ${programId}, ${amount}, 'EUR',
-        'pending', 'multisafepay', ${normalizedCouponCode}, NOW()
+        'pending', 'multisafepay', ${normalizedCouponCode},
+        ${utmSource || null}, ${utmMedium || null}, ${utmCampaign || null}, ${referralCode},
+        NOW()
       )
     `;
 

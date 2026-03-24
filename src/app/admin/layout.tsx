@@ -65,6 +65,12 @@ const adminNavigation = [
     description: "Coupon codes beheren"
   },
   {
+    name: "Affiliates",
+    href: "/admin/affiliate",
+    icon: Users,
+    description: "Partner referral programma"
+  },
+  {
     name: "Cursussen",
     href: "/admin/courses",
     icon: BookOpen,

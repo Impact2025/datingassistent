@@ -22,8 +22,10 @@ import type {
   AttachmentPattern,
 } from '@/lib/quiz/pattern/pattern-types';
 import { PATTERN_QUESTIONS } from '@/lib/quiz/pattern/pattern-questions';
+import { calculatePatternScore } from '@/lib/quiz/pattern/pattern-scoring';
 import { PatternLandingHero } from './pattern-landing-hero';
 import { PatternQuestionComponent } from './pattern-question';
+import { PatternPreview } from './pattern-preview';
 import { PatternAccountGate } from './pattern-account-gate';
 import { PatternAnalyzing } from './pattern-analyzing';
 import { PatternResultWithOTO } from './pattern-result-with-oto';
@@ -118,7 +120,13 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasRestoredProgress, setHasRestoredProgress] = useState(false);
 
-  // Result state
+  // Preview state — local pre-calculation shown before email gate
+  const [previewPattern, setPreviewPattern] = useState<AttachmentPattern | null>(null);
+  const [previewAnxietyScore, setPreviewAnxietyScore] = useState(0);
+  const [previewAvoidanceScore, setPreviewAvoidanceScore] = useState(0);
+  const [previewConfidence, setPreviewConfidence] = useState(0);
+
+  // Result state — confirmed by API after account creation
   const [resultId, setResultId] = useState<string | null>(null);
   const [attachmentPattern, setAttachmentPattern] =
     useState<AttachmentPattern | null>(null);
@@ -134,14 +142,19 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     campaign?: string;
   }>({});
 
-  // Capture UTM params on mount
+  // Capture UTM params on mount and persist to sessionStorage
+  // so the checkout page can read them even after navigation
   useEffect(() => {
-    if (searchParams) {
-      setUtmParams({
-        source: searchParams.get('utm_source') || undefined,
-        medium: searchParams.get('utm_medium') || undefined,
-        campaign: searchParams.get('utm_campaign') || undefined,
-      });
+    if (!searchParams) return;
+    const source   = searchParams.get('utm_source')   || undefined;
+    const medium   = searchParams.get('utm_medium')   || undefined;
+    const campaign = searchParams.get('utm_campaign') || undefined;
+    setUtmParams({ source, medium, campaign });
+
+    if (source || medium || campaign) {
+      try {
+        sessionStorage.setItem('da_utm', JSON.stringify({ source, medium, campaign }));
+      } catch { /* ignore */ }
     }
   }, [searchParams]);
 
@@ -192,18 +205,35 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     }));
   };
 
-  const handleNext = () => {
+  const handleNext = (lastAnswerValue?: string) => {
     if (currentQuestionIndex < PATTERN_QUESTIONS.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Last question - go to email gate
-      setQuizState('email-gate');
+      // Last question — merge the last answer explicitly before scoring.
+      // This guards against the stale-closure race: handleOptionClick calls
+      // onAnswer (async setAnswers) then setTimeout(() => onNext(), 300).
+      // The onNext captured in that closure is from the pre-update render,
+      // so answers may not include the last answer yet.
+      const finalAnswers = lastAnswerValue && currentQuestion
+        ? { ...answers, [currentQuestion.id.toString()]: lastAnswerValue }
+        : answers;
+
+      const localScore = calculatePatternScore(finalAnswers);
+      setPreviewPattern(localScore.attachmentPattern);
+      setPreviewAnxietyScore(localScore.anxietyScore);
+      setPreviewAvoidanceScore(localScore.avoidanceScore);
+      setPreviewConfidence(localScore.confidence);
+      setQuizState('preview');
     }
   };
 
   const handleBack = () => {
-    if (quizState === 'email-gate') {
+    if (quizState === 'preview') {
       setQuizState('question');
+      return;
+    }
+    if (quizState === 'email-gate') {
+      setQuizState('preview');
       return;
     }
 
@@ -287,6 +317,17 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
           onNext={handleNext}
           onBack={handleBack}
           canGoBack={currentQuestionIndex > 0 || !skipLanding}
+        />
+      )}
+
+      {quizState === 'preview' && previewPattern && (
+        <PatternPreview
+          key="preview"
+          pattern={previewPattern}
+          anxietyScore={previewAnxietyScore}
+          avoidanceScore={previewAvoidanceScore}
+          confidence={previewConfidence}
+          onUnlock={() => setQuizState('email-gate')}
         />
       )}
 

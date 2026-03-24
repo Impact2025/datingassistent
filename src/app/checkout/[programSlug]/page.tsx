@@ -144,14 +144,21 @@ export default function CheckoutPage() {
     setProcessingPayment(true);
     setError(null);
 
+    // Read UTM params stored by the quiz (or landing page visit)
+    let utmSource: string | null = null;
+    let utmMedium: string | null = null;
+    let utmCampaign: string | null = null;
     try {
-      console.log('Creating payment with:', {
-        programId: program.id,
-        programSlug: program.slug,
-        amount: finalPrice,
-        couponCode: couponData?.valid ? couponData.code : null
-      });
+      const stored = sessionStorage.getItem('da_utm');
+      if (stored) {
+        const utm = JSON.parse(stored);
+        utmSource   = utm.source   || null;
+        utmMedium   = utm.medium   || null;
+        utmCampaign = utm.campaign || null;
+      }
+    } catch { /* ignore */ }
 
+    try {
       const response = await fetch('/api/payment/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -159,9 +166,12 @@ export default function CheckoutPage() {
           programId: program.id,
           programSlug: program.slug,
           amount: finalPrice,
-          couponCode: couponData?.valid ? couponData.code : null
+          couponCode: couponData?.valid ? couponData.code : null,
+          utmSource,
+          utmMedium,
+          utmCampaign,
         }),
-        credentials: 'include' // Ensure cookies are sent
+        credentials: 'include'
       });
 
       console.log('Payment response status:', response.status);

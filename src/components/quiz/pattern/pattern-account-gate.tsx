@@ -1,17 +1,21 @@
 'use client';
 
 /**
- * Pattern Quiz Account Gate - Creates account during quiz flow
+ * Pattern Quiz Account Gate - Simplified Lead Capture
  *
- * Converts email gate into full account creation for better conversion:
- * - Collects name, email, password
- * - Creates account via signup API
- * - Returns userId for quiz submission
+ * Shown AFTER the preview (user has already seen partial results).
+ * Collects only name + email. No password required.
+ *
+ * Account is created with a temporary auto-generated password.
+ * User receives a "complete your account" email to set their own password.
+ *
+ * Psychology: Friction is earned. User already confirmed the result is accurate.
+ * Asking only for name + email maximises conversion at this step.
  */
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, Lock, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lock, Check } from 'lucide-react';
 
 interface PatternAccountGateProps {
   onSubmit: (email: string, firstName: string, acceptsMarketing: boolean, userId: number) => void;
@@ -19,38 +23,37 @@ interface PatternAccountGateProps {
   isSubmitting: boolean;
 }
 
-export function PatternAccountGate({
-  onSubmit,
-  onBack,
-  isSubmitting,
-}: PatternAccountGateProps) {
+/** Generate a temporary password meeting all requirements */
+function generateTempPassword(): string {
+  const upper   = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const lower   = 'abcdefghjkmnpqrstuvwxyz';
+  const nums    = '23456789';
+  const special = '!@#$%&*';
+  const all     = upper + lower + nums + special;
+
+  const required = [
+    upper[Math.floor(Math.random() * upper.length)],
+    lower[Math.floor(Math.random() * lower.length)],
+    nums[Math.floor(Math.random() * nums.length)],
+    special[Math.floor(Math.random() * special.length)],
+  ];
+  const extra = Array.from({ length: 8 }, () => all[Math.floor(Math.random() * all.length)]);
+
+  return [...required, ...extra]
+    .sort(() => Math.random() - 0.5)
+    .join('');
+}
+
+export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAccountGateProps) {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [acceptsMarketing, setAcceptsMarketing] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
-  // Validation
   const isValidEmail = email.includes('@') && email.includes('.');
   const isValidName = firstName.trim().length >= 2;
-  const isValidPassword = password.length >= 8 &&
-    /[A-Z]/.test(password) &&
-    /[a-z]/.test(password) &&
-    /[0-9]/.test(password) &&
-    /[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password);
-
-  const canSubmit = isValidEmail && isValidName && isValidPassword && !isSubmitting && !isCreatingAccount;
-
-  // Password requirement indicators
-  const passwordChecks = [
-    { label: '8+ karakters', met: password.length >= 8 },
-    { label: 'Hoofdletter', met: /[A-Z]/.test(password) },
-    { label: 'Kleine letter', met: /[a-z]/.test(password) },
-    { label: 'Cijfer', met: /[0-9]/.test(password) },
-    { label: 'Speciaal teken', met: /[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password) },
-  ];
+  const canSubmit = isValidEmail && isValidName && !isSubmitting && !isCreatingAccount;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,14 +63,16 @@ export function PatternAccountGate({
     setError(null);
 
     try {
-      // Create account via API
+      const tempPassword = generateTempPassword();
+
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: firstName.trim(),
           email: email.trim(),
-          password: password,
+          password: tempPassword,
+          needsPasswordSetup: true,
         }),
       });
 
@@ -77,23 +82,20 @@ export function PatternAccountGate({
       }
 
       const data = await response.json();
-      console.log('Account created for quiz:', data.user.id);
 
-      // Save to localStorage for later use
       if (typeof window !== 'undefined') {
         localStorage.setItem('quiz_user_id', data.user.id.toString());
         localStorage.setItem('quiz_user_name', firstName.trim());
       }
 
-      // Continue with quiz submission
       onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
-    } catch (err: any) {
-      console.error('Account creation error:', err);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Er is een fout opgetreden';
 
-      if (err.message?.includes('emailadres is al bij ons bekend') || err.message?.includes('already exists')) {
+      if (message.includes('al bij ons bekend') || message.includes('already exists')) {
         setError('Dit e-mailadres is al geregistreerd. Probeer in te loggen of gebruik een ander e-mailadres.');
       } else {
-        setError(err.message || 'Er is een fout opgetreden. Probeer het opnieuw.');
+        setError(message);
       }
       setIsCreatingAccount(false);
     }
@@ -108,25 +110,24 @@ export function PatternAccountGate({
             animate={{ opacity: 1, y: 0 }}
           >
             {/* Header */}
-            <div className="mb-8">
+            <div className="mb-6">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                Je resultaat is klaar!
+                Waar sturen we je volledige analyse naartoe?
               </h1>
               <p className="text-gray-500">
-                Maak een gratis account aan om je persoonlijke analyse te bekijken.
+                Gratis. Je kunt je altijd uitschrijven.
               </p>
             </div>
 
-            {/* What they get */}
+            {/* What they unlock */}
             <div className="mb-6 space-y-2">
               {[
-                'Je attachment patroon onthuld',
-                'Hoe dit je dating saboteert',
-                'Concrete tips om het te doorbreken',
-                'Toegang tot je persoonlijke dashboard',
+                'Wat je patroon precies doet in dating',
+                'Je grootste valkuil (en hoe je hem omzeilt)',
+                'De concrete tip die jij vandaag kunt toepassen',
               ].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm text-gray-600">
-                  <Check className="w-4 h-4 text-coral-500" />
+                  <Check className="w-4 h-4 text-coral-500 shrink-0" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -146,6 +147,7 @@ export function PatternAccountGate({
                   placeholder="Je voornaam"
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
                   autoComplete="given-name"
+                  autoFocus
                 />
               </div>
 
@@ -164,48 +166,6 @@ export function PatternAccountGate({
                 />
               </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                  Kies een wachtwoord
-                </label>
-                <div className="relative">
-                  <input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Minimaal 8 karakters"
-                    className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
-                    autoComplete="new-password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-
-                {/* Password requirements */}
-                {password.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {passwordChecks.map((check) => (
-                      <span
-                        key={check.label}
-                        className={`text-xs px-2 py-1 rounded-full ${
-                          check.met
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-gray-100 text-gray-500'
-                        }`}
-                      >
-                        {check.met ? '✓' : '○'} {check.label}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
@@ -218,7 +178,6 @@ export function PatternAccountGate({
                 </span>
               </label>
 
-              {/* Error Message */}
               {error && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -237,24 +196,22 @@ export function PatternAccountGate({
                 {isCreatingAccount || isSubmitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Account aanmaken...
+                    Even geduld...
                   </>
                 ) : (
                   <>
-                    Bekijk Mijn Resultaat
+                    Bekijk Mijn Volledige Analyse
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
               </button>
             </form>
 
-            {/* Trust anchor */}
             <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-400">
               <Lock className="w-3 h-3" />
-              <span>Je gegevens zijn veilig en worden niet gedeeld.</span>
+              <span>Je gegevens zijn veilig en worden nooit gedeeld.</span>
             </div>
 
-            {/* Login link */}
             <p className="mt-4 text-center text-sm text-gray-500">
               Al een account?{' '}
               <a href="/login" className="text-coral-600 hover:text-coral-700 font-medium">
@@ -265,7 +222,6 @@ export function PatternAccountGate({
         </div>
       </div>
 
-      {/* Back button */}
       <div className="border-t border-gray-100 px-4 py-4">
         <div className="max-w-md mx-auto">
           <button

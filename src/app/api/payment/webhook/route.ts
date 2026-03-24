@@ -239,6 +239,40 @@ export async function POST(request: NextRequest) {
           console.error('⚠️ Failed to send enrollment email:', emailError);
           // Don't fail the webhook for email errors
         }
+
+        // Register affiliate conversion (non-blocking)
+        try {
+          const affiliateResult = await sql`
+            SELECT pt.referral_code, pt.amount, ap.id AS partner_id, ap.commission_pct
+            FROM payment_transactions pt
+            JOIN affiliate_partners ap ON ap.referral_code = pt.referral_code AND ap.status = 'active'
+            WHERE pt.order_id = ${transaction.order_id}
+              AND pt.referral_code IS NOT NULL
+            LIMIT 1
+          `;
+
+          if (affiliateResult.rows.length > 0) {
+            const aff = affiliateResult.rows[0];
+            const commissionAmt = parseFloat(aff.amount) * (parseFloat(aff.commission_pct) / 100);
+
+            await sql`
+              INSERT INTO affiliate_conversions (
+                partner_id, referral_code, order_id, user_id,
+                sale_amount, commission_pct, commission_amt,
+                status, converted_at
+              ) VALUES (
+                ${aff.partner_id}, ${aff.referral_code}, ${transaction.order_id}, ${transaction.user_id},
+                ${aff.amount}, ${aff.commission_pct}, ${commissionAmt},
+                'pending', NOW()
+              )
+              ON CONFLICT DO NOTHING
+            `;
+            console.log('✅ Affiliate conversion registered for:', aff.referral_code);
+          }
+        } catch (affError) {
+          console.error('⚠️ Affiliate conversion registration failed:', affError);
+          // Non-blocking — don't fail the webhook
+        }
         break;
 
       case 'cancelled':

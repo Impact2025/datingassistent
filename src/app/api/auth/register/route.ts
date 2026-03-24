@@ -10,6 +10,7 @@ import { startProgressiveTrial } from '@/lib/trial-management';
 import { notifyAdminNewLead } from '@/lib/admin-notifications';
 import { getJWTSecret } from '@/lib/jwt-secret';
 import { validatePassword, getPasswordErrorMessage } from '@/lib/password-validation';
+import { signToken, cookieConfig } from '@/lib/jwt-config';
 
 const JWT_SECRET = getJWTSecret();
 
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { name, email, password, plan } = await request.json();
+    const { name, email, password, plan, needsPasswordSetup } = await request.json();
 
     // Validate input
     if (!name || !email || !password) {
@@ -43,13 +44,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate password strength
-    const passwordValidation = validatePassword(password);
-    if (!passwordValidation.isValid) {
-      return NextResponse.json(
-        { error: getPasswordErrorMessage(passwordValidation) },
-        { status: 400 }
-      );
+    // Quiz users use an auto-generated password — skip strict validation
+    if (!needsPasswordSetup) {
+      const passwordValidation = validatePassword(password);
+      if (!passwordValidation.isValid) {
+        return NextResponse.json(
+          { error: getPasswordErrorMessage(passwordValidation) },
+          { status: 400 }
+        );
+      }
     }
 
     // Check if user already exists
@@ -68,25 +71,36 @@ export async function POST(request: NextRequest) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user in database as unverified
+    // Quiz users (needsPasswordSetup) get auto-verified so they can go straight
+    // through the OTO → checkout flow without an email verification interruption.
+    // They receive a password-setup email instead.
+    const emailVerified = needsPasswordSetup ? true : false;
+
     const result = await sql`
       INSERT INTO users (name, email, password_hash, email_verified, created_at, updated_at)
-      VALUES (${name}, ${email}, ${hashedPassword}, false, NOW(), NOW())
+      VALUES (${name}, ${email}, ${hashedPassword}, ${emailVerified}, NOW(), NOW())
       RETURNING id, name, email, created_at, subscription_type
     `;
 
     const user = result.rows[0];
 
-    // Generate and store verification code
-    const verificationCode = generateVerificationCode();
-    await storeVerificationCode(user.id, verificationCode);
-
-    // Send verification code email
-    const verificationEmailSent = await sendVerificationCodeEmail(user.email, user.name, verificationCode);
-
-    if (!verificationEmailSent) {
-      console.error(`❌ Failed to send verification email to ${user.email}`);
-      // Still create the account but log the error
+    if (needsPasswordSetup) {
+      // Send password-setup email (non-blocking) — user can ignore until after checkout
+      try {
+        const { sendPasswordResetEmail } = await import('@/lib/email-service');
+        const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/reset-password?userId=${user.id}`;
+        await sendPasswordResetEmail(user.email, user.name, resetUrl);
+      } catch (e) {
+        console.warn('Password setup email failed (non-critical):', e);
+      }
+    } else {
+      // Standard flow: send verification code
+      const verificationCode = generateVerificationCode();
+      await storeVerificationCode(user.id, verificationCode);
+      const verificationEmailSent = await sendVerificationCodeEmail(user.email, user.name, verificationCode);
+      if (!verificationEmailSent) {
+        console.error(`❌ Failed to send verification email to ${user.email}`);
+      }
     }
 
     // Start progressive trial for Pro plan signups
@@ -109,23 +123,39 @@ export async function POST(request: NextRequest) {
       otoAccepted: false,
     }).catch(err => console.error('Failed to notify admin:', err));
 
-    // Return user data WITHOUT token - email verification required first
-    return NextResponse.json({
+    const responseBody = {
       user: {
         id: user.id,
         name: user.name,
         email: user.email,
-        emailVerified: false,
+        emailVerified,
         createdAt: user.created_at,
         subscriptionType: user.subscription_type,
         trialActive: plan === 'pro',
       },
-      message: plan === 'pro'
-        ? 'Account aangemaakt! Je 3-daagse Pro trial begint zodra je email verifieert.'
-        : 'Account aangemaakt. Controleer je email voor verificatie.',
-      requiresEmailVerification: true,
+      message: needsPasswordSetup
+        ? 'Account aangemaakt. Je kunt direct verder.'
+        : plan === 'pro'
+          ? 'Account aangemaakt! Je 3-daagse Pro trial begint zodra je email verifieert.'
+          : 'Account aangemaakt. Controleer je email voor verificatie.',
+      requiresEmailVerification: !needsPasswordSetup,
       trialStarted: plan === 'pro',
-    }, { status: 201 });
+    };
+
+    // Quiz users (needsPasswordSetup) get auto-logged in immediately
+    // so they can proceed through the OTO → checkout flow without interruption.
+    if (needsPasswordSetup) {
+      const token = await signToken({
+        id: user.id,
+        email: user.email,
+        displayName: user.name,
+      });
+      const response = NextResponse.json(responseBody, { status: 201 });
+      response.cookies.set(cookieConfig.name, token, cookieConfig.options);
+      return response;
+    }
+
+    return NextResponse.json(responseBody, { status: 201 });
 
   } catch (error: any) {
     console.error('Registration error:', error);
