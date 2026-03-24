@@ -3,15 +3,20 @@
 /**
  * Leaderboard Page - Dating Masters Rankings
  * Sprint 4: Gamification & Engagement
+ *
+ * UX: Default = Mijn Pad (persoonlijke groei).
+ * Community ranking is opt-in zodat angstige gebruikers
+ * niet direct worden geconfronteerd met sociale vergelijking.
  */
 
 import { useEffect, useState } from 'react';
 import { useUser } from '@/providers/user-provider';
 import { motion } from 'framer-motion';
-import { Trophy, Crown, Medal, Award, Flame, Star, ArrowLeft } from 'lucide-react';
+import { Trophy, Crown, Medal, Award, Flame, Star, ArrowLeft, TrendingUp, User, Users } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -25,11 +30,15 @@ interface LeaderboardEntry {
   isCurrentUser: boolean;
 }
 
+type LeaderboardView = 'personal' | 'community';
+
 export default function LeaderboardPage() {
   const { user } = useUser();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<'week' | 'month' | 'all_time'>('all_time');
+  // Personal view is de veilige default
+  const [view, setView] = useState<LeaderboardView>('personal');
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -77,6 +86,13 @@ export default function LeaderboardPage() {
     );
   }
 
+  const currentUser = entries.find((e) => e.isCurrentUser);
+  const totalParticipants = entries.length;
+  const userRank = currentUser?.rank ?? null;
+  const topPercentage = userRank && totalParticipants > 0
+    ? Math.round((1 - (userRank - 1) / totalParticipants) * 100)
+    : null;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-coral-50 to-blue-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
@@ -89,41 +105,168 @@ export default function LeaderboardPage() {
             </Button>
           </Link>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2 flex items-center gap-3">
-                <Trophy className="w-10 h-10 text-purple-600" />
-                Leaderboard
-              </h1>
-              <p className="text-gray-600">Wie zijn de beste dating masters?</p>
-            </div>
-          </div>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+            <Trophy className="w-10 h-10 text-purple-600" />
+            Voortgang
+          </h1>
 
-          {/* Period Filter */}
-          <div className="flex gap-2 mt-6">
-            <Button
-              variant={period === 'week' ? 'default' : 'outline'}
-              onClick={() => setPeriod('week')}
-              className={period === 'week' ? 'bg-purple-600 hover:bg-purple-700' : ''}
+          {/* View toggle: Mijn Pad (default) vs Community */}
+          <div className="flex gap-2 mt-5 p-1 bg-white rounded-xl border border-gray-200 w-fit">
+            <button
+              onClick={() => setView('personal')}
+              className={cn(
+                'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all',
+                view === 'personal'
+                  ? 'bg-purple-600 text-white shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
+              )}
             >
-              Deze Week
-            </Button>
-            <Button
-              variant={period === 'month' ? 'default' : 'outline'}
-              onClick={() => setPeriod('month')}
-              className={period === 'month' ? 'bg-purple-600 hover:bg-purple-700' : ''}
+              <User className="w-4 h-4" />
+              Mijn Pad
+            </button>
+            <button
+              onClick={() => setView('community')}
+              className={cn(
+                'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all',
+                view === 'community'
+                  ? 'bg-purple-600 text-white shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
+              )}
             >
-              Deze Maand
-            </Button>
-            <Button
-              variant={period === 'all_time' ? 'default' : 'outline'}
-              onClick={() => setPeriod('all_time')}
-              className={period === 'all_time' ? 'bg-purple-600 hover:bg-purple-700' : ''}
-            >
-              All-Time
-            </Button>
+              <Users className="w-4 h-4" />
+              Community
+            </button>
           </div>
         </div>
+
+        {/* ── MIJN PAD VIEW ────────────────────────────────────────────── */}
+        {view === 'personal' && (
+          <div className="space-y-6">
+            {/* Persoonlijke stats kaart */}
+            {currentUser ? (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-white overflow-hidden">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-6">
+                      <div>
+                        <p className="text-sm text-purple-600 font-semibold uppercase tracking-wide mb-1">
+                          Jouw groei
+                        </p>
+                        <h2 className="text-2xl font-bold text-gray-900">
+                          {currentUser.displayName}
+                        </h2>
+                        <p className="text-sm text-gray-500 mt-0.5">
+                          Level {currentUser.currentLevel}
+                        </p>
+                      </div>
+                      {topPercentage !== null && (
+                        <div className="text-right">
+                          <div className="text-3xl font-bold text-purple-700">
+                            Top {100 - topPercentage + 1}%
+                          </div>
+                          <p className="text-xs text-gray-500 mt-0.5">
+                            van alle deelnemers
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4 mb-6">
+                      <div className="text-center p-3 bg-white rounded-xl border border-purple-100">
+                        <Flame className="w-5 h-5 text-orange-500 mx-auto mb-1" />
+                        <div className="text-xl font-bold text-gray-900">
+                          {currentUser.currentStreak}
+                        </div>
+                        <div className="text-xs text-gray-500">Dagen streak</div>
+                      </div>
+                      <div className="text-center p-3 bg-white rounded-xl border border-purple-100">
+                        <Star className="w-5 h-5 text-purple-500 mx-auto mb-1" />
+                        <div className="text-xl font-bold text-gray-900">
+                          {currentUser.totalPoints.toLocaleString()}
+                        </div>
+                        <div className="text-xs text-gray-500">Punten</div>
+                      </div>
+                      <div className="text-center p-3 bg-white rounded-xl border border-purple-100">
+                        <TrendingUp className="w-5 h-5 text-emerald-500 mx-auto mb-1" />
+                        <div className="text-xl font-bold text-gray-900">
+                          #{currentUser.rank}
+                        </div>
+                        <div className="text-xs text-gray-500">Positie</div>
+                      </div>
+                    </div>
+
+                    {/* Voortgangsbalk richting volgende top-tier */}
+                    {topPercentage !== null && (
+                      <div>
+                        <div className="flex justify-between text-xs text-gray-500 mb-1.5">
+                          <span>Jouw positie</span>
+                          <span>Top 10%</span>
+                        </div>
+                        <Progress
+                          value={Math.min(topPercentage, 90)}
+                          className="h-2"
+                        />
+                        <p className="text-xs text-gray-400 mt-1.5">
+                          Blijf consistent om hoger te eindigen
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ) : (
+              <Card>
+                <CardContent className="p-8 text-center text-gray-500">
+                  <User className="w-10 h-10 mx-auto mb-3 opacity-40" />
+                  <p>Begin met dagelijkse taken om hier je groei te zien.</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Nudge richting community */}
+            <button
+              onClick={() => setView('community')}
+              className="w-full flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-purple-300 hover:shadow-sm transition-all text-left group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 bg-purple-50 rounded-lg flex items-center justify-center group-hover:bg-purple-100 transition-colors">
+                  <Users className="w-4 h-4 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Community ranking bekijken</p>
+                  <p className="text-xs text-gray-500">Vergelijk met andere deelnemers</p>
+                </div>
+              </div>
+              <span className="text-sm text-purple-600 font-medium group-hover:translate-x-0.5 transition-transform">
+                Bekijk →
+              </span>
+            </button>
+          </div>
+        )}
+
+        {/* ── COMMUNITY VIEW ───────────────────────────────────────────── */}
+        {view === 'community' && (
+          <>
+            {/* Period Filter */}
+            <div className="flex gap-2 mb-6">
+              {(['week', 'month', 'all_time'] as const).map((p) => (
+                <Button
+                  key={p}
+                  variant={period === p ? 'default' : 'outline'}
+                  onClick={() => setPeriod(p)}
+                  className={period === p ? 'bg-purple-600 hover:bg-purple-700' : ''}
+                >
+                  {p === 'week' ? 'Deze Week' : p === 'month' ? 'Deze Maand' : 'All-Time'}
+                </Button>
+              ))}
+            </div>
+
+            <p className="text-sm text-gray-500 mb-6">
+              Wie zijn de beste dating masters?
+            </p>
 
         {/* Top 3 Podium */}
         {entries.length >= 3 && (
@@ -225,7 +368,7 @@ export default function LeaderboardPage() {
                         entry.isCurrentUser ? "text-purple-900" : "text-gray-900"
                       )}>
                         {entry.displayName}
-                        {entry.isCurrentUser && " (You)"}
+                        {entry.isCurrentUser && " (jij)"}
                       </p>
                       <p className="text-sm text-gray-600">Level {entry.currentLevel}</p>
                     </div>
@@ -248,6 +391,8 @@ export default function LeaderboardPage() {
             </div>
           </CardContent>
         </Card>
+          </>
+        )}
       </div>
     </div>
   );

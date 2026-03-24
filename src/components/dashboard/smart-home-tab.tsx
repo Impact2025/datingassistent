@@ -27,6 +27,7 @@ import {
 import { GamificationWidget } from '../gamification/gamification-widget';
 import { useGamification } from '@/hooks/use-gamification';
 import { QuickWinsToday } from './quick-wins-today';
+import { TodayFocusCard } from '@/components/engagement/today-focus-card';
 import { MijnCursussenWidget } from './mijn-cursussen-widget';
 import { ToolModal } from '@/components/tools/tool-modal';
 import { WelcomeVideoCard } from './sections/welcome-video-card';
@@ -333,6 +334,9 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
 
         {/* Personalized Welcome */}
         {!showWelcomeVideo && <PersonalizedWelcome />}
+
+        {/* Today Focus Card — de ene handeling die vandaag telt */}
+        {!showWelcomeVideo && <TodayFocusCard userId={userId} />}
 
         {/* World-class Transformatie Hero Card - Priority placement for enrolled users */}
         {!showWelcomeVideo && hasTransformatie && (

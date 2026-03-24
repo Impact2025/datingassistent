@@ -136,8 +136,40 @@ export function MonthlyReport({ userId, month, year }: MonthlyReportProps) {
   const taskCompletionRate = metrics.totalTasks > 0 ? (metrics.tasksCompleted / metrics.totalTasks * 100) : 0;
   const goalAchievementRate = metrics.totalGoals > 0 ? (metrics.goalsAchieved / metrics.totalGoals * 100) : 0;
 
+  // Opbouwfase detectie:
+  // Weinig externe resultaten (dates) maar hoge inzet → niet framen als falen.
+  const isInOpbouwfase = metrics.totalDates === 0 && metrics.daysActive >= 10;
+  // Moed-momenten = gesprekken gestart + profiel-acties (proxy voor dapperheid)
+  const moedMomenten = metrics.totalConversations + (metrics.badgesEarned ?? 0);
+
   return (
     <div className="space-y-6">
+      {/* Opbouwfase banner — verschijnt alleen als resultaten nog laag zijn maar inzet hoog */}
+      {isInOpbouwfase && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50">
+            <CardContent className="p-5">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Zap className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-blue-900 mb-1">Je bent in de opbouwfase</h3>
+                  <p className="text-sm text-blue-700 leading-relaxed">
+                    Resultaten zoals dates komen later. Wat nu telt is dat je <strong>{metrics.daysActive} dagen actief</strong> was
+                    en <strong>{moedMomenten} moed-momenten</strong> hebt laten zien.
+                    Dat is het fundament waarop alles staat.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+
       {/* Header */}
       <Card>
         <CardHeader>
@@ -150,7 +182,9 @@ export function MonthlyReport({ userId, month, year }: MonthlyReportProps) {
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="text-2xl font-bold text-primary">{insights.overallProgress}/100</div>
-              <div className="text-sm text-muted-foreground">Overall score</div>
+              <div className="text-sm text-muted-foreground">
+                {isInOpbouwfase ? 'Inzet-score' : 'Overall score'}
+              </div>
             </div>
             <div className="text-right">
               <div className="text-sm text-muted-foreground mb-1">AI Analyse</div>
@@ -160,7 +194,10 @@ export function MonthlyReport({ userId, month, year }: MonthlyReportProps) {
         </CardContent>
       </Card>
 
-      {/* Key Metrics Grid */}
+      {/* Key Metrics Grid
+          In opbouwfase: vervang "Dates" door "Moed-momenten" zodat nul-dates
+          het rapport niet domineert als bewijs van falen.
+      */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4 text-center">
@@ -184,16 +221,28 @@ export function MonthlyReport({ userId, month, year }: MonthlyReportProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        {/* Dates (normaal) / Moed-momenten (opbouwfase) */}
+        <Card className={isInOpbouwfase ? "border-blue-200 bg-blue-50/50" : ""}>
           <CardContent className="p-4 text-center">
-            <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
-            <div className="text-2xl font-bold">{metrics.totalDates}</div>
-            <div className="text-sm text-muted-foreground">Dates</div>
-            {comparison?.vsLastMonth?.datesChange !== undefined && (
-              <div className="flex items-center justify-center gap-1 text-xs mt-1">
-                {getTrendIcon(comparison.vsLastMonth.datesChange)}
-                <span>{Math.abs(Math.round(comparison.vsLastMonth.datesChange))}%</span>
-              </div>
+            {isInOpbouwfase ? (
+              <>
+                <Zap className="w-8 h-8 mx-auto mb-2 text-blue-500" />
+                <div className="text-2xl font-bold text-blue-700">{moedMomenten}</div>
+                <div className="text-sm text-blue-600 font-medium">Moed-momenten</div>
+                <div className="text-xs text-muted-foreground mt-1">gesprekken + acties</div>
+              </>
+            ) : (
+              <>
+                <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
+                <div className="text-2xl font-bold">{metrics.totalDates}</div>
+                <div className="text-sm text-muted-foreground">Dates</div>
+                {comparison?.vsLastMonth?.datesChange !== undefined && (
+                  <div className="flex items-center justify-center gap-1 text-xs mt-1">
+                    {getTrendIcon(comparison.vsLastMonth.datesChange)}
+                    <span>{Math.abs(Math.round(comparison.vsLastMonth.datesChange))}%</span>
+                  </div>
+                )}
+              </>
             )}
           </CardContent>
         </Card>
