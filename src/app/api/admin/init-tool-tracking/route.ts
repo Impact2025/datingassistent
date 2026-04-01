@@ -7,7 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { sql } from '@vercel/postgres';
+import { sql, db } from '@vercel/postgres';
 import fs from 'fs';
 import path from 'path';
 
@@ -28,11 +28,11 @@ export async function POST(request: NextRequest) {
       )
     `;
 
-    if (authQuery.length === 0) {
+    if (authQuery.rows.length === 0) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const user = authQuery[0];
+    const user = authQuery.rows[0];
     if (user.role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
 
     for (const statement of statements) {
       try {
-        await sql.unsafe(statement);
+        await db.query(statement);
         executed++;
       } catch (error: any) {
         // Log but continue (some statements might already exist)
@@ -92,16 +92,16 @@ export async function POST(request: NextRequest) {
     `;
 
     console.log(`✅ Tool completion tracking initialized successfully`);
-    console.log(`   Tables: ${tables.length}, Views: ${views.length}, Functions: ${functions.length}`);
+    console.log(`   Tables: ${tables.rows.length}, Views: ${views.rows.length}, Functions: ${functions.rows.length}`);
 
     return NextResponse.json({
       success: true,
       message: 'Tool completion tracking system initialized',
       stats: {
         statementsExecuted: executed,
-        tablesCreated: tables.map(t => t.table_name),
-        viewsCreated: views.map(v => v.table_name),
-        functionsCreated: functions.map(f => f.routine_name),
+        tablesCreated: tables.rows.map((t: any) => t.table_name),
+        viewsCreated: views.rows.map((v: any) => v.table_name),
+        functionsCreated: functions.rows.map((f: any) => f.routine_name),
         warnings: results.filter(r => r.error).length
       },
       warnings: results.filter(r => r.error)
@@ -149,13 +149,13 @@ export async function GET(request: NextRequest) {
       AND routine_name IN ('mark_action_completed', 'is_action_completed', 'get_tool_completions', 'reset_tool_progress')
     `;
 
-    const initialized = tables.length > 0 && views.length >= 2 && functions.length >= 4;
+    const initialized = tables.rows.length > 0 && views.rows.length >= 2 && functions.rows.length >= 4;
 
     return NextResponse.json({
       initialized,
-      tables: tables.map(t => t.table_name),
-      views: views.map(v => v.table_name),
-      functions: functions.map(f => f.routine_name),
+      tables: tables.rows.map((t: any) => t.table_name),
+      views: views.rows.map((v: any) => v.table_name),
+      functions: functions.rows.map((f: any) => f.routine_name),
       ready: initialized
     });
 

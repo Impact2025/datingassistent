@@ -16,6 +16,7 @@ import {
 } from './components/email-base';
 
 interface LeadIntakeInfo {
+  gender?: string;
   lookingFor?: string;
   datingStatus?: string;
   mainObstacle?: string;
@@ -35,10 +36,17 @@ interface AdminNewLeadEmailProps {
 }
 
 // Human-readable mappings
+const genderLabels: Record<string, string> = {
+  man: 'Man',
+  vrouw: 'Vrouw',
+  anders: 'Anders',
+};
+
 const lookingForLabels: Record<string, string> = {
   man: 'Een man',
   vrouw: 'Een vrouw',
-  anders: 'Anders / Beiden',
+  beide: 'Beide',
+  anders: 'Anders',
 };
 
 const datingStatusLabels: Record<string, string> = {
@@ -201,6 +209,14 @@ export default function AdminNewLeadEmail({
             }}>
               <table width="100%" cellPadding="8" cellSpacing="0" style={{ borderCollapse: 'collapse' }}>
                 <tbody>
+                  {intakeData.gender && (
+                    <tr>
+                      <td style={{ color: colors.gray, fontSize: '14px', width: '40%' }}>Geslacht:</td>
+                      <td style={{ color: colors.dark, fontSize: '14px', fontWeight: '600' }}>
+                        {genderLabels[intakeData.gender] || intakeData.gender}
+                      </td>
+                    </tr>
+                  )}
                   {intakeData.lookingFor && (
                     <tr>
                       <td style={{ color: colors.gray, fontSize: '14px', width: '40%' }}>Zoekt naar:</td>

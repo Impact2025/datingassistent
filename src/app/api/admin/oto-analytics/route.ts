@@ -6,7 +6,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentUser } from '@/lib/auth';
+import { cookies } from 'next/headers';
+import { verifyAdminSession } from '@/lib/admin-auth';
 import { getOTOStats, getOTOFunnel, getDailyOTOStats, trackOTOEvent } from '@/lib/oto-analytics';
 
 export const dynamic = 'force-dynamic';
@@ -15,12 +16,16 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     // Check admin auth
-    const user = await getCurrentUser();
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get('datespark_session')?.value;
+
+    if (!sessionToken) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const admin = await verifyAdminSession(sessionToken);
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);

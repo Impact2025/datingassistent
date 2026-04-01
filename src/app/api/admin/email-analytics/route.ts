@@ -66,18 +66,30 @@ export async function GET(request: NextRequest) {
     }
 
     // Get overall stats
-    const overallStats = await sql`
-      SELECT
-        COUNT(*) as total_sent,
-        COUNT(CASE WHEN delivered_at IS NOT NULL THEN 1 END) as total_delivered,
-        COUNT(CASE WHEN opened_at IS NOT NULL THEN 1 END) as total_opened,
-        COUNT(CASE WHEN clicked_at IS NOT NULL THEN 1 END) as total_clicked,
-        COUNT(CASE WHEN bounced = true THEN 1 END) as total_bounced,
-        COUNT(CASE WHEN unsubscribed = true THEN 1 END) as total_unsubscribed
-      FROM email_tracking
-      WHERE sent_at > NOW() - INTERVAL '${intervalDays} days'
-        ${emailType ? sql`AND email_type = ${emailType}` : sql``}
-    `;
+    const overallStats = emailType
+      ? await sql`
+          SELECT
+            COUNT(*) as total_sent,
+            COUNT(CASE WHEN delivered_at IS NOT NULL THEN 1 END) as total_delivered,
+            COUNT(CASE WHEN opened_at IS NOT NULL THEN 1 END) as total_opened,
+            COUNT(CASE WHEN clicked_at IS NOT NULL THEN 1 END) as total_clicked,
+            COUNT(CASE WHEN bounced = true THEN 1 END) as total_bounced,
+            COUNT(CASE WHEN unsubscribed = true THEN 1 END) as total_unsubscribed
+          FROM email_tracking
+          WHERE sent_at > NOW() - INTERVAL '1 day' * ${intervalDays}
+            AND email_type = ${emailType}
+        `
+      : await sql`
+          SELECT
+            COUNT(*) as total_sent,
+            COUNT(CASE WHEN delivered_at IS NOT NULL THEN 1 END) as total_delivered,
+            COUNT(CASE WHEN opened_at IS NOT NULL THEN 1 END) as total_opened,
+            COUNT(CASE WHEN clicked_at IS NOT NULL THEN 1 END) as total_clicked,
+            COUNT(CASE WHEN bounced = true THEN 1 END) as total_bounced,
+            COUNT(CASE WHEN unsubscribed = true THEN 1 END) as total_unsubscribed
+          FROM email_tracking
+          WHERE sent_at > NOW() - INTERVAL '1 day' * ${intervalDays}
+        `;
 
     const stats = overallStats.rows[0];
     const totalSent = parseInt(stats.total_sent) || 0;

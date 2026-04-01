@@ -5,6 +5,7 @@ import { notifyAdminNewLead } from '@/lib/admin-notifications';
 export const dynamic = 'force-dynamic';
 
 interface LeadIntakeData {
+  gender?: string;
   lookingFor?: string;
   datingStatus?: string;
   mainObstacle?: string;

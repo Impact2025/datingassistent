@@ -12,7 +12,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { sql } from '@vercel/postgres';
+import { sql, QueryResult, QueryResultRow } from '@vercel/postgres';
 import { Resend } from 'resend';
 import { render } from '@react-email/components';
 import AdminDailyReportEmail from '@/emails/admin-daily-report-email';
@@ -92,7 +92,13 @@ async function gatherDailyStats(): Promise<DailyStats> {
   const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
   const monthStartISO = monthStart.toISOString();
 
-  const emptyResult = { rows: [] };
+  const emptyResult = {
+    rows: [],
+    command: '',
+    rowCount: 0,
+    oid: 0,
+    fields: []
+  } as QueryResult<QueryResultRow>;
 
   // Run all queries in parallel with error handling for each
   const [

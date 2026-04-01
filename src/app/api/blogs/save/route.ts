@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
         ${author_bio || null},
         ${author_avatar || null},
         ${published},
-        ${published_at ? new Date(published_at) : (published ? new Date() : null)},
+        ${published_at ? new Date(published_at).toISOString() : (published ? new Date().toISOString() : null)},
         0,
         NOW(),
         NOW()

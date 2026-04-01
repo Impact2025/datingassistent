@@ -3,12 +3,13 @@
 /**
  * Lead Intake Questions - Data Enrichment Step
  *
- * 3 segmentation questions to understand the user and
+ * 4 segmentation questions to understand the user and
  * target the right upsell offer:
  *
- * 1. Looking for: Man/Vrouw/Anders
- * 2. Dating status: Net begonnen/Tijdje bezig/Gefrustreerd
- * 3. Main obstacle: Profiel/Gesprekken/Dates
+ * 1. Gender: Man/Vrouw/Anders
+ * 2. Looking for: Man/Vrouw/Beide
+ * 3. Dating status: Net begonnen/Tijdje bezig/Gefrustreerd
+ * 4. Main obstacle: Profiel/Gesprekken/Dates
  */
 
 import { useState } from 'react';
@@ -18,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type {
   LeadIntakeData,
+  Gender,
   LookingFor,
   DatingStatus,
   DatingObstacle,
@@ -28,7 +30,7 @@ interface LeadIntakeQuestionsProps {
   userName?: string;
 }
 
-type QuestionStep = 1 | 2 | 3;
+type QuestionStep = 1 | 2 | 3 | 4;
 
 interface OptionConfig {
   value: string;
@@ -41,18 +43,27 @@ export function LeadIntakeQuestions({
   userName,
 }: LeadIntakeQuestionsProps) {
   const [step, setStep] = useState<QuestionStep>(1);
+  const [gender, setGender] = useState<Gender | null>(null);
   const [lookingFor, setLookingFor] = useState<LookingFor | null>(null);
   const [datingStatus, setDatingStatus] = useState<DatingStatus | null>(null);
   const [mainObstacle, setMainObstacle] = useState<DatingObstacle | null>(null);
 
-  // Question 1: Looking for
+  // Question 1: Gender
+  const genderOptions: OptionConfig[] = [
+    { value: 'man', label: 'Een man' },
+    { value: 'vrouw', label: 'Een vrouw' },
+    { value: 'anders', label: 'Anders' },
+  ];
+
+  // Question 2: Looking for
   const lookingForOptions: OptionConfig[] = [
     { value: 'man', label: 'Een man' },
     { value: 'vrouw', label: 'Een vrouw' },
-    { value: 'anders', label: 'Anders / Beiden' },
+    { value: 'beide', label: 'Beide' },
+    { value: 'anders', label: 'Anders' },
   ];
 
-  // Question 2: Dating status
+  // Question 3: Dating status
   const datingStatusOptions: OptionConfig[] = [
     {
       value: 'net_begonnen',
@@ -71,7 +82,7 @@ export function LeadIntakeQuestions({
     },
   ];
 
-  // Question 3: Main obstacle (Money question)
+  // Question 4: Main obstacle (Money question)
   const obstacleOptions: OptionConfig[] = [
     {
       value: 'profiel_trekt_niemand_aan',
@@ -92,16 +103,20 @@ export function LeadIntakeQuestions({
 
   const handleSelect = (value: string) => {
     if (step === 1) {
-      setLookingFor(value as LookingFor);
+      setGender(value as Gender);
       setTimeout(() => setStep(2), 300);
     } else if (step === 2) {
-      setDatingStatus(value as DatingStatus);
+      setLookingFor(value as LookingFor);
       setTimeout(() => setStep(3), 300);
     } else if (step === 3) {
+      setDatingStatus(value as DatingStatus);
+      setTimeout(() => setStep(4), 300);
+    } else if (step === 4) {
       setMainObstacle(value as DatingObstacle);
       // Complete the intake
       setTimeout(() => {
         onComplete({
+          gender: gender!,
           lookingFor: lookingFor!,
           datingStatus: datingStatus!,
           mainObstacle: value as DatingObstacle,
@@ -114,11 +129,13 @@ export function LeadIntakeQuestions({
   const goBack = () => {
     if (step === 2) setStep(1);
     else if (step === 3) setStep(2);
+    else if (step === 4) setStep(3);
   };
 
   const getCurrentValue = (): string | null => {
-    if (step === 1) return lookingFor;
-    if (step === 2) return datingStatus;
+    if (step === 1) return gender;
+    if (step === 2) return lookingFor;
+    if (step === 3) return datingStatus;
     return mainObstacle;
   };
 
@@ -129,9 +146,13 @@ export function LeadIntakeQuestions({
 
     if (step === 1) {
       icon = <User className="w-6 h-6 text-coral-500" />;
-      question = 'Voor wie zoek je?';
-      options = lookingForOptions;
+      question = 'Ik ben...';
+      options = genderOptions;
     } else if (step === 2) {
+      icon = <Heart className="w-6 h-6 text-coral-500" />;
+      question = 'Ik zoek...';
+      options = lookingForOptions;
+    } else if (step === 3) {
       icon = <Heart className="w-6 h-6 text-coral-500" />;
       question = 'Wat is je huidige status?';
       options = datingStatusOptions;
@@ -156,7 +177,7 @@ export function LeadIntakeQuestions({
           </div>
           <div>
             <p className="text-sm text-gray-500">
-              Vraag {step} van 3
+              Vraag {step} van 4
             </p>
             <h2 className="text-xl font-bold text-gray-900">{question}</h2>
           </div>
@@ -203,7 +224,7 @@ export function LeadIntakeQuestions({
 
       {/* Progress dots */}
       <div className="flex items-center justify-center gap-2 mb-8">
-        {[1, 2, 3].map((s) => (
+        {[1, 2, 3, 4].map((s) => (
           <div
             key={s}
             className={cn(

@@ -7,7 +7,7 @@
  * psychological conversion machine:
  *
  * 1. Account Creation (minimal friction)
- * 2. Mini-Intake (3 segmentation questions)
+ * 2. Mini-Intake (4 segmentation questions)
  * 3. Photo Upload + AI Scan
  * 4. Score Reveal + OTO (One-Time-Offer)
  * 5. Dashboard redirect
@@ -202,6 +202,7 @@ export function LeadRegistrationWizard({
             otoProduct: 'transformatie',
             photoScore: state.photoResult?.overall_score,
             intakeData: state.intakeData ? {
+              gender: state.intakeData.gender,
               lookingFor: state.intakeData.lookingFor,
               datingStatus: state.intakeData.datingStatus,
               mainObstacle: state.intakeData.mainObstacle,
@@ -265,6 +266,7 @@ export function LeadRegistrationWizard({
             otoProduct: 'kickstart',
             photoScore: state.photoResult?.overall_score,
             intakeData: state.intakeData ? {
+              gender: state.intakeData.gender,
               lookingFor: state.intakeData.lookingFor,
               datingStatus: state.intakeData.datingStatus,
               mainObstacle: state.intakeData.mainObstacle,
@@ -310,6 +312,7 @@ export function LeadRegistrationWizard({
             otoProduct: null,
             photoScore: state.photoResult?.overall_score,
             intakeData: state.intakeData ? {
+              gender: state.intakeData.gender,
               lookingFor: state.intakeData.lookingFor,
               datingStatus: state.intakeData.datingStatus,
               mainObstacle: state.intakeData.mainObstacle,

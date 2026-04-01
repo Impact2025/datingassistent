@@ -72,7 +72,7 @@ interface CourseData {
 
 export default function CourseDetailPage() {
   const params = useParams();
-  const courseId = parseInt(params.id as string);
+  const courseId = parseInt(params?.id as string);
 
   const [courseData, setCourseData] = useState<CourseData | null>(null);
   const [allCourses, setAllCourses] = useState<CourseData[]>([]);

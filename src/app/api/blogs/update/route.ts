@@ -99,7 +99,7 @@ export async function PUT(request: NextRequest) {
         author_bio = COALESCE(${author_bio}, author_bio),
         author_avatar = COALESCE(${author_avatar}, author_avatar),
         published = COALESCE(${published}, published),
-        published_at = COALESCE(${published_at ? new Date(published_at) : null}, published_at),
+        published_at = COALESCE(${published_at ? new Date(published_at).toISOString() : null}, published_at),
         updated_at = NOW()
       WHERE id = ${id}
       RETURNING id, title, slug, category, published, published_at, updated_at

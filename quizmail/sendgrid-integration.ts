@@ -3,7 +3,7 @@
 
 import sgMail from '@sendgrid/mail';
 import { render } from '@react-email/render';
-import PatternQuizResultEmail from '@/emails/pattern-quiz-result-email';
+import PatternQuizResultEmail from './pattern-quiz-result-email';
 
 // Initialize SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
@@ -76,7 +76,7 @@ async function sendQuizResultEmail(
 ): Promise<boolean> {
   try {
     // Render the React email to HTML
-    const emailHtml = render(
+    const emailHtml = await render(
       PatternQuizResultEmail({
         name,
         resultType,

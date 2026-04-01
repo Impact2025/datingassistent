@@ -22,7 +22,9 @@ export interface LeadAccountData {
 // Step 2: Mini-Intake Questions
 // ============================================
 
-export type LookingFor = 'man' | 'vrouw' | 'anders';
+export type Gender = 'man' | 'vrouw' | 'anders';
+
+export type LookingFor = 'man' | 'vrouw' | 'beide' | 'anders';
 
 export type DatingStatus =
   | 'net_begonnen'
@@ -35,6 +37,7 @@ export type DatingObstacle =
   | 'krijg_geen_dates';
 
 export interface LeadIntakeData {
+  gender: Gender;
   lookingFor: LookingFor;
   datingStatus: DatingStatus;
   mainObstacle: DatingObstacle;

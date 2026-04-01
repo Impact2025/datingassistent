@@ -1,14 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { requireAuth } from '@/lib/auth';
+import { cookies } from 'next/headers';
+import { verifyAdminSession } from '@/lib/admin-auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
     // Require admin authentication
-    const user = await requireAuth(request);
-    if (!user || user.role !== 'admin') {
+    const cookieStore = await cookies();
+    const sessionToken = cookieStore.get('datespark_session')?.value;
+
+    if (!sessionToken) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const admin = await verifyAdminSession(sessionToken);
+    if (!admin) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

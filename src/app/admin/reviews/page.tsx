@@ -76,7 +76,7 @@ export default function ReviewManagement() {
       `;
       
       console.log('ReviewManagement - Reviews loaded:', result.rows.length);
-      setReviews(result.rows);
+      setReviews(result.rows as Review[]);
     } catch (error) {
       console.error('ReviewManagement - Error loading reviews:', error);
       toast({
