@@ -218,6 +218,10 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
         ? { ...answers, [currentQuestion.id.toString()]: lastAnswerValue }
         : answers;
 
+      // Persist the merged answers (including last question) into state
+      // so handleAccountSubmit sends all 10 answers to the API.
+      setAnswers(finalAnswers);
+
       const localScore = calculatePatternScore(finalAnswers);
       setPreviewPattern(localScore.attachmentPattern);
       setPreviewAnxietyScore(localScore.anxietyScore);
