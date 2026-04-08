@@ -69,7 +69,7 @@ function PaymentContent() {
 
       console.log('✅ Payment order created:', data.orderId);
 
-      // Redirect to MultiSafePay payment URL
+      // Redirect to Stripe Checkout
       if (data.paymentUrl) {
         window.location.href = data.paymentUrl;
       } else {
@@ -158,7 +158,7 @@ function PaymentContent() {
           {/* Info Text */}
           <div className="text-center space-y-2">
             <p className="text-xs text-muted-foreground">
-              Je wordt doorgestuurd naar een veilige betalingspagina van MultiSafePay
+              Je wordt doorgestuurd naar een veilige betalingspagina van Stripe
             </p>
             {!user && (
               <p className="text-xs text-muted-foreground">

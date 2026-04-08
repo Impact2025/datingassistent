@@ -1,12 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
-
-// Lazy initialization to avoid build-time errors when env vars are missing
-const getOpenAIClient = () => {
-  return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-};
+import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
 
 const IRIS_SYSTEEM_PROMPT = `
 Je bent Iris, de warme en deskundige AI dating coach van DatingAssistent.
@@ -45,20 +38,18 @@ export async function POST(req: NextRequest) {
       ? `CONTEXT: ${context}`
       : 'CONTEXT: Gebruiker vult een oefening in.';
 
-    const openai = getOpenAIClient();
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
-      messages: [
+    const openrouter = getOpenRouterClient();
+    const feedback = await openrouter.createChatCompletion(
+      OPENROUTER_MODELS.CLAUDE_35_HAIKU,
+      [
+        { role: 'system', content: IRIS_SYSTEEM_PROMPT },
         {
-          role: 'system',
-          content: `${IRIS_SYSTEEM_PROMPT}\n\n${contextPrompt}\n\nVRAAG: "${vraag}"\nANTWOORD GEBRUIKER: "${antwoord}"\n\nOPDRACHT: Geef warme, persoonlijke feedback (2-3 zinnen) die:\n- Erkent wat ze schreven (toon dat je het gelezen hebt)\n- Eén specifiek inzicht of observatie geeft\n- Aanmoedigt zonder te slijmen\n\nGeen bullet points, gewoon natuurlijke tekst.`
-        }
+          role: 'user',
+          content: `${contextPrompt}\n\nVRAAG: "${vraag}"\nANTWOORD GEBRUIKER: "${antwoord}"\n\nOPDRACHT: Geef warme, persoonlijke feedback (2-3 zinnen) die:\n- Erkent wat ze schreven (toon dat je het gelezen hebt)\n- Eén specifiek inzicht of observatie geeft\n- Aanmoedigt zonder te slijmen\n\nGeen bullet points, gewoon natuurlijke tekst.`,
+        },
       ],
-      max_tokens: 200,
-      temperature: 0.7,
-    });
-
-    const feedback = completion.choices[0].message.content;
+      { max_tokens: 200, temperature: 0.7 }
+    );
 
     return NextResponse.json({
       feedback,

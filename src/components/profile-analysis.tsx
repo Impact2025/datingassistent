@@ -1,312 +1,167 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useUser } from '@/providers/user-provider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  User,
-  Heart,
+  ChevronRight,
+  ChevronLeft,
+  Sparkles,
+  Target,
   TrendingUp,
   AlertCircle,
   CheckCircle,
-  Star,
-  Target,
   Zap,
+  ArrowRight,
+  RefreshCw,
+  Copy,
+  Check,
   MessageCircle,
-  Camera,
+  Star,
   Award,
-  Eye
+  BarChart3,
 } from 'lucide-react';
 
 interface ProfileAnalysisProps {
-  onAnalysisComplete?: (results: AnalysisResults) => void;
+  onAnalysisComplete?: (results: any) => void;
 }
 
-interface AnalysisResults {
+const DATING_APPS = [
+  { id: 'tinder', name: 'Tinder', color: 'bg-red-500', description: 'Swipe-based, bio max 500 tekens' },
+  { id: 'hinge', name: 'Hinge', color: 'bg-purple-600', description: 'Prompts & foto-comments, diepgaander' },
+  { id: 'bumble', name: 'Bumble', color: 'bg-yellow-500', description: 'Vrouwen beginnen, bio max 300 tekens' },
+  { id: 'lexa', name: 'Lexa', color: 'bg-pink-500', description: 'Nederlandstalig, serieuze relaties' },
+  { id: 'relatieplanet', name: 'Relatieplanet', color: 'bg-blue-600', description: 'Uitgebreid profiel, serieus' },
+  { id: 'other', name: 'Anders', color: 'bg-gray-500', description: 'Andere app of algemeen advies' },
+];
+
+const HINGE_PROMPTS = [
+  'Mijn leven eist dat jij...',
+  'De manier waarop mijn vrienden mij omschrijven...',
+  'Twee waarheden en een leugen...',
+  'Mijn perfecte zondag...',
+  'De sleutel tot mijn hart is...',
+  'Ik ga altijd praten over...',
+  'Mijn meest controversiële mening...',
+];
+
+interface AnalysisResult {
   overallScore: number;
-  categories: {
-    bio: CategoryScore;
-    photos: CategoryScore;
-    interests: CategoryScore;
-    personality: CategoryScore;
+  sections: {
+    bio: SectionResult;
+    interests: SectionResult;
+    prompts: SectionResult;
+    demographics: SectionResult;
+    photos: SectionResult;
   };
-  recommendations: string[];
-  strengths: string[];
-  improvements: string[];
+  bioRewrite: {
+    original: string;
+    rewritten: string;
+    explanation: string;
+  };
+  openingLines: string[];
+  optimizationSuggestions: Array<{
+    priority: 'high' | 'medium' | 'low';
+    title: string;
+    description: string;
+    expectedImpact: number;
+    actionableSteps: string[];
+  }>;
+  competitorAnalysis: {
+    percentileRank: number;
+    marketPosition: string;
+  };
+  predictedPerformance: {
+    currentMatches: number;
+    optimizedMatches: number;
+    improvement: number;
+  };
+  appSpecificTips: string[];
 }
 
-interface CategoryScore {
+interface SectionResult {
   score: number;
-  label: string;
-  feedback: string;
+  grade: string;
+  strengths: string[];
+  weaknesses: string[];
+  recommendations: string[];
 }
 
 export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
   const { user, userProfile } = useUser();
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
-  const [results, setResults] = useState<AnalysisResults | null>(null);
-  const [savedAnalysis, setSavedAnalysis] = useState<any>(null);
-  const [profileData, setProfileData] = useState({
-    name: '',
-    age: '',
-    bio: '',
-    interests: '',
-    occupation: '',
-    location: ''
-  });
+  const [step, setStep] = useState<'app' | 'input' | 'analyzing' | 'results'>('app');
+  const [selectedApp, setSelectedApp] = useState<string>('');
+  const [bio, setBio] = useState(userProfile?.bio || '');
+  const [age, setAge] = useState(userProfile?.age?.toString() || '');
+  const [interests, setInterests] = useState(userProfile?.interests?.join(', ') || '');
+  const [prompts, setPrompts] = useState<{ question: string; answer: string }[]>([{ question: '', answer: '' }]);
+  const [results, setResults] = useState<AnalysisResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [copiedRewrite, setCopiedRewrite] = useState(false);
 
-  // Pre-fill form with existing user profile data
-  useEffect(() => {
-    if (userProfile) {
-      setProfileData({
-        name: userProfile.name || '',
-        age: userProfile.age?.toString() || '',
-        bio: userProfile.bio || '',
-        interests: userProfile.interests?.join(', ') || '',
-        occupation: '', // Not in profile, user can fill this
-        location: userProfile.location || ''
-      });
-    }
-  }, [userProfile]);
+  const selectedAppData = DATING_APPS.find(a => a.id === selectedApp);
+  const isHinge = selectedApp === 'hinge';
 
-  // Load saved analysis history on component mount
-  useEffect(() => {
-    const loadSavedAnalysis = async () => {
-      if (!user?.id) return;
-
-      try {
-        const token = localStorage.getItem('auth_token');
-        if (!token) return;
-
-        const response = await fetch('/api/profile-history', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.hasAnalysis) {
-            setSavedAnalysis(data);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load saved analysis:', error);
-      } finally {
-        setIsLoadingHistory(false);
-      }
-    };
-
-    loadSavedAnalysis();
-  }, [user?.id]);
-
-  const handleInputChange = (field: string, value: string) => {
-    setProfileData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const analyzeProfile = async () => {
-    setIsAnalyzing(true);
-
-    // For local development, use dynamic mock data based on input quality
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🧪 Development mode: Using dynamic mock analysis data');
-
-      setTimeout(async () => {
-        // Analyze input quality
-        const bioLength = profileData.bio.length;
-        const hasInterests = profileData.interests.trim().length > 0;
-        const hasOccupation = profileData.occupation.trim().length > 0;
-        const hasLocation = profileData.location.trim().length > 0;
-
-        // Check for nonsense input
-        const isNonsense = profileData.bio.toLowerCase().includes('sadasd') ||
-                          profileData.bio.toLowerCase().includes('test') ||
-                          bioLength < 10;
-
-        let overallScore = 75;
-        let bioScore = 80;
-        let interestsScore = 75;
-        let personalityScore = 70;
-
-        if (isNonsense) {
-          overallScore = 25;
-          bioScore = 20;
-          interestsScore = 30;
-          personalityScore = 25;
-        } else if (bioLength > 100 && hasInterests && hasOccupation) {
-          overallScore = 85;
-          bioScore = 90;
-          interestsScore = 85;
-          personalityScore = 80;
-        } else if (bioLength > 50) {
-          overallScore = 70;
-          bioScore = 75;
-        }
-
-        const mockResults: AnalysisResults = {
-          overallScore,
-          categories: {
-            bio: {
-              score: bioScore,
-              label: bioScore >= 80 ? 'Uitstekend' : bioScore >= 60 ? 'Goed' : 'Kan beter',
-              feedback: isNonsense
-                ? 'Je bio lijkt willekeurige tekst te bevatten. Schrijf een echte, persoonlijke bio.'
-                : bioLength > 100
-                  ? 'Je bio is gedetailleerd en laat je persoonlijkheid goed zien.'
-                  : 'Je bio is kort maar duidelijk. Overweeg meer details toe te voegen.'
-            },
-            photos: {
-              score: 70,
-              label: 'Goed',
-              feedback: 'Je foto\'s zijn van goede kwaliteit, maar zouden meer variatie kunnen gebruiken.'
-            },
-            interests: {
-              score: interestsScore,
-              label: interestsScore >= 80 ? 'Zeer goed' : 'Goed',
-              feedback: hasInterests
-                ? 'Je interesses zijn duidelijk en spreken een breed publiek aan.'
-                : 'Voeg je interesses toe om meer matches aan te trekken.'
-            },
-            personality: {
-              score: personalityScore,
-              label: personalityScore >= 75 ? 'Uitstekend' : 'Goed',
-              feedback: isNonsense
-                ? 'Je input lijkt niet serieus te zijn. Geef echte informatie voor een accurate analyse.'
-                : 'Je komt warm en benaderbaar over, maar zou meer humor kunnen toevoegen.'
-            }
-          },
-          recommendations: isNonsense ? [
-            'Gebruik echte, persoonlijke informatie voor een nuttige analyse',
-            'Beschrijf jezelf zoals je echt bent',
-            'Voeg specifieke details toe over je leven en interesses'
-          ] : [
-            'Voeg een foto toe waar je lacht om meer benaderbaarheid te tonen',
-            'Maak je bio iets persoonlijker met een specifieke hobby',
-            'Overweeg een foto in sportieve kleding voor meer dynamiek'
-          ],
-          strengths: isNonsense ? [
-            'Je hebt de tool gevonden!',
-            'Technisch gezien werkt alles perfect'
-          ] : [
-            'Professionele uitstraling op foto\'s',
-            'Duidelijke en eerlijke bio',
-            'Interessante hobby\'s die gesprekken kunnen starten'
-          ],
-          improvements: isNonsense ? [
-            'Gebruik echte profiel informatie',
-            'Wees serieus voor nuttige feedback',
-            'Voeg echte details toe over jezelf'
-          ] : [
-            'Meer foto\'s toevoegen voor vollediger beeld',
-            'Specifieker worden over wat je zoekt in een partner',
-            'Meer humor in bio om luchtiger over te komen'
-          ]
-        };
-
-        setResults(mockResults);
-        setIsAnalyzing(false);
-        onAnalysisComplete?.(mockResults);
-
-        // Track activity for progress system
-        if (user?.id) {
-          try {
-            await fetch('/api/activity/track', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                userId: user.id,
-                activityType: 'profile_analysis',
-                data: {
-                  overallScore: mockResults.overallScore,
-                  categoriesAnalyzed: Object.keys(mockResults.categories),
-                  recommendationsCount: mockResults.recommendations.length
-                }
-              })
-            });
-          } catch (error) {
-            console.error('Failed to track activity:', error);
-            // Non-blocking error - continue even if tracking fails
-          }
-        }
-      }, 2000);
-
-      return;
-    }
+  const handleAnalyze = async () => {
+    setStep('analyzing');
+    setError(null);
 
     try {
-      const response = await fetch('/api/profile-analysis', {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch('/api/profile-optimization', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify(profileData),
+        body: JSON.stringify({
+          profileData: {
+            bio,
+            age,
+            interests,
+            app: selectedApp,
+            prompts: isHinge ? prompts.filter(p => p.answer.trim()) : [],
+            photos: [],
+            location: userProfile?.location || '',
+            occupation: '',
+            education: '',
+          }
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Analyse mislukt');
+        const data = await response.json();
+        throw new Error(data.message || 'Analyse mislukt');
       }
 
-      const analysisResults: AnalysisResults = await response.json();
-
-      setResults(analysisResults);
-      onAnalysisComplete?.(analysisResults);
-    } catch (error) {
-      console.error('Profile analysis error:', error);
-      // Fallback to basic analysis if API fails
-      const fallbackResults: AnalysisResults = {
-        overallScore: 70,
-        categories: {
-          bio: {
-            score: 75,
-            label: 'Goed',
-            feedback: 'Je bio is duidelijk, maar zou meer persoonlijkheid kunnen gebruiken.'
-          },
-          photos: {
-            score: 65,
-            label: 'Gemiddeld',
-            feedback: 'Overweeg meer diverse foto\'s toe te voegen.'
-          },
-          interests: {
-            score: 75,
-            label: 'Goed',
-            feedback: 'Je interesses zijn interessant voor potentiële matches.'
-          },
-          personality: {
-            score: 70,
-            label: 'Goed',
-            feedback: 'Je komt authentiek over, maar meer humor zou helpen.'
-          }
-        },
-        recommendations: [
-          'Maak je bio persoonlijker met specifieke verhalen',
-          'Voeg foto\'s toe die je persoonlijkheid laten zien',
-          'Wees duidelijker over wat je zoekt in een relatie'
-        ],
-        strengths: [
-          'Duidelijke communicatie',
-          'Authentieke uitstraling',
-          'Interessante achtergrond'
-        ],
-        improvements: [
-          'Meer humor toevoegen',
-          'Specifiekere interesses benoemen',
-          'Duidelijker relatievoorkeuren aangeven'
-        ]
-      };
-
-      setResults(fallbackResults);
-      onAnalysisComplete?.(fallbackResults);
-    } finally {
-      setIsAnalyzing(false);
+      const data = await response.json();
+      setResults(data.analysis);
+      setStep('results');
+      onAnalysisComplete?.(data.analysis);
+    } catch (err: any) {
+      setError(err.message || 'Er ging iets mis. Probeer opnieuw.');
+      setStep('input');
     }
+  };
+
+  const copyToClipboard = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
+  const copyRewrite = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedRewrite(true);
+    setTimeout(() => setCopiedRewrite(false), 2000);
   };
 
   const getScoreColor = (score: number) => {
@@ -315,338 +170,467 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
     return 'text-red-600';
   };
 
-  const getScoreBgColor = (score: number) => {
-    if (score >= 80) return 'bg-green-100';
-    if (score >= 60) return 'bg-yellow-100';
-    return 'bg-red-100';
+  const getGradeColor = (grade: string) => {
+    if (grade.startsWith('A')) return 'bg-green-100 text-green-700';
+    if (grade.startsWith('B')) return 'bg-blue-100 text-blue-700';
+    if (grade.startsWith('C')) return 'bg-yellow-100 text-yellow-700';
+    return 'bg-red-100 text-red-700';
+  };
+
+  const getPriorityColor = (priority: string) => {
+    if (priority === 'high') return 'bg-red-100 text-red-700 border-red-200';
+    if (priority === 'medium') return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+    return 'bg-green-100 text-green-700 border-green-200';
+  };
+
+  const getPriorityLabel = (priority: string) => {
+    if (priority === 'high') return 'Hoge prioriteit';
+    if (priority === 'medium') return 'Gemiddeld';
+    return 'Laag';
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      {/* Saved Analysis Section */}
-      {savedAnalysis && !results && !isLoadingHistory && (
-        <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-green-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Je hebt al een analyse!</h3>
-                  <p className="text-sm text-gray-600">
-                    Laatste analyse: {new Date(savedAnalysis.currentAnalysis.analysisDate).toLocaleDateString('nl-NL')}
-                  </p>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-bold text-green-600">{savedAnalysis.currentAnalysis.overallScore}</div>
-                <div className="text-xs text-gray-500">score</div>
-              </div>
+    <div className="max-w-3xl mx-auto space-y-6">
+      <AnimatePresence mode="wait">
+
+        {/* Step 1: App Selector */}
+        {step === 'app' && (
+          <motion.div
+            key="app"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            className="space-y-6"
+          >
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Op welke app ben je actief?</h2>
+              <p className="text-gray-600">We geven advies op maat per platform</p>
             </div>
 
-            <div className="flex gap-3">
-              <Button
-                onClick={() => {
-                  // Load saved results into current results
-                  const saved = savedAnalysis.currentAnalysis;
-                  setResults({
-                    overallScore: saved.overallScore,
-                    categories: saved.sections,
-                    recommendations: saved.optimizationSuggestions.map((s: any) => s.title + ': ' + s.description),
-                    strengths: ['Gebaseerd op je opgeslagen analyse'],
-                    improvements: ['Nieuwe analyse voor updates']
-                  });
-                }}
-                className="flex-1 bg-green-500 hover:bg-green-600"
-              >
-                <Eye className="w-4 h-4 mr-2" />
-                Bekijk Resultaten
-              </Button>
-              <Button
-                onClick={() => setSavedAnalysis(null)}
-                variant="outline"
-                className="flex-1 border-gray-300"
-              >
-                <Target className="w-4 h-4 mr-2" />
-                Nieuwe Analyse
-              </Button>
-            </div>
-
-            {savedAnalysis.history && savedAnalysis.history.length > 1 && (
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600 mb-2">Progress tracking:</p>
-                <div className="flex gap-2">
-                  {savedAnalysis.history.slice(0, 5).map((item: any, index: number) => (
-                    <div key={index} className="text-center">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
-                        index === 0 ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'
-                      }`}>
-                        {item.score}
-                      </div>
-                      <div className="text-xs text-gray-500 mt-1">
-                        {new Date(item.date).toLocaleDateString('nl-NL', { month: 'short', day: 'numeric' })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Loading State */}
-      {isLoadingHistory && !savedAnalysis && (
-        <Card>
-          <CardContent className="p-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-coral-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Analyse geschiedenis laden...</p>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Input Section */}
-      {!results && !savedAnalysis && !isLoadingHistory && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="w-6 h-6" />
-              Profiel Analyse - AI Assessment
-            </CardTitle>
-            <p className="text-gray-600">
-              Je naam en leeftijd zijn al ingevuld uit je registratie. Vul de rest aan voor een professionele analyse door onze AI.
-            </p>
-            {process.env.NODE_ENV === 'development' && (
-              <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded-md">
-                <p className="text-xs text-yellow-800">
-                  🧪 Development mode: Dit gebruikt intelligente mock data die reageert op je input kwaliteit.
-                </p>
-              </div>
-            )}
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                  Naam
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Uit registratie</span>
-                </label>
-                <Input
-                  value={profileData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  placeholder="Je naam"
-                  className="bg-green-50 border-green-200"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                  Leeftijd
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Uit registratie</span>
-                </label>
-                <Input
-                  type="number"
-                  value={profileData.age}
-                  onChange={(e) => handleInputChange('age', e.target.value)}
-                  placeholder="28"
-                  className="bg-green-50 border-green-200"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                Bio
-                {userProfile?.bio && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Uit profiel</span>}
-              </label>
-              <Textarea
-                value={profileData.bio}
-                onChange={(e) => handleInputChange('bio', e.target.value)}
-                placeholder="Schrijf hier je dating bio..."
-                rows={4}
-                className={userProfile?.bio ? "bg-blue-50 border-blue-200" : ""}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Beroep</label>
-                <Input
-                  value={profileData.occupation}
-                  onChange={(e) => handleInputChange('occupation', e.target.value)}
-                  placeholder="Software ontwikkelaar"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                  Locatie
-                  {userProfile?.location && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Uit profiel</span>}
-                </label>
-                <Input
-                  value={profileData.location}
-                  onChange={(e) => handleInputChange('location', e.target.value)}
-                  placeholder="Amsterdam"
-                  className={userProfile?.location ? "bg-blue-50 border-blue-200" : ""}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2 flex items-center gap-2">
-                Interesses & Hobbies
-                {userProfile?.interests && userProfile.interests.length > 0 && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Uit profiel</span>}
-              </label>
-              <Textarea
-                value={profileData.interests}
-                onChange={(e) => handleInputChange('interests', e.target.value)}
-                placeholder="Sporten, reizen, koken, fotografie..."
-                rows={3}
-                className={userProfile?.interests && userProfile.interests.length > 0 ? "bg-blue-50 border-blue-200" : ""}
-              />
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {DATING_APPS.map((app) => (
+                <button
+                  key={app.id}
+                  onClick={() => setSelectedApp(app.id)}
+                  className={cn(
+                    "p-4 rounded-xl border-2 text-left transition-all",
+                    selectedApp === app.id
+                      ? "border-purple-500 bg-purple-50"
+                      : "border-gray-200 bg-white hover:border-gray-300"
+                  )}
+                >
+                  <div className={cn("w-3 h-3 rounded-full mb-2", app.color)} />
+                  <div className="font-semibold text-gray-900 text-sm">{app.name}</div>
+                  <div className="text-xs text-gray-500 mt-1 leading-tight">{app.description}</div>
+                </button>
+              ))}
             </div>
 
             <Button
-              onClick={analyzeProfile}
-              disabled={isAnalyzing || !profileData.bio.trim()}
-              className="w-full bg-coral-500 hover:bg-coral-600"
+              onClick={() => setStep('input')}
+              disabled={!selectedApp}
+              className="w-full bg-gradient-to-r from-purple-600 to-coral-600"
               size="lg"
             >
-              {isAnalyzing ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Analyse uitvoeren...
-                </>
-              ) : (
-                <>
-                  <Target className="w-4 h-4 mr-2" />
-                  Analyse Mijn Profiel
-                </>
-              )}
+              Verder
+              <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
-          </CardContent>
-        </Card>
-      )}
+          </motion.div>
+        )}
 
-      {/* Results Section */}
-      {results && (
-        <div className="space-y-6">
-          {/* Overall Score */}
-          <Card className="bg-gradient-to-r from-coral-50 to-coral-100 border-coral-200">
-            <CardContent className="p-8 text-center">
-              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-lg">
-                <div className="text-center">
-                  <div className={`text-3xl font-bold ${getScoreColor(results.overallScore)}`}>
-                    {results.overallScore}
-                  </div>
-                  <div className="text-xs text-gray-500">/100</div>
-                </div>
+        {/* Step 2: Profile Input */}
+        {step === 'input' && (
+          <motion.div
+            key="input"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            className="space-y-5"
+          >
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setStep('app')}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Jouw {selectedAppData?.name} profiel</h2>
+                <p className="text-sm text-gray-600">Vul in wat je nu hebt — ook al is het niet perfect</p>
               </div>
-              <h2 className="text-2xl font-bold mb-2">Profiel Score</h2>
-              <p className="text-gray-600">
-                {results.overallScore >= 80 ? 'Uitstekend profiel!' :
-                 results.overallScore >= 60 ? 'Goed profiel met ruimte voor verbetering' :
-                 'Profiel heeft verbetering nodig'}
-              </p>
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Category Scores */}
-          <div className="grid grid-cols-1 gap-6">
-            {Object.entries(results.categories).map(([key, category]) => (
-              <Card key={key}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold capitalize">{key}</h3>
-                    <Badge className={getScoreBgColor(category.score)}>
-                      <span className={getScoreColor(category.score)}>{category.score}/100</span>
-                    </Badge>
-                  </div>
-                  <Progress value={category.score} className="mb-3" />
-                  <p className="text-sm text-gray-600">{category.feedback}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                {error}
+              </div>
+            )}
 
-          {/* Strengths & Improvements */}
-          <div className="grid grid-cols-1 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-green-600">
-                  <CheckCircle className="w-5 h-5" />
-                  Sterke punten
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {results.strengths.map((strength, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{strength}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            {/* Bio */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Jouw bio / omschrijving
+                <span className="text-red-500 ml-1">*</span>
+              </label>
+              <Textarea
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                placeholder={`Plak hier je huidige ${selectedAppData?.name} bio. Heb je nog geen bio? Schrijf dan een eerste versie — hoe meer je invult, hoe beter ons advies.`}
+                rows={5}
+                className="resize-none"
+              />
+              <div className="text-xs text-gray-400 mt-1 text-right">{bio.length} tekens</div>
+            </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-orange-600">
-                  <TrendingUp className="w-5 h-5" />
-                  Verbeterpunten
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {results.improvements.map((improvement, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <AlertCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{improvement}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Recommendations */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-blue-600">
-                <Zap className="w-5 h-5" />
-                Aanbevelingen voor verbetering
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {results.recommendations.map((rec, index) => (
-                  <div key={index} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                    <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-xs font-bold">{index + 1}</span>
-                    </div>
-                    <p className="text-sm text-gray-700">{rec}</p>
+            {/* Hinge Prompts */}
+            {isHinge && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Hinge prompts (optioneel maar aanbevolen)
+                </label>
+                {prompts.map((prompt, index) => (
+                  <div key={index} className="mb-3 p-3 bg-gray-50 rounded-lg space-y-2">
+                    <select
+                      value={prompt.question}
+                      onChange={(e) => {
+                        const updated = [...prompts];
+                        updated[index].question = e.target.value;
+                        setPrompts(updated);
+                      }}
+                      className="w-full text-sm border border-gray-200 rounded-md px-3 py-2 bg-white"
+                    >
+                      <option value="">Kies een prompt...</option>
+                      {HINGE_PROMPTS.map(p => (
+                        <option key={p} value={p}>{p}</option>
+                      ))}
+                    </select>
+                    <Textarea
+                      value={prompt.answer}
+                      onChange={(e) => {
+                        const updated = [...prompts];
+                        updated[index].answer = e.target.value;
+                        setPrompts(updated);
+                      }}
+                      placeholder="Jouw antwoord..."
+                      rows={2}
+                      className="resize-none text-sm"
+                    />
                   </div>
                 ))}
+                {prompts.length < 3 && (
+                  <button
+                    onClick={() => setPrompts([...prompts, { question: '', answer: '' }])}
+                    className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                  >
+                    + Prompt toevoegen
+                  </button>
+                )}
               </div>
-            </CardContent>
-          </Card>
+            )}
 
-          {/* Actions */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Age + Interests */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Leeftijd</label>
+                <Input
+                  type="number"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  placeholder="28"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Interesses (optioneel)</label>
+                <Input
+                  value={interests}
+                  onChange={(e) => setInterests(e.target.value)}
+                  placeholder="sporten, reizen, koken..."
+                />
+              </div>
+            </div>
+
             <Button
-              onClick={() => setResults(null)}
-              variant="outline"
-              className="flex-1"
+              onClick={handleAnalyze}
+              disabled={!bio.trim()}
+              className="w-full bg-gradient-to-r from-purple-600 to-coral-600"
+              size="lg"
             >
-              Nieuwe Analyse
+              <Sparkles className="w-4 h-4 mr-2" />
+              Analyseer mijn profiel
             </Button>
-            <Button className="flex-1 bg-coral-500 hover:bg-coral-600">
-              <Award className="w-4 h-4 mr-2" />
-              Upgrade voor meer tips
-            </Button>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+
+        {/* Analyzing */}
+        {step === 'analyzing' && (
+          <motion.div
+            key="analyzing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="text-center py-16 space-y-6"
+          >
+            <div className="relative w-20 h-20 mx-auto">
+              <div className="absolute inset-0 rounded-full border-4 border-purple-100" />
+              <div className="absolute inset-0 rounded-full border-4 border-t-purple-600 animate-spin" />
+              <Sparkles className="absolute inset-0 m-auto w-8 h-8 text-purple-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Profiel wordt geanalyseerd...</h3>
+              <p className="text-gray-600 text-sm">AI bekijkt je bio, schrijft een verbeterde versie en geeft {selectedAppData?.name}-specifiek advies</p>
+            </div>
+            <div className="flex justify-center gap-2">
+              {['Bio analyseren', 'Rewrite genereren', 'Tips samenstellen'].map((label, i) => (
+                <motion.div
+                  key={label}
+                  initial={{ opacity: 0.3 }}
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.5 }}
+                  className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full"
+                >
+                  {label}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Results */}
+        {step === 'results' && results && (
+          <motion.div
+            key="results"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6"
+          >
+            {/* Header met score */}
+            <Card className="bg-gradient-to-br from-purple-600 to-coral-600 text-white border-0">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-purple-100 text-sm mb-1">{selectedAppData?.name} profiel score</p>
+                    <div className="text-6xl font-bold">{results.overallScore}</div>
+                    <div className="text-purple-200 text-sm">/100</div>
+                  </div>
+                  <div className="text-right space-y-2">
+                    <div className="bg-white/20 rounded-lg px-3 py-2">
+                      <div className="text-xs text-purple-200">Nu</div>
+                      <div className="font-bold">~{results.predictedPerformance?.currentMatches || '?'} matches/week</div>
+                    </div>
+                    <div className="bg-white/20 rounded-lg px-3 py-2">
+                      <div className="text-xs text-purple-200">Na optimalisatie</div>
+                      <div className="font-bold text-yellow-300">~{results.predictedPerformance?.optimizedMatches || '?'} matches/week</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <div className="flex justify-between text-xs text-purple-200 mb-1">
+                    <span>Profiel sterkte</span>
+                    <span>Top {100 - (results.competitorAnalysis?.percentileRank || 50)}%</span>
+                  </div>
+                  <div className="h-2 bg-white/20 rounded-full">
+                    <div
+                      className="h-2 bg-white rounded-full transition-all"
+                      style={{ width: `${results.overallScore}%` }}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Bio Rewrite — het meest waardevolle onderdeel */}
+            {results.bioRewrite && (
+              <Card className="border-2 border-purple-200">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-purple-700">
+                    <Zap className="w-5 h-5" />
+                    AI Bio Rewrite
+                  </CardTitle>
+                  <p className="text-sm text-gray-600">{results.bioRewrite.explanation}</p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="rounded-lg bg-red-50 border border-red-200 p-4">
+                    <div className="text-xs font-semibold text-red-600 mb-2 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      Jouw huidige bio
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed">{results.bioRewrite.original || bio}</p>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <ArrowRight className="w-5 h-5 text-gray-400" />
+                  </div>
+
+                  <div className="rounded-lg bg-green-50 border border-green-200 p-4">
+                    <div className="text-xs font-semibold text-green-600 mb-2 flex items-center gap-1">
+                      <CheckCircle className="w-3 h-3" />
+                      Verbeterde versie
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed">{results.bioRewrite.rewritten}</p>
+                    <button
+                      onClick={() => copyRewrite(results.bioRewrite.rewritten)}
+                      className="mt-3 text-xs flex items-center gap-1 text-green-700 hover:text-green-800 font-medium"
+                    >
+                      {copiedRewrite ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      {copiedRewrite ? 'Gekopieerd!' : 'Kopieer tekst'}
+                    </button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Openingszinnen */}
+            {results.openingLines && results.openingLines.length > 0 && (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-gray-900">
+                    <MessageCircle className="w-5 h-5 text-blue-600" />
+                    Openingszinnen die werken voor dit profiel
+                  </CardTitle>
+                  <p className="text-sm text-gray-600">Gebruik deze als iemand jou swipt — kopieer en pas aan</p>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {results.openingLines.map((line, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start justify-between gap-3 p-3 bg-blue-50 rounded-lg"
+                    >
+                      <p className="text-sm text-gray-800 flex-1">{line}</p>
+                      <button
+                        onClick={() => copyToClipboard(line, index)}
+                        className="flex-shrink-0 text-blue-600 hover:text-blue-700"
+                      >
+                        {copiedIndex === index ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* App-specifieke tips */}
+            {results.appSpecificTips && results.appSpecificTips.length > 0 && (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-gray-900">
+                    <Star className="w-5 h-5 text-yellow-500" />
+                    {selectedAppData?.name}-specifieke tips
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {results.appSpecificTips.map((tip, index) => (
+                      <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
+                        <CheckCircle className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+                        {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Prioriteiten */}
+            {results.optimizationSuggestions && results.optimizationSuggestions.length > 0 && (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-gray-900">
+                    <Target className="w-5 h-5 text-purple-600" />
+                    Wat moet je als eerste aanpakken
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {results.optimizationSuggestions.slice(0, 4).map((sug, index) => (
+                    <div key={index} className={cn("border rounded-lg p-4", getPriorityColor(sug.priority))}>
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <div className="font-semibold text-sm">{sug.title}</div>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Badge variant="outline" className="text-xs">
+                            +{sug.expectedImpact}% impact
+                          </Badge>
+                        </div>
+                      </div>
+                      <p className="text-sm opacity-80 mb-3">{sug.description}</p>
+                      {sug.actionableSteps && sug.actionableSteps.length > 0 && (
+                        <ul className="space-y-1">
+                          {sug.actionableSteps.map((step, i) => (
+                            <li key={i} className="text-xs flex items-start gap-1.5 opacity-90">
+                              <span className="font-bold mt-0.5">{i + 1}.</span>
+                              {step}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Categorie scores */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-gray-900">
+                  <BarChart3 className="w-5 h-5 text-gray-600" />
+                  Scores per onderdeel
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {Object.entries(results.sections).map(([key, section]) => {
+                  const labels: Record<string, string> = {
+                    bio: 'Bio',
+                    interests: 'Interesses',
+                    prompts: 'Prompts',
+                    demographics: 'Profiel info',
+                    photos: "Foto's (geschat)"
+                  };
+                  return (
+                    <div key={key}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-sm font-medium text-gray-700">{labels[key] || key}</span>
+                        <div className="flex items-center gap-2">
+                          <Badge className={cn("text-xs", getGradeColor(section.grade))}>
+                            {section.grade}
+                          </Badge>
+                          <span className={cn("text-sm font-bold", getScoreColor(section.score))}>
+                            {section.score}/100
+                          </span>
+                        </div>
+                      </div>
+                      <Progress value={section.score} className="h-1.5" />
+                      {section.recommendations && section.recommendations[0] && (
+                        <p className="text-xs text-gray-500 mt-1">{section.recommendations[0]}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+
+            {/* Opnieuw */}
+            <div className="flex gap-3">
+              <Button
+                onClick={() => { setStep('input'); setResults(null); }}
+                variant="outline"
+                className="flex-1"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Nieuwe analyse
+              </Button>
+              <Button
+                onClick={() => { setStep('app'); setResults(null); setBio(''); setInterests(''); setAge(''); }}
+                variant="outline"
+                className="flex-1"
+              >
+                Andere app testen
+              </Button>
+            </div>
+          </motion.div>
+        )}
+
+      </AnimatePresence>
     </div>
   );
 }

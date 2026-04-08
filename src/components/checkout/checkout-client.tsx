@@ -6,8 +6,8 @@ import { useUser } from "@/providers/user-provider";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { PACKAGES, getPackagePrice } from "@/lib/multisafepay";
-import { PackageType } from "@/lib/subscription";
+import { PACKAGES, getPackagePrice } from "@/lib/packages";
+import type { PackageType } from "@/lib/packages";
 import { CheckCircle, Lock, ArrowLeft, Tag } from "lucide-react";
 import Link from "next/link";
 import { trackBeginCheckout, trackViewItem } from "@/lib/analytics/ga4-events";
@@ -182,9 +182,10 @@ export function CheckoutClientComponent() {
 
       const paymentData = await response.json();
 
-      if (paymentData.paymentUrl) {
-        localStorage.setItem('pending_order_id', paymentData.orderId);
-        window.location.href = paymentData.paymentUrl;
+      const paymentUrl = paymentData.paymentUrl || paymentData.payment_url;
+      if (paymentUrl) {
+        localStorage.setItem('pending_order_id', paymentData.order_id || paymentData.orderId);
+        window.location.href = paymentUrl;
       } else {
         throw new Error('No payment URL received');
       }
@@ -329,7 +330,7 @@ export function CheckoutClientComponent() {
 
           {/* Trust Text */}
           <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-4">
-            Veilig betalen via MultiSafePay
+            Veilig betalen via Stripe
           </p>
         </Card>
 
@@ -341,7 +342,7 @@ export function CheckoutClientComponent() {
           <span>•</span>
           <span>Mastercard</span>
           <span>•</span>
-          <span>PayPal</span>
+          <span>American Express</span>
         </div>
 
         {/* Terms */}

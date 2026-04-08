@@ -13,6 +13,7 @@ interface ProfileData {
   education: string;
   photos: string[];
   prompts: { question: string; answer: string }[];
+  app?: string;
 }
 
 interface ProfileAnalysis {
@@ -24,6 +25,13 @@ interface ProfileAnalysis {
     prompts: SectionAnalysis;
     demographics: SectionAnalysis;
   };
+  bioRewrite: {
+    original: string;
+    rewritten: string;
+    explanation: string;
+  };
+  openingLines: string[];
+  appSpecificTips: string[];
   optimizationSuggestions: OptimizationSuggestion[];
   competitorAnalysis: CompetitorAnalysis;
   predictedPerformance: PredictedPerformance;
@@ -157,69 +165,117 @@ export async function POST(request: NextRequest) {
 }
 
 async function analyzeProfile(profileData: ProfileData): Promise<ProfileAnalysis> {
-  const profileText = `
-Profiel gegevens:
-- Leeftijd: ${profileData.age}
-- Locatie: ${profileData.location}
-- Beroep: ${profileData.occupation}
-- Opleiding: ${profileData.education}
-- Bio: ${profileData.bio}
-- Interesses: ${profileData.interests}
-- Aantal foto's: ${profileData.photos.length}
-- Aantal prompts: ${profileData.prompts.length}
-  `;
+  const app = profileData.app || 'tinder';
+  const appNames: Record<string, string> = {
+    tinder: 'Tinder',
+    hinge: 'Hinge',
+    bumble: 'Bumble',
+    lexa: 'Lexa',
+    relatieplanet: 'Relatieplanet',
+    other: 'dating app'
+  };
+  const appName = appNames[app] || 'Tinder';
 
-  const prompt = `
-Analyseer dit dating profiel en geef een gedetailleerde optimalisatie analyse in het Nederlands. Focus op Nederlandse dating cultuur en Tinder/Bumble optimalisatie.
+  const hingePromptsText = profileData.prompts?.length
+    ? profileData.prompts.map(p => `  Prompt: "${p.question}"\n  Antwoord: "${p.answer}"`).join('\n\n')
+    : 'Geen prompts opgegeven';
 
-Profiel:
-${profileText}
+  const prompt = `Je bent een expert dating coach en copywriter gespecialiseerd in Nederlandse dating apps. Analyseer dit ${appName} profiel en geef concrete, eerlijke, bruikbare feedback in het Nederlands.
 
-Geef een JSON object terug met:
+PROFIEL:
+- App: ${appName}
+- Leeftijd: ${profileData.age || 'onbekend'}
+- Interesses: ${profileData.interests || 'niet opgegeven'}
+- Bio: "${profileData.bio}"
+${app === 'hinge' ? `- Hinge Prompts:\n${hingePromptsText}` : ''}
+
+OPDRACHT: Geef een diepgaande analyse en schrijf een verbeterde bio. Wees eerlijk en specifiek — geen vage algemeenheden.
+
+Retourneer ALLEEN geldig JSON (geen markdown, geen uitleg buiten de JSON):
 {
-  "overallScore": number (0-100),
+  "overallScore": number (0-100, wees realistisch: gemiddeld profiel = 45-60),
+  "bioRewrite": {
+    "original": "de originele bio exact zoals opgegeven",
+    "rewritten": "jouw verbeterde versie van de bio — specifiek, persoonlijk, met een hook en call-to-action. Herschrijf echt, kopieer niet",
+    "explanation": "in 1-2 zinnen: wat je veranderd hebt en waarom"
+  },
+  "openingLines": [
+    "3 concrete openingszinnen die goed aansluiten bij DIT specifieke profiel en persoonlijkheid. Geen generieke vragen, maar iets wat aansluit op wat in de bio staat."
+  ],
+  "appSpecificTips": [
+    "4-5 concrete tips specifiek voor ${appName}: hoe het algoritme werkt, wat het platform beloont, wanneer swipe/like, foto-volgorde etc."
+  ],
   "sections": {
-    "bio": {"score": number, "grade": "A+ | A | B+ | B | C+ | C | D | F", "strengths": ["sterkte1"], "weaknesses": ["zwakte1"], "recommendations": ["advies1"]},
-    "photos": {"score": number, "grade": "...", "strengths": [...], "weaknesses": [...], "recommendations": [...]},
-    "interests": {"score": number, "grade": "...", "strengths": [...], "weaknesses": [...], "recommendations": [...]},
-    "prompts": {"score": number, "grade": "...", "strengths": [...], "weaknesses": [...], "recommendations": [...]},
-    "demographics": {"score": number, "grade": "...", "strengths": [...], "weaknesses": [...], "recommendations": [...]}
+    "bio": {
+      "score": number,
+      "grade": "A+ | A | B+ | B | C+ | C | D | F",
+      "strengths": ["wat werkt goed en waarom — wees specifiek"],
+      "weaknesses": ["wat werkt niet en waarom — wees direct"],
+      "recommendations": ["concrete actie om dit te verbeteren"]
+    },
+    "photos": {
+      "score": number (geef 65 als basis als er geen foto info is, leg uit dat we foto's niet kunnen zien),
+      "grade": "B",
+      "strengths": ["algemene foto tips die altijd werken"],
+      "weaknesses": ["meest voorkomende fout bij foto's op ${appName}"],
+      "recommendations": ["concrete foto-advies voor ${appName}"]
+    },
+    "interests": {
+      "score": number,
+      "grade": "...",
+      "strengths": ["..."],
+      "weaknesses": ["..."],
+      "recommendations": ["..."]
+    },
+    "prompts": {
+      "score": number (als geen prompts: 50 met uitleg dat ze missen),
+      "grade": "...",
+      "strengths": ["..."],
+      "weaknesses": ["..."],
+      "recommendations": ["..."]
+    },
+    "demographics": {
+      "score": number,
+      "grade": "...",
+      "strengths": ["..."],
+      "weaknesses": ["..."],
+      "recommendations": ["..."]
+    }
   },
   "optimizationSuggestions": [
     {
-      "priority": "high | medium | low",
-      "category": "string",
-      "title": "string",
-      "description": "string",
-      "expectedImpact": number (percentage),
+      "priority": "high",
+      "category": "Bio",
+      "title": "concrete actietitel",
+      "description": "uitleg wat en waarom",
+      "expectedImpact": number (realistisch: 10-40),
       "effort": "low | medium | high",
-      "actionableSteps": ["stap1", "stap2"]
+      "actionableSteps": ["stap 1", "stap 2", "stap 3"]
     }
   ],
   "competitorAnalysis": {
     "percentileRank": number (1-100),
-    "topPerformingElements": ["element1"],
-    "commonWeaknesses": ["zwakte1"],
-    "marketPosition": "string"
+    "topPerformingElements": ["wat goed werkt in dit profiel"],
+    "commonWeaknesses": ["wat ontbreekt vergeleken met top profielen"],
+    "marketPosition": "eerlijke omschrijving van hoe dit profiel scoort"
   },
   "predictedPerformance": {
-    "currentMatches": number,
-    "optimizedMatches": number,
-    "improvement": number,
+    "currentMatches": number (realistisch geschat per week op basis van profiel kwaliteit),
+    "optimizedMatches": number (na alle verbeteringen),
+    "improvement": number (percentage verbetering),
     "confidence": number (0-100),
-    "timeToResults": "string (bijv. '1-2 weken')"
+    "timeToResults": "1-2 weken"
   }
 }
 
-Wees specifiek voor Nederlandse dating apps en geef praktische, uitvoerbare adviezen.
-  `;
+Wees eerlijk en direct. Een slechte bio is een slechte bio — zeg het. De gebruiker heeft meer aan harde waarheid dan aan valse geruststelling.`;
 
   try {
     const response = await chatCompletion(
       [
         {
           role: 'system',
-          content: 'Je bent een expert dating profile optimizer voor Nederlandse dating apps. Geef altijd een geldig JSON antwoord.'
+          content: 'Je bent een expert dating coach en bio copywriter voor Nederlandse dating apps. Je geeft eerlijke, directe feedback en schrijft echt betere bio\'s. Retourneer ALTIJD geldig JSON zonder markdown code blocks.'
         },
         {
           role: 'user',
@@ -228,7 +284,7 @@ Wees specifiek voor Nederlandse dating apps en geef praktische, uitvoerbare advi
       ],
       {
         provider: 'openrouter',
-        maxTokens: 2000,
+        maxTokens: 3500,
         temperature: 0.7
       }
     );
@@ -246,6 +302,13 @@ Wees specifiek voor Nederlandse dating apps en geef praktische, uitvoerbare advi
     // Validate and provide defaults if needed
     return {
       overallScore: Math.max(0, Math.min(100, analysis.overallScore || 70)),
+      bioRewrite: {
+        original: analysis.bioRewrite?.original || profileData.bio,
+        rewritten: analysis.bioRewrite?.rewritten || profileData.bio,
+        explanation: analysis.bioRewrite?.explanation || 'Bio geanalyseerd.'
+      },
+      openingLines: Array.isArray(analysis.openingLines) ? analysis.openingLines : [],
+      appSpecificTips: Array.isArray(analysis.appSpecificTips) ? analysis.appSpecificTips : [],
       sections: {
         bio: validateSection(analysis.sections?.bio),
         photos: validateSection(analysis.sections?.photos),
@@ -274,70 +337,81 @@ Wees specifiek voor Nederlandse dating apps en geef praktische, uitvoerbare advi
 
     // Return fallback analysis
     return {
-      overallScore: 70,
+      overallScore: 55,
+      bioRewrite: {
+        original: profileData.bio,
+        rewritten: profileData.bio,
+        explanation: 'Analyse tijdelijk niet beschikbaar — probeer het opnieuw.'
+      },
+      openingLines: [],
+      appSpecificTips: [
+        'Zorg voor minimaal 4 foto\'s op je profiel',
+        'Wees actief in de avonduren voor meer zichtbaarheid',
+        'Reageer snel op matches om je ranking te verbeteren'
+      ],
       sections: {
         bio: {
-          score: 75,
-          grade: 'B' as const,
-          strengths: ['Duidelijke schrijfstijl'],
-          weaknesses: ['Kan persoonlijker'],
-          recommendations: ['Voeg meer details toe over je leven']
+          score: 55,
+          grade: 'C+' as const,
+          strengths: ['Bio aanwezig'],
+          weaknesses: ['Kon niet volledig worden geanalyseerd'],
+          recommendations: ['Probeer de analyse opnieuw']
         },
         photos: {
-          score: 70,
+          score: 65,
           grade: 'B' as const,
-          strengths: ['Goede kwaliteit'],
-          weaknesses: ['Meer variatie gewenst'],
-          recommendations: ['Voeg foto\'s toe van verschillende activiteiten']
+          strengths: ['Foto\'s zijn het belangrijkst op dating apps'],
+          weaknesses: ['We kunnen je foto\'s niet zien'],
+          recommendations: ['Gebruik duidelijke, goed belichte foto\'s met een glimlach']
         },
         interests: {
-          score: 65,
+          score: 55,
           grade: 'C+' as const,
-          strengths: ['Enkele goede interesses'],
+          strengths: ['Interesses aanwezig'],
           weaknesses: ['Te algemeen'],
           recommendations: ['Wees specifieker over je hobby\'s']
         },
         prompts: {
-          score: 60,
+          score: 50,
           grade: 'C' as const,
-          strengths: ['Basis aanwezig'],
-          weaknesses: ['Ontbreken diepgang'],
-          recommendations: ['Gebruik meer creatieve prompts']
+          strengths: [],
+          weaknesses: ['Geen prompts opgegeven'],
+          recommendations: ['Voeg Hinge prompts toe voor meer gespreksstarters']
         },
         demographics: {
-          score: 80,
-          grade: 'A' as const,
-          strengths: ['Complete informatie'],
-          weaknesses: ['Kan meer context'],
-          recommendations: ['Voeg meer over je achtergrond toe']
+          score: 70,
+          grade: 'B' as const,
+          strengths: ['Basisinformatie aanwezig'],
+          weaknesses: [],
+          recommendations: ['Voeg beroep en locatie toe']
         }
       },
       optimizationSuggestions: [
         {
           priority: 'high' as const,
           category: 'Bio',
-          title: 'Verbeter je bio met verhalen',
-          description: 'Je bio is goed maar kan meer persoonlijkheid gebruiken',
-          expectedImpact: 25,
-          effort: 'medium' as const,
+          title: 'Maak je bio persoonlijker',
+          description: 'Een specifieke, persoonlijke bio trekt 3x meer matches',
+          expectedImpact: 30,
+          effort: 'low' as const,
           actionableSteps: [
-            'Voeg een specifiek verhaal toe',
-            'Gebruik humoristische elementen',
-            'Maak duidelijk wat je zoekt'
+            'Noem één concreet verhaal of feit over jezelf',
+            'Voeg een lichte grap of zelfreflectie toe',
+            'Eindig met een vraag of call-to-action'
           ]
         }
       ],
       competitorAnalysis: {
-        percentileRank: 65,
-        topPerformingElements: ['Persoonlijke verhalen', 'Goede foto kwaliteit'],
-        commonWeaknesses: ['Te korte bio', 'Geen specifieke interesses'],
-        marketPosition: 'Boven gemiddeld'
+        percentileRank: 50,
+        topPerformingElements: ['Persoonlijke bio'],
+        commonWeaknesses: ['Te generiek profiel'],
+        marketPosition: 'Gemiddeld'
       },
       predictedPerformance: {
-        currentMatches: 5,
-        optimizedMatches: 8,
-        improvement: 60,
-        confidence: 75,
+        currentMatches: 3,
+        optimizedMatches: 6,
+        improvement: 100,
+        confidence: 50,
         timeToResults: '1-2 weken'
       }
     };

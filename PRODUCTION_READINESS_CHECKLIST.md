@@ -12,30 +12,29 @@
 **Huidige situatie:**
 ```env
 NEXT_PUBLIC_BASE_URL=http://localhost:9000
-NEXT_PUBLIC_MSP_TEST_MODE=true
 ```
 
 **Wat moet gebeuren:**
 ```env
 # PRODUCTIE WAARDES:
 NEXT_PUBLIC_BASE_URL=https://datingassistent.nl
-NEXT_PUBLIC_MSP_TEST_MODE=false
 
 # BELANGRIJK: Vercel Environment Variables instellen:
 # 1. Ga naar Vercel Dashboard > datingassistent > Settings > Environment Variables
 # 2. Voeg toe voor PRODUCTION environment:
 #    - NEXT_PUBLIC_BASE_URL=https://datingassistent.nl
-#    - NEXT_PUBLIC_MSP_TEST_MODE=false
+#    - STRIPE_SECRET_KEY=sk_live_...
+#    - STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
-### 2. MultiSafePay Payment Integration
-**Status:** ❌ IN TEST MODE
+### 2. Stripe Payment Integration
+**Status:** ❌ CONTROLEER LIVE KEYS
 
 **Actie vereist:**
-- [ ] Test mode uitzetten in .env.local
-- [ ] Vercel environment variables updaten
+- [ ] Stripe live keys instellen in Vercel environment variables
+- [ ] Stripe webhook endpoint configureren in Stripe Dashboard
 - [ ] Test payment flow op staging eerst
-- [ ] Check of MultiSafePay productie API key actief is
+- [ ] Check of Stripe account actief is voor productie
 
 ### 3. Domain Configuration
 **Status:** ⚠️ TE CONTROLEREN
@@ -155,12 +154,12 @@ SENDGRID_PAYMENT_CONFIRMATION_TEMPLATE_ID=d-payment-confirmation-template-id  �
 ```bash
 # In Vercel Dashboard:
 NEXT_PUBLIC_BASE_URL=https://datingassistent.nl
-NEXT_PUBLIC_MSP_TEST_MODE=false
 DATABASE_URL=[from .env.local]
 JWT_SECRET=[generate new voor productie!]
 SENDGRID_API_KEY=[from .env.local]
 OPENROUTER_API_KEY=[from .env.local]
-MULTISAFEPAY_API_KEY=[productie key!]
+STRIPE_SECRET_KEY=sk_live_[jouw live key]
+STRIPE_WEBHOOK_SECRET=whsec_[jouw webhook secret]
 ```
 
 ### Stap 2: Domain Setup

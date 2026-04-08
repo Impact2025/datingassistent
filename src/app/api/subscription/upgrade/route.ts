@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { getPackagePrice } from '@/lib/multisafepay';
-import { PackageType } from '@/lib/subscription';
+import { getPackagePrice, type PackageType } from '@/lib/packages';
 
 export const runtime = 'edge';
 
@@ -80,7 +79,7 @@ export async function POST(request: NextRequest) {
         ${proratedAmount},
         'EUR',
         'pending',
-        'multisafepay',
+        'stripe',
         NOW()
       )
       RETURNING id
@@ -88,7 +87,7 @@ export async function POST(request: NextRequest) {
 
     const orderId = orderResult.rows[0].id;
 
-    // Create payment order via MultiSafePay
+    // Create payment order via Stripe
     const paymentResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/payment/create`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -89,25 +89,25 @@ const envChecks: EnvCheck[] = [
     description: 'OpenRouter API key for AI services (optional)',
   },
   {
-    name: 'MULTISAFEPAY_API_KEY',
+    name: 'STRIPE_SECRET_KEY',
     required: true,
     validate: (value) => {
-      if (value === 'your_multisafepay_api_key' ||
-          value === 'jouw_echte_multisafepay_api_sleutel_hier') {
+      if (value === 'sk_test_your_stripe_secret_key' ||
+          value.startsWith('sk_test_your') || value.startsWith('sk_live_your')) {
         return { valid: false, message: 'Using placeholder value - MUST BE CHANGED!' };
       }
       return { valid: true };
     },
-    description: 'MultiSafePay API key for payment processing',
+    description: 'Stripe secret key for payment processing',
   },
   {
-    name: 'NEXT_PUBLIC_MSP_TEST_MODE',
+    name: 'STRIPE_WEBHOOK_SECRET',
     required: true,
     validate: (value) => ({
-      valid: value === 'true' || value === 'false',
-      message: 'Must be "true" or "false"',
+      valid: value.startsWith('whsec_'),
+      message: 'Must start with "whsec_"',
     }),
-    description: 'MultiSafePay test mode flag',
+    description: 'Stripe webhook signing secret',
   },
   {
     name: 'NEXT_PUBLIC_BASE_URL',
@@ -182,12 +182,12 @@ for (const result of results) {
 if (process.env.NODE_ENV === 'production') {
   console.log('\n🔒 Production Environment Checks:\n');
 
-  if (process.env.NEXT_PUBLIC_MSP_TEST_MODE === 'true') {
-    console.log('❌ CRITICAL: MultiSafePay is in TEST mode in production!');
-    console.log('   Set NEXT_PUBLIC_MSP_TEST_MODE=false for production\n');
+  if (process.env.STRIPE_SECRET_KEY?.startsWith('sk_test_')) {
+    console.log('❌ CRITICAL: Stripe is using TEST key in production!');
+    console.log('   Gebruik een sk_live_ sleutel voor productie\n');
     hasErrors = true;
   } else {
-    console.log('✅ MultiSafePay test mode is disabled (production ready)\n');
+    console.log('✅ Stripe live key geconfigureerd (production ready)\n');
   }
 
   if (process.env.NEXT_PUBLIC_BASE_URL?.includes('localhost')) {

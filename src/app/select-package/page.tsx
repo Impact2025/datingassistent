@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckIcon, AlertCircle, Info } from 'lucide-react';
-import { PACKAGES, getPackagePrice, calculateDiscountedPrice } from '@/lib/multisafepay';
+import { PACKAGES, getPackagePrice, calculateDiscountedPrice } from '@/lib/packages';
 import { PackageType } from '@/lib/subscription';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 
@@ -390,7 +390,7 @@ const SelectPackagePage = () => {
           <Alert className="mb-8">
             <Info className="h-4 w-4" />
             <AlertDescription>
-              Na het selecteren van je pakket word je doorgestuurd naar MultiSafepay voor betaling. 
+              Na het selecteren van je pakket word je doorgestuurd naar Stripe voor een veilige betaling.
               Je abonnement wordt automatisch geactiveerd na succesvolle betaling.
             </AlertDescription>
           </Alert>

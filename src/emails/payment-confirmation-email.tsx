@@ -92,7 +92,7 @@ export default function PaymentConfirmationEmail({
               <Text style={{ ...styles.paragraph, margin: '0', color: '#374151' }}>Betaalmethode</Text>
             </Column>
             <Column style={{ textAlign: 'right' as const }}>
-              <Text style={{ ...styles.paragraph, margin: '0', fontWeight: '600', color: '#065f46' }}>MultiSafePay</Text>
+              <Text style={{ ...styles.paragraph, margin: '0', fontWeight: '600', color: '#065f46' }}>Stripe</Text>
             </Column>
           </Row>
 

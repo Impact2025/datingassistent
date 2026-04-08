@@ -240,7 +240,7 @@ Nooit meer "Hoi, hoe gaat het?" - laat de AI unieke openers genereren.
 
 ## Betalen & Opzeggen
 
-- Betaal met iDEAL, creditcard, of PayPal
+- Betaal met iDEAL of creditcard (via Stripe)
 - Maandelijks opzegbaar, geen verplichtingen
 - Jaarabonnement = 2 maanden gratis
     `,
@@ -270,8 +270,7 @@ Nooit meer "Hoi, hoe gaat het?" - laat de AI unieke openers genereren.
 
 ### Stap 3: Alternatieve betaalmethode
 - iDEAL (NL banken)
-- Creditcard (Visa, Mastercard)
-- PayPal
+- Creditcard (Visa, Mastercard, American Express)
 - Bankoverschrijving (op aanvraag)
 
 ## Nog steeds problemen?

@@ -55,8 +55,9 @@ NODE_ENV="production"
 
 ### 6. Payments (Required)
 ```bash
-# MultiSafepay Payment Gateway
-MULTISAFEPAY_API_KEY="..."
+# Stripe Payment Gateway
+STRIPE_SECRET_KEY="sk_live_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
 ```
 
 ### 7. Monitoring (Optional but Recommended)

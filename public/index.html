@@ -234,15 +234,8 @@
             ? "http://localhost:9002"
             : "https://studio--studio-1884662658-29957.us-central1.hosted.app/";
 
-        // MultiSafepay Configuration
-        const MULTISAFEPAY_CONFIG = {
-            apiKey: 'YOUR_MULTISAFEPAY_API_KEY', // Vervang met jouw API key
-            testMode: true, // Zet op false voor productie
-            locale: 'nl_NL',
-            currency: 'EUR'
-        };
-
-        // Plan prijzen (in centen voor MultiSafepay)
+        // Stripe betaling wordt afgehandeld via de app (server-side)
+        // Plan prijzen (in centen voor Stripe)
         const PLAN_PRICES = {
             sociaal: {
                 monthly: 995,  // €9.95
@@ -262,11 +255,10 @@
             }
         };
 
-        // MultiSafepay checkout functie
+        // Stripe checkout via app
         async function initiateCheckout(plan, billingCycle = 'monthly') {
             try {
-                // Check if user is logged in - redirect to payment page
-                // This will create payment order and redirect to MultiSafePay
+                // Redirect naar de app, die Stripe Checkout afhandelt
                 const priceInCents = PLAN_PRICES[plan][billingCycle];
                 const priceInEuros = (priceInCents / 100).toFixed(2);
 

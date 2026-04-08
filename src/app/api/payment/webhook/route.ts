@@ -1,328 +1,372 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import crypto from 'crypto';
+import { stripe, constructStripeEvent } from '@/lib/stripe';
+import type Stripe from 'stripe';
 
 export const dynamic = 'force-dynamic';
 
-const MULTISAFEPAY_API_KEY = process.env.MULTISAFEPAY_API_KEY || '';
-
-/**
- * Verify MultiSafePay webhook signature
- * MultiSafePay sends a timestamp and signature in headers for verification
- */
-function verifyWebhookSignature(
-  payload: string,
-  timestamp: string | null,
-  signature: string | null
-): boolean {
-  // Skip verification in development or if no API key
-  if (!MULTISAFEPAY_API_KEY || process.env.NODE_ENV === 'development') {
-    console.log('⚠️ Webhook signature verification skipped (dev mode or no API key)');
-    return true;
-  }
-
-  if (!timestamp || !signature) {
-    console.warn('⚠️ Missing webhook signature headers');
-    // For now, allow webhooks without signature (gradual rollout)
-    // In production, change this to: return false;
-    return true;
-  }
-
-  // Create expected signature: HMAC-SHA512 of timestamp + payload
-  const signedPayload = `${timestamp}.${payload}`;
-  const expectedSignature = crypto
-    .createHmac('sha512', MULTISAFEPAY_API_KEY)
-    .update(signedPayload)
-    .digest('hex');
-
-  // Timing-safe comparison to prevent timing attacks
-  try {
-    return crypto.timingSafeEqual(
-      Buffer.from(signature),
-      Buffer.from(expectedSignature)
-    );
-  } catch {
-    return false;
-  }
-}
+const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
 
 /**
  * POST /api/payment/webhook
- * MultiSafePay webhook handler
- * Called by MultiSafePay when payment status changes
+ * Stripe webhook handler — called by Stripe on payment status changes.
  *
- * SECURITY:
- * - Signature verification (when available)
- * - Idempotency check (prevents duplicate processing)
- * - Transaction locking (prevents race conditions)
+ * Supported events:
+ *   checkout.session.completed   → fulfill order (subscription or program)
+ *   checkout.session.expired     → mark as cancelled
+ *   payment_intent.payment_failed → mark as failed
  */
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
+  const signature = request.headers.get('stripe-signature') || '';
+
+  // ── Signature verification ────────────────────────────────────────────────
+  let event: Stripe.Event;
+  try {
+    if (!WEBHOOK_SECRET) {
+      console.warn('⚠️ STRIPE_WEBHOOK_SECRET not set — skipping signature verification');
+      event = JSON.parse(rawBody) as Stripe.Event;
+    } else {
+      event = constructStripeEvent(rawBody, signature, WEBHOOK_SECRET);
+    }
+  } catch (err) {
+    console.error('❌ Stripe webhook signature invalid:', err);
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+  }
+
+  console.log(`📞 Stripe webhook: ${event.type}`);
 
   try {
-    // Verify webhook signature
-    const timestamp = request.headers.get('x-msp-timestamp');
-    const signature = request.headers.get('x-msp-signature');
-
-    if (!verifyWebhookSignature(rawBody, timestamp, signature)) {
-      console.error('❌ Invalid webhook signature');
-      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
-    }
-
-    const body = JSON.parse(rawBody);
-    console.log('📞 MultiSafePay webhook received:', body);
-
-    const { transactionid, status } = body;
-
-    if (!transactionid) {
-      console.error('❌ No transaction ID in webhook');
-      return NextResponse.json({ error: 'No transaction ID' }, { status: 400 });
-    }
-
-    // Get transaction from database with lock for update (prevents race conditions)
-    const result = await sql`
-      SELECT * FROM payment_transactions
-      WHERE order_id = ${transactionid}
-      LIMIT 1
-      FOR UPDATE SKIP LOCKED
-    `;
-
-    if (result.rows.length === 0) {
-      console.error('❌ Transaction not found:', transactionid);
-      return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
-    }
-
-    const transaction = result.rows[0];
-
-    // IDEMPOTENCY CHECK: Skip if already processed with same status
-    if (transaction.status === 'completed' && status === 'completed') {
-      console.log('ℹ️ Transaction already completed, skipping duplicate webhook');
-      return NextResponse.json({ success: true, message: 'Already processed' });
-    }
-
-    // Update transaction status
-    let newStatus = 'pending';
-    let paidAt = null;
-    let cancelledAt = null;
-
-    switch (status) {
-      case 'completed':
-        newStatus = 'completed';
-        paidAt = new Date();
-
-        // IDEMPOTENCY: Check if enrollment already exists
-        const existingEnrollment = await sql`
-          SELECT id FROM program_enrollments
-          WHERE user_id = ${transaction.user_id}
-          AND program_id = ${transaction.program_id}
-          LIMIT 1
-        `;
-
-        if (existingEnrollment.rows.length > 0) {
-          console.log('ℹ️ Enrollment already exists, skipping creation');
-        } else {
-          // Create program enrollment
-          await sql`
-            INSERT INTO program_enrollments (
-              user_id, program_id, order_id, status, enrolled_at
-            ) VALUES (
-              ${transaction.user_id},
-              ${transaction.program_id},
-              ${transactionid},
-              'active',
-              NOW()
-            )
-            ON CONFLICT (user_id, program_id, order_id) DO NOTHING
-          `;
-          console.log('✅ Enrollment created');
-        }
-
-        // INCREMENT COUPON USAGE if coupon was used
-        if (transaction.coupon_code) {
-          try {
-            await sql`
-              UPDATE coupons
-              SET used_count = used_count + 1, updated_at = NOW()
-              WHERE UPPER(code) = UPPER(${transaction.coupon_code})
-              AND (used_count < max_uses OR max_uses IS NULL)
-            `;
-            console.log('✅ Coupon usage incremented:', transaction.coupon_code);
-          } catch (couponError) {
-            console.error('⚠️ Failed to increment coupon usage:', couponError);
-            // Don't fail the webhook for coupon errors
-          }
-        }
-
-        // Initialize program progress (Sprint 4 Enhancement)
-        // Count total modules and lessons
-        const statsResult = await sql`
-          SELECT
-            COUNT(DISTINCT pm.id) as total_modules,
-            COUNT(DISTINCT l.id) as total_lessons
-          FROM program_modules pm
-          LEFT JOIN lessons l ON l.module_id = pm.id AND l.is_published = true
-          WHERE pm.program_id = ${transaction.program_id}
-            AND pm.is_published = true
-        `;
-
-        const { total_modules, total_lessons } = statsResult.rows[0];
-
-        // Find first lesson as current lesson
-        const firstLessonResult = await sql`
-          SELECT l.id
-          FROM lessons l
-          JOIN program_modules pm ON l.module_id = pm.id
-          WHERE pm.program_id = ${transaction.program_id}
-            AND pm.is_published = true
-            AND l.is_published = true
-          ORDER BY pm.display_order, l.display_order
-          LIMIT 1
-        `;
-
-        const currentLessonId = firstLessonResult.rows[0]?.id || null;
-
-        // Initialize user_program_progress
-        await sql`
-          INSERT INTO user_program_progress (
-            user_id, program_id,
-            started_at, total_modules, total_lessons,
-            overall_progress_percentage,
-            current_lesson_id
-          ) VALUES (
-            ${transaction.user_id},
-            ${transaction.program_id},
-            NOW(),
-            ${total_modules},
-            ${total_lessons},
-            0,
-            ${currentLessonId}
-          )
-          ON CONFLICT (user_id, program_id) DO UPDATE SET
-            total_modules = ${total_modules},
-            total_lessons = ${total_lessons},
-            current_lesson_id = COALESCE(user_program_progress.current_lesson_id, ${currentLessonId})
-        `;
-
-        console.log('✅ Payment completed, enrollment created, and progress initialized');
-        console.log(`📊 Program stats: ${total_modules} modules, ${total_lessons} lessons`);
-
-        // Send enrollment confirmation email
-        try {
-          // Fetch user and program details for email
-          const userResult = await sql`
-            SELECT name, email FROM users WHERE id = ${transaction.user_id} LIMIT 1
-          `;
-          const programResult = await sql`
-            SELECT name, slug FROM programs WHERE id = ${transaction.program_id} LIMIT 1
-          `;
-
-          if (userResult.rows.length > 0 && programResult.rows.length > 0) {
-            const user = userResult.rows[0];
-            const program = programResult.rows[0];
-
-            // Construct day one URL
-            const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL || 'http://localhost:9000';
-            const dayOneUrl = `${baseUrl}/${program.slug}/dag/1`;
-
-            // Import and send enrollment email
-            const { sendProgramEnrollmentEmail } = await import('@/lib/email-service');
-            await sendProgramEnrollmentEmail(
-              user.email,
-              user.name,
-              program.name,
-              program.slug,
-              dayOneUrl
-            );
-            console.log('✅ Enrollment confirmation email sent to:', user.email);
-          }
-        } catch (emailError) {
-          console.error('⚠️ Failed to send enrollment email:', emailError);
-          // Don't fail the webhook for email errors
-        }
-
-        // Register affiliate conversion (non-blocking)
-        try {
-          const affiliateResult = await sql`
-            SELECT pt.referral_code, pt.amount, ap.id AS partner_id, ap.commission_pct
-            FROM payment_transactions pt
-            JOIN affiliate_partners ap ON ap.referral_code = pt.referral_code AND ap.status = 'active'
-            WHERE pt.order_id = ${transaction.order_id}
-              AND pt.referral_code IS NOT NULL
-            LIMIT 1
-          `;
-
-          if (affiliateResult.rows.length > 0) {
-            const aff = affiliateResult.rows[0];
-            const commissionAmt = parseFloat(aff.amount) * (parseFloat(aff.commission_pct) / 100);
-
-            await sql`
-              INSERT INTO affiliate_conversions (
-                partner_id, referral_code, order_id, user_id,
-                sale_amount, commission_pct, commission_amt,
-                status, converted_at
-              ) VALUES (
-                ${aff.partner_id}, ${aff.referral_code}, ${transaction.order_id}, ${transaction.user_id},
-                ${aff.amount}, ${aff.commission_pct}, ${commissionAmt},
-                'pending', NOW()
-              )
-              ON CONFLICT DO NOTHING
-            `;
-            console.log('✅ Affiliate conversion registered for:', aff.referral_code);
-          }
-        } catch (affError) {
-          console.error('⚠️ Affiliate conversion registration failed:', affError);
-          // Non-blocking — don't fail the webhook
-        }
+    switch (event.type) {
+      case 'checkout.session.completed':
+        await handleSessionCompleted(event.data.object as Stripe.Checkout.Session);
         break;
 
-      case 'cancelled':
-      case 'expired':
-        newStatus = 'cancelled';
-        cancelledAt = new Date();
-        console.log('❌ Payment cancelled/expired');
+      case 'checkout.session.expired':
+        await handleSessionExpired(event.data.object as Stripe.Checkout.Session);
         break;
 
-      case 'declined':
-      case 'void':
-        newStatus = 'failed';
-        console.log('❌ Payment failed');
+      case 'payment_intent.payment_failed':
+        await handlePaymentFailed(event.data.object as Stripe.PaymentIntent);
         break;
 
       default:
-        console.log('ℹ️ Payment status:', status);
+        console.log(`ℹ️ Unhandled event type: ${event.type}`);
     }
+  } catch (err) {
+    console.error('💥 Webhook handler error:', err);
+    return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 });
+  }
 
-    // Update transaction
-    await sql`
-      UPDATE payment_transactions
-      SET
-        status = ${newStatus},
-        multisafepay_transaction_id = ${transactionid},
-        multisafepay_status = ${status},
-        paid_at = ${paidAt},
-        cancelled_at = ${cancelledAt},
-        webhook_data = ${JSON.stringify(body)},
-        updated_at = NOW()
-      WHERE order_id = ${transactionid}
-    `;
+  return NextResponse.json({ received: true });
+}
 
-    console.log('✅ Webhook processed successfully');
+export async function GET() {
+  return NextResponse.json({ message: 'Stripe webhook endpoint' });
+}
 
-    return NextResponse.json({ success: true });
+// ─── Handlers ──────────────────────────────────────────────────────────────
 
-  } catch (error) {
-    console.error('💥 Webhook error:', error);
-    return NextResponse.json(
-      { error: 'Webhook processing failed' },
-      { status: 500 }
-    );
+async function handleSessionCompleted(session: Stripe.Checkout.Session) {
+  const meta = session.metadata ?? {};
+  const { payment_type, order_id } = meta;
+
+  if (!order_id) {
+    console.error('❌ Webhook missing order_id in metadata');
+    return;
+  }
+
+  if (payment_type === 'subscription') {
+    await fulfillSubscription(session, meta);
+  } else if (payment_type === 'program') {
+    await fulfillProgram(session, meta);
+  } else {
+    console.warn('⚠️ Unknown payment_type in metadata:', payment_type);
   }
 }
 
-/**
- * GET /api/payment/webhook
- * Verification endpoint
- */
-export async function GET() {
-  return NextResponse.json({ message: 'MultiSafePay webhook endpoint' });
+async function handleSessionExpired(session: Stripe.Checkout.Session) {
+  const orderId = session.metadata?.order_id;
+  if (!orderId) return;
+
+  // Try both tables
+  await sql`
+    UPDATE payment_transactions SET status = 'cancelled', updated_at = NOW()
+    WHERE order_id = ${orderId} AND status = 'pending'
+  `.catch(() => null);
+
+  await sql`
+    UPDATE orders SET status = 'cancelled', updated_at = NOW()
+    WHERE id = ${orderId} AND status = 'pending'
+  `.catch(() => null);
+
+  console.log('❌ Session expired, order cancelled:', orderId);
+}
+
+async function handlePaymentFailed(intent: Stripe.PaymentIntent) {
+  const orderId = intent.metadata?.order_id;
+  if (!orderId) return;
+
+  await sql`
+    UPDATE payment_transactions SET status = 'failed', updated_at = NOW()
+    WHERE order_id = ${orderId}
+  `.catch(() => null);
+
+  await sql`
+    UPDATE orders SET status = 'failed', updated_at = NOW()
+    WHERE id = ${orderId}
+  `.catch(() => null);
+
+  console.log('❌ Payment failed for order:', orderId);
+}
+
+// ─── Fulfillment: subscription package ─────────────────────────────────────
+
+async function fulfillSubscription(
+  session: Stripe.Checkout.Session,
+  meta: Record<string, string>
+) {
+  const { order_id, user_id, package_type, billing_period, coupon_code } = meta;
+  const userId = parseInt(user_id, 10);
+  const amountPaid = (session.amount_total ?? 0) / 100; // euros
+
+  // IDEMPOTENCY: skip if already completed
+  const existing = await sql`
+    SELECT status FROM orders WHERE id = ${order_id} LIMIT 1
+  `;
+  if (existing.rows[0]?.status === 'completed') {
+    console.log('ℹ️ Subscription order already completed, skipping');
+    return;
+  }
+
+  // Update orders table
+  await sql`
+    UPDATE orders
+    SET status = 'completed', paid_at = NOW(), updated_at = NOW()
+    WHERE id = ${order_id}
+  `;
+
+  // Activate subscription
+  const { createOrUpdateSubscription } = await import('@/lib/neon-subscription');
+  await createOrUpdateSubscription(userId, {
+    packageType: package_type as any,
+    billingPeriod: billing_period as any,
+    status: 'active',
+    orderId: order_id,
+    startDate: new Date().toISOString(),
+    amount: amountPaid,
+  });
+
+  // Increment coupon usage
+  if (coupon_code) {
+    await sql`
+      UPDATE coupons
+      SET used_count = used_count + 1, updated_at = NOW()
+      WHERE UPPER(code) = ${coupon_code}
+      AND (used_count < max_uses OR max_uses IS NULL)
+    `.catch((e: unknown) => console.error('⚠️ Coupon increment failed:', e));
+  }
+
+  console.log(`✅ Subscription activated: ${package_type} (${billing_period}) for user ${userId}`);
+}
+
+// ─── Fulfillment: one-time program purchase ─────────────────────────────────
+
+async function fulfillProgram(
+  session: Stripe.Checkout.Session,
+  meta: Record<string, string>
+) {
+  const {
+    order_id,
+    user_id,
+    program_id,
+    program_slug,
+    coupon_code,
+    referral_code,
+  } = meta;
+  const userId = parseInt(user_id, 10);
+  const programIdInt = parseInt(program_id, 10);
+
+  // IDEMPOTENCY: skip if already completed
+  const existing = await sql`
+    SELECT status FROM payment_transactions WHERE order_id = ${order_id} LIMIT 1
+  `;
+  if (existing.rows[0]?.status === 'completed') {
+    console.log('ℹ️ Program transaction already completed, skipping');
+    return;
+  }
+
+  // Update payment_transactions
+  await sql`
+    UPDATE payment_transactions
+    SET status = 'completed', paid_at = NOW(), updated_at = NOW()
+    WHERE order_id = ${order_id}
+  `;
+
+  // Create enrollment (idempotent)
+  await sql`
+    INSERT INTO program_enrollments (user_id, program_id, order_id, status, enrolled_at)
+    VALUES (${userId}, ${programIdInt}, ${order_id}, 'active', NOW())
+    ON CONFLICT (user_id, program_id, order_id) DO NOTHING
+  `;
+  console.log('✅ Enrollment created');
+
+  // Increment coupon usage
+  if (coupon_code) {
+    await sql`
+      UPDATE coupons
+      SET used_count = used_count + 1, updated_at = NOW()
+      WHERE UPPER(code) = ${coupon_code}
+      AND (used_count < max_uses OR max_uses IS NULL)
+    `.catch((e: unknown) => console.error('⚠️ Coupon increment failed:', e));
+  }
+
+  // Initialize program progress
+  await initializeProgramProgress(userId, programIdInt, program_slug);
+
+  // Send enrollment confirmation email
+  try {
+    const userResult = await sql`SELECT name, email FROM users WHERE id = ${userId} LIMIT 1`;
+    const programResult = await sql`SELECT name, slug FROM programs WHERE id = ${programIdInt} LIMIT 1`;
+
+    if (userResult.rows.length > 0 && programResult.rows.length > 0) {
+      const { name, email } = userResult.rows[0];
+      const { name: programName, slug } = programResult.rows[0];
+      const dayOneUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:9000'}/${slug}/dag/1`;
+
+      const { sendProgramEnrollmentEmail } = await import('@/lib/email-service');
+      await sendProgramEnrollmentEmail(email, name, programName, slug, dayOneUrl);
+      console.log('✅ Enrollment email sent to:', email);
+    }
+  } catch (e) {
+    console.error('⚠️ Enrollment email failed (non-fatal):', e);
+  }
+
+  // Register affiliate conversion
+  if (referral_code) {
+    await registerAffiliateConversion(order_id, userId, referral_code).catch((e: unknown) =>
+      console.error('⚠️ Affiliate conversion failed (non-fatal):', e)
+    );
+  }
+
+  console.log('✅ Program fulfilled:', order_id);
+}
+
+// ─── Helpers ───────────────────────────────────────────────────────────────
+
+async function initializeProgramProgress(
+  userId: number,
+  programId: number,
+  programSlug: string
+) {
+  try {
+    // Kickstart: day-based progress
+    if (programSlug === 'kickstart') {
+      const daysResult = await sql`
+        SELECT id, dag_nummer FROM program_days
+        WHERE program_id = ${programId} ORDER BY dag_nummer
+      `;
+      for (const day of daysResult.rows) {
+        const status = day.dag_nummer === 1 ? 'available' : 'locked';
+        await sql`
+          INSERT INTO user_day_progress (user_id, program_id, day_id, status)
+          VALUES (${userId}, ${programId}, ${day.id}, ${status})
+          ON CONFLICT (user_id, day_id) DO NOTHING
+        `;
+      }
+
+      // Schedule Kickstart → Transformatie upsell
+      try {
+        const { scheduleKickstartUpsellSequence } = await import('@/lib/kickstart-upsell-service');
+        await scheduleKickstartUpsellSequence({
+          userId,
+          purchaseDate: new Date(),
+          kickstartOrderId: '',
+        });
+      } catch (e) {
+        console.error('⚠️ Upsell schedule failed (non-fatal):', e);
+      }
+      return;
+    }
+
+    // Transformatie: cancel Kickstart upsell sequence
+    if (programSlug === 'transformatie') {
+      try {
+        const { cancelKickstartUpsellSequence } = await import('@/lib/kickstart-upsell-service');
+        await cancelKickstartUpsellSequence(userId);
+      } catch (e) {
+        console.error('⚠️ Cancel upsell sequence failed (non-fatal):', e);
+      }
+    }
+
+    // Standard module/lesson progress
+    const statsResult = await sql`
+      SELECT
+        COUNT(DISTINCT pm.id) AS total_modules,
+        COUNT(DISTINCT l.id)  AS total_lessons
+      FROM program_modules pm
+      LEFT JOIN lessons l ON l.module_id = pm.id AND l.is_published = true
+      WHERE pm.program_id = ${programId} AND pm.is_published = true
+    `;
+    const { total_modules, total_lessons } = statsResult.rows[0];
+
+    const firstLesson = await sql`
+      SELECT l.id
+      FROM lessons l
+      JOIN program_modules pm ON l.module_id = pm.id
+      WHERE pm.program_id = ${programId}
+        AND pm.is_published = true AND l.is_published = true
+      ORDER BY pm.display_order, l.display_order
+      LIMIT 1
+    `;
+    const currentLessonId = firstLesson.rows[0]?.id ?? null;
+
+    await sql`
+      INSERT INTO user_program_progress (
+        user_id, program_id, started_at, total_modules, total_lessons,
+        overall_progress_percentage, current_lesson_id
+      ) VALUES (
+        ${userId}, ${programId}, NOW(), ${total_modules}, ${total_lessons}, 0, ${currentLessonId}
+      )
+      ON CONFLICT (user_id, program_id) DO UPDATE SET
+        total_modules    = ${total_modules},
+        total_lessons    = ${total_lessons},
+        current_lesson_id = COALESCE(user_program_progress.current_lesson_id, ${currentLessonId})
+    `;
+    console.log(`📊 Progress initialized: ${total_modules} modules, ${total_lessons} lessons`);
+  } catch (e) {
+    console.error('⚠️ Progress initialization failed (non-fatal):', e);
+  }
+}
+
+async function registerAffiliateConversion(
+  orderId: string,
+  userId: number,
+  referralCode: string
+) {
+  const affResult = await sql`
+    SELECT pt.amount, ap.id AS partner_id, ap.commission_pct
+    FROM payment_transactions pt
+    JOIN affiliate_partners ap ON ap.referral_code = ${referralCode} AND ap.status = 'active'
+    WHERE pt.order_id = ${orderId}
+    LIMIT 1
+  `;
+  if (affResult.rows.length === 0) return;
+
+  const aff = affResult.rows[0];
+  const commissionAmt = parseFloat(aff.amount) * (parseFloat(aff.commission_pct) / 100);
+
+  await sql`
+    INSERT INTO affiliate_conversions (
+      partner_id, referral_code, order_id, user_id,
+      sale_amount, commission_pct, commission_amt,
+      status, converted_at
+    ) VALUES (
+      ${aff.partner_id}, ${referralCode}, ${orderId}, ${userId},
+      ${aff.amount}, ${aff.commission_pct}, ${commissionAmt},
+      'pending', NOW()
+    )
+    ON CONFLICT DO NOTHING
+  `;
+  console.log('✅ Affiliate conversion registered:', referralCode);
 }

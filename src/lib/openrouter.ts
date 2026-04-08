@@ -63,6 +63,66 @@ export class OpenRouterClient {
    * @param messages - Array van berichten
    * @param options - Optionele parameters zoals max_tokens, temperature, etc.
    */
+  async *streamChatCompletion(
+    model: string,
+    messages: OpenRouterMessage[],
+    options: {
+      max_tokens?: number;
+      temperature?: number;
+    } = {}
+  ): AsyncGenerator<string, void, unknown> {
+    const requestBody = { model, messages, ...options, stream: true };
+
+    const response = await fetch(`${this.baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://datingassistent.nl',
+        'X-Title': 'DatingAssistent',
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`OpenRouter streaming error: ${response.status} - ${errorText}`);
+    }
+
+    const reader = response.body?.getReader();
+    if (!reader) throw new Error('No response body for streaming');
+
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed === 'data: [DONE]') continue;
+          if (!trimmed.startsWith('data: ')) continue;
+
+          try {
+            const json = JSON.parse(trimmed.slice(6));
+            const content = json.choices?.[0]?.delta?.content;
+            if (content) yield content;
+          } catch {
+            // skip malformed chunks
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock();
+    }
+  }
+
   async createChatCompletion(
     model: string,
     messages: OpenRouterMessage[],
@@ -92,9 +152,8 @@ export class OpenRouterClient {
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
-          // Privacy: Use generic headers to minimize identifying information
-          'HTTP-Referer': 'https://app.example.com',
-          'X-Title': 'App',
+          'HTTP-Referer': 'https://datingassistent.nl',
+          'X-Title': 'DatingAssistent',
         },
         body: JSON.stringify(requestBody),
       });

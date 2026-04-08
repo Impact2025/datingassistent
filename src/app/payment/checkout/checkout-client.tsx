@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useUser } from '@/providers/user-provider';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
-import { getPackagePrice, type PackageType, type BillingPeriod } from '@/lib/multisafepay';
+import { getPackagePrice, type PackageType, type BillingPeriod } from '@/lib/packages';
 
 export function CheckoutClientComponent() {
   const searchParams = useSearchParams();
@@ -67,9 +67,9 @@ export function CheckoutClientComponent() {
 
       const data = await response.json();
 
-      if (data.payment_url) {
-        // Redirect to MultiSafePay
-        window.location.href = data.payment_url;
+      const paymentUrl = data.payment_url || data.paymentUrl;
+      if (paymentUrl) {
+        window.location.href = paymentUrl;
       } else {
         throw new Error('No payment URL received');
       }

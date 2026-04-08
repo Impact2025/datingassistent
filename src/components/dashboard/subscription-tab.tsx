@@ -22,7 +22,7 @@ import {
   BookOpen,
   ExternalLink
 } from 'lucide-react';
-import { PACKAGES, getPackagePrice, calculateDiscountedPrice } from '@/lib/multisafepay';
+import { PACKAGES, getPackagePrice, calculateDiscountedPrice } from '@/lib/packages';
 import { PackageType } from '@/lib/subscription';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 
@@ -820,7 +820,7 @@ export function SubscriptionTab() {
       <Alert>
         <Info className="h-4 w-4" />
         <AlertDescription>
-          Na het selecteren van je pakket word je doorgestuurd naar MultiSafepay voor een veilige betaling.
+          Na het selecteren van je pakket word je doorgestuurd naar Stripe voor een veilige betaling.
           Je abonnement wordt automatisch geactiveerd na succesvolle betaling.
         </AlertDescription>
       </Alert>

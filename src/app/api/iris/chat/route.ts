@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import Anthropic from '@anthropic-ai/sdk';
+import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
 import {
   getEnrichedIrisContext,  // 🚀 WERELDKLASSE UPGRADE
   buildIrisSystemPrompt,
@@ -19,12 +19,6 @@ import { analyzeConversationWithAI, generateFollowUpSuggestions } from '@/lib/ir
 import { generateProactiveSuggestions } from '@/lib/iris/proactive-coaching';
 import { checkIrisLimit, trackIrisUsage, type IrisUsageStatus } from '@/lib/neon-usage-tracking';
 
-// Lazy initialization to avoid build-time errors when env vars are missing
-const getAnthropicClient = () => {
-  return new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY,
-  });
-};
 
 export async function POST(request: NextRequest) {
   try {
@@ -102,23 +96,16 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = `${baseSystemPrompt}\n\n${modePrompt}`;
 
-    // 5. 🚀 Call Claude API met WERELDKLASSE setup
-    const anthropic = getAnthropicClient();
-    const response = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',  // Beste model voor gepersonaliseerde coaching
-      max_tokens: 2048,  // Meer tokens voor rijkere, diepere antwoorden
-      system: systemPrompt,
-      messages: [
-        {
-          role: 'user',
-          content: message,
-        },
+    // 5. 🚀 Call Claude API via OpenRouter
+    const openrouter = getOpenRouterClient();
+    const irisResponse = await openrouter.createChatCompletion(
+      OPENROUTER_MODELS.CLAUDE_35_SONNET,
+      [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: message },
       ],
-    });
-
-    const irisResponse = response.content[0].type === 'text'
-      ? response.content[0].text
-      : '';
+      { max_tokens: 2048 }
+    );
 
     // 6. 🧠 AI-powered conversation analysis
     const conversationAnalysis = await analyzeConversationWithAI(message, irisResponse);

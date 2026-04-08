@@ -10,11 +10,7 @@
  * - Token usage tracking
  */
 
-import Anthropic from '@anthropic-ai/sdk';
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!
-});
+import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -113,20 +109,15 @@ export async function* streamCoachingResponse(
     // Get system prompt
     const systemPrompt = getCoachSystemPrompt(context.coachPersonality, context.userProfile);
 
-    // Stream from Anthropic
-    const stream = await anthropic.messages.stream({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: messages
-    });
-
-    // Yield each content block as it arrives
-    for await (const chunk of stream) {
-      if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-        yield chunk.delta.text;
-      }
-    }
+    const openrouter = getOpenRouterClient();
+    yield* openrouter.streamChatCompletion(
+      OPENROUTER_MODELS.CLAUDE_35_SONNET,
+      [
+        { role: 'system', content: systemPrompt },
+        ...messages,
+      ],
+      { max_tokens: 1024 }
+    );
 
   } catch (error) {
     console.error('Error streaming coaching response:', error);
@@ -155,15 +146,15 @@ export async function getCoachingResponse(
 
     const systemPrompt = getCoachSystemPrompt(context.coachPersonality, context.userProfile);
 
-    const response = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: messages
-    });
-
-    const textContent = response.content.find(block => block.type === 'text');
-    return textContent && 'text' in textContent ? textContent.text : 'Sorry, geen response ontvangen.';
+    const openrouter = getOpenRouterClient();
+    return await openrouter.createChatCompletion(
+      OPENROUTER_MODELS.CLAUDE_35_SONNET,
+      [
+        { role: 'system', content: systemPrompt },
+        ...messages,
+      ],
+      { max_tokens: 1024 }
+    );
 
   } catch (error) {
     console.error('Error getting coaching response:', error);

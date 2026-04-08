@@ -23,7 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 import { LoadingSpinner } from "../shared/loading-spinner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, CheckCircle, Mail } from "lucide-react";
-import { PACKAGES, getPackagePrice } from "@/lib/multisafepay";
+import { PACKAGES, getPackagePrice } from "@/lib/packages";
 import { PackageType } from "@/lib/subscription";
 import { useTurnstile } from "../shared/turnstile";
 import { VerificationCodeInput } from "./verification-code-input";

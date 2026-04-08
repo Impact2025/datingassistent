@@ -53,8 +53,7 @@ async function initializeKickstartProgress(userId: number, programId: number): P
   }
 }
 
-const MULTISAFEPAY_API_KEY = process.env.MULTISAFEPAY_API_KEY || '';
-const MULTISAFEPAY_ENVIRONMENT = process.env.MULTISAFEPAY_ENVIRONMENT || 'test';
+import { stripe } from '@/lib/stripe';
 
 /**
  * Payment Status Types for typed responses
@@ -90,46 +89,25 @@ const STATUS_MESSAGES: Record<string, string> = {
 };
 
 /**
- * Check payment status directly from MultiSafePay API
- * This is a fallback when webhook hasn't arrived yet
+ * Check payment status directly from Stripe API.
+ * Fallback when webhook hasn't arrived yet.
  */
-async function checkMultiSafePayStatus(orderId: string): Promise<{ status: string; success: boolean } | null> {
-  if (!MULTISAFEPAY_API_KEY) {
-    console.log('⚠️ No MultiSafePay API key configured');
-    return null;
-  }
-
-  const baseUrl = MULTISAFEPAY_ENVIRONMENT === 'live'
-    ? 'https://api.multisafepay.com/v1/json'
-    : 'https://testapi.multisafepay.com/v1/json';
+async function checkStripeSessionStatus(
+  stripeSessionId: string | null
+): Promise<{ status: string; success: boolean } | null> {
+  if (!stripeSessionId) return null;
 
   try {
-    const response = await fetch(`${baseUrl}/orders/${orderId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': MULTISAFEPAY_API_KEY
-      }
-    });
+    const session = await stripe.checkout.sessions.retrieve(stripeSessionId);
+    console.log('📞 Stripe session status:', { id: stripeSessionId, payment_status: session.payment_status });
 
-    if (!response.ok) {
-      console.error('❌ MultiSafePay API error:', response.status);
-      return null;
-    }
-
-    const data = await response.json();
-    console.log('📞 MultiSafePay status check:', { orderId, status: data.data?.status });
-
-    if (data.success && data.data) {
-      return {
-        status: data.data.status,
-        success: data.data.status === 'completed'
-      };
-    }
-
-    return null;
+    const success = session.payment_status === 'paid';
+    return {
+      status: success ? 'completed' : session.payment_status === 'unpaid' ? 'pending' : 'failed',
+      success,
+    };
   } catch (error) {
-    console.error('❌ Failed to check MultiSafePay status:', error);
+    console.error('❌ Failed to check Stripe session status:', error);
     return null;
   }
 }
@@ -190,19 +168,18 @@ export async function GET(request: NextRequest) {
 
       const tx = txResult.rows[0];
 
-      // If status is pending, check MultiSafePay API directly as fallback
+      // If status is pending, check Stripe directly as fallback (webhook may not have arrived yet)
       if (tx.status === 'pending' || tx.status === 'initialized') {
-        console.log('🔍 Status is pending, checking MultiSafePay API directly...');
-        const mspStatus = await checkMultiSafePayStatus(orderId);
+        console.log('🔍 Status is pending, checking Stripe directly...');
+        const stripeStatus = await checkStripeSessionStatus(tx.stripe_session_id ?? null);
 
-        if (mspStatus?.success && mspStatus.status === 'completed') {
-          console.log('✅ MultiSafePay reports completed, updating database...');
+        if (stripeStatus?.success && stripeStatus.status === 'completed') {
+          console.log('✅ Stripe reports paid, updating database...');
 
           // Update payment transaction
           await sql`
             UPDATE payment_transactions
-            SET status = 'completed', paid_at = NOW(), updated_at = NOW(),
-                multisafepay_status = 'completed'
+            SET status = 'completed', paid_at = NOW(), updated_at = NOW()
             WHERE order_id = ${orderId}
           `;
 
@@ -291,17 +268,9 @@ export async function GET(request: NextRequest) {
             }
           }
 
-          console.log('✅ Payment completed via API check, enrollment initialized');
+          console.log('✅ Payment completed via Stripe API check, enrollment initialized');
           tx.status = 'completed';
           tx.paid_at = new Date();
-        } else if (mspStatus && mspStatus.status !== 'initialized') {
-          // Update status from MSP if it's different (cancelled, failed, etc.)
-          console.log(`📞 MultiSafePay status: ${mspStatus.status}`);
-          await sql`
-            UPDATE payment_transactions
-            SET multisafepay_status = ${mspStatus.status}, updated_at = NOW()
-            WHERE order_id = ${orderId}
-          `;
         }
       }
 

@@ -6,16 +6,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
+import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
 import { KB_ARTICLES, searchKnowledgeBase } from '@/lib/support/knowledge-base';
 import type { SupportMessage, TicketCategory } from '@/lib/support/types';
-
-// Lazy initialization
-const getAnthropicClient = () => {
-  return new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY,
-  });
-};
 
 // Support-focused system prompt
 const IRIS_SUPPORT_SYSTEM_PROMPT = `Je bent Iris Support, de vriendelijke AI support assistant van DatingAssistent.nl.
@@ -202,18 +195,16 @@ export async function POST(request: NextRequest) {
 
     claudeMessages.push({ role: 'user', content: contextualMessage });
 
-    // Call Claude API
-    const anthropic = getAnthropicClient();
-    const response = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 1024,
-      system: IRIS_SUPPORT_SYSTEM_PROMPT,
-      messages: claudeMessages,
-    });
-
-    const irisResponse = response.content[0].type === 'text'
-      ? response.content[0].text
-      : 'Sorry, ik kon geen antwoord genereren. Neem contact op met onze support.';
+    // Call Claude API via OpenRouter
+    const openrouter = getOpenRouterClient();
+    const irisResponse = await openrouter.createChatCompletion(
+      OPENROUTER_MODELS.CLAUDE_35_SONNET,
+      [
+        { role: 'system', content: IRIS_SUPPORT_SYSTEM_PROMPT },
+        ...claudeMessages,
+      ],
+      { max_tokens: 1024 }
+    );
 
     // Generate suggested actions based on category
     const suggestedActions = getSuggestedActions(category);

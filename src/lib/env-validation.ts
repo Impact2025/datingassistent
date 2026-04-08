@@ -44,9 +44,9 @@ const ENV_VARIABLES: EnvVariable[] = [
     validator: (val) => !!val && (val.startsWith('postgres://') || val.startsWith('postgresql://')),
   },
   {
-    name: 'ANTHROPIC_API_KEY',
+    name: 'OPENROUTER_API_KEY',
     required: true,
-    description: 'Anthropic API key for AI features',
+    description: 'OpenRouter API key for all AI features',
     securityLevel: 'high',
     validator: (val) => !!val && val.length > 20,
   },
@@ -72,9 +72,15 @@ const ENV_VARIABLES: EnvVariable[] = [
     validator: (val) => !!val && (val.startsWith('http://') || val.startsWith('https://')),
   },
   {
-    name: 'MULTISAFEPAY_API_KEY',
+    name: 'STRIPE_SECRET_KEY',
     required: true,
-    description: 'MultiSafePay API key for payment processing',
+    description: 'Stripe secret key for payment processing',
+    securityLevel: 'high',
+  },
+  {
+    name: 'STRIPE_WEBHOOK_SECRET',
+    required: true,
+    description: 'Stripe webhook signing secret',
     securityLevel: 'high',
   },
 ];

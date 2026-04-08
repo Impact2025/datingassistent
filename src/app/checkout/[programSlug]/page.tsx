@@ -411,7 +411,7 @@ export default function CheckoutPage() {
 
           {/* Trust Text */}
           <p className="text-center text-xs text-gray-400 mt-4">
-            Veilig betalen via MultiSafePay
+            Veilig betalen via Stripe
           </p>
         </Card>
 
@@ -423,7 +423,7 @@ export default function CheckoutPage() {
           <span>•</span>
           <span>Mastercard</span>
           <span>•</span>
-          <span>PayPal</span>
+          <span>American Express</span>
         </div>
 
         {/* Terms */}
