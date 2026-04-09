@@ -42,11 +42,11 @@ export const colors = {
   dark: '#2D3142', // Charcoal (not pure black)
   gray: '#6b7280',
   grayLight: '#9ca3af',
-  // Background Colors - Warm tinted
-  lightGray: '#F5E6E8', // Soft Blush
-  cream: '#FFF8F3',
+  // Background Colors - Neutral
+  lightGray: '#e5e7eb',
+  cream: '#f9fafb',
   white: '#ffffff',
-  background: '#FFF8F3', // Cream background
+  background: '#f4f4f5',
 };
 
 // Shared Styles
@@ -55,15 +55,15 @@ export const styles = {
     backgroundColor: colors.background,
     fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     margin: '0',
-    padding: '48px 24px',
+    padding: '40px 20px',
   },
   container: {
     backgroundColor: colors.white,
     margin: '0 auto',
-    maxWidth: '580px',
-    borderRadius: '20px',
+    maxWidth: '560px',
+    borderRadius: '8px',
     overflow: 'hidden' as const,
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.10)',
+    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.07)',
   },
   header: {
     backgroundColor: colors.white,
@@ -72,9 +72,10 @@ export const styles = {
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   heroGradient: {
-    background: 'linear-gradient(135deg, #FF7B54 0%, #722F37 100%)',
+    backgroundColor: colors.white,
     padding: '36px 48px 32px 48px',
     textAlign: 'center' as const,
+    borderBottom: `1px solid ${colors.lightGray}`,
   },
   content: {
     padding: '40px 48px',
@@ -107,32 +108,34 @@ export const styles = {
   },
   primaryButton: {
     backgroundColor: colors.primary,
-    borderRadius: '12px',
+    borderRadius: '6px',
     color: colors.white,
     display: 'inline-block',
-    fontSize: '16px',
+    fontSize: '15px',
     fontWeight: '600',
-    padding: '16px 36px',
+    padding: '14px 32px',
     textDecoration: 'none',
     textAlign: 'center' as const,
+    letterSpacing: '0.01em',
   },
   secondaryButton: {
     backgroundColor: 'transparent',
-    border: `2px solid ${colors.primary}`,
-    borderRadius: '12px',
-    color: colors.primary,
+    border: `1.5px solid ${colors.lightGray}`,
+    borderRadius: '6px',
+    color: colors.dark,
     display: 'inline-block',
-    fontSize: '16px',
-    fontWeight: '600',
-    padding: '12px 26px',
+    fontSize: '15px',
+    fontWeight: '500',
+    padding: '12px 24px',
     textDecoration: 'none',
     textAlign: 'center' as const,
   },
   card: {
-    backgroundColor: colors.lightGray,
-    borderRadius: '12px',
-    padding: '24px',
-    margin: '24px 0',
+    backgroundColor: '#f9fafb',
+    border: `1px solid ${colors.lightGray}`,
+    borderRadius: '8px',
+    padding: '20px 24px',
+    margin: '20px 0',
   },
   statBox: {
     textAlign: 'center' as const,
@@ -251,39 +254,37 @@ interface HeroHeaderProps {
 
 export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
   return (
-    <Section style={{
-      ...styles.heroGradient,
-    }}>
+    <Section style={styles.heroGradient}>
       {/* Logo with brand text */}
-      <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto' }}>
+      <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto 20px' }}>
         <tr>
           <td style={{ verticalAlign: 'middle' }}>
             <Img
               src="https://datingassistent.nl/images/LogoDA.png"
               alt="DatingAssistent"
-              width={44}
-              height={44}
+              width={36}
+              height={36}
               style={{ display: 'block' }}
             />
           </td>
-          <td style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>
+          <td style={{ verticalAlign: 'middle', paddingLeft: '8px' }}>
             <span style={{
-              fontSize: '22px',
+              fontSize: '17px',
               fontFamily: '"Inter", Arial, sans-serif',
               fontWeight: '700',
               letterSpacing: '-0.02em',
-              color: colors.white,
+              color: colors.dark,
             }}>
               DatingAssistent
             </span>
           </td>
         </tr>
       </table>
-      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '16px', marginBottom: '0' }}>
+      <Text style={{ ...styles.heading1, color: colors.dark, margin: '0' }}>
         {title}
       </Text>
       {subtitle && (
-        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '8px 0 0 0', fontSize: '15px' }}>
+        <Text style={{ ...styles.paragraph, color: colors.gray, margin: '8px 0 0', fontSize: '14px' }}>
           {subtitle}
         </Text>
       )}
@@ -481,7 +482,7 @@ export function ProgressBar({ progress, label }: ProgressBarProps) {
             height: '10px',
           }}>
             <div style={{
-              background: 'linear-gradient(135deg, #FF7B54 0%, #722F37 100%)',
+              backgroundColor: colors.primary,
               borderRadius: '10px',
               height: '10px',
               width: `${Math.min(100, Math.max(0, progress))}%`,
@@ -505,7 +506,7 @@ export function EmailFooter({ unsubscribeUrl, preferencesUrl }: EmailFooterProps
   return (
     <Section style={{
       ...styles.footer,
-      backgroundColor: colors.cream,
+      backgroundColor: colors.white,
       borderTop: `1px solid ${colors.lightGray}`,
     }}>
       <EmailLogo size="sm" showText={true} />
@@ -553,7 +554,7 @@ interface GreetingProps {
 export function Greeting({ name }: GreetingProps) {
   return (
     <Text style={{ ...styles.heading2, color: colors.dark, marginBottom: '12px' }}>
-      Hoi {name}!
+      Hoi {name},
     </Text>
   );
 }
@@ -577,14 +578,14 @@ export function StepsList({ steps }: StepsListProps) {
             <table cellPadding="0" cellSpacing="0">
               <tr>
                 <td style={{
-                  background: 'linear-gradient(135deg, #FF7B54 0%, #722F37 100%)',
+                  backgroundColor: colors.primary,
                   borderRadius: '50%',
                   width: '32px',
                   height: '32px',
                   textAlign: 'center',
                   color: colors.white,
-                  fontWeight: '700',
-                  fontSize: '14px',
+                  fontWeight: '600',
+                  fontSize: '13px',
                 }}>
                   {index + 1}
                 </td>
@@ -602,6 +603,32 @@ export function StepsList({ steps }: StepsListProps) {
         </Row>
       ))}
     </Section>
+  );
+}
+
+// Minimal Feature Item (no emoji - professional)
+interface FeatureItemProps {
+  title: string;
+  description: string;
+}
+
+export function FeatureItem({ title, description }: FeatureItemProps) {
+  return (
+    <Row style={{ marginBottom: '16px' }}>
+      <Column style={{ width: '20px', verticalAlign: 'top', paddingTop: '2px' }}>
+        <Text style={{ margin: '0', fontSize: '12px', color: colors.primary, lineHeight: '1.7', fontWeight: '700' }}>
+          &#x25B8;
+        </Text>
+      </Column>
+      <Column>
+        <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark, marginBottom: '2px', fontSize: '15px' }}>
+          {title}
+        </Text>
+        <Text style={{ ...styles.paragraph, fontSize: '14px', margin: '0', color: colors.gray }}>
+          {description}
+        </Text>
+      </Column>
+    </Row>
   );
 }
 

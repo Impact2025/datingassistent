@@ -10,7 +10,7 @@ import {
   HeroHeader,
   Greeting,
   CTAButton,
-  FeatureCard,
+  FeatureItem,
   StepsList,
   InfoBox,
   EmailFooter,
@@ -97,7 +97,7 @@ export default function WelcomeEmail({
         />
 
         <CTAButton href={dashboardUrl}>
-          Start je dating avontuur
+          Naar je dashboard
         </CTAButton>
 
         <Hr style={styles.divider} />
@@ -106,23 +106,19 @@ export default function WelcomeEmail({
           Wat je kunt verwachten:
         </Text>
 
-        <FeatureCard
-          icon="🤖"
+        <FeatureItem
           title="24/7 AI Dating Coach"
           description="Stel al je dating vragen, dag en nacht. Van profiel tips tot gesprekstechnieken."
         />
-        <FeatureCard
-          icon="📚"
+        <FeatureItem
           title="8+ Expert Cursussen"
           description="Van profieloptimalisatie tot eerste date tips. Leer van dating experts."
         />
-        <FeatureCard
-          icon="🛠️"
+        <FeatureItem
           title="20+ Slimme Tools"
           description="Profiel analyzer, openingszinnen generator, foto check, en meer."
         />
-        <FeatureCard
-          icon="📈"
+        <FeatureItem
           title="89% Meer Matches"
           description="Onze gebruikers zien gemiddeld 89% meer matches na 2 weken."
         />
