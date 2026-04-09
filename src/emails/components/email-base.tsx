@@ -55,7 +55,7 @@ export const styles = {
     backgroundColor: colors.background,
     fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     margin: '0',
-    padding: '40px 20px',
+    padding: '40px 24px',
   },
   container: {
     backgroundColor: colors.white,
@@ -67,22 +67,22 @@ export const styles = {
   },
   header: {
     backgroundColor: colors.white,
-    padding: '36px 48px 28px 48px',
+    padding: '36px 64px 28px 64px',
     textAlign: 'center' as const,
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   heroGradient: {
     backgroundColor: colors.white,
-    padding: '36px 48px 32px 48px',
+    padding: '36px 64px 32px 64px',
     textAlign: 'center' as const,
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   content: {
-    padding: '40px 48px',
+    padding: '40px 64px',
   },
   footer: {
     backgroundColor: colors.cream,
-    padding: '28px 48px',
+    padding: '28px 64px',
     textAlign: 'center' as const,
     borderTop: `1px solid ${colors.lightGray}`,
   },
