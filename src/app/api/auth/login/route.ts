@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
     // Set token in cookie using centralized config
     response.cookies.set(cookieConfig.name, token, cookieConfig.options);
 
-    console.log('🍪 Cookie set:', {
+    logger.log('🍪 Cookie set:', {
       name: cookieConfig.name,
       ...cookieConfig.options
     });

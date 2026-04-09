@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
@@ -14,7 +15,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User ID required' }, { status: 400 });
     }
 
-    console.log(`🔧 Fixing subscription for user ${userId}...`);
+    logger.log(`🔧 Fixing subscription for user ${userId}...`);
 
     // Get user's latest order
     const orderResult = await sql`
@@ -38,7 +39,7 @@ export async function POST(request: NextRequest) {
         SET status = 'completed', updated_at = NOW()
         WHERE id = ${order.id}
       `;
-      console.log(`✅ Order ${order.id} marked as completed`);
+      logger.log(`✅ Order ${order.id} marked as completed`);
     }
 
     // Create subscription data
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
     // Activate subscription
     await createOrUpdateSubscription(userId, subscriptionData);
 
-    console.log(`✅ Subscription activated for user ${userId}: ${order.package_type}`);
+    logger.log(`✅ Subscription activated for user ${userId}: ${order.package_type}`);
 
     // Reset journey to start
     await sql`
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
         updated_at = NOW()
     `;
 
-    console.log(`✅ Journey reset for user ${userId}`);
+    logger.log(`✅ Journey reset for user ${userId}`);
 
     return NextResponse.json({
       success: true,

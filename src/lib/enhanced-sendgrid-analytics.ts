@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * ENHANCED SENDGRID ANALYTICS SERVICE
  * Advanced SendGrid email analytics with intelligent fallbacks
@@ -65,7 +66,7 @@ export class EnhancedSendGridAnalytics {
     if (apiKey) {
       this.apiKey = apiKey;
       this.configured = true;
-      console.log('✅ SendGrid analytics configured');
+      logger.log('✅ SendGrid analytics configured');
     } else {
       this.checkEnvironmentConfig();
     }
@@ -77,9 +78,9 @@ export class EnhancedSendGridAnalytics {
     if (apiKey) {
       this.apiKey = apiKey;
       this.configured = true;
-      console.log('✅ SendGrid API key configured');
+      logger.log('✅ SendGrid API key configured');
     } else {
-      console.log('⚠️  SendGrid API key not configured, using intelligent mock data');
+      logger.log('⚠️  SendGrid API key not configured, using intelligent mock data');
     }
   }
 

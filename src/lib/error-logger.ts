@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * ERROR LOGGING UTILITY
  * Centralized error handling and logging
@@ -97,7 +98,7 @@ const errorTrackingConfig = {
  */
 export async function initErrorTracking() {
   if (!errorTrackingConfig.enabled) {
-    console.log('📊 Error tracking disabled in development');
+    logger.log('📊 Error tracking disabled in development');
     return;
   }
 
@@ -112,7 +113,7 @@ export async function initErrorTracking() {
     //   replaysSessionSampleRate: 0.1,
     //   replaysOnErrorSampleRate: 1.0,
     // });
-    console.log('🔍 Sentry error tracking ready (add @sentry/nextjs to enable)');
+    logger.log('🔍 Sentry error tracking ready (add @sentry/nextjs to enable)');
   }
 }
 

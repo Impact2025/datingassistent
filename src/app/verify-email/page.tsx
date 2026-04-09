@@ -1,4 +1,5 @@
 'use client';
+import { logger } from '@/lib/logger';
 
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -34,7 +35,7 @@ function VerifyEmailContent() {
       }
 
       try {
-        console.log('🔐 Verifying email with token...');
+        logger.log('🔐 Verifying email with token...');
 
         // Call the verification API
         const response = await fetch('/api/auth/verify-email-token', {

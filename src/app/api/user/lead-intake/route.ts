@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('📝 Saving lead intake for user:', userId, intakeData);
+    logger.log('📝 Saving lead intake for user:', userId, intakeData);
 
     // Check if user_profiles entry exists
     const existingProfile = await sql`
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
       `;
     }
 
-    console.log('✅ Lead intake saved for user:', userId);
+    logger.log('✅ Lead intake saved for user:', userId);
 
     return NextResponse.json({
       success: true,

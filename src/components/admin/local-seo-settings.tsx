@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -53,7 +54,7 @@ export function LocalSEOSettings() {
 
   const saveSettings = () => {
     // In a real implementation, this would save to a database
-    console.log("Saving local SEO settings:", settings);
+    logger.log("Saving local SEO settings:", settings);
     alert("Local SEO settings saved successfully!");
   };
 

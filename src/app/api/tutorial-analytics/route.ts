@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 
 // POST: Track tutorial events
@@ -6,7 +7,7 @@ export async function POST(request: NextRequest) {
     const event = await request.json();
 
     // In a real implementation, this would save to database
-    console.log('📊 Tutorial Event Tracked:', {
+    logger.log('📊 Tutorial Event Tracked:', {
       eventType: event.eventType,
       tutorialId: event.tutorialId,
       userId: event.userId,

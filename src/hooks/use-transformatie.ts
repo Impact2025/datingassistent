@@ -1,4 +1,5 @@
 'use client';
+import { logger } from '@/lib/logger';
 
 /**
  * useTransformatie - World-class Transformatie data hooks
@@ -191,7 +192,7 @@ export function usePrefetchNextLesson() {
   return (nextLessonId: number) => {
     // This could prefetch detailed lesson content if we had a separate endpoint
     // For now, the overview includes all lesson data
-    console.log(`[Prefetch] Ready to prefetch lesson ${nextLessonId} when endpoint available`);
+    logger.log(`[Prefetch] Ready to prefetch lesson ${nextLessonId} when endpoint available`);
   };
 }
 

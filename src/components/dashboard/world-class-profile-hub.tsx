@@ -27,6 +27,7 @@ import {
 import { ProfileAnalysis } from '@/components/profile-analysis';
 import { PhotoAnalysisTab } from '@/components/dashboard/photo-analysis-tab';
 import { ProfielOptimalisatie } from '@/components/dashboard/profiel-optimalisatie';
+import { logger } from '@/lib/logger';
 
 interface ProfileStatus {
   completeness: number;
@@ -171,7 +172,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
           <ProfielOptimalisatie
             onStartAssessment={() => {
               // TODO: Implement assessment flow
-              console.log('Start Profiel Optimalisatie assessment');
+              logger.log('Start Profiel Optimalisatie assessment');
             }}
             onSkipToDashboard={() => setShowProfielOptimalisatie(false)}
           />
@@ -193,7 +194,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
             Terug
           </Button>
           <ProfileAnalysis onAnalysisComplete={(results) => {
-            console.log('Analysis complete:', results);
+            logger.log('Analysis complete:', results);
           }} />
         </div>
       </div>

@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { verifyAuth } from '@/lib/auth';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -126,7 +127,7 @@ export async function GET(request: NextRequest) {
     // If table doesn't exist, return empty array (graceful degradation)
     if (error?.message?.includes('relation "qa_sessions" does not exist') ||
         error?.code === '42P01') {
-      console.log('qa_sessions table does not exist, returning empty array');
+      logger.log('qa_sessions table does not exist, returning empty array');
       return NextResponse.json({
         sessions: [],
         count: 0,

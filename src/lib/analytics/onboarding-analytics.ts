@@ -212,7 +212,7 @@ export function trackOnboardingEvent(
   // Check analytics consent
   if (!hasAnalyticsConsent()) {
     if (config.debug) {
-      console.log(`[Onboarding Analytics] ❌ ${eventName} blocked - Analytics consent required`);
+      logger.log(`[Onboarding Analytics] ❌ ${eventName} blocked - Analytics consent required`);
     }
     return;
   }
@@ -225,7 +225,7 @@ export function trackOnboardingEvent(
 
   // Debug logging
   if (config.debug) {
-    console.log(`📊 [Analytics] ${eventName}`, fullProperties);
+    logger.log(`📊 [Analytics] ${eventName}`, fullProperties);
   }
 
   // Send to provider
@@ -373,6 +373,7 @@ export function trackValidationError(
 // =====================================================
 
 import { useEffect, useRef, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 
 interface UseOnboardingAnalyticsOptions {
   flowType: 'dating_snapshot' | 'transformatie_intake' | 'kickstart';

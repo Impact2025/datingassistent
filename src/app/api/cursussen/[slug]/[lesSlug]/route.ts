@@ -3,6 +3,7 @@ import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
 import { verifyToken, cookieConfig } from '@/lib/jwt-config';
 import { resolveSlug } from '@/lib/cursus-slug-utils';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/cursussen/[slug]/[lesSlug]
@@ -22,10 +23,10 @@ export async function GET(
     const slug = resolveSlug(rawSlug);
 
     if (rawSlug !== slug) {
-      console.log(`🔄 Slug alias resolved: ${rawSlug} -> ${slug}`);
+      logger.log(`🔄 Slug alias resolved: ${rawSlug} -> ${slug}`);
     }
 
-    console.log(`🚀 Fetching lesson: ${lesSlug} from course: ${slug}`);
+    logger.log(`🚀 Fetching lesson: ${lesSlug} from course: ${slug}`);
 
     // 1. Haal cursus op
     const cursusResult = await sql`
@@ -70,7 +71,7 @@ export async function GET(
             ORDER BY volgorde ASC
           `;
 
-          console.log(`📝 Loaded ${vragenResult.rows.length} quiz vragen for sectie ${sectie.id}`);
+          logger.log(`📝 Loaded ${vragenResult.rows.length} quiz vragen for sectie ${sectie.id}`);
 
           return {
             ...sectie,
@@ -112,7 +113,7 @@ export async function GET(
         userId = user?.id || null;
       }
     } catch (authError) {
-      console.log('No authenticated user for lesson request');
+      logger.log('No authenticated user for lesson request');
     }
 
     // Als geen user ingelogd, geen progress
@@ -182,7 +183,7 @@ export async function GET(
       }
     };
 
-    console.log(`✅ Lesson fetched: ${les.titel} with ${secties.length} sections`);
+    logger.log(`✅ Lesson fetched: ${les.titel} with ${secties.length} sections`);
 
     return NextResponse.json({ les: lesData });
   } catch (error: any) {
@@ -210,7 +211,7 @@ export async function POST(
     const body = await request.json();
     const { userId, sectieId, lesId, cursusId, status, quizScore, quizAntwoorden, reflectieAntwoord, opdrachtVoltooide, actieplanVoltooide } = body;
 
-    console.log(`💾 Updating progress for user ${userId}, section ${sectieId}`);
+    logger.log(`💾 Updating progress for user ${userId}, section ${sectieId}`);
 
     // Upsert sectie progress
     const result = await sql`
@@ -257,7 +258,7 @@ export async function POST(
       RETURNING *
     `;
 
-    console.log(`✅ Progress saved for sectie ${sectieId}`);
+    logger.log(`✅ Progress saved for sectie ${sectieId}`);
 
     return NextResponse.json({
       success: true,

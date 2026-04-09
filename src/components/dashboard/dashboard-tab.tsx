@@ -22,6 +22,7 @@ import {
 import { useEffect, useState } from "react";
 import { useUser } from "@/providers/user-provider";
 import { PersonalizedWelcome } from "@/components/dashboard/personalized-welcome";
+import { logger } from '@/lib/logger';
 
 // Import interactive components
 import { AIConfidenceCoach } from "@/components/quiz/ai-confidence-coach";
@@ -234,7 +235,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
                   key={action.action}
                   className="cursor-pointer transition-all duration-200 border-0 shadow-sm hover:shadow-md bg-white dark:bg-gray-700"
                   onClick={() => {
-                    console.log('Quick action clicked:', action.action);
+                    logger.log('Quick action clicked:', action.action);
                     onTabChange?.(action.action);
                   }}
                 >
@@ -377,7 +378,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
             </div>
             <InteractiveProfileBuilder
               onComplete={(profile, score) => {
-                console.log('Profile completed:', profile, 'Score:', score);
+                logger.log('Profile completed:', profile, 'Score:', score);
               }}
               initialProfile=""
             />
@@ -400,7 +401,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
               userId={user?.id?.toString() || ''}
               courseId="dashboard-gamification"
               onPointsEarned={(points, reason) => {
-                console.log(`Earned ${points} points for: ${reason}`);
+                logger.log(`Earned ${points} points for: ${reason}`);
               }}
             />
           </CardContent>
@@ -422,7 +423,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
               text=""
               onTextChange={() => {}}
               onFeedbackUpdate={(feedback) => {
-                console.log('Feedback updated:', feedback);
+                logger.log('Feedback updated:', feedback);
               }}
             />
           </CardContent>
@@ -443,10 +444,10 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
             <SocialLearning
               currentUserId={user?.id?.toString() || ''}
               onReviewSubmitted={(review) => {
-                console.log('Review submitted:', review);
+                logger.log('Review submitted:', review);
               }}
               onProfileShared={(profile) => {
-                console.log('Profile shared:', profile);
+                logger.log('Profile shared:', profile);
               }}
             />
           </CardContent>

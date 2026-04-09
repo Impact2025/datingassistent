@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { requireAuth } from '@/lib/auth';
@@ -16,7 +17,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`📊 Tracking profile analytics for user ${user.id}: ${eventType}`);
+    logger.log(`📊 Tracking profile analytics for user ${user.id}: ${eventType}`);
 
     // Insert analytics event
     await sql`

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Badge & Achievement System - Gamification engine for user motivation
  * Provides dopamine hits through recognition and progression
@@ -239,7 +240,7 @@ export class BadgeSystem {
         `;
       }
 
-      console.log('Badge system initialized with', this.BADGE_TEMPLATES.length, 'badges');
+      logger.log('Badge system initialized with', this.BADGE_TEMPLATES.length, 'badges');
     } catch (error) {
       console.error('Error initializing badge system:', error);
     }

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Admin API: Migrate Badges System
  * Creates missing database tables for the badges/gamification system
@@ -8,10 +9,10 @@ import { sql } from '@vercel/postgres';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🚀 Starting Badges System Migration via API...');
+    logger.log('🚀 Starting Badges System Migration via API...');
 
     // Check if tables already exist
-    console.log('📋 Checking existing tables...');
+    logger.log('📋 Checking existing tables...');
 
     const existingTables = await sql`
       SELECT tablename
@@ -21,11 +22,11 @@ export async function POST(request: NextRequest) {
     `;
 
     const existingTableNames = existingTables.rows.map(row => row.tablename);
-    console.log('📊 Existing tables:', existingTableNames);
+    logger.log('📊 Existing tables:', existingTableNames);
 
     // Create performance_metrics table if it doesn't exist
     if (!existingTableNames.includes('performance_metrics')) {
-      console.log('📈 Creating performance_metrics table...');
+      logger.log('📈 Creating performance_metrics table...');
       await sql`
         CREATE TABLE IF NOT EXISTS performance_metrics (
           id SERIAL PRIMARY KEY,
@@ -37,14 +38,14 @@ export async function POST(request: NextRequest) {
           UNIQUE(user_id, metric_type, recorded_at)
         )
       `;
-      console.log('✅ performance_metrics table created');
+      logger.log('✅ performance_metrics table created');
     } else {
-      console.log('⏭️  performance_metrics table already exists');
+      logger.log('⏭️  performance_metrics table already exists');
     }
 
     // Create weekly_insights table if it doesn't exist
     if (!existingTableNames.includes('weekly_insights')) {
-      console.log('📅 Creating weekly_insights table...');
+      logger.log('📅 Creating weekly_insights table...');
       await sql`
         CREATE TABLE IF NOT EXISTS weekly_insights (
           id SERIAL PRIMARY KEY,
@@ -59,13 +60,13 @@ export async function POST(request: NextRequest) {
           UNIQUE(user_id, week_start, insight_type)
         )
       `;
-      console.log('✅ weekly_insights table created');
+      logger.log('✅ weekly_insights table created');
     } else {
-      console.log('⏭️  weekly_insights table already exists');
+      logger.log('⏭️  weekly_insights table already exists');
     }
 
     // Fix user_badges table structure - nuclear approach
-    console.log('🏆 Fixing user_badges table structure...');
+    logger.log('🏆 Fixing user_badges table structure...');
 
     try {
       // Check current structure
@@ -77,7 +78,7 @@ export async function POST(request: NextRequest) {
       `;
 
       const existingColumns = badgeColumns.rows.map(row => row.column_name);
-      console.log('📋 Current user_badges columns:', existingColumns);
+      logger.log('📋 Current user_badges columns:', existingColumns);
 
       // If the table has wrong structure, recreate it
       const hasCorrectStructure = existingColumns.includes('badge_type') &&
@@ -85,15 +86,15 @@ export async function POST(request: NextRequest) {
                                   existingColumns.includes('tier');
 
       if (!hasCorrectStructure) {
-        console.log('🔄 user_badges table has incorrect structure, recreating...');
+        logger.log('🔄 user_badges table has incorrect structure, recreating...');
 
         // Backup existing data if any
         let existingData: any[] = [];
         try {
           existingData = (await sql`SELECT * FROM user_badges`).rows;
-          console.log(`📦 Backed up ${existingData.length} existing badge records`);
+          logger.log(`📦 Backed up ${existingData.length} existing badge records`);
         } catch (error) {
-          console.log('ℹ️  No existing data to backup');
+          logger.log('ℹ️  No existing data to backup');
         }
 
         // Drop and recreate table with correct structure
@@ -115,7 +116,7 @@ export async function POST(request: NextRequest) {
 
         // Restore data if we had any (map old structure to new)
         if (existingData.length > 0) {
-          console.log('🔄 Restoring backed up data...');
+          logger.log('🔄 Restoring backed up data...');
           for (const record of existingData) {
             try {
               await sql`
@@ -139,9 +140,9 @@ export async function POST(request: NextRequest) {
           }
         }
 
-        console.log('✅ user_badges table recreated with correct structure');
+        logger.log('✅ user_badges table recreated with correct structure');
       } else {
-        console.log('⏭️  user_badges table structure is already correct');
+        logger.log('⏭️  user_badges table structure is already correct');
       }
 
     } catch (error: any) {
@@ -150,7 +151,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create indexes for performance
-    console.log('⚡ Creating performance indexes...');
+    logger.log('⚡ Creating performance indexes...');
 
     await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_user_id ON performance_metrics(user_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_performance_metrics_type ON performance_metrics(metric_type)`;
@@ -158,10 +159,10 @@ export async function POST(request: NextRequest) {
     await sql`CREATE INDEX IF NOT EXISTS idx_weekly_insights_user_id ON weekly_insights(user_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_weekly_insights_week ON weekly_insights(week_start DESC)`;
 
-    console.log('✅ Performance indexes created');
+    logger.log('✅ Performance indexes created');
 
     // Insert some sample performance metrics for testing (optional)
-    console.log('📊 Adding sample performance data for testing...');
+    logger.log('📊 Adding sample performance data for testing...');
 
     try {
       // Only add if no data exists
@@ -179,17 +180,17 @@ export async function POST(request: NextRequest) {
               (${userId}, 'message', 12, CURRENT_DATE),
               (${userId}, 'task_completed', 3, CURRENT_DATE)
           `;
-          console.log('✅ Sample performance metrics added');
+          logger.log('✅ Sample performance metrics added');
         }
       } else {
-        console.log('⏭️  Performance metrics already exist');
+        logger.log('⏭️  Performance metrics already exist');
       }
     } catch (error: any) {
       console.warn('⚠️  Could not add sample data:', error.message);
     }
 
     // Verify migration success
-    console.log('🔍 Verifying migration...');
+    logger.log('🔍 Verifying migration...');
 
     const finalTables = await sql`
       SELECT tablename
@@ -198,17 +199,17 @@ export async function POST(request: NextRequest) {
       AND tablename IN ('performance_metrics', 'weekly_insights', 'user_badges')
     `;
 
-    console.log('📊 Final table status:', finalTables.rows.map(row => row.tablename));
+    logger.log('📊 Final table status:', finalTables.rows.map(row => row.tablename));
 
     // Test badge service functionality
-    console.log('🧪 Testing badge service...');
+    logger.log('🧪 Testing badge service...');
 
     try {
       const badgeCount = await sql`SELECT COUNT(*) as count FROM user_badges`;
       const metricsCount = await sql`SELECT COUNT(*) as count FROM performance_metrics`;
       const insightsCount = await sql`SELECT COUNT(*) as count FROM weekly_insights`;
 
-      console.log('📈 Table counts:', {
+      logger.log('📈 Table counts:', {
         badges: badgeCount.rows[0].count,
         metrics: metricsCount.rows[0].count,
         insights: insightsCount.rows[0].count
@@ -218,8 +219,8 @@ export async function POST(request: NextRequest) {
       console.warn('⚠️  Could not verify table counts:', error.message);
     }
 
-    console.log('🎉 Badges System Migration Completed Successfully!');
-    console.log('🏆 The badge system is now fully operational.');
+    logger.log('🎉 Badges System Migration Completed Successfully!');
+    logger.log('🏆 The badge system is now fully operational.');
 
     return NextResponse.json({
       success: true,

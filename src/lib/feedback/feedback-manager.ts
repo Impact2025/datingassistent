@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Comprehensive User Feedback and Support System
  * Handles feedback collection, support tickets, and user satisfaction tracking
@@ -314,7 +315,7 @@ class FeedbackManager {
    */
   private static async notifyAdminOfUrgentFeedback(feedback: FeedbackData, feedbackId?: number): Promise<void> {
     // In a real implementation, this would send an email or notification
-    console.log('🚨 URGENT FEEDBACK RECEIVED:', {
+    logger.log('🚨 URGENT FEEDBACK RECEIVED:', {
       id: feedbackId,
       type: feedback.type,
       rating: feedback.rating,
@@ -329,7 +330,7 @@ class FeedbackManager {
    * Send notification to admin about new support ticket
    */
   private static async notifyAdminOfNewTicket(ticket: Omit<SupportTicket, 'id' | 'createdAt' | 'updatedAt'>, ticketId?: number): Promise<void> {
-    console.log('🎫 NEW SUPPORT TICKET CREATED:', {
+    logger.log('🎫 NEW SUPPORT TICKET CREATED:', {
       id: ticketId,
       priority: ticket.priority,
       subject: ticket.subject,

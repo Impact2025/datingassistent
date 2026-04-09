@@ -15,6 +15,7 @@ import { sql } from '@vercel/postgres';
 import { Resend } from 'resend';
 import { render } from '@react-email/components';
 import KickstartUpgradeEmail from '@/emails/kickstart-upgrade-email';
+import { logger } from '@/lib/logger';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -159,7 +160,7 @@ export async function GET(request: NextRequest) {
     const totalSent = results.day7.sent + results.day14.sent;
     const totalFailed = results.day7.failed + results.day14.failed;
 
-    console.log(`Kickstart upsell cron: ${totalSent} sent, ${totalFailed} failed`);
+    logger.log(`Kickstart upsell cron: ${totalSent} sent, ${totalFailed} failed`);
 
     return NextResponse.json({
       success: true,

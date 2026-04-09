@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Dashboard Constants & Configuration
  * Centralized constants for type-safe dashboard management
@@ -169,10 +170,10 @@ const isDev = process.env.NODE_ENV === 'development';
 
 export const debugLog = {
   info: (message: string, ...args: unknown[]) => {
-    if (isDev) console.log(`ℹ️ ${message}`, ...args);
+    if (isDev) logger.log(`ℹ️ ${message}`, ...args);
   },
   success: (message: string, ...args: unknown[]) => {
-    if (isDev) console.log(`✅ ${message}`, ...args);
+    if (isDev) logger.log(`✅ ${message}`, ...args);
   },
   warn: (message: string, ...args: unknown[]) => {
     if (isDev) console.warn(`⚠️ ${message}`, ...args);
@@ -182,12 +183,12 @@ export const debugLog = {
     console.error(`❌ ${message}`, ...args);
   },
   action: (message: string, ...args: unknown[]) => {
-    if (isDev) console.log(`🎯 ${message}`, ...args);
+    if (isDev) logger.log(`🎯 ${message}`, ...args);
   },
   navigate: (message: string, ...args: unknown[]) => {
-    if (isDev) console.log(`🔄 ${message}`, ...args);
+    if (isDev) logger.log(`🔄 ${message}`, ...args);
   },
   render: (message: string, ...args: unknown[]) => {
-    if (isDev) console.log(`🎨 ${message}`, ...args);
+    if (isDev) logger.log(`🎨 ${message}`, ...args);
   },
 };

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Email Sender - Enhanced version with template rendering
  * Integrates with email-templates.tsx for React Email rendering
@@ -22,7 +23,7 @@ export async function sendTemplatedEmail(
     // Check if user can receive this email
     const canSend = await canUserReceiveEmail(userId, emailType, emailCategory);
     if (!canSend) {
-      console.log(`📧 Email ${emailType} blocked by preferences for user ${userId}`);
+      logger.log(`📧 Email ${emailType} blocked by preferences for user ${userId}`);
       return false;
     }
 
@@ -60,7 +61,7 @@ export async function sendTemplatedEmail(
     // Update user preferences
     await updateEmailPreferences(userId);
 
-    console.log(`✅ Email ${emailType} sent to user ${userId}`);
+    logger.log(`✅ Email ${emailType} sent to user ${userId}`);
     return true;
   } catch (error) {
     console.error(`❌ Error sending email ${emailType}:`, error);
@@ -225,7 +226,7 @@ async function updateEmailPreferences(userId: number): Promise<void> {
  * Process email queue (called by cron job)
  */
 export async function processEmailQueue(): Promise<void> {
-  console.log('📬 Processing email queue...');
+  logger.log('📬 Processing email queue...');
 
   try {
     // Get pending emails that are due
@@ -239,7 +240,7 @@ export async function processEmailQueue(): Promise<void> {
       LIMIT 100
     `;
 
-    console.log(`📨 Found ${result.rows.length} emails to process`);
+    logger.log(`📨 Found ${result.rows.length} emails to process`);
 
     for (const queueItem of result.rows) {
       try {
@@ -291,7 +292,7 @@ export async function processEmailQueue(): Promise<void> {
           WHERE id = ${queueItem.id}
         `;
 
-        console.log(`${sent ? '✅' : '❌'} Processed email ${queueItem.email_type} for user ${user.id}`);
+        logger.log(`${sent ? '✅' : '❌'} Processed email ${queueItem.email_type} for user ${user.id}`);
       } catch (error) {
         console.error(`❌ Error processing queue item ${queueItem.id}:`, error);
 
@@ -307,7 +308,7 @@ export async function processEmailQueue(): Promise<void> {
       }
     }
 
-    console.log('✅ Email queue processing complete');
+    logger.log('✅ Email queue processing complete');
   } catch (error) {
     console.error('❌ Error processing email queue:', error);
   }

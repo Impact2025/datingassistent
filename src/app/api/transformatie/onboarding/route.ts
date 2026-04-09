@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
@@ -116,7 +117,7 @@ export async function POST(request: NextRequest) {
       RETURNING id, completed_at
     `;
 
-    console.log(`✅ Transformatie onboarding saved for user ${user.id}`);
+    logger.log(`✅ Transformatie onboarding saved for user ${user.id}`);
 
     return NextResponse.json({
       success: true,

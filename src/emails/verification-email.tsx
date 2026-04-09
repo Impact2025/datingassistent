@@ -52,57 +52,46 @@ export default function VerificationEmail({
             </Text>
 
             <Section style={{
-              backgroundColor: colors.lightGray,
+              backgroundColor: colors.cream,
               borderRadius: '16px',
-              padding: '32px',
-              margin: '32px 0',
+              padding: '36px 32px',
+              margin: '28px 0',
               textAlign: 'center',
+              border: `1px solid ${colors.lightGray}`,
             }}>
               <Text style={{
-                fontSize: '14px',
-                color: colors.gray,
-                margin: '0 0 16px 0',
+                fontSize: '11px',
+                color: colors.grayLight,
+                margin: '0 0 20px 0',
                 textTransform: 'uppercase',
-                letterSpacing: '1px',
-                fontWeight: '500',
+                letterSpacing: '2px',
+                fontWeight: '600',
               }}>
                 Je verificatiecode
               </Text>
 
-              {/* Makkelijk te kopiëren code - groot en duidelijk */}
               <Text style={{
-                fontSize: '36px',
+                fontSize: '40px',
                 fontWeight: '700',
-                color: colors.primary,
-                fontFamily: 'monospace, Courier New, Courier',
-                letterSpacing: '8px',
-                margin: '0 0 8px 0',
-                padding: '16px 24px',
+                color: colors.dark,
+                fontFamily: '"Courier New", Courier, monospace',
+                letterSpacing: '10px',
+                margin: '0',
+                padding: '18px 28px',
                 backgroundColor: colors.white,
                 borderRadius: '12px',
-                border: `2px solid ${colors.primary}`,
+                border: `1.5px solid ${colors.lightGray}`,
                 display: 'inline-block',
-                userSelect: 'all',
-                WebkitUserSelect: 'all',
               }}>
                 {verificationCode}
               </Text>
 
               <Text style={{
-                fontSize: '12px',
-                color: colors.gray,
-                margin: '8px 0 0 0',
-                fontStyle: 'italic',
-              }}>
-                Tip: Selecteer en kopieer de code hierboven
-              </Text>
-
-              <Text style={{
                 fontSize: '13px',
-                color: colors.gray,
-                margin: '16px 0 0 0',
+                color: colors.grayLight,
+                margin: '20px 0 0 0',
               }}>
-                Deze code verloopt over {expiresIn}
+                Verloopt over {expiresIn}
               </Text>
             </Section>
 

@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -117,7 +118,7 @@ export default function ForumCategoryPage() {
     setSearchLoading(true);
     try {
       // For now, just log the search - implement actual search later
-      console.log('Searching:', { query, categoryId, sortBy });
+      logger.log('Searching:', { query, categoryId, sortBy });
       // Could redirect to search results page or filter current content
     } catch (error) {
       console.error('Search error:', error);

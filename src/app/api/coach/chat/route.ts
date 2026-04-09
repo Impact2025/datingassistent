@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
 import { buildCoachContext, contextToPrompt } from '@/lib/coach/context';
 import { detectTools } from '@/lib/coach/routing';
+import { logger } from '@/lib/logger';
 
 /**
  * POST /api/coach/chat
@@ -165,7 +166,7 @@ Beantwoord de gebruiker op een persoonlijke, coachende manier.`;
 
     // 5. Log conversation for learning and monitoring
     try {
-      console.log(`💬 Coach chat | User ${userId} | Message length: ${message.length} | Context: ${contextEnriched ? 'enriched' : 'basic'}`);
+      logger.log(`💬 Coach chat | User ${userId} | Message length: ${message.length} | Context: ${contextEnriched ? 'enriched' : 'basic'}`);
     } catch (logError) {
       // Silent fail on logging
     }

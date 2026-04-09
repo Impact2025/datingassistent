@@ -7,6 +7,7 @@
 
 import { sql } from '@vercel/postgres';
 import type { FreemiumStatus, CreditType } from '@/types/lead-activation.types';
+import { logger } from '@/lib/logger';
 
 /**
  * Get freemium status for a user
@@ -75,7 +76,7 @@ export async function useFreemiumCredit(
     `;
 
     if (currentCredits.rows.length === 0 || (currentCredits.rows[0].freemium_credits ?? 0) <= 0) {
-      console.log(`No freemium credits available for user ${userId}`);
+      logger.log(`No freemium credits available for user ${userId}`);
       return false;
     }
 
@@ -87,7 +88,7 @@ export async function useFreemiumCredit(
       WHERE id = ${userId} AND freemium_credits > 0
     `;
 
-    console.log(`Used freemium credit (${creditType}) for user ${userId}`);
+    logger.log(`Used freemium credit (${creditType}) for user ${userId}`);
     return true;
   } catch (error) {
     console.error('Failed to use freemium credit:', error);
@@ -110,7 +111,7 @@ export async function addFreemiumCredits(
       WHERE id = ${userId}
     `;
 
-    console.log(`Added ${amount} freemium credits for user ${userId}`);
+    logger.log(`Added ${amount} freemium credits for user ${userId}`);
     return true;
   } catch (error) {
     console.error('Failed to add freemium credits:', error);

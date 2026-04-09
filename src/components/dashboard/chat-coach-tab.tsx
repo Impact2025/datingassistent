@@ -25,6 +25,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { logger } from '@/lib/logger';
 
 type Message = {
   role: "user" | "model";
@@ -355,7 +356,7 @@ export function ChatCoachTab() {
         steps={getOnboardingSteps('chat-coach')}
         open={showOverlay}
         onOpenChange={setShowOverlay}
-        onComplete={() => console.log('Chat Coach onboarding completed!')}
+        onComplete={() => logger.log('Chat Coach onboarding completed!')}
       />
 
       {/* Main Chat Container - ChatGPT Style */}

@@ -1,4 +1,5 @@
 'use client';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,7 +56,7 @@ function TransformatieContent() {
 
   // Handle onboarding completion (Dating Snapshot)
   const handleOnboardingComplete = useCallback(async (profile: UserOnboardingProfile) => {
-    console.log('✅ Dating Snapshot completed:', profile.displayName);
+    logger.log('✅ Dating Snapshot completed:', profile.displayName);
     // The DatingSnapshotFlow already saves to API, just update local state
     setOnboardingJustCompleted(true);
     // Invalidate cache to refetch enrollment status

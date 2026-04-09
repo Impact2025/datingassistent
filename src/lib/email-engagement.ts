@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Email Engagement System voor DatingAssistent
  * Uitgebreide email automation met tracking en personalisatie
@@ -553,12 +554,12 @@ function getBaseUrl(): string {
  * Trigger all automation checks (called by cron)
  */
 export async function triggerEmailAutomation(): Promise<void> {
-  console.log('🤖 Running email automation checks...');
+  logger.log('🤖 Running email automation checks...');
 
   try {
     await checkAndScheduleInactivityAlerts();
     await scheduleSubscriptionRenewalReminders();
-    console.log('✅ Email automation completed successfully');
+    logger.log('✅ Email automation completed successfully');
   } catch (error) {
     console.error('❌ Error in email automation:', error);
   }
@@ -568,11 +569,11 @@ export async function triggerEmailAutomation(): Promise<void> {
  * Run weekly email campaigns (Every Monday)
  */
 export async function runWeeklyEmailCampaigns(): Promise<void> {
-  console.log('📧 Running weekly email campaigns...');
+  logger.log('📧 Running weekly email campaigns...');
 
   try {
     await scheduleWeeklyDigests();
-    console.log('✅ Weekly email campaigns scheduled');
+    logger.log('✅ Weekly email campaigns scheduled');
   } catch (error) {
     console.error('❌ Error scheduling weekly campaigns:', error);
   }
@@ -582,11 +583,11 @@ export async function runWeeklyEmailCampaigns(): Promise<void> {
  * Run monthly email campaigns (Last day of month)
  */
 export async function runMonthlyEmailCampaigns(): Promise<void> {
-  console.log('📊 Running monthly email campaigns...');
+  logger.log('📊 Running monthly email campaigns...');
 
   try {
     await scheduleMonthlyProgressReports();
-    console.log('✅ Monthly email campaigns scheduled');
+    logger.log('✅ Monthly email campaigns scheduled');
   } catch (error) {
     console.error('❌ Error scheduling monthly campaigns:', error);
   }

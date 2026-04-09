@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 
 // Types for progress tracking
@@ -177,7 +178,7 @@ async function checkAndAwardBadges(userId: number) {
             VALUES (${userId}, ${badge.type}, ${badge.name}, ${badge.description}, ${badge.icon})
           `;
 
-          console.log(`🏆 Badge awarded to user ${userId}: ${badge.name}`);
+          logger.log(`🏆 Badge awarded to user ${userId}: ${badge.name}`);
         }
       }
     }

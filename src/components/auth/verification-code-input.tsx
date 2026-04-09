@@ -1,4 +1,5 @@
 'use client';
+import { logger } from '@/lib/logger';
 
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -102,7 +103,7 @@ export function VerificationCodeInput({
         // Save the token to localStorage for authentication persistence
         if (data.token) {
           localStorage.setItem('datespark_auth_token', data.token);
-          console.log('✅ Token saved to localStorage after email verification');
+          logger.log('✅ Token saved to localStorage after email verification');
         }
         onSuccess(data.user);
       } else {

@@ -11,6 +11,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useTimeoutLoading } from '@/hooks/use-timeout-loading';
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 const ADMIN_EMAILS = ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'];
 
@@ -38,19 +39,19 @@ export default function ReviewManagement() {
   useTimeoutLoading(isLoading, setIsLoading, 5000);
 
   useEffect(() => {
-    console.log('ReviewManagement - useEffect triggered', { user, loading });
+    logger.log('ReviewManagement - useEffect triggered', { user, loading });
     
     if (!loading) {
-      console.log('ReviewManagement - User loaded, checking permissions');
+      logger.log('ReviewManagement - User loaded, checking permissions');
       
       if (!user) {
-        console.log('ReviewManagement - No user, redirecting to dashboard');
+        logger.log('ReviewManagement - No user, redirecting to dashboard');
         router.push('/dashboard');
       } else if (user.email && !ADMIN_EMAILS.includes(user.email)) {
-        console.log('ReviewManagement - Not admin, redirecting to dashboard');
+        logger.log('ReviewManagement - Not admin, redirecting to dashboard');
         router.push('/dashboard');
       } else {
-        console.log('ReviewManagement - Admin user, loading reviews');
+        logger.log('ReviewManagement - Admin user, loading reviews');
         loadReviews();
       }
     }
@@ -58,7 +59,7 @@ export default function ReviewManagement() {
 
   const loadReviews = async () => {
     try {
-      console.log('ReviewManagement - Loading reviews from Neon');
+      logger.log('ReviewManagement - Loading reviews from Neon');
       setIsLoading(true);
       
       // Fetch reviews from Neon database
@@ -75,7 +76,7 @@ export default function ReviewManagement() {
         ORDER BY created_at DESC
       `;
       
-      console.log('ReviewManagement - Reviews loaded:', result.rows.length);
+      logger.log('ReviewManagement - Reviews loaded:', result.rows.length);
       setReviews(result.rows as Review[]);
     } catch (error) {
       console.error('ReviewManagement - Error loading reviews:', error);
@@ -85,18 +86,18 @@ export default function ReviewManagement() {
         variant: 'destructive',
       });
     } finally {
-      console.log('ReviewManagement - Setting isLoading to false');
+      logger.log('ReviewManagement - Setting isLoading to false');
       setIsLoading(false);
     }
   };
 
   // Add a manual reset function
   const resetLoading = () => {
-    console.log('ReviewManagement - Manual reset loading');
+    logger.log('ReviewManagement - Manual reset loading');
     setIsLoading(false);
   };
 
-  console.log('ReviewManagement - Render triggered', { loading, isLoading });
+  logger.log('ReviewManagement - Render triggered', { loading, isLoading });
 
   if (loading || isLoading) {
     return (

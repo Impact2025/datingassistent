@@ -29,6 +29,7 @@ import type { KickstartIntakeData } from '@/types/kickstart-onboarding.types';
 import { cn } from '@/lib/utils';
 import Confetti from 'react-confetti';
 import { IrisAvatar } from '@/components/onboarding/IrisAvatar';
+import { logger } from '@/lib/logger';
 
 interface KickstartOnboardingFlowProps {
   userName?: string;
@@ -98,7 +99,7 @@ export function KickstartOnboardingFlow({
         setVideoPlaying(true);
       } catch (error) {
         // If autoplay with sound fails (browser policy), try muted first then unmute
-        console.log('Autoplay with sound blocked, trying alternative...');
+        logger.log('Autoplay with sound blocked, trying alternative...');
         videoRef.current.muted = true;
         setIsMuted(true);
         await videoRef.current.play();

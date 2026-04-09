@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { generateBlog } from '@/lib/ai-service';
+import { logger } from '@/lib/logger';
 
 /**
  * Test en vergelijk verschillende AI providers
@@ -13,7 +14,7 @@ export async function GET(request: Request) {
   const provider = (providerParam === 'claude' || providerParam === 'openrouter') ? providerParam : 'openrouter';
 
   try {
-    console.log(`🔄 Genereren blog met ${provider}...`);
+    logger.log(`🔄 Genereren blog met ${provider}...`);
     const start = Date.now();
 
     const blog = await generateBlog(
@@ -62,7 +63,7 @@ export async function GET(request: Request) {
       },
     };
 
-    console.log(`✅ Blog gegenereerd met ${provider} in ${(duration / 1000).toFixed(2)}s`);
+    logger.log(`✅ Blog gegenereerd met ${provider} in ${(duration / 1000).toFixed(2)}s`);
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {

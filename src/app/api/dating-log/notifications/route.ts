@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { sql } from '@vercel/postgres';
@@ -34,7 +35,7 @@ export async function GET(request: Request) {
     } catch (error: any) {
       // If table doesn't exist, return default preferences
       if (error.message?.includes('relation "user_notification_preferences" does not exist')) {
-        console.log('🗄️ user_notification_preferences table does not exist yet, using defaults');
+        logger.log('🗄️ user_notification_preferences table does not exist yet, using defaults');
         return Response.json({
           mondayRemindersEnabled: true,
           reminderTime: '09:00',
@@ -121,7 +122,7 @@ export async function POST(request: Request) {
     } catch (error: any) {
       // If table doesn't exist, simulate success with provided values
       if (error.message?.includes('relation "user_notification_preferences" does not exist')) {
-        console.log('🗄️ user_notification_preferences table does not exist yet, simulating save');
+        logger.log('🗄️ user_notification_preferences table does not exist yet, simulating save');
         return NextResponse.json({
           success: true,
           preferences: {

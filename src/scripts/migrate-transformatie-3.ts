@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Migratie Script: De Transformatie 3.0
  *
@@ -282,11 +283,11 @@ const courseStructure = {
 };
 
 async function migrate() {
-  console.log('🚀 Starting De Transformatie 3.0 migration...\n');
+  logger.log('🚀 Starting De Transformatie 3.0 migration...\n');
 
   try {
     // Step 1: Check/Create programs table entry
-    console.log('📊 Stap 1: Programma record aanmaken/updaten...');
+    logger.log('📊 Stap 1: Programma record aanmaken/updaten...');
 
     // Check if programs table exists
     const tableCheck = await sql`
@@ -297,7 +298,7 @@ async function migrate() {
     `;
 
     if (!tableCheck.rows[0].exists) {
-      console.log('❌ Programs tabel bestaat niet! Run eerst database-setup-programs.sql');
+      logger.log('❌ Programs tabel bestaat niet! Run eerst database-setup-programs.sql');
       process.exit(1);
     }
 
@@ -330,7 +331,7 @@ async function migrate() {
         RETURNING id
       `;
       programId = newProgram.rows[0].id;
-      console.log(`  ✓ Nieuw Transformatie programma aangemaakt (ID: ${programId})`);
+      logger.log(`  ✓ Nieuw Transformatie programma aangemaakt (ID: ${programId})`);
     } else {
       // Update existing program
       programId = programCheck.rows[0].id;
@@ -345,20 +346,20 @@ async function migrate() {
           tangible_proof = '12 modules, 48 video lessen, 4 exclusieve AI tools'
         WHERE id = ${programId}
       `;
-      console.log(`  ✓ Bestaand Transformatie programma geüpdatet (ID: ${programId})`);
+      logger.log(`  ✓ Bestaand Transformatie programma geüpdatet (ID: ${programId})`);
     }
 
     // Step 2: Create module tables
-    console.log('\n📊 Stap 2: Tabellen aanmaken...');
+    logger.log('\n📊 Stap 2: Tabellen aanmaken...');
 
     // Drop existing tables (cascade)
     try {
       await sql`DROP TABLE IF EXISTS transformatie_lesson_progress CASCADE`;
       await sql`DROP TABLE IF EXISTS transformatie_lessons CASCADE`;
       await sql`DROP TABLE IF EXISTS transformatie_modules CASCADE`;
-      console.log('  ✓ Oude tabellen verwijderd (indien aanwezig)');
+      logger.log('  ✓ Oude tabellen verwijderd (indien aanwezig)');
     } catch (err: any) {
-      console.log('  ⚠️ Drop tables warning:', err.message?.substring(0, 50));
+      logger.log('  ⚠️ Drop tables warning:', err.message?.substring(0, 50));
     }
 
     // Create transformatie_modules table
@@ -383,7 +384,7 @@ async function migrate() {
         UNIQUE(program_id, slug)
       )
     `;
-    console.log('  ✓ transformatie_modules tabel aangemaakt');
+    logger.log('  ✓ transformatie_modules tabel aangemaakt');
 
     // Create transformatie_lessons table
     await sql`
@@ -407,7 +408,7 @@ async function migrate() {
         UNIQUE(module_id, slug)
       )
     `;
-    console.log('  ✓ transformatie_lessons tabel aangemaakt');
+    logger.log('  ✓ transformatie_lessons tabel aangemaakt');
 
     // Create progress tracking table
     await sql`
@@ -427,7 +428,7 @@ async function migrate() {
         UNIQUE(user_id, lesson_id)
       )
     `;
-    console.log('  ✓ transformatie_lesson_progress tabel aangemaakt');
+    logger.log('  ✓ transformatie_lesson_progress tabel aangemaakt');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_transformatie_modules_program_id ON transformatie_modules(program_id)`;
@@ -435,10 +436,10 @@ async function migrate() {
     await sql`CREATE INDEX IF NOT EXISTS idx_transformatie_lessons_module_id ON transformatie_lessons(module_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_transformatie_lesson_progress_user_id ON transformatie_lesson_progress(user_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_transformatie_lesson_progress_lesson_id ON transformatie_lesson_progress(lesson_id)`;
-    console.log('  ✓ Indexes aangemaakt');
+    logger.log('  ✓ Indexes aangemaakt');
 
     // Step 3: Create AI Tool tables
-    console.log('\n📊 Stap 3: AI Tool tabellen aanmaken...');
+    logger.log('\n📊 Stap 3: AI Tool tabellen aanmaken...');
 
     // Vibe Check results
     await sql`
@@ -452,7 +453,7 @@ async function migrate() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('  ✓ vibe_check_results tabel aangemaakt');
+    logger.log('  ✓ vibe_check_results tabel aangemaakt');
 
     // Energie Batterij logs
     await sql`
@@ -466,7 +467,7 @@ async function migrate() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('  ✓ energie_batterij_logs tabel aangemaakt');
+    logger.log('  ✓ energie_batterij_logs tabel aangemaakt');
 
     // 36 Vragen sessions
     await sql`
@@ -482,7 +483,7 @@ async function migrate() {
         updated_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('  ✓ vragen_36_sessions tabel aangemaakt');
+    logger.log('  ✓ vragen_36_sessions tabel aangemaakt');
 
     // Ghosting Reframer sessions
     await sql`
@@ -498,10 +499,10 @@ async function migrate() {
         updated_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('  ✓ ghosting_reframe_sessions tabel aangemaakt');
+    logger.log('  ✓ ghosting_reframe_sessions tabel aangemaakt');
 
     // Step 4: Seed modules and lessons
-    console.log('\n📝 Stap 4: Modules en lessen seeden...');
+    logger.log('\n📝 Stap 4: Modules en lessen seeden...');
 
     for (const module of courseStructure.modules) {
       // Insert module
@@ -521,7 +522,7 @@ async function migrate() {
       `;
 
       const moduleId = insertedModule.rows[0].id;
-      console.log(`  ✓ Module ${module.order}: ${module.title} (${module.phase})`);
+      logger.log(`  ✓ Module ${module.order}: ${module.title} (${module.phase})`);
 
       // Insert lessons
       for (const lesson of module.lessons) {
@@ -542,12 +543,12 @@ async function migrate() {
             ${module.order <= 4}
           )
         `;
-        console.log(`    ✓ Les ${lesson.order}: ${lesson.title}`);
+        logger.log(`    ✓ Les ${lesson.order}: ${lesson.title}`);
       }
     }
 
     // Step 5: Verify
-    console.log('\n🔍 Stap 5: Verificatie...');
+    logger.log('\n🔍 Stap 5: Verificatie...');
 
     const modulesCount = await sql`
       SELECT COUNT(*) as count FROM transformatie_modules
@@ -565,16 +566,16 @@ async function migrate() {
       WHERE program_id = ${programId} AND is_published = true
     `;
 
-    console.log(`  • ${modulesCount.rows[0].count} modules aangemaakt`);
-    console.log(`  • ${lessonsCount.rows[0].count} lessen aangemaakt`);
-    console.log(`  • ${publishedModules.rows[0].count} modules gepubliceerd (Wave 1: DESIGN fase)`);
+    logger.log(`  • ${modulesCount.rows[0].count} modules aangemaakt`);
+    logger.log(`  • ${lessonsCount.rows[0].count} lessen aangemaakt`);
+    logger.log(`  • ${publishedModules.rows[0].count} modules gepubliceerd (Wave 1: DESIGN fase)`);
 
-    console.log('\n✅ Migratie voltooid!');
-    console.log('\n📌 Next steps:');
-    console.log('  1. Bouw de 4 AI tool routes');
-    console.log('  2. Voeg tools toe aan routing.ts');
-    console.log('  3. Update access-control.ts');
-    console.log('  4. Bouw dashboard componenten');
+    logger.log('\n✅ Migratie voltooid!');
+    logger.log('\n📌 Next steps:');
+    logger.log('  1. Bouw de 4 AI tool routes');
+    logger.log('  2. Voeg tools toe aan routing.ts');
+    logger.log('  3. Update access-control.ts');
+    logger.log('  4. Bouw dashboard componenten');
 
   } catch (error) {
     console.error('\n❌ Migratie mislukt:', error);

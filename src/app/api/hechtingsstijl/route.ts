@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { openRouter, OPENROUTER_MODELS } from '@/lib/openrouter';
@@ -143,8 +144,8 @@ export async function POST(request: NextRequest) {
       }
 
       try {
-        console.log('📊 Starting assessment submission...');
-        console.log('Assessment ID:', assessmentId, 'User ID:', userId);
+        logger.log('📊 Starting assessment submission...');
+        logger.log('Assessment ID:', assessmentId, 'User ID:', userId);
 
         // Retrieve assessment to get microIntake data
         const assessmentQuery = await sql`
@@ -164,7 +165,7 @@ export async function POST(request: NextRequest) {
           );
         }
 
-        console.log('✅ Assessment found:', assessmentQuery.rows[0]);
+        logger.log('✅ Assessment found:', assessmentQuery.rows[0]);
 
         // Reconstruct microIntake from database
         const assessmentData = assessmentQuery.rows[0];
@@ -174,24 +175,24 @@ export async function POST(request: NextRequest) {
           stressNiveau: assessmentData.stress_niveau
         };
 
-        console.log('📋 MicroIntake:', retrievedMicroIntake);
+        logger.log('📋 MicroIntake:', retrievedMicroIntake);
 
         // Calculate scores based on responses
-        console.log('🧮 Calculating scores...');
+        logger.log('🧮 Calculating scores...');
         const scores = calculateAttachmentScores(responses);
-        console.log('✅ Scores calculated:', scores);
+        logger.log('✅ Scores calculated:', scores);
 
         // Calculate validity metrics and confidence
-        console.log('📈 Calculating validity metrics...');
+        logger.log('📈 Calculating validity metrics...');
         const validity = calculateValidityMetrics(responses);
-        console.log('✅ Validity metrics:', validity);
+        logger.log('✅ Validity metrics:', validity);
 
         // Generate AI analysis with retrieved microIntake
-        console.log('🤖 Generating AI analysis...');
+        logger.log('🤖 Generating AI analysis...');
         let aiAnalysis;
         try {
           aiAnalysis = await generateAIAnalysis(scores, retrievedMicroIntake);
-          console.log('✅ AI analysis generated');
+          logger.log('✅ AI analysis generated');
         } catch (aiError: any) {
           console.error('⚠️ AI analysis failed, using fallback:', aiError.message);
           // Use fallback analysis if AI fails
@@ -800,7 +801,7 @@ BELANGRIJK:
       parsedData = JSON.parse(cleanedResponse);
     } catch (parseError) {
       console.error('Failed to parse AI response as JSON:', parseError);
-      console.log('Raw response:', response);
+      logger.log('Raw response:', response);
       throw new Error('AI returned invalid JSON');
     }
 

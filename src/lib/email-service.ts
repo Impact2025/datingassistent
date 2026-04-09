@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Email Service - World-Class Email System for DatingAssistent
  * Uses Resend + React Email templates for beautiful, responsive emails
@@ -35,6 +36,19 @@ interface EmailData {
   subject: string;
   text?: string;
   html?: string;
+  headers?: Record<string, string>;
+}
+
+/**
+ * Genereer List-Unsubscribe headers voor marketing-e-mails (Telecomwet art. 11.7)
+ */
+function getUnsubscribeHeaders(email: string): Record<string, string> {
+  const encodedEmail = encodeURIComponent(email);
+  const unsubUrl = `${BASE_URL}/api/newsletter/unsubscribe?email=${encodedEmail}`;
+  return {
+    'List-Unsubscribe': `<${unsubUrl}>, <mailto:uitschrijven@datingassistent.nl?subject=uitschrijven>`,
+    'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+  };
 }
 
 /**
@@ -44,12 +58,12 @@ export async function sendEmail(emailData: EmailData): Promise<boolean> {
   try {
     if (!resend || !process.env.RESEND_API_KEY) {
       console.warn('🔧 Resend API key not configured. Email logged instead of sent.');
-      console.log('📧 EMAIL NOT SENT (Resend not configured) - Email content:');
-      console.log('To:', emailData.to);
-      console.log('From:', emailData.from || FROM_EMAIL);
-      console.log('Subject:', emailData.subject);
-      console.log('Text preview:', emailData.text?.substring(0, 200) + '...');
-      console.log('---');
+      logger.log('📧 EMAIL NOT SENT (Resend not configured) - Email content:');
+      logger.log('To:', emailData.to);
+      logger.log('From:', emailData.from || FROM_EMAIL);
+      logger.log('Subject:', emailData.subject);
+      logger.log('Text preview:', emailData.text?.substring(0, 200) + '...');
+      logger.log('---');
       return true; // Return true for development/testing
     }
 
@@ -59,6 +73,7 @@ export async function sendEmail(emailData: EmailData): Promise<boolean> {
       subject: emailData.subject,
       ...(emailData.html && { html: emailData.html }),
       ...(emailData.text && { text: emailData.text }),
+      ...(emailData.headers && { headers: emailData.headers }),
     });
 
     if (result.error) {
@@ -66,7 +81,7 @@ export async function sendEmail(emailData: EmailData): Promise<boolean> {
       return false;
     }
 
-    console.log(`✅ Email sent successfully to ${emailData.to} (ID: ${result.data?.id})`);
+    logger.log(`✅ Email sent successfully to ${emailData.to} (ID: ${result.data?.id})`);
     return true;
   } catch (error) {
     console.error('❌ Error sending email:', error);
@@ -606,6 +621,7 @@ P.S. Reply op deze mail met je grootste dating frustratie. Ik lees alles persoon
       subject: `${firstName}, je Dating Patroon is: ${patternTitle}`,
       html,
       text: textContent,
+      headers: getUnsubscribeHeaders(userEmail),
     });
   } catch (error) {
     console.error('Error rendering pattern quiz result email:', error);
@@ -649,6 +665,7 @@ export async function sendPatternQuizNurtureEmail(
       from: FROM_EMAIL,
       subject: subjects[day],
       html,
+      headers: getUnsubscribeHeaders(userEmail),
     });
   } catch (error) {
     console.error(`Error rendering pattern quiz nurture email (day ${day}):`, error);
@@ -666,11 +683,11 @@ export async function sendTextEmail(
 ): Promise<boolean> {
   // If Resend is not configured, log the email content instead of sending
   if (!resend || !process.env.RESEND_API_KEY) {
-    console.log('📧 EMAIL NOT SENT (Resend not configured) - Email content:');
-    console.log('To:', to);
-    console.log('Subject:', subject);
-    console.log('Text:', text.substring(0, 200) + '...');
-    console.log('---');
+    logger.log('📧 EMAIL NOT SENT (Resend not configured) - Email content:');
+    logger.log('To:', to);
+    logger.log('Subject:', subject);
+    logger.log('Text:', text.substring(0, 200) + '...');
+    logger.log('---');
     return true; // Return true for development/testing
   }
 

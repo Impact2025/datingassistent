@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { logAdminAction } from '@/lib/admin-audit';
@@ -115,7 +116,7 @@ export async function POST(request: NextRequest) {
 
         case 'all-jobs':
           // Run all jobs (for testing)
-          console.log('Running all cron jobs...');
+          logger.log('Running all cron jobs...');
 
           const results = await Promise.allSettled([
             CronJobsService.runMonthlyJobs(),

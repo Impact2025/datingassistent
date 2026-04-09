@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -53,7 +54,7 @@ export async function GET() {
     await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_metrics_metric_name ON ab_test_metrics(metric_name);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_metrics_recorded_at ON ab_test_metrics(recorded_at);`;
 
-    console.log('✅ A/B testing database tables initialized successfully');
+    logger.log('✅ A/B testing database tables initialized successfully');
 
     return NextResponse.json({
       success: true,

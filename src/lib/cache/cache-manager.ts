@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Advanced caching manager for DatingAssistent
  * Implements multiple caching strategies for optimal performance
@@ -127,7 +128,7 @@ class CacheManager {
         this.set(key, data, ttl);
       }
 
-      console.log(`Cache warmed up with ${warmupData.length} entries`);
+      logger.log(`Cache warmed up with ${warmupData.length} entries`);
     } catch (error) {
       console.error('Cache warmup failed:', error);
     }

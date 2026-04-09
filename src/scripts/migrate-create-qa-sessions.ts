@@ -9,6 +9,7 @@
 
 import { config } from 'dotenv';
 import { resolve } from 'path';
+import { logger } from '@/lib/logger';
 
 // Load environment variables from .env.local
 config({ path: resolve(process.cwd(), '.env.local') });
@@ -16,7 +17,7 @@ config({ path: resolve(process.cwd(), '.env.local') });
 import { sql } from '@vercel/postgres';
 
 async function migrate() {
-  console.log('🚀 Creating qa_sessions table...');
+  logger.log('🚀 Creating qa_sessions table...');
 
   try {
     // Create qa_sessions table
@@ -40,7 +41,7 @@ async function migrate() {
       )
     `;
 
-    console.log('✅ qa_sessions table created');
+    logger.log('✅ qa_sessions table created');
 
     // Create index on session_date for fast queries
     await sql`
@@ -48,7 +49,7 @@ async function migrate() {
       ON qa_sessions(session_date DESC)
     `;
 
-    console.log('✅ Index created on session_date');
+    logger.log('✅ Index created on session_date');
 
     // Create index on program for filtering
     await sql`
@@ -56,7 +57,7 @@ async function migrate() {
       ON qa_sessions(program)
     `;
 
-    console.log('✅ Index created on program');
+    logger.log('✅ Index created on program');
 
     // Insert sample Q&A session for testing
     const now = new Date();
@@ -86,13 +87,13 @@ async function migrate() {
       ON CONFLICT DO NOTHING
     `;
 
-    console.log('✅ Sample Q&A session inserted');
+    logger.log('✅ Sample Q&A session inserted');
 
-    console.log('\n🎉 Migration completed successfully!');
-    console.log('\nNext steps:');
-    console.log('1. Add real Zoom links via admin panel');
-    console.log('2. Schedule sessions for week 1, 6, and 12');
-    console.log('3. Test the calendar view in Transformatie dashboard');
+    logger.log('\n🎉 Migration completed successfully!');
+    logger.log('\nNext steps:');
+    logger.log('1. Add real Zoom links via admin panel');
+    logger.log('2. Schedule sessions for week 1, 6, and 12');
+    logger.log('3. Test the calendar view in Transformatie dashboard');
 
   } catch (error) {
     console.error('❌ Migration failed:', error);
@@ -102,7 +103,7 @@ async function migrate() {
 
 migrate()
   .then(() => {
-    console.log('✨ Migration script completed');
+    logger.log('✨ Migration script completed');
     process.exit(0);
   })
   .catch((error) => {

@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -239,7 +240,7 @@ export function SkillsAssessment() {
         });
 
         if (stepResponse.ok && updateResponse.ok) {
-          console.log('✅ Coaching profile updated with personality scan completion');
+          logger.log('✅ Coaching profile updated with personality scan completion');
           // Trigger a page reload after a short delay to show the updated dashboard
           setTimeout(() => {
             window.location.reload();

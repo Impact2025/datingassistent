@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * COMPREHENSIVE TESTING & PERFORMANCE OPTIMIZATION SYSTEM
  * Enterprise-grade testing suite and performance optimization
@@ -182,7 +183,9 @@ export class ComprehensiveTestingOptimization {
     const metrics: Record<string, number> = {};
 
     // Override console.log to capture logs
+    // eslint-disable-next-line no-console
     const originalLog = console.log;
+    // eslint-disable-next-line no-console
     console.log = (...args) => {
       logs.push(args.join(' '));
       originalLog(...args);
@@ -207,6 +210,7 @@ export class ComprehensiveTestingOptimization {
       error = err instanceof Error ? err.message : String(err);
       metrics.executionTime = Date.now() - startTime;
     } finally {
+      // eslint-disable-next-line no-console
       console.log = originalLog; // Restore original console.log
     }
 
@@ -397,24 +401,24 @@ export class ComprehensiveTestingOptimization {
     switch (recommendation.component) {
       case 'ai-cache':
         // Optimize cache settings
-        console.log('🔧 Applying AI cache optimization...');
+        logger.log('🔧 Applying AI cache optimization...');
         // Implementation would adjust cache TTL, size limits, etc.
         break;
 
       case 'personalization-engine':
         // Optimize personalization queries
-        console.log('🔧 Applying personalization optimization...');
+        logger.log('🔧 Applying personalization optimization...');
         // Implementation would add database indexes, query optimization, etc.
         break;
 
       case 'conversation-intelligence':
         // Optimize conversation processing
-        console.log('🔧 Applying conversation optimization...');
+        logger.log('🔧 Applying conversation optimization...');
         // Implementation would adjust processing pipelines, caching, etc.
         break;
 
       default:
-        console.log(`🔧 Applying general optimization for ${recommendation.component}...`);
+        logger.log(`🔧 Applying general optimization for ${recommendation.component}...`);
     }
   }
 
@@ -522,7 +526,7 @@ export class ComprehensiveTestingOptimization {
   }> {
     const startTime = Date.now();
 
-    console.log('🚀 Starting CI checks...');
+    logger.log('🚀 Starting CI checks...');
 
     // Run critical tests
     const criticalSuites = ['ai-service-tests', 'integration-tests'];
@@ -554,7 +558,7 @@ export class ComprehensiveTestingOptimization {
                    Array.from(testResults.values()).every(r => r.summary.successRate >= 0.9) &&
                    Array.from(performanceResults.values()).every(r => r.errorRate < 0.1);
 
-    console.log(`✅ CI checks completed in ${duration}ms - ${passed ? 'PASSED' : 'FAILED'}`);
+    logger.log(`✅ CI checks completed in ${duration}ms - ${passed ? 'PASSED' : 'FAILED'}`);
 
     return {
       passed,
@@ -842,7 +846,7 @@ comprehensiveTestingOptimization['initializePerformanceBenchmarks']?.();
 // Schedule automated testing
 setInterval(async () => {
   try {
-    console.log('🧪 Running automated health checks...');
+    logger.log('🧪 Running automated health checks...');
     const healthCheck = await comprehensiveTestingOptimization.runSystemHealthCheck();
 
     if (healthCheck.overallHealth === 'critical') {
@@ -851,7 +855,7 @@ setInterval(async () => {
     } else if (healthCheck.overallHealth === 'warning') {
       console.warn('⚠️ WARNING: System health needs attention');
     } else {
-      console.log('✅ System health is good');
+      logger.log('✅ System health is good');
     }
   } catch (error) {
     console.error('Failed to run automated health checks:', error);

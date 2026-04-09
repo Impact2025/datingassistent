@@ -11,6 +11,7 @@ import { notifyAdminNewLead } from '@/lib/admin-notifications';
 import { getJWTSecret } from '@/lib/jwt-secret';
 import { validatePassword, getPasswordErrorMessage } from '@/lib/password-validation';
 import { signToken, cookieConfig } from '@/lib/jwt-config';
+import { logger } from '@/lib/logger';
 
 const JWT_SECRET = getJWTSecret();
 
@@ -34,18 +35,21 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { name, email, password, plan, needsPasswordSetup } = await request.json();
+    const { name, email, password: rawPassword, plan, needsPasswordSetup, marketingConsent = false } = await request.json();
+    // When password is empty (passwordless registration), generate a secure random one
+    const password = rawPassword || require('crypto').randomBytes(32).toString('hex');
 
     // Validate input
-    if (!name || !email || !password) {
+    if (!name || !email) {
       return NextResponse.json(
-        { error: 'Name, email, and password are required' },
+        { error: 'Name and email are required' },
         { status: 400 }
       );
     }
 
-    // Quiz users use an auto-generated password — skip strict validation
-    if (!needsPasswordSetup) {
+    // Only validate password strength when a real password was explicitly provided
+    // (i.e. not passwordless registration and not quiz/needsPasswordSetup flow)
+    if (rawPassword && !needsPasswordSetup) {
       const passwordValidation = validatePassword(password);
       if (!passwordValidation.isValid) {
         return NextResponse.json(
@@ -103,13 +107,20 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Store marketing consent preference (AVG art. 6 lid 1 sub a)
+    await sql`
+      INSERT INTO email_preferences (user_id, marketing_emails)
+      VALUES (${user.id}, ${marketingConsent})
+      ON CONFLICT (user_id) DO UPDATE SET marketing_emails = ${marketingConsent}
+    `.catch(() => {}); // Non-critical — don't block registration
+
     // Start progressive trial for Pro plan signups
     if (plan === 'pro') {
       await startProgressiveTrial(user.id);
-      console.log(`✅ Started 3-day progressive trial for user ${user.id}`);
+      logger.log(`✅ Started 3-day progressive trial for user ${user.id}`);
     }
 
-    console.log(`✅ User ${user.id} created, verification email sent to ${user.email}`);
+    logger.log(`✅ User ${user.id} created, verification email sent to ${user.email}`);
 
     // Send admin notification (non-blocking)
     notifyAdminNewLead({

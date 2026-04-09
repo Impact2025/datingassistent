@@ -55,6 +55,7 @@
  */
 
 import type { AttachmentStyle } from '@/types/dating-snapshot.types';
+import { logger } from '@/lib/logger';
 
 // =====================================================
 // TYPES
@@ -338,9 +339,9 @@ function calculateConfidence(
  *   attachment_q7_closeness: 4,
  * });
  *
- * console.log(result.style); // 'anxious'
- * console.log(result.confidence); // 78
- * console.log(result.dimensions.anxiety); // 13
+ * logger.log(result.style); // 'anxious'
+ * logger.log(result.confidence); // 78
+ * logger.log(result.dimensions.anxiety); // 13
  * ```
  */
 export function calculateAttachmentStyle(

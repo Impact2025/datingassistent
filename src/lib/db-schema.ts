@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 
 /**
@@ -1119,13 +1120,13 @@ export async function initializeDatabase() {
       await sql`CREATE TRIGGER update_waarden_results_updated_at BEFORE UPDATE ON waarden_kompas_results FOR EACH ROW EXECUTE FUNCTION update_waarden_updated_at_column()`;
       await sql`CREATE TRIGGER update_waarden_integrations_updated_at BEFORE UPDATE ON waarden_kompas_integrations FOR EACH ROW EXECUTE FUNCTION update_waarden_updated_at_column()`;
 
-      console.log('Waarden Kompas tables created successfully');
+      logger.log('Waarden Kompas tables created successfully');
     } catch (waardenError) {
       console.error('Error creating Waarden Kompas tables:', waardenError);
       // Continue with other tables even if Waarden Kompas fails
     }
 
-    console.log('Database schema initialized successfully');
+    logger.log('Database schema initialized successfully');
     return { success: true };
   } catch (error) {
     console.error('Error initializing database schema:', error);
@@ -1148,7 +1149,7 @@ export async function dropAllTables() {
     await sql`DROP TABLE IF EXISTS user_profiles CASCADE`;
     await sql`DROP TABLE IF EXISTS users CASCADE`;
 
-    console.log('All tables dropped successfully');
+    logger.log('All tables dropped successfully');
     return { success: true };
   } catch (error) {
     console.error('Error dropping tables:', error);

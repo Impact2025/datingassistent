@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { createCoupon, getAllCoupons } from '@/lib/coupon-service';
 import { checkAdminAuth } from '@/lib/admin-auth';
@@ -7,18 +8,18 @@ export const dynamic = 'force-dynamic';
 // GET /api/admin/coupons - Get all coupons
 export async function GET() {
   try {
-    console.log('GET /api/admin/coupons called');
+    logger.log('GET /api/admin/coupons called');
 
     // Verify admin authentication
     const authResult = await checkAdminAuth();
-    console.log('Auth result:', authResult);
+    logger.log('Auth result:', authResult);
 
     if (!authResult.isAdmin) {
       return NextResponse.json({ error: 'Not authorized' }, { status: 401 });
     }
 
     const coupons = await getAllCoupons();
-    console.log('Coupons fetched:', coupons.length);
+    logger.log('Coupons fetched:', coupons.length);
     
     // Ensure we always return an array
     return NextResponse.json(Array.isArray(coupons) ? coupons : []);
@@ -32,18 +33,18 @@ export async function GET() {
 // POST /api/admin/coupons - Create a new coupon
 export async function POST(request: Request) {
   try {
-    console.log('POST /api/admin/coupons called');
+    logger.log('POST /api/admin/coupons called');
 
     // Verify admin authentication
     const authResult = await checkAdminAuth();
-    console.log('Auth result:', authResult);
+    logger.log('Auth result:', authResult);
 
     if (!authResult.isAdmin) {
       return NextResponse.json({ error: 'Not authorized' }, { status: 401 });
     }
 
     const body = await request.json();
-    console.log('Request body:', body);
+    logger.log('Request body:', body);
     
     // Validate required fields
     if (!body.code || !body.package_type || !body.discount_type || body.discount_value === undefined) {

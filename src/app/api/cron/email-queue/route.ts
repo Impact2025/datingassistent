@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Cron Job: Process Email Queue
  * Runs hourly to send scheduled emails
@@ -14,18 +15,22 @@ export async function GET(request: Request) {
   try {
     // Verify cron secret (security)
     const authHeader = request.headers.get('authorization');
-    const cronSecret = process.env.CRON_SECRET || 'dev_secret';
+    const cronSecret = process.env.CRON_SECRET;
+
+    if (!cronSecret) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     if (authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    console.log('🤖 [CRON] Starting email queue processing...');
+    logger.log('🤖 [CRON] Starting email queue processing...');
 
     // Process email queue
     await processEmailQueue();
 
-    console.log('✅ [CRON] Email queue processing completed');
+    logger.log('✅ [CRON] Email queue processing completed');
 
     return NextResponse.json({
       success: true,

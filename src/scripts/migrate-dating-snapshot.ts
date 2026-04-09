@@ -10,15 +10,16 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 async function migrateDatingSnapshot() {
-  console.log('🚀 Starting Dating Snapshot migration...\n');
+  logger.log('🚀 Starting Dating Snapshot migration...\n');
 
   try {
     // =====================================================
     // STEP 1: CREATE MAIN ONBOARDING PROFILES TABLE
     // =====================================================
-    console.log('📊 Creating user_onboarding_profiles table...');
+    logger.log('📊 Creating user_onboarding_profiles table...');
 
     await sql`
       CREATE TABLE IF NOT EXISTS user_onboarding_profiles (
@@ -120,24 +121,24 @@ async function migrateDatingSnapshot() {
         UNIQUE(user_id)
       )
     `;
-    console.log('✅ user_onboarding_profiles table created\n');
+    logger.log('✅ user_onboarding_profiles table created\n');
 
     // =====================================================
     // STEP 2: CREATE INDEXES
     // =====================================================
-    console.log('🔍 Creating indexes...');
+    logger.log('🔍 Creating indexes...');
 
     await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_profiles_user ON user_onboarding_profiles(user_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_profiles_complete ON user_onboarding_profiles(is_complete)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_profiles_energy ON user_onboarding_profiles(energy_profile)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_profiles_attachment ON user_onboarding_profiles(attachment_style_predicted)`;
 
-    console.log('✅ Indexes created\n');
+    logger.log('✅ Indexes created\n');
 
     // =====================================================
     // STEP 3: CREATE ANSWER LOG TABLE
     // =====================================================
-    console.log('📝 Creating user_onboarding_answers table...');
+    logger.log('📝 Creating user_onboarding_answers table...');
 
     await sql`
       CREATE TABLE IF NOT EXISTS user_onboarding_answers (
@@ -163,12 +164,12 @@ async function migrateDatingSnapshot() {
     await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_answers_user ON user_onboarding_answers(user_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_onboarding_answers_section ON user_onboarding_answers(section_id)`;
 
-    console.log('✅ user_onboarding_answers table created\n');
+    logger.log('✅ user_onboarding_answers table created\n');
 
     // =====================================================
     // STEP 4: CREATE WELCOME TEMPLATES TABLE
     // =====================================================
-    console.log('💌 Creating onboarding_welcome_templates table...');
+    logger.log('💌 Creating onboarding_welcome_templates table...');
 
     await sql`
       CREATE TABLE IF NOT EXISTS onboarding_welcome_templates (
@@ -184,12 +185,12 @@ async function migrateDatingSnapshot() {
       )
     `;
 
-    console.log('✅ onboarding_welcome_templates table created\n');
+    logger.log('✅ onboarding_welcome_templates table created\n');
 
     // =====================================================
     // STEP 5: INSERT DEFAULT WELCOME TEMPLATES
     // =====================================================
-    console.log('📨 Inserting welcome message templates...');
+    logger.log('📨 Inserting welcome message templates...');
 
     // Check if templates exist
     const existingTemplates = await sql`
@@ -294,15 +295,15 @@ Iris',
         )
       `;
 
-      console.log('✅ Welcome templates inserted\n');
+      logger.log('✅ Welcome templates inserted\n');
     } else {
-      console.log('⏭️ Welcome templates already exist, skipping\n');
+      logger.log('⏭️ Welcome templates already exist, skipping\n');
     }
 
     // =====================================================
     // STEP 6: CREATE SCORE CALCULATION FUNCTIONS
     // =====================================================
-    console.log('🧮 Creating score calculation functions...');
+    logger.log('🧮 Creating score calculation functions...');
 
     // Drop existing functions first to avoid conflicts
     await sql`DROP FUNCTION IF EXISTS calculate_introvert_score(INTEGER, INTEGER, VARCHAR, INTEGER)`;
@@ -363,12 +364,12 @@ Iris',
       $$ LANGUAGE plpgsql
     `;
 
-    console.log('✅ Score calculation functions created\n');
+    logger.log('✅ Score calculation functions created\n');
 
     // =====================================================
     // STEP 7: MIGRATE EXISTING TRANSFORMATIE ONBOARDING DATA
     // =====================================================
-    console.log('🔄 Migrating existing transformatie_onboarding data...');
+    logger.log('🔄 Migrating existing transformatie_onboarding data...');
 
     const existingOnboarding = await sql`
       SELECT user_id, data, completed_at
@@ -412,22 +413,22 @@ Iris',
       }
     }
 
-    console.log(`✅ Migrated ${migratedCount} existing onboarding profiles\n`);
+    logger.log(`✅ Migrated ${migratedCount} existing onboarding profiles\n`);
 
     // =====================================================
     // DONE
     // =====================================================
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('🎉 Dating Snapshot migration completed successfully!');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('\nTables created:');
-    console.log('  • user_onboarding_profiles');
-    console.log('  • user_onboarding_answers');
-    console.log('  • onboarding_welcome_templates');
-    console.log('\nFunctions created:');
-    console.log('  • calculate_introvert_score()');
-    console.log('  • determine_energy_profile()');
-    console.log(`\nMigrated: ${migratedCount} existing profiles`);
+    logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    logger.log('🎉 Dating Snapshot migration completed successfully!');
+    logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    logger.log('\nTables created:');
+    logger.log('  • user_onboarding_profiles');
+    logger.log('  • user_onboarding_answers');
+    logger.log('  • onboarding_welcome_templates');
+    logger.log('\nFunctions created:');
+    logger.log('  • calculate_introvert_score()');
+    logger.log('  • determine_energy_profile()');
+    logger.log(`\nMigrated: ${migratedCount} existing profiles`);
 
   } catch (error) {
     console.error('❌ Migration failed:', error);

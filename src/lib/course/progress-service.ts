@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 
 // Types
@@ -407,7 +408,7 @@ export class ProgressService {
   private static async checkAndAwardAchievements(userId: number, courseId: number): Promise<void> {
     // This will be implemented in Phase 4
     // For now, just log completion
-    console.log(`User ${userId} completed course ${courseId}`);
+    logger.log(`User ${userId} completed course ${courseId}`);
   }
 
   /**

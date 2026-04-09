@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 /**
  * Database Migration API: Pattern Quiz Results
@@ -10,7 +11,7 @@ import { sql } from '@vercel/postgres';
 
 export async function GET() {
   try {
-    console.log('Starting Pattern Quiz migration...');
+    logger.log('Starting Pattern Quiz migration...');
 
     // Create the pattern_quiz_results table
     await sql`
@@ -35,7 +36,7 @@ export async function GET() {
         result_email_sent_at TIMESTAMP
       )
     `;
-    console.log('Created pattern_quiz_results table');
+    logger.log('Created pattern_quiz_results table');
 
     // Create indexes
     await sql`
@@ -53,7 +54,7 @@ export async function GET() {
       ON pattern_quiz_results(completed_at)
     `;
 
-    console.log('Created indexes');
+    logger.log('Created indexes');
 
     return NextResponse.json({
       success: true,

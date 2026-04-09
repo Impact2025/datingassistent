@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,7 +52,7 @@ export function CoachAdvice({ advice, onComplete }: CoachAdviceProps) {
   // Track coach advice view
   useEffect(() => {
     try {
-      console.log('📊 Tracking coach advice view...');
+      logger.log('📊 Tracking coach advice view...');
       // We don't need to wait for this to complete
       fetch('/api/activity/track', {
         method: 'POST',

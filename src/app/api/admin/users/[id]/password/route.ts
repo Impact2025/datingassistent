@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcryptjs';
@@ -41,7 +42,7 @@ export async function PUT(
 
     // TODO: Send notification email if requested
     if (sendNotification) {
-      console.log(`Password change notification would be sent for user ${targetUserId}`);
+      logger.log(`Password change notification would be sent for user ${targetUserId}`);
     }
 
     return NextResponse.json({ message: 'Password changed successfully' });

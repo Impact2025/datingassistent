@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating AI relationship coach dashboard tables...');
+    logger.log('Creating AI relationship coach dashboard tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -38,7 +39,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created relationship_coach_profiles table');
+    logger.log('✅ Created relationship_coach_profiles table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_coach_insights (
@@ -82,7 +83,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created relationship_coach_insights table');
+    logger.log('✅ Created relationship_coach_insights table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_coach_plans (
@@ -129,7 +130,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created relationship_coach_plans table');
+    logger.log('✅ Created relationship_coach_plans table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_coach_progress (
@@ -169,7 +170,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created relationship_coach_progress table');
+    logger.log('✅ Created relationship_coach_progress table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_coach_sessions (
@@ -204,7 +205,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created relationship_coach_sessions table');
+    logger.log('✅ Created relationship_coach_sessions table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_coach_analytics (
@@ -238,7 +239,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created relationship_coach_analytics table');
+    logger.log('✅ Created relationship_coach_analytics table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_relationship_coach_profiles_user_id ON relationship_coach_profiles(user_id);`;
@@ -247,7 +248,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_relationship_coach_progress_user_id ON relationship_coach_progress(user_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_relationship_coach_sessions_user_id ON relationship_coach_sessions(user_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_relationship_coach_analytics_user_id ON relationship_coach_analytics(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     return NextResponse.json({
       success: true,

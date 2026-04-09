@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * In-App Notification Service
  * Handles notifications that appear within the application
@@ -293,7 +294,7 @@ export async function cleanupExpiredNotifications(): Promise<number> {
       WHERE expires_at IS NOT NULL AND expires_at < NOW()
     `;
 
-    console.log(`🧹 Cleaned up ${result.rowCount} expired notifications`);
+    logger.log(`🧹 Cleaned up ${result.rowCount} expired notifications`);
     return result.rowCount;
   } catch (error) {
     console.error('Error cleaning up expired notifications:', error);

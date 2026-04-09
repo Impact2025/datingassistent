@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * AI Context Manager - Cross-tool memory system
  * Manages user preferences, personality data, and AI insights across all tools
@@ -188,7 +189,7 @@ export class AIContextManager {
     try {
       // For development, return a basic context if database is not available
       if (process.env.NODE_ENV === 'development' && !process.env.POSTGRES_URL) {
-        console.log('⚠️ Database not configured in development, returning basic context');
+        logger.log('⚠️ Database not configured in development, returning basic context');
         return {
           userId,
           communicationStyle: 'casual',
@@ -270,7 +271,7 @@ export class AIContextManager {
     try {
       // For development, skip database save if not configured
       if (process.env.NODE_ENV === 'development' && !process.env.POSTGRES_URL) {
-        console.log(`⚠️ Database not configured in development, skipping AI context save for user ${userId}`);
+        logger.log(`⚠️ Database not configured in development, skipping AI context save for user ${userId}`);
         return;
       }
 
@@ -294,7 +295,7 @@ export class AIContextManager {
         WHERE id = ${userId}
       `;
 
-      console.log(`✅ AI context saved for user ${userId}`);
+      logger.log(`✅ AI context saved for user ${userId}`);
     } catch (error) {
       console.error('Error saving user AI context:', error);
       // Don't throw error in development to prevent breaking functionality
@@ -335,7 +336,7 @@ export class AIContextManager {
     try {
       // For development, skip tracking if database is not configured
       if (process.env.NODE_ENV === 'development' && !process.env.POSTGRES_URL) {
-        console.log(`⚠️ Database not configured in development, skipping tool usage tracking for ${toolName}`);
+        logger.log(`⚠️ Database not configured in development, skipping tool usage tracking for ${toolName}`);
         return;
       }
 
@@ -578,7 +579,7 @@ export class AIContextManager {
       }
 
       await this.saveUserContext(userId, context);
-      console.log(`✅ AI context initialized for user ${userId}`);
+      logger.log(`✅ AI context initialized for user ${userId}`);
     } catch (error) {
       console.error('Error initializing AI context:', error);
     }
@@ -642,7 +643,7 @@ export class AIContextManager {
         relationshipPatterns: r.relationship_patterns ? (typeof r.relationship_patterns === 'string' ? JSON.parse(r.relationship_patterns) : r.relationship_patterns) : []
       };
     } catch (error) {
-      console.log('No Hechtingsstijl data found or table does not exist');
+      logger.log('No Hechtingsstijl data found or table does not exist');
       return null;
     }
   }
@@ -690,7 +691,7 @@ export class AIContextManager {
         microExercises: r.micro_exercises ? (typeof r.micro_exercises === 'string' ? JSON.parse(r.micro_exercises) : r.micro_exercises) : []
       };
     } catch (error) {
-      console.log('No Dating Style data found or table does not exist');
+      logger.log('No Dating Style data found or table does not exist');
       return null;
     }
   }
@@ -1037,7 +1038,7 @@ export class AIContextManager {
         context.zelfbeeld = zelfbeeld;
       }
 
-      console.log(`✅ Context enriched with ALL 7 assessments for user ${userId}`);
+      logger.log(`✅ Context enriched with ALL 7 assessments for user ${userId}`);
       return context;
     } catch (error) {
       console.error('Error enriching context with assessments:', error);

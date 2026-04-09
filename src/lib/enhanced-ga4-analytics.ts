@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * ENHANCED GA4 ANALYTICS SERVICE
  * Intelligent mock data generator for Google Analytics 4
@@ -73,7 +74,7 @@ export class EnhancedGA4Analytics {
   constructor(config?: GA4Config) {
     if (config) {
       this.configured = true;
-      console.log('✅ GA4 configuration provided');
+      logger.log('✅ GA4 configuration provided');
     } else {
       this.checkEnvironmentConfig();
     }
@@ -85,9 +86,9 @@ export class EnhancedGA4Analytics {
 
     if (propertyId && hasCredentials) {
       this.configured = true;
-      console.log('✅ GA4 credentials configured');
+      logger.log('✅ GA4 credentials configured');
     } else {
-      console.log('⚠️  GA4 credentials not configured, using intelligent mock data');
+      logger.log('⚠️  GA4 credentials not configured, using intelligent mock data');
     }
   }
 

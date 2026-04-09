@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 import { sql } from '@vercel/postgres';
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Track conversion (simplified - just log it)
-    console.log(`A/B Test Conversion: ${testId} - ${variantId} - ${user.id} - ${event}`);
+    logger.log(`A/B Test Conversion: ${testId} - ${variantId} - ${user.id} - ${event}`);
 
     // In a real implementation, you'd store this in the database
     // await sql`INSERT INTO ab_test_conversions ...`

@@ -1,4 +1,5 @@
 'use client';
+import { logger } from '@/lib/logger';
 
 import { useEffect, useRef, useState } from 'react';
 
@@ -98,7 +99,7 @@ export function useRecaptchaV3(siteKey: string) {
   useEffect(() => {
     // Skip reCAPTCHA entirely in development mode OR if no siteKey
     if (process.env.NODE_ENV === 'development' || !siteKey || siteKey.trim() === '') {
-      console.log('🧪 Skipping reCAPTCHA initialization (development or no siteKey)');
+      logger.log('🧪 Skipping reCAPTCHA initialization (development or no siteKey)');
       setIsLoaded(true); // Mark as loaded to prevent errors
       return;
     }
@@ -125,7 +126,7 @@ export function useRecaptchaV3(siteKey: string) {
   const execute = async (action: string = 'submit'): Promise<string | null> => {
     // Skip reCAPTCHA if in development OR no siteKey
     if (process.env.NODE_ENV === 'development' || !siteKey || siteKey.trim() === '') {
-      console.log('🧪 Bypassing reCAPTCHA verification (development or no siteKey)');
+      logger.log('🧪 Bypassing reCAPTCHA verification (development or no siteKey)');
       return 'bypass'; // Return a bypass token
     }
 

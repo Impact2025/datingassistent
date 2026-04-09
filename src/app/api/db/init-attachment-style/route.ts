@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating attachment style tables...');
+    logger.log('Creating attachment style tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -23,7 +24,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created hechtingsstijl_assessments table');
+    logger.log('✅ Created hechtingsstijl_assessments table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS hechtingsstijl_responses (
@@ -37,7 +38,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created hechtingsstijl_responses table');
+    logger.log('✅ Created hechtingsstijl_responses table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS hechtingsstijl_results (
@@ -78,7 +79,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created hechtingsstijl_results table');
+    logger.log('✅ Created hechtingsstijl_results table');
 
     // Assessment questions table (static data)
     await sql`
@@ -93,7 +94,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created hechtingsstijl_questions table');
+    logger.log('✅ Created hechtingsstijl_questions table');
 
     // Scenario options for scenario-type questions
     await sql`
@@ -108,7 +109,7 @@ export async function POST() {
         UNIQUE(question_id, order_position)
       );
     `;
-    console.log('✅ Created hechtingsstijl_scenarios table');
+    logger.log('✅ Created hechtingsstijl_scenarios table');
 
     // User progress tracking
     await sql`
@@ -124,7 +125,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created hechtingsstijl_progress table');
+    logger.log('✅ Created hechtingsstijl_progress table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_hechtingsstijl_assessments_user_id ON hechtingsstijl_assessments(user_id);`;
@@ -132,7 +133,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_hechtingsstijl_responses_assessment_id ON hechtingsstijl_responses(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_hechtingsstijl_results_assessment_id ON hechtingsstijl_results(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_hechtingsstijl_progress_user_id ON hechtingsstijl_progress(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     // Insert the 10 core questions + 2 scenarios
     await sql`
@@ -160,7 +161,7 @@ export async function POST() {
       ('scenario', 'Tijdens een kleine miscommunicatie op date 2 zegt iemand: "Laat maar, maakt niet uit."', 'communicatie_triggers', false, 1.0, 12)
       ON CONFLICT (order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted questions');
+    logger.log('✅ Inserted questions');
 
     // Insert scenario options
     await sql`
@@ -176,7 +177,7 @@ export async function POST() {
       ((SELECT id FROM hechtingsstijl_questions WHERE order_position = 12), 'Ik sluit me af en praat over iets anders.', ARRAY['vermijdend'], 1.0, 3)
       ON CONFLICT (question_id, order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted scenario options');
+    logger.log('✅ Inserted scenario options');
 
     return NextResponse.json({
       success: true,

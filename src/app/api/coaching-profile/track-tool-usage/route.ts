@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { CoachingProfileService } from '@/lib/coaching-profile-service';
 import { trackUserActivity } from '@/lib/progress-tracker';
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`📊 Tracking tool usage for user ${userId}: ${toolName}`);
+    logger.log(`📊 Tracking tool usage for user ${userId}: ${toolName}`);
 
     // Track tool usage in coaching profile
     const success = await CoachingProfileService.trackToolUsage(userId, toolName);

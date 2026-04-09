@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating dating archetypes tables...');
+    logger.log('Creating dating archetypes tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -19,7 +20,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_archetypes_assessments table');
+    logger.log('✅ Created dating_archetypes_assessments table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS dating_archetypes_responses (
@@ -31,7 +32,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_archetypes_responses table');
+    logger.log('✅ Created dating_archetypes_responses table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS dating_archetypes_results (
@@ -76,7 +77,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_archetypes_results table');
+    logger.log('✅ Created dating_archetypes_results table');
 
     // Assessment questions table (static data)
     await sql`
@@ -88,7 +89,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_archetypes_questions table');
+    logger.log('✅ Created dating_archetypes_questions table');
 
     // Question options with archetype mappings
     await sql`
@@ -102,7 +103,7 @@ export async function POST() {
         UNIQUE(question_id, order_position)
       );
     `;
-    console.log('✅ Created dating_archetypes_options table');
+    logger.log('✅ Created dating_archetypes_options table');
 
     // User progress tracking
     await sql`
@@ -118,7 +119,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created dating_archetypes_progress table');
+    logger.log('✅ Created dating_archetypes_progress table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_archetypes_assessments_user_id ON dating_archetypes_assessments(user_id);`;
@@ -126,7 +127,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_archetypes_responses_assessment_id ON dating_archetypes_responses(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_archetypes_results_assessment_id ON dating_archetypes_results(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_archetypes_progress_user_id ON dating_archetypes_progress(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     // Insert the 10-12 questions
     await sql`
@@ -145,7 +146,7 @@ export async function POST() {
       ('Je droom partner is iemand die:', 'preference', 12)
       ON CONFLICT (order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted questions');
+    logger.log('✅ Inserted questions');
 
     // Insert options with archetype weights for each question
     await sql`
@@ -223,7 +224,7 @@ export async function POST() {
       ((SELECT id FROM dating_archetypes_questions WHERE order_position = 12), 'Rust en stabiliteit biedt', '{"slow_burner": 4, "anchor": 3, "visionary": 2}', 4)
       ON CONFLICT (question_id, order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted question options with archetype weights');
+    logger.log('✅ Inserted question options with archetype weights');
 
     return NextResponse.json({
       success: true,

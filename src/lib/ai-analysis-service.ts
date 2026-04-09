@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 import { AIDatingCoach, AICoachService } from './ai-coach-service';
 
@@ -7,7 +8,7 @@ export class AIAnalysisService {
    */
   static async generateMonthlyReports(): Promise<void> {
     try {
-      console.log('Starting monthly AI report generation...');
+      logger.log('Starting monthly AI report generation...');
 
       // Get all active clients
       const clientsResult = await sql`
@@ -20,13 +21,13 @@ export class AIAnalysisService {
       for (const client of clientsResult.rows) {
         try {
           await this.generateMonthlyReportForClient(client.id);
-          console.log(`Generated monthly report for ${client.name}`);
+          logger.log(`Generated monthly report for ${client.name}`);
         } catch (error) {
           console.error(`Failed to generate report for ${client.name}:`, error);
         }
       }
 
-      console.log('Monthly AI report generation completed');
+      logger.log('Monthly AI report generation completed');
     } catch (error) {
       console.error('Error in monthly report generation:', error);
     }
@@ -37,7 +38,7 @@ export class AIAnalysisService {
    */
   static async generateWeeklyReviews(): Promise<void> {
     try {
-      console.log('Starting weekly AI review generation...');
+      logger.log('Starting weekly AI review generation...');
 
       // Get all active clients
       const clientsResult = await sql`
@@ -50,13 +51,13 @@ export class AIAnalysisService {
       for (const client of clientsResult.rows) {
         try {
           await this.generateWeeklyReviewForClient(client.id);
-          console.log(`Generated weekly review for ${client.name}`);
+          logger.log(`Generated weekly review for ${client.name}`);
         } catch (error) {
           console.error(`Failed to generate review for ${client.name}:`, error);
         }
       }
 
-      console.log('Weekly AI review generation completed');
+      logger.log('Weekly AI review generation completed');
     } catch (error) {
       console.error('Error in weekly review generation:', error);
     }
@@ -67,7 +68,7 @@ export class AIAnalysisService {
    */
   static async generateCoachNotifications(): Promise<void> {
     try {
-      console.log('Starting coach notification generation...');
+      logger.log('Starting coach notification generation...');
 
       // Get all coaches with their clients
       const coachesResult = await sql`
@@ -107,13 +108,13 @@ export class AIAnalysisService {
             }
           }
 
-          console.log(`Generated notifications for coach ${coach.coach_name}`);
+          logger.log(`Generated notifications for coach ${coach.coach_name}`);
         } catch (error) {
           console.error(`Failed to generate notifications for coach ${coach.coach_name}:`, error);
         }
       }
 
-      console.log('Coach notification generation completed');
+      logger.log('Coach notification generation completed');
     } catch (error) {
       console.error('Error in coach notification generation:', error);
     }
@@ -148,7 +149,7 @@ export class AIAnalysisService {
         )
       `;
 
-      console.log(`Analyzed ${contentType} content for user ${userId}`);
+      logger.log(`Analyzed ${contentType} content for user ${userId}`);
     } catch (error) {
       console.error(`Error analyzing content for user ${userId}:`, error);
     }

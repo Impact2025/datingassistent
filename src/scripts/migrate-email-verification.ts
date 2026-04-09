@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 
 /**
@@ -14,11 +15,11 @@ interface MigrationResult {
 }
 
 export async function migrateEmailVerification(): Promise<MigrationResult> {
-  console.log('🚀 Starting Email Verification Database Migration...');
+  logger.log('🚀 Starting Email Verification Database Migration...');
 
   try {
     // Step 1: Check current database state
-    console.log('📊 Analyzing current database state...');
+    logger.log('📊 Analyzing current database state...');
     const currentState = await analyzeCurrentState();
 
     if (!currentState.usersTableExists) {
@@ -30,7 +31,7 @@ export async function migrateEmailVerification(): Promise<MigrationResult> {
 
     // Step 2: Check if migration already completed
     if (currentState.migrationCompleted) {
-      console.log('✅ Migration already completed');
+      logger.log('✅ Migration already completed');
       return {
         success: true,
         message: 'Email verification migration already completed',
@@ -39,23 +40,23 @@ export async function migrateEmailVerification(): Promise<MigrationResult> {
     }
 
     // Step 3: Backup strategy (log current state)
-    console.log('💾 Creating migration backup...');
+    logger.log('💾 Creating migration backup...');
     await logMigrationStart(currentState);
 
     // Step 4: Add new columns safely
-    console.log('🔧 Adding email verification columns...');
+    logger.log('🔧 Adding email verification columns...');
     await addEmailVerificationColumns();
 
     // Step 5: Migrate existing users to verified state (for backwards compatibility)
-    console.log('👥 Migrating existing users...');
+    logger.log('👥 Migrating existing users...');
     const migrationStats = await migrateExistingUsers();
 
     // Step 6: Create necessary indexes
-    console.log('📈 Creating performance indexes...');
+    logger.log('📈 Creating performance indexes...');
     await createVerificationIndexes();
 
     // Step 7: Validation
-    console.log('✅ Validating migration...');
+    logger.log('✅ Validating migration...');
     const validationResult = await validateMigration();
 
     if (!validationResult.valid) {
@@ -65,7 +66,7 @@ export async function migrateEmailVerification(): Promise<MigrationResult> {
     // Step 8: Mark migration as complete
     await markMigrationComplete();
 
-    console.log('🎉 Email verification migration completed successfully!');
+    logger.log('🎉 Email verification migration completed successfully!');
 
     return {
       success: true,
@@ -96,7 +97,7 @@ export async function migrateEmailVerification(): Promise<MigrationResult> {
 }
 
 async function analyzeCurrentState() {
-  console.log('🔍 Checking users table structure...');
+  logger.log('🔍 Checking users table structure...');
 
   // Check if users table exists
   const tableCheck = await sql`
@@ -145,7 +146,7 @@ async function analyzeCurrentState() {
 }
 
 async function logMigrationStart(state: any) {
-  console.log('📝 Logging migration start...');
+  logger.log('📝 Logging migration start...');
 
   // Create migration log table if it doesn't exist
   await sql`
@@ -166,11 +167,11 @@ async function logMigrationStart(state: any) {
     VALUES ('email_verification_migration', ${JSON.stringify(state)});
   `;
 
-  console.log('✅ Migration start logged');
+  logger.log('✅ Migration start logged');
 }
 
 async function addEmailVerificationColumns() {
-  console.log('🔧 Adding email verification columns...');
+  logger.log('🔧 Adding email verification columns...');
 
   // Add columns one by one to handle potential conflicts
   const columns = [
@@ -190,7 +191,7 @@ async function addEmailVerificationColumns() {
 
   for (const column of columns) {
     try {
-      console.log(`Adding column: ${column.name}`);
+      logger.log(`Adding column: ${column.name}`);
       // Use template literals for dynamic SQL
       if (column.name === 'email_verified') {
         await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT false;`;
@@ -199,18 +200,18 @@ async function addEmailVerificationColumns() {
       } else if (column.name === 'verification_expires_at') {
         await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS verification_expires_at TIMESTAMP;`;
       }
-      console.log(`✅ Column ${column.name} added successfully`);
+      logger.log(`✅ Column ${column.name} added successfully`);
     } catch (error) {
       console.warn(`⚠️ Column ${column.name} may already exist or failed to add:`, error);
       // Continue with other columns - this is safe
     }
   }
 
-  console.log('✅ Email verification columns added');
+  logger.log('✅ Email verification columns added');
 }
 
 async function migrateExistingUsers(): Promise<{ migrated: number; skipped: number }> {
-  console.log('👥 Migrating existing users to verified state...');
+  logger.log('👥 Migrating existing users to verified state...');
 
   // For backwards compatibility, mark all existing users as verified
   // This assumes existing users were created through proper channels
@@ -222,7 +223,7 @@ async function migrateExistingUsers(): Promise<{ migrated: number; skipped: numb
 
   const migrated = result.rowCount || 0;
 
-  console.log(`✅ Migrated ${migrated} existing users to verified state`);
+  logger.log(`✅ Migrated ${migrated} existing users to verified state`);
 
   return {
     migrated,
@@ -231,7 +232,7 @@ async function migrateExistingUsers(): Promise<{ migrated: number; skipped: numb
 }
 
 async function createVerificationIndexes() {
-  console.log('📈 Creating verification indexes...');
+  logger.log('📈 Creating verification indexes...');
 
   const indexes = [
     'CREATE INDEX IF NOT EXISTS idx_users_email_verified ON users(email_verified);',
@@ -243,7 +244,7 @@ async function createVerificationIndexes() {
 
   for (const indexName of ['email_verified', 'verification_token', 'verification_expires', 'token_expiry']) {
     try {
-      console.log(`Creating index: idx_users_${indexName}`);
+      logger.log(`Creating index: idx_users_${indexName}`);
       if (indexName === 'email_verified') {
         await sql`CREATE INDEX IF NOT EXISTS idx_users_email_verified ON users(email_verified);`;
       } else if (indexName === 'verification_token') {
@@ -258,11 +259,11 @@ async function createVerificationIndexes() {
     }
   }
 
-  console.log('✅ Verification indexes created');
+  logger.log('✅ Verification indexes created');
 }
 
 async function validateMigration(): Promise<{ valid: boolean; errors: string[] }> {
-  console.log('🔍 Validating migration...');
+  logger.log('🔍 Validating migration...');
 
   const errors: string[] = [];
 
@@ -288,7 +289,7 @@ async function validateMigration(): Promise<{ valid: boolean; errors: string[] }
     `;
 
     const stats = verifiedCheck.rows[0];
-    console.log(`📊 User verification stats: ${stats.verified_users}/${stats.total_users} users verified`);
+    logger.log(`📊 User verification stats: ${stats.verified_users}/${stats.total_users} users verified`);
 
     // Test basic functionality
     const testUser = await sql`
@@ -297,7 +298,7 @@ async function validateMigration(): Promise<{ valid: boolean; errors: string[] }
 
     if (testUser.rows.length > 0) {
       const user = testUser.rows[0];
-      console.log(`🧪 Test user verification status: ${user.email} -> ${user.email_verified}`);
+      logger.log(`🧪 Test user verification status: ${user.email} -> ${user.email_verified}`);
     }
 
   } catch (error) {
@@ -311,7 +312,7 @@ async function validateMigration(): Promise<{ valid: boolean; errors: string[] }
 }
 
 async function markMigrationComplete() {
-  console.log('✅ Marking migration as complete...');
+  logger.log('✅ Marking migration as complete...');
 
   await sql`
     UPDATE migration_logs
@@ -319,11 +320,11 @@ async function markMigrationComplete() {
     WHERE migration_name = 'email_verification_migration' AND status = 'running';
   `;
 
-  console.log('✅ Migration marked as complete');
+  logger.log('✅ Migration marked as complete');
 }
 
 async function rollbackMigration() {
-  console.log('🔄 Attempting migration rollback...');
+  logger.log('🔄 Attempting migration rollback...');
 
   try {
     // Remove added columns (be very careful with this!)
@@ -354,7 +355,7 @@ async function rollbackMigration() {
       WHERE migration_name = 'email_verification_migration' AND status = 'running';
     `;
 
-    console.log('✅ Migration rollback completed');
+    logger.log('✅ Migration rollback completed');
   } catch (error) {
     console.error('❌ Migration rollback failed:', error);
     throw error;
@@ -365,22 +366,22 @@ async function rollbackMigration() {
 if (require.main === module) {
   migrateEmailVerification()
     .then((result) => {
-      console.log('\n' + '='.repeat(50));
+      logger.log('\n' + '='.repeat(50));
       if (result.success) {
-        console.log('🎉 MIGRATION SUCCESSFUL');
-        console.log(result.message);
+        logger.log('🎉 MIGRATION SUCCESSFUL');
+        logger.log(result.message);
         if (result.details) {
-          console.log('Details:', JSON.stringify(result.details, null, 2));
+          logger.log('Details:', JSON.stringify(result.details, null, 2));
         }
       } else {
-        console.log('❌ MIGRATION FAILED');
-        console.log(result.message);
+        logger.log('❌ MIGRATION FAILED');
+        logger.log(result.message);
         if (result.details) {
-          console.log('Error details:', result.details);
+          logger.log('Error details:', result.details);
         }
         process.exit(1);
       }
-      console.log('='.repeat(50));
+      logger.log('='.repeat(50));
     })
     .catch((error) => {
       console.error('💥 Unexpected error:', error);

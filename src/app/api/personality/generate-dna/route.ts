@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { chatCompletion } from '@/lib/ai-service';
 
@@ -5,7 +6,7 @@ export async function POST(request: NextRequest) {
   try {
     const scanData = await request.json();
 
-    console.log('🧬 Generating Dating DNA for scan data:', scanData);
+    logger.log('🧬 Generating Dating DNA for scan data:', scanData);
 
     // Build AI prompt
     const prompt = `Je bent een expert dating psycholoog en DatingAssistent coach. Analyseer de volgende dating persoonlijkheidscan en genereer een gedetailleerd "Dating Profiel DNA" rapport dat specifiek adviseert over het gebruik van DatingAssistent tools.
@@ -59,7 +60,7 @@ Genereer een JSON object met de volgende structuur:
 Antwoord ALLEEN met het JSON object, geen extra text.`;
 
     // TEMPORARY: Skip AI call and use fallback for testing
-    console.log('🧪 Using fallback DNA generation for testing');
+    logger.log('🧪 Using fallback DNA generation for testing');
     let dnaResults;
 
     try {
@@ -102,7 +103,7 @@ Antwoord ALLEEN met het JSON object, geen extra text.`;
         }
       };
 
-      console.log('✅ Generated DNA Results:', dnaResults);
+      logger.log('✅ Generated DNA Results:', dnaResults);
 
       return NextResponse.json({
         success: true,

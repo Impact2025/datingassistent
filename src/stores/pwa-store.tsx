@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 
 // ============================================
 // PWA STORE - World-Class State Management
@@ -90,13 +91,13 @@ export function PWAProvider({ children }: { children: ReactNode }) {
 
   // Listen for beforeinstallprompt event
   useEffect(() => {
-    console.log('[PWA] Setting up install event listeners...');
+    logger.log('[PWA] Setting up install event listeners...');
 
     const handleBeforeInstallPrompt = (e: Event) => {
-      console.log('[PWA] beforeinstallprompt event fired!');
+      logger.log('[PWA] beforeinstallprompt event fired!');
       e.preventDefault();
       const promptEvent = e as BeforeInstallPromptEvent;
-      console.log('[PWA] Platforms:', promptEvent.platforms);
+      logger.log('[PWA] Platforms:', promptEvent.platforms);
       setState(s => ({
         ...s,
         deferredPrompt: promptEvent,
@@ -105,7 +106,7 @@ export function PWAProvider({ children }: { children: ReactNode }) {
     };
 
     const handleAppInstalled = () => {
-      console.log('[PWA] App was installed!');
+      logger.log('[PWA] App was installed!');
       setState(s => ({
         ...s,
         isInstalled: true,
@@ -120,7 +121,7 @@ export function PWAProvider({ children }: { children: ReactNode }) {
     // Check if already in standalone mode
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
     if (isStandalone) {
-      console.log('[PWA] Already running in standalone mode');
+      logger.log('[PWA] Already running in standalone mode');
       setState(s => ({ ...s, isInstalled: true }));
     }
 
@@ -169,7 +170,7 @@ export function PWAProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const promptInstall = useCallback(async (): Promise<boolean> => {
-    console.log('[PWA] promptInstall called, deferredPrompt:', !!state.deferredPrompt);
+    logger.log('[PWA] promptInstall called, deferredPrompt:', !!state.deferredPrompt);
 
     if (!state.deferredPrompt) {
       console.warn('[PWA] No deferred prompt available - browser may not support PWA install or criteria not met');
@@ -177,12 +178,12 @@ export function PWAProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      console.log('[PWA] Triggering install prompt...');
+      logger.log('[PWA] Triggering install prompt...');
       await state.deferredPrompt.prompt();
 
-      console.log('[PWA] Waiting for user choice...');
+      logger.log('[PWA] Waiting for user choice...');
       const { outcome } = await state.deferredPrompt.userChoice;
-      console.log('[PWA] User choice:', outcome);
+      logger.log('[PWA] User choice:', outcome);
 
       if (outcome === 'accepted') {
         setState(s => ({
@@ -191,10 +192,10 @@ export function PWAProvider({ children }: { children: ReactNode }) {
           isInstallable: false,
           deferredPrompt: null,
         }));
-        console.log('[PWA] App installed successfully!');
+        logger.log('[PWA] App installed successfully!');
         return true;
       } else {
-        console.log('[PWA] User dismissed install prompt');
+        logger.log('[PWA] User dismissed install prompt');
       }
     } catch (error) {
       console.error('[PWA] Install prompt failed:', error);

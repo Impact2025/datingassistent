@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating dating style tables...');
+    logger.log('Creating dating style tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -23,7 +24,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_style_assessments table');
+    logger.log('✅ Created dating_style_assessments table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS dating_style_responses (
@@ -37,7 +38,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_style_responses table');
+    logger.log('✅ Created dating_style_responses table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS dating_style_results (
@@ -76,7 +77,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_style_results table');
+    logger.log('✅ Created dating_style_results table');
 
     // Assessment questions table (static data)
     await sql`
@@ -91,7 +92,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_style_questions table');
+    logger.log('✅ Created dating_style_questions table');
 
     // Scenario options for scenario-type questions
     await sql`
@@ -106,7 +107,7 @@ export async function POST() {
         UNIQUE(question_id, order_position)
       );
     `;
-    console.log('✅ Created dating_style_scenarios table');
+    logger.log('✅ Created dating_style_scenarios table');
 
     // User progress tracking
     await sql`
@@ -122,7 +123,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created dating_style_progress table');
+    logger.log('✅ Created dating_style_progress table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_style_assessments_user_id ON dating_style_assessments(user_id);`;
@@ -130,7 +131,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_style_responses_assessment_id ON dating_style_responses(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_style_results_assessment_id ON dating_style_results(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_style_progress_user_id ON dating_style_progress(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     // Insert the 16 core questions + 2 scenarios
     await sql`
@@ -170,7 +171,7 @@ export async function POST() {
       ('scenario', 'Tijdens een date loopt het gesprek niet soepel. Hoe reageer je?', 'communicatie_stijl', false, 1.0, 18)
       ON CONFLICT (order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted questions');
+    logger.log('✅ Inserted questions');
 
     // Insert scenario options
     await sql`
@@ -186,7 +187,7 @@ export async function POST() {
       ((SELECT id FROM dating_style_questions WHERE order_position = 18), 'Ik trek me terug en laat het loslopen.', ARRAY['distant', 'ghost_prone'], 1.0, 3)
       ON CONFLICT (question_id, order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted scenario options');
+    logger.log('✅ Inserted scenario options');
 
     return NextResponse.json({
       success: true,

@@ -23,6 +23,7 @@ export function NewsletterForm({
   variant = 'default',
 }: NewsletterFormProps) {
   const [email, setEmail] = useState('');
+  const [consentAccepted, setConsentAccepted] = useState(false);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
@@ -35,13 +36,19 @@ export function NewsletterForm({
       return;
     }
 
+    if (!consentAccepted) {
+      setStatus('error');
+      setMessage('Vink het vakje aan om je aan te melden');
+      return;
+    }
+
     setStatus('loading');
 
     try {
       const response = await fetch('/api/newsletter/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source }),
+        body: JSON.stringify({ email, source, consentAccepted: true }),
       });
 
       const data = await response.json();
@@ -115,6 +122,24 @@ export function NewsletterForm({
           )}
         </Button>
       </div>
+
+      <label className="mt-3 flex items-start gap-2 cursor-pointer text-sm text-gray-600 dark:text-gray-400">
+        <input
+          type="checkbox"
+          checked={consentAccepted}
+          onChange={(e) => {
+            setConsentAccepted(e.target.checked);
+            if (status === 'error') handleReset();
+          }}
+          className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 accent-coral-500"
+        />
+        <span>
+          Ik ga akkoord dat DatingAssistent mij e-mails stuurt. Je kunt je altijd uitschrijven.{' '}
+          <a href="/privacyverklaring" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-800 dark:hover:text-gray-200">
+            Privacyverklaring
+          </a>
+        </span>
+      </label>
 
       <AnimatePresence>
         {status === 'error' && message && (

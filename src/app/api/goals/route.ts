@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -55,7 +56,7 @@ export async function GET(request: NextRequest) {
       `;
     } catch (error: any) {
       // If deadline column doesn't exist, that's okay - just continue without it
-      console.log('Note: deadline column may not exist in user_goals table');
+      logger.log('Note: deadline column may not exist in user_goals table');
       result = await sql`
         SELECT
           g.id,
@@ -312,7 +313,7 @@ async function createDefaultGoals(userId: number) {
       }
     }
     
-    console.log(`✅ Created ${goals.length} default goals for user ${userId}`);
+    logger.log(`✅ Created ${goals.length} default goals for user ${userId}`);
     
     // Update coaching profile with active goals
     const goalIds = await sql`

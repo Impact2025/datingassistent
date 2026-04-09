@@ -23,6 +23,7 @@ import { formatDuration } from '@/types/content-delivery.types';
 import { QuizComponent } from '@/components/lessons/quiz-component';
 import { useAchievementNotifications } from '@/hooks/use-achievement-notifications';
 import { VimeoPlayer } from '@/components/video/vimeo-player';
+import { logger } from '@/lib/logger';
 
 export default function LessonPlayerPage() {
   const params = useParams();
@@ -164,7 +165,7 @@ export default function LessonPlayerPage() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('✅ Lesson completed!', data);
+        logger.log('✅ Lesson completed!', data);
 
         // Update local state
         setLessonData(prev => {
@@ -182,7 +183,7 @@ export default function LessonPlayerPage() {
         // Check for new achievements and show toast notifications
         const newAchievements = await checkForNewAchievements();
         if (newAchievements.length > 0) {
-          console.log('🏆 New achievements unlocked:', newAchievements);
+          logger.log('🏆 New achievements unlocked:', newAchievements);
         }
       }
     } catch (error) {
@@ -193,7 +194,7 @@ export default function LessonPlayerPage() {
   };
 
   const handleQuizComplete = async (score: number, passed: boolean, answers: QuizAnswer[]) => {
-    console.log('📝 Quiz completed:', { score, passed });
+    logger.log('📝 Quiz completed:', { score, passed });
 
     try {
       const response = await fetch(`/api/lessons/${lessonId}/progress`, {
@@ -207,7 +208,7 @@ export default function LessonPlayerPage() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('✅ Quiz progress saved!', data);
+        logger.log('✅ Quiz progress saved!', data);
 
         // Update local state
         setLessonData(prev => {
@@ -226,7 +227,7 @@ export default function LessonPlayerPage() {
         if (passed) {
           const newAchievements = await checkForNewAchievements();
           if (newAchievements.length > 0) {
-            console.log('🏆 New achievements unlocked:', newAchievements);
+            logger.log('🏆 New achievements unlocked:', newAchievements);
           }
         }
       }

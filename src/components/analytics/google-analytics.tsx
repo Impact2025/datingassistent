@@ -14,6 +14,7 @@
 import { useEffect } from 'react';
 import Script from 'next/script';
 import { hasAnalyticsConsent, hasMarketingConsent } from '@/components/cookie-consent';
+import { logger } from '@/lib/logger';
 
 declare global {
   interface Window {
@@ -32,7 +33,7 @@ function applyConsent(analytics: boolean, marketing: boolean) {
     ad_personalization: marketing ? 'granted' : 'denied',
   });
 
-  console.log('[GA4] Consent updated:', { analytics, marketing });
+  logger.log('[GA4] Consent updated:', { analytics, marketing });
 }
 
 export function GoogleAnalytics() {

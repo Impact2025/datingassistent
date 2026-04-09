@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 import { ExtendedUserProfile, Badge, UserBadge, ForumCategory, ForumPost, ForumReply } from '@/lib/types';
 
@@ -55,7 +56,7 @@ function parseInterests(value: unknown): string[] {
 // User Profile Operations
 export async function createUserProfileExtended(userId: number, profileData: Partial<ExtendedUserProfile>) {
   try {
-    console.log('Creating extended profile for user:', userId, 'with data:', profileData);
+    logger.log('Creating extended profile for user:', userId, 'with data:', profileData);
 
     const interestsArray = normalizeInterests(profileData.interests);
 
@@ -77,7 +78,7 @@ export async function createUserProfileExtended(userId: number, profileData: Par
       RETURNING *
     `;
 
-    console.log('Created extended profile result:', result.rows[0]);
+    logger.log('Created extended profile result:', result.rows[0]);
     return result.rows[0];
   } catch (error) {
     console.error('Error creating extended user profile for user', userId, ':', error);
@@ -87,24 +88,24 @@ export async function createUserProfileExtended(userId: number, profileData: Par
 
 export async function getUserProfileExtended(userId: number): Promise<ExtendedUserProfile | null> {
   try {
-    console.log('Fetching extended profile for user:', userId);
+    logger.log('Fetching extended profile for user:', userId);
     const result = await sql`
       SELECT * FROM user_profiles_extended
       WHERE user_id = ${userId}
     `;
 
-    console.log('Profile query result:', result.rows);
+    logger.log('Profile query result:', result.rows);
 
     if (result.rows.length === 0) {
-      console.log('No extended profile found, creating basic one for user:', userId);
+      logger.log('No extended profile found, creating basic one for user:', userId);
       const userProfileResult = await sql`
         SELECT name, email FROM users WHERE id = ${userId}
       `;
 
-      console.log('User query result:', userProfileResult.rows);
+      logger.log('User query result:', userProfileResult.rows);
 
       if (userProfileResult.rows.length === 0) {
-        console.log('No user found with id:', userId);
+        logger.log('No user found with id:', userId);
         return null;
       }
 
@@ -145,7 +146,7 @@ export async function getUserProfileExtended(userId: number): Promise<ExtendedUs
 
     const userData = userProfileResult.rows[0] || { name: '', email: null };
 
-    console.log('Returning profile for user:', userId);
+    logger.log('Returning profile for user:', userId);
 
     const interests = parseInterests(row.interests);
 
@@ -180,13 +181,13 @@ export async function getUserProfileExtended(userId: number): Promise<ExtendedUs
 
 export async function updateUserProfileExtended(userId: number, profileData: Partial<ExtendedUserProfile>) {
   try {
-    console.log('Updating profile for user:', userId, 'with data:', profileData);
+    logger.log('Updating profile for user:', userId, 'with data:', profileData);
     const existingProfile = await sql`
       SELECT id FROM user_profiles_extended WHERE user_id = ${userId}
     `;
 
     if (existingProfile.rows.length === 0) {
-      console.log('No existing profile found, creating new one');
+      logger.log('No existing profile found, creating new one');
       await createUserProfileExtended(userId, profileData);
       return;
     }
@@ -222,7 +223,7 @@ export async function updateUserProfileExtended(userId: number, profileData: Par
     updates.push(sql`updated_at = NOW()`);
 
     if (updates.length === 0) {
-      console.log('No profile fields provided for update. Skipping.');
+      logger.log('No profile fields provided for update. Skipping.');
       return null;
     }
 
@@ -236,7 +237,7 @@ export async function updateUserProfileExtended(userId: number, profileData: Par
       RETURNING *
     `;
 
-    console.log('Updated profile:', result.rows[0]);
+    logger.log('Updated profile:', result.rows[0]);
     return result.rows[0];
   } catch (error) {
     console.error('Error updating extended user profile:', error);

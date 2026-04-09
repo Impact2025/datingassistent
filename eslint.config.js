@@ -19,7 +19,7 @@ export default tseslint.config(
         caughtErrorsIgnorePattern: "^_",
       }],
       "@typescript-eslint/no-explicit-any": "off",
-      "no-console": "warn",
+      "no-console": ["warn", { allow: ["warn", "error", "table"] }],
     },
   }
 );

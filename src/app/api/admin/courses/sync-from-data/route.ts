@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { syncCoursesFromStaticData } from '@/lib/course-sync';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,9 +22,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    console.log('🔄 Starting course synchronization...');
+    logger.log('🔄 Starting course synchronization...');
     await syncCoursesFromStaticData();
-    console.log('✅ Course synchronization completed successfully');
+    logger.log('✅ Course synchronization completed successfully');
     return NextResponse.json({ success: true, message: 'Courses synchronized successfully' });
   } catch (error) {
     console.error('❌ Failed to sync courses:', error);

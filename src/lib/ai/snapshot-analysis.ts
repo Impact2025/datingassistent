@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * AI Snapshot Analysis Engine
  *
@@ -664,7 +665,7 @@ export async function* streamSnapshotAnalysis(
     console.error('Error in streaming analysis:', error);
 
     // On any error, return fallback analysis instead of failing
-    console.log('Returning fallback analysis due to error');
+    logger.log('Returning fallback analysis due to error');
     const fallbackAnalysis = createFallbackAnalysis(answers, scores, userId, Date.now() - startTime);
     yield { type: 'phase', phase: 'complete', progress: 100 };
     yield { type: 'complete', data: fallbackAnalysis };

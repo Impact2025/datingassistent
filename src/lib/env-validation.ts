@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * ENVIRONMENT VARIABLE VALIDATION
  *
@@ -130,5 +131,5 @@ export function assertValidEnvironment(): void {
     throw new Error(`Environment validation failed: ${result.missingRequired.length} required variables missing`);
   }
 
-  console.log('Environment validation passed');
+  logger.log('Environment validation passed');
 }

@@ -144,7 +144,7 @@ export async function requireValidToken(token: string): Promise<SessionUser> {
 export const cookieConfig = {
   name: COOKIE_NAME,
   options: {
-    httpOnly: false, // Allow JS access for client-side auth checks
+    httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
     maxAge: COOKIE_MAX_AGE,

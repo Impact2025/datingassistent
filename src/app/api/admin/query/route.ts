@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { adminSecurityMiddleware } from '@/lib/admin-security';
@@ -105,7 +106,7 @@ export async function POST(request: NextRequest) {
     // Sanitize parameters
     const sanitizedParams = sanitizeParams(params);
 
-    console.log('🔍 Executing validated query:', query.substring(0, 100) + '...');
+    logger.log('🔍 Executing validated query:', query.substring(0, 100) + '...');
 
     // Execute query safely with parameterized statements
     try {

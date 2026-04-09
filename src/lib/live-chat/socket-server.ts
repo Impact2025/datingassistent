@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { Server as HTTPServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import { sql } from '@vercel/postgres';
@@ -40,14 +41,14 @@ class LiveChatSocketServer {
     });
 
     this.setupEventHandlers();
-    console.log('🔌 Live Chat Socket Server initialized');
+    logger.log('🔌 Live Chat Socket Server initialized');
   }
 
   private setupEventHandlers() {
     if (!this.io) return;
 
     this.io.on('connection', (socket: Socket) => {
-      console.log(`🔌 User connected: ${socket.id}`);
+      logger.log(`🔌 User connected: ${socket.id}`);
 
       // Handle user joining conversation
       socket.on('join_conversation', async (data: {
@@ -128,7 +129,7 @@ class LiveChatSocketServer {
       // Join conversation room
       if (conversationId) {
         socket.join(`conversation_${conversationId}`);
-        console.log(`👤 ${userType} joined conversation ${conversationId}`);
+        logger.log(`👤 ${userType} joined conversation ${conversationId}`);
 
         // Update presence
         await this.updatePresence(conversationId, userType, userId, true);
@@ -358,7 +359,7 @@ class LiveChatSocketServer {
   private handleDisconnect(socket: Socket) {
     const user = this.connectedUsers.get(socket.id);
     if (user) {
-      console.log(`🔌 User disconnected: ${socket.id} (${user.userType})`);
+      logger.log(`🔌 User disconnected: ${socket.id} (${user.userType})`);
 
       // Update presence to offline
       if (user.conversationId) {

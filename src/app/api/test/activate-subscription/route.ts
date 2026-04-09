@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
 
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
     // Activate subscription
     await createOrUpdateSubscription(userId, subscriptionData);
 
-    console.log(`✅ TEST: Subscription activated for user ${userId}: ${packageType}`);
+    logger.log(`✅ TEST: Subscription activated for user ${userId}: ${packageType}`);
 
     return NextResponse.json({
       success: true,

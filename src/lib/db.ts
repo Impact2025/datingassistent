@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql as vercelSql } from '@vercel/postgres';
 
 // Re-export sql for direct use in API routes
@@ -35,7 +36,7 @@ export async function executeQuerySingle<T = any>(
 export async function testConnection(): Promise<boolean> {
   try {
     await sql`SELECT 1 as test`;
-    console.log('Database connection successful');
+    logger.log('Database connection successful');
     return true;
   } catch (error) {
     console.error('Database connection failed:', error);

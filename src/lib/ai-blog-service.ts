@@ -11,6 +11,7 @@
 import { getOpenRouterClient, OPENROUTER_MODELS } from './openrouter';
 import { KB_ARTICLES } from './support/knowledge-base';
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 // ============================================================================
 // TYPES
@@ -195,7 +196,7 @@ async function callAIWithFallback(
 
     // Fallback to GPT-3.5 if primary model fails
     if (model !== OPENROUTER_MODELS.GPT_35_TURBO) {
-      console.log('Falling back to GPT-3.5 Turbo...');
+      logger.log('Falling back to GPT-3.5 Turbo...');
       return await client.createChatCompletion(
         OPENROUTER_MODELS.GPT_35_TURBO,
         [
@@ -223,7 +224,7 @@ function parseAIResponse<T>(response: string): T {
     try {
       return JSON.parse(jsonMatch[1]);
     } catch (e) {
-      console.log('Failed to parse markdown JSON, trying other strategies...');
+      logger.log('Failed to parse markdown JSON, trying other strategies...');
     }
   }
 
@@ -231,7 +232,7 @@ function parseAIResponse<T>(response: string): T {
   try {
     return JSON.parse(response);
   } catch (e) {
-    console.log('Direct parse failed, cleaning response...');
+    logger.log('Direct parse failed, cleaning response...');
   }
 
   // Strategy 3: Clean control characters and try again
@@ -244,7 +245,7 @@ function parseAIResponse<T>(response: string): T {
 
     return JSON.parse(cleaned);
   } catch (e) {
-    console.log('Cleaned parse failed, extracting JSON object...');
+    logger.log('Cleaned parse failed, extracting JSON object...');
   }
 
   // Strategy 4: Extract JSON object/array with regex
@@ -263,7 +264,7 @@ function parseAIResponse<T>(response: string): T {
       return JSON.parse(cleaned);
     }
   } catch (e) {
-    console.log('Regex extraction failed');
+    logger.log('Regex extraction failed');
   }
 
   // Final fallback: Log raw response and throw
@@ -436,7 +437,7 @@ export async function enhanceMetadata(input: {
     keywords: input.focusKeyword ? [input.focusKeyword] : undefined
   });
 
-  console.log('📚 Found internal content:', {
+  logger.log('📚 Found internal content:', {
     knowledgeBaseCount: internalContent.knowledgeBase.length,
     blogsCount: internalContent.blogs.length,
     knowledgeBase: internalContent.knowledgeBase.map(kb => kb.title),
@@ -523,7 +524,7 @@ Geef ALLEEN de JSON terug, geen extra uitleg.`;
   const response = await callAIWithFallback(prompt, OPENROUTER_MODELS.CLAUDE_35_HAIKU);
   const result = parseAIResponse<MetadataEnhancementResult>(response);
 
-  console.log('🤖 AI metadata result:', {
+  logger.log('🤖 AI metadata result:', {
     hasInternalLinks: !!result.internalLinks,
     knowledgeBaseLinksCount: result.internalLinks?.knowledgeBase?.length || 0,
     relatedBlogsCount: result.internalLinks?.relatedBlogs?.length || 0

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
     } catch (dbError: any) {
       // If user_follows table doesn't exist, return empty notifications
       if (dbError.code === '42P01') {
-        console.log('⚠️ user_follows table does not exist yet, returning empty notifications');
+        logger.log('⚠️ user_follows table does not exist yet, returning empty notifications');
         return NextResponse.json({
           notifications: [],
           total: 0

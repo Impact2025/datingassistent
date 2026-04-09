@@ -23,6 +23,7 @@ import type {
   PainPoint,
   WelcomeMessage,
 } from '@/types/dating-snapshot.types';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -296,7 +297,7 @@ export async function POST(request: Request) {
     // Generate welcome message
     const welcomeMessage = generateWelcomeMessage(profile, scores);
 
-    console.log(`✅ Dating Snapshot completed for user ${userId}`);
+    logger.log(`✅ Dating Snapshot completed for user ${userId}`);
 
     return NextResponse.json({
       success: true,

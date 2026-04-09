@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Cron Jobs - Automated task scheduler for the journey system
  * Handles daily engagement, weekly reflections, monthly reports, and maintenance tasks
@@ -33,7 +34,7 @@ export class CronJobsService {
     let errors = 0;
 
     try {
-      console.log('🚀 Starting daily cron jobs...');
+      logger.log('🚀 Starting daily cron jobs...');
 
       // 1. Schedule daily engagements for all active users
       const engagementResult = await this.scheduleDailyEngagements();
@@ -60,7 +61,7 @@ export class CronJobsService {
       processed += cleanupResult.processed;
       errors += cleanupResult.errors;
 
-      console.log(`✅ Daily jobs completed: ${processed} processed, ${errors} errors`);
+      logger.log(`✅ Daily jobs completed: ${processed} processed, ${errors} errors`);
 
       const result: CronJobResult = {
         jobName,
@@ -101,7 +102,7 @@ export class CronJobsService {
     let errors = 0;
 
     try {
-      console.log('📅 Starting weekly cron jobs...');
+      logger.log('📅 Starting weekly cron jobs...');
 
       // 1. Generate weekly reflections for all users
       const reflectionResult = await this.generateWeeklyReflections();
@@ -123,7 +124,7 @@ export class CronJobsService {
       processed += insightsResult.processed;
       errors += insightsResult.errors;
 
-      console.log(`✅ Weekly jobs completed: ${processed} processed, ${errors} errors`);
+      logger.log(`✅ Weekly jobs completed: ${processed} processed, ${errors} errors`);
 
       const result: CronJobResult = {
         jobName,
@@ -164,7 +165,7 @@ export class CronJobsService {
     let errors = 0;
 
     try {
-      console.log('📊 Starting monthly cron jobs...');
+      logger.log('📊 Starting monthly cron jobs...');
 
       // 1. Generate monthly progress reports
       const reportResult = await this.generateMonthlyReports();
@@ -186,7 +187,7 @@ export class CronJobsService {
       processed += summaryResult.processed;
       errors += summaryResult.errors;
 
-      console.log(`✅ Monthly jobs completed: ${processed} processed, ${errors} errors`);
+      logger.log(`✅ Monthly jobs completed: ${processed} processed, ${errors} errors`);
 
       const result: CronJobResult = {
         jobName,
@@ -227,7 +228,7 @@ export class CronJobsService {
     let errors = 0;
 
     try {
-      console.log('⏰ Starting hourly cron jobs...');
+      logger.log('⏰ Starting hourly cron jobs...');
 
       // 1. Process any missed deliveries
       const deliveryResult = await this.processMissedDeliveries();
@@ -239,7 +240,7 @@ export class CronJobsService {
       processed += metricsResult.processed;
       errors += metricsResult.errors;
 
-      console.log(`✅ Hourly jobs completed: ${processed} processed, ${errors} errors`);
+      logger.log(`✅ Hourly jobs completed: ${processed} processed, ${errors} errors`);
 
       const result: CronJobResult = {
         jobName,

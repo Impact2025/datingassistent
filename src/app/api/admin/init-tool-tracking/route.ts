@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Admin API: Initialize Tool Completion Tracking System
  * Sprint 2 Phase 3
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    console.log(`🔧 Admin ${user.email} initializing tool completion tracking...`);
+    logger.log(`🔧 Admin ${user.email} initializing tool completion tracking...`);
 
     // Read the SQL schema file
     const schemaPath = path.join(process.cwd(), 'sql', 'tool_completion_tracking_schema.sql');
@@ -91,8 +92,8 @@ export async function POST(request: NextRequest) {
       AND routine_name IN ('mark_action_completed', 'is_action_completed', 'get_tool_completions', 'reset_tool_progress')
     `;
 
-    console.log(`✅ Tool completion tracking initialized successfully`);
-    console.log(`   Tables: ${tables.rows.length}, Views: ${views.rows.length}, Functions: ${functions.rows.length}`);
+    logger.log(`✅ Tool completion tracking initialized successfully`);
+    logger.log(`   Tables: ${tables.rows.length}, Views: ${views.rows.length}, Functions: ${functions.rows.length}`);
 
     return NextResponse.json({
       success: true,

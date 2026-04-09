@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * ACTIVITY TRACKING API
  * Track user activities for gamification and analytics
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest) {
     // Determine points to award
     const pointsEarned = points || ACTIVITY_POINTS[activityType] || 0;
 
-    console.log(`📊 Tracking activity for user ${userId}: ${activityType} (+${pointsEarned} points)`);
+    logger.log(`📊 Tracking activity for user ${userId}: ${activityType} (+${pointsEarned} points)`);
 
     // Insert activity log (non-blocking if it fails)
     try {
@@ -95,7 +96,7 @@ export async function POST(request: NextRequest) {
         'track-activity'
       );
 
-      console.log(`✅ Activity tracked for user ${userId}: ${activityType}`);
+      logger.log(`✅ Activity tracked for user ${userId}: ${activityType}`);
     } catch (activityError) {
       console.error('Failed to log activity (non-blocking):', activityError);
       // Don't fail the request if activity logging fails
@@ -112,7 +113,7 @@ export async function POST(request: NextRequest) {
           WHERE user_id = ${userId}
         `;
 
-        console.log(`🎯 User ${userId} earned ${pointsEarned} points (${activityType})`);
+        logger.log(`🎯 User ${userId} earned ${pointsEarned} points (${activityType})`);
       }
     } catch (pointsError) {
       console.error('Failed to update points (non-blocking):', pointsError);
@@ -145,7 +146,7 @@ export async function POST(request: NextRequest) {
           ON CONFLICT (user_id, badge_id) DO NOTHING
         `;
 
-        console.log(`🏆 User ${userId} earned "Getting Started" badge!`);
+        logger.log(`🏆 User ${userId} earned "Getting Started" badge!`);
       }
 
       // Award "Journey Complete" badge
@@ -163,7 +164,7 @@ export async function POST(request: NextRequest) {
           ON CONFLICT (user_id, badge_id) DO NOTHING
         `;
 
-        console.log(`🏆 User ${userId} earned "Journey Complete" badge!`);
+        logger.log(`🏆 User ${userId} earned "Journey Complete" badge!`);
       }
     } catch (badgeError) {
       console.error('Failed to check badges (non-blocking):', badgeError);

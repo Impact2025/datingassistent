@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Google Analytics 4 Integration
  * For fetching real website analytics data
@@ -43,7 +44,7 @@ export class GoogleAnalyticsService {
 
       // Check if we have all required credentials
       if (!this.serviceAccountEmail || !this.privateKey || !this.propertyId) {
-        console.log('GA4 credentials not configured, using mock data');
+        logger.log('GA4 credentials not configured, using mock data');
         return null;
       }
 
@@ -159,7 +160,7 @@ export class GoogleAnalyticsService {
       }
 
       // Fallback to mock data
-      console.log('Using mock visitor data (GA4 not configured)');
+      logger.log('Using mock visitor data (GA4 not configured)');
       return this.getMockVisitorData();
     } catch (error) {
       console.error('Error fetching visitor data:', error);

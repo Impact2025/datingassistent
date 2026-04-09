@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -30,7 +31,7 @@ export async function GET() {
       ON platform_match_results(created_at DESC)
     `;
 
-    console.log('✅ Platform match results table created successfully');
+    logger.log('✅ Platform match results table created successfully');
 
     return NextResponse.json({
       success: true,

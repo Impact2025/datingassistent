@@ -1,6 +1,7 @@
 // defaultCache removed - was causing stale asset issues
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
 import { Serwist } from "serwist";
+import { logger } from '@/lib/logger';
 
 // This declares the value of `injectionPoint` to TypeScript.
 declare global {
@@ -47,7 +48,7 @@ const safePrecacheEntries = (self.__SW_MANIFEST || []).filter((entry) => {
   return isSafe && !isDangerous;
 });
 
-console.log(`[SW] Precaching ${safePrecacheEntries.length} safe assets (images/fonts only)`);
+logger.log(`[SW] Precaching ${safePrecacheEntries.length} safe assets (images/fonts only)`);
 
 // Initialize Serwist with FILTERED precaching - only safe assets
 const serwist = new Serwist({
@@ -219,7 +220,7 @@ self.addEventListener("notificationclick", (event) => {
 // ============================================
 
 self.addEventListener("sync", (event) => {
-  console.log("Background sync:", event.tag);
+  logger.log("Background sync:", event.tag);
 
   if (event.tag === "sync-chat-messages") {
     event.waitUntil(syncChatMessages());
@@ -446,7 +447,7 @@ async function handleShareTarget(request: Request): Promise<Response> {
 // ============================================
 
 self.addEventListener("install", (event) => {
-  console.log(`[SW] Installing Service Worker v${APP_VERSION}`);
+  logger.log(`[SW] Installing Service Worker v${APP_VERSION}`);
 
   event.waitUntil(
     (async () => {
@@ -454,13 +455,13 @@ self.addEventListener("install", (event) => {
       // This ensures stale assets are removed before the new SW activates
       const cacheNames = await caches.keys();
       if (cacheNames.length > 0) {
-        console.log(`[SW] Clearing ${cacheNames.length} old caches during install:`, cacheNames);
+        logger.log(`[SW] Clearing ${cacheNames.length} old caches during install:`, cacheNames);
         await Promise.all(cacheNames.map((name) => caches.delete(name)));
       }
 
       // Skip waiting to activate immediately
       await self.skipWaiting();
-      console.log(`[SW] Service Worker v${APP_VERSION} installed and skipped waiting`);
+      logger.log(`[SW] Service Worker v${APP_VERSION} installed and skipped waiting`);
     })()
   );
 });
@@ -477,11 +478,11 @@ self.addEventListener("activate", (event) => {
       // there's no reason to keep any old caches
       const cacheNames = await caches.keys();
 
-      console.log(`[SW] NUCLEAR CLEANUP: Deleting ALL ${cacheNames.length} caches:`, cacheNames);
+      logger.log(`[SW] NUCLEAR CLEANUP: Deleting ALL ${cacheNames.length} caches:`, cacheNames);
 
       await Promise.all(
         cacheNames.map((name) => {
-          console.log(`[SW] Deleting cache: ${name}`);
+          logger.log(`[SW] Deleting cache: ${name}`);
           return caches.delete(name);
         })
       );
@@ -491,7 +492,7 @@ self.addEventListener("activate", (event) => {
 
       // Force all clients to reload to get fresh assets
       const clients = await self.clients.matchAll({ type: "window" });
-      console.log(`[SW] Service Worker v${APP_VERSION} activated. Notifying ${clients.length} clients to reload.`);
+      logger.log(`[SW] Service Worker v${APP_VERSION} activated. Notifying ${clients.length} clients to reload.`);
 
       // Send message to all clients to reload
       clients.forEach((client) => {
@@ -502,7 +503,7 @@ self.addEventListener("activate", (event) => {
         });
       });
 
-      console.log(`[SW] Service Worker v${APP_VERSION} activated and controlling all clients`);
+      logger.log(`[SW] Service Worker v${APP_VERSION} activated and controlling all clients`);
     })()
   );
 });

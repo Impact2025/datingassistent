@@ -6,6 +6,7 @@ import AuthLayout from '../../auth-layout';
 import { RegistrationForm } from '@/components/auth/registration-form';
 import { useUser } from '@/providers/user-provider';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
+import { logger } from '@/lib/logger';
 
 export default function RegisterProfilePage() {
   const { user, loading } = useUser();
@@ -14,10 +15,10 @@ export default function RegisterProfilePage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      console.log('🔒 Register profile: No user found, redirecting to login');
+      logger.log('🔒 Register profile: No user found, redirecting to login');
       router.replace('/login');
     } else if (!loading && user) {
-      console.log('✅ Register profile: User authenticated:', user.id);
+      logger.log('✅ Register profile: User authenticated:', user.id);
     }
   }, [loading, user, router]);
 

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Fallback Strategies Testing Framework
  *
@@ -315,7 +316,7 @@ export class FallbackTester {
   }
 
   async runAllTests(): Promise<FallbackTestResult[]> {
-    console.log('🧪 Running fallback strategy tests...\n');
+    logger.log('🧪 Running fallback strategy tests...\n');
 
     const tests = [
       this.testOpenRouterFallback(),
@@ -327,7 +328,7 @@ export class FallbackTester {
 
     const results = await Promise.all(tests);
 
-    console.log('📊 Fallback Test Results:');
+    logger.log('📊 Fallback Test Results:');
     console.table(results.map(r => ({
       Test: r.testName,
       Success: r.success,

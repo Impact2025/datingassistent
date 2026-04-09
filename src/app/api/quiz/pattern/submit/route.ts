@@ -7,6 +7,7 @@ import type {
   PatternQuizSubmitRequest,
   PatternQuizSubmitResponse,
 } from '@/lib/quiz/pattern/pattern-types';
+import { logger } from '@/lib/logger';
 
 /**
  * Pattern Quiz Submission API
@@ -38,8 +39,8 @@ export async function POST(request: Request) {
     }
 
     const answerCount = Object.keys(answers).length;
-    console.log('Received answers:', answerCount, 'questions answered');
-    console.log('Answers:', JSON.stringify(answers));
+    logger.log('Received answers:', answerCount, 'questions answered');
+    logger.log('Answers:', JSON.stringify(answers));
 
     if (answerCount < 10) {
       console.error(`Incomplete quiz: only ${answerCount}/10 questions answered`);
@@ -124,7 +125,7 @@ export async function POST(request: Request) {
     )
       .then((sent) => {
         if (sent) {
-          console.log(`✅ Pattern quiz result email sent to ${email}`);
+          logger.log(`✅ Pattern quiz result email sent to ${email}`);
           // Update database to mark email as sent
           sql`
             UPDATE pattern_quiz_results

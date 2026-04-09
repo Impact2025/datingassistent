@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * DATABASE MIGRATIONS SERVICE
  * Professional database migration management
@@ -23,7 +24,7 @@ export async function runMigrations(): Promise<MigrationResult> {
   const migrationsRun: string[] = [];
   const errors: string[] = [];
 
-  console.log('🔄 Starting database migrations...');
+  logger.log('🔄 Starting database migrations...');
 
   try {
     // Create migrations tracking table
@@ -41,13 +42,13 @@ export async function runMigrations(): Promise<MigrationResult> {
         const alreadyRun = await checkMigrationRun(migration.name);
 
         if (!alreadyRun) {
-          console.log(`  Running migration: ${migration.name}`);
+          logger.log(`  Running migration: ${migration.name}`);
           await migration.fn();
           await recordMigration(migration.name);
           migrationsRun.push(migration.name);
-          console.log(`  ✅ ${migration.name} completed`);
+          logger.log(`  ✅ ${migration.name} completed`);
         } else {
-          console.log(`  ⏭️  ${migration.name} already run`);
+          logger.log(`  ⏭️  ${migration.name} already run`);
         }
       } catch (error) {
         const errorMsg = `Migration ${migration.name} failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
@@ -59,7 +60,7 @@ export async function runMigrations(): Promise<MigrationResult> {
     }
 
     const duration = Date.now() - startTime;
-    console.log(`✅ Migrations completed in ${duration}ms`);
+    logger.log(`✅ Migrations completed in ${duration}ms`);
 
     return {
       success: errors.length === 0,

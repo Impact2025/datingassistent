@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { neon } from '@neondatabase/serverless';
@@ -57,7 +58,7 @@ export async function GET(request: Request) {
     } catch (error: any) {
       // If table doesn't exist, assume no logs
       if (error.message?.includes('relation "weekly_dating_logs" does not exist')) {
-        console.log('🗄️ weekly_dating_logs table does not exist yet, assuming no logs');
+        logger.log('🗄️ weekly_dating_logs table does not exist yet, assuming no logs');
       } else {
         throw error;
       }
@@ -82,7 +83,7 @@ export async function GET(request: Request) {
     } catch (error: any) {
       // If table doesn't exist, assume no logs
       if (error.message?.includes('relation "weekly_dating_logs" does not exist')) {
-        console.log('🗄️ weekly_dating_logs table does not exist yet, assuming no current week logs');
+        logger.log('🗄️ weekly_dating_logs table does not exist yet, assuming no current week logs');
         hasLoggedCurrentWeek = false;
       } else {
         throw error;
@@ -101,7 +102,7 @@ export async function GET(request: Request) {
     } catch (error: any) {
       // If table doesn't exist, use defaults
       if (error.message?.includes('relation "user_notification_preferences" does not exist')) {
-        console.log('🗄️ user_notification_preferences table does not exist yet, using defaults');
+        logger.log('🗄️ user_notification_preferences table does not exist yet, using defaults');
         remindersEnabled = true;
         lastReminderSent = null;
       } else {

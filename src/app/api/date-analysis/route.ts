@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { chatCompletion } from '@/lib/ai-service';
 import { verifyToken } from '@/lib/auth';
@@ -237,7 +238,7 @@ Houd je antwoord warm, ondersteunend en tussen de 150-250 woorden.`;
       };
 
       await AIContextManager.saveUserContext(user.id, updatedContext);
-      console.log(`✅ Date analysis insights saved to AI context for user ${user.id}`);
+      logger.log(`✅ Date analysis insights saved to AI context for user ${user.id}`);
     } catch (contextError) {
       console.error('Error saving date analysis to AI context:', contextError);
       // Don't fail the request if context saving fails

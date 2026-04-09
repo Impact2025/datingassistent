@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * SECURITY HEADERS MIDDLEWARE
  * OWASP compliant security headers for Next.js
@@ -282,8 +283,8 @@ export function getSecurityConfig(): SecurityHeadersConfig {
 
   if (!isProduction) {
     // Relaxed config for development - CSP disabled to prevent dev errors
-    console.log('🔧 Security Middleware loaded in DEVELOPMENT mode');
-    console.log('⚠️  Some security features may be relaxed for development');
+    logger.log('🔧 Security Middleware loaded in DEVELOPMENT mode');
+    logger.log('⚠️  Some security features may be relaxed for development');
     return {
       ...DEFAULT_SECURITY_CONFIG,
       csp: {

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 import { sendEmail } from './email-service';
 import { sendSMSToUser } from './sms-service';
@@ -439,7 +440,7 @@ export class ClientCommunicationService {
       const preferences = await this.getClientCommunicationPreferences(message.client_id);
 
       if (!preferences || preferences.unsubscribed) {
-        console.log('Client has unsubscribed from communications');
+        logger.log('Client has unsubscribed from communications');
         return false;
       }
 
@@ -824,7 +825,7 @@ export class ClientCommunicationService {
         }
       }
 
-      console.log(`Processed ${processed} scheduled messages`);
+      logger.log(`Processed ${processed} scheduled messages`);
       return processed;
     } catch (error) {
       console.error('Error processing scheduled messages:', error);

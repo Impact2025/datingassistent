@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -69,7 +70,7 @@ export async function GET() {
     await sql`CREATE INDEX IF NOT EXISTS idx_survey_responses_user_id ON survey_responses(user_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_survey_responses_survey_id ON survey_responses(survey_id);`;
 
-    console.log('✅ Feedback system database tables initialized successfully');
+    logger.log('✅ Feedback system database tables initialized successfully');
 
     return NextResponse.json({
       success: true,

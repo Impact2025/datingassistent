@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Admin API: Migrate Dating Activities System
  * Creates the dating_activities table for tracking user dating activities
@@ -8,7 +9,7 @@ import { sql } from '@vercel/postgres';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🚀 Starting Dating Activities System Migration via API...');
+    logger.log('🚀 Starting Dating Activities System Migration via API...');
 
     // Check if table already exists
     const existingTables = await sql`
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
     `;
 
     if (existingTables.rows.length > 0) {
-      console.log('⏭️  dating_activities table already exists');
+      logger.log('⏭️  dating_activities table already exists');
       return NextResponse.json({
         success: true,
         message: 'Dating activities table already exists',
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create dating_activities table
-    console.log('📅 Creating dating_activities table...');
+    logger.log('📅 Creating dating_activities table...');
     await sql`
       CREATE TABLE IF NOT EXISTS dating_activities (
         id SERIAL PRIMARY KEY,
@@ -55,17 +56,17 @@ export async function POST(request: NextRequest) {
         updated_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('✅ dating_activities table created');
+    logger.log('✅ dating_activities table created');
 
     // Create indexes
-    console.log('⚡ Creating performance indexes...');
+    logger.log('⚡ Creating performance indexes...');
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_activities_user_date ON dating_activities(user_id, activity_date DESC)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_activities_type ON dating_activities(activity_type)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_activities_platform ON dating_activities(platform)`;
-    console.log('✅ Performance indexes created');
+    logger.log('✅ Performance indexes created');
 
     // Create trigger for updated_at
-    console.log('🔧 Setting up update trigger...');
+    logger.log('🔧 Setting up update trigger...');
     try {
       await sql`
         CREATE OR REPLACE FUNCTION update_dating_activities_updated_at()
@@ -83,13 +84,13 @@ export async function POST(request: NextRequest) {
           FOR EACH ROW
           EXECUTE FUNCTION update_dating_activities_updated_at()
       `;
-      console.log('✅ Update trigger created');
+      logger.log('✅ Update trigger created');
     } catch (error: any) {
       console.warn('⚠️  Could not create trigger:', error.message);
     }
 
     // Add some sample data for testing
-    console.log('📊 Adding sample data for testing...');
+    logger.log('📊 Adding sample data for testing...');
     try {
       // Add sample data for user ID 1 (if exists)
       const users = await sql`SELECT id FROM users LIMIT 1`;
@@ -128,14 +129,14 @@ export async function POST(request: NextRequest) {
             )
           `;
         }
-        console.log('✅ Sample dating activities added');
+        logger.log('✅ Sample dating activities added');
       }
     } catch (error: any) {
       console.warn('⚠️  Could not add sample data:', error.message);
     }
 
     // Verify migration
-    console.log('🔍 Verifying migration...');
+    logger.log('🔍 Verifying migration...');
     const finalTable = await sql`
       SELECT tablename
       FROM pg_tables
@@ -143,10 +144,10 @@ export async function POST(request: NextRequest) {
       AND tablename = 'dating_activities'
     `;
 
-    console.log('📊 Final table status:', finalTable.rows.map(row => row.tablename));
+    logger.log('📊 Final table status:', finalTable.rows.map(row => row.tablename));
 
-    console.log('🎉 Dating Activities System Migration Completed Successfully!');
-    console.log('📅 The dating activities tracking system is now operational.');
+    logger.log('🎉 Dating Activities System Migration Completed Successfully!');
+    logger.log('📅 The dating activities tracking system is now operational.');
 
     return NextResponse.json({
       success: true,

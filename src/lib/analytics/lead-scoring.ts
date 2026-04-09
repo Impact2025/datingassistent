@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Lead Scoring - Track and score visitor engagement
  *
@@ -132,7 +133,7 @@ export function trackLeadEngagement(
   // Check marketing consent first
   if (!hasMarketingConsent()) {
     if (process.env.NODE_ENV === 'development') {
-      console.log('[Lead Scoring] ❌ Blocked - Marketing consent required');
+      logger.log('[Lead Scoring] ❌ Blocked - Marketing consent required');
     }
     return {
       score: 0,
@@ -202,7 +203,7 @@ export function trackLeadEngagement(
 
   // Log in development
   if (process.env.NODE_ENV === 'development') {
-    console.log(`🎯 Lead Score: ${currentScore.score} (${currentScore.level})`, {
+    logger.log(`🎯 Lead Score: ${currentScore.score} (${currentScore.level})`, {
       event,
       pointsAdded: pointsToAdd,
       signals: currentScore.highIntentSignals
@@ -251,7 +252,7 @@ export async function syncLeadScoreToBackend(): Promise<void> {
   // Check marketing consent
   if (!hasMarketingConsent()) {
     if (process.env.NODE_ENV === 'development') {
-      console.log('[Lead Scoring] ❌ Sync blocked - Marketing consent required');
+      logger.log('[Lead Scoring] ❌ Sync blocked - Marketing consent required');
     }
     return;
   }

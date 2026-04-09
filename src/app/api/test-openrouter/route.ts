@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { generateBlog, convertArticleToBlog } from '@/lib/ai-service';
 import { generateDatingProfile, generateOpener } from '@/lib/ai-service';
+import { logger } from '@/lib/logger';
 
 /**
  * Test API endpoint voor OpenRouter integratie
@@ -15,7 +16,7 @@ export async function GET() {
     };
 
     // Test 1: Blog generatie (kort artikel voor snelheid)
-    console.log('🔄 Test 1: Blog generatie...');
+    logger.log('🔄 Test 1: Blog generatie...');
     try {
       const blogStart = Date.now();
       const blog = await generateBlog(
@@ -35,7 +36,7 @@ export async function GET() {
         contentLength: blog.content.length,
         keywords: blog.keywords,
       };
-      console.log('✅ Blog generatie geslaagd!');
+      logger.log('✅ Blog generatie geslaagd!');
     } catch (error) {
       results.tests.blogGeneration = {
         success: false,
@@ -45,7 +46,7 @@ export async function GET() {
     }
 
     // Test 2: Dating profiel
-    console.log('🔄 Test 2: Dating profiel generatie...');
+    logger.log('🔄 Test 2: Dating profiel generatie...');
     try {
       const profileStart = Date.now();
       const profile = await generateDatingProfile(
@@ -63,7 +64,7 @@ export async function GET() {
         profile: profile,
         length: profile.length,
       };
-      console.log('✅ Profiel generatie geslaagd!');
+      logger.log('✅ Profiel generatie geslaagd!');
     } catch (error) {
       results.tests.profileGeneration = {
         success: false,
@@ -73,7 +74,7 @@ export async function GET() {
     }
 
     // Test 3: Opener generatie
-    console.log('🔄 Test 3: Opener generatie...');
+    logger.log('🔄 Test 3: Opener generatie...');
     try {
       const openerStart = Date.now();
       const opener = await generateOpener(
@@ -91,7 +92,7 @@ export async function GET() {
         opener: opener,
         length: opener.length,
       };
-      console.log('✅ Opener generatie geslaagd!');
+      logger.log('✅ Opener generatie geslaagd!');
     } catch (error) {
       results.tests.openerGeneration = {
         success: false,
@@ -111,7 +112,7 @@ export async function GET() {
       successRate: `${Math.round((passedTests / totalTests) * 100)}%`,
     };
 
-    console.log(`\n📊 Resultaten: ${passedTests}/${totalTests} tests geslaagd`);
+    logger.log(`\n📊 Resultaten: ${passedTests}/${totalTests} tests geslaagd`);
 
     return NextResponse.json(results, { status: 200 });
   } catch (error) {

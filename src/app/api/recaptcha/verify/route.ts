@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     // Handle development bypass tokens
     if (token === 'bypass' || token === 'bypass_development') {
-      console.log('🧪 Using reCAPTCHA bypass token for development');
+      logger.log('🧪 Using reCAPTCHA bypass token for development');
       return NextResponse.json({
         success: true,
         score: 1.0,

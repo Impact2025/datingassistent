@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating relationship patterns tables...');
+    logger.log('Creating relationship patterns tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -19,7 +20,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created relationship_patterns_assessments table');
+    logger.log('✅ Created relationship_patterns_assessments table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_patterns_responses (
@@ -33,7 +34,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created relationship_patterns_responses table');
+    logger.log('✅ Created relationship_patterns_responses table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_patterns_results (
@@ -66,7 +67,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created relationship_patterns_results table');
+    logger.log('✅ Created relationship_patterns_results table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_patterns_questions (
@@ -80,7 +81,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created relationship_patterns_questions table');
+    logger.log('✅ Created relationship_patterns_questions table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_patterns_scenarios (
@@ -94,7 +95,7 @@ export async function POST() {
         UNIQUE(question_id, order_position)
       );
     `;
-    console.log('✅ Created relationship_patterns_scenarios table');
+    logger.log('✅ Created relationship_patterns_scenarios table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS relationship_patterns_progress (
@@ -109,7 +110,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created relationship_patterns_progress table');
+    logger.log('✅ Created relationship_patterns_progress table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_relationship_patterns_assessments_user_id ON relationship_patterns_assessments(user_id);`;
@@ -117,7 +118,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_relationship_patterns_responses_assessment_id ON relationship_patterns_responses(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_relationship_patterns_results_assessment_id ON relationship_patterns_results(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_relationship_patterns_progress_user_id ON relationship_patterns_progress(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     // Insert questions
     await sql`
@@ -138,7 +139,7 @@ export async function POST() {
       ('scenario', 'Na een ruzie ga je direct repareren of ga je stilzwijgend afstand nemen?', 'boundary_deficit', false, 1.0, 14)
       ON CONFLICT (order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted questions');
+    logger.log('✅ Inserted questions');
 
     // Insert scenario options
     await sql`
@@ -151,7 +152,7 @@ export async function POST() {
       ((SELECT id FROM relationship_patterns_questions WHERE order_position = 14), 'Denk en later handelen - ik neem tijd om na te denken.', ARRAY['idealize'], 1.0, 3)
       ON CONFLICT (question_id, order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted scenario options');
+    logger.log('✅ Inserted scenario options');
 
     return NextResponse.json({
       success: true,

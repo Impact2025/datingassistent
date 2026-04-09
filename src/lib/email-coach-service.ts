@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 import { sendEmail } from './email-service';
 
@@ -36,7 +37,7 @@ export class EmailCoachService {
         from: 'coach@datingsassistent.nl'
       });
 
-      console.log(`✅ Monthly report sent to ${userName} (${userEmail})`);
+      logger.log(`✅ Monthly report sent to ${userName} (${userEmail})`);
 
       // Track email sent
       await this.trackEmailSent(emailData.userId, 'monthly_report', subject);
@@ -65,7 +66,7 @@ export class EmailCoachService {
         from: 'coach@datingsassistent.nl'
       });
 
-      console.log(`✅ Weekly review sent to ${userName} (${userEmail})`);
+      logger.log(`✅ Weekly review sent to ${userName} (${userEmail})`);
 
       // Track email sent
       await this.trackEmailSent(emailData.userId, 'weekly_review', subject);
@@ -96,7 +97,7 @@ export class EmailCoachService {
         from: 'system@datingsassistent.nl'
       });
 
-      console.log(`✅ Coach notification sent to ${coachName} (${coachEmail})`);
+      logger.log(`✅ Coach notification sent to ${coachName} (${coachEmail})`);
 
     } catch (error) {
       console.error('❌ Error sending coach notification email:', error);
@@ -109,7 +110,7 @@ export class EmailCoachService {
    */
   static async sendAllPendingMonthlyReports(): Promise<void> {
     try {
-      console.log('📧 Sending all pending monthly reports to coach...');
+      logger.log('📧 Sending all pending monthly reports to coach...');
 
       // Get reports that haven't been emailed yet
       const pendingReports = await sql`
@@ -129,7 +130,7 @@ export class EmailCoachService {
       `;
 
       if (pendingReports.rows.length === 0) {
-        console.log('📧 No pending monthly reports to send');
+        logger.log('📧 No pending monthly reports to send');
         return;
       }
 
@@ -141,7 +142,7 @@ export class EmailCoachService {
         await this.trackEmailSent(report.user_id, 'monthly_report', `Monthly Report for ${report.user_name}`);
       }
 
-      console.log(`✅ Sent consolidated monthly report with ${pendingReports.rows.length} client reports to coach`);
+      logger.log(`✅ Sent consolidated monthly report with ${pendingReports.rows.length} client reports to coach`);
 
     } catch (error) {
       console.error('❌ Error sending pending monthly reports:', error);
@@ -154,7 +155,7 @@ export class EmailCoachService {
    */
   static async sendAllPendingWeeklyReviews(): Promise<void> {
     try {
-      console.log('📧 Sending all pending weekly reviews to coach...');
+      logger.log('📧 Sending all pending weekly reviews to coach...');
 
       // Get reviews that haven't been emailed yet
       const pendingReviews = await sql`
@@ -174,7 +175,7 @@ export class EmailCoachService {
       `;
 
       if (pendingReviews.rows.length === 0) {
-        console.log('📧 No pending weekly reviews to send');
+        logger.log('📧 No pending weekly reviews to send');
         return;
       }
 
@@ -186,7 +187,7 @@ export class EmailCoachService {
         await this.trackEmailSent(review.user_id, 'weekly_review', `Weekly Review for ${review.user_name}`);
       }
 
-      console.log(`✅ Sent consolidated weekly review with ${pendingReviews.rows.length} client reviews to coach`);
+      logger.log(`✅ Sent consolidated weekly review with ${pendingReviews.rows.length} client reviews to coach`);
 
     } catch (error) {
       console.error('❌ Error sending pending weekly reviews:', error);
@@ -727,7 +728,7 @@ export class EmailCoachService {
       from: 'system@datingsassistent.nl'
     });
 
-    console.log(`✅ Consolidated monthly reports sent to coach (${coachEmail})`);
+    logger.log(`✅ Consolidated monthly reports sent to coach (${coachEmail})`);
   }
 
   /**
@@ -748,7 +749,7 @@ export class EmailCoachService {
       from: 'system@datingsassistent.nl'
     });
 
-    console.log(`✅ Consolidated weekly reviews sent to coach (${coachEmail})`);
+    logger.log(`✅ Consolidated weekly reviews sent to coach (${coachEmail})`);
   }
 
   // Helper methods

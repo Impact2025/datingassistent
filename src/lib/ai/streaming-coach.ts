@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Streaming AI Coach
  * Sprint 6.1: Real-time streaming AI responses for live coaching
@@ -237,7 +238,7 @@ export async function initCoachConversationsTable(): Promise<void> {
         INDEX idx_conversation_id (conversation_id)
       )
     `;
-    console.log('Coach conversations table initialized');
+    logger.log('Coach conversations table initialized');
   } catch (error) {
     console.error('Error initializing coach conversations table:', error);
   }

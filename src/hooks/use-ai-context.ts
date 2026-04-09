@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect, useCallback } from 'react';
 import { useUser } from '@/providers/user-provider';
@@ -30,7 +31,7 @@ export function useAIContext() {
 
       // Skip if no token available yet
       if (!token) {
-        console.log('AI Context: No token available yet, skipping load');
+        logger.log('AI Context: No token available yet, skipping load');
         setLoading(false);
         return;
       }
@@ -44,7 +45,7 @@ export function useAIContext() {
         setContext(data.context);
       } else if (response.status === 401) {
         // Silently handle auth errors - user may be logging in
-        console.log('AI Context: Auth pending, will retry on next render');
+        logger.log('AI Context: Auth pending, will retry on next render');
         setContext(null);
       } else {
         console.error('Failed to load AI context:', response.statusText);

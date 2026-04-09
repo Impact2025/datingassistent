@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 import { randomBytes } from 'crypto';
 // Note: sendEmail import removed to avoid client-side issues
@@ -116,7 +117,7 @@ Voorwaarden: https://datingassistent.nl/algemene-voorwaarden
     `.trim();
 
     const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@datingassistent.nl';
-    console.log(`📧 Sending verification link email to ${userEmail} from ${fromEmail}`);
+    logger.log(`📧 Sending verification link email to ${userEmail} from ${fromEmail}`);
 
     return sendEmail({
       to: userEmail,
@@ -226,7 +227,7 @@ export function generateVerificationCode(): string {
  * Store verification code for user
  */
 export async function storeVerificationCode(userId: number, code: string): Promise<void> {
-  console.log(`⏰ Setting verification code expiry for user ${userId}`);
+  logger.log(`⏰ Setting verification code expiry for user ${userId}`);
 
   // First ensure columns exist
   await ensureVerificationColumns();
@@ -246,7 +247,7 @@ export async function storeVerificationCode(userId: number, code: string): Promi
   `;
   const expiryTime = expiryCheck.rows[0]?.code_expires_at;
 
-  console.log(`✅ Verification code stored for user ${userId}, expires at ${expiryTime}`);
+  logger.log(`✅ Verification code stored for user ${userId}, expires at ${expiryTime}`);
 }
 
 /**
@@ -265,17 +266,17 @@ async function ensureVerificationColumns(): Promise<void> {
     // Add missing columns
     if (!existingColumns.includes('verification_code')) {
       await sql.query('ALTER TABLE users ADD COLUMN verification_code VARCHAR(6)');
-      console.log('✅ Added verification_code column');
+      logger.log('✅ Added verification_code column');
     }
 
     if (!existingColumns.includes('code_expires_at')) {
       await sql.query('ALTER TABLE users ADD COLUMN code_expires_at TIMESTAMP');
-      console.log('✅ Added code_expires_at column');
+      logger.log('✅ Added code_expires_at column');
     }
 
     if (!existingColumns.includes('code_attempts')) {
       await sql.query('ALTER TABLE users ADD COLUMN code_attempts INTEGER DEFAULT 0');
-      console.log('✅ Added code_attempts column');
+      logger.log('✅ Added code_attempts column');
     }
 
   } catch (error) {
@@ -289,7 +290,7 @@ async function ensureVerificationColumns(): Promise<void> {
  */
 export async function verifyEmailWithCode(userId: number, code: string): Promise<{ success: boolean; user?: any; error?: string }> {
   try {
-    console.log(`🔍 Verifying code for user ${userId}: ${code}`);
+    logger.log(`🔍 Verifying code for user ${userId}: ${code}`);
 
     // Get user data
     const result = await sql`
@@ -299,12 +300,12 @@ export async function verifyEmailWithCode(userId: number, code: string): Promise
     `;
 
     if (result.rows.length === 0) {
-      console.log(`❌ User ${userId} not found`);
+      logger.log(`❌ User ${userId} not found`);
       return { success: false, error: 'User not found' };
     }
 
     const user = result.rows[0];
-    console.log(`📋 User data:`, {
+    logger.log(`📋 User data:`, {
       id: user.id,
       email: user.email,
       email_verified: user.email_verified,
@@ -315,13 +316,13 @@ export async function verifyEmailWithCode(userId: number, code: string): Promise
 
     // Check if already verified
     if (user.email_verified) {
-      console.log(`❌ Email already verified for user ${userId}`);
+      logger.log(`❌ Email already verified for user ${userId}`);
       return { success: false, error: 'Email already verified' };
     }
 
     // Check attempts (max 5)
     if (user.code_attempts >= 5) {
-      console.log(`❌ Too many failed attempts for user ${userId}: ${user.code_attempts}`);
+      logger.log(`❌ Too many failed attempts for user ${userId}: ${user.code_attempts}`);
       return { success: false, error: 'Too many failed attempts. Request a new code.' };
     }
 
@@ -333,17 +334,17 @@ export async function verifyEmailWithCode(userId: number, code: string): Promise
     `;
     const isExpired = expiredCheck.rows[0].is_expired;
 
-    console.log(`⏰ Code expires at: ${user.code_expires_at}, is expired: ${isExpired}`);
+    logger.log(`⏰ Code expires at: ${user.code_expires_at}, is expired: ${isExpired}`);
 
     if (isExpired) {
-      console.log(`❌ Code expired for user ${userId}`);
+      logger.log(`❌ Code expired for user ${userId}`);
       return { success: false, error: 'Verification code has expired' };
     }
 
     // Check code match
-    console.log(`🔍 Comparing codes: input "${code}" vs stored "${user.verification_code}"`);
+    logger.log(`🔍 Comparing codes: input "${code}" vs stored "${user.verification_code}"`);
     if (user.verification_code !== code) {
-      console.log(`❌ Code mismatch for user ${userId}`);
+      logger.log(`❌ Code mismatch for user ${userId}`);
       // Increment attempts
       await sql`
         UPDATE users
@@ -353,7 +354,7 @@ export async function verifyEmailWithCode(userId: number, code: string): Promise
       return { success: false, error: 'Invalid verification code' };
     }
 
-    console.log(`✅ Code verified successfully for user ${userId}`);
+    logger.log(`✅ Code verified successfully for user ${userId}`);
 
     // Mark email as verified and clear code
     await sql`
@@ -365,7 +366,7 @@ export async function verifyEmailWithCode(userId: number, code: string): Promise
       WHERE id = ${userId}
     `;
 
-    console.log(`✅ Email marked as verified for user ${userId}`);
+    logger.log(`✅ Email marked as verified for user ${userId}`);
 
     return { success: true, user };
   } catch (error) {
@@ -417,7 +418,7 @@ DatingAssistent - De dating coach die altijd beschikbaar is
     `.trim();
 
     const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@datingassistent.nl';
-    console.log(`📧 Sending verification email to ${userEmail} from ${fromEmail}`);
+    logger.log(`📧 Sending verification email to ${userEmail} from ${fromEmail}`);
 
     return sendEmail({
       to: userEmail,

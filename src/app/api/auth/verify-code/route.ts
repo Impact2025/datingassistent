@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyEmailWithCode } from '@/lib/email-verification';
 import { SignJWT } from 'jose';
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
       await scheduleWelcomeEmail(user.id);
       await scheduleProfileOptimizationReminder(user.id);
       await scheduleWeeklyCheckin(user.id);
-      console.log(`✅ Email engagement sequence scheduled for verified user ${user.id}`);
+      logger.log(`✅ Email engagement sequence scheduled for verified user ${user.id}`);
     } catch (error) {
       console.error('Failed to schedule welcome emails:', error);
       // Non-blocking error
@@ -79,7 +80,7 @@ export async function POST(request: NextRequest) {
       path: '/'
     });
 
-    console.log(`✅ Email verified for user ${user.id} (${user.email})`);
+    logger.log(`✅ Email verified for user ${user.id} (${user.email})`);
 
     return response;
 

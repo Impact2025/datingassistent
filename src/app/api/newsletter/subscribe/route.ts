@@ -18,7 +18,14 @@ async function ensureTable() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, source = 'contact-page' } = await request.json();
+    const { email, source = 'contact-page', consentAccepted = false } = await request.json();
+
+    if (!consentAccepted) {
+      return NextResponse.json(
+        { error: 'Toestemming is vereist voor aanmelding' },
+        { status: 400 }
+      );
+    }
 
     // Validate email
     if (!email || typeof email !== 'string') {
@@ -67,10 +74,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Insert new subscriber
+    // Insert new subscriber with consent timestamp (AVG art. 6 lid 1 sub a)
     await sql`
       INSERT INTO newsletter_subscribers (email, source, metadata)
-      VALUES (${email.toLowerCase()}, ${source}, ${JSON.stringify({ userAgent: request.headers.get('user-agent') })})
+      VALUES (
+        ${email.toLowerCase()},
+        ${source},
+        ${JSON.stringify({
+          userAgent: request.headers.get('user-agent'),
+          consentTimestamp: new Date().toISOString(),
+          consentVersion: '1.0',
+        })}
+      )
     `;
 
     return NextResponse.json(

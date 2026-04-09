@@ -12,6 +12,7 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 // ============================================================================
 // TYPES
@@ -606,11 +607,11 @@ const werkboeken: { dag_nummer: number; werkboek: Werkboek }[] = [
 // ============================================================================
 
 async function runKickstartUpgrade() {
-  console.log('');
-  console.log('╔════════════════════════════════════════════════════════════╗');
-  console.log('║     KICKSTART COMPLETE UPGRADE - TRANSFORMATIE START       ║');
-  console.log('╚════════════════════════════════════════════════════════════╝');
-  console.log('');
+  logger.log('');
+  logger.log('╔════════════════════════════════════════════════════════════╗');
+  logger.log('║     KICKSTART COMPLETE UPGRADE - TRANSFORMATIE START       ║');
+  logger.log('╚════════════════════════════════════════════════════════════╝');
+  logger.log('');
 
   try {
     // Get Kickstart program ID
@@ -619,20 +620,20 @@ async function runKickstartUpgrade() {
     `;
 
     if (programResult.rows.length === 0) {
-      console.log('❌ Kickstart program niet gevonden!');
-      console.log('   Run eerst de basis migratie.');
+      logger.log('❌ Kickstart program niet gevonden!');
+      logger.log('   Run eerst de basis migratie.');
       process.exit(1);
     }
 
     const programId = programResult.rows[0].id;
-    console.log(`✅ Kickstart program gevonden (ID: ${programId})\n`);
+    logger.log(`✅ Kickstart program gevonden (ID: ${programId})\n`);
 
     // ========================================
     // PHASE 1: UPDATE REFLECTIES
     // ========================================
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('📝 FASE 1: Reflectievragen Upgraden (21 dagen)');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    logger.log('📝 FASE 1: Reflectievragen Upgraden (21 dagen)');
+    logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     let reflectieSuccess = 0;
     for (const r of reflecties) {
@@ -646,21 +647,21 @@ async function runKickstartUpgrade() {
           RETURNING dag_nummer, titel
         `;
         if (result.rows.length > 0) {
-          console.log(`  ✓ Dag ${r.dag_nummer}: ${r.vragen.length} transformationele vragen`);
+          logger.log(`  ✓ Dag ${r.dag_nummer}: ${r.vragen.length} transformationele vragen`);
           reflectieSuccess++;
         }
       } catch (err) {
-        console.log(`  ❌ Dag ${r.dag_nummer}: Error`);
+        logger.log(`  ❌ Dag ${r.dag_nummer}: Error`);
       }
     }
-    console.log(`\n  📊 Reflecties: ${reflectieSuccess}/21 dagen succesvol\n`);
+    logger.log(`\n  📊 Reflecties: ${reflectieSuccess}/21 dagen succesvol\n`);
 
     // ========================================
     // PHASE 2: UPDATE VIDEO SCRIPTS
     // ========================================
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('🎬 FASE 2: Video Scripts Upgraden (Dag 6-21)');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    logger.log('🎬 FASE 2: Video Scripts Upgraden (Dag 6-21)');
+    logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     let scriptSuccess = 0;
     for (const vs of videoScripts) {
@@ -674,21 +675,21 @@ async function runKickstartUpgrade() {
           RETURNING dag_nummer, titel
         `;
         if (result.rows.length > 0) {
-          console.log(`  ✓ Dag ${vs.dag_nummer}: Hybrid script (mindset + praktijk)`);
+          logger.log(`  ✓ Dag ${vs.dag_nummer}: Hybrid script (mindset + praktijk)`);
           scriptSuccess++;
         }
       } catch (err) {
-        console.log(`  ❌ Dag ${vs.dag_nummer}: Error`);
+        logger.log(`  ❌ Dag ${vs.dag_nummer}: Error`);
       }
     }
-    console.log(`\n  📊 Video Scripts: ${scriptSuccess}/${videoScripts.length} dagen succesvol\n`);
+    logger.log(`\n  📊 Video Scripts: ${scriptSuccess}/${videoScripts.length} dagen succesvol\n`);
 
     // ========================================
     // PHASE 3: UPDATE WERKBOEKEN
     // ========================================
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('📓 FASE 3: Werkboeken Upgraden met Journaling');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    logger.log('📓 FASE 3: Werkboeken Upgraden met Journaling');
+    logger.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     let werkboekSuccess = 0;
     for (const wb of werkboeken) {
@@ -702,39 +703,39 @@ async function runKickstartUpgrade() {
           RETURNING dag_nummer, titel
         `;
         if (result.rows.length > 0) {
-          console.log(`  ✓ Dag ${wb.dag_nummer}: Werkboek + journaling prompts`);
+          logger.log(`  ✓ Dag ${wb.dag_nummer}: Werkboek + journaling prompts`);
           werkboekSuccess++;
         }
       } catch (err) {
-        console.log(`  ❌ Dag ${wb.dag_nummer}: Error`);
+        logger.log(`  ❌ Dag ${wb.dag_nummer}: Error`);
       }
     }
-    console.log(`\n  📊 Werkboeken: ${werkboekSuccess}/${werkboeken.length} dagen succesvol\n`);
+    logger.log(`\n  📊 Werkboeken: ${werkboekSuccess}/${werkboeken.length} dagen succesvol\n`);
 
     // ========================================
     // SUMMARY
     // ========================================
-    console.log('');
-    console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║                    UPGRADE COMPLEET!                        ║');
-    console.log('╚════════════════════════════════════════════════════════════╝');
-    console.log('');
-    console.log('📊 SAMENVATTING:');
-    console.log(`   • Reflecties geupgraded: ${reflectieSuccess}/21 dagen`);
-    console.log(`   • Video scripts geupgraded: ${scriptSuccess}/${videoScripts.length} dagen`);
-    console.log(`   • Werkboeken geupgraded: ${werkboekSuccess}/${werkboeken.length} dagen`);
-    console.log('');
-    console.log('🎯 WAT IS ER VERANDERD:');
-    console.log('   • Elke dag heeft nu 3 transformationele reflectievragen');
-    console.log('   • Spiegel (confrontatie) + Identiteit (wie wil je zijn) + Actie');
-    console.log('   • Video scripts bevatten nu mindset hooks en transformatie afsluitingen');
-    console.log('   • Werkboeken bevatten journaling prompts voor diepere reflectie');
-    console.log('');
-    console.log('🔗 TEST DE UPGRADE:');
-    console.log('   http://localhost:9000/kickstart/dag/1  (check reflecties)');
-    console.log('   http://localhost:9000/kickstart/dag/6  (check nieuwe content)');
-    console.log('   http://localhost:9000/kickstart/dag/20 (check mindset dag)');
-    console.log('');
+    logger.log('');
+    logger.log('╔════════════════════════════════════════════════════════════╗');
+    logger.log('║                    UPGRADE COMPLEET!                        ║');
+    logger.log('╚════════════════════════════════════════════════════════════╝');
+    logger.log('');
+    logger.log('📊 SAMENVATTING:');
+    logger.log(`   • Reflecties geupgraded: ${reflectieSuccess}/21 dagen`);
+    logger.log(`   • Video scripts geupgraded: ${scriptSuccess}/${videoScripts.length} dagen`);
+    logger.log(`   • Werkboeken geupgraded: ${werkboekSuccess}/${werkboeken.length} dagen`);
+    logger.log('');
+    logger.log('🎯 WAT IS ER VERANDERD:');
+    logger.log('   • Elke dag heeft nu 3 transformationele reflectievragen');
+    logger.log('   • Spiegel (confrontatie) + Identiteit (wie wil je zijn) + Actie');
+    logger.log('   • Video scripts bevatten nu mindset hooks en transformatie afsluitingen');
+    logger.log('   • Werkboeken bevatten journaling prompts voor diepere reflectie');
+    logger.log('');
+    logger.log('🔗 TEST DE UPGRADE:');
+    logger.log('   http://localhost:9000/kickstart/dag/1  (check reflecties)');
+    logger.log('   http://localhost:9000/kickstart/dag/6  (check nieuwe content)');
+    logger.log('   http://localhost:9000/kickstart/dag/20 (check mindset dag)');
+    logger.log('');
 
   } catch (error) {
     console.error('\n❌ Upgrade mislukt:', error);

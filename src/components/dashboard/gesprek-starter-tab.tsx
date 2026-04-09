@@ -22,6 +22,7 @@ import { ToolOnboardingOverlay, useOnboardingOverlay } from "@/components/shared
 import { getOnboardingSteps, getToolDisplayName } from "@/lib/tool-onboarding-content";
 import { ContextualTooltip } from "@/components/shared/contextual-tooltip";
 import { useToolCompletion } from "@/hooks/use-tool-completion";
+import { logger } from '@/lib/logger';
 
 
 export function GesprekStarterTab() {
@@ -266,7 +267,7 @@ export function GesprekStarterTab() {
         steps={getOnboardingSteps('gesprek-starter')}
         open={showOverlay}
         onOpenChange={setShowOverlay}
-        onComplete={() => console.log('Gesprek Starters onboarding completed!')}
+        onComplete={() => logger.log('Gesprek Starters onboarding completed!')}
       />
 
       <div className="space-y-6">

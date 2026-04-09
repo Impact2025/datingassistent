@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Daily Engagement Service - Automated personalized content delivery
  * Keeps users engaged with daily motivation, check-ins, and progress tracking
@@ -167,7 +168,7 @@ export class DailyEngagementService {
         }
       }
 
-      console.log(`Delivered ${delivered} scheduled engagements`);
+      logger.log(`Delivered ${delivered} scheduled engagements`);
       return delivered;
 
     } catch (error) {

@@ -1,16 +1,17 @@
 import { sql } from '@vercel/postgres';
 import * as dotenv from 'dotenv';
+import { logger } from '@/lib/logger';
 
 // Load environment variables
 dotenv.config();
 
 async function migrateAddCouponCode() {
-  console.log('🚀 Starting coupon_code column migration...\n');
+  logger.log('🚀 Starting coupon_code column migration...\n');
 
   try {
     // Test connection first
     await sql`SELECT 1 as test`;
-    console.log('✅ Database connection successful\n');
+    logger.log('✅ Database connection successful\n');
 
     // Check if payment_transactions table exists
     const tableCheck = await sql`
@@ -21,65 +22,65 @@ async function migrateAddCouponCode() {
     `;
 
     if (!tableCheck.rows[0].exists) {
-      console.log('⚠️ payment_transactions table does not exist yet.');
-      console.log('ℹ️ The coupon_code column will be added when the table is created.\n');
-      console.log('📋 To create the table, run the database-setup-payments.sql script first.\n');
+      logger.log('⚠️ payment_transactions table does not exist yet.');
+      logger.log('ℹ️ The coupon_code column will be added when the table is created.\n');
+      logger.log('📋 To create the table, run the database-setup-payments.sql script first.\n');
       process.exit(0);
     }
 
     // Add coupon_code column to payment_transactions if not exists
-    console.log('📦 Adding coupon_code column to payment_transactions...');
+    logger.log('📦 Adding coupon_code column to payment_transactions...');
     try {
       await sql`
         ALTER TABLE payment_transactions
         ADD COLUMN IF NOT EXISTS coupon_code VARCHAR(100)
       `;
-      console.log('✅ coupon_code column added to payment_transactions\n');
+      logger.log('✅ coupon_code column added to payment_transactions\n');
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       if (errorMessage.includes('already exists')) {
-        console.log('ℹ️ coupon_code column already exists in payment_transactions\n');
+        logger.log('ℹ️ coupon_code column already exists in payment_transactions\n');
       } else {
         throw error;
       }
     }
 
     // Add coupon_code column to orders table if it exists
-    console.log('📦 Adding coupon_code column to orders table (if exists)...');
+    logger.log('📦 Adding coupon_code column to orders table (if exists)...');
     try {
       await sql`
         ALTER TABLE orders
         ADD COLUMN IF NOT EXISTS coupon_code VARCHAR(100)
       `;
-      console.log('✅ coupon_code column added to orders\n');
+      logger.log('✅ coupon_code column added to orders\n');
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       if (errorMessage.includes('does not exist')) {
-        console.log('ℹ️ orders table does not exist, skipping\n');
+        logger.log('ℹ️ orders table does not exist, skipping\n');
       } else if (errorMessage.includes('already exists')) {
-        console.log('ℹ️ coupon_code column already exists in orders\n');
+        logger.log('ℹ️ coupon_code column already exists in orders\n');
       } else {
-        console.log('⚠️ Could not add column to orders:', errorMessage, '\n');
+        logger.log('⚠️ Could not add column to orders:', errorMessage, '\n');
       }
     }
 
     // Create index for faster coupon lookups
-    console.log('📦 Creating index for coupon_code...');
+    logger.log('📦 Creating index for coupon_code...');
     try {
       await sql`
         CREATE INDEX IF NOT EXISTS idx_payment_transactions_coupon_code
         ON payment_transactions(coupon_code)
         WHERE coupon_code IS NOT NULL
       `;
-      console.log('✅ Index created\n');
+      logger.log('✅ Index created\n');
     } catch (error) {
-      console.log('ℹ️ Index might already exist\n');
+      logger.log('ℹ️ Index might already exist\n');
     }
 
-    console.log('\n🎉 Migration completed successfully!');
-    console.log('\nChanges made:');
-    console.log('  - Added coupon_code column to payment_transactions');
-    console.log('  - Added index for coupon_code lookups');
+    logger.log('\n🎉 Migration completed successfully!');
+    logger.log('\nChanges made:');
+    logger.log('  - Added coupon_code column to payment_transactions');
+    logger.log('  - Added index for coupon_code lookups');
 
   } catch (error) {
     console.error('❌ Migration failed:', error);

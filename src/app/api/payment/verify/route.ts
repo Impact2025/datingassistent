@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
@@ -19,7 +20,7 @@ async function initializeKickstartProgress(userId: number, programId: number): P
     `;
 
     if (daysResult.rows.length === 0) {
-      console.log('⚠️ No Kickstart days found, skipping progress initialization');
+      logger.log('⚠️ No Kickstart days found, skipping progress initialization');
       return;
     }
 
@@ -30,7 +31,7 @@ async function initializeKickstartProgress(userId: number, programId: number): P
     `;
 
     if (parseInt(existingProgress.rows[0].count) > 0) {
-      console.log(`ℹ️ User ${userId} already has Kickstart progress, skipping initialization`);
+      logger.log(`ℹ️ User ${userId} already has Kickstart progress, skipping initialization`);
       return;
     }
 
@@ -46,7 +47,7 @@ async function initializeKickstartProgress(userId: number, programId: number): P
       `;
     }
 
-    console.log(`✅ Initialized Kickstart progress for user ${userId} (${daysResult.rows.length} days)`);
+    logger.log(`✅ Initialized Kickstart progress for user ${userId} (${daysResult.rows.length} days)`);
   } catch (error) {
     // Don't fail the payment if progress init fails - we can retry later
     console.error('⚠️ Error initializing Kickstart progress (non-fatal):', error);
@@ -99,7 +100,7 @@ async function checkStripeSessionStatus(
 
   try {
     const session = await stripe.checkout.sessions.retrieve(stripeSessionId);
-    console.log('📞 Stripe session status:', { id: stripeSessionId, payment_status: session.payment_status });
+    logger.log('📞 Stripe session status:', { id: stripeSessionId, payment_status: session.payment_status });
 
     const success = session.payment_status === 'paid';
     return {
@@ -170,11 +171,11 @@ export async function GET(request: NextRequest) {
 
       // If status is pending, check Stripe directly as fallback (webhook may not have arrived yet)
       if (tx.status === 'pending' || tx.status === 'initialized') {
-        console.log('🔍 Status is pending, checking Stripe directly...');
+        logger.log('🔍 Status is pending, checking Stripe directly...');
         const stripeStatus = await checkStripeSessionStatus(tx.stripe_session_id ?? null);
 
         if (stripeStatus?.success && stripeStatus.status === 'completed') {
-          console.log('✅ Stripe reports paid, updating database...');
+          logger.log('✅ Stripe reports paid, updating database...');
 
           // Update payment transaction
           await sql`
@@ -201,7 +202,7 @@ export async function GET(request: NextRequest) {
                 purchaseDate: new Date(),
                 kickstartOrderId: orderId,
               });
-              console.log(`📧 Scheduled upsell sequence for Kickstart user ${tx.user_id}`);
+              logger.log(`📧 Scheduled upsell sequence for Kickstart user ${tx.user_id}`);
             } catch (upsellError) {
               // Don't fail payment if upsell scheduling fails
               console.error('⚠️ Failed to schedule upsell sequence (non-fatal):', upsellError);
@@ -212,7 +213,7 @@ export async function GET(request: NextRequest) {
           if (tx.program_slug === 'transformatie') {
             try {
               await cancelKickstartUpsellSequence(tx.user_id);
-              console.log(`🛑 Cancelled Kickstart upsell sequence for user ${tx.user_id} (upgraded to Transformatie)`);
+              logger.log(`🛑 Cancelled Kickstart upsell sequence for user ${tx.user_id} (upgraded to Transformatie)`);
             } catch (cancelError) {
               console.error('⚠️ Failed to cancel upsell sequence (non-fatal):', cancelError);
             }
@@ -268,7 +269,7 @@ export async function GET(request: NextRequest) {
             }
           }
 
-          console.log('✅ Payment completed via Stripe API check, enrollment initialized');
+          logger.log('✅ Payment completed via Stripe API check, enrollment initialized');
           tx.status = 'completed';
           tx.paid_at = new Date();
         }
@@ -391,7 +392,7 @@ export async function POST(request: NextRequest) {
     const isDevelopment = process.env.NODE_ENV === 'development';
     const isTestOrder = order.id?.startsWith('DA-');
 
-    console.log('🔍 Payment verification:', {
+    logger.log('🔍 Payment verification:', {
       orderId: order.id,
       status: order.status,
       mock,
@@ -419,7 +420,7 @@ export async function POST(request: NextRequest) {
         SET status = 'completed', updated_at = NOW()
         WHERE id = ${orderId}
       `;
-      console.log('✅ Test order marked as completed:', orderId);
+      logger.log('✅ Test order marked as completed:', orderId);
       order.status = 'completed';
     }
 
@@ -449,7 +450,7 @@ export async function POST(request: NextRequest) {
         // Use the proper subscription creation function
         await createOrUpdateSubscription(order.user_id, subscriptionData);
 
-        console.log(`✅ Subscription activated for user ${order.user_id}: ${order.package_type}`);
+        logger.log(`✅ Subscription activated for user ${order.user_id}: ${order.package_type}`);
       }
     }
 

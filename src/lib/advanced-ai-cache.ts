@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * ADVANCED AI CACHE LAYER
  * Intelligent caching for AI responses with performance optimization
@@ -180,13 +181,13 @@ export class AdvancedAICache {
       options?: any;
     }>
   ): Promise<void> {
-    console.log(`Warming cache with ${commonQueries.length} common queries...`);
+    logger.log(`Warming cache with ${commonQueries.length} common queries...`);
 
     // This would typically call the AI service to pre-populate cache
     // For now, we'll just log the intent
     for (const query of commonQueries) {
       const key = this.generateCacheKey(query.messages, query.options);
-      console.log(`Would warm cache for key: ${key}`);
+      logger.log(`Would warm cache for key: ${key}`);
     }
   }
 
@@ -236,7 +237,7 @@ export class AdvancedAICache {
 
     keysToDelete.forEach(key => this.cache.delete(key));
 
-    console.log(`Cache cleanup: removed ${keysToDelete.length} expired entries`);
+    logger.log(`Cache cleanup: removed ${keysToDelete.length} expired entries`);
   }
 
   clear(): void {
@@ -247,7 +248,7 @@ export class AdvancedAICache {
       totalRequests: 0,
       totalResponseTime: 0
     };
-    console.log('Cache cleared');
+    logger.log('Cache cleared');
   }
 
   // ============================================================================
@@ -278,7 +279,7 @@ export class AdvancedAICache {
 
     for (const pattern of patterns) {
       // Prefetch likely next queries
-      console.log(`Would prefetch pattern: ${pattern}`);
+      logger.log(`Would prefetch pattern: ${pattern}`);
     }
   }
 
@@ -322,13 +323,13 @@ export async function cachedChatCompletion(
   if (!options.skipCache) {
     const cachedResponse = await cache.get(cacheKey);
     if (cachedResponse) {
-      console.log('🎯 Cache hit for AI request');
+      logger.log('🎯 Cache hit for AI request');
       return cachedResponse;
     }
   }
 
   // Cache miss - make actual API call
-  console.log('🔄 Cache miss - calling AI API');
+  logger.log('🔄 Cache miss - calling AI API');
   const startTime = Date.now();
 
   const { chatCompletion } = await import('./ai-service');

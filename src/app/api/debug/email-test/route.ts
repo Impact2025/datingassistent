@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   // Only allow in development or with secret key
@@ -61,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@datingassistent.nl';
 
-    console.log(`📧 Debug: Attempting to send test email to ${testEmail} from ${fromEmail}`);
+    logger.log(`📧 Debug: Attempting to send test email to ${testEmail} from ${fromEmail}`);
 
     await sgMail.default.send({
       to: testEmail,
@@ -71,7 +72,7 @@ export async function POST(request: NextRequest) {
       html: `<h1>Email Test</h1><p>Dit is een test email verzonden op ${new Date().toISOString()}</p>`,
     });
 
-    console.log(`✅ Debug: Test email sent successfully to ${testEmail}`);
+    logger.log(`✅ Debug: Test email sent successfully to ${testEmail}`);
 
     return NextResponse.json({
       success: true,

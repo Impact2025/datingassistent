@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -41,7 +42,7 @@ export async function GET(request: NextRequest) {
       `;
       blogStats = countResult.rows;
     } catch (blogsError) {
-      console.log('Blogs table not found, trying blog_posts');
+      logger.log('Blogs table not found, trying blog_posts');
       try {
         const blogPostsResult = await sql`
           SELECT 
@@ -68,7 +69,7 @@ export async function GET(request: NextRequest) {
         `;
         blogStats = countResult.rows;
       } catch (blogPostsError) {
-        console.log('Neither blogs nor blog_posts table found');
+        logger.log('Neither blogs nor blog_posts table found');
       }
     }
 

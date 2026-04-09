@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import fs from 'fs';
@@ -5,7 +6,7 @@ import path from 'path';
 
 export async function POST() {
   try {
-    console.log('Initializing course database schema...');
+    logger.log('Initializing course database schema...');
 
     // Read the SQL schema file
     const schemaPath = path.join(process.cwd(), 'src', 'lib', 'db', 'schema', 'courses.sql');
@@ -23,23 +24,23 @@ export async function POST() {
       .map(s => s.trim())
       .filter(s => s.length > 0);
 
-    console.log(`Found ${statements.length} SQL statements to execute`);
+    logger.log(`Found ${statements.length} SQL statements to execute`);
 
     for (let i = 0; i < statements.length; i++) {
       const statement = statements[i];
       const preview = statement.substring(0, 80).replace(/\s+/g, ' ');
-      console.log(`[${i + 1}/${statements.length}] Executing: ${preview}...`);
+      logger.log(`[${i + 1}/${statements.length}] Executing: ${preview}...`);
 
       try {
         await sql.query(statement);
-        console.log(`[${i + 1}/${statements.length}] Success`);
+        logger.log(`[${i + 1}/${statements.length}] Success`);
       } catch (err) {
         console.error(`[${i + 1}/${statements.length}] Failed:`, err);
         throw err;
       }
     }
 
-    console.log('Course database schema initialized successfully');
+    logger.log('Course database schema initialized successfully');
 
     return NextResponse.json({
       success: true,

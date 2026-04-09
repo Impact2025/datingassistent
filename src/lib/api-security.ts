@@ -31,6 +31,7 @@ import {
   createRateLimitHeaders
 } from './rate-limit';
 import { verifyAdminAuth } from './admin-auth';
+import { logger } from '@/lib/logger';
 
 export type RateLimitType = 'api' | 'auth' | 'ai' | 'payment' | 'none';
 
@@ -122,7 +123,7 @@ export function withSecurity(
 
           // Log rate limit status in dev
           if (process.env.NODE_ENV !== 'production') {
-            console.log(`✅ Rate limit OK: ${result.remaining} remaining`);
+            logger.log(`✅ Rate limit OK: ${result.remaining} remaining`);
           }
         }
       }

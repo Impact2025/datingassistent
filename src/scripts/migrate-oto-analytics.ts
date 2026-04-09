@@ -5,9 +5,10 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 async function migrate() {
-  console.log('🚀 Creating OTO Analytics table...');
+  logger.log('🚀 Creating OTO Analytics table...');
 
   try {
     // Create oto_analytics table
@@ -55,7 +56,7 @@ async function migrate() {
       CREATE INDEX IF NOT EXISTS idx_oto_analytics_product ON oto_analytics(oto_product)
     `;
 
-    console.log('✅ OTO Analytics table created successfully!');
+    logger.log('✅ OTO Analytics table created successfully!');
 
     // Verify table
     const result = await sql`
@@ -65,9 +66,9 @@ async function migrate() {
       ORDER BY ordinal_position
     `;
 
-    console.log('\n📋 Table structure:');
+    logger.log('\n📋 Table structure:');
     result.rows.forEach(row => {
-      console.log(`  - ${row.column_name}: ${row.data_type}`);
+      logger.log(`  - ${row.column_name}: ${row.data_type}`);
     });
 
   } catch (error) {

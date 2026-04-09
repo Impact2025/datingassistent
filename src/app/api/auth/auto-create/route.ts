@@ -3,6 +3,7 @@ import { sql } from '@vercel/postgres';
 import bcrypt from 'bcryptjs';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
 import { notifyAdminNewLead } from '@/lib/admin-notifications';
+import { logger } from '@/lib/logger';
 
 // Auto-create account for paid orders
 export async function POST(req: NextRequest) {
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
 
     const order = orderResult.rows[0];
 
-    console.log('📦 Order details:', {
+    logger.log('📦 Order details:', {
       id: order.id,
       status: order.status,
       customer_email: order.customer_email,
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
     const isInitialized = order.status === 'initialized';
 
     if (!isPaid && !isInitialized) {
-      console.log(`⚠️ Order status is ${order.status}, not creating account`);
+      logger.log(`⚠️ Order status is ${order.status}, not creating account`);
       return NextResponse.json(
         { error: `Order status is ${order.status}. Please wait for payment confirmation.` },
         { status: 400 }
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (isInitialized) {
-      console.log('ℹ️ Order is initialized but not yet confirmed. User can create account and wait for payment.');
+      logger.log('ℹ️ Order is initialized but not yet confirmed. User can create account and wait for payment.');
     }
 
     // Check if order already has a user
@@ -115,7 +116,7 @@ export async function POST(req: NextRequest) {
         otoAccepted: true, // They paid, so they converted!
       }).catch(err => console.error('Failed to notify admin of existing user upgrade:', err));
 
-      console.log(`✅ Existing user ${existingUser.id} upgraded, admin notified`);
+      logger.log(`✅ Existing user ${existingUser.id} upgraded, admin notified`);
 
       return NextResponse.json({
         success: true,
@@ -159,7 +160,7 @@ export async function POST(req: NextRequest) {
       amount: parseFloat(order.amount),
     });
 
-    console.log('✅ Auto-created account for order:', { orderId, userId: newUser.id });
+    logger.log('✅ Auto-created account for order:', { orderId, userId: newUser.id });
 
     // Send admin notification about new paid customer (non-blocking)
     notifyAdminNewLead({

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { logger } from '@/lib/logger';
 
 /**
  * Consent Provider - Beheert cookie toestemmingen
@@ -26,6 +27,7 @@ const ConsentContext = createContext<ConsentContextType | undefined>(undefined);
 
 const CONSENT_STORAGE_KEY = 'cookie-consent';
 const CONSENT_VERSION = '1.0'; // Verhoog dit als je privacy policy wijzigt
+const CONSENT_MAX_AGE_MS = 13 * 30 * 24 * 60 * 60 * 1000; // 13 maanden (EDPB-richtlijn)
 
 interface StoredConsent extends ConsentPreferences {
   timestamp: number;
@@ -53,8 +55,9 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
       if (stored) {
         const parsed: StoredConsent = JSON.parse(stored);
 
-        // Check versie - als privacy policy is gewijzigd, vraag opnieuw toestemming
-        if (parsed.version === CONSENT_VERSION) {
+        // Check versie én houdbaarheid (max 13 maanden per EDPB-richtlijn)
+        const isExpired = Date.now() - (parsed.timestamp || 0) > CONSENT_MAX_AGE_MS;
+        if (parsed.version === CONSENT_VERSION && !isExpired) {
           setConsent({
             necessary: parsed.necessary,
             analytics: parsed.analytics,
@@ -62,8 +65,9 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
           });
           setHasConsent(true);
         } else {
-          // Oude versie, reset consent
-          console.log('[Consent] Privacy policy updated, requesting new consent');
+          // Verlopen of verouderde versie — opnieuw toestemming vragen
+          localStorage.removeItem(CONSENT_STORAGE_KEY);
+          logger.log('[Consent] Consent expired or policy updated, requesting new consent');
           setHasConsent(false);
         }
       }
@@ -92,7 +96,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
         }));
       }
 
-      console.log('[Consent] Updated:', preferences);
+      logger.log('[Consent] Updated:', preferences);
     } catch (error) {
       console.error('[Consent] Error saving consent:', error);
     }
@@ -107,7 +111,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
         marketing: false,
       });
       setHasConsent(false);
-      console.log('[Consent] Reset');
+      logger.log('[Consent] Reset');
     } catch (error) {
       console.error('[Consent] Error resetting consent:', error);
     }

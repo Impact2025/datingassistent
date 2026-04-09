@@ -11,6 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { formatBlog } from '@/lib/ai-blog-service';
+import { logger } from '@/lib/logger';
 
 // ============================================================================
 // TYPES
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`🤖 Formatting blog: "${body.title}"`);
+    logger.log(`🤖 Formatting blog: "${body.title}"`);
 
     // Call AI service
     const result = await formatBlog({
@@ -71,7 +72,7 @@ export async function POST(request: NextRequest) {
     });
 
     const duration = Date.now() - startTime;
-    console.log(`✅ Blog formatting completed in ${duration}ms`);
+    logger.log(`✅ Blog formatting completed in ${duration}ms`);
 
     return NextResponse.json(
       {

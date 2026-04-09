@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { chatCompletion } from '@/lib/ai-service';
@@ -102,7 +103,7 @@ export async function POST(request: Request) {
       }
     } catch (historyError) {
       // Table might not exist yet, continue without history
-      console.log('Could not fetch previous logs:', historyError);
+      logger.log('Could not fetch previous logs:', historyError);
     }
 
     // Analyze activities and create insights prompt

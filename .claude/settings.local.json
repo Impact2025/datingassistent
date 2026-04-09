@@ -294,7 +294,16 @@
       "Bash(copy \"C:\\\\Users\\\\v_mun\\\\Downloads\\\\Gemini_Generated_Image_gb8nidgb8nidgb8n-removebg-preview.png\" \"D:\\\\apps\\\\datingassistent\\\\datingassistentapp\\\\public\\\\images\\\\pureliefde-logo.png\")",
       "Bash(magick:*)",
       "Bash(convert:*)",
-      "Bash(npx --version:*)"
+      "Bash(npx --version:*)",
+      "Bash(xargs:*)",
+      "Bash(npx next build)",
+      "Bash(npm:*)",
+      "Bash(head:*)",
+      "Bash(npx npm-check-updates:*)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); v=d.get\\('vulnerabilities',{}\\); counts={}; [counts.update\\({v[k]['severity']:counts.get\\(v[k]['severity'],0\\)+1}\\) for k in v]; print\\('Vulnerabilities:',counts\\); print\\('Total:',d.get\\('metadata',{}\\).get\\('vulnerabilities',{}\\)\\)\")",
+      "Bash(python3 -c ':*)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); m=d.get\\('metadata',{}\\).get\\('vulnerabilities',{}\\); print\\('Vulnerabilities:', m\\)\")",
+      "Bash(set NODE_OPTIONS=--max-old-space-size=4096)"
     ],
     "deny": [],
     "ask": []

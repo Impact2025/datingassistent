@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { generateVerificationCode, storeVerificationCode, sendVerificationCodeEmail } from '@/lib/email-verification';
 import { sql } from '@vercel/postgres';
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`✅ Verification code sent to ${user.email} for user ${userId}`);
+    logger.log(`✅ Verification code sent to ${user.email} for user ${userId}`);
 
     return NextResponse.json({
       success: true,

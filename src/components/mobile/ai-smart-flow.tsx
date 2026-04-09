@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
@@ -63,19 +64,19 @@ export function AISmartFlow({ className, userId }: AISmartFlowProps) {
           cardType = 'opportunity';
           icon = <BookOpen className="w-5 h-5 text-blue-500" />;
           actionText = 'Start Module';
-          onAction = () => console.log(`Navigate to module ${rec.id}`);
+          onAction = () => logger.log(`Navigate to module ${rec.id}`);
           break;
         case 'course':
           cardType = 'opportunity';
           icon = <Target className="w-5 h-5 text-green-500" />;
           actionText = 'Bekijk Cursus';
-          onAction = () => console.log(`Navigate to course ${rec.id}`);
+          onAction = () => logger.log(`Navigate to course ${rec.id}`);
           break;
         case 'feature':
           cardType = 'insight';
           icon = <Lightbulb className="w-5 h-5 text-purple-500" />;
           actionText = 'Probeer Uit';
-          onAction = () => console.log(`Navigate to feature ${rec.id}`);
+          onAction = () => logger.log(`Navigate to feature ${rec.id}`);
           break;
         default:
           cardType = 'insight';

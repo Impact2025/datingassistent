@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 
 export interface Podcast {
@@ -26,7 +27,7 @@ export async function getAllPodcasts(): Promise<Podcast[]> {
     console.error('Error fetching podcasts:', error);
     // Check if it's a table doesn't exist error
     if (String(error).includes('does not exist')) {
-      console.log('Podcasts table does not exist, returning empty array');
+      logger.log('Podcasts table does not exist, returning empty array');
       return [];
     }
     throw error;

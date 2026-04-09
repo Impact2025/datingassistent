@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { AIContextManager } from '@/lib/ai-context-manager';
 import { verifyToken } from '@/lib/auth';
@@ -88,7 +89,7 @@ export async function POST(request: NextRequest) {
       proWelcomeCompletedAt: new Date()
     });
 
-    console.log(`✅ Pro welcome data saved for user ${user.id}`);
+    logger.log(`✅ Pro welcome data saved for user ${user.id}`);
 
     return NextResponse.json({
       success: true,

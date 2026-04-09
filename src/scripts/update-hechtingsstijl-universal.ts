@@ -13,9 +13,10 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 async function updateHechtingsstijlQuestions() {
-  console.log('🚀 Updating Hechtingsstijl questions to universal language...\n');
+  logger.log('🚀 Updating Hechtingsstijl questions to universal language...\n');
 
   try {
     // Update statement questions with universal language
@@ -79,35 +80,35 @@ async function updateHechtingsstijlQuestions() {
       }
     ];
 
-    console.log('📝 Updating statement questions...\n');
+    logger.log('📝 Updating statement questions...\n');
     for (const update of updates) {
       await sql`
         UPDATE hechtingsstijl_questions
         SET question_text = ${update.text}
         WHERE order_position = ${update.position}
       `;
-      console.log(`✅ Q${update.position}: ${update.notes}`);
+      logger.log(`✅ Q${update.position}: ${update.notes}`);
     }
 
     // Update scenario questions
-    console.log('\n📝 Updating scenario questions...\n');
+    logger.log('\n📝 Updating scenario questions...\n');
 
     await sql`
       UPDATE hechtingsstijl_questions
       SET question_text = 'Stel je voor: iemand die je leuk vindt, reageert drie uur niet op een belangrijk appje. Wat gebeurt er van binnen?'
       WHERE order_position = 11
     `;
-    console.log('✅ Q11: Scenario A - Nu "iemand die je leuk vindt" (werkt voor beginners EN ervaren)');
+    logger.log('✅ Q11: Scenario A - Nu "iemand die je leuk vindt" (werkt voor beginners EN ervaren)');
 
     await sql`
       UPDATE hechtingsstijl_questions
       SET question_text = 'Tijdens een beginnende connectie met iemand is er een kleine miscommunicatie. Ze zeggen: "Laat maar, maakt niet uit." Hoe voel jij je dan?'
       WHERE order_position = 12
     `;
-    console.log('✅ Q12: Scenario B - Nu "beginnende connectie" ipv "date 2"');
+    logger.log('✅ Q12: Scenario B - Nu "beginnende connectie" ipv "date 2"');
 
     // Update scenario options to be more universal
-    console.log('\n📝 Updating scenario options...\n');
+    logger.log('\n📝 Updating scenario options...\n');
 
     // Scenario A options - nu met hypothetisch "zou"
     await sql`
@@ -153,15 +154,15 @@ async function updateHechtingsstijlQuestions() {
         AND order_position = 3
     `;
 
-    console.log('✅ All scenario options updated to conditional/universal language');
+    logger.log('✅ All scenario options updated to conditional/universal language');
 
-    console.log('\n✨ SUCCESS! Hechtingsstijl questions updated to universal language.');
-    console.log('\n📊 Summary:');
-    console.log('   • 10 statement questions updated');
-    console.log('   • 2 scenario questions updated');
-    console.log('   • 6 scenario options updated');
-    console.log('   • Strategy: Broader relational context (friends/family/dating)');
-    console.log('   • Result: Works for everyone - even without dating experience! 🎯\n');
+    logger.log('\n✨ SUCCESS! Hechtingsstijl questions updated to universal language.');
+    logger.log('\n📊 Summary:');
+    logger.log('   • 10 statement questions updated');
+    logger.log('   • 2 scenario questions updated');
+    logger.log('   • 6 scenario options updated');
+    logger.log('   • Strategy: Broader relational context (friends/family/dating)');
+    logger.log('   • Result: Works for everyone - even without dating experience! 🎯\n');
 
   } catch (error) {
     console.error('❌ Error updating questions:', error);
@@ -172,7 +173,7 @@ async function updateHechtingsstijlQuestions() {
 // Auto-execute when run directly
 updateHechtingsstijlQuestions()
   .then(() => {
-    console.log('✅ Script completed successfully');
+    logger.log('✅ Script completed successfully');
     process.exit(0);
   })
   .catch((error) => {

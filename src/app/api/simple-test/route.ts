@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -14,7 +15,7 @@ export async function GET(request: NextRequest) {
         FROM blogs
       `;
     } catch (blogsError) {
-      console.log('Blogs table not found, trying blog_posts');
+      logger.log('Blogs table not found, trying blog_posts');
       blogsResult = await sql`
         SELECT 
           COUNT(*) as total,

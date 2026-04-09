@@ -4,11 +4,12 @@
  */
 
 import { neon } from '@neondatabase/serverless';
+import { logger } from '@/lib/logger';
 
 const sql = neon(process.env.DATABASE_URL!);
 
 async function migrate() {
-  console.log('Adding 2FA columns to users table...');
+  logger.log('Adding 2FA columns to users table...');
 
   try {
     await sql`
@@ -18,7 +19,7 @@ async function migrate() {
       ADD COLUMN IF NOT EXISTS two_factor_backup_codes JSONB
     `;
 
-    console.log('✅ 2FA columns added successfully');
+    logger.log('✅ 2FA columns added successfully');
   } catch (error) {
     console.error('❌ Migration failed:', error);
     process.exit(1);

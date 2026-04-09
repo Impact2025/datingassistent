@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Progress Automation Service
  * Triggers automated communications based on client progress events
@@ -29,7 +30,7 @@ export async function trackProgressEvent(event: ProgressEvent): Promise<void> {
     // Trigger appropriate automated responses
     await handleProgressEvent(event);
 
-    console.log(`📊 Progress event tracked: ${event.eventType} for user ${event.userId}`);
+    logger.log(`📊 Progress event tracked: ${event.eventType} for user ${event.userId}`);
   } catch (error) {
     console.error('Error tracking progress event:', error);
   }
@@ -448,7 +449,7 @@ export async function getProgressAutomationStats(coachId: number): Promise<{
  */
 export async function processProgressEvents(): Promise<number> {
   try {
-    console.log('🔄 Processing progress events...');
+    logger.log('🔄 Processing progress events...');
 
     // Get unprocessed events from the last 24 hours
     const eventsResult = await sql`
@@ -483,7 +484,7 @@ export async function processProgressEvents(): Promise<number> {
       }
     }
 
-    console.log(`✅ Processed ${processed} progress events`);
+    logger.log(`✅ Processed ${processed} progress events`);
     return processed;
   } catch (error) {
     console.error('Error processing progress events:', error);

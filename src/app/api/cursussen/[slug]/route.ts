@@ -3,6 +3,7 @@ import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
 import { verifyToken, cookieConfig } from '@/lib/jwt-config';
 import { resolveSlug } from '@/lib/cursus-slug-utils';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/cursussen/[slug]
@@ -21,7 +22,7 @@ export async function GET(
     const slug = resolveSlug(rawSlug);
 
     if (rawSlug !== slug) {
-      console.log(`🔄 Slug alias resolved: ${rawSlug} -> ${slug}`);
+      logger.log(`🔄 Slug alias resolved: ${rawSlug} -> ${slug}`);
     }
 
     // Try to get user from JWT token
@@ -58,7 +59,7 @@ export async function GET(
         }
       }
     } catch (authError) {
-      console.log('No authenticated user for cursus detail request');
+      logger.log('No authenticated user for cursus detail request');
     }
 
     // 1. Haal cursus metadata op
@@ -218,7 +219,7 @@ export async function POST(
         }
       }
     } catch (authError) {
-      console.log('Auth error in POST cursussen:', authError);
+      logger.log('Auth error in POST cursussen:', authError);
     }
 
     if (!userId) {

@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating self-image tables...');
+    logger.log('Creating self-image tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -25,7 +26,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created zelfbeeld_assessments table');
+    logger.log('✅ Created zelfbeeld_assessments table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS zelfbeeld_vibe_meters (
@@ -47,7 +48,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created zelfbeeld_vibe_meters table');
+    logger.log('✅ Created zelfbeeld_vibe_meters table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS zelfbeeld_results (
@@ -88,7 +89,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created zelfbeeld_results table');
+    logger.log('✅ Created zelfbeeld_results table');
 
     // Photo analysis table
     await sql`
@@ -109,7 +110,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created zelfbeeld_photo_analysis table');
+    logger.log('✅ Created zelfbeeld_photo_analysis table');
 
     // User progress tracking
     await sql`
@@ -128,7 +129,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created zelfbeeld_progress table');
+    logger.log('✅ Created zelfbeeld_progress table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_zelfbeeld_assessments_user_id ON zelfbeeld_assessments(user_id);`;
@@ -137,7 +138,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_zelfbeeld_results_assessment_id ON zelfbeeld_results(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_zelfbeeld_photo_analysis_assessment_id ON zelfbeeld_photo_analysis(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_zelfbeeld_progress_user_id ON zelfbeeld_progress(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     return NextResponse.json({
       success: true,

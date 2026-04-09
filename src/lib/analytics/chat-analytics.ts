@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Chat Analytics - Track proactive invite performance
  *
@@ -49,7 +50,7 @@ export function trackChatEvent(
 
   // Also log to console in development
   if (process.env.NODE_ENV === 'development') {
-    console.log('📊 Chat Analytics:', event, metadata);
+    logger.log('📊 Chat Analytics:', event, metadata);
   }
 }
 

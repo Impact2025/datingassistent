@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('🌱 Seeding dating style questions via API...');
+    logger.log('🌱 Seeding dating style questions via API...');
 
     // Clear existing data
     await sql`DELETE FROM dating_style_scenarios`;
@@ -150,7 +151,7 @@ export async function POST() {
       });
     }
 
-    console.log(`✅ Inserted ${insertedQuestions.length} questions`);
+    logger.log(`✅ Inserted ${insertedQuestions.length} questions`);
 
     // Insert scenarios
     const scenarios = [
@@ -206,7 +207,7 @@ export async function POST() {
       }
     }
 
-    console.log(`✅ Inserted ${scenarioCount} scenarios`);
+    logger.log(`✅ Inserted ${scenarioCount} scenarios`);
 
     return NextResponse.json({
       success: true,

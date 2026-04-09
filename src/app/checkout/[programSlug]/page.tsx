@@ -1,5 +1,7 @@
 'use client';
 
+import { logger } from '@/lib/logger';
+
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useUser } from '@/providers/user-provider';
@@ -174,7 +176,7 @@ export default function CheckoutPage() {
         credentials: 'include'
       });
 
-      console.log('Payment response status:', response.status);
+      logger.log('Payment response status:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -183,7 +185,7 @@ export default function CheckoutPage() {
       }
 
       const { payment_url } = await response.json();
-      console.log('Redirecting to:', payment_url);
+      logger.log('Redirecting to:', payment_url);
       window.location.href = payment_url;
 
     } catch (err) {

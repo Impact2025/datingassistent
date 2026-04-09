@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Token Usage Tracking Utility
  * Tracks AI API calls for cost monitoring and admin analytics
@@ -49,7 +50,7 @@ export async function trackTokenUsage(data: TokenUsageData): Promise<void> {
       )
     `;
 
-    console.log(`📊 Tracked token usage: ${data.provider}/${data.model} - ${data.tokensUsed} tokens, $${(data.costCents / 100).toFixed(4)}`);
+    logger.log(`📊 Tracked token usage: ${data.provider}/${data.model} - ${data.tokensUsed} tokens, $${(data.costCents / 100).toFixed(4)}`);
   } catch (error) {
     console.error('❌ Failed to track token usage:', error);
     // Don't throw - we don't want token tracking to break the API

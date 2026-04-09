@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { datePlannerAI, DatePlanRequest } from '@/lib/date-planner-ai';
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`📅 Generating date plan for user ${user.id}: ${body.dateType} at ${body.location}`);
+    logger.log(`📅 Generating date plan for user ${user.id}: ${body.dateType} at ${body.location}`);
 
     // Generate AI-powered date plan
     const datePlan = await datePlannerAI.generateDatePlan(body, user.id.toString());
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    console.log(`✅ Date plan created: ${planId} for user ${user.id}`);
+    logger.log(`✅ Date plan created: ${planId} for user ${user.id}`);
 
     return NextResponse.json({
       success: true,

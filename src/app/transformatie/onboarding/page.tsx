@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -21,11 +22,11 @@ export default function TransformatieOnboardingPage() {
 
     if (!user) {
       // Niet ingelogd - redirect naar login met redirect terug naar dashboard
-      console.log("🔄 Transformatie onboarding: Not logged in, redirecting to login");
+      logger.log("🔄 Transformatie onboarding: Not logged in, redirecting to login");
       router.push("/login?redirect=/dashboard");
     } else {
       // Ingelogd - redirect naar dashboard waar de Transformatie onboarding geïntegreerd is
-      console.log("🔄 Transformatie onboarding: Logged in, redirecting to dashboard");
+      logger.log("🔄 Transformatie onboarding: Logged in, redirecting to dashboard");
       router.push("/dashboard");
     }
   }, [user, isLoading, router]);

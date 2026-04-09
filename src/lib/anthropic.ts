@@ -1,5 +1,3 @@
-import Anthropic from '@anthropic-ai/sdk';
-
-export const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+// All AI calls now go through OpenRouter — see src/lib/openrouter.ts
+// This file is kept as a placeholder to avoid broken imports during the transition.
+export {};

@@ -6,11 +6,8 @@
 // ============================================================================
 
 import { sql } from '@vercel/postgres';
-import Anthropic from '@anthropic-ai/sdk';
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
+import { logger } from '@/lib/logger';
 
 export interface ConversationInsight {
   userId: number;
@@ -57,18 +54,12 @@ Geef JSON terug met:
   "keyInsight": "1 zin samenvatting van waar user mee worstelt"
 }`;
 
-    const response = await anthropic.messages.create({
-      model: 'claude-3-haiku-20240307',  // Snel en goedkoop voor analyse
-      max_tokens: 300,
-      messages: [
-        {
-          role: 'user',
-          content: analysisPrompt,
-        },
-      ],
-    });
-
-    const content = response.content[0].type === 'text' ? response.content[0].text : '';
+    const openrouter = getOpenRouterClient();
+    const content = await openrouter.createChatCompletion(
+      OPENROUTER_MODELS.CLAUDE_3_HAIKU,
+      [{ role: 'user', content: analysisPrompt }],
+      { max_tokens: 300 }
+    );
 
     // Parse JSON response
     const jsonMatch = content.match(/\{[\s\S]*\}/);
@@ -275,7 +266,7 @@ export async function saveConversationInsight(
       created_at = NOW()
   `.catch(err => {
     // Table might not exist yet, that's ok
-    console.log('Note: iris_conversation_insights table not found (expected on first run)');
+    logger.log('Note: iris_conversation_insights table not found (expected on first run)');
   });
 }
 

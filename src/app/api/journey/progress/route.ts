@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * JOURNEY PROGRESS API
  * Save user's onboarding journey progress
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`💾 Saving journey progress for user ${userId}: ${currentStep}`);
+    logger.log(`💾 Saving journey progress for user ${userId}: ${currentStep}`);
 
     // Prepare metadata
     const metadata = {
@@ -104,7 +105,7 @@ export async function POST(request: NextRequest) {
         'create-journey'
       );
 
-      console.log(`✅ Created new journey for user ${userId}`);
+      logger.log(`✅ Created new journey for user ${userId}`);
     } else {
       // Update existing journey
       await update(
@@ -136,7 +137,7 @@ export async function POST(request: NextRequest) {
         'update-journey'
       );
 
-      console.log(`✅ Updated journey for user ${userId} to step: ${currentStep}`);
+      logger.log(`✅ Updated journey for user ${userId} to step: ${currentStep}`);
     }
 
     // If journey is complete, initialize user progress tracking
@@ -154,7 +155,7 @@ export async function POST(request: NextRequest) {
           ON CONFLICT (user_id, metric_type, week_start) DO NOTHING
         `;
 
-        console.log(`🎉 Journey completed for user ${userId}!`);
+        logger.log(`🎉 Journey completed for user ${userId}!`);
       } catch (error) {
         console.error('Failed to initialize progress metrics:', error);
         // Non-blocking - continue even if this fails

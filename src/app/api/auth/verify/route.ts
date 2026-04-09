@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { neon } from '@neondatabase/serverless';
+import { logger } from '@/lib/logger';
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -11,7 +12,7 @@ const JWT_SECRET = JWT_SECRET_RAW && JWT_SECRET_RAW.length >= 32
   : null;
 
 export async function GET(request: NextRequest) {
-  console.log('🔍 Auth verify API called');
+  logger.log('🔍 Auth verify API called');
 
   // Check JWT secret at runtime
   if (!JWT_SECRET) {
@@ -25,10 +26,10 @@ export async function GET(request: NextRequest) {
   try {
     // Get token from Authorization header
     const authHeader = request.headers.get('authorization');
-    console.log('🔍 Auth header present:', !!authHeader);
+    logger.log('🔍 Auth header present:', !!authHeader);
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      console.log('❌ No token provided');
+      logger.log('❌ No token provided');
       return NextResponse.json(
         { error: 'No token provided' },
         { status: 401 }
@@ -36,17 +37,17 @@ export async function GET(request: NextRequest) {
     }
 
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-    console.log('🔍 Token extracted, length:', token.length);
+    logger.log('🔍 Token extracted, length:', token.length);
 
     // Verify token using jose (same as auth.ts)
     let decoded;
     try {
-      console.log('🔍 Verifying JWT token...');
+      logger.log('🔍 Verifying JWT token...');
       const { payload } = await jwtVerify(token, JWT_SECRET);
       decoded = payload;
-      console.log('✅ JWT verified successfully');
+      logger.log('✅ JWT verified successfully');
     } catch (err) {
-      console.log('❌ JWT verification failed:', err);
+      logger.log('❌ JWT verification failed:', err);
       return NextResponse.json(
         { error: 'Invalid or expired token' },
         { status: 401 }
@@ -68,7 +69,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log('🔍 Querying database for user ID:', userId);
+    logger.log('🔍 Querying database for user ID:', userId);
 
     const result = await sql`
       SELECT id, name, email, created_at, subscription_type, role, email_verified
@@ -76,10 +77,10 @@ export async function GET(request: NextRequest) {
       WHERE id = ${userId}
     `;
 
-    console.log('🔍 Database query result:', result.length, 'rows found');
+    logger.log('🔍 Database query result:', result.length, 'rows found');
 
     if (result.length === 0) {
-      console.log('❌ User not found in database');
+      logger.log('❌ User not found in database');
       return NextResponse.json(
         { error: 'User not found' },
         { status: 404 }
@@ -100,7 +101,7 @@ export async function GET(request: NextRequest) {
       },
     };
 
-    console.log('✅ Returning user data:', responseData);
+    logger.log('✅ Returning user data:', responseData);
     return NextResponse.json(responseData, { status: 200 });
 
   } catch (error) {

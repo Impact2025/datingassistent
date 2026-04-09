@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -121,7 +122,7 @@ export function IJsbrekerGeneratorTool() {
         steps={getOnboardingSteps('ijsbreker-generator')}
         open={showOverlay}
         onOpenChange={setShowOverlay}
-        onComplete={() => console.log('IJsbreker Generator onboarding completed!')}
+        onComplete={() => logger.log('IJsbreker Generator onboarding completed!')}
       />
 
       <div className="space-y-6">

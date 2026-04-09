@@ -11,6 +11,7 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
 
@@ -27,7 +28,7 @@ interface UpsellSequenceConfig {
 export async function scheduleKickstartUpsellSequence(config: UpsellSequenceConfig): Promise<void> {
   const { userId, purchaseDate, kickstartOrderId } = config;
 
-  console.log(`📧 Scheduling Kickstart upsell sequence for user ${userId}`);
+  logger.log(`📧 Scheduling Kickstart upsell sequence for user ${userId}`);
 
   try {
     // Check if user already has Transformatie (don't upsell)
@@ -44,7 +45,7 @@ export async function scheduleKickstartUpsellSequence(config: UpsellSequenceConf
 
     // Don't schedule if already has higher tier
     if (['transformatie', 'vip', 'premium'].includes(user.subscription_type?.toLowerCase())) {
-      console.log(`User ${userId} already has ${user.subscription_type}, skipping upsell sequence`);
+      logger.log(`User ${userId} already has ${user.subscription_type}, skipping upsell sequence`);
       return;
     }
 
@@ -94,7 +95,7 @@ export async function scheduleKickstartUpsellSequence(config: UpsellSequenceConf
       emailData: { ...emailData, variant: 'day21', daysCompleted: 21 },
     });
 
-    console.log(`✅ Scheduled 3 upsell emails for user ${userId}`);
+    logger.log(`✅ Scheduled 3 upsell emails for user ${userId}`);
   } catch (error) {
     console.error('Error scheduling upsell sequence:', error);
   }
@@ -121,7 +122,7 @@ async function scheduleUpsellEmail(params: {
     `;
 
     if (existingResult.rows.length > 0) {
-      console.log(`Email ${emailType} already scheduled for user ${userId}`);
+      logger.log(`Email ${emailType} already scheduled for user ${userId}`);
       return;
     }
 
@@ -149,7 +150,7 @@ async function scheduleUpsellEmail(params: {
       )
     `;
 
-    console.log(`📅 Scheduled ${emailType} for ${scheduledFor.toISOString()}`);
+    logger.log(`📅 Scheduled ${emailType} for ${scheduledFor.toISOString()}`);
   } catch (error) {
     console.error(`Error scheduling ${emailType}:`, error);
   }
@@ -160,7 +161,7 @@ async function scheduleUpsellEmail(params: {
  * Called when user purchases Transformatie
  */
 export async function cancelKickstartUpsellSequence(userId: number): Promise<void> {
-  console.log(`🛑 Cancelling upsell sequence for user ${userId}`);
+  logger.log(`🛑 Cancelling upsell sequence for user ${userId}`);
 
   try {
     await sql`
@@ -171,7 +172,7 @@ export async function cancelKickstartUpsellSequence(userId: number): Promise<voi
         AND status = 'pending'
     `;
 
-    console.log(`✅ Cancelled pending upsell emails for user ${userId}`);
+    logger.log(`✅ Cancelled pending upsell emails for user ${userId}`);
   } catch (error) {
     console.error('Error cancelling upsell sequence:', error);
   }

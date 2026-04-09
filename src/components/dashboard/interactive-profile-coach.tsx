@@ -46,6 +46,7 @@ import { ProfileResults } from './profile-results';
 import { abTesting, useABTest } from '@/lib/ab-testing';
 import { profileAnalytics, useProfileAnalytics } from '@/lib/profile-analytics';
 import { ErrorBoundary, useErrorHandler } from '@/components/shared/error-boundary';
+import { logger } from '@/lib/logger';
 
 // Professional World-Class Personality & Authenticity Assessment
 const PROFESSIONAL_PERSONALITY_QUIZ = [
@@ -431,7 +432,7 @@ function InteractiveProfileCoachInner() {
           }
         }
       } catch (error) {
-        console.log('Waarden Kompas status check failed:', error);
+        logger.log('Waarden Kompas status check failed:', error);
       }
     };
 
@@ -676,7 +677,7 @@ function InteractiveProfileCoachInner() {
         onReset={resetWizard}
         markAsCompleted={markAsCompleted}
         onProfileUsed={(profile) => {
-          console.log('Profile used:', profile);
+          logger.log('Profile used:', profile);
           // You could add additional logic here, like showing a success message
           // or navigating to a different page
         }}

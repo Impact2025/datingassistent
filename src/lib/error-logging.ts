@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * PROFESSIONAL ERROR LOGGING SERVICE
  * Centralized error logging with Sentry integration
@@ -118,7 +119,7 @@ export function logMessage(
 
   // Log to console in development
   if (process.env.NODE_ENV === 'development') {
-    console.log(`[${level.toUpperCase()}]`, message, context);
+    logger.log(`[${level.toUpperCase()}]`, message, context);
   }
 
   // Send to Sentry if available
@@ -296,7 +297,7 @@ export function addBreadcrumb(
 
   // Also log to console in development
   if (process.env.NODE_ENV === 'development') {
-    console.log(`[BREADCRUMB ${category}]`, message, data);
+    logger.log(`[BREADCRUMB ${category}]`, message, data);
   }
 }
 

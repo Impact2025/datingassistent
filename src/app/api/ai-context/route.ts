@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * AI CONTEXT API
  * Save and retrieve AI personalization context
@@ -80,7 +81,7 @@ export async function GET(request: NextRequest) {
       context[row.content_type][row.content_key] = data;
     });
 
-    console.log(`📖 Retrieved AI context for user ${userId}: ${result.rows.length} entries`);
+    logger.log(`📖 Retrieved AI context for user ${userId}: ${result.rows.length} entries`);
 
     return NextResponse.json({
       success: true,
@@ -143,7 +144,7 @@ export async function POST(request: NextRequest) {
 
     // Handle save_context action (used by onboarding)
     if (action === 'save_context' && updates) {
-      console.log(`💾 Saving AI context for user ${userId}`, Object.keys(updates));
+      logger.log(`💾 Saving AI context for user ${userId}`, Object.keys(updates));
 
       // Save each field to ai_content_cache
       for (const [key, value] of Object.entries(updates)) {
@@ -209,7 +210,7 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      console.log(`✅ AI context saved for user ${userId}`);
+      logger.log(`✅ AI context saved for user ${userId}`);
 
       return NextResponse.json({
         success: true,

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
+import { logger } from '@/lib/logger';
 
 export async function POST(req: NextRequest) {
   try {
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
       WHERE id = ${orderId}
     `;
 
-    console.log('✅ Order linked to user:', { orderId, userId });
+    logger.log('✅ Order linked to user:', { orderId, userId });
 
     return NextResponse.json({
       success: true,

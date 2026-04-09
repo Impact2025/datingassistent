@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating chat coach tables...');
+    logger.log('Creating chat coach tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -20,7 +21,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created chat_coach_conversations table');
+    logger.log('✅ Created chat_coach_conversations table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS chat_coach_analyses (
@@ -60,7 +61,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created chat_coach_analyses table');
+    logger.log('✅ Created chat_coach_analyses table');
 
     // Message-level analysis table
     await sql`
@@ -79,7 +80,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created chat_coach_messages table');
+    logger.log('✅ Created chat_coach_messages table');
 
     // User progress and learning
     await sql`
@@ -97,7 +98,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created chat_coach_progress table');
+    logger.log('✅ Created chat_coach_progress table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_chat_coach_conversations_user_id ON chat_coach_conversations(user_id);`;
@@ -105,7 +106,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_chat_coach_analyses_conversation_id ON chat_coach_analyses(conversation_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_chat_coach_messages_conversation_id ON chat_coach_messages(conversation_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_chat_coach_progress_user_id ON chat_coach_progress(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     return NextResponse.json({
       success: true,

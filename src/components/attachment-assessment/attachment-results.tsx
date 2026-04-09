@@ -26,6 +26,7 @@ import { AssessmentData, AttachmentStyle } from './attachment-assessment-flow';
 import { MicroInterventions } from './micro-interventions';
 import { ConversationScripts } from './conversation-scripts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { logger } from '@/lib/logger';
 
 interface AttachmentResultsProps {
   data: AssessmentData;
@@ -270,14 +271,14 @@ export function AttachmentResults({ data, onRestart, onClose, styleIcon, styleCo
             <TabsContent value="interventions" className="space-y-6">
               <MicroInterventions
                 interventions={data.aiInsights.microInterventies}
-                onInterventionComplete={(id) => console.log('Intervention completed:', id)}
+                onInterventionComplete={(id) => logger.log('Intervention completed:', id)}
               />
             </TabsContent>
     
             <TabsContent value="scripts" className="space-y-6">
               <ConversationScripts
                 scripts={data.aiInsights.gesprekScripts}
-                onScriptUsed={(id) => console.log('Script used:', id)}
+                onScriptUsed={(id) => logger.log('Script used:', id)}
               />
             </TabsContent>
           </Tabs>

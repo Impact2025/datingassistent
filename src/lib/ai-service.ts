@@ -5,6 +5,7 @@
 
 import { generateBlogWithOpenRouter } from './generate-blog-with-openrouter';
 import { openRouter, OPENROUTER_MODELS } from './openrouter';
+import { logger } from '@/lib/logger';
 
 export type AIProvider = 'openrouter'; // Alleen OpenRouter ondersteund
 
@@ -33,7 +34,7 @@ export async function generateBlog(
 ): Promise<any> { // BlogOutput type verwijderd om import conflicten te voorkomen
   const selectedProvider = provider || AI_CONFIG.defaultBlogProvider;
 
-  console.log(`Genereren blog met ${selectedProvider}...`);
+  logger.log(`Genereren blog met ${selectedProvider}...`);
 
   switch (selectedProvider) {
     case 'openrouter':

@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating user_lesson_responses table...');
+    logger.log('Creating user_lesson_responses table...');
 
     // Create the table
     const createTableResult = await sql`
@@ -18,7 +19,7 @@ export async function POST() {
       )
     `;
 
-    console.log('Table created successfully:', createTableResult);
+    logger.log('Table created successfully:', createTableResult);
 
     // Create index for faster queries
     const createIndexResult = await sql`
@@ -26,7 +27,7 @@ export async function POST() {
       ON user_lesson_responses(user_id)
     `;
 
-    console.log('Index created successfully:', createIndexResult);
+    logger.log('Index created successfully:', createIndexResult);
 
     return NextResponse.json({
       success: true,

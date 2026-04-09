@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { triggerEmailAutomation } from '@/lib/email-engagement';
+import { logger } from '@/lib/logger';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -23,13 +24,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    console.log('[CRON] Starting email automation check...');
+    logger.log('[CRON] Starting email automation check...');
     const startTime = Date.now();
 
     await triggerEmailAutomation();
 
     const duration = Date.now() - startTime;
-    console.log(`[CRON] Email automation completed in ${duration}ms`);
+    logger.log(`[CRON] Email automation completed in ${duration}ms`);
 
     return NextResponse.json({
       success: true,

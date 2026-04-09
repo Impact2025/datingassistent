@@ -36,6 +36,7 @@ import {
   Save,
   Eye
 } from 'lucide-react';
+import { logger } from '@/lib/logger';
 
 // Tab components (we'll create these)
 import { EditorTab } from '@/components/blog/editor-tab';
@@ -112,7 +113,7 @@ export default function BlogEditorPage() {
       const blog = data.blog;
 
       // 🐛 DEBUG: Log loaded blog data
-      console.log('📖 Loaded blog:', {
+      logger.log('📖 Loaded blog:', {
         category: blog.category,
         tags: blog.tags,
         fullBlog: blog,
@@ -381,7 +382,7 @@ export default function BlogEditorPage() {
         throw new Error(data.error || 'Metadata generatie mislukt');
       }
 
-      console.log('📥 Received metadata response:', {
+      logger.log('📥 Received metadata response:', {
         hasInternalLinks: !!data.internalLinks,
         internalLinks: data.internalLinks,
         fullData: data
@@ -451,7 +452,7 @@ export default function BlogEditorPage() {
       const blog = data.blog;
 
       // 🐛 DEBUG: Log what AI returned
-      console.log('🤖 AI Generated Blog:', {
+      logger.log('🤖 AI Generated Blog:', {
         category: blog.category,
         keywords: blog.keywords,
         tags: blog.keywords?.slice(0, 5),
@@ -475,7 +476,7 @@ export default function BlogEditorPage() {
         header_title: blog.headerSuggestion?.headerTitle || '',
       };
 
-      console.log('📝 Updating blog data with:', updatedData);
+      logger.log('📝 Updating blog data with:', updatedData);
       updateBlogData(updatedData);
 
       toast({
@@ -528,7 +529,7 @@ export default function BlogEditorPage() {
       const knowledgeBase = kbData.articles || [];
       const blogs = blogsData.blogs || [];
 
-      console.log('📊 Auto-linking data:', {
+      logger.log('📊 Auto-linking data:', {
         kbCount: knowledgeBase.length,
         kbTitles: knowledgeBase.map((a: any) => a.title).slice(0, 5),
         blogsCount: blogs.length,
@@ -591,7 +592,7 @@ export default function BlogEditorPage() {
       };
 
       // Strategy 1: Exact matching (original behavior)
-      console.log('🔍 Strategy 1: Exact matching...');
+      logger.log('🔍 Strategy 1: Exact matching...');
 
       knowledgeBase.forEach((article: any) => {
         const title = article.title;
@@ -606,7 +607,7 @@ export default function BlogEditorPage() {
         for (const variation of titleVariations) {
           if (tryReplaceWithLink(variation, url, title)) {
             linksInserted++;
-            console.log(`✅ Exact match: "${title}"`);
+            logger.log(`✅ Exact match: "${title}"`);
             break;
           }
         }
@@ -627,14 +628,14 @@ export default function BlogEditorPage() {
         for (const variation of titleVariations) {
           if (tryReplaceWithLink(variation, url, title)) {
             linksInserted++;
-            console.log(`✅ Exact match: "${title}"`);
+            logger.log(`✅ Exact match: "${title}"`);
             break;
           }
         }
       });
 
       // Strategy 2: Fuzzy matching - Find sentences/phrases that match article topics
-      console.log('🔍 Strategy 2: Fuzzy matching...');
+      logger.log('🔍 Strategy 2: Fuzzy matching...');
 
       // Extract all sentences/list items from content (potential link targets)
       const contentPhrases = updatedContent
@@ -643,7 +644,7 @@ export default function BlogEditorPage() {
         .map(s => s.trim())
         .filter(s => s.length > 20 && s.length < 200); // Reasonable length
 
-      console.log(`📝 Found ${contentPhrases.length} phrases to analyze for fuzzy matching`);
+      logger.log(`📝 Found ${contentPhrases.length} phrases to analyze for fuzzy matching`);
 
       // For each phrase, find best matching article
       contentPhrases.forEach(phrase => {
@@ -678,12 +679,12 @@ export default function BlogEditorPage() {
 
           if (tryReplaceWithLink(phrase, url, bestMatch.title)) {
             linksInserted++;
-            console.log(`✨ Fuzzy match (score ${bestScore}): "${phrase.substring(0, 50)}..." → "${bestMatch.title}"`);
+            logger.log(`✨ Fuzzy match (score ${bestScore}): "${phrase.substring(0, 50)}..." → "${bestMatch.title}"`);
           }
         }
       });
 
-      console.log(`✅ Auto-linking complete: ${linksInserted} links inserted`);
+      logger.log(`✅ Auto-linking complete: ${linksInserted} links inserted`);
 
       updateBlogData({ content: updatedContent });
 

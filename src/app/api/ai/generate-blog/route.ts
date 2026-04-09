@@ -11,6 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { generateBlog } from '@/lib/ai-blog-service';
+import { logger } from '@/lib/logger';
 
 // ============================================================================
 // TYPES
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`🤖 Generating blog for keyword: "${body.primaryKeyword}"`);
+    logger.log(`🤖 Generating blog for keyword: "${body.primaryKeyword}"`);
 
     // Call AI service
     const result = await generateBlog({
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
     });
 
     const duration = Date.now() - startTime;
-    console.log(`✅ Blog generation completed in ${duration}ms`);
+    logger.log(`✅ Blog generation completed in ${duration}ms`);
 
     return NextResponse.json(
       {

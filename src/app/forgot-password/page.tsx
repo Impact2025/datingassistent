@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -59,7 +60,7 @@ export default function ForgotPasswordPage() {
           });
 
           if (verifyResponse.ok) {
-            console.log('✅ Turnstile verification successful');
+            logger.log('✅ Turnstile verification successful');
           } else {
             console.warn('⚠️ Turnstile verification failed, proceeding anyway...');
           }
@@ -67,7 +68,7 @@ export default function ForgotPasswordPage() {
           console.warn('⚠️ Turnstile error:', turnstileError, '- proceeding anyway...');
         }
       } else {
-        console.log('🔧 Skipping Turnstile server verification (development mode)');
+        logger.log('🔧 Skipping Turnstile server verification (development mode)');
       }
 
       const response = await fetch("/api/auth/reset-password", {

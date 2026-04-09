@@ -7,6 +7,7 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 interface ReflectieVraag {
   type: 'spiegel' | 'identiteit' | 'actie';
@@ -448,8 +449,8 @@ const nieuweReflecties: DagReflectie[] = [
 ];
 
 async function upgradeReflecties() {
-  console.log('🚀 Starting Kickstart Reflecties Upgrade...\n');
-  console.log('📝 Upgrading from surface-level to transformational questions\n');
+  logger.log('🚀 Starting Kickstart Reflecties Upgrade...\n');
+  logger.log('📝 Upgrading from surface-level to transformational questions\n');
 
   try {
     // Get Kickstart program ID
@@ -458,12 +459,12 @@ async function upgradeReflecties() {
     `;
 
     if (programResult.rows.length === 0) {
-      console.log('❌ Kickstart program niet gevonden!');
+      logger.log('❌ Kickstart program niet gevonden!');
       process.exit(1);
     }
 
     const programId = programResult.rows[0].id;
-    console.log(`✅ Kickstart program gevonden (ID: ${programId})\n`);
+    logger.log(`✅ Kickstart program gevonden (ID: ${programId})\n`);
 
     // Update each day's reflecties
     let successCount = 0;
@@ -482,38 +483,38 @@ async function upgradeReflecties() {
         `;
 
         if (result.rows.length > 0) {
-          console.log(`  ✓ Dag ${result.rows[0].dag_nummer}: ${result.rows[0].titel}`);
-          console.log(`    → ${dagReflectie.vragen.length} nieuwe transformationele vragen`);
+          logger.log(`  ✓ Dag ${result.rows[0].dag_nummer}: ${result.rows[0].titel}`);
+          logger.log(`    → ${dagReflectie.vragen.length} nieuwe transformationele vragen`);
           successCount++;
         } else {
-          console.log(`  ⚠️ Dag ${dagReflectie.dag_nummer}: Niet gevonden in database`);
+          logger.log(`  ⚠️ Dag ${dagReflectie.dag_nummer}: Niet gevonden in database`);
           errorCount++;
         }
       } catch (err: unknown) {
         const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-        console.log(`  ❌ Dag ${dagReflectie.dag_nummer}: Error - ${errorMessage.substring(0, 50)}`);
+        logger.log(`  ❌ Dag ${dagReflectie.dag_nummer}: Error - ${errorMessage.substring(0, 50)}`);
         errorCount++;
       }
     }
 
-    console.log('\n' + '='.repeat(50));
-    console.log('📊 UPGRADE RESULTAAT');
-    console.log('='.repeat(50));
-    console.log(`  ✅ Succesvol: ${successCount} dagen`);
-    console.log(`  ❌ Errors: ${errorCount} dagen`);
-    console.log(`  📝 Totaal: ${nieuweReflecties.length} dagen`);
+    logger.log('\n' + '='.repeat(50));
+    logger.log('📊 UPGRADE RESULTAAT');
+    logger.log('='.repeat(50));
+    logger.log(`  ✅ Succesvol: ${successCount} dagen`);
+    logger.log(`  ❌ Errors: ${errorCount} dagen`);
+    logger.log(`  📝 Totaal: ${nieuweReflecties.length} dagen`);
 
     if (successCount === nieuweReflecties.length) {
-      console.log('\n🎉 ALLE REFLECTIES SUCCESVOL GEUPGRADED!');
-      console.log('\n📌 What changed:');
-      console.log('   • Elke dag heeft nu 3 diepere vragen:');
-      console.log('     1. SPIEGEL - Confronteert met huidige situatie');
-      console.log('     2. IDENTITEIT - Wie wil je zijn?');
-      console.log('     3. ACTIE - Concrete volgende stap');
-      console.log('\n🔗 Test: http://localhost:9000/kickstart/dag/1');
+      logger.log('\n🎉 ALLE REFLECTIES SUCCESVOL GEUPGRADED!');
+      logger.log('\n📌 What changed:');
+      logger.log('   • Elke dag heeft nu 3 diepere vragen:');
+      logger.log('     1. SPIEGEL - Confronteert met huidige situatie');
+      logger.log('     2. IDENTITEIT - Wie wil je zijn?');
+      logger.log('     3. ACTIE - Concrete volgende stap');
+      logger.log('\n🔗 Test: http://localhost:9000/kickstart/dag/1');
     } else {
-      console.log('\n⚠️ Sommige dagen konden niet worden geupgraded.');
-      console.log('   Check of alle 21 dagen in de database staan.');
+      logger.log('\n⚠️ Sommige dagen konden niet worden geupgraded.');
+      logger.log('   Check of alle 21 dagen in de database staan.');
     }
 
   } catch (error) {

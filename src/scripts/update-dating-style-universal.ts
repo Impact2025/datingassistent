@@ -13,9 +13,10 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 async function updateDatingStyleQuestions() {
-  console.log('🚀 Updating Dating Style questions to universal language...\n');
+  logger.log('🚀 Updating Dating Style questions to universal language...\n');
 
   try {
     // Update existing questions with universal language
@@ -115,35 +116,35 @@ async function updateDatingStyleQuestions() {
       }
     ];
 
-    console.log('📝 Updating statement questions...\n');
+    logger.log('📝 Updating statement questions...\n');
     for (const update of updates) {
       await sql`
         UPDATE dating_style_questions
         SET question_text = ${update.text}
         WHERE order_position = ${update.position}
       `;
-      console.log(`✅ Q${update.position}: ${update.notes}`);
+      logger.log(`✅ Q${update.position}: ${update.notes}`);
     }
 
     // Update scenario questions
-    console.log('\n📝 Updating scenario questions...\n');
+    logger.log('\n📝 Updating scenario questions...\n');
 
     await sql`
       UPDATE dating_style_questions
       SET question_text = 'Stel je voor: iemand die je leuk vindt, stelt een spontane date voor. Wat zou je doen?'
       WHERE order_position = 17
     `;
-    console.log('✅ Q17: Scenario 1 - Nu met "Stel je voor" en "iemand die je leuk vindt"');
+    logger.log('✅ Q17: Scenario 1 - Nu met "Stel je voor" en "iemand die je leuk vindt"');
 
     await sql`
       UPDATE dating_style_questions
       SET question_text = 'Stel je voor: tijdens een eerste ontmoeting loopt het gesprek wat stroef. Hoe zou je reageren?'
       WHERE order_position = 18
     `;
-    console.log('✅ Q18: Scenario 2 - Nu "eerste ontmoeting" ipv "date"');
+    logger.log('✅ Q18: Scenario 2 - Nu "eerste ontmoeting" ipv "date"');
 
     // Update scenario options to be more universal
-    console.log('\n📝 Updating scenario options...\n');
+    logger.log('\n📝 Updating scenario options...\n');
 
     // Scenario 1 options
     await sql`
@@ -189,15 +190,15 @@ async function updateDatingStyleQuestions() {
         AND order_position = 3
     `;
 
-    console.log('✅ All scenario options updated to conditional/universal language');
+    logger.log('✅ All scenario options updated to conditional/universal language');
 
-    console.log('\n✨ SUCCESS! Dating Style questions updated to universal language.');
-    console.log('\n📊 Summary:');
-    console.log('   • 16 statement questions updated');
-    console.log('   • 2 scenario questions updated');
-    console.log('   • 6 scenario options updated');
-    console.log('   • Strategy: Conditional tense + universal context');
-    console.log('   • Result: Works for beginners AND experienced daters! 🎯\n');
+    logger.log('\n✨ SUCCESS! Dating Style questions updated to universal language.');
+    logger.log('\n📊 Summary:');
+    logger.log('   • 16 statement questions updated');
+    logger.log('   • 2 scenario questions updated');
+    logger.log('   • 6 scenario options updated');
+    logger.log('   • Strategy: Conditional tense + universal context');
+    logger.log('   • Result: Works for beginners AND experienced daters! 🎯\n');
 
   } catch (error) {
     console.error('❌ Error updating questions:', error);
@@ -208,7 +209,7 @@ async function updateDatingStyleQuestions() {
 // Auto-execute when run directly
 updateDatingStyleQuestions()
   .then(() => {
-    console.log('✅ Script completed successfully');
+    logger.log('✅ Script completed successfully');
     process.exit(0);
   })
   .catch((error) => {

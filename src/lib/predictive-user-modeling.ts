@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * PREDICTIVE USER MODELING SYSTEM
  * Machine learning-based user behavior prediction and proactive recommendations
@@ -503,7 +504,7 @@ export class PredictiveUserModeling {
   // ============================================================================
 
   async trainModels(): Promise<void> {
-    console.log('🧠 Training predictive models...');
+    logger.log('🧠 Training predictive models...');
 
     // In production, this would train actual ML models
     // For now, we'll simulate model training
@@ -534,7 +535,7 @@ export class PredictiveUserModeling {
     this.mlModels.set('engagement_prediction', mockModel);
     this.mlModels.set('next_action_prediction', mockModel);
 
-    console.log('✅ Models trained successfully');
+    logger.log('✅ Models trained successfully');
   }
 
   // ============================================================================

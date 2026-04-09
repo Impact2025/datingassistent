@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 /**
  * API endpoint for kennisbank article feedback
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log feedback for now (in production, store in database)
-    console.log('[Kennisbank Feedback]', {
+    logger.log('[Kennisbank Feedback]', {
       articleSlug,
       articleTitle,
       isHelpful,

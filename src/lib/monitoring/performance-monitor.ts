@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Performance monitoring and error tracking system
  * Provides comprehensive monitoring for production applications
@@ -134,7 +135,7 @@ class PerformanceMonitor {
 
     // Log in development
     if (process.env.NODE_ENV === 'development') {
-      console.log(`Web Vital ${metric.name}:`, metric.value);
+      logger.log(`Web Vital ${metric.name}:`, metric.value);
     }
   }
 
@@ -315,7 +316,7 @@ class PerformanceMonitor {
     };
 
     // Example: fetch('/api/monitoring', { method: 'POST', body: JSON.stringify(payload) })
-    console.log('Sending to monitoring service:', payload);
+    logger.log('Sending to monitoring service:', payload);
   }
 
   private sendToErrorService(error: ErrorEvent): void {

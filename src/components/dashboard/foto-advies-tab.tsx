@@ -10,6 +10,7 @@ import { ToolOnboardingOverlay, useOnboardingOverlay } from '@/components/shared
 import { getOnboardingSteps, getToolDisplayName } from '@/lib/tool-onboarding-content';
 import { ContextualTooltip } from '@/components/shared/contextual-tooltip';
 import { useToolCompletion } from '@/hooks/use-tool-completion';
+import { logger } from '@/lib/logger';
 
 interface PhotoAnalysisResult {
   overall_score: number;
@@ -189,7 +190,7 @@ export function FotoAdviesTab() {
         steps={getOnboardingSteps('foto-advies')}
         open={showOverlay}
         onOpenChange={setShowOverlay}
-        onComplete={() => console.log('Foto Advies onboarding completed!')}
+        onComplete={() => logger.log('Foto Advies onboarding completed!')}
       />
 
       <div className="space-y-6">

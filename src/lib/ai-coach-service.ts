@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * World-Class AI Dating Coach Service
  * Advanced dating coaching with Dutch cultural intelligence and psychological expertise
@@ -596,7 +597,7 @@ Wees empathisch, psychologisch onderbouwd, cultureel bewust, en action-oriented.
       return assessmentData;
     } catch (parseError) {
       console.error('Failed to parse personality assessment:', parseError);
-      console.log('AI Response:', aiResponse);
+      logger.log('AI Response:', aiResponse);
 
       // Fallback assessment
       return {
@@ -690,7 +691,7 @@ export class AICoachService {
    */
   static async generateCoachNotifications(userId: number): Promise<any[]> {
     try {
-      console.log(`📊 Generating notifications for user ${userId}`);
+      logger.log(`📊 Generating notifications for user ${userId}`);
 
       const notifications: any[] = [];
 
@@ -751,7 +752,7 @@ export class AICoachService {
         });
       }
 
-      console.log(`✅ Generated ${notifications.length} notifications for user ${userId}`);
+      logger.log(`✅ Generated ${notifications.length} notifications for user ${userId}`);
       return notifications;
 
     } catch (error) {
@@ -771,7 +772,7 @@ export class AICoachService {
     contentId?: string;
   }): Promise<any> {
     try {
-      console.log(`🔍 Analyzing ${params.contentType} for user ${params.userId}`);
+      logger.log(`🔍 Analyzing ${params.contentType} for user ${params.userId}`);
 
       const analysisPrompt = `Je bent Dr. DatingCoach, een expert in dating psychologie en content optimalisatie.
 
@@ -818,7 +819,7 @@ Geef je feedback in dit JSON format:
       // Parse AI response
       try {
         const analysis = JSON.parse(aiResponse.trim());
-        console.log(`✅ Content analyzed for user ${params.userId}: Score ${analysis.aiScore}/100`);
+        logger.log(`✅ Content analyzed for user ${params.userId}: Score ${analysis.aiScore}/100`);
         return analysis;
       } catch (parseError) {
         console.error('Failed to parse content analysis:', parseError);
@@ -857,7 +858,7 @@ Geef je feedback in dit JSON format:
    */
   static async generateMonthlyReport(reportData: any): Promise<any> {
     try {
-      console.log(`📊 Generating monthly report for user ${reportData.userId}`);
+      logger.log(`📊 Generating monthly report for user ${reportData.userId}`);
 
       const reportPrompt = `Je bent Dr. DatingCoach. Analyseer de maandelijkse voortgang van deze gebruiker.
 
@@ -903,7 +904,7 @@ GENEREER EEN COMPREHENSIEF MONTHLY REPORT IN JSON:
       );
 
       const report = JSON.parse(aiResponse.trim());
-      console.log(`✅ Monthly report generated for user ${reportData.userId}`);
+      logger.log(`✅ Monthly report generated for user ${reportData.userId}`);
       return report;
 
     } catch (error) {
@@ -931,7 +932,7 @@ GENEREER EEN COMPREHENSIEF MONTHLY REPORT IN JSON:
    */
   static async generateWeeklyReview(reviewData: any): Promise<any> {
     try {
-      console.log(`📝 Generating weekly review for user ${reviewData.userId}`);
+      logger.log(`📝 Generating weekly review for user ${reviewData.userId}`);
 
       const weeklyPrompt = `Je bent Dr. DatingCoach. Analyseer deze weekly reflection.
 
@@ -973,7 +974,7 @@ GENEREER WEEKLY REVIEW IN JSON:
       );
 
       const review = JSON.parse(aiResponse.trim());
-      console.log(`✅ Weekly review generated for user ${reviewData.userId}`);
+      logger.log(`✅ Weekly review generated for user ${reviewData.userId}`);
       return review;
 
     } catch (error) {

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Update Transformatie Video URLs
  *
@@ -16,7 +17,7 @@ config({ path: resolve(process.cwd(), '.env.local') });
 import { sql } from '@vercel/postgres';
 
 async function updateVideoUrls() {
-  console.log('🎬 Transformatie Video URLs bijwerken...\n');
+  logger.log('🎬 Transformatie Video URLs bijwerken...\n');
 
   try {
     // Get all lessons with their module info
@@ -32,7 +33,7 @@ async function updateVideoUrls() {
       ORDER BY m.module_order, l.lesson_order
     `;
 
-    console.log(`📋 Gevonden: ${lessons.rows.length} lessen\n`);
+    logger.log(`📋 Gevonden: ${lessons.rows.length} lessen\n`);
 
     let updatedCount = 0;
 
@@ -47,11 +48,11 @@ async function updateVideoUrls() {
         WHERE id = ${lesson.id}
       `;
 
-      console.log(`✓ Module ${lesson.module_order}.${lesson.lesson_order}: ${videoUrl}`);
+      logger.log(`✓ Module ${lesson.module_order}.${lesson.lesson_order}: ${videoUrl}`);
       updatedCount++;
     }
 
-    console.log(`\n✅ ${updatedCount} video URLs bijgewerkt!`);
+    logger.log(`\n✅ ${updatedCount} video URLs bijgewerkt!`);
 
     // Verify the update
     const verification = await sql`
@@ -62,9 +63,9 @@ async function updateVideoUrls() {
       LIMIT 5
     `;
 
-    console.log('\n📋 Verificatie (eerste 5 lessen):');
+    logger.log('\n📋 Verificatie (eerste 5 lessen):');
     for (const row of verification.rows) {
-      console.log(`  ${row.slug}: ${row.video_url}`);
+      logger.log(`  ${row.slug}: ${row.video_url}`);
     }
 
   } catch (error) {

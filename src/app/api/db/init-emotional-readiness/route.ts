@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating emotional readiness tables...');
+    logger.log('Creating emotional readiness tables...');
 
     // Drop existing tables first to ensure schema updates
     await sql`DROP TABLE IF EXISTS emotionele_readiness_results CASCADE;`;
@@ -24,7 +25,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created emotionele_readiness_assessments table');
+    logger.log('✅ Created emotionele_readiness_assessments table');
 
     await sql`
       CREATE TABLE emotionele_readiness_responses (
@@ -37,7 +38,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created emotionele_readiness_responses table');
+    logger.log('✅ Created emotionele_readiness_responses table');
 
     await sql`
       CREATE TABLE emotionele_readiness_results (
@@ -69,14 +70,14 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created emotionele_readiness_results table');
+    logger.log('✅ Created emotionele_readiness_results table');
 
     // Create indexes for performance
     await sql`CREATE INDEX idx_emotionele_readiness_assessments_user_id ON emotionele_readiness_assessments(user_id);`;
     await sql`CREATE INDEX idx_emotionele_readiness_assessments_status ON emotionele_readiness_assessments(status);`;
     await sql`CREATE INDEX idx_emotionele_readiness_responses_assessment_id ON emotionele_readiness_responses(assessment_id);`;
     await sql`CREATE INDEX idx_emotionele_readiness_results_assessment_id ON emotionele_readiness_results(assessment_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     return NextResponse.json({
       success: true,

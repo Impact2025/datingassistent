@@ -21,6 +21,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useToast } from "@/hooks/use-toast";
 import { RegistrationForm } from "./registration-form";
 import { LoadingSpinner } from "../shared/loading-spinner";
+import { logger } from '@/lib/logger';
 
 const signupSchema = z.object({
   name: z.string().min(2, "Naam moet minimaal 2 karakters lang zijn."),
@@ -70,7 +71,7 @@ export function RegistrationContainer() {
     if (user) {
       const isAdminUser = user.email && ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'].includes(user.email);
       if (isAdminUser) {
-        console.log('➡️ Admin user registered, redirecting to admin dashboard');
+        logger.log('➡️ Admin user registered, redirecting to admin dashboard');
         window.location.href = '/admin';
       }
     }
@@ -79,18 +80,18 @@ export function RegistrationContainer() {
   async function onSubmit(data: SignupFormValues) {
     if (isSigningUp) return;
     setIsSigningUp(true);
-    console.log('🔵 Starting registration...', { orderId });
+    logger.log('🔵 Starting registration...', { orderId });
     try {
       const userCredential = await signup(data.email, data.password);
       const newUser = userCredential?.user;
-      console.log('🔵 User created:', newUser?.uid);
+      logger.log('🔵 User created:', newUser?.uid);
 
       // Check if this is an admin user
       const isAdminUser = newUser?.email && ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'].includes(newUser.email);
       
       if (isAdminUser) {
         // For admin users, just redirect to admin dashboard
-        console.log('🔵 Admin user created, redirecting to admin dashboard');
+        logger.log('🔵 Admin user created, redirecting to admin dashboard');
         window.location.href = '/admin';
         return;
       }
@@ -117,7 +118,7 @@ export function RegistrationContainer() {
               photos: [],
             };
             localStorage.setItem(`datespark_user_profile_${newUser.id}`, JSON.stringify(basicProfile));
-            console.log('✅ Profile saved to localStorage');
+            logger.log('✅ Profile saved to localStorage');
           }
 
           try {
@@ -132,7 +133,7 @@ export function RegistrationContainer() {
             });
 
             if (response.ok) {
-              console.log('✅ Subscription activated for user:', newUser.id);
+              logger.log('✅ Subscription activated for user:', newUser.id);
             } else {
               console.warn('⚠️ Failed to link order to user');
             }
@@ -147,7 +148,7 @@ export function RegistrationContainer() {
 
       // If there's an order_id, redirect to dashboard (subscription already created above)
       if (orderId && newUser) {
-        console.log('🔵 Has order_id, redirecting to dashboard');
+        logger.log('🔵 Has order_id, redirecting to dashboard');
         // Profile was already saved to Firestore above (lines 102-114)
         // Just redirect to dashboard
         window.location.href = '/dashboard';
@@ -156,7 +157,7 @@ export function RegistrationContainer() {
 
       // If coming from index.html with redirect_after_payment, go directly to payment
       if (redirectAfterPayment === 'true' && plan && billing && newUser) {
-        console.log('🔵 Redirecting to payment with plan and billing');
+        logger.log('🔵 Redirecting to payment with plan and billing');
         try {
           // Create payment order directly
           const response = await fetch('/api/payment/create', {
@@ -193,7 +194,7 @@ export function RegistrationContainer() {
       }
 
       // No order - redirect to package selection
-      console.log('🔵 No order_id, redirecting to /select-package');
+      logger.log('🔵 No order_id, redirecting to /select-package');
       window.location.href = '/select-package';
     } catch (error: any) {
       console.error("Registratie error:", error);

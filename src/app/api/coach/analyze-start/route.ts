@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { AIDatingCoach, type CoachingContext } from '@/lib/ai-coach-service';
 import { AIContextManager } from '@/lib/ai-context-manager';
@@ -47,10 +48,10 @@ export async function POST(request: NextRequest) {
     }
 
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-    console.log('🔐 Coach API: Token received:', token ? token.substring(0, 20) + '...' : 'none');
+    logger.log('🔐 Coach API: Token received:', token ? token.substring(0, 20) + '...' : 'none');
 
     const user = await verifyToken(token);
-    console.log('🔐 Coach API: Token verification result:', !!user, user ? `user ${user.id}` : 'null');
+    logger.log('🔐 Coach API: Token verification result:', !!user, user ? `user ${user.id}` : 'null');
 
     if (!user) {
       return NextResponse.json(

@@ -10,6 +10,7 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 interface MigrationStep {
   name: string;
@@ -17,8 +18,8 @@ interface MigrationStep {
 }
 
 async function migrate() {
-  console.log('🚀 Starting Complete Content System Migration...\n');
-  console.log('=' .repeat(60));
+  logger.log('🚀 Starting Complete Content System Migration...\n');
+  logger.log('=' .repeat(60));
 
   const steps: MigrationStep[] = [
     {
@@ -350,7 +351,7 @@ async function migrate() {
         `;
 
         if (kickstartProgram.rows.length === 0) {
-          console.log('    ⚠️ Kickstart program not found, skipping user progress initialization');
+          logger.log('    ⚠️ Kickstart program not found, skipping user progress initialization');
           return;
         }
 
@@ -370,7 +371,7 @@ async function migrate() {
         `;
 
         if (enrolledUsers.rows.length === 0) {
-          console.log('    ℹ️ No users need progress initialization');
+          logger.log('    ℹ️ No users need progress initialization');
           return;
         }
 
@@ -382,7 +383,7 @@ async function migrate() {
         `;
 
         if (days.rows.length === 0) {
-          console.log('    ⚠️ No days found for Kickstart, skipping initialization');
+          logger.log('    ⚠️ No days found for Kickstart, skipping initialization');
           return;
         }
 
@@ -398,7 +399,7 @@ async function migrate() {
               ON CONFLICT (user_id, day_id) DO NOTHING
             `;
           }
-          console.log(`    ✓ Initialized progress for user ${user.user_id}`);
+          logger.log(`    ✓ Initialized progress for user ${user.user_id}`);
         }
       }
     }
@@ -409,15 +410,15 @@ async function migrate() {
 
   for (const step of steps) {
     try {
-      console.log(`\n📋 ${step.name}...`);
+      logger.log(`\n📋 ${step.name}...`);
       await step.execute();
-      console.log(`   ✓ Success`);
+      logger.log(`   ✓ Success`);
       successCount++;
     } catch (error: any) {
       // Check if it's just a "table already exists" or similar benign error
       if (error.message?.includes('already exists') ||
           error.message?.includes('duplicate key')) {
-        console.log(`   ✓ Already exists (skipped)`);
+        logger.log(`   ✓ Already exists (skipped)`);
         successCount++;
       } else {
         console.error(`   ✗ Error: ${error.message}`);
@@ -426,16 +427,16 @@ async function migrate() {
     }
   }
 
-  console.log('\n' + '=' .repeat(60));
-  console.log(`\n📊 Migration Summary:`);
-  console.log(`   ✓ Successful: ${successCount}`);
-  console.log(`   ✗ Errors: ${errorCount}`);
+  logger.log('\n' + '=' .repeat(60));
+  logger.log(`\n📊 Migration Summary:`);
+  logger.log(`   ✓ Successful: ${successCount}`);
+  logger.log(`   ✗ Errors: ${errorCount}`);
 
   if (errorCount === 0) {
-    console.log('\n✅ Migration completed successfully!');
+    logger.log('\n✅ Migration completed successfully!');
 
     // Verify tables exist
-    console.log('\n🔍 Verification:');
+    logger.log('\n🔍 Verification:');
     const tables = [
       'program_modules', 'lessons', 'user_lesson_progress',
       'user_module_progress', 'user_program_progress',
@@ -446,19 +447,19 @@ async function migrate() {
     for (const table of tables) {
       try {
         const result = await sql.query(`SELECT COUNT(*) FROM ${table}`);
-        console.log(`   ✓ ${table}: ${result.rows[0].count} rows`);
+        logger.log(`   ✓ ${table}: ${result.rows[0].count} rows`);
       } catch {
-        console.log(`   ✗ ${table}: not found or error`);
+        logger.log(`   ✗ ${table}: not found or error`);
       }
     }
   } else {
-    console.log('\n⚠️ Migration completed with some errors. Please review the logs above.');
+    logger.log('\n⚠️ Migration completed with some errors. Please review the logs above.');
   }
 
-  console.log('\n📌 Next steps:');
-  console.log('   1. The enrolled-programs API should now work correctly');
-  console.log('   2. Test: http://localhost:9000/dashboard');
-  console.log('   3. Kickstart should appear in "Mijn Programma\'s" widget');
+  logger.log('\n📌 Next steps:');
+  logger.log('   1. The enrolled-programs API should now work correctly');
+  logger.log('   2. Test: http://localhost:9000/dashboard');
+  logger.log('   3. Kickstart should appear in "Mijn Programma\'s" widget');
 }
 
 // Run migration

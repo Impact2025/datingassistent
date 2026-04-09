@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 
 let publishedColumnEnsured = false;
@@ -17,7 +18,7 @@ export async function ensureReviewPublishedColumn() {
     // Add column if it doesn't exist
     if (result.rows.length === 0) {
       await sql.query('ALTER TABLE reviews ADD COLUMN published boolean DEFAULT true');
-      console.log('✅ Added published column to reviews table');
+      logger.log('✅ Added published column to reviews table');
     }
 
     // Update existing records

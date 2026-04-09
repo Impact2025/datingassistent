@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 /**
  * CLOUDFLARE TURNSTILE VERIFICATION API
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     // Handle development bypass tokens
     if (token === 'bypass' || token === 'bypass_development') {
-      console.log('Turnstile: Using bypass token for development');
+      logger.log('Turnstile: Using bypass token for development');
       return NextResponse.json({
         success: true,
         bypass: true,

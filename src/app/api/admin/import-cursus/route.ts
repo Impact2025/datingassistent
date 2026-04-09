@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 import fs from 'fs';
 import path from 'path';
+import { logger } from '@/lib/logger';
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
     const cursusStructuur = JSON.parse(fs.readFileSync(cursusStructuurPath, 'utf-8'));
     const { cursus: cursusData, modules } = cursusStructuur;
 
-    console.log('📚 Importing cursus:', cursusData.titel);
+    logger.log('📚 Importing cursus:', cursusData.titel);
 
     // 1. Maak of update cursus record
     const cursusResult = await sql`
@@ -89,10 +90,10 @@ export async function POST(request: NextRequest) {
     `;
 
     const cursusDbId = cursusResult[0].id;
-    console.log('✅ Cursus created/updated with ID:', cursusDbId);
+    logger.log('✅ Cursus created/updated with ID:', cursusDbId);
 
     // 2. Verwijder bestaande lessen en secties voor deze cursus (voor clean re-import)
-    console.log('🗑️ Removing existing lessen for clean import...');
+    logger.log('🗑️ Removing existing lessen for clean import...');
 
     try {
       // Eerst quiz vragen verwijderen (vanwege foreign key)
@@ -104,9 +105,9 @@ export async function POST(request: NextRequest) {
           WHERE cl.cursus_id = ${cursusDbId}
         )
       `;
-      console.log('✅ Quiz vragen removed');
+      logger.log('✅ Quiz vragen removed');
     } catch (e: any) {
-      console.log('⚠️ Quiz vragen table may not exist:', e.message);
+      logger.log('⚠️ Quiz vragen table may not exist:', e.message);
     }
 
     try {
@@ -117,27 +118,27 @@ export async function POST(request: NextRequest) {
           SELECT id FROM cursus_lessen WHERE cursus_id = ${cursusDbId}
         )
       `;
-      console.log('✅ Secties removed');
+      logger.log('✅ Secties removed');
     } catch (e: any) {
-      console.log('⚠️ Secties table may not exist:', e.message);
+      logger.log('⚠️ Secties table may not exist:', e.message);
     }
 
     try {
       // Dan lessen verwijderen
       await sql`DELETE FROM cursus_lessen WHERE cursus_id = ${cursusDbId}`;
-      console.log('✅ Lessen removed');
+      logger.log('✅ Lessen removed');
     } catch (e: any) {
-      console.log('⚠️ Lessen table may not exist:', e.message);
+      logger.log('⚠️ Lessen table may not exist:', e.message);
     }
 
-    console.log('✅ Existing data cleanup complete');
+    logger.log('✅ Existing data cleanup complete');
 
     // 3. Import alle modules en lessen
     let lesVolgorde = 1;
     const importResults: any[] = [];
 
     for (const module of modules) {
-      console.log(`\n📦 Processing module ${module.nummer}: ${module.titel}`);
+      logger.log(`\n📦 Processing module ${module.nummer}: ${module.titel}`);
 
       for (const lesConfig of module.lessen) {
         // Probeer les.json te lezen als het bestaat
@@ -150,7 +151,7 @@ export async function POST(request: NextRequest) {
         try {
           lesData = JSON.parse(fs.readFileSync(lesJsonPath, 'utf-8'));
         } catch (e) {
-          console.log(`  ⚠️ No les.json for ${lesConfig.id}, using config only`);
+          logger.log(`  ⚠️ No les.json for ${lesConfig.id}, using config only`);
         }
 
         // Maak les slug
@@ -187,7 +188,7 @@ export async function POST(request: NextRequest) {
         `;
 
         const lesDbId = lesResult[0].id;
-        console.log(`  ✅ Les ${lesVolgorde}: ${lesTitel} (ID: ${lesDbId})`);
+        logger.log(`  ✅ Les ${lesVolgorde}: ${lesTitel} (ID: ${lesDbId})`);
 
         // 3. Import secties als les.json bestaat
         if (lesData?.secties) {
@@ -219,7 +220,7 @@ export async function POST(request: NextRequest) {
 
             sectieVolgorde++;
           }
-          console.log(`    📝 ${sectieVolgorde - 1} secties imported`);
+          logger.log(`    📝 ${sectieVolgorde - 1} secties imported`);
         }
 
         // 4. Import quiz vragen als die bestaan
@@ -264,7 +265,7 @@ export async function POST(request: NextRequest) {
               `;
               vraagVolgorde++;
             }
-            console.log(`    ❓ ${vraagVolgorde - 1} quiz vragen imported`);
+            logger.log(`    ❓ ${vraagVolgorde - 1} quiz vragen imported`);
           }
         }
 

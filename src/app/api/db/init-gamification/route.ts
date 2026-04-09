@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
+import { logger } from '@/lib/logger';
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -9,10 +10,10 @@ const sql = neon(process.env.DATABASE_URL!);
  */
 export async function GET() {
   try {
-    console.log('🎮 Initializing Gamification tables...');
+    logger.log('🎮 Initializing Gamification tables...');
 
     // First, drop existing gamification tables to ensure clean slate
-    console.log('Dropping existing gamification tables if they exist...');
+    logger.log('Dropping existing gamification tables if they exist...');
     try {
       await sql`DROP TABLE IF EXISTS user_challenge_progress CASCADE`;
       await sql`DROP TABLE IF EXISTS points_history CASCADE`;
@@ -21,13 +22,13 @@ export async function GET() {
       await sql`DROP TABLE IF EXISTS user_gamification_stats CASCADE`;
       await sql`DROP TABLE IF EXISTS level_milestones CASCADE`;
       await sql`DROP TABLE IF EXISTS daily_challenges CASCADE`;
-      console.log('✅ Existing tables dropped');
+      logger.log('✅ Existing tables dropped');
     } catch (dropError) {
-      console.log('⚠️ Some tables could not be dropped (may not exist)');
+      logger.log('⚠️ Some tables could not be dropped (may not exist)');
     }
 
     // 1. User Stats - Overall gamification stats per user
-    console.log('Creating user_gamification_stats table...');
+    logger.log('Creating user_gamification_stats table...');
     await sql`
       CREATE TABLE user_gamification_stats (
         id SERIAL PRIMARY KEY,
@@ -46,10 +47,10 @@ export async function GET() {
         UNIQUE(user_id)
       )
     `;
-    console.log('✅ user_gamification_stats table created');
+    logger.log('✅ user_gamification_stats table created');
 
     // 2. Streak History - Track daily login streaks
-    console.log('Creating user_streaks table...');
+    logger.log('Creating user_streaks table...');
     await sql`
       CREATE TABLE user_streaks (
         id SERIAL PRIMARY KEY,
@@ -62,10 +63,10 @@ export async function GET() {
         UNIQUE(user_id, login_date)
       )
     `;
-    console.log('✅ user_streaks table created');
+    logger.log('✅ user_streaks table created');
 
     // 3. Daily Challenges - Available challenges
-    console.log('Creating daily_challenges table...');
+    logger.log('Creating daily_challenges table...');
     await sql`
       CREATE TABLE daily_challenges (
         id SERIAL PRIMARY KEY,
@@ -85,10 +86,10 @@ export async function GET() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('✅ daily_challenges table created');
+    logger.log('✅ daily_challenges table created');
 
     // 4. User Challenge Progress - Track user progress on challenges
-    console.log('Creating user_challenge_progress table...');
+    logger.log('Creating user_challenge_progress table...');
     await sql`
       CREATE TABLE user_challenge_progress (
         id SERIAL PRIMARY KEY,
@@ -105,10 +106,10 @@ export async function GET() {
         UNIQUE(user_id, challenge_id, challenge_date)
       )
     `;
-    console.log('✅ user_challenge_progress table created');
+    logger.log('✅ user_challenge_progress table created');
 
     // 5. Points History - Track all point transactions
-    console.log('Creating points_history table...');
+    logger.log('Creating points_history table...');
     await sql`
       CREATE TABLE points_history (
         id SERIAL PRIMARY KEY,
@@ -121,10 +122,10 @@ export async function GET() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('✅ points_history table created');
+    logger.log('✅ points_history table created');
 
     // 6. Level Milestones - Level progression rewards
-    console.log('Creating level_milestones table...');
+    logger.log('Creating level_milestones table...');
     await sql`
       CREATE TABLE level_milestones (
         id SERIAL PRIMARY KEY,
@@ -138,10 +139,10 @@ export async function GET() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('✅ level_milestones table created');
+    logger.log('✅ level_milestones table created');
 
     // 7. Leaderboard Entries - Privacy-aware leaderboard
-    console.log('Creating leaderboard_entries table...');
+    logger.log('Creating leaderboard_entries table...');
     await sql`
       CREATE TABLE leaderboard_entries (
         id SERIAL PRIMARY KEY,
@@ -159,9 +160,9 @@ export async function GET() {
         UNIQUE(user_id, period)
       )
     `;
-    console.log('✅ leaderboard_entries table created');
+    logger.log('✅ leaderboard_entries table created');
 
-    console.log('✅ All gamification tables created');
+    logger.log('✅ All gamification tables created');
 
     // Insert default daily challenges
     await sql`
@@ -191,7 +192,7 @@ export async function GET() {
       ON CONFLICT (challenge_id) DO NOTHING
     `;
 
-    console.log('✅ Default challenges inserted');
+    logger.log('✅ Default challenges inserted');
 
     // Insert level milestones (1-50)
     const levelMilestones = [];
@@ -230,33 +231,33 @@ export async function GET() {
       `;
     }
 
-    console.log('✅ Level milestones created (1-50)');
+    logger.log('✅ Level milestones created (1-50)');
 
     // Create indexes for performance
-    console.log('Creating database indexes...');
+    logger.log('Creating database indexes...');
 
-    console.log('Creating index: idx_gamification_stats_user...');
+    logger.log('Creating index: idx_gamification_stats_user...');
     await sql`CREATE INDEX IF NOT EXISTS idx_gamification_stats_user ON user_gamification_stats(user_id)`;
-    console.log('✅ idx_gamification_stats_user created');
+    logger.log('✅ idx_gamification_stats_user created');
 
-    console.log('Creating index: idx_streaks_user_date...');
+    logger.log('Creating index: idx_streaks_user_date...');
     await sql`CREATE INDEX IF NOT EXISTS idx_streaks_user_date ON user_streaks(user_id, login_date DESC)`;
-    console.log('✅ idx_streaks_user_date created');
+    logger.log('✅ idx_streaks_user_date created');
 
-    console.log('Creating index: idx_challenge_progress_user...');
+    logger.log('Creating index: idx_challenge_progress_user...');
     await sql`CREATE INDEX IF NOT EXISTS idx_challenge_progress_user ON user_challenge_progress(user_id, challenge_date DESC)`;
-    console.log('✅ idx_challenge_progress_user created');
+    logger.log('✅ idx_challenge_progress_user created');
 
-    console.log('Creating index: idx_points_history_user...');
+    logger.log('Creating index: idx_points_history_user...');
     await sql`CREATE INDEX IF NOT EXISTS idx_points_history_user ON points_history(user_id, created_at DESC)`;
-    console.log('✅ idx_points_history_user created');
+    logger.log('✅ idx_points_history_user created');
 
-    console.log('Creating index: idx_leaderboard_rank...');
+    logger.log('Creating index: idx_leaderboard_rank...');
     await sql`CREATE INDEX IF NOT EXISTS idx_leaderboard_rank ON leaderboard_entries(period, rank)`;
-    console.log('✅ idx_leaderboard_rank created');
+    logger.log('✅ idx_leaderboard_rank created');
 
-    console.log('✅ All indexes created');
-    console.log('✅ Gamification system initialized successfully!');
+    logger.log('✅ All indexes created');
+    logger.log('✅ Gamification system initialized successfully!');
 
     return NextResponse.json({
       success: true,

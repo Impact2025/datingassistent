@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { verifyToken } from '@/lib/auth';
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`🗑️ Account deletion requested for user ${user.id}`);
+    logger.log(`🗑️ Account deletion requested for user ${user.id}`);
 
     // Check if user already has a pending deletion request
     const existingRequest = await sql`
@@ -103,7 +104,7 @@ export async function POST(request: NextRequest) {
 
     // TODO: Send confirmation email
     // For now, we'll log it
-    console.log(`✅ Account deletion request created for user ${user.id}, scheduled for ${deletionDate.toISOString()}`);
+    logger.log(`✅ Account deletion request created for user ${user.id}, scheduled for ${deletionDate.toISOString()}`);
 
     // In a real implementation, you would send an email here
     // await sendDeletionConfirmationEmail(user.email, requestId, deletionDate);

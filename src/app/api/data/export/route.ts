@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { verifyToken } from '@/lib/auth';
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log(`📤 Starting data export for user ${user.id}`);
+    logger.log(`📤 Starting data export for user ${user.id}`);
 
     // Ensure data_requests table exists
     try {
@@ -170,7 +171,7 @@ export async function GET(request: NextRequest) {
       // Don't fail the export if logging fails
     }
 
-    console.log(`✅ Data export completed for user ${user.id}`);
+    logger.log(`✅ Data export completed for user ${user.id}`);
 
     // Return JSON response with proper headers for download
     return new Response(JSON.stringify(exportData, null, 2), {

@@ -1,19 +1,20 @@
 import { sql } from '@vercel/postgres';
 import * as dotenv from 'dotenv';
+import { logger } from '@/lib/logger';
 
 // Load environment variables
 dotenv.config();
 
 async function migrateOnboardingTables() {
-  console.log('🚀 Starting onboarding tables migration...\n');
+  logger.log('🚀 Starting onboarding tables migration...\n');
 
   try {
     // Test connection first
     await sql`SELECT 1 as test`;
-    console.log('✅ Database connection successful\n');
+    logger.log('✅ Database connection successful\n');
 
     // Create user_onboarding table
-    console.log('📦 Creating user_onboarding table...');
+    logger.log('📦 Creating user_onboarding table...');
     await sql`
       CREATE TABLE IF NOT EXISTS user_onboarding (
         id SERIAL PRIMARY KEY,
@@ -43,16 +44,16 @@ async function migrateOnboardingTables() {
         updated_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('✅ user_onboarding table created\n');
+    logger.log('✅ user_onboarding table created\n');
 
     // Create indexes for user_onboarding
-    console.log('📦 Creating indexes for user_onboarding...');
+    logger.log('📦 Creating indexes for user_onboarding...');
     await sql`CREATE INDEX IF NOT EXISTS idx_user_onboarding_user_id ON user_onboarding(user_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_user_onboarding_current_step ON user_onboarding(current_step)`;
-    console.log('✅ Indexes created\n');
+    logger.log('✅ Indexes created\n');
 
     // Create user_achievements table
-    console.log('📦 Creating user_achievements table...');
+    logger.log('📦 Creating user_achievements table...');
     await sql`
       CREATE TABLE IF NOT EXISTS user_achievements (
         id SERIAL PRIMARY KEY,
@@ -64,16 +65,16 @@ async function migrateOnboardingTables() {
         UNIQUE(user_id, achievement_id)
       )
     `;
-    console.log('✅ user_achievements table created\n');
+    logger.log('✅ user_achievements table created\n');
 
     // Create indexes for user_achievements
-    console.log('📦 Creating indexes for user_achievements...');
+    logger.log('📦 Creating indexes for user_achievements...');
     await sql`CREATE INDEX IF NOT EXISTS idx_user_achievements_user_id ON user_achievements(user_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_user_achievements_achievement_id ON user_achievements(achievement_id)`;
-    console.log('✅ Indexes created\n');
+    logger.log('✅ Indexes created\n');
 
     // Create user_progress table
-    console.log('📦 Creating user_progress table...');
+    logger.log('📦 Creating user_progress table...');
     await sql`
       CREATE TABLE IF NOT EXISTS user_progress (
         id SERIAL PRIMARY KEY,
@@ -88,15 +89,15 @@ async function migrateOnboardingTables() {
         updated_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('✅ user_progress table created\n');
+    logger.log('✅ user_progress table created\n');
 
     // Create index for user_progress
-    console.log('📦 Creating indexes for user_progress...');
+    logger.log('📦 Creating indexes for user_progress...');
     await sql`CREATE INDEX IF NOT EXISTS idx_user_progress_user_id ON user_progress(user_id)`;
-    console.log('✅ Indexes created\n');
+    logger.log('✅ Indexes created\n');
 
     // Create update trigger function
-    console.log('📦 Creating update trigger function...');
+    logger.log('📦 Creating update trigger function...');
     await sql`
       CREATE OR REPLACE FUNCTION update_onboarding_updated_at_column()
       RETURNS TRIGGER AS $$
@@ -106,13 +107,13 @@ async function migrateOnboardingTables() {
       END;
       $$ language 'plpgsql'
     `;
-    console.log('✅ Trigger function created\n');
+    logger.log('✅ Trigger function created\n');
 
-    console.log('\n🎉 Migration completed successfully!');
-    console.log('\nTables created:');
-    console.log('  - user_onboarding');
-    console.log('  - user_achievements');
-    console.log('  - user_progress');
+    logger.log('\n🎉 Migration completed successfully!');
+    logger.log('\nTables created:');
+    logger.log('  - user_onboarding');
+    logger.log('  - user_achievements');
+    logger.log('  - user_progress');
 
   } catch (error) {
     console.error('❌ Migration failed:', error);

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * GA4 Analytics Events - Professional Event Tracking (AVG Compliant)
  *
@@ -138,21 +139,21 @@ function sendEvent(
   // Check consent based on category
   if (category === 'analytics' && !hasAnalyticsConsent()) {
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[GA4] ❌ ${eventName} blocked - Analytics consent required`);
+      logger.log(`[GA4] ❌ ${eventName} blocked - Analytics consent required`);
     }
     return;
   }
 
   if (category === 'marketing' && !hasMarketingConsent()) {
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[GA4] ❌ ${eventName} blocked - Marketing consent required`);
+      logger.log(`[GA4] ❌ ${eventName} blocked - Marketing consent required`);
     }
     return;
   }
 
   if (!isGtagAvailable()) {
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[GA4 Event] ${eventName}`, parameters);
+      logger.log(`[GA4 Event] ${eventName}`, parameters);
     }
     return;
   }
@@ -164,7 +165,7 @@ function sendEvent(
     });
 
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[GA4] ✅ Event sent: ${eventName}`, parameters);
+      logger.log(`[GA4] ✅ Event sent: ${eventName}`, parameters);
     }
   } catch (error) {
     console.error('[GA4] Error sending event:', error);
@@ -177,7 +178,7 @@ function sendEvent(
 export function setUserProperties(properties: GA4UserProperties): void {
   if (!hasAnalyticsConsent()) {
     if (process.env.NODE_ENV === 'development') {
-      console.log('[GA4] ❌ User properties blocked - Analytics consent required');
+      logger.log('[GA4] ❌ User properties blocked - Analytics consent required');
     }
     return;
   }

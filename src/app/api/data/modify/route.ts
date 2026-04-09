@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { verifyToken } from '@/lib/auth';
@@ -66,7 +67,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    console.log(`✏️ Data modification requested for user ${user.id}`);
+    logger.log(`✏️ Data modification requested for user ${user.id}`);
 
     // Get current profile
     const currentProfileResult = await sql`
@@ -122,7 +123,7 @@ export async function PUT(request: NextRequest) {
       `;
     }
 
-    console.log(`✅ Data modification completed for user ${user.id}, changes: ${changes.join(', ')}`);
+    logger.log(`✅ Data modification completed for user ${user.id}, changes: ${changes.join(', ')}`);
 
     return NextResponse.json({
       message: 'Profile updated successfully',

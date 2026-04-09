@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { updateCouponStatus, deleteCoupon } from '@/lib/coupon-service';
 import { checkAdminAuth } from '@/lib/admin-auth';
@@ -12,11 +13,11 @@ export async function PUT(
   try {
     // Await params in Next.js 15
     const params = await context.params;
-    console.log('PUT /api/admin/coupons/[id] called with id:', params.id);
+    logger.log('PUT /api/admin/coupons/[id] called with id:', params.id);
 
     // Verify admin authentication
     const authResult = await checkAdminAuth();
-    console.log('Auth result:', authResult);
+    logger.log('Auth result:', authResult);
 
     if (!authResult.isAdmin) {
       return NextResponse.json({ error: 'Not authorized' }, { status: 401 });
@@ -29,7 +30,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Invalid coupon ID' }, { status: 400 });
     }
 
-    console.log('Updating coupon:', { id, is_active: body.is_active });
+    logger.log('Updating coupon:', { id, is_active: body.is_active });
 
     const success = await updateCouponStatus(id, body.is_active);
 
@@ -37,7 +38,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Failed to update coupon' }, { status: 500 });
     }
 
-    console.log('Coupon updated successfully');
+    logger.log('Coupon updated successfully');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error updating coupon:', error);
@@ -53,11 +54,11 @@ export async function DELETE(
   try {
     // Await params in Next.js 15
     const params = await context.params;
-    console.log('DELETE /api/admin/coupons/[id] called with id:', params.id);
+    logger.log('DELETE /api/admin/coupons/[id] called with id:', params.id);
 
     // Verify admin authentication
     const authResult = await checkAdminAuth();
-    console.log('Auth result:', authResult);
+    logger.log('Auth result:', authResult);
 
     if (!authResult.isAdmin) {
       return NextResponse.json({ error: 'Not authorized' }, { status: 401 });
@@ -69,7 +70,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Invalid coupon ID' }, { status: 400 });
     }
 
-    console.log('Deleting coupon:', { id });
+    logger.log('Deleting coupon:', { id });
 
     const success = await deleteCoupon(id);
 
@@ -77,7 +78,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Coupon not found or failed to delete' }, { status: 404 });
     }
 
-    console.log('Coupon deleted successfully');
+    logger.log('Coupon deleted successfully');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting coupon:', error);

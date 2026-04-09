@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
+import { logger } from '@/lib/logger';
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -9,10 +10,10 @@ const sql = neon(process.env.DATABASE_URL!);
  */
 export async function GET() {
   try {
-    console.log('📅 Initializing Dating Log tables...');
+    logger.log('📅 Initializing Dating Log tables...');
 
     // 1. Weekly Dating Logs - Hoofdtabel voor wekelijkse logs
-    console.log('Creating weekly_dating_logs table...');
+    logger.log('Creating weekly_dating_logs table...');
     await sql`
       CREATE TABLE IF NOT EXISTS weekly_dating_logs (
         id SERIAL PRIMARY KEY,
@@ -47,10 +48,10 @@ export async function GET() {
         UNIQUE(user_id, week_start)
       )
     `;
-    console.log('✅ weekly_dating_logs table created');
+    logger.log('✅ weekly_dating_logs table created');
 
     // 2. User Matches - Track individual matches
-    console.log('Creating user_matches table...');
+    logger.log('Creating user_matches table...');
     await sql`
       CREATE TABLE IF NOT EXISTS user_matches (
         id SERIAL PRIMARY KEY,
@@ -90,10 +91,10 @@ export async function GET() {
         updated_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('✅ user_matches table created');
+    logger.log('✅ user_matches table created');
 
     // 3. Dating Log History - Track patterns over time
-    console.log('Creating dating_log_history table...');
+    logger.log('Creating dating_log_history table...');
     await sql`
       CREATE TABLE IF NOT EXISTS dating_log_history (
         id SERIAL PRIMARY KEY,
@@ -120,10 +121,10 @@ export async function GET() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('✅ dating_log_history table created');
+    logger.log('✅ dating_log_history table created');
 
     // 4. User Notification Preferences
-    console.log('Creating user_notification_preferences table...');
+    logger.log('Creating user_notification_preferences table...');
     await sql`
       CREATE TABLE IF NOT EXISTS user_notification_preferences (
         id SERIAL PRIMARY KEY,
@@ -149,10 +150,10 @@ export async function GET() {
         UNIQUE(user_id)
       )
     `;
-    console.log('✅ user_notification_preferences table created');
+    logger.log('✅ user_notification_preferences table created');
 
     // 5. Dating Insights - Store AI-generated insights for context
-    console.log('Creating dating_insights table...');
+    logger.log('Creating dating_insights table...');
     await sql`
       CREATE TABLE IF NOT EXISTS dating_insights (
         id SERIAL PRIMARY KEY,
@@ -173,10 +174,10 @@ export async function GET() {
         created_at TIMESTAMP DEFAULT NOW()
       )
     `;
-    console.log('✅ dating_insights table created');
+    logger.log('✅ dating_insights table created');
 
     // Create indexes for performance
-    console.log('Creating database indexes...');
+    logger.log('Creating database indexes...');
 
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_logs_user ON weekly_dating_logs(user_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_logs_week ON weekly_dating_logs(user_id, week_start DESC)`;
@@ -185,19 +186,19 @@ export async function GET() {
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_history_user ON dating_log_history(user_id, year DESC, week_number DESC)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_insights_user ON dating_insights(user_id, created_at DESC)`;
 
-    console.log('✅ All indexes created');
+    logger.log('✅ All indexes created');
 
     // Insert default notification preferences for existing users
-    console.log('Setting up default preferences for existing users...');
+    logger.log('Setting up default preferences for existing users...');
     await sql`
       INSERT INTO user_notification_preferences (user_id)
       SELECT id FROM users
       WHERE id NOT IN (SELECT user_id FROM user_notification_preferences)
       ON CONFLICT DO NOTHING
     `;
-    console.log('✅ Default preferences created');
+    logger.log('✅ Default preferences created');
 
-    console.log('✅ Dating Log system initialized successfully!');
+    logger.log('✅ Dating Log system initialized successfully!');
 
     return NextResponse.json({
       success: true,
@@ -239,7 +240,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     if (body.action === 'reset') {
-      console.log('⚠️ Resetting Dating Log tables...');
+      logger.log('⚠️ Resetting Dating Log tables...');
 
       await sql`DROP TABLE IF EXISTS dating_insights CASCADE`;
       await sql`DROP TABLE IF EXISTS dating_log_history CASCADE`;
@@ -247,7 +248,7 @@ export async function POST(request: Request) {
       await sql`DROP TABLE IF EXISTS user_matches CASCADE`;
       await sql`DROP TABLE IF EXISTS weekly_dating_logs CASCADE`;
 
-      console.log('✅ Tables dropped');
+      logger.log('✅ Tables dropped');
 
       return NextResponse.json({
         success: true,

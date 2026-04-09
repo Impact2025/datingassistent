@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * SMS Service - Twilio Integration for Client Communications
  */
@@ -32,10 +33,10 @@ export async function sendSMS(message: SMSMessage): Promise<SMSResponse> {
     // Check if Twilio is configured
     if (!twilioClient || !process.env.TWILIO_PHONE_NUMBER) {
       console.warn('Twilio not configured. SMS not sent.');
-      console.log('📱 SMS NOT SENT (Twilio not configured) - SMS content:');
-      console.log('To:', message.to);
-      console.log('Body:', message.body);
-      console.log('---');
+      logger.log('📱 SMS NOT SENT (Twilio not configured) - SMS content:');
+      logger.log('To:', message.to);
+      logger.log('Body:', message.body);
+      logger.log('---');
       return { success: true }; // Return success for testing purposes
     }
 
@@ -47,7 +48,7 @@ export async function sendSMS(message: SMSMessage): Promise<SMSResponse> {
       statusCallback: message.statusCallback || `${process.env.NEXT_PUBLIC_APP_URL}/api/sms/webhook`
     });
 
-    console.log(`✅ SMS sent successfully to ${message.to}, SID: ${twilioMessage.sid}`);
+    logger.log(`✅ SMS sent successfully to ${message.to}, SID: ${twilioMessage.sid}`);
 
     return {
       success: true,
@@ -151,7 +152,7 @@ export async function getSMSDeliveryStatus(messageSid: string): Promise<string |
  */
 export async function handleIncomingSMS(from: string, body: string): Promise<void> {
   try {
-    console.log(`📱 Incoming SMS from ${from}: ${body}`);
+    logger.log(`📱 Incoming SMS from ${from}: ${body}`);
 
     // Find user by phone number
     const userResult = await sql`
@@ -159,7 +160,7 @@ export async function handleIncomingSMS(from: string, body: string): Promise<voi
     `;
 
     if (userResult.rows.length === 0) {
-      console.log('User not found for incoming SMS');
+      logger.log('User not found for incoming SMS');
       return;
     }
 
@@ -171,7 +172,7 @@ export async function handleIncomingSMS(from: string, body: string): Promise<voi
     // Check if this is a response to a coach message
     // This could trigger notifications to coaches, etc.
 
-    console.log(`Incoming SMS from user ${user.name} (${user.id}): ${body}`);
+    logger.log(`Incoming SMS from user ${user.name} (${user.id}): ${body}`);
 
     // TODO: Implement auto-responses, coach notifications, etc.
 

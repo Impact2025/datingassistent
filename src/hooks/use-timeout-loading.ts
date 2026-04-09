@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { useEffect, useRef } from 'react';
 
 /**
@@ -20,7 +21,7 @@ export function useTimeoutLoading(
       
       // Set new timeout
       timeoutRef.current = setTimeout(() => {
-        console.log(`⏰ useTimeoutLoading - Loading timeout triggered after ${timeoutMs}ms, forcing loading to false`);
+        logger.log(`⏰ useTimeoutLoading - Loading timeout triggered after ${timeoutMs}ms, forcing loading to false`);
         setLoading(false);
       }, timeoutMs);
     } else {

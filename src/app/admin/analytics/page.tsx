@@ -37,6 +37,7 @@ import {
   Star,
   Crown
 } from "lucide-react";
+import { logger } from '@/lib/logger';
 
 interface AnalyticsData {
   overview: {
@@ -100,7 +101,7 @@ export default function AdminAnalytics() {
           dashboardData = await dashboardRes.json();
         }
       } catch (e) {
-        console.log('Could not fetch dashboard data, using estimates');
+        logger.log('Could not fetch dashboard data, using estimates');
       }
 
       // Fetch user stats
@@ -111,7 +112,7 @@ export default function AdminAnalytics() {
           userStats = await statsRes.json();
         }
       } catch (e) {
-        console.log('Could not fetch user stats');
+        logger.log('Could not fetch user stats');
       }
 
       // Build analytics data with real data where available, estimates elsewhere

@@ -74,11 +74,6 @@ export function validatePassword(password: string): PasswordValidationResult {
     }
   }
 
-  // Sequential characters check (e.g., "abc", "123")
-  if (/(?:abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz|012|123|234|345|456|567|678|789)/i.test(password)) {
-    errors.push('Wachtwoord bevat opeenvolgende karakters (abc, 123) en is niet veilig');
-  }
-
   return {
     isValid: errors.length === 0,
     errors,

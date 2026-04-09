@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -123,7 +124,7 @@ export function VideoPlayer({
           setIsPlaying(true);
         } catch (error) {
           // Auto-play failed, user interaction required
-          console.log('Auto-play prevented by browser');
+          logger.log('Auto-play prevented by browser');
         }
       };
       playVideo();

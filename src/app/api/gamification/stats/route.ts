@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 
@@ -113,7 +114,7 @@ export async function GET(request: NextRequest) {
     const pointsToNextLevel = Math.max(0, data.next_level_points - data.total_points);
 
     const duration = Date.now() - startTime;
-    console.log(`✅ Gamification stats fetched in ${duration}ms for user ${userId}`);
+    logger.log(`✅ Gamification stats fetched in ${duration}ms for user ${userId}`);
 
     return NextResponse.json({
       totalPoints: data.total_points,

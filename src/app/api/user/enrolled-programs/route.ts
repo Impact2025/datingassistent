@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
@@ -107,7 +108,7 @@ async function initializeKickstartProgress(userId: number, programId: number) {
     `;
 
     if (days.rows.length === 0) {
-      console.log('No days found for Kickstart program');
+      logger.log('No days found for Kickstart program');
       return;
     }
 
@@ -123,7 +124,7 @@ async function initializeKickstartProgress(userId: number, programId: number) {
       `;
     }
 
-    console.log(`Initialized Kickstart progress for user ${userId}`);
+    logger.log(`Initialized Kickstart progress for user ${userId}`);
   } catch (error) {
     console.error('Error initializing Kickstart progress:', error);
   }
@@ -229,7 +230,7 @@ export async function GET(request: NextRequest) {
 
     const userId = user.id;
 
-    console.log('🔍 Fetching enrolled programs for user:', userId);
+    logger.log('🔍 Fetching enrolled programs for user:', userId);
 
     // PERFORMANCE: Use cache to reduce database load
     const programsWithProgress = await getCachedOrCompute(
@@ -251,7 +252,7 @@ export async function GET(request: NextRequest) {
       ORDER BY pe.enrolled_at DESC
     `;
 
-    console.log('📋 Found enrolled programs:', result.rows.length, 'for user:', userId);
+    logger.log('📋 Found enrolled programs:', result.rows.length, 'for user:', userId);
 
     // For each program, get progress data based on program type
     const programsWithProgress = await Promise.all(

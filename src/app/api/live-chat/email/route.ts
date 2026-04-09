@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     const emailData: EmailWebhookPayload = await request.json();
-    console.log('📧 Email webhook received:', {
+    logger.log('📧 Email webhook received:', {
       from: emailData.from,
       to: emailData.to,
       subject: emailData.subject,
@@ -127,7 +128,7 @@ async function processIncomingEmail(email: EmailWebhookPayload) {
     `;
 
     if (conversation.rows[0].assigned_agent_id) {
-      console.log(`🔔 Email notification sent to agent ${conversation.rows[0].assigned_agent_id}`);
+      logger.log(`🔔 Email notification sent to agent ${conversation.rows[0].assigned_agent_id}`);
       // In production, send real-time notification
     }
 
@@ -220,7 +221,7 @@ async function processEmailAttachments(conversationId: string, attachments: any[
 
       // In production, save file to cloud storage
       // For now, we'll just log it
-      console.log(`📎 Processing email attachment: ${attachment.filename}`);
+      logger.log(`📎 Processing email attachment: ${attachment.filename}`);
 
       // Store attachment reference in database
       await sql`
@@ -273,10 +274,10 @@ async function sendEmailReply(
   agentName: string
 ) {
   // In production, integrate with your email service (SendGrid, AWS SES, etc.)
-  console.log(`📤 Sending email reply to ${to}`);
-  console.log(`Subject: Re: ${subject}`);
-  console.log(`From: ${agentName} <support@datingsassistent.nl>`);
-  console.log(`Message: ${message}`);
+  logger.log(`📤 Sending email reply to ${to}`);
+  logger.log(`Subject: Re: ${subject}`);
+  logger.log(`From: ${agentName} <support@datingsassistent.nl>`);
+  logger.log(`Message: ${message}`);
 
   // Store agent's reply as message
   await sql`
@@ -339,9 +340,9 @@ async function autoAssignConversation(conversationId: string) {
         WHERE id = ${conversationId}
       `;
 
-      console.log(`✅ Email conversation ${conversationId} assigned to agent ${agent.name}`);
+      logger.log(`✅ Email conversation ${conversationId} assigned to agent ${agent.name}`);
     } else {
-      console.log(`⏳ Email conversation ${conversationId} queued - no available agents`);
+      logger.log(`⏳ Email conversation ${conversationId} queued - no available agents`);
     }
   } catch (error) {
     console.error('Error auto-assigning email conversation:', error);

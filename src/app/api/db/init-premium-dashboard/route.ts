@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating premium coaching dashboard tables...');
+    logger.log('Creating premium coaching dashboard tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -33,7 +34,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created premium_dashboard_profiles table');
+    logger.log('✅ Created premium_dashboard_profiles table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS premium_tool_progress (
@@ -68,7 +69,7 @@ export async function POST() {
         UNIQUE(user_id, tool_name)
       );
     `;
-    console.log('✅ Created premium_tool_progress table');
+    logger.log('✅ Created premium_tool_progress table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS premium_success_metrics (
@@ -107,7 +108,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created premium_success_metrics table');
+    logger.log('✅ Created premium_success_metrics table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS premium_coaching_sessions (
@@ -148,7 +149,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created premium_coaching_sessions table');
+    logger.log('✅ Created premium_coaching_sessions table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS premium_user_goals (
@@ -190,7 +191,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created premium_user_goals table');
+    logger.log('✅ Created premium_user_goals table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS premium_achievements (
@@ -220,7 +221,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created premium_achievements table');
+    logger.log('✅ Created premium_achievements table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS premium_notifications (
@@ -251,7 +252,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created premium_notifications table');
+    logger.log('✅ Created premium_notifications table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS premium_subscription_features (
@@ -280,7 +281,7 @@ export async function POST() {
         UNIQUE(user_id, feature_name)
       );
     `;
-    console.log('✅ Created premium_subscription_features table');
+    logger.log('✅ Created premium_subscription_features table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_premium_dashboard_profiles_user_id ON premium_dashboard_profiles(user_id);`;
@@ -291,7 +292,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_premium_achievements_user_id ON premium_achievements(user_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_premium_notifications_user_id ON premium_notifications(user_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_premium_subscription_features_user_id ON premium_subscription_features(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     return NextResponse.json({
       success: true,

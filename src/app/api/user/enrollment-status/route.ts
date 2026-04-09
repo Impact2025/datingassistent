@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
@@ -141,7 +142,7 @@ export async function GET(request: NextRequest) {
     }
 
     const duration = Date.now() - startTime;
-    console.log(`✅ Consolidated enrollment check completed in ${duration}ms for user ${user.id}`);
+    logger.log(`✅ Consolidated enrollment check completed in ${duration}ms for user ${user.id}`);
 
     return NextResponse.json({
       authenticated: true,

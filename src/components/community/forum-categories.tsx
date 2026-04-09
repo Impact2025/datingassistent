@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -27,7 +28,7 @@ export function ForumCategories() {
       }
 
       const data = await response.json();
-      console.log('Fetched categories:', data);
+      logger.log('Fetched categories:', data);
       setCategories(data.categories);
     } catch (err) {
       setError('Kon forum categorieën niet laden');

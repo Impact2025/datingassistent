@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -100,15 +101,15 @@ export function AdminLoginForm() {
 
   async function onLoginSubmit(data: AdminLoginFormValues) {
     if (isLoggingIn) {
-      console.log('⚠️ Admin login already in progress');
+      logger.log('⚠️ Admin login already in progress');
       return;
     }
 
-    console.log('🚀 Admin login form submitted', { email: data.email });
+    logger.log('🚀 Admin login form submitted', { email: data.email });
     setIsLoggingIn(true);
 
     try {
-      console.log('🔐 Attempting admin login with email:', data.email);
+      logger.log('🔐 Attempting admin login with email:', data.email);
 
       // First, check if user exists and has 2FA enabled
       const checkResponse = await fetch('/api/admin/2fa/check', {
@@ -121,7 +122,7 @@ export function AdminLoginForm() {
 
       if (checkResult.requires2FA) {
         // User has 2FA enabled, proceed to 2FA step
-        console.log('🔐 2FA required for user');
+        logger.log('🔐 2FA required for user');
         setTempUserId(checkResult.userId);
         setStep('2fa');
         setIsLoggingIn(false);
@@ -134,7 +135,7 @@ export function AdminLoginForm() {
       // Clear sensitive data from form immediately after successful login
       loginForm.reset();
 
-      console.log('✅ Admin login successful:', result);
+      logger.log('✅ Admin login successful:', result);
       // The AdminLayout will handle redirection on success.
     } catch (error: any) {
       console.error('❌ Admin login failed:', error);
@@ -156,7 +157,7 @@ export function AdminLoginForm() {
         variant: "destructive",
       });
     } finally {
-      console.log('🔄 Resetting admin login state');
+      logger.log('🔄 Resetting admin login state');
       setIsLoggingIn(false);
     }
   }
@@ -169,7 +170,7 @@ export function AdminLoginForm() {
     setIsLoggingIn(true);
 
     try {
-      console.log('🔐 Verifying 2FA token for user:', tempUserId);
+      logger.log('🔐 Verifying 2FA token for user:', tempUserId);
 
       // Verify 2FA token
       const verifyResponse = await fetch('/api/admin/2fa/login-verify', {
@@ -194,7 +195,7 @@ export function AdminLoginForm() {
       loginForm.reset();
       twoFAForm.reset();
 
-      console.log('✅ Admin login with 2FA successful:', result);
+      logger.log('✅ Admin login with 2FA successful:', result);
 
     } catch (error: any) {
       console.error('❌ 2FA verification failed:', error);

@@ -1,10 +1,11 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 // GET - Get all assessment questions
 export async function GET() {
   try {
-    console.log('🔍 Fetching attachment questions...');
+    logger.log('🔍 Fetching attachment questions...');
 
     const result = await sql`
       SELECT id, question_text, order_position
@@ -12,10 +13,10 @@ export async function GET() {
       ORDER BY order_position ASC
     `;
 
-    console.log(`📊 Found ${result.rows.length} questions in database`);
+    logger.log(`📊 Found ${result.rows.length} questions in database`);
 
     if (result.rows.length === 0) {
-      console.log('⚠️ No questions found, inserting default questions...');
+      logger.log('⚠️ No questions found, inserting default questions...');
 
       // Insert questions if none exist
       await sql`
@@ -46,7 +47,7 @@ export async function GET() {
         ORDER BY order_position ASC
       `;
 
-      console.log(`✅ Inserted and found ${newResult.rows.length} questions`);
+      logger.log(`✅ Inserted and found ${newResult.rows.length} questions`);
 
       return NextResponse.json({
         questions: newResult.rows.map(row => ({

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useCallback, useTransition } from 'react'
 import Link from 'next/link';
 import * as Lucide from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { logger } from '@/lib/logger';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -43,26 +44,26 @@ import { SocialLearning } from '@/components/interactive/social-learning';
 function convertMarkdownToHTML(markdown: string): string {
   if (!markdown) return '';
 
-  console.log('Original markdown length:', markdown.length);
-  console.log('First 200 chars:', markdown.substring(0, 200));
+  logger.log('Original markdown length:', markdown.length);
+  logger.log('First 200 chars:', markdown.substring(0, 200));
 
   // Remove code block wrapper if present (from RichTextEditor)
   let cleanMarkdown = markdown;
   if (markdown.includes('<pre><code class="language-markdown">')) {
-    console.log('Found code block wrapper, removing...');
+    logger.log('Found code block wrapper, removing...');
     cleanMarkdown = markdown
       .replace(/<pre><code class="language-markdown">/g, '')
       .replace(/<\/code><\/pre>/g, '');
-    console.log('After removal, first 200 chars:', cleanMarkdown.substring(0, 200));
+    logger.log('After removal, first 200 chars:', cleanMarkdown.substring(0, 200));
   }
 
   // Check if already HTML (contains HTML tags that aren't pre/code)
   if (/<\/?(?!pre|code)[a-z][\s\S]*>/i.test(cleanMarkdown)) {
-    console.log('Detected as HTML, returning as-is');
+    logger.log('Detected as HTML, returning as-is');
     return cleanMarkdown;
   }
 
-  console.log('Processing as markdown...');
+  logger.log('Processing as markdown...');
 
   const html = cleanMarkdown;
 
@@ -112,8 +113,8 @@ function convertMarkdownToHTML(markdown: string): string {
   }
 
   const result = processed.join('\n');
-  console.log('Converted HTML length:', result.length);
-  console.log('First 500 chars of result:', result.substring(0, 500));
+  logger.log('Converted HTML length:', result.length);
+  logger.log('First 500 chars of result:', result.substring(0, 500));
   return result;
 }
 import {
@@ -483,7 +484,7 @@ function CourseSectionCard({
           {/* Module Media from Database */}
           {dbModule && (
             <>
-              {console.log('dbModule data:', {
+              {logger.log('dbModule data:', {
                 id: dbModule.id,
                 title: dbModule.title,
                 has_image: !!dbModule.image_url,
@@ -562,7 +563,7 @@ function CourseSectionCard({
                         const isKennisQuiz = titleLower.includes('kennisquiz') ||
                                             (titleLower.includes('de 5 v') && titleLower.includes('quiz'));
 
-                        console.log('Quiz lesson detected:', {
+                        logger.log('Quiz lesson detected:', {
                           title: lesson.title,
                           titleLower,
                           isPreQuiz,
@@ -605,7 +606,7 @@ function CourseSectionCard({
                             const cleanContent = lesson.content.replace(/<[^>]*>/g, '').trim();
                             quizData = JSON.parse(cleanContent);
                           } catch (e2) {
-                            console.log('Quiz content is not valid JSON for lesson', lesson.id);
+                            logger.log('Quiz content is not valid JSON for lesson', lesson.id);
                             // For non-JSON quiz content, return null and let it render as text below
                             return null;
                           }
@@ -1309,10 +1310,10 @@ function CourseSectionCard({
                 .replace(/<[^>]*>/g, '') // Remove HTML tags
                 .trim();
               quizData = JSON.parse(cleanContent);
-              console.log('Quiz JSON extracted from HTML wrapper');
+              logger.log('Quiz JSON extracted from HTML wrapper');
             } catch (e2) {
               // If that also fails, content is probably old markdown format
-              console.log('Quiz content is not JSON, falling back to markdown');
+              logger.log('Quiz content is not JSON, falling back to markdown');
             }
           }
 

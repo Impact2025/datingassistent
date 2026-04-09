@@ -9,6 +9,7 @@ import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { CheckCircle, Sparkles, ArrowRight, Mail, Rocket } from 'lucide-react';
 import { trackPurchase, setUserProperties } from '@/lib/analytics/ga4-events';
 import Image from 'next/image';
+import { logger } from '@/lib/logger';
 
 export function PaymentSuccessClientComponent() {
   const searchParams = useSearchParams();
@@ -47,7 +48,7 @@ export function PaymentSuccessClientComponent() {
           subscription_tier: orderData.packageType || 'pro',
         });
 
-        console.log('✅ GA4 Purchase event tracked:', orderId);
+        logger.log('✅ GA4 Purchase event tracked:', orderId);
       }
     } catch (error) {
       console.error('Failed to track purchase:', error);
@@ -56,7 +57,7 @@ export function PaymentSuccessClientComponent() {
 
   useEffect(() => {
     const handleRedirect = async () => {
-      console.log('💳 Payment success - Order ID:', orderId);
+      logger.log('💳 Payment success - Order ID:', orderId);
 
       if (!orderId) {
         console.error('❌ No order ID provided');
@@ -69,11 +70,11 @@ export function PaymentSuccessClientComponent() {
       if (transactionId) {
         localStorage.setItem('pending_transaction_id', transactionId);
       }
-      console.log('💾 Saved order info to localStorage');
+      logger.log('💾 Saved order info to localStorage');
 
       // Check if user is already logged in
       if (user) {
-        console.log('✅ User already logged in, linking order to existing account');
+        logger.log('✅ User already logged in, linking order to existing account');
         setStatusMessage('Order koppelen aan je account...');
         try {
           const response = await fetch('/api/orders/link', {
@@ -88,7 +89,7 @@ export function PaymentSuccessClientComponent() {
           });
 
           if (response.ok) {
-            console.log('✅ Order linked successfully');
+            logger.log('✅ Order linked successfully');
             await refreshUser();
             // Clear localStorage
             localStorage.removeItem('pending_order_id');
@@ -110,7 +111,7 @@ export function PaymentSuccessClientComponent() {
       }
 
       // User not logged in - redirect to registration to create proper account
-      console.log('🔄 No user logged in, redirecting to registration with order_id');
+      logger.log('🔄 No user logged in, redirecting to registration with order_id');
       setStatusMessage('Betaling geslaagd! Account aanmaken om te starten...');
       setIsVerifying(false);
 

@@ -3,6 +3,7 @@ import { chatCompletion } from '@/lib/ai-service';
 import { verifyToken } from '@/lib/auth';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
 import { sql } from '@/lib/db';
+import { getAgeRange } from '@/lib/ai-privacy';
 
 interface ProfileData {
   bio: string;
@@ -184,7 +185,7 @@ async function analyzeProfile(profileData: ProfileData): Promise<ProfileAnalysis
 
 PROFIEL:
 - App: ${appName}
-- Leeftijd: ${profileData.age || 'onbekend'}
+- Leeftijdsgroep: ${profileData.age ? getAgeRange(parseInt(profileData.age)) : 'onbekend'}
 - Interesses: ${profileData.interests || 'niet opgegeven'}
 - Bio: "${profileData.bio}"
 ${app === 'hinge' ? `- Hinge Prompts:\n${hingePromptsText}` : ''}

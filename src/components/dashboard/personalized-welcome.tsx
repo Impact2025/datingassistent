@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -242,7 +243,7 @@ Kies de tool die NU het meest waardevol is voor deze gebruiker.`;
           }
         } catch (aiError) {
           clearTimeout(timeoutId);
-          console.log('AI recommendation skipped (timeout or error):', aiError);
+          logger.log('AI recommendation skipped (timeout or error):', aiError);
         }
 
         // Fallback if AI fails

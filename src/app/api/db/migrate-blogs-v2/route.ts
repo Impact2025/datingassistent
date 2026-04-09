@@ -24,6 +24,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 interface MigrationResult {
   success: boolean;
@@ -42,7 +43,7 @@ export async function GET(request: NextRequest) {
   const errors: string[] = [];
 
   try {
-    console.log('🚀 Starting Blog Database Migration V2...');
+    logger.log('🚀 Starting Blog Database Migration V2...');
 
     // =========================================================================
     // STEP 1: Add Categories & Tags
@@ -371,10 +372,10 @@ export async function GET(request: NextRequest) {
 
     const duration = Date.now() - startTime;
 
-    console.log('✅ Migration completed successfully!');
-    console.log(`⏱️  Duration: ${duration}ms`);
-    console.log(`📊 Changes: ${changes.length}`);
-    console.log(`❌ Errors: ${errors.length}`);
+    logger.log('✅ Migration completed successfully!');
+    logger.log(`⏱️  Duration: ${duration}ms`);
+    logger.log(`📊 Changes: ${changes.length}`);
+    logger.log(`❌ Errors: ${errors.length}`);
 
     const result: MigrationResult = {
       success: errors.length === 0,

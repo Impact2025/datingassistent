@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { jwtVerify } from 'jose';
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('🔄 Adding ai_context column to users table...');
+    logger.log('🔄 Adding ai_context column to users table...');
 
     // Check if column already exists
     const checkResult = await sql`
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
     `;
 
     if (checkResult.rows.length > 0) {
-      console.log('✅ ai_context column already exists');
+      logger.log('✅ ai_context column already exists');
       return NextResponse.json({
         success: true,
         message: 'ai_context column already exists'
@@ -49,14 +50,14 @@ export async function POST(request: NextRequest) {
       ALTER TABLE users ADD COLUMN ai_context JSONB
     `;
 
-    console.log('✅ ai_context column added successfully');
+    logger.log('✅ ai_context column added successfully');
 
     // Create index for better performance
     await sql`
       CREATE INDEX IF NOT EXISTS idx_users_ai_context ON users USING GIN (ai_context)
     `;
 
-    console.log('✅ Index created for ai_context column');
+    logger.log('✅ Index created for ai_context column');
 
     return NextResponse.json({
       success: true,

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * REAL-TIME LEARNING & ADAPTATION SYSTEM
  * Continuous learning from user interactions and self-improving AI
@@ -649,7 +650,7 @@ export class RealTimeLearningAdaptation {
       await this.evaluateContinuousAdaptations();
     }, 60 * 1000);
 
-    console.log('🔄 Continuous learning and adaptation started');
+    logger.log('🔄 Continuous learning and adaptation started');
   }
 
   stopContinuousLearning(): void {
@@ -657,7 +658,7 @@ export class RealTimeLearningAdaptation {
       clearInterval(this.adaptationInterval);
       this.adaptationInterval = null;
     }
-    console.log('⏹️ Continuous learning and adaptation stopped');
+    logger.log('⏹️ Continuous learning and adaptation stopped');
   }
 
   private async evaluateContinuousAdaptations(): Promise<void> {
@@ -679,7 +680,7 @@ export class RealTimeLearningAdaptation {
   }
 
   private async triggerSystemAdaptation(adaptationType: string): Promise<void> {
-    console.log(`🔧 Triggering system adaptation: ${adaptationType}`);
+    logger.log(`🔧 Triggering system adaptation: ${adaptationType}`);
 
     // Implement system-wide adaptations
     switch (adaptationType) {
@@ -743,7 +744,7 @@ realTimeLearningAdaptation.registerAdaptationRule({
   condition: (event) => event.data.responseTime > 5000,
   action: async (event) => {
     // Trigger performance optimization
-    console.log(`🐌 Slow response detected for ${event.component}, triggering optimization`);
+    logger.log(`🐌 Slow response detected for ${event.component}, triggering optimization`);
   },
   priority: 9,
   effectiveness: 0.8

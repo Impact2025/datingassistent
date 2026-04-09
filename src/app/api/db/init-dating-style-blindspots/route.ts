@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating dating style & blind spots tables...');
+    logger.log('Creating dating style & blind spots tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -23,7 +24,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_blindspots_assessments table');
+    logger.log('✅ Created dating_blindspots_assessments table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS dating_blindspots_responses (
@@ -37,7 +38,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_blindspots_responses table');
+    logger.log('✅ Created dating_blindspots_responses table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS dating_blindspots_results (
@@ -85,7 +86,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_blindspots_results table');
+    logger.log('✅ Created dating_blindspots_results table');
 
     // Assessment questions table (static data)
     await sql`
@@ -100,7 +101,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created dating_blindspots_questions table');
+    logger.log('✅ Created dating_blindspots_questions table');
 
     // Scenario options for scenario-type questions
     await sql`
@@ -115,7 +116,7 @@ export async function POST() {
         UNIQUE(question_id, order_position)
       );
     `;
-    console.log('✅ Created dating_blindspots_scenarios table');
+    logger.log('✅ Created dating_blindspots_scenarios table');
 
     // User progress tracking
     await sql`
@@ -132,7 +133,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created dating_blindspots_progress table');
+    logger.log('✅ Created dating_blindspots_progress table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_blindspots_assessments_user_id ON dating_blindspots_assessments(user_id);`;
@@ -140,7 +141,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_blindspots_responses_assessment_id ON dating_blindspots_responses(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_blindspots_results_assessment_id ON dating_blindspots_results(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_dating_blindspots_progress_user_id ON dating_blindspots_progress(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     // Insert the 12 core questions + 2 scenarios + 1 open question
     await sql`
@@ -167,7 +168,7 @@ export async function POST() {
       ('open', 'Wat is het terugkerende probleem dat je het meest frustreert aan daten?', 'modern_dating', false, 1.0, 15)
       ON CONFLICT (order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted questions');
+    logger.log('✅ Inserted questions');
 
     // Insert scenario options
     await sql`
@@ -183,7 +184,7 @@ export async function POST() {
       ((SELECT id FROM dating_blindspots_questions WHERE order_position = 14), 'Ik sluit me af en praat over iets anders.', ARRAY['afstandelijke'], 1.0, 3)
       ON CONFLICT (question_id, order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted scenario options');
+    logger.log('✅ Inserted scenario options');
 
     return NextResponse.json({
       success: true,

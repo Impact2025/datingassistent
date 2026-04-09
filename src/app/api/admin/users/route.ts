@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcryptjs';
@@ -245,7 +246,7 @@ export async function POST(request: NextRequest) {
     // TODO: Send welcome email if requested
     if (sendWelcomeEmail) {
       // Implementation for welcome email would go here
-      console.log(`Welcome email would be sent to ${email}`);
+      logger.log(`Welcome email would be sent to ${email}`);
     }
 
     return NextResponse.json({

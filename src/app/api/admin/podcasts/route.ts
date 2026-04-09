@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { createPodcast, getAllPodcasts } from '@/lib/podcast-service';
 import { sql } from '@vercel/postgres';
@@ -26,7 +27,7 @@ export async function GET() {
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
           )
         `;
-        console.log('Podcasts table created successfully');
+        logger.log('Podcasts table created successfully');
       } catch (createError) {
         console.error('Error creating podcasts table:', createError);
         return NextResponse.json(

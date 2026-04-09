@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -42,13 +43,13 @@ export default function ProWelcomePage() {
   }, [user, router, isLoading]);
 
   const handleVideoComplete = () => {
-    console.log('🎥 DEBUG: Welcome video completed successfully');
+    logger.log('🎥 DEBUG: Welcome video completed successfully');
     setVideoCompleted(true);
     setCurrentStep('writing-style');
   };
 
   const handleSkipVideo = () => {
-    console.log('⏭️ DEBUG: User skipped welcome video');
+    logger.log('⏭️ DEBUG: User skipped welcome video');
     setVideoCompleted(true);
     setCurrentStep('writing-style');
   };
@@ -89,12 +90,12 @@ export default function ProWelcomePage() {
 
   const handleComplete = async () => {
     if (!user?.id) {
-      console.log('❌ DEBUG: No user ID available for pro-welcome completion');
+      logger.log('❌ DEBUG: No user ID available for pro-welcome completion');
       return;
     }
 
-    console.log('💾 DEBUG: Saving pro-welcome data for user:', user.id);
-    console.log('💾 DEBUG: Data to save:', {
+    logger.log('💾 DEBUG: Saving pro-welcome data for user:', user.id);
+    logger.log('💾 DEBUG: Data to save:', {
       writingStyle,
       datingApps,
       genderPreference,
@@ -104,7 +105,7 @@ export default function ProWelcomePage() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('datespark_auth_token');
-      console.log('🔐 DEBUG: Auth token available:', !!token);
+      logger.log('🔐 DEBUG: Auth token available:', !!token);
 
       const response = await fetch('/api/pro-welcome', {
         method: 'POST',
@@ -120,10 +121,10 @@ export default function ProWelcomePage() {
         })
       });
 
-      console.log('💾 DEBUG: Pro-welcome API response status:', response.status, 'ok:', response.ok);
+      logger.log('💾 DEBUG: Pro-welcome API response status:', response.status, 'ok:', response.ok);
 
       if (response.ok) {
-        console.log('✅ DEBUG: Pro-welcome data saved successfully');
+        logger.log('✅ DEBUG: Pro-welcome data saved successfully');
         setCurrentStep('complete');
         // Redirect to dashboard after a short delay
         setTimeout(() => {

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getUserProfileExtended } from '@/lib/community-db';
@@ -6,7 +7,7 @@ export async function GET() {
   try {
     // First check if there are any users
     const usersResult = await sql`SELECT id, name, email FROM users LIMIT 5`;
-    console.log('Users in database:', usersResult.rows);
+    logger.log('Users in database:', usersResult.rows);
     
     if (usersResult.rows.length === 0) {
       return NextResponse.json({
@@ -18,10 +19,10 @@ export async function GET() {
     
     // Try to get profile for the first user
     const firstUserId = usersResult.rows[0].id;
-    console.log('Testing profile for user ID:', firstUserId);
+    logger.log('Testing profile for user ID:', firstUserId);
     
     const profile = await getUserProfileExtended(firstUserId);
-    console.log('Profile result:', profile);
+    logger.log('Profile result:', profile);
     
     return NextResponse.json({
       success: true,

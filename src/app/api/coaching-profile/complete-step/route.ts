@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { CoachingProfileService } from '@/lib/coaching-profile-service';
 import { trackUserActivity } from '@/lib/progress-tracker';
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`📊 Completing step for user ${userId}: ${stepName}`);
+    logger.log(`📊 Completing step for user ${userId}: ${stepName}`);
 
     // Mark step as completed in coaching profile
     const success = await CoachingProfileService.completeStep(userId, stepName);

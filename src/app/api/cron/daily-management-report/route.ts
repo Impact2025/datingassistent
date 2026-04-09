@@ -16,6 +16,7 @@ import { sql, QueryResult, QueryResultRow } from '@vercel/postgres';
 import { Resend } from 'resend';
 import { render } from '@react-email/components';
 import AdminDailyReportEmail from '@/emails/admin-daily-report-email';
+import { logger } from '@/lib/logger';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -346,10 +347,10 @@ Admin Dashboard: https://datingassistent.nl/admin
     `.trim();
 
     if (!resend || !process.env.RESEND_API_KEY) {
-      console.log('📧 DAILY REPORT NOT SENT (Resend not configured)');
-      console.log('To:', ADMIN_EMAIL);
-      console.log('Subject:', `Dagrapport ${reportDate}`);
-      console.log(textContent);
+      logger.log('📧 DAILY REPORT NOT SENT (Resend not configured)');
+      logger.log('To:', ADMIN_EMAIL);
+      logger.log('Subject:', `Dagrapport ${reportDate}`);
+      logger.log(textContent);
       return true;
     }
 
@@ -366,7 +367,7 @@ Admin Dashboard: https://datingassistent.nl/admin
       return false;
     }
 
-    console.log(`✅ Daily report sent to ${ADMIN_EMAIL} (ID: ${result.data?.id})`);
+    logger.log(`✅ Daily report sent to ${ADMIN_EMAIL} (ID: ${result.data?.id})`);
     return true;
   } catch (error) {
     console.error('❌ Error rendering/sending daily report:', error);
@@ -387,7 +388,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    console.log('[CRON] Starting daily management report...');
+    logger.log('[CRON] Starting daily management report...');
     const startTime = Date.now();
 
     // Gather all statistics
@@ -397,7 +398,7 @@ export async function GET(request: NextRequest) {
     const sent = await sendDailyReport(stats);
 
     const duration = Date.now() - startTime;
-    console.log(`[CRON] Daily report completed in ${duration}ms`);
+    logger.log(`[CRON] Daily report completed in ${duration}ms`);
 
     return NextResponse.json({
       success: true,

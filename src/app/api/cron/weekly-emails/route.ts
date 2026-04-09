@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { runWeeklyEmailCampaigns } from '@/lib/email-engagement';
+import { logger } from '@/lib/logger';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -23,13 +24,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    console.log('[CRON] Starting weekly email campaigns...');
+    logger.log('[CRON] Starting weekly email campaigns...');
     const startTime = Date.now();
 
     await runWeeklyEmailCampaigns();
 
     const duration = Date.now() - startTime;
-    console.log(`[CRON] Weekly email campaigns scheduled in ${duration}ms`);
+    logger.log(`[CRON] Weekly email campaigns scheduled in ${duration}ms`);
 
     return NextResponse.json({
       success: true,

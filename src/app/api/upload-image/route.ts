@@ -23,6 +23,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { put, del, head } from '@vercel/blob';
 import { requireAdmin } from '@/lib/auth';
+import { logger } from '@/lib/logger';
 
 // ============================================================================
 // CONSTANTS
@@ -203,7 +204,7 @@ export async function POST(request: NextRequest) {
     const uniqueFilename = generateUniqueFilename(file.name);
     const blobPath = getBlobPath(uniqueFilename);
 
-    console.log(`📤 Uploading image to Vercel Blob: ${blobPath}`);
+    logger.log(`📤 Uploading image to Vercel Blob: ${blobPath}`);
 
     const blob = await put(blobPath, file, {
       access: 'public',
@@ -214,9 +215,9 @@ export async function POST(request: NextRequest) {
 
     const uploadDuration = Date.now() - startTime;
 
-    console.log(`✅ Image uploaded successfully in ${uploadDuration}ms`);
-    console.log(`📍 URL: ${blob.url}`);
-    console.log(`🆔 Blob ID: ${blob.pathname}`);
+    logger.log(`✅ Image uploaded successfully in ${uploadDuration}ms`);
+    logger.log(`📍 URL: ${blob.url}`);
+    logger.log(`🆔 Blob ID: ${blob.pathname}`);
 
     // ========================================================================
     // RETURN SUCCESS RESPONSE
@@ -423,12 +424,12 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    console.log(`🗑️  Deleting image from Vercel Blob: ${deleteTarget}`);
+    logger.log(`🗑️  Deleting image from Vercel Blob: ${deleteTarget}`);
 
     // Delete from Vercel Blob
     await del(deleteTarget);
 
-    console.log(`✅ Image deleted successfully`);
+    logger.log(`✅ Image deleted successfully`);
 
     return NextResponse.json({
       success: true,

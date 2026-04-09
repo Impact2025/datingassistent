@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 
 export interface TrialStatus {
@@ -35,7 +36,7 @@ export async function startProgressiveTrial(userId: number): Promise<void> {
     WHERE id = ${userId}
   `;
 
-  console.log(`✅ Started 3-day progressive trial for user ${userId}`);
+  logger.log(`✅ Started 3-day progressive trial for user ${userId}`);
 }
 
 /**
@@ -173,7 +174,7 @@ export async function endTrial(userId: number, converted: boolean = false): Prom
     WHERE id = ${userId}
   `;
 
-  console.log(`✅ Trial ended for user ${userId}, status: ${newStatus}`);
+  logger.log(`✅ Trial ended for user ${userId}, status: ${newStatus}`);
 }
 
 /**

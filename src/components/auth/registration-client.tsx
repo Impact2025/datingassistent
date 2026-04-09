@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useTransition, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -33,19 +34,10 @@ const signupSchema = z.object({
   firstName: z.string().min(2, "Voornaam moet minimaal 2 karakters lang zijn."),
   lastName: z.string().min(2, "Achternaam moet minimaal 2 karakters lang zijn."),
   email: z.string().email("Ongeldig e-mailadres."),
-  password: z.string()
-    .min(8, "Wachtwoord moet minimaal 8 karakters bevatten.")
-    .regex(/[A-Z]/, "Wachtwoord moet minimaal één hoofdletter bevatten.")
-    .regex(/[a-z]/, "Wachtwoord moet minimaal één kleine letter bevatten.")
-    .regex(/[0-9]/, "Wachtwoord moet minimaal één cijfer bevatten.")
-    .regex(/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/, "Wachtwoord moet minimaal één speciaal teken bevatten (!@#$%^&* etc.)."),
-  confirmPassword: z.string().min(1, "Bevestig je wachtwoord."),
   termsAccepted: z.boolean().refine((val) => val === true, {
     message: "Je moet akkoord gaan met de voorwaarden.",
   }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Wachtwoorden komen niet overeen.",
-  path: ["confirmPassword"],
+  marketingConsent: z.boolean().default(false),
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -97,7 +89,7 @@ export function RegistrationClientComponent() {
 
   // Debug logging
   useEffect(() => {
-    console.log('🔍 RegistrationClient - Current state:', {
+    logger.log('🔍 RegistrationClient - Current state:', {
       hasUser: !!user,
       plan,
       programSlug,
@@ -115,9 +107,8 @@ export function RegistrationClientComponent() {
       firstName: "",
       lastName: "",
       email: "",
-      password: "",
-      confirmPassword: "",
       termsAccepted: false,
+      marketingConsent: false,
     },
   });
 
@@ -128,7 +119,7 @@ export function RegistrationClientComponent() {
     const orderIdTimestamp = localStorage.getItem('pending_order_id_timestamp');
 
     if (orderIdParam) {
-      console.log('📦 Got order_id from URL:', orderIdParam);
+      logger.log('📦 Got order_id from URL:', orderIdParam);
       setOrderId(orderIdParam);
       // Save to localStorage as backup with timestamp
       localStorage.setItem('pending_order_id', orderIdParam);
@@ -142,18 +133,18 @@ export function RegistrationClientComponent() {
       const isRecent = (Date.now() - timestamp) < fifteenMinutesInMs;
 
       if (isRecent) {
-        console.log('📦 Got recent order_id from localStorage:', pendingOrderId);
+        logger.log('📦 Got recent order_id from localStorage:', pendingOrderId);
         setOrderId(pendingOrderId);
         // Validate payment status
         validatePaymentStatus(pendingOrderId);
       } else {
-        console.log('🗑️ Clearing expired order_id from localStorage');
+        logger.log('🗑️ Clearing expired order_id from localStorage');
         localStorage.removeItem('pending_order_id');
         localStorage.removeItem('pending_order_id_timestamp');
       }
     } else if (pendingOrderId && !orderIdTimestamp) {
       // Old localStorage data without timestamp, clear it
-      console.log('🗑️ Clearing old order_id from localStorage (no timestamp)');
+      logger.log('🗑️ Clearing old order_id from localStorage (no timestamp)');
       localStorage.removeItem('pending_order_id');
     }
   }, [searchParams]);
@@ -162,15 +153,15 @@ export function RegistrationClientComponent() {
   const validatePaymentStatus = async (orderIdToCheck: string) => {
     try {
       setValidatingPayment(true);
-      console.log('🔍 Validating payment status for order:', orderIdToCheck);
+      logger.log('🔍 Validating payment status for order:', orderIdToCheck);
       const response = await fetch(`/api/orders/validate-payment?orderId=${orderIdToCheck}`);
       const data = await response.json();
 
       if (response.ok && data.paid) {
-        console.log('✅ Payment validated for order:', orderIdToCheck);
+        logger.log('✅ Payment validated for order:', orderIdToCheck);
         setPaymentValidated(true);
       } else {
-        console.log('❌ Payment not validated for order:', orderIdToCheck, data);
+        logger.log('❌ Payment not validated for order:', orderIdToCheck, data);
         setPaymentValidated(false);
         // Clear invalid order ID
         setOrderId(null);
@@ -199,13 +190,13 @@ export function RegistrationClientComponent() {
   useEffect(() => {
     const handlePreRegistrationLogout = async () => {
       if (user && redirectAfterPayment === 'true' && plan && billing && !hasLoggedOut.current) {
-        console.log('🚪 RegistrationClient - User already logged in, but redirect_after_payment=true');
-        console.log('🚪 Logging out to allow new account creation');
+        logger.log('🚪 RegistrationClient - User already logged in, but redirect_after_payment=true');
+        logger.log('🚪 Logging out to allow new account creation');
         hasLoggedOut.current = true; // Mark that we're logging out
         setIsLoggingOut(true);
         try {
           await logout();
-          console.log('✅ Logout completed successfully');
+          logger.log('✅ Logout completed successfully');
         } catch (error) {
           console.error('❌ Failed to logout:', error);
           hasLoggedOut.current = false; // Reset on error
@@ -213,7 +204,7 @@ export function RegistrationClientComponent() {
         }
       } else if (!user && hasLoggedOut.current) {
         // Logout completed, user is now null
-        console.log('✅ User logged out, ready for new registration');
+        logger.log('✅ User logged out, ready for new registration');
         setIsLoggingOut(false);
       }
     };
@@ -225,7 +216,7 @@ export function RegistrationClientComponent() {
     if (isSigningUp) return;
     setIsSigningUp(true);
     setRegistrationError(null); // Clear previous errors
-    console.log('🔵 Starting registration...', { orderId });
+    logger.log('🔵 Starting registration...', { orderId });
 
     // Verify Turnstile
     if (!isTurnstileLoaded) {
@@ -270,9 +261,9 @@ export function RegistrationClientComponent() {
           return;
         }
 
-        console.log('✅ Turnstile verification successful');
+        logger.log('✅ Turnstile verification successful');
       } else {
-        console.log('🔧 Skipping Turnstile server verification in development mode');
+        logger.log('🔧 Skipping Turnstile server verification in development mode');
       }
     } catch (error) {
       console.error('Turnstile error:', error);
@@ -287,9 +278,9 @@ export function RegistrationClientComponent() {
 
     try {
       const fullName = `${data.firstName} ${data.lastName}`.trim();
-      const result = await signup(data.email, data.password, fullName);
+      const result = await signup(data.email, '', fullName, { marketingConsent: data.marketingConsent });
       const newUser = result.user;
-      console.log('🔵 User created:', newUser.id);
+      logger.log('🔵 User created:', newUser.id);
 
       if (typeof window !== 'undefined') {
         localStorage.setItem('profile_setup_name', fullName);
@@ -327,10 +318,10 @@ export function RegistrationClientComponent() {
           if (linkData.warning === 'missing_connection_string') {
             console.warn('⚠️ Subscription linking skipped: database connection string ontbreekt.');
           } else if (response.ok) {
-            console.log('✅ Subscription linked for user:', newUser.id);
+            logger.log('✅ Subscription linked for user:', newUser.id);
           }
         } else {
-          console.log('ℹ️ No orderId provided, skipping subscription linking');
+          logger.log('ℹ️ No orderId provided, skipping subscription linking');
         }
 
         // Save basic profile (skip auth check during registration)
@@ -347,34 +338,34 @@ export function RegistrationClientComponent() {
         });
 
         if (profileResponse.ok) {
-          console.log('✅ Profile saved to database');
+          logger.log('✅ Profile saved to database');
           // Cache in localStorage
           localStorage.setItem(`datespark_user_profile_${newUser.id}`, JSON.stringify(basicProfile));
-          console.log('💾 Profile cached in localStorage');
+          logger.log('💾 Profile cached in localStorage');
         }
       } catch (error) {
         console.error('Failed to save user data:', error);
         // Fallback: save to localStorage only
         localStorage.setItem(`datespark_user_profile_${newUser.id}`, JSON.stringify(basicProfile));
-        console.log('⚠️ Fallback: Profile saved to localStorage only');
+        logger.log('⚠️ Fallback: Profile saved to localStorage only');
       }
 
-      setTempName(data.name);
+      setTempName(fullName);
 
       // Email verification is now always required with codes
-      console.log('📧 Email verification required, showing code verification screen');
+      logger.log('📧 Email verification required, showing code verification screen');
       setRegisteredUserId(newUser.id);
       setRegisteredUserEmail(data.email);
       setShowCodeVerification(true);
       setIsSigningUp(false);
 
       // Note: Verification code is already sent by the registration API
-      console.log('✅ Verification code already sent by registration API');
+      logger.log('✅ Verification code already sent by registration API');
       return;
 
       // If there's an order_id, clear localStorage and redirect to profile setup
       if (orderId) {
-        console.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');
+        logger.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');
         localStorage.removeItem('pending_order_id');
         localStorage.removeItem('pending_order_id_timestamp');
         localStorage.removeItem('pending_transaction_id');
@@ -400,7 +391,7 @@ export function RegistrationClientComponent() {
           return;
         }
 
-        console.log('🔵 Redirecting to checkout page with plan and billing');
+        logger.log('🔵 Redirecting to checkout page with plan and billing');
         setIsRedirecting(true);
         toast({
           title: "Account aangemaakt! ✅",
@@ -413,7 +404,7 @@ export function RegistrationClientComponent() {
       }
 
       // No order - redirect to profile setup
-      console.log('🔵 No order_id, redirecting to /register/profile');
+      logger.log('🔵 No order_id, redirecting to /register/profile');
       setShowSuccessMessage(true);
 
       // Redirect to profile setup after a short delay
@@ -460,7 +451,7 @@ export function RegistrationClientComponent() {
   // Show code verification screen
   if (showCodeVerification && registeredUserId && registeredUserEmail) {
     const handleVerificationSuccess = (user: unknown) => {
-      console.log('✅ Email verified successfully:', user);
+      logger.log('✅ Email verified successfully:', user);
 
       // Track successful sign up in GA4
       trackSignUp({
@@ -488,7 +479,7 @@ export function RegistrationClientComponent() {
       // Check if coming from assessment (PRO CONVERSION FLOW)
       const fromAssessment = searchParams.get('from');
       if (fromAssessment === 'assessment') {
-        console.log('🎯 Coming from assessment, redirecting back to results');
+        logger.log('🎯 Coming from assessment, redirecting back to results');
         setIsRedirecting(true);
         toast({
           title: "Account geverifieerd! ✅",
@@ -502,7 +493,7 @@ export function RegistrationClientComponent() {
 
       // Check if this is a PROGRAM PURCHASE (e.g., kickstart-programma)
       if (isProgramPurchase && programSlug) {
-        console.log('🛒 Program purchase detected, redirecting to checkout:', programSlug);
+        logger.log('🛒 Program purchase detected, redirecting to checkout:', programSlug);
         setIsRedirecting(true);
         toast({
           title: "Account geverifieerd! ✅",
@@ -517,7 +508,7 @@ export function RegistrationClientComponent() {
 
       // If there's an order_id, clear localStorage and redirect to profile setup
       if (orderId) {
-        console.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');
+        logger.log('🔵 Has order_id, clearing localStorage and redirecting to profile setup');
         localStorage.removeItem('pending_order_id');
         localStorage.removeItem('pending_order_id_timestamp');
         localStorage.removeItem('pending_transaction_id');
@@ -543,7 +534,7 @@ export function RegistrationClientComponent() {
           return;
         }
 
-        console.log('🔵 Redirecting to checkout page with plan and billing');
+        logger.log('🔵 Redirecting to checkout page with plan and billing');
         setIsRedirecting(true);
         toast({
           title: "Account geverifieerd! ✅",
@@ -556,7 +547,7 @@ export function RegistrationClientComponent() {
       }
 
       // No order - redirect to profile setup
-      console.log('🔵 No order_id, redirecting to /register/profile');
+      logger.log('🔵 No order_id, redirecting to /register/profile');
       setShowSuccessMessage(true);
 
       // Redirect to profile setup after a short delay
@@ -570,7 +561,7 @@ export function RegistrationClientComponent() {
     };
 
     const handleResendCode = () => {
-      console.log('🔄 Resending verification code...');
+      logger.log('🔄 Resending verification code...');
       // The VerificationCodeInput component handles this internally
     };
 
@@ -864,34 +855,6 @@ export function RegistrationClientComponent() {
 
                   <FormField
                     control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem suppressHydrationWarning>
-                        <FormLabel suppressHydrationWarning>Wachtwoord</FormLabel>
-                        <FormControl>
-                          <Input type="password" placeholder="Minimaal 8 karakters, hoofdletter, cijfer & speciaal teken" {...field} suppressHydrationWarning />
-                        </FormControl>
-                        <FormMessage suppressHydrationWarning />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                      <FormItem suppressHydrationWarning>
-                        <FormLabel suppressHydrationWarning>Herhaal wachtwoord</FormLabel>
-                        <FormControl>
-                          <Input type="password" placeholder="Herhaal je wachtwoord" {...field} suppressHydrationWarning />
-                        </FormControl>
-                        <FormMessage suppressHydrationWarning />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
                     name="termsAccepted"
                     render={({ field }) => (
                       <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4" suppressHydrationWarning>
@@ -913,6 +876,27 @@ export function RegistrationClientComponent() {
                             </Link>
                           </FormLabel>
                           <FormMessage suppressHydrationWarning />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="marketingConsent"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-muted/30" suppressHydrationWarning>
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="font-normal text-sm" suppressHydrationWarning>
+                            Ja, ik ontvang graag tips, updates en aanbiedingen van DatingAssistent per e-mail. Je kunt je altijd uitschrijven.{" "}
+                            <span className="text-muted-foreground">(optioneel)</span>
+                          </FormLabel>
                         </div>
                       </FormItem>
                     )}

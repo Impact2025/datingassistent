@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/shared/logo';
 import { AuthManager } from '@/lib/auth-manager';
 import { safeStorage } from '@/lib/safe-storage';
+import { logger } from '@/lib/logger';
 
 const motivationalMessages = [
   {
@@ -54,7 +55,7 @@ export default function LogoutPage() {
 
   useEffect(() => {
     const performLogout = async () => {
-      console.log('🚪 Logout page - clearing session');
+      logger.log('🚪 Logout page - clearing session');
 
       // Clear all auth data
       const authManager = new AuthManager();

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 import { hasActiveSubscription } from '@/lib/subscription';
@@ -99,7 +100,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('📸 Analyzing photo:', photo.name, photo.type, `${(photo.size / 1024).toFixed(2)}KB`);
+    logger.log('📸 Analyzing photo:', photo.name, photo.type, `${(photo.size / 1024).toFixed(2)}KB`);
 
     // Convert image to base64
     const buffer = await photo.arrayBuffer();
@@ -174,7 +175,7 @@ STRIKTE PERFECTE EERSTE FOTO CRITERIA - SCOOR SLECHTS HOOG ALS ALLE Punten Volda
 
 Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto's krijgen 8+/10.`;
 
-    console.log('🤖 Calling OpenRouter Vision API...');
+    logger.log('🤖 Calling OpenRouter Vision API...');
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -218,7 +219,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
     }
 
     const data = await response.json();
-    console.log('✅ OpenRouter response received');
+    logger.log('✅ OpenRouter response received');
 
     // Parse the AI response
     const aiResponse = data.choices[0]?.message?.content;
@@ -231,7 +232,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
       );
     }
 
-    console.log('📝 AI Response:', aiResponse);
+    logger.log('📝 AI Response:', aiResponse);
 
     // Try to parse JSON from the response
     let analysis: PhotoAnalysisResult;
@@ -270,7 +271,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
       };
     }
 
-    console.log('✅ Photo analysis complete');
+    logger.log('✅ Photo analysis complete');
 
     // Track usage
     await trackFeatureUsage(user.id, 'photo_check');

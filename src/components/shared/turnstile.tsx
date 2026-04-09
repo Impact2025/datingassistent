@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 
 /**
  * CLOUDFLARE TURNSTILE - World-Class Bot Protection
@@ -260,7 +261,7 @@ export function useTurnstile(siteKey: string) {
     const init = async () => {
       // Skip if no siteKey (development mode)
       if (!siteKey || siteKey.trim() === '') {
-        console.log('Turnstile: No site key, running in bypass mode');
+        logger.log('Turnstile: No site key, running in bypass mode');
         setIsLoaded(true);
         return;
       }
@@ -301,11 +302,11 @@ export function useTurnstile(siteKey: string) {
    * Returns token on success, null on failure
    */
   const execute = useCallback(async (action?: string): Promise<string | null> => {
-    console.log('🔐 Turnstile execute called', { siteKey: siteKey?.substring(0, 10) + '...', action, isLoaded });
+    logger.log('🔐 Turnstile execute called', { siteKey: siteKey?.substring(0, 10) + '...', action, isLoaded });
 
     // Bypass mode for development or missing key
     if (!siteKey || siteKey.trim() === '') {
-      console.log('🔓 Turnstile: Bypassing verification (no site key)');
+      logger.log('🔓 Turnstile: Bypassing verification (no site key)');
       return 'bypass_development';
     }
 
@@ -321,7 +322,7 @@ export function useTurnstile(siteKey: string) {
       return null;
     }
 
-    console.log('✅ Turnstile: Script loaded, rendering widget...');
+    logger.log('✅ Turnstile: Script loaded, rendering widget...');
     setIsVerifying(true);
     setError(null);
 
@@ -344,14 +345,14 @@ export function useTurnstile(siteKey: string) {
           }
         }
 
-        console.log('🔄 Turnstile: Rendering widget with sitekey', siteKey.substring(0, 10) + '...');
+        logger.log('🔄 Turnstile: Rendering widget with sitekey', siteKey.substring(0, 10) + '...');
 
         // Render widget (managed mode - Cloudflare decides visibility)
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
           action,
           callback: (newToken: string) => {
-            console.log('✅ Turnstile: Token received', newToken.substring(0, 20) + '...');
+            logger.log('✅ Turnstile: Token received', newToken.substring(0, 20) + '...');
             setToken(newToken);
             setIsVerifying(false);
             resolve(newToken);
@@ -414,7 +415,7 @@ export async function verifyTurnstileToken(
 ): Promise<{ success: boolean; error?: string; challengeTs?: string; hostname?: string }> {
   // Handle bypass tokens
   if (token === 'bypass' || token === 'bypass_development') {
-    console.log('Turnstile: Using bypass token');
+    logger.log('Turnstile: Using bypass token');
     return { success: true };
   }
 

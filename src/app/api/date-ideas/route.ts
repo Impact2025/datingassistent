@@ -6,6 +6,7 @@ import type { UserProfile } from '@/lib/types';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
 import { trackFeatureUsage } from '@/lib/neon-usage-tracking';
 import { checkAndEnforceLimit } from '@/lib/api-helpers';
+import { getAgeRange } from '@/lib/ai-privacy';
 
 /**
  * API endpoint voor AI-gegenereerde date ideeën
@@ -81,7 +82,7 @@ export async function POST(request: Request) {
     let userContext = '';
     if (userProfile) {
       userContext = '\n\nGebruikersprofiel:';
-      if (userProfile.age) userContext += `\n- Leeftijd: ${userProfile.age}`;
+      if (userProfile.age) userContext += `\n- Leeftijdsgroep: ${getAgeRange(userProfile.age)}`;
       if (userProfile.gender) userContext += `\n- Geslacht: ${userProfile.gender}`;
       if (userProfile.seekingGender && userProfile.seekingGender.length > 0) {
         userContext += `\n- Zoekt: ${userProfile.seekingGender.join(', ')}`;

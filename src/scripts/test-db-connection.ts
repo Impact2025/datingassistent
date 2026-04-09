@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 #!/usr/bin/env node
 
 /**
@@ -14,7 +15,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 async function testDatabaseConnection() {
-  console.log('🔍 Testing database connection...');
+  logger.log('🔍 Testing database connection...');
   
   // Check if POSTGRES_URL is configured
   if (!process.env.POSTGRES_URL || process.env.POSTGRES_URL.includes('your_')) {
@@ -25,11 +26,11 @@ async function testDatabaseConnection() {
   }
 
   try {
-    console.log('🔗 Connecting to database...');
+    logger.log('🔗 Connecting to database...');
     // Test the connection with a simple query
     const result = await sql`SELECT version()`;
-    console.log('✅ Database connection successful!');
-    console.log('📊 Database version:', result.rows[0].version);
+    logger.log('✅ Database connection successful!');
+    logger.log('📊 Database version:', result.rows[0].version);
     process.exit(0);
   } catch (error) {
     console.error('❌ Database connection failed:', error);

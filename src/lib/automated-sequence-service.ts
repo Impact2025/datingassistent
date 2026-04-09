@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Automated Sequence Service
  * Handles automated follow-up sequences and drip campaigns
@@ -166,7 +167,7 @@ export async function triggerSequenceEnrollment(
 
     for (const sequence of sequencesResult.rows) {
       await enrollClientInSequence(clientId, sequence.id);
-      console.log(`Enrolled client ${clientId} in sequence "${sequence.name}"`);
+      logger.log(`Enrolled client ${clientId} in sequence "${sequence.name}"`);
     }
   } catch (error) {
     console.error('Error triggering sequence enrollment:', error);
@@ -281,7 +282,7 @@ export async function processSequenceSteps(): Promise<number> {
       }
     }
 
-    console.log(`Processed ${processed} sequence steps`);
+    logger.log(`Processed ${processed} sequence steps`);
     return processed;
   } catch (error) {
     console.error('Error processing sequence steps:', error);

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Migration: Enhance Program Days met Focus, Context & Prioriteiten
  *
@@ -18,11 +19,11 @@ import { sql } from '@vercel/postgres';
 config({ path: '.env.local' });
 
 async function migrate() {
-  console.log('🚀 Enhancing program_days table voor wereldklasse UX...\n');
+  logger.log('🚀 Enhancing program_days table voor wereldklasse UX...\n');
 
   try {
     // Add new columns to program_days
-    console.log('📊 Stap 1: Nieuwe kolommen toevoegen...');
+    logger.log('📊 Stap 1: Nieuwe kolommen toevoegen...');
 
     await sql`
       ALTER TABLE program_days
@@ -39,7 +40,7 @@ async function migrate() {
       ADD COLUMN IF NOT EXISTS werkboek_priority INT DEFAULT 4
     `;
 
-    console.log('  ✓ Kolommen toegevoegd');
+    logger.log('  ✓ Kolommen toegevoegd');
 
     // Verify columns
     const verify = await sql`
@@ -54,13 +55,13 @@ async function migrate() {
       ORDER BY column_name
     `;
 
-    console.log('\n📋 Nieuwe kolommen:');
+    logger.log('\n📋 Nieuwe kolommen:');
     verify.rows.forEach(col => {
-      console.log(`  • ${col.column_name}: ${col.data_type} (default: ${col.column_default || 'NULL'})`);
+      logger.log(`  • ${col.column_name}: ${col.data_type} (default: ${col.column_default || 'NULL'})`);
     });
 
-    console.log('\n✅ Migratie voltooid!');
-    console.log('\n📌 Next step: Run seed script om content toe te voegen');
+    logger.log('\n✅ Migratie voltooid!');
+    logger.log('\n📌 Next step: Run seed script om content toe te voegen');
 
   } catch (error) {
     console.error('\n❌ Migratie mislukt:', error);

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * JOURNEY STATUS API
  * Get user's onboarding journey status and progress
@@ -77,7 +78,7 @@ export async function GET(request: NextRequest) {
         completedSteps: [],
       };
 
-      console.log(`📊 Journey status for user ${userIdNum}: not started`);
+      logger.log(`📊 Journey status for user ${userIdNum}: not started`);
       return NextResponse.json(response, { status: 200 });
     }
 
@@ -97,7 +98,7 @@ export async function GET(request: NextRequest) {
         lastActivity: journey.last_activity,
       };
 
-      console.log(`✅ Journey status for user ${userIdNum}: completed`);
+      logger.log(`✅ Journey status for user ${userIdNum}: completed`);
       return NextResponse.json(response, { status: 200 });
     }
 
@@ -111,7 +112,7 @@ export async function GET(request: NextRequest) {
       lastActivity: journey.last_activity,
     };
 
-    console.log(`🔄 Journey status for user ${userIdNum}: ${journey.current_phase}`);
+    logger.log(`🔄 Journey status for user ${userIdNum}: ${journey.current_phase}`);
     return NextResponse.json(response, { status: 200 });
 
   } catch (error) {

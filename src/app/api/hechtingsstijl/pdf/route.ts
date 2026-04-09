@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 
 export async function GET(request: NextRequest) {
   try {
@@ -35,10 +36,12 @@ export async function GET(request: NextRequest) {
     // Generate HTML for PDF
     const html = generatePDFHTML(result);
 
-    // Generate PDF using Puppeteer
+    // Generate PDF using Puppeteer (serverless-compatible via @sparticuz/chromium)
     const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
     });
 
     const page = await browser.newPage();

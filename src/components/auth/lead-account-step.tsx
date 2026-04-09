@@ -30,6 +30,7 @@ import {
 import { useUser } from '@/providers/user-provider';
 import { useToast } from '@/hooks/use-toast';
 import type { LeadAccountData } from '@/types/lead-activation.types';
+import { logger } from '@/lib/logger';
 
 const accountSchema = z.object({
   firstName: z
@@ -78,7 +79,7 @@ export function LeadAccountStep({ onComplete }: LeadAccountStepProps) {
       const result = await signup(data.email, data.password, data.firstName);
       const newUser = result.user;
 
-      console.log('Account created:', newUser.id);
+      logger.log('Account created:', newUser.id);
 
       // Save name to localStorage for profile setup
       if (typeof window !== 'undefined') {

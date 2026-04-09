@@ -9,6 +9,7 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 export interface OTOEvent {
   userId: number;
@@ -62,7 +63,7 @@ export async function trackOTOEvent(event: OTOEvent): Promise<void> {
       )
     `;
 
-    console.log(`📊 OTO Event tracked: ${event.eventType} for user ${event.userId}`);
+    logger.log(`📊 OTO Event tracked: ${event.eventType} for user ${event.userId}`);
   } catch (error) {
     console.error('Failed to track OTO event:', error);
     // Don't throw - analytics should not break the flow

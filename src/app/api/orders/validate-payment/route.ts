@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -13,7 +14,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log('🔍 Validating payment for order:', orderId);
+    logger.log('🔍 Validating payment for order:', orderId);
 
     // Check if database connection is available
     const hasConnectionString = Boolean(
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest) {
     `;
 
     if (orderResult.rows.length === 0) {
-      console.log('❌ Order not found:', orderId);
+      logger.log('❌ Order not found:', orderId);
       return NextResponse.json({
         paid: false,
         error: 'Order not found'
@@ -47,7 +48,7 @@ export async function GET(request: NextRequest) {
     }
 
     const order = orderResult.rows[0];
-    console.log('📦 Order status:', order.status);
+    logger.log('📦 Order status:', order.status);
 
     // Check if order is paid
     const isPaid = order.status === 'completed' || order.status === 'paid';

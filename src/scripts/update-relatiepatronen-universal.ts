@@ -14,9 +14,10 @@
  */
 
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 async function updateRelatiepatronenQuestions() {
-  console.log('🚀 Updating Relatiepatronen questions to universal language...\n');
+  logger.log('🚀 Updating Relatiepatronen questions to universal language...\n');
 
   try {
     // Update statement questions with universal language
@@ -104,35 +105,35 @@ async function updateRelatiepatronenQuestions() {
       }
     ];
 
-    console.log('📝 Updating statement questions...\n');
+    logger.log('📝 Updating statement questions...\n');
     for (const update of updates) {
       await sql`
         UPDATE relationship_patterns_questions
         SET question_text = ${update.text}
         WHERE order_position = ${update.position}
       `;
-      console.log(`✅ Q${update.position}: ${update.notes}`);
+      logger.log(`✅ Q${update.position}: ${update.notes}`);
     }
 
     // Update scenario questions to hypothetical
-    console.log('\n📝 Updating scenario questions...\n');
+    logger.log('\n📝 Updating scenario questions...\n');
 
     await sql`
       UPDATE relationship_patterns_questions
       SET question_text = 'Stel je voor: iemand waar je interesse in hebt, reageert drie dagen niet op een belangrijk gesprek. Wat zou je doen?'
       WHERE order_position = 13
     `;
-    console.log('✅ Q13: Scenario A - Nu "Stel je voor" en "iemand waar je interesse in hebt"');
+    logger.log('✅ Q13: Scenario A - Nu "Stel je voor" en "iemand waar je interesse in hebt"');
 
     await sql`
       UPDATE relationship_patterns_questions
       SET question_text = 'Stel je voor: na een meningsverschil met iemand die je belangrijk vindt. Wat is jouw natuurlijke reactie?'
       WHERE order_position = 14
     `;
-    console.log('✅ Q14: Scenario B - Nu algemener: "meningsverschil" ipv "ruzie"');
+    logger.log('✅ Q14: Scenario B - Nu algemener: "meningsverschil" ipv "ruzie"');
 
     // Update scenario options to be more universal
-    console.log('\n📝 Updating scenario options...\n');
+    logger.log('\n📝 Updating scenario options...\n');
 
     // Scenario A options (non-response pattern)
     await sql`
@@ -178,15 +179,15 @@ async function updateRelatiepatronenQuestions() {
         AND order_position = 3
     `;
 
-    console.log('✅ All scenario options updated to conditional/universal language');
+    logger.log('✅ All scenario options updated to conditional/universal language');
 
-    console.log('\n✨ SUCCESS! Relatiepatronen questions updated to universal language.');
-    console.log('\n📊 Summary:');
-    console.log('   • 12 statement questions updated');
-    console.log('   • 2 scenario questions updated');
-    console.log('   • 6 scenario options updated');
-    console.log('   • Strategy: Hypothetical framing + broader context');
-    console.log('   • Result: Works for everyone - even without relationship experience! 🎯\n');
+    logger.log('\n✨ SUCCESS! Relatiepatronen questions updated to universal language.');
+    logger.log('\n📊 Summary:');
+    logger.log('   • 12 statement questions updated');
+    logger.log('   • 2 scenario questions updated');
+    logger.log('   • 6 scenario options updated');
+    logger.log('   • Strategy: Hypothetical framing + broader context');
+    logger.log('   • Result: Works for everyone - even without relationship experience! 🎯\n');
 
   } catch (error) {
     console.error('❌ Error updating questions:', error);
@@ -197,7 +198,7 @@ async function updateRelatiepatronenQuestions() {
 // Auto-execute when run directly
 updateRelatiepatronenQuestions()
   .then(() => {
-    console.log('✅ Script completed successfully');
+    logger.log('✅ Script completed successfully');
     process.exit(0);
   })
   .catch((error) => {

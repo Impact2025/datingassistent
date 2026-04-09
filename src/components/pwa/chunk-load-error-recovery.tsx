@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from 'react';
+import { logger } from '@/lib/logger';
 
 /**
  * CHUNK LOAD ERROR RECOVERY
@@ -64,7 +65,7 @@ export function ChunkLoadErrorRecovery() {
         console.warn('[Chunk Recovery] Detected chunk load error:', message);
 
         if (canAttemptReload()) {
-          console.log('[Chunk Recovery] Attempting automatic reload to fetch latest chunks...');
+          logger.log('[Chunk Recovery] Attempting automatic reload to fetch latest chunks...');
           recordReloadAttempt();
 
           // Clear service worker cache to ensure fresh fetch
@@ -116,7 +117,7 @@ export function ChunkLoadErrorRecovery() {
         console.warn('[Chunk Recovery] Detected chunk load error in promise:', message);
 
         if (canAttemptReload()) {
-          console.log('[Chunk Recovery] Attempting automatic reload...');
+          logger.log('[Chunk Recovery] Attempting automatic reload...');
           recordReloadAttempt();
 
           // Clear caches and reload

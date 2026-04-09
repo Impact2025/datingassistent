@@ -14,6 +14,7 @@ import { ExamplesSectie } from './components/ExamplesSectie';
 import { InteractiveSectie } from './components/InteractiveSectie';
 import { useUser } from '@/providers/user-provider';
 import { getCanonicalSlug } from '@/lib/cursus-slug-utils';
+import { logger } from '@/lib/logger';
 
 interface LesData {
   id: number;
@@ -50,7 +51,7 @@ export default function LesViewerPage() {
   useEffect(() => {
     const { canonical, wasAlias } = getCanonicalSlug(rawSlug);
     if (wasAlias) {
-      console.log(`🔄 Redirecting from alias ${rawSlug} to canonical ${canonical}`);
+      logger.log(`🔄 Redirecting from alias ${rawSlug} to canonical ${canonical}`);
       router.replace(`/cursussen/${canonical}/${lesSlug}`);
     }
   }, [rawSlug, lesSlug, router]);
@@ -78,12 +79,12 @@ export default function LesViewerPage() {
       }
 
       const data = await response.json();
-      console.log('🔍 DEBUG: Fetched lesson data:', data);
-      console.log('🔍 DEBUG: Secties array:', data.les?.secties);
+      logger.log('🔍 DEBUG: Fetched lesson data:', data);
+      logger.log('🔍 DEBUG: Secties array:', data.les?.secties);
 
       // Log details of each sectie
       data.les?.secties?.forEach((s: any, i: number) => {
-        console.log(`📝 Section ${i + 1}:`, {
+        logger.log(`📝 Section ${i + 1}:`, {
           type: s.sectie_type,
           titel: s.titel,
           hasInhoud: !!s.inhoud,
@@ -142,7 +143,7 @@ export default function LesViewerPage() {
         throw new Error('Failed to save progress');
       }
 
-      console.log('✅ Progress saved to database for user', user.id);
+      logger.log('✅ Progress saved to database for user', user.id);
     } catch (err) {
       console.error('❌ Error saving progress:', err);
     }

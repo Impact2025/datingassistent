@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
 import { trackFeatureUsage } from '@/lib/usage-tracking';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -83,7 +84,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('📸 [Lead] Analyzing photo for user:', userId, photo.name, photo.type, `${(photo.size / 1024).toFixed(2)}KB`);
+    logger.log('📸 [Lead] Analyzing photo for user:', userId, photo.name, photo.type, `${(photo.size / 1024).toFixed(2)}KB`);
 
     // Convert image to base64
     const buffer = await photo.arrayBuffer();
@@ -158,7 +159,7 @@ STRIKTE PERFECTE EERSTE FOTO CRITERIA - SCOOR SLECHTS HOOG ALS ALLE Punten Volda
 
 Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto's krijgen 8+/10.`;
 
-    console.log('🤖 [Lead] Calling OpenRouter Vision API...');
+    logger.log('🤖 [Lead] Calling OpenRouter Vision API...');
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -202,7 +203,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
     }
 
     const data = await response.json();
-    console.log('✅ [Lead] OpenRouter response received');
+    logger.log('✅ [Lead] OpenRouter response received');
 
     // Parse the AI response
     const aiResponse = data.choices[0]?.message?.content;
@@ -215,7 +216,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
       );
     }
 
-    console.log('📝 [Lead] AI Response:', aiResponse);
+    logger.log('📝 [Lead] AI Response:', aiResponse);
 
     // Try to parse JSON from the response
     let analysis: PhotoAnalysisResult;
@@ -254,7 +255,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
       };
     }
 
-    console.log('✅ [Lead] Photo analysis complete for user:', userId);
+    logger.log('✅ [Lead] Photo analysis complete for user:', userId);
 
     // Track usage (if possible)
     try {

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAuth } from '@/lib/auth';
 import { neon } from '@neondatabase/serverless';
@@ -19,7 +20,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    console.log('🔍 Checking Kickstart enrollment for user:', currentUser.id);
+    logger.log('🔍 Checking Kickstart enrollment for user:', currentUser.id);
 
     // Check for Kickstart program enrollment AND day-zero status in parallel
     const [enrollments, dayZeroProgress] = await Promise.all([
@@ -41,7 +42,7 @@ export async function GET(req: NextRequest) {
     const hasOnboardingData = hasEnrollment && enrollments[0]?.kickstart_onboarding_completed === true;
     const dayZeroCompleted = dayZeroProgress.length > 0 && dayZeroProgress[0]?.completed === true;
 
-    console.log('✅ Kickstart enrollment check:', {
+    logger.log('✅ Kickstart enrollment check:', {
       userId: currentUser.id,
       hasEnrollment,
       hasOnboardingData,

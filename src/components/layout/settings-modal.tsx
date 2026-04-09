@@ -31,6 +31,7 @@ import type { UserProfile } from "@/lib/types";
 import { GENDERS, SEEKING_GENDERS, RELATIONSHIP_TYPES, IDENTITY_GROUPS } from "@/lib/types";
 import { useEffect } from "react";
 import { useRecaptchaV3 } from "../shared/recaptcha";
+import { logger } from '@/lib/logger';
 
 
 const profileSchema = z.object({
@@ -117,7 +118,7 @@ export function SettingsModal({ isOpen, onOpenChange }: SettingsModalProps) {
         return;
       }
 
-      console.log('✅ reCAPTCHA verification successful');
+      logger.log('✅ reCAPTCHA verification successful');
 
       // Update profile
       updateProfile(data as UserProfile);

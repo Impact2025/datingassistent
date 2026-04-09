@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Migratie Script: Kickstart 21-dagen structuur
  *
@@ -11,7 +12,7 @@
 import { sql } from '@vercel/postgres';
 
 async function migrate() {
-  console.log('🚀 Starting Kickstart 21-dagen migration...\n');
+  logger.log('🚀 Starting Kickstart 21-dagen migration...\n');
 
   try {
     // Check if Kickstart program exists
@@ -20,16 +21,16 @@ async function migrate() {
     `;
 
     if (programCheck.rows.length === 0) {
-      console.log('❌ Kickstart program niet gevonden!');
-      console.log('   Run eerst: database-setup-programs.sql');
+      logger.log('❌ Kickstart program niet gevonden!');
+      logger.log('   Run eerst: database-setup-programs.sql');
       process.exit(1);
     }
 
     const programId = programCheck.rows[0].id;
-    console.log(`✅ Kickstart program gevonden (ID: ${programId})`);
+    logger.log(`✅ Kickstart program gevonden (ID: ${programId})`);
 
     // Step 1: Create tables
-    console.log('\n📊 Stap 1: Tabellen aanmaken...');
+    logger.log('\n📊 Stap 1: Tabellen aanmaken...');
 
     // Drop existing tables first (cascade)
     try {
@@ -37,9 +38,9 @@ async function migrate() {
       await sql`DROP TABLE IF EXISTS user_day_progress CASCADE`;
       await sql`DROP TABLE IF EXISTS program_days CASCADE`;
       await sql`DROP TABLE IF EXISTS program_weeks CASCADE`;
-      console.log('  ✓ Oude tabellen verwijderd');
+      logger.log('  ✓ Oude tabellen verwijderd');
     } catch (err: any) {
-      console.log('  ⚠️ Drop tables warning:', err.message?.substring(0, 50));
+      logger.log('  ⚠️ Drop tables warning:', err.message?.substring(0, 50));
     }
 
     // Create program_weeks table
@@ -57,7 +58,7 @@ async function migrate() {
         UNIQUE(program_id, week_nummer)
       )
     `;
-    console.log('  ✓ program_weeks tabel aangemaakt');
+    logger.log('  ✓ program_weeks tabel aangemaakt');
 
     // Create program_days table
     await sql`
@@ -88,7 +89,7 @@ async function migrate() {
         UNIQUE(program_id, dag_nummer)
       )
     `;
-    console.log('  ✓ program_days tabel aangemaakt');
+    logger.log('  ✓ program_days tabel aangemaakt');
 
     // Create user_day_progress table
     await sql`
@@ -114,7 +115,7 @@ async function migrate() {
         UNIQUE(user_id, day_id)
       )
     `;
-    console.log('  ✓ user_day_progress tabel aangemaakt');
+    logger.log('  ✓ user_day_progress tabel aangemaakt');
 
     // Create user_weekly_metrics table
     await sql`
@@ -134,7 +135,7 @@ async function migrate() {
         UNIQUE(user_id, program_id, week_nummer)
       )
     `;
-    console.log('  ✓ user_weekly_metrics tabel aangemaakt');
+    logger.log('  ✓ user_weekly_metrics tabel aangemaakt');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_program_weeks_program_id ON program_weeks(program_id)`;
@@ -145,12 +146,12 @@ async function migrate() {
     await sql`CREATE INDEX IF NOT EXISTS idx_user_day_progress_day_id ON user_day_progress(day_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_user_day_progress_status ON user_day_progress(status)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_user_weekly_metrics_user_id ON user_weekly_metrics(user_id)`;
-    console.log('  ✓ Indexes aangemaakt');
+    logger.log('  ✓ Indexes aangemaakt');
 
-    console.log('✅ Tabellen aangemaakt');
+    logger.log('✅ Tabellen aangemaakt');
 
     // Step 2: Seed weeks
-    console.log('\n📝 Stap 2: Weken seeden...');
+    logger.log('\n📝 Stap 2: Weken seeden...');
 
     // Insert Week 1
     const week1 = await sql`
@@ -158,7 +159,7 @@ async function migrate() {
       VALUES (${programId}, 1, 'Fundament & Foto''s', 'Van onzichtbaar naar opvallend', '4-6 goedgekeurde foto''s die werken', '📸')
       RETURNING id
     `;
-    console.log('  ✓ Week 1 aangemaakt');
+    logger.log('  ✓ Week 1 aangemaakt');
 
     // Insert Week 2
     const week2 = await sql`
@@ -166,7 +167,7 @@ async function migrate() {
       VALUES (${programId}, 2, 'Bio & Platform', 'Van swipen naar connecties', 'Complete profieltekst + 3 platforms geoptimaliseerd', '✍️')
       RETURNING id
     `;
-    console.log('  ✓ Week 2 aangemaakt');
+    logger.log('  ✓ Week 2 aangemaakt');
 
     // Insert Week 3
     const week3 = await sql`
@@ -174,10 +175,10 @@ async function migrate() {
       VALUES (${programId}, 3, 'Gesprekken & Connectie', 'Van match naar date', '3+ nieuwe gesprekken gestart, 1+ date gepland', '💬')
       RETURNING id
     `;
-    console.log('  ✓ Week 3 aangemaakt');
+    logger.log('  ✓ Week 3 aangemaakt');
 
     // Step 3: Seed all 21 days
-    console.log('\n📅 Stap 3: Dagen seeden...');
+    logger.log('\n📅 Stap 3: Dagen seeden...');
 
     // Week 1 Days (1-7)
     const week1Days = [
@@ -402,7 +403,7 @@ async function migrate() {
           ${day.dag_nummer}
         )
       `;
-      console.log(`  ✓ Dag ${day.dag_nummer}: ${day.titel}`);
+      logger.log(`  ✓ Dag ${day.dag_nummer}: ${day.titel}`);
     }
 
     // Week 2 Days (8-14)
@@ -576,7 +577,7 @@ async function migrate() {
           ${day.dag_nummer}
         )
       `;
-      console.log(`  ✓ Dag ${day.dag_nummer}: ${day.titel}`);
+      logger.log(`  ✓ Dag ${day.dag_nummer}: ${day.titel}`);
     }
 
     // Week 3 Days (15-21)
@@ -759,11 +760,11 @@ async function migrate() {
           ${day.upsell ? JSON.stringify(day.upsell) : null}, ${day.dag_nummer}
         )
       `;
-      console.log(`  ✓ Dag ${day.dag_nummer}: ${day.titel}`);
+      logger.log(`  ✓ Dag ${day.dag_nummer}: ${day.titel}`);
     }
 
     // Step 4: Verify
-    console.log('\n🔍 Stap 4: Verificatie...');
+    logger.log('\n🔍 Stap 4: Verificatie...');
 
     const weeksCount = await sql`
       SELECT COUNT(*) as count FROM program_weeks
@@ -775,14 +776,14 @@ async function migrate() {
       WHERE program_id = ${programId}
     `;
 
-    console.log(`  • ${weeksCount.rows[0].count} weken aangemaakt`);
-    console.log(`  • ${daysCount.rows[0].count} dagen aangemaakt`);
+    logger.log(`  • ${weeksCount.rows[0].count} weken aangemaakt`);
+    logger.log(`  • ${daysCount.rows[0].count} dagen aangemaakt`);
 
-    console.log('\n✅ Migratie voltooid!');
-    console.log('\n📌 Next steps:');
-    console.log('  1. Start de dev server: npm run dev');
-    console.log('  2. Ga naar: http://localhost:9000/kickstart');
-    console.log('  3. Test een dag: http://localhost:9000/kickstart/dag/1');
+    logger.log('\n✅ Migratie voltooid!');
+    logger.log('\n📌 Next steps:');
+    logger.log('  1. Start de dev server: npm run dev');
+    logger.log('  2. Ga naar: http://localhost:9000/kickstart');
+    logger.log('  3. Test een dag: http://localhost:9000/kickstart/dag/1');
 
   } catch (error) {
     console.error('\n❌ Migratie mislukt:', error);

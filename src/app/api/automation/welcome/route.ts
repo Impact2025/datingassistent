@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -75,9 +76,9 @@ export async function POST(request: NextRequest) {
         CREATE INDEX IF NOT EXISTS idx_journey_user_id ON user_journey_progress(user_id)
       `;
 
-      console.log('✅ user_journey_progress table ensured');
+      logger.log('✅ user_journey_progress table ensured');
     } catch (tableError) {
-      console.log('ℹ️ Table might already exist:', tableError);
+      logger.log('ℹ️ Table might already exist:', tableError);
     }
 
     // Now insert/update journey progress
@@ -100,7 +101,7 @@ export async function POST(request: NextRequest) {
         updated_at = NOW()
     `;
 
-    console.log(`✅ Journey initialized for user ${userId}`);
+    logger.log(`✅ Journey initialized for user ${userId}`);
 
     // Award welcome badge
     await sql`
@@ -109,7 +110,7 @@ export async function POST(request: NextRequest) {
       ON CONFLICT DO NOTHING
     `;
 
-    console.log(`✅ Welcome automation completed for user ${userId}`);
+    logger.log(`✅ Welcome automation completed for user ${userId}`);
 
     return NextResponse.json({
       success: true,

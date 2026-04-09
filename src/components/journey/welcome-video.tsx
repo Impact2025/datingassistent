@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Play, Volume2, VolumeX, Pause } from 'lucide-react';
+import { logger } from '@/lib/logger';
 
 interface WelcomeVideoProps {
   onComplete: () => void;
@@ -17,14 +18,14 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  console.log('🎥 DEBUG: WelcomeVideo component mounted');
+  logger.log('🎥 DEBUG: WelcomeVideo component mounted');
 
   const handlePlay = () => {
-    console.log('▶️ DEBUG: Video play button clicked');
+    logger.log('▶️ DEBUG: Video play button clicked');
     if (videoRef.current) {
-      console.log('▶️ DEBUG: Attempting to play video...');
+      logger.log('▶️ DEBUG: Attempting to play video...');
       videoRef.current.play().then(() => {
-        console.log('✅ DEBUG: Video started playing successfully');
+        logger.log('✅ DEBUG: Video started playing successfully');
       }).catch((error) => {
         console.error('❌ DEBUG: Video play failed:', error);
       });
@@ -36,7 +37,7 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
   };
 
   const handlePause = () => {
-    console.log('⏸️ DEBUG: Video pause button clicked');
+    logger.log('⏸️ DEBUG: Video pause button clicked');
     if (videoRef.current) {
       videoRef.current.pause();
       setIsPlaying(false);
@@ -44,7 +45,7 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
   };
 
   const handleVideoEnd = () => {
-    console.log('🏁 DEBUG: Video ended, calling onComplete');
+    logger.log('🏁 DEBUG: Video ended, calling onComplete');
     setIsPlaying(false);
     onComplete();
   };
@@ -75,7 +76,7 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
   };
 
   const skipVideo = () => {
-    console.log('⏭️ DEBUG: User chose to skip video');
+    logger.log('⏭️ DEBUG: User chose to skip video');
     onComplete();
   };
 
@@ -134,20 +135,20 @@ export function WelcomeVideo({ onComplete }: WelcomeVideoProps) {
                 className="w-full h-full object-cover"
                 onEnded={handleVideoEnd}
                 onPlay={() => {
-                  console.log('▶️ DEBUG: Video onPlay event fired');
+                  logger.log('▶️ DEBUG: Video onPlay event fired');
                   setIsPlaying(true);
                 }}
                 onPause={() => {
-                  console.log('⏸️ DEBUG: Video onPause event fired');
+                  logger.log('⏸️ DEBUG: Video onPause event fired');
                   setIsPlaying(false);
                 }}
                 onError={handleVideoError}
-                onLoadStart={() => console.log('⏳ DEBUG: Video load started')}
+                onLoadStart={() => logger.log('⏳ DEBUG: Video load started')}
                 onLoadedData={() => {
-                  console.log('✅ DEBUG: Video data loaded');
+                  logger.log('✅ DEBUG: Video data loaded');
                   setVideoLoaded(true);
                 }}
-                onCanPlay={() => console.log('🎯 DEBUG: Video can play')}
+                onCanPlay={() => logger.log('🎯 DEBUG: Video can play')}
                 muted={isMuted}
                 playsInline
                 preload="metadata"

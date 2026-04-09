@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { KB_ARTICLES, FAQ_CATEGORIES } from '@/lib/support/knowledge-base';
+import { logger } from '@/lib/logger';
 
 interface DynamicFAQProps {
   className?: string;
@@ -108,7 +109,7 @@ export function DynamicFAQ({
   const handleFeedback = (articleId: string, isHelpful: boolean) => {
     setFeedbackGiven(prev => new Set(prev).add(articleId));
     // In production, log this to analytics
-    console.log(`FAQ feedback: ${articleId} = ${isHelpful ? 'helpful' : 'not helpful'}`);
+    logger.log(`FAQ feedback: ${articleId} = ${isHelpful ? 'helpful' : 'not helpful'}`);
   };
 
   const clearFilters = () => {

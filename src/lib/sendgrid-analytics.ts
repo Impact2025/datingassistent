@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * SendGrid Analytics Integration
  * For fetching real email campaign performance data
@@ -59,7 +60,7 @@ export class SendGridAnalyticsService {
       }
 
       // Fallback to mock data
-      console.log('Using mock email data (SendGrid not configured)');
+      logger.log('Using mock email data (SendGrid not configured)');
       return this.getMockEmailData();
     } catch (error) {
       console.error('Error fetching email data:', error);

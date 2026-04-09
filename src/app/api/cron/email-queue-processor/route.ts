@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { render } from '@react-email/components';
 import { sendEmail } from '@/lib/email-service';
+import { logger } from '@/lib/logger';
 
 // Import all email templates
 import WelcomeEmail from '@/emails/welcome-email';
@@ -91,7 +92,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    console.log('[CRON] Starting email queue processing...');
+    logger.log('[CRON] Starting email queue processing...');
     const startTime = Date.now();
 
     // Get pending emails from queue
@@ -199,7 +200,7 @@ export async function GET(request: NextRequest) {
     }
 
     const duration = Date.now() - startTime;
-    console.log(`[CRON] Email queue processing completed: ${processed} sent, ${failed} failed in ${duration}ms`);
+    logger.log(`[CRON] Email queue processing completed: ${processed} sent, ${failed} failed in ${duration}ms`);
 
     return NextResponse.json({
       success: true,

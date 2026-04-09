@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Migration: Create day_zero_progress table
  *
@@ -16,7 +17,7 @@ config({ path: '.env.local' });
 
 async function migrate() {
   try {
-    console.log('🚀 Starting migration: Create day_zero_progress table...\n');
+    logger.log('🚀 Starting migration: Create day_zero_progress table...\n');
 
     // Create day_zero_progress table
     await sql`
@@ -47,7 +48,7 @@ async function migrate() {
       )
     `;
 
-    console.log('✅ Table day_zero_progress created successfully!');
+    logger.log('✅ Table day_zero_progress created successfully!');
 
     // Create index for faster user lookups
     await sql`
@@ -55,9 +56,9 @@ async function migrate() {
       ON day_zero_progress(user_id)
     `;
 
-    console.log('✅ Index idx_day_zero_user created successfully!');
+    logger.log('✅ Index idx_day_zero_user created successfully!');
 
-    console.log('\n🎉 Migration completed successfully!');
+    logger.log('\n🎉 Migration completed successfully!');
 
   } catch (error) {
     console.error('❌ Migration failed:', error);

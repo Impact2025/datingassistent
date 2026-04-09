@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { cookies } from 'next/headers';
 import { verifyToken, cookieConfig } from '@/lib/jwt-config';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/cursussen
@@ -9,7 +10,7 @@ import { verifyToken, cookieConfig } from '@/lib/jwt-config';
  */
 export async function GET(request: NextRequest) {
   try {
-    console.log('🚀 Fetching cursussen...');
+    logger.log('🚀 Fetching cursussen...');
 
     // Try to get user from JWT token
     let userId: number | null = null;
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
       }
     } catch (authError) {
       // User not authenticated - continue without access info
-      console.log('No authenticated user for cursussen request');
+      logger.log('No authenticated user for cursussen request');
     }
 
     // Get all published courses
@@ -61,7 +62,7 @@ export async function GET(request: NextRequest) {
       ORDER BY c.created_at ASC
     `;
 
-    console.log(`✅ Found ${result.rows.length} cursussen`);
+    logger.log(`✅ Found ${result.rows.length} cursussen`);
 
     const cursussen = result.rows.map((cursus: any) => {
       // Determine access:

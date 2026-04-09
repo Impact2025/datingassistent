@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { sendGridAnalytics } from '@/lib/enhanced-sendgrid-analytics';
@@ -10,7 +11,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const days = parseInt(searchParams.get('days') || '30');
 
-    console.log('📧 Fetching email analytics for last', days, 'days');
+    logger.log('📧 Fetching email analytics for last', days, 'days');
 
     // Get enhanced email data (intelligent mock data)
     const emailData = await sendGridAnalytics.getEmailData(days);

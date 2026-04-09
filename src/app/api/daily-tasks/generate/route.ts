@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { openRouter, OPENROUTER_MODELS } from '@/lib/openrouter';
 import { sql } from '@vercel/postgres';
+import { getAgeRange } from '@/lib/ai-privacy';
 
 export async function POST(request: NextRequest) {
   try {
@@ -235,7 +236,7 @@ function buildAIContext({
 
   const context = `USER CONTEXT:
 - Journey dag: ${journeyDay}
-- Leeftijd: ${userProfile?.age || 'onbekend'}
+- Leeftijdsgroep: ${userProfile?.age ? getAgeRange(userProfile.age) : 'onbekend'}
 - Geslacht: ${userProfile?.gender || 'onbekend'}
 - Doel: ${userProfile?.seekingType || 'onbekend'}
 - Locatie: ${userProfile?.location || 'onbekend'}

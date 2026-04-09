@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
-
-// Initialize OpenAI only if API key is available
-const openai = process.env.OPENAI_API_KEY ? new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-}) : null;
+import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
 
 const COACHING_SYSTEM_PROMPT = `Je bent een ervaren dating coach en psycholoog gespecialiseerd in zelfvertrouwen en sociale vaardigheden. Je geeft altijd empathische, praktische en wetenschappelijk onderbouwde adviezen.
 
@@ -99,57 +94,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let aiResponse: string;
-
-    // Check if OpenAI is available, otherwise use mock responses
-    if (!openai) {
-      // Mock responses for development/testing
-      const mockResponses = {
-        motivation: [
-          "Geweldig dat je aan je zelfvertrouwen werkt! Elke stap die je zet, hoe klein ook, brengt je dichter bij het zelfverzekerde gevoel dat je verdient. Blijf doorgaan met oefeningen zoals het dagelijks herhalen van affirmaties en het vieren van kleine successen.",
-          "Je bent al veel verder dan je denkt! Het feit dat je hier bent en werkt aan je dating zelfvertrouwen toont al je vastberadenheid. Focus op één kwaliteit tegelijk en bouw daar langzaam op voort.",
-          "Vertrouwen is als een spier - het wordt sterker door regelmatig gebruik. Begin vandaag met één positieve actie richting jezelf, zoals een compliment geven in de spiegel of een hobby oppakken die je leuk vindt."
-        ],
-        feedback: [
-          "Uitstekend werk! Je aanpak toont echte zelfreflectie. Probeer nu deze inzichten toe te passen in één concrete situatie deze week. Wat zou er gebeuren als je iets meer risico neemt?",
-          "Heel goed dat je je gevoelens onder woorden brengt. Dit is een sterke basis voor groei. Volgende stap: schrijf op welke concrete acties je kunt nemen om deze inzichten om te zetten in gedrag.",
-          "Prima zelfanalyse! Nu de brug naar actie: kies één situatie waarin je deze nieuwe inzichten kunt toepassen. Begin klein en bouw op naar grotere uitdagingen."
-        ],
-        advice: [
-          "Voor meer zelfvertrouwen: begin elke dag met 5 minuten positieve affirmaties, oefen machtsposes voor de spiegel, en schrijf dagelijks één ding op waar je trots op bent. Consistentie is key!",
-          "Probeer de 'als-dan' techniek: 'Als ik zenuwachtig word, dan haal ik diep adem en herinner ik mezelf aan mijn sterke kanten.' Dit helpt om automatische negatieve patronen te doorbreken.",
-          "Stel jezelf een kleine uitdaging per dag: maak oogcontact met een vreemde, geef een compliment, of probeer iets nieuws. Elk succes bouwt je zelfvertrouwen op voor dating situaties."
-        ]
-      };
-
-      const coachingType = context?.coachingType || 'advice';
-      const responses = mockResponses[coachingType as keyof typeof mockResponses] || mockResponses.advice;
-      aiResponse = responses[Math.floor(Math.random() * responses.length)];
-    } else {
-      const personalizedPrompt = getPersonalizedPrompt(userInput, context);
-
-      const completion = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: personalizedPrompt
-          },
-          {
-            role: 'user',
-            content: userInput
-          }
-        ],
-        max_tokens: 500,
-        temperature: 0.7,
-      });
-
-      aiResponse = completion.choices[0]?.message?.content || 'Sorry, ik kon geen advies genereren op dit moment.';
-
-      if (!aiResponse) {
-        throw new Error('No response from OpenAI');
-      }
-    }
+    const personalizedPrompt = getPersonalizedPrompt(userInput, context);
+    const openrouter = getOpenRouterClient();
+    const aiResponse = await openrouter.createChatCompletion(
+      OPENROUTER_MODELS.CLAUDE_35_HAIKU,
+      [
+        { role: 'system', content: personalizedPrompt },
+        { role: 'user', content: userInput },
+      ],
+      { max_tokens: 500, temperature: 0.7 }
+    );
 
     // Analyze sentiment for UI feedback
     const sentiment = analyzeSentiment(userInput);

@@ -110,10 +110,65 @@ export default function PrivacyPage() {
               </div>
 
               <div className="space-y-3">
-                <h2 className="text-2xl font-semibold">6. Delen met derden</h2>
+                <h2 className="text-2xl font-semibold">6. Subverwerkers en doorgifte aan derden</h2>
                 <p className="text-sm sm:text-base leading-relaxed text-foreground/80">
-                  DatingAssistent deelt geen gegevens met derden, behalve als dat nodig is voor technische uitvoering (bijv. hosting) of
-                  wettelijk verplicht is. Met deze partijen zijn verwerkersovereenkomsten afgesloten.
+                  Voor de uitvoering van onze diensten maken wij gebruik van de volgende verwerkers. Met elk van deze partijen is een verwerkersovereenkomst (DPA) afgesloten, inclusief de door de Europese Commissie goedgekeurde Standaard Contractuele Bepalingen (SCC) voor doorgiften buiten de EU.
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse border border-border">
+                    <thead className="bg-muted">
+                      <tr>
+                        <th className="border border-border px-3 py-2 text-left font-semibold">Verwerker</th>
+                        <th className="border border-border px-3 py-2 text-left font-semibold">Doel</th>
+                        <th className="border border-border px-3 py-2 text-left font-semibold">Locatie</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-foreground/80">
+                      <tr>
+                        <td className="border border-border px-3 py-2 font-medium">Neon (PostgreSQL)</td>
+                        <td className="border border-border px-3 py-2">Database / opslag persoonsgegevens</td>
+                        <td className="border border-border px-3 py-2">EU (Dublin)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2 font-medium">Vercel</td>
+                        <td className="border border-border px-3 py-2">Hosting en deployment</td>
+                        <td className="border border-border px-3 py-2">EU / VS (SCC)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2 font-medium">OpenRouter</td>
+                        <td className="border border-border px-3 py-2">AI-coaching (gepseudonimiseerde data)</td>
+                        <td className="border border-border px-3 py-2">VS (SCC)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2 font-medium">Resend</td>
+                        <td className="border border-border px-3 py-2">E-mailverzending (naam + e-mailadres)</td>
+                        <td className="border border-border px-3 py-2">VS (SCC)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2 font-medium">Stripe</td>
+                        <td className="border border-border px-3 py-2">Betalingsverwerking</td>
+                        <td className="border border-border px-3 py-2">VS (SCC)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2 font-medium">Google Analytics</td>
+                        <td className="border border-border px-3 py-2">Website-analyse (alleen met toestemming)</td>
+                        <td className="border border-border px-3 py-2">VS (SCC)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2 font-medium">Microsoft Clarity</td>
+                        <td className="border border-border px-3 py-2">Sessie-opnames (alleen met toestemming)</td>
+                        <td className="border border-border px-3 py-2">VS (SCC)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2 font-medium">Sentry</td>
+                        <td className="border border-border px-3 py-2">Foutopsporing (alleen met toestemming)</td>
+                        <td className="border border-border px-3 py-2">VS (SCC)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-sm sm:text-base leading-relaxed text-foreground/80">
+                  Gegevens worden uitsluitend gedeeld voor de omschreven doeleinden en nooit verkocht aan derden. De AI-coaching diensten ontvangen gepseudonimiseerde data — naam, exacte leeftijd en locatie worden vóór verzending vervangen door algemene categorieën.
                 </p>
               </div>
 

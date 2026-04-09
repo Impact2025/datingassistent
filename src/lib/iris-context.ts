@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 // ============================================================================
 // IRIS CONTEXT BUILDER - MEGA UPGRADE
 //
@@ -20,6 +21,7 @@ import type { IrisContextForPrompt, IrisUserContext, CursusLes } from '../types/
 import { AIContextManager } from './ai-context-manager';
 import { detectPatterns, type Pattern } from './iris/iris-patterns';
 import type { SnapshotAIAnalysis } from './ai/snapshot-analysis-types';
+import { getAgeRange } from './ai-privacy';
 
 // ============================================================================
 // EXTENDED TYPES
@@ -148,7 +150,7 @@ async function getKickstartOnboardingData(userId: number): Promise<KickstartOnbo
       current_day: row.current_day || 1,
     };
   } catch (error) {
-    console.log('No kickstart onboarding data found');
+    logger.log('No kickstart onboarding data found');
     return null;
   }
 }
@@ -180,7 +182,7 @@ async function getTransformatieOnboardingData(userId: number): Promise<Transform
       completed_at: row.completed_at,
     };
   } catch (error) {
-    console.log('No transformatie onboarding data found');
+    logger.log('No transformatie onboarding data found');
     return null;
   }
 }
@@ -212,7 +214,7 @@ async function getUserReflections(userId: number): Promise<UserReflection[]> {
       created_at: row.created_at,
     }));
   } catch (error) {
-    console.log('No user reflections found');
+    logger.log('No user reflections found');
     return [];
   }
 }
@@ -247,7 +249,7 @@ async function getDatingLogActivity(userId: number): Promise<DatingLogActivity[]
       activities: row.activities || [],
     }));
   } catch (error) {
-    console.log('No dating log data found');
+    logger.log('No dating log data found');
     return [];
   }
 }
@@ -279,7 +281,7 @@ async function getUserGoals(userId: number): Promise<UserGoals | null> {
       challenges: row.challenges || [],
     };
   } catch (error) {
-    console.log('No goals data found');
+    logger.log('No goals data found');
     return null;
   }
 }
@@ -313,7 +315,7 @@ async function getAISnapshotAnalysis(userId: number): Promise<SnapshotAIAnalysis
       generatedAt: row.created_at,
     } as SnapshotAIAnalysis;
   } catch (error) {
-    console.log('No AI snapshot analysis found');
+    logger.log('No AI snapshot analysis found');
     return null;
   }
 }
@@ -736,21 +738,16 @@ WAT JE WEET OVER DEZE GEBRUIKER:`);
   if (kickstart) {
     parts.push(`
 👤 PERSOONLIJK PROFIEL (uit onboarding):`);
-    if (kickstart.preferred_name) {
-      parts.push(`- Naam: ${kickstart.preferred_name}`);
-    }
     if (kickstart.gender) {
       parts.push(`- Gender: ${kickstart.gender}`);
     }
     if (kickstart.age) {
-      parts.push(`- Leeftijd: ${kickstart.age} jaar`);
+      parts.push(`- Leeftijdsgroep: ${getAgeRange(kickstart.age)}`);
     }
     if (kickstart.looking_for) {
       parts.push(`- Zoekt naar: ${kickstart.looking_for}`);
     }
-    if (kickstart.region) {
-      parts.push(`- Regio: ${kickstart.region}`);
-    }
+    parts.push(`- Land: Nederland`);
     if (kickstart.dating_status) {
       parts.push(`- Dating status: ${kickstart.dating_status}`);
     }
@@ -800,9 +797,6 @@ WAT JE WEET OVER DEZE GEBRUIKER:`);
   if (transformatie) {
     parts.push(`
 🦋 TRANSFORMATIE PROFIEL (uit onboarding):`);
-    if (transformatie.preferred_name) {
-      parts.push(`- Naam: ${transformatie.preferred_name}`);
-    }
     if (transformatie.age_range) {
       parts.push(`- Leeftijdsgroep: ${transformatie.age_range}`);
     }
@@ -1139,7 +1133,7 @@ ${context.recente_gesprekken.slice(0, 3).map(g =>
   // 🚀 WERELDKLASSE COACHING INSTRUCTIES
   parts.push(`
 💡 HOE JE ALLE DATA GEBRUIKT:
-- PERSONALISEER: Gebruik hun naam, gender, en leeftijd
+- PERSONALISEER: Gebruik hun gender en leeftijdsgroep (geen naam of exacte locatie)
 - EMPATHIE: Refereer aan hun angsten en frustraties met begrip
 - REFLECTIES: Verwijs naar wat ze schreven ("Je zei op dag X dat...")
 - HECHTINGSSTIJL: Pas advies aan op hun attachment style

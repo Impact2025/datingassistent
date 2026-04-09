@@ -13,6 +13,7 @@ import type {
   DayDetailResponse,
   UpdateDayProgressInput,
 } from '@/types/kickstart.types';
+import { logger } from '@/lib/logger';
 
 interface KickstartDayFlowProps {
   dayNumber: number;
@@ -76,7 +77,7 @@ export function KickstartDayFlow({ dayNumber, onClose, onNavigate }: KickstartDa
 
       // If day is complete, show success
       if (result.isComplete) {
-        console.log('Day complete!');
+        logger.log('Day complete!');
       }
     } catch (err) {
       console.error('Progress update error:', err);

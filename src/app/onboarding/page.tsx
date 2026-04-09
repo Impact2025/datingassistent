@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -45,7 +46,7 @@ export default function OnboardingPage() {
           ...state,
           lastSaved: Date.now()
         }));
-        console.log('💾 DEBUG: Journey state saved to localStorage');
+        logger.log('💾 DEBUG: Journey state saved to localStorage');
       } catch (error) {
         console.error('❌ DEBUG: Failed to save journey state to localStorage:', error);
       }
@@ -66,27 +67,27 @@ export default function OnboardingPage() {
     const initializeJourney = async () => {
       // Wait for user loading to complete
       if (loading) {
-        console.log('⏳ Onboarding: Waiting for user loading to complete...');
+        logger.log('⏳ Onboarding: Waiting for user loading to complete...');
         return;
       }
 
-      console.log('🎯 Onboarding: Initializing journey, user:', !!user, 'userId:', user?.id);
+      logger.log('🎯 Onboarding: Initializing journey, user:', !!user, 'userId:', user?.id);
       if (!user) {
-        console.log('❌ Onboarding: No user, redirecting to login');
+        logger.log('❌ Onboarding: No user, redirecting to login');
         router.push('/login');
         return;
       }
 
-      console.log('🔍 DEBUG: Checking user profile completeness...');
+      logger.log('🔍 DEBUG: Checking user profile completeness...');
       const hasProfile = userProfile && userProfile.name && userProfile.age;
-      console.log('🔍 DEBUG: User profile check - hasProfile:', hasProfile, 'userProfile:', userProfile);
+      logger.log('🔍 DEBUG: User profile check - hasProfile:', hasProfile, 'userProfile:', userProfile);
 
       // Check for saved journey state in localStorage as backup
       const savedJourneyState = localStorage.getItem(`onboarding_journey_${user.id}`);
       if (savedJourneyState) {
         try {
           const parsedState = JSON.parse(savedJourneyState);
-          console.log('💾 DEBUG: Found saved journey state in localStorage:', parsedState);
+          logger.log('💾 DEBUG: Found saved journey state in localStorage:', parsedState);
           // Use saved state if it's more recent than API state
           setJourneyState(parsedState);
           return;
@@ -99,27 +100,27 @@ export default function OnboardingPage() {
       try {
         // Check if user has profile
         const hasProfile = userProfile && userProfile.name && userProfile.age;
-        console.log('🔍 DEBUG: Profile check result - hasProfile:', hasProfile);
+        logger.log('🔍 DEBUG: Profile check result - hasProfile:', hasProfile);
 
         // Check if user has already completed journey
-        console.log('🔍 DEBUG: Fetching journey status from API...');
+        logger.log('🔍 DEBUG: Fetching journey status from API...');
         const response = await fetch(`/api/journey/status?userId=${user.id}`);
-        console.log('🔍 DEBUG: Journey status API response:', response.status, response.ok);
+        logger.log('🔍 DEBUG: Journey status API response:', response.status, response.ok);
 
         if (response.ok) {
           const data = await response.json();
-          console.log('🔍 DEBUG: Journey status data:', data);
+          logger.log('🔍 DEBUG: Journey status data:', data);
 
           // If journey is complete, redirect to dashboard
           if (data.status === 'completed') {
-            console.log('✅ DEBUG: Journey already completed, redirecting to dashboard');
+            logger.log('✅ DEBUG: Journey already completed, redirecting to dashboard');
             router.push('/dashboard');
             return;
           }
 
           // Resume from current step, but check if profile is needed first
           const currentStep = !hasProfile ? 'profile' : (data.currentStep || 'welcome');
-          console.log('🔍 DEBUG: Resuming journey - currentStep:', currentStep, 'hasProfile:', hasProfile);
+          logger.log('🔍 DEBUG: Resuming journey - currentStep:', currentStep, 'hasProfile:', hasProfile);
           setJourneyStateWithStorage({
             currentStep,
             completedSteps: data.completedSteps || [],
@@ -127,10 +128,10 @@ export default function OnboardingPage() {
             coachAdvice: data.coachAdvice,
           });
         } else {
-          console.log('⚠️ DEBUG: Journey status API failed, starting fresh journey');
+          logger.log('⚠️ DEBUG: Journey status API failed, starting fresh journey');
           // Start fresh journey - check if profile is needed
           const currentStep = !hasProfile ? 'profile' : 'welcome';
-          console.log('🔍 DEBUG: Starting fresh journey - currentStep:', currentStep);
+          logger.log('🔍 DEBUG: Starting fresh journey - currentStep:', currentStep);
           setJourneyStateWithStorage({
             currentStep,
             completedSteps: [],
@@ -176,7 +177,7 @@ export default function OnboardingPage() {
   };
 
   const handleScanComplete = async (scanData: any): Promise<void> => {
-    console.log('🎯 DEBUG: Scan completed, received scanData:', scanData);
+    logger.log('🎯 DEBUG: Scan completed, received scanData:', scanData);
 
     // Show loading state
     setJourneyStateWithStorage(prev => ({
@@ -187,9 +188,9 @@ export default function OnboardingPage() {
     try {
       // Generate coach advice via AI with improved error handling
       const token = authManager.getToken();
-      console.log('🔐 DEBUG: Token available for coach advice:', !!token, token ? token.substring(0, 20) + '...' : 'none');
+      logger.log('🔐 DEBUG: Token available for coach advice:', !!token, token ? token.substring(0, 20) + '...' : 'none');
 
-      console.log('🔍 DEBUG: Sending scan data to coach API...');
+      logger.log('🔍 DEBUG: Sending scan data to coach API...');
       const response = await fetch('/api/coach/analyze-start', {
         method: 'POST',
         headers: {
@@ -199,7 +200,7 @@ export default function OnboardingPage() {
         body: JSON.stringify(scanData),
       });
 
-      console.log('🔐 DEBUG: Coach API response status:', response.status, 'ok:', response.ok);
+      logger.log('🔐 DEBUG: Coach API response status:', response.status, 'ok:', response.ok);
 
       if (!response.ok) {
         // Handle different error types
@@ -225,7 +226,7 @@ export default function OnboardingPage() {
 
       // Use enhanced error messaging
       const errorMessage = getAuthErrorMessage(error as Error);
-      console.log('🔍 DEBUG: Error message from auth manager:', errorMessage);
+      logger.log('🔍 DEBUG: Error message from auth manager:', errorMessage);
 
       // Determine error type and provide appropriate fallback
       const isAuthError = errorMessage.includes('AUTH_FALLBACK_MODE') ||
@@ -237,7 +238,7 @@ export default function OnboardingPage() {
                             errorMessage.includes('timeout');
 
       if (isAuthError) {
-        console.log('🔐 DEBUG: Auth error detected, providing fallback coach advice');
+        logger.log('🔐 DEBUG: Auth error detected, providing fallback coach advice');
         // Allow user to continue with limited functionality
         setJourneyStateWithStorage(prev => ({
           ...prev,
@@ -261,7 +262,7 @@ export default function OnboardingPage() {
           },
         }));
       } else if (isNetworkError) {
-        console.log('🌐 DEBUG: Network error detected, offering retry option');
+        logger.log('🌐 DEBUG: Network error detected, offering retry option');
         // Show retry option for network errors
         const retry = confirm('Netwerkfout bij het genereren van advies. Wil je het opnieuw proberen?\n\nKlik OK om opnieuw te proberen, Cancel om door te gaan zonder advies.');
         if (retry) {
@@ -295,7 +296,7 @@ export default function OnboardingPage() {
           }));
         }
       } else {
-        console.log('❓ DEBUG: Unknown error type, providing generic fallback');
+        logger.log('❓ DEBUG: Unknown error type, providing generic fallback');
         // Generic fallback for unknown errors
         alert('Er ging iets mis bij het genereren van je persoonlijke advies. Je kunt wel doorgaan met de app!');
         setJourneyStateWithStorage(prev => ({
@@ -325,7 +326,7 @@ export default function OnboardingPage() {
 
   const handleCoachAdviceComplete = async () => {
     // Transition to welcome video instead of completing journey
-    console.log('🎯 Coach advice completed, transitioning to welcome video');
+    logger.log('🎯 Coach advice completed, transitioning to welcome video');
     await saveJourneyProgress('welcome-video', ['profile', 'welcome', 'scan', 'coach-advice']);
     setJourneyStateWithStorage(prev => ({
       ...prev,

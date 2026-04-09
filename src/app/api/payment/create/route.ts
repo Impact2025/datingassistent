@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
 import { stripe } from '@/lib/stripe';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -136,7 +137,7 @@ export async function POST(request: NextRequest) {
         ON CONFLICT DO NOTHING
       `;
 
-      console.log('✅ Stripe subscription session created:', orderId);
+      logger.log('✅ Stripe subscription session created:', orderId);
 
       return NextResponse.json({
         success: true,
@@ -161,7 +162,7 @@ export async function POST(request: NextRequest) {
 
     // Free order (100% coupon or free program)
     if (amountCents === 0) {
-      console.log('🎁 Free order detected, creating direct enrollment');
+      logger.log('🎁 Free order detected, creating direct enrollment');
 
       const existingEnrollment = await sql`
         SELECT id, order_id, status FROM program_enrollments
@@ -275,7 +276,7 @@ export async function POST(request: NextRequest) {
       )
     `;
 
-    console.log('✅ Stripe program session created:', orderId);
+    logger.log('✅ Stripe program session created:', orderId);
 
     return NextResponse.json({
       success: true,

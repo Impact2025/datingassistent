@@ -1,4 +1,5 @@
 'use client';
+import { logger } from '@/lib/logger';
 
 import { useReportWebVitals } from 'next/web-vitals';
 import { useEffect, useState } from 'react';
@@ -27,7 +28,7 @@ export function WebVitals() {
   useReportWebVitals((metric) => {
     // Log metrics in development
     if (process.env.NODE_ENV === 'development') {
-      console.log('Web Vitals:', metric);
+      logger.log('Web Vitals:', metric);
     }
 
     // Only send with consent

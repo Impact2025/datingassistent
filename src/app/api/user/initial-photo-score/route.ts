@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('📊 Saving initial photo score for user:', userId, 'score:', score);
+    logger.log('📊 Saving initial photo score for user:', userId, 'score:', score);
 
     await sql`
       UPDATE users
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
       WHERE id = ${userId}
     `;
 
-    console.log('✅ Initial photo score saved for user:', userId);
+    logger.log('✅ Initial photo score saved for user:', userId);
 
     return NextResponse.json({
       success: true,

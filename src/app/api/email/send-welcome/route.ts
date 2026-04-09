@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import sgMail from '@sendgrid/mail';
 
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
     // Send email
     await sgMail.send(msg);
     
-    console.log('✅ Welcome email sent to:', email);
+    logger.log('✅ Welcome email sent to:', email);
     
     return NextResponse.json({ success: true, message: 'Welcome email sent' });
   } catch (error) {

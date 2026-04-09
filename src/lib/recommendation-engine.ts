@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
 import { UserProfile } from '@/lib/types';
 import { MODULES } from '@/lib/data';
@@ -320,7 +321,7 @@ export async function initializeUserBehaviorTable(): Promise<void> {
     await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_action ON user_behavior(action)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_user_behavior_timestamp ON user_behavior(timestamp)`;
     
-    console.log('User behavior table initialized successfully');
+    logger.log('User behavior table initialized successfully');
   } catch (error) {
     console.error('Error initializing user behavior table:', error);
   }

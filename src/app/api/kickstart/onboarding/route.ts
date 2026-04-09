@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
@@ -169,7 +170,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    console.log(`✅ Kickstart onboarding completed for user ${userId}`);
+    logger.log(`✅ Kickstart onboarding completed for user ${userId}`);
 
     return NextResponse.json({
       success: true,

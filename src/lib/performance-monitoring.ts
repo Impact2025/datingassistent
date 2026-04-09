@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * PERFORMANCE MONITORING SERVICE
  * Track and monitor application performance with Sentry
@@ -100,7 +101,7 @@ export function trackWebVitals(metric: {
 
   // Also log to console in development
   if (process.env.NODE_ENV === 'development') {
-    console.log(`[Web Vital] ${metric.name}:`, metric);
+    logger.log(`[Web Vital] ${metric.name}:`, metric);
   }
 }
 
@@ -352,5 +353,5 @@ export function initializePerformanceMonitoring(): void {
   // Observe long tasks
   observeLongTasks();
 
-  console.log('✅ Performance monitoring initialized');
+  logger.log('✅ Performance monitoring initialized');
 }

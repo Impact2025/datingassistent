@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { verifyToken } from '@/lib/auth';
@@ -45,7 +46,7 @@ export async function GET(request: NextRequest) {
       await sql`CREATE INDEX IF NOT EXISTS idx_data_requests_status ON data_requests(status)`;
       await sql`CREATE INDEX IF NOT EXISTS idx_data_requests_requested_at ON data_requests(requested_at)`;
 
-      console.log('✅ Data requests table ensured');
+      logger.log('✅ Data requests table ensured');
     } catch (tableError) {
       console.error('Error creating data_requests table:', tableError);
       // Continue anyway - table might already exist

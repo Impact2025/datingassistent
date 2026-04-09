@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 #!/usr/bin/env node
 
 /**
@@ -15,7 +16,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 async function setupDatabase() {
-  console.log('🚀 Setting up database...');
+  logger.log('🚀 Setting up database...');
   
   // Check if POSTGRES_URL is configured
   if (!process.env.POSTGRES_URL || process.env.POSTGRES_URL.includes('your_')) {
@@ -26,27 +27,27 @@ async function setupDatabase() {
   }
 
   try {
-    console.log('🔧 Initializing database schema...');
+    logger.log('🔧 Initializing database schema...');
     const result = await initializeDatabase();
-    console.log('✅ Database schema initialized successfully!');
-    console.log('📋 Tables created:');
-    console.log('   - users');
-    console.log('   - user_profiles');
-    console.log('   - conversations');
-    console.log('   - messages');
-    console.log('   - photo_analyses');
-    console.log('   - usage_tracking');
-    console.log('   - subscription_history');
-    console.log('   - blog_posts');
-    console.log('   - reviews');
-    console.log('   - orders');
-    console.log('   - password_reset_tokens');
-    console.log('   - coupons');
-    console.log('   - podcasts');
-    console.log('   - waarden_kompas_sessions');
-    console.log('   - waarden_kompas_responses');
-    console.log('   - waarden_kompas_results');
-    console.log('   - waarden_kompas_integrations');
+    logger.log('✅ Database schema initialized successfully!');
+    logger.log('📋 Tables created:');
+    logger.log('   - users');
+    logger.log('   - user_profiles');
+    logger.log('   - conversations');
+    logger.log('   - messages');
+    logger.log('   - photo_analyses');
+    logger.log('   - usage_tracking');
+    logger.log('   - subscription_history');
+    logger.log('   - blog_posts');
+    logger.log('   - reviews');
+    logger.log('   - orders');
+    logger.log('   - password_reset_tokens');
+    logger.log('   - coupons');
+    logger.log('   - podcasts');
+    logger.log('   - waarden_kompas_sessions');
+    logger.log('   - waarden_kompas_responses');
+    logger.log('   - waarden_kompas_results');
+    logger.log('   - waarden_kompas_integrations');
     
     process.exit(0);
   } catch (error) {

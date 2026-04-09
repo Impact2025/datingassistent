@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { CoachingProfileService } from '@/lib/coaching-profile-service';
@@ -109,7 +110,7 @@ export async function POST(request: NextRequest) {
             completedSteps: [...(profile.completedSteps || []), `goal_completed_${goalId}`]
           });
           
-          console.log(`✅ Removed completed goal ${goalId} from active goals for user ${userId}`);
+          logger.log(`✅ Removed completed goal ${goalId} from active goals for user ${userId}`);
         }
       } catch (error) {
         console.error('Failed to update coaching profile after goal completion:', error);

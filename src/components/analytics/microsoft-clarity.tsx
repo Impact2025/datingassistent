@@ -20,6 +20,7 @@
 
 import { useEffect, useState } from 'react';
 import { hasAnalyticsConsent } from '@/components/cookie-consent';
+import { logger } from '@/lib/logger';
 
 declare global {
   interface Window {
@@ -42,7 +43,7 @@ export function MicrosoftClarity({ projectId }: ClarityProps) {
       setShouldLoad(hasConsent);
 
       if (!hasConsent) {
-        console.log('[Clarity] Blocked - Analytics consent required');
+        logger.log('[Clarity] Blocked - Analytics consent required');
       }
     };
 
@@ -60,14 +61,14 @@ export function MicrosoftClarity({ projectId }: ClarityProps) {
   useEffect(() => {
     if (!clarityId) {
       if (process.env.NODE_ENV === 'development') {
-        console.log('[Clarity] No project ID configured. Add NEXT_PUBLIC_CLARITY_PROJECT_ID to .env');
+        logger.log('[Clarity] No project ID configured. Add NEXT_PUBLIC_CLARITY_PROJECT_ID to .env');
       }
       return;
     }
 
     // Don't load in development unless explicitly enabled
     if (process.env.NODE_ENV === 'development' && !process.env.NEXT_PUBLIC_CLARITY_DEV_ENABLED) {
-      console.log('[Clarity] Disabled in development. Set NEXT_PUBLIC_CLARITY_DEV_ENABLED=true to enable.');
+      logger.log('[Clarity] Disabled in development. Set NEXT_PUBLIC_CLARITY_DEV_ENABLED=true to enable.');
       return;
     }
 
@@ -78,7 +79,7 @@ export function MicrosoftClarity({ projectId }: ClarityProps) {
 
     // Prevent double initialization
     if (window.clarity) {
-      console.log('[Clarity] Already initialized');
+      logger.log('[Clarity] Already initialized');
       return;
     }
 
@@ -94,7 +95,7 @@ export function MicrosoftClarity({ projectId }: ClarityProps) {
       y.parentNode.insertBefore(t, y);
     })(window, document, 'clarity', 'script', clarityId);
 
-    console.log('[Clarity] ✅ Initialized with consent - Session recording active');
+    logger.log('[Clarity] ✅ Initialized with consent - Session recording active');
   }, [clarityId, shouldLoad]);
 
   return null;

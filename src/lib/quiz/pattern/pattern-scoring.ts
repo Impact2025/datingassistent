@@ -18,6 +18,7 @@ import type {
   PatternScoringResult,
 } from './pattern-types';
 import { PATTERN_QUESTIONS } from './pattern-questions';
+import { logger } from '@/lib/logger';
 
 // =====================================================
 // THRESHOLDS
@@ -251,9 +252,9 @@ function calculateConfidence(
  *   '10': 'understand_myself',
  * });
  *
- * console.log(result.attachmentPattern); // 'anxious'
- * console.log(result.anxietyScore); // 80
- * console.log(result.confidence); // 78
+ * logger.log(result.attachmentPattern); // 'anxious'
+ * logger.log(result.anxietyScore); // 80
+ * logger.log(result.confidence); // 78
  * ```
  */
 export function calculatePatternScore(

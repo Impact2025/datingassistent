@@ -159,6 +159,30 @@ export default function TermsPage() {
                   <li>Indien voor bepaalde Diensten kosten gelden, worden deze duidelijk vermeld op de Website.</li>
                   <li>Betaling geschiedt op de wijze zoals aangegeven door DatingAssistent.</li>
                   <li>Bij niet-tijdige betaling mag DatingAssistent de dienstverlening opschorten.</li>
+                  <li>Abonnementen worden automatisch verlengd voor dezelfde periode tenzij de Gebruiker het abonnement uiterlijk 24 uur voor de verlengingsdatum opzegt via de accountinstellingen of via <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@datingassistent.nl</Link>.</li>
+                  <li>DatingAssistent behoudt zich het recht voor de prijzen te wijzigen. Bij prijswijzigingen worden abonnees minimaal 30 dagen van tevoren per e-mail geïnformeerd.</li>
+                </ol>
+              </div>
+
+              <div className="space-y-3">
+                <h2 className="text-2xl font-semibold">7a. Herroepingsrecht (consumenten)</h2>
+                <ol className="space-y-3 text-sm sm:text-base leading-relaxed text-foreground/80 list-decimal pl-6">
+                  <li>Consumenten hebben het recht een overeenkomst op afstand zonder opgave van redenen te ontbinden binnen <strong>14 kalenderdagen</strong> na het sluiten van de overeenkomst (art. 6:230o BW).</li>
+                  <li>
+                    <strong>Afstand van herroepingsrecht:</strong> Door bij het afronden van de betaling expliciet toestemming te geven voor onmiddellijke levering van digitale diensten, erkent de Gebruiker dat het herroepingsrecht vervalt zodra de dienst volledig is geleverd of de toegang is verstrekt.
+                  </li>
+                  <li>Om gebruik te maken van het herroepingsrecht kan de Gebruiker binnen de 14-daagse termijn contact opnemen via <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@datingassistent.nl</Link> met vermelding van naam, e-mailadres en ordernummer.</li>
+                  <li>Bij gebruikmaking van het herroepingsrecht vergoedt DatingAssistent het betaalde bedrag binnen 14 dagen via de oorspronkelijke betaalmethode.</li>
+                </ol>
+              </div>
+
+              <div className="space-y-3">
+                <h2 className="text-2xl font-semibold">7b. Proefperiode</h2>
+                <ol className="space-y-3 text-sm sm:text-base leading-relaxed text-foreground/80 list-decimal pl-6">
+                  <li>DatingAssistent kan een gratis proefperiode aanbieden. De duur en voorwaarden van de proefperiode worden vermeld bij het aanbod.</li>
+                  <li>Na afloop van de proefperiode wordt de Gebruiker <strong>niet automatisch</strong> omgezet naar een betaald abonnement tenzij dit expliciet is overeengekomen en de Gebruiker daarvoor zijn betaalgegevens heeft opgegeven.</li>
+                  <li>De Gebruiker ontvangt een herinnering per e-mail voordat de proefperiode afloopt.</li>
+                  <li>Annuleren tijdens de proefperiode kan op elk moment via de accountinstellingen of via <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@datingassistent.nl</Link>.</li>
                 </ol>
               </div>
 

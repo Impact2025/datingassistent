@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { chatCompletion } from '@/lib/ai-service';
 import { verifyToken } from '@/lib/auth';
@@ -190,7 +191,7 @@ Gebruik dit EXACTE format:
       }
     );
 
-    console.log('🤖 AI Response:', response.substring(0, 200) + '...');
+    logger.log('🤖 AI Response:', response.substring(0, 200) + '...');
 
     // Parse JSON response with robust error handling
     let recommendations: PlatformRecommendation[];
@@ -243,7 +244,7 @@ Gebruik dit EXACTE format:
         throw new Error('No valid recommendations found');
       }
 
-      console.log(`✅ Successfully parsed ${recommendations.length} recommendations`);
+      logger.log(`✅ Successfully parsed ${recommendations.length} recommendations`);
 
     } catch (parseError) {
       console.error('❌ Failed to parse AI response:', parseError);
@@ -274,7 +275,7 @@ Gebruik dit EXACTE format:
           NOW()
         )
       `;
-      console.log('✅ Saved recommendations to database');
+      logger.log('✅ Saved recommendations to database');
     } catch (dbError) {
       // Don't fail the request if DB save fails
       console.error('⚠️  Failed to save to database:', dbError);

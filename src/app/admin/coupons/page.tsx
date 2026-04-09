@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -79,18 +80,18 @@ export default function CouponsPage() {
       setError(null);
       setLoading(true);
       
-      console.log('Fetching coupons...');
+      logger.log('Fetching coupons...');
       const response = await fetch('/api/admin/coupons');
-      console.log('Response status:', response.status);
+      logger.log('Response status:', response.status);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.log('Error data:', errorData);
+        logger.log('Error data:', errorData);
         throw new Error(`HTTP error! status: ${response.status} - ${errorData.error || 'Unknown error'}`);
       }
       
       const data = await response.json();
-      console.log('Coupons data received:', data);
+      logger.log('Coupons data received:', data);
       
       // Ensure data is an array
       if (Array.isArray(data)) {

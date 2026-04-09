@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Smart Notification System
  * Sprint 5.6: Context-aware notifications based on user behavior
@@ -228,7 +229,7 @@ export async function initNotificationsTable(): Promise<void> {
         INDEX idx_user_notifications (user_id, is_read, created_at)
       )
     `;
-    console.log('Notifications table initialized');
+    logger.log('Notifications table initialized');
   } catch (error) {
     console.error('Error initializing notifications table:', error);
   }

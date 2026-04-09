@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * API Route: Dating Snapshot AI Analysis
  *
@@ -100,7 +101,7 @@ export async function POST(request: NextRequest) {
 
     // Non-streaming response
     if (!streaming) {
-      console.log(`🤖 Generating non-streaming AI analysis for user ${userId}`);
+      logger.log(`🤖 Generating non-streaming AI analysis for user ${userId}`);
       const analysis = await generateSnapshotAnalysis(answers, scores, userId);
       return new Response(JSON.stringify({ success: true, analysis }), {
         headers: { 'Content-Type': 'application/json' },
@@ -108,7 +109,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Streaming SSE response
-    console.log(`🤖 Starting streaming AI analysis for user ${userId}`);
+    logger.log(`🤖 Starting streaming AI analysis for user ${userId}`);
 
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
@@ -120,7 +121,7 @@ export async function POST(request: NextRequest) {
 
             // Log progress
             if (chunk.type === 'phase') {
-              console.log(`📊 Analysis progress: ${chunk.phase} (${chunk.progress}%)`);
+              logger.log(`📊 Analysis progress: ${chunk.phase} (${chunk.progress}%)`);
             }
           }
 

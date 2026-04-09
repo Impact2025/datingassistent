@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { verifyToken } from '@/lib/jwt-config';
@@ -101,7 +102,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(notificationsResult.rows);
       }
     } catch (dbError) {
-      console.log('Database not available for notifications, using mock data');
+      logger.log('Database not available for notifications, using mock data');
     }
 
     // Return mock data if database is not available

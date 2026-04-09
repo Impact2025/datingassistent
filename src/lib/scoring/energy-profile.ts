@@ -55,6 +55,7 @@
  */
 
 import type { EnergyProfile } from '@/types/dating-snapshot.types';
+import { logger } from '@/lib/logger';
 
 // =====================================================
 // TYPES
@@ -269,9 +270,9 @@ function determineProfile(introvertScore: number): EnergyProfile {
  *   conversation_preference: 'deep_1on1',
  * });
  *
- * console.log(result.profile); // 'introvert'
- * console.log(result.introvertScore); // 78
- * console.log(result.enableIntrovertMode); // true
+ * logger.log(result.profile); // 'introvert'
+ * logger.log(result.introvertScore); // 78
+ * logger.log(result.enableIntrovertMode); // true
  * ```
  */
 export function calculateEnergyProfile(

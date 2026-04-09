@@ -7,6 +7,7 @@
 import { sql } from '@vercel/postgres';
 import { getAgeRange } from '../ai-privacy';
 import type { CoachContext, UserProfile, AssessmentResults, JourneyProgress, UserGoals, RecentActivity } from './types';
+import { logger } from '@/lib/logger';
 
 export async function buildCoachContext(userId: number): Promise<CoachContext> {
   try {
@@ -85,7 +86,7 @@ async function getAssessmentResults(userId: number): Promise<AssessmentResults> 
       };
     }
   } catch (error) {
-    console.log('No hechtingsstijl data');
+    logger.log('No hechtingsstijl data');
   }
 
   // Dating Stijl
@@ -108,7 +109,7 @@ async function getAssessmentResults(userId: number): Promise<AssessmentResults> 
       };
     }
   } catch (error) {
-    console.log('No dating style data');
+    logger.log('No dating style data');
   }
 
   // Emotionele Readiness
@@ -130,7 +131,7 @@ async function getAssessmentResults(userId: number): Promise<AssessmentResults> 
       };
     }
   } catch (error) {
-    console.log('No emotional readiness data');
+    logger.log('No emotional readiness data');
   }
 
   return assessments;
@@ -157,7 +158,7 @@ async function getJourneyProgress(userId: number): Promise<JourneyProgress> {
       };
     }
   } catch (error) {
-    console.log('No journey progress data');
+    logger.log('No journey progress data');
   }
 
   return {
@@ -189,7 +190,7 @@ async function getUserGoals(userId: number): Promise<UserGoals> {
       };
     }
   } catch (error) {
-    console.log('No goals data');
+    logger.log('No goals data');
   }
 
   return {};
@@ -207,7 +208,7 @@ async function getRecentActivity(userId: number): Promise<RecentActivity> {
       activity.lastLogin = loginResult.rows[0].last_login;
     }
   } catch (error) {
-    console.log('No login data');
+    logger.log('No login data');
   }
 
   // Courses in progress
@@ -231,7 +232,7 @@ async function getRecentActivity(userId: number): Promise<RecentActivity> {
       }));
     }
   } catch (error) {
-    console.log('No course progress data');
+    logger.log('No course progress data');
   }
 
   return activity;

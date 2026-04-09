@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * OpenRouter API Client voor toegang tot Claude Haiku en andere AI modellen
  * OpenRouter biedt toegang tot meerdere AI modellen via één API
@@ -136,7 +137,7 @@ export class OpenRouterClient {
   ): Promise<string> {
     // For development with fallback key, return mock response
     if (process.env.NODE_ENV === 'development' && this.apiKey === 'sk-or-v1-fallback-key-for-development') {
-      console.log('⚠️ Using mock OpenRouter response in development mode');
+      logger.log('⚠️ Using mock OpenRouter response in development mode');
       return `Dit is een mock response voor development. Het echte AI model zou hier een nuttige dating tip geven gebaseerd op je input. In productie zou dit een echte AI response zijn van ${model}.`;
     }
 

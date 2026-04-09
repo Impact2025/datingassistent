@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -125,7 +126,7 @@ export function SettingsTab() {
         return;
       }
 
-      console.log('✅ reCAPTCHA verification successful');
+      logger.log('✅ reCAPTCHA verification successful');
 
       // Update profile
       updateProfile(data as UserProfile);

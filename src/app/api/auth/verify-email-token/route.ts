@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyEmailWithToken } from '@/lib/email-verification';
 import { SignJWT } from 'jose';
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
       await scheduleWelcomeEmail(user.id);
       await scheduleProfileOptimizationReminder(user.id);
       await scheduleWeeklyCheckin(user.id);
-      console.log(`✅ Email engagement sequence scheduled for verified user ${user.id}`);
+      logger.log(`✅ Email engagement sequence scheduled for verified user ${user.id}`);
     } catch (error) {
       console.error('Failed to schedule welcome emails:', error);
     }

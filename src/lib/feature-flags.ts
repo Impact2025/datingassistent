@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Feature Flags System
  * Enables gradual rollouts, A/B testing, and safe feature deployments
@@ -299,5 +300,5 @@ export function trackABTestConversion(
   event: string = 'conversion'
 ) {
   // In a real implementation, this would send to analytics service
-  console.log(`A/B Test Conversion: ${testName} - ${variant} - ${event}`, { userId });
+  logger.log(`A/B Test Conversion: ${testName} - ${variant} - ${event}`, { userId });
 }

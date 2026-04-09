@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { notifyAdminNewLead } from '@/lib/admin-notifications';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✅ Completing lead onboarding for user:', userId, {
+    logger.log('✅ Completing lead onboarding for user:', userId, {
       otoShown,
       otoAccepted,
       photoScore,
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
       WHERE id = ${userId}
     `;
 
-    console.log('✅ Lead onboarding marked as completed for user:', userId);
+    logger.log('✅ Lead onboarding marked as completed for user:', userId);
 
     // Fetch user data for admin notification
     const userResult = await sql`

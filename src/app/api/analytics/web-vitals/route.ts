@@ -4,6 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +13,7 @@ export async function POST(req: NextRequest) {
     const metric = await req.json();
     
     // Log to console (or send to your analytics service)
-    console.log('[Web Vitals]', {
+    logger.log('[Web Vitals]', {
       name: metric.name,
       value: metric.value,
       rating: metric.rating,

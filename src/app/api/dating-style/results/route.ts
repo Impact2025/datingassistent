@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
@@ -214,7 +215,7 @@ export async function POST(request: NextRequest) {
           microExercises: aiInsights.microExercises
         }
       });
-      console.log(`✅ Dating style data saved to AI context for user ${userId}`);
+      logger.log(`✅ Dating style data saved to AI context for user ${userId}`);
     } catch (contextError) {
       console.error('Error saving dating style data to AI context:', contextError);
     }

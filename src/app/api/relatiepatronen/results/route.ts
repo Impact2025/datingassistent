@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
@@ -209,7 +210,7 @@ export async function POST(request: NextRequest) {
           microInterventions: aiInsights.microInterventions
         }
       });
-      console.log(`✅ Relationship patterns data saved to AI context for user ${userId}`);
+      logger.log(`✅ Relationship patterns data saved to AI context for user ${userId}`);
     } catch (contextError) {
       console.error('Error saving relationship patterns data to AI context:', contextError);
     }

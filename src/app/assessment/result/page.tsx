@@ -1,4 +1,5 @@
 'use client';
+import { logger } from '@/lib/logger';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -81,7 +82,7 @@ export default function AssessmentResultPage() {
 
         // If authenticated AND we have assessment data, save to database
         if (isAuth && answers) {
-          console.log('✅ User is authenticated, saving assessment to database...');
+          logger.log('✅ User is authenticated, saving assessment to database...');
           try {
             const saveRes = await fetch('/api/assessment/save', {
               method: 'POST',
@@ -91,13 +92,13 @@ export default function AssessmentResultPage() {
 
             if (saveRes.ok) {
               const saveData = await saveRes.json();
-              console.log('✅ Assessment saved to database:', saveData);
+              logger.log('✅ Assessment saved to database:', saveData);
 
               // Clear localStorage after successful save
               if (saveData.saved) {
                 localStorage.removeItem('assessment_answers');
                 localStorage.removeItem('pending_recommendation');
-                console.log('🧹 Cleaned up localStorage');
+                logger.log('🧹 Cleaned up localStorage');
               }
             }
           } catch (saveErr) {

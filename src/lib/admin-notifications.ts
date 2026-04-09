@@ -10,6 +10,7 @@
 import { render } from '@react-email/components';
 import { sendEmail } from './email-service';
 import AdminNewLeadEmail from '@/emails/admin-new-lead-email';
+import { logger } from '@/lib/logger';
 
 // Admin email configuration
 const ADMIN_EMAIL = 'admin@datingassistent.nl';
@@ -79,7 +80,7 @@ export async function notifyAdminNewLead(data: NewLeadNotificationData): Promise
     });
 
     if (sent) {
-      console.log(`📧 Admin notified of new lead: ${data.email}`);
+      logger.log(`📧 Admin notified of new lead: ${data.email}`);
     } else {
       console.error(`❌ Failed to notify admin of new lead: ${data.email}`);
     }
@@ -203,6 +204,6 @@ export async function sendDailyLeadSummary(): Promise<boolean> {
   // - Conversion rate
   // - Top obstacles
   // - Revenue generated
-  console.log('📊 Daily lead summary not yet implemented');
+  logger.log('📊 Daily lead summary not yet implemented');
   return true;
 }

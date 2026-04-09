@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -41,11 +42,11 @@ USER AGENT: ${request.headers.get('user-agent') || 'Onbekend'}
     `.trim();
 
     // For development/testing - log the email content
-    console.log('=== CONTACT FORM SUBMISSION ===');
-    console.log('To:', 'info@datingassistent.nl');
-    console.log('Subject:', emailSubject);
-    console.log('Body:', emailBody);
-    console.log('================================');
+    logger.log('=== CONTACT FORM SUBMISSION ===');
+    logger.log('To:', 'info@datingassistent.nl');
+    logger.log('Subject:', emailSubject);
+    logger.log('Body:', emailBody);
+    logger.log('================================');
 
     // Send email using Web3Forms (free service)
     // Alternative services you can use:
@@ -96,13 +97,13 @@ USER AGENT: ${request.headers.get('user-agent') || 'Onbekend'}
     }
 
     // Always log the email for development/testing
-    console.log('=== CONTACT FORM SUBMISSION ===');
-    console.log('Email sent via Web3Forms:', emailSent ? 'YES' : 'NO (fallback used)');
-    console.log('To: info@datingassistent.nl');
-    console.log('Subject:', emailSubject);
-    console.log('From:', `${firstName} ${lastName} <${email}>`);
-    console.log('Message:', message);
-    console.log('================================');
+    logger.log('=== CONTACT FORM SUBMISSION ===');
+    logger.log('Email sent via Web3Forms:', emailSent ? 'YES' : 'NO (fallback used)');
+    logger.log('To: info@datingassistent.nl');
+    logger.log('Subject:', emailSubject);
+    logger.log('From:', `${firstName} ${lastName} <${email}>`);
+    logger.log('Message:', message);
+    logger.log('================================');
 
     // For development/testing, we always return success
     // In production, you should implement proper email service monitoring

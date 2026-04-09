@@ -1,4 +1,5 @@
 'use client';
+import { logger } from '@/lib/logger';
 
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -73,10 +74,10 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
       }
 
       const data = await response.json();
-      console.log('🔍 LessonViewer: Fetched lesson data:', data);
-      console.log('🔍 LessonViewer: Secties:', data.les?.secties);
+      logger.log('🔍 LessonViewer: Fetched lesson data:', data);
+      logger.log('🔍 LessonViewer: Secties:', data.les?.secties);
       data.les?.secties?.forEach((s: any, i: number) => {
-        console.log(`📝 Section ${i + 1}:`, {
+        logger.log(`📝 Section ${i + 1}:`, {
           type: s.sectie_type,
           titel: s.titel,
           hasInhoud: !!s.inhoud,

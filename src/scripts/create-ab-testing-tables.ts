@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 #!/usr/bin/env tsx
 
 /**
@@ -12,7 +13,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 async function createABTestingTables() {
-  console.log('🔧 Creating A/B Testing Tables...');
+  logger.log('🔧 Creating A/B Testing Tables...');
 
   try {
     // A/B Test Conversions Table
@@ -28,7 +29,7 @@ async function createABTestingTables() {
         UNIQUE(test_id, variant_id, user_id, event_type)
       )
     `;
-    console.log('✅ Created ab_test_conversions table');
+    logger.log('✅ Created ab_test_conversions table');
 
     // Profile Analytics Events Table
     await sql`
@@ -41,7 +42,7 @@ async function createABTestingTables() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )
     `;
-    console.log('✅ Created profile_analytics_events table');
+    logger.log('✅ Created profile_analytics_events table');
 
     // Profile Quality Scores Table
     await sql`
@@ -55,7 +56,7 @@ async function createABTestingTables() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )
     `;
-    console.log('✅ Created profile_quality_scores table');
+    logger.log('✅ Created profile_quality_scores table');
 
     // User Journey Metrics Table
     await sql`
@@ -66,7 +67,7 @@ async function createABTestingTables() {
         last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )
     `;
-    console.log('✅ Created user_journey_metrics table');
+    logger.log('✅ Created user_journey_metrics table');
 
     // Create indexes for performance
     await sql`CREATE INDEX IF NOT EXISTS idx_ab_test_conversions_test_id ON ab_test_conversions(test_id)`;
@@ -83,7 +84,7 @@ async function createABTestingTables() {
     await sql`CREATE INDEX IF NOT EXISTS idx_profile_quality_session_id ON profile_quality_scores(session_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_profile_quality_created_at ON profile_quality_scores(created_at)`;
 
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     // Create views for analytics
     await sql`
@@ -100,7 +101,7 @@ async function createABTestingTables() {
       FROM ab_test_conversions
       GROUP BY test_id, variant_id
     `;
-    console.log('✅ Created ab_test_results view');
+    logger.log('✅ Created ab_test_results view');
 
     await sql`
       CREATE OR REPLACE VIEW profile_analytics_summary AS
@@ -115,7 +116,7 @@ async function createABTestingTables() {
       GROUP BY DATE(created_at), event_type
       ORDER BY date DESC, event_count DESC
     `;
-    console.log('✅ Created profile_analytics_summary view');
+    logger.log('✅ Created profile_analytics_summary view');
 
     // Create statistical significance function
     await sql`
@@ -159,9 +160,9 @@ async function createABTestingTables() {
       END;
       $$ LANGUAGE plpgsql
     `;
-    console.log('✅ Created statistical significance function');
+    logger.log('✅ Created statistical significance function');
 
-    console.log('🎉 All A/B Testing tables created successfully!');
+    logger.log('🎉 All A/B Testing tables created successfully!');
 
   } catch (error) {
     console.error('❌ Error creating A/B testing tables:', error);
@@ -171,7 +172,7 @@ async function createABTestingTables() {
 
 // Run the script
 createABTestingTables().then(() => {
-  console.log('✅ A/B Testing setup complete!');
+  logger.log('✅ A/B Testing setup complete!');
   process.exit(0);
 }).catch((error) => {
   console.error('❌ Setup failed:', error);

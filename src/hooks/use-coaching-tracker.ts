@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * useCoachingTracker Hook
  *
@@ -105,7 +106,7 @@ export function useCoachingTracker(
     setIsFromOnboarding(onboarding);
 
     if (debug) {
-      console.log(`🎯 [${toolName}] Context:`, {
+      logger.log(`🎯 [${toolName}] Context:`, {
         isFirstTime: firstTime,
         isFromOnboarding: onboarding
       });
@@ -126,7 +127,7 @@ export function useCoachingTracker(
 
     // Temporarily disable tracking until coaching_profiles table is created
     if (debug) {
-      console.log(`📊 [${toolName}] Tracking disabled - coaching_profiles table not available`);
+      logger.log(`📊 [${toolName}] Tracking disabled - coaching_profiles table not available`);
     }
     return;
 
@@ -164,7 +165,7 @@ export function useCoachingTracker(
       }
 
       if (debug) {
-        console.log(`✅ [${toolName}] Tracked ${eventType}:`, eventName || 'tool usage');
+        logger.log(`✅ [${toolName}] Tracked ${eventType}:`, eventName || 'tool usage');
       }
 
       onTrackSuccess?.(eventType);

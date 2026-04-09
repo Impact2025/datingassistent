@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * AI Response Caching Layer
  *
@@ -152,7 +153,7 @@ class AICache {
       if (this.shouldUseRedis()) {
         // Note: This would require scanning all keys with ai_cache: prefix
         // For now, we'll skip this in production
-        console.log('[AI Cache] Clearing not implemented for Redis');
+        logger.log('[AI Cache] Clearing not implemented for Redis');
       } else {
         this.memoryCache.clear();
       }

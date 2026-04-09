@@ -15,6 +15,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { Resend } from 'resend';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -163,7 +164,7 @@ export async function GET(request: NextRequest) {
     const failed = results.filter((r) => r.status === 'rejected').length;
 
     // Log results
-    console.log(`✅ Q&A Reminders sent: ${successful} successful, ${failed} failed`);
+    logger.log(`✅ Q&A Reminders sent: ${successful} successful, ${failed} failed`);
 
     return NextResponse.json({
       message: 'Reminders sent',

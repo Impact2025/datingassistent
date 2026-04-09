@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * ADMIN AUDIT LOGGING SYSTEM
  * Enterprise-grade audit logging for admin actions
@@ -82,7 +83,7 @@ export async function logAdminAction(
 
     // Log critical security events to console
     if (!success || isSecurityEvent(action)) {
-      console.log(`🔐 AUDIT [${success ? 'SUCCESS' : 'FAILED'}]: ${action} on ${resource} by user ${userId}`, {
+      logger.log(`🔐 AUDIT [${success ? 'SUCCESS' : 'FAILED'}]: ${action} on ${resource} by user ${userId}`, {
         ip: auditEntry.ipAddress,
         details: auditEntry.details
       });
@@ -418,7 +419,7 @@ export async function initializeAuditTables(): Promise<void> {
       $$ LANGUAGE plpgsql;
     `;
 
-    console.log('✅ Admin audit tables initialized');
+    logger.log('✅ Admin audit tables initialized');
 
   } catch (error) {
     console.error('Failed to initialize audit tables:', error);

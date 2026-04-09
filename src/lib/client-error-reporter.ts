@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Client-Side Error Reporter
  * Captures and reports errors to the monitoring API for live debugging
@@ -187,7 +188,7 @@ export function setupGlobalErrorHandlers(): void {
     });
   }
 
-  console.log('[ErrorReporter] Global error handlers initialized');
+  logger.log('[ErrorReporter] Global error handlers initialized');
 }
 
 /**

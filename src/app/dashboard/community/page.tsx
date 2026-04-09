@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -60,7 +61,7 @@ export default function CommunityDashboard() {
         const followsData = await followsResponse.json();
         setFollowedItems(followsData.follows || []);
       } else {
-        console.log('Follow API not available yet, showing empty follows');
+        logger.log('Follow API not available yet, showing empty follows');
         setFollowedItems([]);
       }
 
@@ -134,7 +135,7 @@ export default function CommunityDashboard() {
         fetchDashboardData();
       } else if (response.status === 503) {
         // Follow functionality not available yet
-        console.log('Follow functionality not available yet');
+        logger.log('Follow functionality not available yet');
         alert('Follow functionaliteit is nog niet beschikbaar. Probeer het later opnieuw.');
       }
     } catch (error) {

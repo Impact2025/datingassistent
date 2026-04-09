@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * TOKEN USAGE API
  * Provides AI token usage analytics for the admin dashboard
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
     // Calculate date range
     const thirtyDaysAgo = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
 
-    console.log('🔍 Fetching token usage data for last', days, 'days');
+    logger.log('🔍 Fetching token usage data for last', days, 'days');
 
     try {
       // Ensure api_usage table exists
@@ -282,6 +283,6 @@ function generateMockTokenUsageData(days: number): any {
     }
   };
 
-  console.log('📊 Using intelligent mock token usage data');
+  logger.log('📊 Using intelligent mock token usage data');
   return mockData;
 }

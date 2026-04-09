@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { sendVerificationEmail } from '@/lib/email-service';
+import { logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
   try {
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
       // Don't fail the request if email sending fails
     }
 
-    console.log(`✅ New verification code sent to user ${user.id} (${user.email})`);
+    logger.log(`✅ New verification code sent to user ${user.id} (${user.email})`);
 
     return NextResponse.json({
       success: true,

@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -80,7 +81,7 @@ export function PlatformMatchTool() {
           }
         }
       } catch (error) {
-        console.log('Waarden Kompas status check failed:', error);
+        logger.log('Waarden Kompas status check failed:', error);
       }
     };
 
@@ -195,7 +196,7 @@ export function PlatformMatchTool() {
       const data = response as { recommendations?: PlatformRecommendation[] };
       if (data.recommendations && Array.isArray(data.recommendations) && data.recommendations.length > 0) {
         setRecommendations(data.recommendations);
-        console.log(`✅ Received ${data.recommendations.length} platform recommendations`);
+        logger.log(`✅ Received ${data.recommendations.length} platform recommendations`);
       } else {
         throw new Error('Geen aanbevelingen ontvangen van de server');
       }
@@ -242,7 +243,7 @@ export function PlatformMatchTool() {
         steps={getOnboardingSteps('platform-match')}
         open={showOverlay}
         onOpenChange={setShowOverlay}
-        onComplete={() => console.log('Platform Match onboarding completed!')}
+        onComplete={() => logger.log('Platform Match onboarding completed!')}
       />
 
       <div className="space-y-6">

@@ -1,8 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { initializeDatabase } from '@/lib/db-schema';
 import { initializeUserBehaviorTable } from '@/lib/recommendation-engine';
+import { requireAdmin } from '@/lib/auth';
 
-export async function POST() {
+export async function POST(request: NextRequest) {
+  try {
+    await requireAdmin(request);
+  } catch {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
   try {
     await initializeDatabase();
     await initializeUserBehaviorTable();

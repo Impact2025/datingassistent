@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { stripe, constructStripeEvent } from '@/lib/stripe';
 import type Stripe from 'stripe';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
   }
 
-  console.log(`📞 Stripe webhook: ${event.type}`);
+  logger.log(`📞 Stripe webhook: ${event.type}`);
 
   try {
     switch (event.type) {
@@ -51,7 +52,7 @@ export async function POST(request: NextRequest) {
         break;
 
       default:
-        console.log(`ℹ️ Unhandled event type: ${event.type}`);
+        logger.log(`ℹ️ Unhandled event type: ${event.type}`);
     }
   } catch (err) {
     console.error('💥 Webhook handler error:', err);
@@ -100,7 +101,7 @@ async function handleSessionExpired(session: Stripe.Checkout.Session) {
     WHERE id = ${orderId} AND status = 'pending'
   `.catch(() => null);
 
-  console.log('❌ Session expired, order cancelled:', orderId);
+  logger.log('❌ Session expired, order cancelled:', orderId);
 }
 
 async function handlePaymentFailed(intent: Stripe.PaymentIntent) {
@@ -117,7 +118,7 @@ async function handlePaymentFailed(intent: Stripe.PaymentIntent) {
     WHERE id = ${orderId}
   `.catch(() => null);
 
-  console.log('❌ Payment failed for order:', orderId);
+  logger.log('❌ Payment failed for order:', orderId);
 }
 
 // ─── Fulfillment: subscription package ─────────────────────────────────────
@@ -135,7 +136,7 @@ async function fulfillSubscription(
     SELECT status FROM orders WHERE id = ${order_id} LIMIT 1
   `;
   if (existing.rows[0]?.status === 'completed') {
-    console.log('ℹ️ Subscription order already completed, skipping');
+    logger.log('ℹ️ Subscription order already completed, skipping');
     return;
   }
 
@@ -167,7 +168,7 @@ async function fulfillSubscription(
     `.catch((e: unknown) => console.error('⚠️ Coupon increment failed:', e));
   }
 
-  console.log(`✅ Subscription activated: ${package_type} (${billing_period}) for user ${userId}`);
+  logger.log(`✅ Subscription activated: ${package_type} (${billing_period}) for user ${userId}`);
 }
 
 // ─── Fulfillment: one-time program purchase ─────────────────────────────────
@@ -192,7 +193,7 @@ async function fulfillProgram(
     SELECT status FROM payment_transactions WHERE order_id = ${order_id} LIMIT 1
   `;
   if (existing.rows[0]?.status === 'completed') {
-    console.log('ℹ️ Program transaction already completed, skipping');
+    logger.log('ℹ️ Program transaction already completed, skipping');
     return;
   }
 
@@ -209,7 +210,7 @@ async function fulfillProgram(
     VALUES (${userId}, ${programIdInt}, ${order_id}, 'active', NOW())
     ON CONFLICT (user_id, program_id, order_id) DO NOTHING
   `;
-  console.log('✅ Enrollment created');
+  logger.log('✅ Enrollment created');
 
   // Increment coupon usage
   if (coupon_code) {
@@ -236,7 +237,7 @@ async function fulfillProgram(
 
       const { sendProgramEnrollmentEmail } = await import('@/lib/email-service');
       await sendProgramEnrollmentEmail(email, name, programName, slug, dayOneUrl);
-      console.log('✅ Enrollment email sent to:', email);
+      logger.log('✅ Enrollment email sent to:', email);
     }
   } catch (e) {
     console.error('⚠️ Enrollment email failed (non-fatal):', e);
@@ -249,7 +250,7 @@ async function fulfillProgram(
     );
   }
 
-  console.log('✅ Program fulfilled:', order_id);
+  logger.log('✅ Program fulfilled:', order_id);
 }
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
@@ -333,7 +334,7 @@ async function initializeProgramProgress(
         total_lessons    = ${total_lessons},
         current_lesson_id = COALESCE(user_program_progress.current_lesson_id, ${currentLessonId})
     `;
-    console.log(`📊 Progress initialized: ${total_modules} modules, ${total_lessons} lessons`);
+    logger.log(`📊 Progress initialized: ${total_modules} modules, ${total_lessons} lessons`);
   } catch (e) {
     console.error('⚠️ Progress initialization failed (non-fatal):', e);
   }
@@ -368,5 +369,5 @@ async function registerAffiliateConversion(
     )
     ON CONFLICT DO NOTHING
   `;
-  console.log('✅ Affiliate conversion registered:', referralCode);
+  logger.log('✅ Affiliate conversion registered:', referralCode);
 }

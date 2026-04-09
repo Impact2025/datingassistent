@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Streak Tracker - Daily login streak system
  * Sprint 4: Gamification & Engagement
@@ -104,7 +105,7 @@ export async function trackDailyLogin(userId: number): Promise<StreakData> {
       await awardPoints(userId, pointsEarned, 'daily_login', today, `Dagelijkse login streak: ${newStreak} dagen`);
     } catch (e) {
       // Points table may not exist yet, continue without failing
-      console.log('Points tracking skipped (table may not exist)');
+      logger.log('Points tracking skipped (table may not exist)');
     }
 
     // Check for streak achievements
@@ -265,7 +266,7 @@ async function checkStreakAchievements(userId: number, streakDays: number) {
         `;
       } catch (notifError) {
         // Notification table may not exist, continue
-        console.log('Notification skipped (table may not exist)');
+        logger.log('Notification skipped (table may not exist)');
       }
     }
   } catch (error) {

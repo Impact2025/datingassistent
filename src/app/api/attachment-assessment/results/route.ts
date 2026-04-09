@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
@@ -318,7 +319,7 @@ export async function POST(request: NextRequest) {
           practicalTips: aiInsights.tips
         }
       });
-      console.log(`✅ Attachment style data saved to AI context for user ${userId}`);
+      logger.log(`✅ Attachment style data saved to AI context for user ${userId}`);
     } catch (contextError) {
       console.error('Error saving attachment data to AI context:', contextError);
       // Don't fail the request if context save fails

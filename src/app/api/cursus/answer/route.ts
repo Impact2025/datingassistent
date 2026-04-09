@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { authenticateUser } from '@/lib/auth-utils';
@@ -16,7 +17,7 @@ export async function POST(request: NextRequest) {
   let userId: number | undefined;
 
   try {
-    console.log(`📝 Cursus answer request from IP: ${clientIP}`);
+    logger.log(`📝 Cursus answer request from IP: ${clientIP}`);
 
     // Authenticate user
     const authResult = await authenticateUser(request);
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
       return authResult;
     }
     userId = authResult.id;
-    console.log(`✅ User ${userId} authenticated successfully`);
+    logger.log(`✅ User ${userId} authenticated successfully`);
 
     // Parse and validate request body
     let body;
@@ -102,7 +103,7 @@ export async function POST(request: NextRequest) {
         message: `Lesson ${lesSlug} in module ${moduleSlug} not found or has no exercises`
       }, { status: 400 });
     }
-    console.log(`✅ Lesson validation passed: ${exerciseCount} exercises found`);
+    logger.log(`✅ Lesson validation passed: ${exerciseCount} exercises found`);
 
     // Auto-migrate answer_type column if needed (one-time migration)
     try {
@@ -121,7 +122,7 @@ export async function POST(request: NextRequest) {
       `;
     } catch (migrationError) {
       // Log but don't fail - migration might already be done
-      console.log('Migration check completed (column may already be correct size)');
+      logger.log('Migration check completed (column may already be correct size)');
     }
 
     // Rate limit AI feedback calls to prevent API cost abuse
@@ -141,7 +142,7 @@ export async function POST(request: NextRequest) {
         { status: 429, headers }
       );
     }
-    console.log(`✅ Rate limit check passed for user ${userId}`);
+    logger.log(`✅ Rate limit check passed for user ${userId}`);
 
     // Generate AI feedback using Claude
     let aiFeedback: string;
@@ -190,7 +191,7 @@ export async function POST(request: NextRequest) {
     }
 
     const processingTime = Date.now() - startTime;
-    console.log(`✅ Cursus answer saved successfully for user ${userId}: exercise ${exerciseId}, score ${aiScore}, processing time: ${processingTime}ms`);
+    logger.log(`✅ Cursus answer saved successfully for user ${userId}: exercise ${exerciseId}, score ${aiScore}, processing time: ${processingTime}ms`);
 
     return NextResponse.json({
       success: true,

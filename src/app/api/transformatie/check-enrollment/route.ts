@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
@@ -110,7 +111,7 @@ export async function GET(request: NextRequest) {
       }
     } catch {
       // Table might not exist yet, that's ok
-      console.log('Transformatie onboarding table not found or empty');
+      logger.log('Transformatie onboarding table not found or empty');
     }
 
     // Check if enrollment is expired

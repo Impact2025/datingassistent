@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Application Logger
  *
@@ -96,6 +97,16 @@ class Logger {
     if (level === 'error' && this.isProduction) {
       // Example: Send to Sentry
       // Sentry.captureException(error || new Error(message), { contexts: { custom: context } });
+    }
+  }
+
+  /**
+   * Drop-in replacement for console.log — silent in production
+   * Use this when migrating raw console.log calls
+   */
+  log(...args: unknown[]): void {
+    if (this.isDevelopment) {
+      console.log(...args);
     }
   }
 

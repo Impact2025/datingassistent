@@ -11,6 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
+import { logger } from '@/lib/logger';
 
 // ============================================================================
 // TYPES
@@ -83,7 +84,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`🤖 Auto-completing blog: "${body.title}"`);
+    logger.log(`🤖 Auto-completing blog: "${body.title}"`);
 
     // Generate slug from title (fast, no AI needed)
     const slug = generateSlug(body.title);
@@ -157,14 +158,14 @@ Geef terug in exact dit JSON formaat (geen markdown code blocks):
       seo_description = aiResult.seo_description || excerpt;
 
     } catch (aiError) {
-      console.log('AI auto-complete failed, using fallback extraction:', aiError);
+      logger.log('AI auto-complete failed, using fallback extraction:', aiError);
       // Fallback to simple extraction
       excerpt = extractExcerpt(body.content);
       seo_description = excerpt;
     }
 
     const duration = Date.now() - startTime;
-    console.log(`✅ Auto-complete finished in ${duration}ms`);
+    logger.log(`✅ Auto-complete finished in ${duration}ms`);
 
     const result: AutoCompleteResult = {
       excerpt,

@@ -24,6 +24,7 @@ export default {
 
         // Primary - Warm Coral (CTA buttons, key actions)
         primary: {
+          DEFAULT: 'var(--primary-500)', // #FF7B54 - Main CTA color
           50: 'var(--primary-50)',   // #FFF5F2
           100: 'var(--primary-100)', // #FFE8E1
           200: 'var(--primary-200)', // #FFD4C8

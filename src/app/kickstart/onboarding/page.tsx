@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
 import { Loader2 } from "lucide-react";
+import { logger } from '@/lib/logger';
 
 /**
  * Kickstart Onboarding Redirect Page
@@ -21,11 +22,11 @@ export default function KickstartOnboardingPage() {
 
     if (!user) {
       // Niet ingelogd - redirect naar login met redirect terug naar dashboard
-      console.log("🔄 Kickstart onboarding: Not logged in, redirecting to login");
+      logger.log("🔄 Kickstart onboarding: Not logged in, redirecting to login");
       router.push("/login?redirect=/dashboard");
     } else {
       // Ingelogd - redirect naar dashboard waar de Kickstart onboarding geïntegreerd is
-      console.log("🔄 Kickstart onboarding: Logged in, redirecting to dashboard");
+      logger.log("🔄 Kickstart onboarding: Logged in, redirecting to dashboard");
       router.push("/dashboard");
     }
   }, [user, isLoading, router]);

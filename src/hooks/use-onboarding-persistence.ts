@@ -12,6 +12,7 @@
  */
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { logger } from '@/lib/logger';
 
 interface PersistedProgress<T> {
   sectionIndex: number;
@@ -98,7 +99,7 @@ export function useOnboardingPersistence<T extends Record<string, any>>(
 
       // Check version compatibility
       if (parsed.version !== version) {
-        console.log(`[Persistence] Version mismatch (${parsed.version} vs ${version}), clearing`);
+        logger.log(`[Persistence] Version mismatch (${parsed.version} vs ${version}), clearing`);
         localStorage.removeItem(fullKey);
         return;
       }
@@ -106,13 +107,13 @@ export function useOnboardingPersistence<T extends Record<string, any>>(
       // Check expiry
       const age = Date.now() - parsed.lastUpdated;
       if (age > expiryMs) {
-        console.log(`[Persistence] Progress expired (${Math.round(age / 1000 / 60)} minutes old)`);
+        logger.log(`[Persistence] Progress expired (${Math.round(age / 1000 / 60)} minutes old)`);
         localStorage.removeItem(fullKey);
         return;
       }
 
       // Restore progress
-      console.log(`[Persistence] Restoring progress at section ${parsed.sectionIndex}`);
+      logger.log(`[Persistence] Restoring progress at section ${parsed.sectionIndex}`);
       setRestoredSectionIndex(parsed.sectionIndex);
       setRestoredAnswers(parsed.answers);
       setWasRestored(true);
@@ -138,7 +139,7 @@ export function useOnboardingPersistence<T extends Record<string, any>>(
           };
           localStorage.setItem(fullKey, JSON.stringify(progress));
           lastSaveTime.current = progress.lastUpdated;
-          console.log(`[Persistence] Saved progress at section ${sectionIndex}`);
+          logger.log(`[Persistence] Saved progress at section ${sectionIndex}`);
         } catch (error) {
           console.error('[Persistence] Failed to save:', error);
         }
@@ -168,7 +169,7 @@ export function useOnboardingPersistence<T extends Record<string, any>>(
     try {
       localStorage.removeItem(fullKey);
       lastSaveTime.current = null;
-      console.log('[Persistence] Progress cleared');
+      logger.log('[Persistence] Progress cleared');
     } catch (error) {
       console.error('[Persistence] Failed to clear:', error);
     }

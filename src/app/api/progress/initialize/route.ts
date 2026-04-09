@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -9,7 +10,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'userId is required' }, { status: 400 });
     }
 
-    console.log(`🔄 Initializing progress data for user ${userId}...`);
+    logger.log(`🔄 Initializing progress data for user ${userId}...`);
 
     // Calculate initial scores based on onboarding completion
     let profileScore = 0;
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
     const weekStart = getWeekStart();
     const weekStartStr = weekStart.toISOString().split('T')[0];
 
-    console.log(`📊 Initial scores - Profile: ${profileScore}, Conversation: ${conversationQuality}, Consistency: ${consistency}, Overall: ${overallScore}`);
+    logger.log(`📊 Initial scores - Profile: ${profileScore}, Conversation: ${conversationQuality}, Consistency: ${consistency}, Overall: ${overallScore}`);
 
     // Insert initial progress metrics
     await sql`
@@ -89,7 +90,7 @@ export async function POST(request: NextRequest) {
       `;
     }
 
-    console.log(`✅ Initial progress data created: ${insights.length} insights`);
+    logger.log(`✅ Initial progress data created: ${insights.length} insights`);
 
     return NextResponse.json({
       success: true,

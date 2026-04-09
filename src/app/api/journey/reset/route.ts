@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 import { sql } from '@vercel/postgres';
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
         updated_at = NOW()
     `;
 
-    console.log(`✅ Journey reset for user ${userId} - fresh onboarding enabled`);
+    logger.log(`✅ Journey reset for user ${userId} - fresh onboarding enabled`);
 
     return NextResponse.json({
       success: true,

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
       RETURNING id
     `;
 
-    console.log(`Report created: ${targetType} ${targetId} reported by user ${reporterId} for ${reason}`);
+    logger.log(`Report created: ${targetType} ${targetId} reported by user ${reporterId} for ${reason}`);
 
     return NextResponse.json({
       success: true,

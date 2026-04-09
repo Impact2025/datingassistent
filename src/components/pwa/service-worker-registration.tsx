@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useEffect, useCallback } from 'react';
 import { usePWAStore } from '@/stores/pwa-store';
@@ -29,12 +30,12 @@ export function ServiceWorkerRegistration() {
 
   const registerServiceWorker = useCallback(async () => {
     if (!('serviceWorker' in navigator)) {
-      console.log('[SW] Service Workers not supported');
+      logger.log('[SW] Service Workers not supported');
       return;
     }
 
     if (!ENABLE_SERVICE_WORKER) {
-      console.log('[SW] Service Worker registration disabled');
+      logger.log('[SW] Service Worker registration disabled');
       return;
     }
 
@@ -45,7 +46,7 @@ export function ServiceWorkerRegistration() {
         updateViaCache: 'none' // Always check for updates
       });
 
-      console.log('[SW] Service Worker registered successfully');
+      logger.log('[SW] Service Worker registered successfully');
       setServiceWorkerRegistration(registration);
 
       // Handle updates
@@ -54,7 +55,7 @@ export function ServiceWorkerRegistration() {
         if (newWorker) {
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              console.log('[SW] New version available');
+              logger.log('[SW] New version available');
               setUpdateAvailable(true);
             }
           });
@@ -87,7 +88,7 @@ export function ServiceWorkerRegistration() {
     const storedVersion = localStorage.getItem(STORED_VERSION_KEY);
 
     if (storedVersion !== CURRENT_APP_VERSION) {
-      console.log(`[SW] Version update: ${storedVersion || 'none'} -> ${CURRENT_APP_VERSION}`);
+      logger.log(`[SW] Version update: ${storedVersion || 'none'} -> ${CURRENT_APP_VERSION}`);
 
       try {
         // Clear old caches
@@ -96,7 +97,7 @@ export function ServiceWorkerRegistration() {
           const oldCaches = cacheNames.filter(name => !name.includes(CURRENT_APP_VERSION));
           for (const name of oldCaches) {
             await caches.delete(name);
-            console.log('[SW] Cleared old cache:', name);
+            logger.log('[SW] Cleared old cache:', name);
           }
         }
 
@@ -134,12 +135,12 @@ export function ServiceWorkerRegistration() {
     // Listen for SW messages
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('message', (event) => {
-        console.log('[SW] Message from SW:', event.data);
+        logger.log('[SW] Message from SW:', event.data);
       });
 
       // Handle controller change (new SW activated)
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        console.log('[SW] Controller changed - new SW active');
+        logger.log('[SW] Controller changed - new SW active');
       });
     }
 

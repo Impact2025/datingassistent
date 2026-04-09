@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sendWelcomeEmail } from '@/lib/email-service';
 
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
     const emailSent = await sendWelcomeEmail(userEmail, userName, loginUrl);
 
     if (emailSent) {
-      console.log(`✅ Welcome email sent successfully to ${userEmail}`);
+      logger.log(`✅ Welcome email sent successfully to ${userEmail}`);
       return NextResponse.json({
         success: true,
         message: 'Welcome email sent successfully'

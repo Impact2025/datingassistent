@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Play, CheckCircle, Lock, Clock, BookOpen } from 'lucide-react';
 import type { CursusMetVoortgang } from '@/types/cursus.types';
 import { getCanonicalSlug } from '@/lib/cursus-slug-utils';
+import { logger } from '@/lib/logger';
 
 export default function CursusDetailPage() {
   const params = useParams();
@@ -20,7 +21,7 @@ export default function CursusDetailPage() {
   useEffect(() => {
     const { canonical, wasAlias } = getCanonicalSlug(rawSlug);
     if (wasAlias) {
-      console.log(`🔄 Redirecting from alias ${rawSlug} to canonical ${canonical}`);
+      logger.log(`🔄 Redirecting from alias ${rawSlug} to canonical ${canonical}`);
       router.replace(`/cursussen/${canonical}`);
     }
   }, [rawSlug, router]);

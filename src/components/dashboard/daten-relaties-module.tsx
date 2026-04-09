@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -492,7 +493,7 @@ export function DatenRelatiesModule({ onTabChange }: DatenRelatiesModuleProps) {
 
           if (response.ok) {
             const result = await response.json();
-            console.log('Weekly log saved:', result);
+            logger.log('Weekly log saved:', result);
             // Show success message or redirect
             setActiveSubTab('date-planner');
           } else {

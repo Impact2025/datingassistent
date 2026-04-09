@@ -1,8 +1,9 @@
 import 'dotenv/config';
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 async function migrateUserProfilesExtended() {
-  console.log('🚀 Starting user_profiles_extended interests migration to JSONB');
+  logger.log('🚀 Starting user_profiles_extended interests migration to JSONB');
 
   await sql`ALTER TABLE user_profiles_extended
     ALTER COLUMN interests DROP DEFAULT`;
@@ -14,7 +15,7 @@ async function migrateUserProfilesExtended() {
   await sql`ALTER TABLE user_profiles_extended
     ALTER COLUMN interests SET DEFAULT '[]'::jsonb`;
 
-  console.log('✅ user_profiles_extended interests column migrated to JSONB');
+  logger.log('✅ user_profiles_extended interests column migrated to JSONB');
 }
 
 migrateUserProfilesExtended()

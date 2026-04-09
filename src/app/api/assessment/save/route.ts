@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getRecommendedProgram } from '@/lib/assessment-questions';
@@ -115,7 +116,7 @@ export async function POST(request: NextRequest) {
         `;
 
         savedToDatabase = true;
-        console.log('✅ Assessment saved to database for user:', userId);
+        logger.log('✅ Assessment saved to database for user:', userId);
       }
     }
 

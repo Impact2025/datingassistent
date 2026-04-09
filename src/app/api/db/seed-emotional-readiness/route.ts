@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 /**
  * EMOTIONELE READINESS SCAN - UNIVERSELE VRAGEN
@@ -17,7 +18,7 @@ import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Seeding emotional readiness questions...');
+    logger.log('Seeding emotional readiness questions...');
 
     // Drop and recreate tables to ensure clean schema
     await sql`DROP TABLE IF EXISTS emotionele_readiness_scenarios CASCADE;`;
@@ -90,7 +91,7 @@ export async function POST() {
         is_reverse_scored = EXCLUDED.is_reverse_scored,
         weight = EXCLUDED.weight;
     `;
-    console.log('✅ Inserted 16 universal questions');
+    logger.log('✅ Inserted 16 universal questions');
 
     // Insert scenario options
     await sql`
@@ -147,7 +148,7 @@ export async function POST() {
         associated_readiness = EXCLUDED.associated_readiness,
         weight = EXCLUDED.weight;
     `;
-    console.log('✅ Inserted 6 scenario options');
+    logger.log('✅ Inserted 6 scenario options');
 
     return NextResponse.json({
       success: true,

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Engagement Metrics Tracking System
  * Sprint 5.4: Track user interactions and engagement patterns
@@ -345,7 +346,7 @@ export async function initEngagementTable(): Promise<void> {
         INDEX idx_event_type (event_type)
       )
     `;
-    console.log('Engagement events table initialized');
+    logger.log('Engagement events table initialized');
   } catch (error) {
     console.error('Error initializing engagement table:', error);
   }

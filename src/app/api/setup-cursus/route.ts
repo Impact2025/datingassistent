@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import fs from 'fs';
@@ -5,7 +6,7 @@ import path from 'path';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('Setting up cursus tables...');
+    logger.log('Setting up cursus tables...');
 
     // Create cursus_exercise_answers table
     await sql`
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest) {
     await sql`CREATE INDEX IF NOT EXISTS idx_gebruiker_profielen_hechtingsstijl ON gebruiker_profielen(hechtingsstijl)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_gebruiker_profielen_gereerdheidsScore ON gebruiker_profielen(gereerdheidsScore)`;
 
-    console.log('✅ Cursus tables and Module 1 Pro schema created successfully!');
+    logger.log('✅ Cursus tables and Module 1 Pro schema created successfully!');
 
     return NextResponse.json({
       success: true,

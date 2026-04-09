@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { KB_ARTICLES, searchKnowledgeBase } from '@/lib/support/knowledge-base';
 import type { SearchResult } from '@/lib/support/types';
+import { logger } from '@/lib/logger';
 
 // Simple TF-IDF-like scoring for relevance
 function calculateRelevance(query: string, article: typeof KB_ARTICLES[0]): number {
@@ -144,7 +145,7 @@ export async function POST(request: NextRequest) {
 // Analytics logging (simplified version)
 async function logSearch(query: string, resultCount: number) {
   // In production, this would log to database or analytics service
-  console.log(`[Search] "${query}" -> ${resultCount} results`);
+  logger.log(`[Search] "${query}" -> ${resultCount} results`);
 }
 
 // GET endpoint for popular searches

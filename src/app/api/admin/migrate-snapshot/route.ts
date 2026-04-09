@@ -7,6 +7,7 @@
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getCurrentUser, isAdmin } from '@/lib/auth';
+import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,7 +25,7 @@ export async function POST() {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    console.log('🚀 Starting Dating Snapshot migration...\n');
+    logger.log('🚀 Starting Dating Snapshot migration...\n');
 
     const logs: string[] = [];
 

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -10,7 +11,7 @@ export async function GET() {
   };
 
   try {
-    console.log('🚀 Starting comprehensive database initialization...');
+    logger.log('🚀 Starting comprehensive database initialization...');
 
     // 1. Core user tables
     try {
@@ -28,7 +29,7 @@ export async function GET() {
         );
       `;
       results.initialized.push('users');
-      console.log('✅ Users table initialized');
+      logger.log('✅ Users table initialized');
     } catch (error) {
       results.errors.push(`users: ${error}`);
       console.error('❌ Failed to create users table:', error);
@@ -52,7 +53,7 @@ export async function GET() {
         );
       `;
       results.initialized.push('user_profiles');
-      console.log('✅ User profiles table initialized');
+      logger.log('✅ User profiles table initialized');
     } catch (error) {
       results.errors.push(`user_profiles: ${error}`);
     }
@@ -109,7 +110,7 @@ export async function GET() {
       `;
 
       results.initialized.push('emotionele_readiness_assessments', 'emotionele_readiness_results', 'emotionele_readiness_responses');
-      console.log('✅ Emotional readiness tables initialized');
+      logger.log('✅ Emotional readiness tables initialized');
     } catch (error) {
       results.errors.push(`emotional_readiness_tables: ${error}`);
     }
@@ -144,7 +145,7 @@ export async function GET() {
       `;
 
       results.initialized.push('dating_style_questions', 'dating_style_assessments');
-      console.log('✅ Dating style tables initialized');
+      logger.log('✅ Dating style tables initialized');
     } catch (error) {
       results.errors.push(`dating_style_tables: ${error}`);
     }
@@ -165,7 +166,7 @@ export async function GET() {
       `;
 
       results.initialized.push('relationship_coach_sessions');
-      console.log('✅ Relationship coach tables initialized');
+      logger.log('✅ Relationship coach tables initialized');
     } catch (error) {
       results.errors.push(`relationship_coach_tables: ${error}`);
     }
@@ -185,7 +186,7 @@ export async function GET() {
       `;
 
       results.initialized.push('dating_blindspots_assessments');
-      console.log('✅ Dating blindspots tables initialized');
+      logger.log('✅ Dating blindspots tables initialized');
     } catch (error) {
       results.errors.push(`dating_blindspots_tables: ${error}`);
     }
@@ -205,7 +206,7 @@ export async function GET() {
       `;
 
       results.initialized.push('premium_dashboard_data');
-      console.log('✅ Premium dashboard tables initialized');
+      logger.log('✅ Premium dashboard tables initialized');
     } catch (error) {
       results.errors.push(`premium_dashboard_tables: ${error}`);
     }
@@ -238,7 +239,7 @@ export async function GET() {
       `;
 
       results.initialized.push('dating_archetypes', 'user_archetype_assessments');
-      console.log('✅ Dating archetypes tables initialized');
+      logger.log('✅ Dating archetypes tables initialized');
     } catch (error) {
       results.errors.push(`dating_archetypes_tables: ${error}`);
     }
@@ -284,7 +285,7 @@ export async function GET() {
       `;
 
       results.initialized.push('ab_tests', 'user_test_assignments', 'ab_test_metrics');
-      console.log('✅ A/B testing tables initialized');
+      logger.log('✅ A/B testing tables initialized');
     } catch (error) {
       results.errors.push(`ab_testing_tables: ${error}`);
     }
@@ -329,7 +330,7 @@ export async function GET() {
       `;
 
       results.initialized.push('user_feedback', 'support_tickets');
-      console.log('✅ Feedback and support tables initialized');
+      logger.log('✅ Feedback and support tables initialized');
     } catch (error) {
       results.errors.push(`feedback_support_tables: ${error}`);
     }
@@ -362,7 +363,7 @@ export async function GET() {
       `;
 
       results.initialized.push('tutorial_progress', 'tutorial_analytics');
-      console.log('✅ Tutorial and onboarding tables initialized');
+      logger.log('✅ Tutorial and onboarding tables initialized');
     } catch (error) {
       results.errors.push(`tutorial_tables: ${error}`);
     }
@@ -386,17 +387,17 @@ export async function GET() {
         await sql.unsafe(indexSQL);
       }
 
-      console.log('✅ Database indexes created');
+      logger.log('✅ Database indexes created');
     } catch (error) {
       results.errors.push(`indexes: ${error}`);
     }
 
     results.totalTables = results.initialized.length;
 
-    console.log(`🎉 Database initialization completed!`);
-    console.log(`✅ Successfully initialized: ${results.initialized.length} tables`);
+    logger.log(`🎉 Database initialization completed!`);
+    logger.log(`✅ Successfully initialized: ${results.initialized.length} tables`);
     if (results.errors.length > 0) {
-      console.log(`⚠️  Errors encountered: ${results.errors.length}`);
+      logger.log(`⚠️  Errors encountered: ${results.errors.length}`);
     }
 
     return NextResponse.json(results);

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { ga4Analytics } from '@/lib/enhanced-ga4-analytics';
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
       endDate: endDate.toISOString().split('T')[0]
     };
 
-    console.log('📊 Fetching visitor analytics for date range:', dateRange);
+    logger.log('📊 Fetching visitor analytics for date range:', dateRange);
 
     // Get enhanced visitor data (intelligent mock data)
     const visitorData = await ga4Analytics.getVisitorData(dateRange);

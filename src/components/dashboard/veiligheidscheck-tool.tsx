@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -132,7 +133,7 @@ Geef terug in JSON format:
         steps={getOnboardingSteps('veiligheidscheck')}
         open={showOverlay}
         onOpenChange={setShowOverlay}
-        onComplete={() => console.log('Veiligheidscheck onboarding completed!')}
+        onComplete={() => logger.log('Veiligheidscheck onboarding completed!')}
       />
 
       <div className="space-y-6">

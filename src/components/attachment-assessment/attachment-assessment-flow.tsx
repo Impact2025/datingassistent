@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -170,7 +171,7 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
         return;
       }
 
-      console.log('Assessment results:', data);
+      logger.log('Assessment results:', data);
 
       // Helper function to safely parse arrays
       const safeParseArray = (data: any, fallback: any[] = []) => {

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
+import { logger } from '@/lib/logger';
 
 /**
  * Add publish_date column to blogs table
@@ -7,7 +8,7 @@ import { sql } from '@vercel/postgres';
  */
 export async function POST(request: NextRequest) {
   try {
-    console.log('Adding publish_date column to blogs table...');
+    logger.log('Adding publish_date column to blogs table...');
 
     // Add publish_date column if it doesn't exist
     await sql`
@@ -15,7 +16,7 @@ export async function POST(request: NextRequest) {
       ADD COLUMN IF NOT EXISTS publish_date DATE;
     `;
 
-    console.log('✅ Successfully added publish_date column to blogs table');
+    logger.log('✅ Successfully added publish_date column to blogs table');
 
     // Show current table structure
     const result = await sql`

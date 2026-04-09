@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 #!/usr/bin/env tsx
 
 /**
@@ -12,7 +13,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 async function createDatePlannerTables() {
-  console.log('📅 Creating Date Planner Tables...');
+  logger.log('📅 Creating Date Planner Tables...');
 
   try {
     // Date Plans Table
@@ -48,7 +49,7 @@ async function createDatePlannerTables() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )
     `;
-    console.log('✅ Created date_plans table');
+    logger.log('✅ Created date_plans table');
 
     // Date Plan Checklists (for progress tracking)
     await sql`
@@ -64,7 +65,7 @@ async function createDatePlannerTables() {
         FOREIGN KEY (date_plan_id) REFERENCES date_plans(id) ON DELETE CASCADE
       )
     `;
-    console.log('✅ Created date_plan_checklists table');
+    logger.log('✅ Created date_plan_checklists table');
 
     // Date Ideas Table (for integration)
     await sql`
@@ -86,7 +87,7 @@ async function createDatePlannerTables() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )
     `;
-    console.log('✅ Created date_ideas table');
+    logger.log('✅ Created date_ideas table');
 
     // Indexes for performance
     await sql`CREATE INDEX IF NOT EXISTS idx_date_plans_user_id ON date_plans(user_id)`;
@@ -96,7 +97,7 @@ async function createDatePlannerTables() {
     await sql`CREATE INDEX IF NOT EXISTS idx_date_ideas_user_id ON date_ideas(user_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_date_ideas_type ON date_ideas(type)`;
 
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     // Views for analytics
     await sql`
@@ -116,7 +117,7 @@ async function createDatePlannerTables() {
       GROUP BY DATE(created_at), date_type, energy_level, desired_style, budget
       ORDER BY date DESC
     `;
-    console.log('✅ Created date_planner_analytics view');
+    logger.log('✅ Created date_planner_analytics view');
 
     await sql`
       CREATE OR REPLACE VIEW date_plan_completion_rates AS
@@ -133,9 +134,9 @@ async function createDatePlannerTables() {
       GROUP BY user_id
       HAVING COUNT(*) >= 1
     `;
-    console.log('✅ Created date_plan_completion_rates view');
+    logger.log('✅ Created date_plan_completion_rates view');
 
-    console.log('🎉 All Date Planner tables created successfully!');
+    logger.log('🎉 All Date Planner tables created successfully!');
 
   } catch (error) {
     console.error('❌ Error creating Date Planner tables:', error);
@@ -145,7 +146,7 @@ async function createDatePlannerTables() {
 
 // Run the script
 createDatePlannerTables().then(() => {
-  console.log('✅ Date Planner setup complete!');
+  logger.log('✅ Date Planner setup complete!');
   process.exit(0);
 }).catch((error) => {
   console.error('❌ Setup failed:', error);

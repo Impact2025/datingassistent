@@ -1,13 +1,14 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserProfileExtended, updateUserProfileExtended } from '@/lib/community-db';
 
 export async function GET(request: NextRequest) {
   try {
     const userId = request.nextUrl.searchParams.get('userId');
-    console.log('Profile API GET request for userId:', userId);
+    logger.log('Profile API GET request for userId:', userId);
 
     if (!userId) {
-      console.log('No userId provided');
+      logger.log('No userId provided');
       return NextResponse.json(
         { error: 'userId is required' },
         { status: 400 }
@@ -16,10 +17,10 @@ export async function GET(request: NextRequest) {
 
     try {
       const profile = await getUserProfileExtended(parseInt(userId));
-      console.log('Profile fetched:', profile);
+      logger.log('Profile fetched:', profile);
 
       if (!profile) {
-        console.log('No profile found for userId:', userId);
+        logger.log('No profile found for userId:', userId);
         // Return empty profile instead of error to prevent crashes
         return NextResponse.json({
           profile: {
@@ -69,10 +70,10 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const { userId, profileData } = await request.json();
-    console.log('Profile API PUT request for userId:', userId, 'with data:', profileData);
+    logger.log('Profile API PUT request for userId:', userId, 'with data:', profileData);
 
     if (!userId || !profileData) {
-      console.log('Missing userId or profileData');
+      logger.log('Missing userId or profileData');
       return NextResponse.json(
         { error: 'userId and profileData are required' },
         { status: 400 }
@@ -81,11 +82,11 @@ export async function PUT(request: NextRequest) {
 
     try {
       await updateUserProfileExtended(parseInt(userId), profileData);
-      console.log('Profile updated for userId:', userId);
+      logger.log('Profile updated for userId:', userId);
 
       // Fetch the updated profile
       const updatedProfile = await getUserProfileExtended(parseInt(userId));
-      console.log('Updated profile fetched:', updatedProfile);
+      logger.log('Updated profile fetched:', updatedProfile);
 
       return NextResponse.json({
         profile: updatedProfile

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Seed Enhanced Day Content - Wereldklasse Kickstart Content
  *
@@ -97,7 +98,7 @@ const enhancedContent: DayEnhancement[] = [
 ];
 
 async function seed() {
-  console.log('🌱 Seeding enhanced content voor Dag 1-7...\n');
+  logger.log('🌱 Seeding enhanced content voor Dag 1-7...\n');
 
   try {
     // Get Kickstart program ID
@@ -106,12 +107,12 @@ async function seed() {
     `;
 
     if (programCheck.rows.length === 0) {
-      console.log('❌ Kickstart program niet gevonden!');
+      logger.log('❌ Kickstart program niet gevonden!');
       process.exit(1);
     }
 
     const programId = programCheck.rows[0].id;
-    console.log(`✅ Kickstart program gevonden (ID: ${programId})\n`);
+    logger.log(`✅ Kickstart program gevonden (ID: ${programId})\n`);
 
     // Update each day with enhanced content
     for (const day of enhancedContent) {
@@ -128,10 +129,10 @@ async function seed() {
         WHERE program_id = ${programId} AND dag_nummer = ${day.dag_nummer}
       `;
 
-      console.log(`  ✓ Dag ${day.dag_nummer}: "${day.focus_statement}"`);
-      console.log(`    Tijd: ${day.estimated_time_minutes} min`);
-      console.log(`    Context: Video ${day.video_context ? '✓' : '○'} | Quiz ${day.quiz_context ? '✓' : '○'} | Reflectie ${day.reflectie_context ? '✓' : '○'} | Werkboek ${day.werkboek_context ? '✓' : '○'}`);
-      console.log('');
+      logger.log(`  ✓ Dag ${day.dag_nummer}: "${day.focus_statement}"`);
+      logger.log(`    Tijd: ${day.estimated_time_minutes} min`);
+      logger.log(`    Context: Video ${day.video_context ? '✓' : '○'} | Quiz ${day.quiz_context ? '✓' : '○'} | Reflectie ${day.reflectie_context ? '✓' : '○'} | Werkboek ${day.werkboek_context ? '✓' : '○'}`);
+      logger.log('');
     }
 
     // Verify
@@ -142,19 +143,19 @@ async function seed() {
       ORDER BY dag_nummer
     `;
 
-    console.log('\n📊 Verificatie:');
-    console.log('Dag | Titel                      | Focus                                      | Tijd');
-    console.log('────┼────────────────────────────┼────────────────────────────────────────────┼──────');
+    logger.log('\n📊 Verificatie:');
+    logger.log('Dag | Titel                      | Focus                                      | Tijd');
+    logger.log('────┼────────────────────────────┼────────────────────────────────────────────┼──────');
     updated.rows.forEach((row: any) => {
       const dagStr = String(row.dag_nummer).padStart(2, ' ');
       const titleStr = String(row.titel).padEnd(25, ' ');
       const focusStr = String(row.focus_statement || 'N/A').substring(0, 40).padEnd(40, ' ');
       const timeStr = String(row.estimated_time_minutes) + ' min';
-      console.log(`${dagStr}  | ${titleStr} | ${focusStr} | ${timeStr}`);
+      logger.log(`${dagStr}  | ${titleStr} | ${focusStr} | ${timeStr}`);
     });
 
-    console.log('\n✅ Seed completed!');
-    console.log('\n📌 Next: Update DayViewer component om deze content te tonen');
+    logger.log('\n✅ Seed completed!');
+    logger.log('\n📌 Next: Update DayViewer component om deze content te tonen');
 
   } catch (error) {
     console.error('\n❌ Seed mislukt:', error);

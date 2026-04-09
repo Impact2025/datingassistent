@@ -7,6 +7,7 @@ import { CoachTyping } from './CoachTyping';
 import { CoachSuggestions, Suggestion } from './CoachSuggestions';
 import { CoachToolCard, ToolSuggestion } from './CoachToolCard';
 import { trackChatMessageSent, trackToolUsed } from '@/lib/analytics/ga4-events';
+import { logger } from '@/lib/logger';
 
 interface Message {
   id: string;
@@ -147,7 +148,7 @@ export function CoachChat({ userId, initialContext }: CoachChatProps) {
   };
 
   const handleFileUpload = async (file: File) => {
-    console.log('File uploaded:', file);
+    logger.log('File uploaded:', file);
     // TODO: Implement file upload logic (e.g., for profile photos)
   };
 

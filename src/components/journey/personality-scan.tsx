@@ -1,4 +1,5 @@
 "use client";
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -172,7 +173,7 @@ export function PersonalityScan({ onComplete, onBack }: PersonalityScanProps) {
 
       // Track scan completion
       try {
-        console.log('📊 Tracking personality scan completion...');
+        logger.log('📊 Tracking personality scan completion...');
         // We don't need to wait for this to complete
         // Track scan completion activity
         if (user?.id) {

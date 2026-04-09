@@ -1,15 +1,16 @@
 import { sql } from '@vercel/postgres';
 import * as dotenv from 'dotenv';
+import { logger } from '@/lib/logger';
 
 dotenv.config();
 
 async function migratePaymentTables() {
-  console.log('🚀 Starting payment tables migration...\n');
+  logger.log('🚀 Starting payment tables migration...\n');
 
   try {
     // Test connection
     await sql`SELECT 1 as test`;
-    console.log('✅ Database connection successful\n');
+    logger.log('✅ Database connection successful\n');
 
     // Check if payment_transactions table exists
     const tableCheck = await sql`
@@ -20,9 +21,9 @@ async function migratePaymentTables() {
     `;
 
     if (tableCheck.rows[0].exists) {
-      console.log('ℹ️ payment_transactions table already exists');
+      logger.log('ℹ️ payment_transactions table already exists');
     } else {
-      console.log('📦 Creating payment_transactions table...');
+      logger.log('📦 Creating payment_transactions table...');
 
       await sql`
         CREATE TABLE payment_transactions (
@@ -48,7 +49,7 @@ async function migratePaymentTables() {
           CONSTRAINT valid_amount CHECK (amount > 0)
         )
       `;
-      console.log('✅ payment_transactions table created\n');
+      logger.log('✅ payment_transactions table created\n');
     }
 
     // Check if program_enrollments table exists
@@ -60,9 +61,9 @@ async function migratePaymentTables() {
     `;
 
     if (enrollmentsCheck.rows[0].exists) {
-      console.log('ℹ️ program_enrollments table already exists');
+      logger.log('ℹ️ program_enrollments table already exists');
     } else {
-      console.log('📦 Creating program_enrollments table...');
+      logger.log('📦 Creating program_enrollments table...');
 
       await sql`
         CREATE TABLE program_enrollments (
@@ -79,11 +80,11 @@ async function migratePaymentTables() {
           UNIQUE(user_id, program_id, order_id)
         )
       `;
-      console.log('✅ program_enrollments table created\n');
+      logger.log('✅ program_enrollments table created\n');
     }
 
     // Create indexes
-    console.log('📦 Creating indexes...');
+    logger.log('📦 Creating indexes...');
 
     try {
       await sql`CREATE INDEX IF NOT EXISTS idx_payment_transactions_user_id ON payment_transactions(user_id)`;
@@ -91,12 +92,12 @@ async function migratePaymentTables() {
       await sql`CREATE INDEX IF NOT EXISTS idx_payment_transactions_status ON payment_transactions(status)`;
       await sql`CREATE INDEX IF NOT EXISTS idx_program_enrollments_user_id ON program_enrollments(user_id)`;
       await sql`CREATE INDEX IF NOT EXISTS idx_program_enrollments_program_id ON program_enrollments(program_id)`;
-      console.log('✅ Indexes created\n');
+      logger.log('✅ Indexes created\n');
     } catch (e) {
-      console.log('ℹ️ Some indexes may already exist\n');
+      logger.log('ℹ️ Some indexes may already exist\n');
     }
 
-    console.log('\n🎉 Payment tables migration completed successfully!');
+    logger.log('\n🎉 Payment tables migration completed successfully!');
 
   } catch (error) {
     console.error('❌ Migration failed:', error);

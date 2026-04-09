@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { verifyToken } from '@/lib/auth';
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
       }
     } catch (dbError) {
       // If table doesn't exist, just log and continue (for demo purposes)
-      console.log('Database table not available, skipping proof storage:', dbError);
+      logger.log('Database table not available, skipping proof storage:', dbError);
     }
 
     return NextResponse.json({
@@ -120,7 +121,7 @@ export async function GET(request: NextRequest) {
 
     } catch (dbError) {
       // If table doesn't exist, return empty array
-      console.log('Database table not available, returning empty proofs:', dbError);
+      logger.log('Database table not available, returning empty proofs:', dbError);
       return NextResponse.json({
         proofs: [],
         count: 0

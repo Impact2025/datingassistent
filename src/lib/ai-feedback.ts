@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * AI Feedback utilities for DatingAssistent
  * Contains functions for generating AI-powered feedback for course exercises
@@ -45,7 +46,7 @@ export async function generateAIFeedback(
 
         if (cachedResult.rows.length > 0) {
           const cachedData = JSON.parse(cachedResult.rows[0].content_data);
-          console.log(`📖 Using cached AI feedback for user ${userId}, exercise ${exerciseId}`);
+          logger.log(`📖 Using cached AI feedback for user ${userId}, exercise ${exerciseId}`);
           return cachedData;
         }
       } catch (cacheError) {
@@ -136,7 +137,7 @@ Geef feedback en een score (60-100).`;
             last_used = CURRENT_TIMESTAMP,
             expires_at = CURRENT_TIMESTAMP + INTERVAL '24 hours'
         `;
-        console.log(`💾 Cached AI feedback for user ${userId}, exercise ${exerciseId}`);
+        logger.log(`💾 Cached AI feedback for user ${userId}, exercise ${exerciseId}`);
       } catch (cacheError) {
         console.warn('Failed to cache AI feedback:', cacheError);
         // Don't fail the request if caching fails

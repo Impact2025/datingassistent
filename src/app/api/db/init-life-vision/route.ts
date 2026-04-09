@@ -1,9 +1,10 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Creating life vision tables...');
+    logger.log('Creating life vision tables...');
 
     // Create tables one by one to avoid Turbopack issues with sql.unsafe()
     await sql`
@@ -21,7 +22,7 @@ export async function POST() {
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created levensvisie_assessments table');
+    logger.log('✅ Created levensvisie_assessments table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS levensvisie_responses (
@@ -34,7 +35,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created levensvisie_responses table');
+    logger.log('✅ Created levensvisie_responses table');
 
     await sql`
       CREATE TABLE IF NOT EXISTS levensvisie_results (
@@ -93,7 +94,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created levensvisie_results table');
+    logger.log('✅ Created levensvisie_results table');
 
     // Assessment questions table (static data)
     await sql`
@@ -109,7 +110,7 @@ export async function POST() {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
     `;
-    console.log('✅ Created levensvisie_questions table');
+    logger.log('✅ Created levensvisie_questions table');
 
     // User progress and evolution tracking
     await sql`
@@ -126,7 +127,7 @@ export async function POST() {
         UNIQUE(user_id)
       );
     `;
-    console.log('✅ Created levensvisie_progress table');
+    logger.log('✅ Created levensvisie_progress table');
 
     // Create indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_levensvisie_assessments_user_id ON levensvisie_assessments(user_id);`;
@@ -134,7 +135,7 @@ export async function POST() {
     await sql`CREATE INDEX IF NOT EXISTS idx_levensvisie_responses_assessment_id ON levensvisie_responses(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_levensvisie_results_assessment_id ON levensvisie_results(assessment_id);`;
     await sql`CREATE INDEX IF NOT EXISTS idx_levensvisie_progress_user_id ON levensvisie_progress(user_id);`;
-    console.log('✅ Created indexes');
+    logger.log('✅ Created indexes');
 
     // Insert the assessment questions for all 3 phases
     await sql`
@@ -164,7 +165,7 @@ export async function POST() {
       ('future_partner', 'open_text', 'Beschrijf een dag uit het leven van jullie samen over 5 jaar.', NULL, NULL, 18, true)
       ON CONFLICT (order_position) DO NOTHING;
     `;
-    console.log('✅ Inserted questions');
+    logger.log('✅ Inserted questions');
 
     return NextResponse.json({
       success: true,

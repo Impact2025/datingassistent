@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Sparkles, Target, CheckCircle2 } from 'lucide-react';
 import { AuthManager } from '@/lib/auth-manager';
+import { logger } from '@/lib/logger';
 
 // NEW COMPONENTS
 import { DatingDNAAssessment } from '@/components/onboarding/dating-dna-assessment';
@@ -51,7 +52,7 @@ export default function NewOnboardingPage() {
           `onboarding_new_${user.id}`,
           JSON.stringify({ ...newState, lastSaved: Date.now() })
         );
-        console.log('💾 Onboarding state saved');
+        logger.log('💾 Onboarding state saved');
       } catch (error) {
         console.error('Failed to save onboarding state:', error);
       }
@@ -71,24 +72,24 @@ export default function NewOnboardingPage() {
   useEffect(() => {
     const initialize = async () => {
       if (loading) {
-        console.log('⏳ Waiting for user...');
+        logger.log('⏳ Waiting for user...');
         return;
       }
 
       if (!user) {
-        console.log('❌ No user, redirecting to login');
+        logger.log('❌ No user, redirecting to login');
         router.push('/login');
         return;
       }
 
-      console.log('🎯 Initializing onboarding for user:', user.id);
+      logger.log('🎯 Initializing onboarding for user:', user.id);
 
       // Check for saved state
       const savedState = localStorage.getItem(`onboarding_new_${user.id}`);
       if (savedState) {
         try {
           const parsed = JSON.parse(savedState);
-          console.log('💾 Restored saved state:', parsed.currentStep);
+          logger.log('💾 Restored saved state:', parsed.currentStep);
           setState(parsed);
           setIsInitializing(false);
           return;
@@ -105,7 +106,7 @@ export default function NewOnboardingPage() {
           const data = await response.json();
 
           if (data.status === 'completed') {
-            console.log('✅ Journey already completed, redirecting to dashboard');
+            logger.log('✅ Journey already completed, redirecting to dashboard');
             router.push('/dashboard');
             return;
           }
@@ -132,7 +133,7 @@ export default function NewOnboardingPage() {
 
   // Step completion handlers
   const handleProfileComplete = async () => {
-    console.log('✅ Profile completed');
+    logger.log('✅ Profile completed');
 
     await saveProgress('welcome', ['profile']);
 
@@ -144,7 +145,7 @@ export default function NewOnboardingPage() {
   };
 
   const handleWelcomeComplete = async () => {
-    console.log('✅ Welcome completed');
+    logger.log('✅ Welcome completed');
 
     await saveProgress('three-pillars', ['profile', 'welcome']);
 
@@ -156,7 +157,7 @@ export default function NewOnboardingPage() {
   };
 
   const handlePillarsComplete = async () => {
-    console.log('✅ Three Pillars completed');
+    logger.log('✅ Three Pillars completed');
 
     await saveProgress('dating-dna', ['profile', 'welcome', 'three-pillars']);
 
@@ -168,8 +169,8 @@ export default function NewOnboardingPage() {
   };
 
   const handleDNAComplete = async (answers: Record<number, string>, userType: string) => {
-    console.log('✅ Dating DNA completed. Type:', userType);
-    console.log('📊 Answers:', answers);
+    logger.log('✅ Dating DNA completed. Type:', userType);
+    logger.log('📊 Answers:', answers);
 
     // Save to AI context
     try {
@@ -197,7 +198,7 @@ export default function NewOnboardingPage() {
         })
       });
 
-      console.log('💾 DNA data saved to AI context');
+      logger.log('💾 DNA data saved to AI context');
     } catch (error) {
       console.error('Failed to save DNA data:', error);
     }
@@ -214,7 +215,7 @@ export default function NewOnboardingPage() {
   };
 
   const handleRoadmapComplete = async () => {
-    console.log('✅ Roadmap completed - redirecting to dashboard');
+    logger.log('✅ Roadmap completed - redirecting to dashboard');
 
     await saveProgress('complete', [
       'profile',
@@ -245,7 +246,7 @@ export default function NewOnboardingPage() {
           status: currentStep === 'complete' ? 'completed' : 'in_progress'
         })
       });
-      console.log('📊 Progress saved:', currentStep);
+      logger.log('📊 Progress saved:', currentStep);
     } catch (error) {
       console.error('Failed to save progress:', error);
     }

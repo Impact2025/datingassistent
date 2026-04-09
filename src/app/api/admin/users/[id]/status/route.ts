@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { requireAdmin } from '@/lib/auth';
@@ -29,7 +30,7 @@ export async function PUT(
 
     // Since the database doesn't have a status column, just return success
     // All users are considered active in the current schema
-    console.log(`Status change requested for user ${targetUserId} to ${status} - no database update performed`);
+    logger.log(`Status change requested for user ${targetUserId} to ${status} - no database update performed`);
 
     return NextResponse.json({
       message: `User status changed to ${status}`,

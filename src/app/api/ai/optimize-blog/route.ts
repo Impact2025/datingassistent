@@ -11,6 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { optimizeBlogContent } from '@/lib/ai-blog-service';
+import { logger } from '@/lib/logger';
 
 // ============================================================================
 // TYPES
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`🤖 Optimizing blog: "${body.title}"`);
+    logger.log(`🤖 Optimizing blog: "${body.title}"`);
 
     // Call AI service
     const result = await optimizeBlogContent({
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
     });
 
     const duration = Date.now() - startTime;
-    console.log(`✅ Blog optimization completed in ${duration}ms`);
+    logger.log(`✅ Blog optimization completed in ${duration}ms`);
 
     return NextResponse.json(
       {

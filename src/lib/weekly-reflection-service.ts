@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Weekly Reflection Service - AI-powered progress reviews and goal adjustments
  * Helps users reflect on their week, celebrate wins, and plan ahead
@@ -330,7 +331,7 @@ Neem even tijd om terug te kijken op je week. Wat ging goed? Wat heb je geleerd?
         }
       }
 
-      console.log(`Scheduled ${scheduled} weekly reflection reminders`);
+      logger.log(`Scheduled ${scheduled} weekly reflection reminders`);
       return scheduled;
     } catch (error) {
       console.error('Error scheduling weekly reflections:', error);

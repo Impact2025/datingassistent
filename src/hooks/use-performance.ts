@@ -5,12 +5,13 @@
 
 import { useEffect } from 'react';
 import { useReportWebVitals } from 'next/web-vitals';
+import { logger } from '@/lib/logger';
 
 export function usePerformanceMonitoring() {
   useReportWebVitals((metric) => {
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[Performance] ${metric.name}:`, metric.value);
+      logger.log(`[Performance] ${metric.name}:`, metric.value);
     }
 
     // Send to analytics in production

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * COMPREHENSIVE AI MONITORING & ANALYTICS SYSTEM
  * Enterprise-grade monitoring for AI performance and user experience
@@ -693,7 +694,7 @@ export const comprehensiveAIMonitoring = ComprehensiveAIMonitoring.getInstance()
 setInterval(async () => {
   try {
     const insights = await comprehensiveAIMonitoring.generateSystemInsights('24h');
-    console.log('🔍 System Health Check:', insights);
+    logger.log('🔍 System Health Check:', insights);
 
     if (insights.systemHealth !== 'healthy') {
       console.warn('⚠️ System health issues detected:', insights.bottlenecks);

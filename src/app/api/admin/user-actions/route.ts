@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { requireAdmin } from '@/lib/auth';
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
         `;
 
         // TODO: Send email with verification code
-        console.log(`Verification code for user ${userId}: ${code}`);
+        logger.log(`Verification code for user ${userId}: ${code}`);
 
         return NextResponse.json({
           success: true,
@@ -132,7 +133,7 @@ export async function POST(request: NextRequest) {
 
       case 'send_welcome_email': {
         // TODO: Trigger welcome email
-        console.log(`Welcome email for user ${userId}`);
+        logger.log(`Welcome email for user ${userId}`);
 
         return NextResponse.json({
           success: true,

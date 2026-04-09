@@ -55,33 +55,33 @@ export const styles = {
     backgroundColor: colors.background,
     fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     margin: '0',
-    padding: '40px 20px',
+    padding: '48px 24px',
   },
   container: {
     backgroundColor: colors.white,
     margin: '0 auto',
-    maxWidth: '600px',
-    borderRadius: '16px',
+    maxWidth: '580px',
+    borderRadius: '20px',
     overflow: 'hidden' as const,
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.10)',
   },
   header: {
     backgroundColor: colors.white,
-    padding: '32px',
+    padding: '36px 48px 28px 48px',
     textAlign: 'center' as const,
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   heroGradient: {
     background: 'linear-gradient(135deg, #FF7B54 0%, #722F37 100%)',
-    padding: '32px 32px 28px 32px', // Compact header
+    padding: '36px 48px 32px 48px',
     textAlign: 'center' as const,
   },
   content: {
-    padding: '32px',
+    padding: '40px 48px',
   },
   footer: {
-    backgroundColor: colors.cream, // Cream - brand consistent
-    padding: '24px 32px',
+    backgroundColor: colors.cream,
+    padding: '28px 48px',
     textAlign: 'center' as const,
     borderTop: `1px solid ${colors.lightGray}`,
   },
@@ -97,13 +97,13 @@ export const styles = {
     fontSize: '22px',
     fontWeight: '600',
     lineHeight: '1.3',
-    margin: '0 0 12px 0',
+    margin: '0 0 16px 0',
   },
   paragraph: {
-    color: colors.gray,
+    color: '#4B5563',
     fontSize: '16px',
-    lineHeight: '1.6',
-    margin: '0 0 16px 0',
+    lineHeight: '1.7',
+    margin: '0 0 20px 0',
   },
   primaryButton: {
     backgroundColor: colors.primary,
@@ -112,7 +112,7 @@ export const styles = {
     display: 'inline-block',
     fontSize: '16px',
     fontWeight: '600',
-    padding: '14px 28px',
+    padding: '16px 36px',
     textDecoration: 'none',
     textAlign: 'center' as const,
   },
@@ -253,7 +253,6 @@ export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
   return (
     <Section style={{
       ...styles.heroGradient,
-      padding: '32px 32px 28px 32px', // Reduced padding
     }}>
       {/* Logo with brand text */}
       <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto' }}>
@@ -302,7 +301,7 @@ export function PinkHeader({ title, subtitle }: PinkHeaderProps) {
   return (
     <Section style={{
       backgroundColor: colors.primary,
-      padding: '32px 32px 28px 32px', // Reduced padding
+      padding: '36px 48px 32px 48px',
       textAlign: 'center' as const,
     }}>
       {/* Logo with brand text */}
@@ -347,16 +346,6 @@ export function SimpleHeader() {
   return (
     <Section style={styles.header}>
       <EmailLogo size="md" showText={true} />
-      <Text style={{
-        color: colors.gray,
-        fontSize: '12px',
-        margin: '12px 0 0 0',
-        textTransform: 'uppercase',
-        letterSpacing: '0.05em',
-        fontWeight: '500',
-      }}>
-        Durf te daten, durf jezelf te zijn
-      </Text>
     </Section>
   );
 }
@@ -453,17 +442,17 @@ export function InfoBox({ type = 'info', title, children }: InfoBoxProps) {
   return (
     <Section style={{
       backgroundColor: config.bg,
-      borderLeft: `4px solid ${config.border}`,
-      borderRadius: '8px',
-      padding: '20px',
-      margin: '24px 0',
+      borderLeft: `3px solid ${config.border}`,
+      borderRadius: '0 10px 10px 0',
+      padding: '18px 22px',
+      margin: '28px 0',
     }}>
       {title && (
-        <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark, marginBottom: '8px' }}>
+        <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark, marginBottom: '6px', fontSize: '14px' }}>
           {title}
         </Text>
       )}
-      <Text style={{ ...styles.paragraph, margin: '0', fontSize: '15px' }}>
+      <Text style={{ ...styles.paragraph, margin: '0', fontSize: '14px', lineHeight: '1.6', color: colors.gray }}>
         {children}
       </Text>
     </Section>
@@ -521,8 +510,8 @@ export function EmailFooter({ unsubscribeUrl, preferencesUrl }: EmailFooterProps
     }}>
       <EmailLogo size="sm" showText={true} />
 
-      <Text style={{ ...styles.footerText, marginTop: '20px', color: colors.gray }}>
-        © {new Date().getFullYear()} DatingAssistent. Alle rechten voorbehouden.
+      <Text style={{ ...styles.footerText, marginTop: '16px', color: colors.grayLight, fontSize: '13px' }}>
+        © {new Date().getFullYear()} DatingAssistent · Alle rechten voorbehouden
       </Text>
 
       <Text style={{ ...styles.footerText, marginTop: '12px' }}>
@@ -563,7 +552,7 @@ interface GreetingProps {
 
 export function Greeting({ name }: GreetingProps) {
   return (
-    <Text style={{ ...styles.heading2, color: colors.primary }}>
+    <Text style={{ ...styles.heading2, color: colors.dark, marginBottom: '12px' }}>
       Hoi {name}!
     </Text>
   );

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * useToolCompletion Hook
  * Sprint 2 Phase 3
@@ -75,7 +76,7 @@ export function useToolCompletion(
       if (!response.ok) {
         // Handle authentication/subscription issues gracefully
         if (response.status >= 400 && response.status < 500) {
-          console.log(`🔐 User not authorized for ${toolName} progress (status: ${response.status}) - using localStorage fallback`);
+          logger.log(`🔐 User not authorized for ${toolName} progress (status: ${response.status}) - using localStorage fallback`);
           // Fall back to localStorage immediately
           try {
             const localKey = `${toolName}-completions`;
@@ -108,7 +109,7 @@ export function useToolCompletion(
       // Handle authentication errors silently
       if (err.message === 'Failed to fetch progress') {
         // This is an auth error that should have been handled above, but if not, handle it here
-        console.log(`🔒 Auth error for ${toolName} progress - using localStorage fallback`);
+        logger.log(`🔒 Auth error for ${toolName} progress - using localStorage fallback`);
         try {
           const localKey = `${toolName}-completions`;
           const localData = localStorage.getItem(localKey);
@@ -181,7 +182,7 @@ export function useToolCompletion(
       if (!response.ok) {
         // Handle both client errors (4xx) and server errors (5xx) gracefully
         if (response.status >= 400) {
-          console.log(`🔐 User not authorized for ${toolName} or server error (status: ${response.status}) - marking ${actionName} completed in localStorage only`);
+          logger.log(`🔐 User not authorized for ${toolName} or server error (status: ${response.status}) - marking ${actionName} completed in localStorage only`);
           // Fall back to localStorage immediately
           try {
             const localKey = `${toolName}-completions`;

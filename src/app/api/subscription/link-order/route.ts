@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { createOrUpdateSubscription } from '@/lib/neon-subscription';
+import { logger } from '@/lib/logger';
 
 export const runtime = 'edge';
 
@@ -11,7 +12,7 @@ export async function POST(request: NextRequest) {
 
     const { userId, orderId } = await request.json();
 
-    console.log('🔗 Linking order to user:', { userId, orderId });
+    logger.log('🔗 Linking order to user:', { userId, orderId });
 
     if (!userId || !orderId) {
       return NextResponse.json(
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     const orderData = orderResult.rows[0];
-    console.log('📦 Order data:', {
+    logger.log('📦 Order data:', {
       id: orderData.id,
       status: orderData.status,
       package: orderData.package_type,
@@ -79,7 +80,7 @@ export async function POST(request: NextRequest) {
     }
 
     const user = userResult.rows[0];
-    console.log('👤 User found:', user.email);
+    logger.log('👤 User found:', user.email);
 
     // Create or update subscription
     const rawAmount = typeof orderData.amount === 'number' ? orderData.amount : parseFloat(orderData.amount);
@@ -103,7 +104,7 @@ export async function POST(request: NextRequest) {
       WHERE id = ${orderId}
     `;
 
-    console.log('✅ Subscription activated for user:', userId);
+    logger.log('✅ Subscription activated for user:', userId);
 
     return NextResponse.json({
       success: true,

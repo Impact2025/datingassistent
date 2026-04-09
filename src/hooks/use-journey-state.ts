@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * JOURNEY STATE HOOK
  * Manages onboarding journey state and progression
@@ -49,7 +50,7 @@ export function useJourneyState({ userId, userProfile, enabled = true }: UseJour
   // Users without Kickstart will see the regular dashboard
   useEffect(() => {
     // Always skip old onboarding - mark check as complete immediately
-    console.log('ℹ️ Old journey onboarding disabled - users go directly to dashboard');
+    logger.log('ℹ️ Old journey onboarding disabled - users go directly to dashboard');
     setShowOnboarding(false);
     setJourneyCheckComplete(true);
   }, [userId, userProfile, enabled]);
@@ -116,7 +117,7 @@ export function useJourneyState({ userId, userProfile, enabled = true }: UseJour
             metadata: { scanData }
           }),
         });
-        console.log('✅ Personality scan marked as completed in coaching profile');
+        logger.log('✅ Personality scan marked as completed in coaching profile');
       } catch (error) {
         console.error('Failed to mark personality scan as completed:', error);
       }
@@ -140,7 +141,7 @@ export function useJourneyState({ userId, userProfile, enabled = true }: UseJour
                 completed: true
               }),
             });
-            console.log('✅ Personality scan goal marked as completed');
+            logger.log('✅ Personality scan goal marked as completed');
           }
         }
       } catch (error) {
@@ -203,7 +204,7 @@ export function useJourneyState({ userId, userProfile, enabled = true }: UseJour
   };
 
   const handleCoachAdviceComplete = async () => {
-    console.log('🎯 Coach advice completed, transitioning to welcome video');
+    logger.log('🎯 Coach advice completed, transitioning to welcome video');
 
     await saveJourneyProgress('welcome-video', ['profile', 'welcome', 'scan', 'coach-advice']);
 
@@ -221,7 +222,7 @@ export function useJourneyState({ userId, userProfile, enabled = true }: UseJour
             }
           }),
         });
-        console.log('✅ Coach advice marked as completed in coaching profile');
+        logger.log('✅ Coach advice marked as completed in coaching profile');
       } catch (error) {
         console.error('Failed to mark coach advice as completed:', error);
       }
@@ -233,7 +234,7 @@ export function useJourneyState({ userId, userProfile, enabled = true }: UseJour
       completedSteps: [...prev.completedSteps, 'coach-advice'],
     }));
 
-    console.log('✅ Journey state set to welcome-video');
+    logger.log('✅ Journey state set to welcome-video');
   };
 
   const handleWelcomeVideoComplete = async () => {
@@ -283,7 +284,7 @@ export function useJourneyState({ userId, userProfile, enabled = true }: UseJour
 
     await saveJourneyProgress('complete', ['profile', 'welcome', 'scan', 'coach-advice', 'welcome-video', 'welcome-questions']);
     setShowOnboarding(false);
-    console.log('🎉 Welcome experience completed successfully!');
+    logger.log('🎉 Welcome experience completed successfully!');
   };
 
   return {

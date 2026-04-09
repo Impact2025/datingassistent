@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * DATABASE QUERY WRAPPER
  * Automatic logging, monitoring, and error handling for database queries
@@ -65,7 +66,7 @@ export async function query<T = any>(
 
     // Log successful query in development
     if (process.env.NODE_ENV === 'development') {
-      console.log(`📊 DB Query: ${queryName} (${duration}ms)`);
+      logger.log(`📊 DB Query: ${queryName} (${duration}ms)`);
     }
 
     return result;
@@ -220,7 +221,7 @@ export async function transaction<T>(
       { duration }
     );
 
-    console.log(`✅ Transaction ${name} completed in ${duration}ms`);
+    logger.log(`✅ Transaction ${name} completed in ${duration}ms`);
 
     return result;
   } catch (error) {

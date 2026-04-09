@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Coaching Profile Service - Unified coaching context for users
  * Integrates personality scan, goals, progress, and recommendations
@@ -403,7 +404,7 @@ export class CoachingProfileService {
       `;
 
       if (scanResult.rows.length === 0) {
-        console.log('No personality scan found for user:', userId);
+        logger.log('No personality scan found for user:', userId);
         return null;
       }
 

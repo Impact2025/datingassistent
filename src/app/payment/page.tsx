@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/lib/logger';
 
 // Force dynamic rendering (required for useSearchParams)
 export const dynamic = "force-dynamic";
@@ -67,7 +68,7 @@ function PaymentContent() {
         throw new Error(data.error || 'Payment creation failed');
       }
 
-      console.log('✅ Payment order created:', data.orderId);
+      logger.log('✅ Payment order created:', data.orderId);
 
       // Redirect to Stripe Checkout
       if (data.paymentUrl) {

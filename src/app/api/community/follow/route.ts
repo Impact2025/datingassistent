@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
     } catch (dbError: any) {
       // If table doesn't exist, return error but don't crash
       if (dbError.code === '42P01') {
-        console.log('⚠️ user_follows table does not exist yet, follow functionality disabled');
+        logger.log('⚠️ user_follows table does not exist yet, follow functionality disabled');
         return NextResponse.json(
           { error: 'Follow functionality not available yet' },
           { status: 503 }
@@ -97,7 +98,7 @@ export async function GET(request: NextRequest) {
     } catch (dbError: any) {
       // If table doesn't exist, return empty array
       if (dbError.code === '42P01') {
-        console.log('⚠️ user_follows table does not exist yet, returning empty follows');
+        logger.log('⚠️ user_follows table does not exist yet, returning empty follows');
         return NextResponse.json({ follows: [] }, { status: 200 });
       }
       throw dbError;

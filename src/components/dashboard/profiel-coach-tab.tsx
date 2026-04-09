@@ -11,6 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Lightbulb, HelpCircle, CheckCircle2, User } from "lucide-react";
 import { ToolOnboardingOverlay, useOnboardingOverlay } from "@/components/shared/tool-onboarding-overlay";
 import { getOnboardingSteps, getToolDisplayName } from "@/lib/tool-onboarding-content";
+import { logger } from '@/lib/logger';
 
 export function ProfielCoachTab() {
   const [activeSubTab, setActiveSubTab] = useState("profiel-aanpassen");
@@ -37,7 +38,7 @@ export function ProfielCoachTab() {
         steps={getOnboardingSteps('profiel-coach')}
         open={showOverlay}
         onOpenChange={setShowOverlay}
-        onComplete={() => console.log('Profiel Coach onboarding completed!')}
+        onComplete={() => logger.log('Profiel Coach onboarding completed!')}
       />
 
       <div className="space-y-6">

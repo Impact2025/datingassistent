@@ -1,16 +1,17 @@
+import { logger } from '@/lib/logger';
 import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
 export async function POST() {
   try {
-    console.log('Adding image_url column to course_lessons table...');
+    logger.log('Adding image_url column to course_lessons table...');
 
     // Add image_url column
     await sql`
       ALTER TABLE course_lessons
       ADD COLUMN IF NOT EXISTS image_url TEXT
     `;
-    console.log('Added image_url column');
+    logger.log('Added image_url column');
 
     return NextResponse.json({
       success: true,

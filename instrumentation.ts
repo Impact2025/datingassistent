@@ -1,6 +1,15 @@
+/* eslint-disable no-console */
 import * as Sentry from '@sentry/nextjs';
 
 export async function register() {
+  // Suppress verbose console output in production (server-side only)
+  // console.error and console.warn remain active for real issues
+  if (process.env.NODE_ENV === 'production' && process.env.NEXT_RUNTIME === 'nodejs') {
+    console.log = () => {};
+    console.debug = () => {};
+    console.info = () => {};
+  }
+
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     // Server-side Sentry initialization
     Sentry.init({

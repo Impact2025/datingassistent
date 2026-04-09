@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 
@@ -68,7 +69,7 @@ export async function GET(request: NextRequest) {
   const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || 'your_verify_token';
 
   if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-    console.log('✅ WhatsApp webhook verified');
+    logger.log('✅ WhatsApp webhook verified');
     return new Response(challenge, { status: 200 });
   }
 
@@ -79,7 +80,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body: WhatsAppMessage = await request.json();
-    console.log('📱 WhatsApp webhook received:', JSON.stringify(body, null, 2));
+    logger.log('📱 WhatsApp webhook received:', JSON.stringify(body, null, 2));
 
     // Validate webhook structure
     if (!body.object || body.object !== 'whatsapp_business_account') {
@@ -200,7 +201,7 @@ async function processWhatsAppMessages(value: any) {
 
       if (updatedConversation.rows[0].assigned_agent_id) {
         // In production, you would send real-time notification to agent
-        console.log(`🔔 Notification sent to agent ${updatedConversation.rows[0].assigned_agent_id} for WhatsApp message`);
+        logger.log(`🔔 Notification sent to agent ${updatedConversation.rows[0].assigned_agent_id} for WhatsApp message`);
       }
 
     } catch (error) {
@@ -233,9 +234,9 @@ async function autoAssignConversation(conversationId: string) {
         WHERE id = ${conversationId}
       `;
 
-      console.log(`✅ WhatsApp conversation ${conversationId} assigned to agent ${agent.name}`);
+      logger.log(`✅ WhatsApp conversation ${conversationId} assigned to agent ${agent.name}`);
     } else {
-      console.log(`⏳ WhatsApp conversation ${conversationId} queued - no available agents`);
+      logger.log(`⏳ WhatsApp conversation ${conversationId} queued - no available agents`);
     }
   } catch (error) {
     console.error('Error auto-assigning WhatsApp conversation:', error);

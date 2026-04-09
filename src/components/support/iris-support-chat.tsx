@@ -1,4 +1,5 @@
 'use client';
+import { logger } from '@/lib/logger';
 
 /**
  * Iris Support Chat Component
@@ -251,7 +252,7 @@ export function IrisSupportChat({
   const handleFeedback = (messageId: string, isPositive: boolean) => {
     setFeedbackGiven(prev => new Set(prev).add(messageId));
     // In production, log this feedback
-    console.log(`Feedback for ${messageId}: ${isPositive ? 'positive' : 'negative'}`);
+    logger.log(`Feedback for ${messageId}: ${isPositive ? 'positive' : 'negative'}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

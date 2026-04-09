@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { verifyToken } from '@/lib/auth';
+import { logger } from '@/lib/logger';
 
 // Helper functions to map kickstart onboarding data to profile format
 function mapGender(kickstartGender: string | null): string {
@@ -100,7 +101,7 @@ export async function GET(request: NextRequest) {
             _dataSource: 'kickstart_onboarding'
           };
 
-          console.log('✅ Profile enriched with Kickstart onboarding data for user:', userId);
+          logger.log('✅ Profile enriched with Kickstart onboarding data for user:', userId);
         }
       } catch (koError) {
         console.error('Error fetching kickstart onboarding data:', koError);

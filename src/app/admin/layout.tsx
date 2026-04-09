@@ -27,6 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useUser } from "@/providers/user-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { logger } from '@/lib/logger';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -142,7 +143,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
         // Redirect if not admin
         if (!data.isAdmin) {
-          console.log('🚫 User is not an admin, redirecting...');
+          logger.log('🚫 User is not an admin, redirecting...');
           setTimeout(() => router.push('/dashboard'), 100);
         }
       } catch (error) {

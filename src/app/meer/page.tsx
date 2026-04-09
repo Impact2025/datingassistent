@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense } from 'react';
+import { logger } from '@/lib/logger';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -144,7 +145,7 @@ function MeerPageContent() {
     localStorage.setItem('notifications_enabled', JSON.stringify(enabled));
 
     // Here you could also send to backend API
-    console.log('Notifications', enabled ? 'enabled' : 'disabled');
+    logger.log('Notifications', enabled ? 'enabled' : 'disabled');
   };
 
   // Handle theme toggle

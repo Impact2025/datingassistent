@@ -8,6 +8,7 @@ import { BioAnalyzer } from "@/components/quiz/bio-analyzer";
 import { ClicheTransformer } from "@/components/quiz/cliche-transformer";
 import { PersonalityProfileBuilder } from "@/components/quiz/personality-profile-builder";
 import { Sparkles, Zap, Trophy, User } from "lucide-react";
+import { logger } from '@/lib/logger';
 
 export default function TestProfileComponents() {
   const [bioAnalyzerSaves, setBioAnalyzerSaves] = useState(0);
@@ -89,11 +90,11 @@ export default function TestProfileComponents() {
               <CardContent>
                 <BioAnalyzer
                   onSave={(bio, analysis) => {
-                    console.log('Bio saved:', { bio, analysis });
+                    logger.log('Bio saved:', { bio, analysis });
                     setBioAnalyzerSaves(prev => prev + 1);
                   }}
                   onAIEnhance={(bio) => {
-                    console.log('AI enhance requested for:', bio);
+                    logger.log('AI enhance requested for:', bio);
                     alert('AI Enhancement zou hier geactiveerd worden (komt in volgende sprint!)');
                   }}
                 />
@@ -158,7 +159,7 @@ export default function TestProfileComponents() {
               <CardContent>
                 <ClicheTransformer
                   onComplete={(completed, totalScore) => {
-                    console.log('Transformer completed:', { completed, totalScore });
+                    logger.log('Transformer completed:', { completed, totalScore });
                     setTransformerCompleted(completed);
                     setTransformerScore(totalScore);
                   }}
@@ -224,7 +225,7 @@ export default function TestProfileComponents() {
               <CardContent>
                 <PersonalityProfileBuilder
                   onComplete={(profile, answers) => {
-                    console.log('Profile completed:', { profile, answers });
+                    logger.log('Profile completed:', { profile, answers });
                     setProfilesCompleted(prev => prev + 1);
                   }}
                 />

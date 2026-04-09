@@ -6,6 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { WelcomeTour } from '@/components/welcome-tour';
 import { AuthManager, getAuthErrorMessage } from '@/lib/auth-manager';
 import { safeStorage } from '@/lib/safe-storage';
+import { logger } from '@/lib/logger';
 
 interface User {
   id: number;
@@ -45,7 +46,7 @@ function getCookie(name: string): string | null {
 }
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  console.log('🎨 UserProvider component rendering');
+  logger.log('🎨 UserProvider component rendering');
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -54,7 +55,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  console.log('🧭 UserProvider - Current pathname:', pathname);
+  logger.log('🧭 UserProvider - Current pathname:', pathname);
 
   // Initialize AuthManager
   const [authManager] = useState(() => new AuthManager());
@@ -68,7 +69,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         error.message.includes('Invalid or expired token') ||
         error.message === 'AUTH_FALLBACK_MODE') {
 
-      console.log('🔐 Authentication error detected, logging out user');
+      logger.log('🔐 Authentication error detected, logging out user');
 
       // Clear authentication state
       safeStorage.removeItem(TOKEN_STORAGE_KEY);
@@ -89,7 +90,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loadUserProfile = useCallback(async (userId: number) => {
     try {
-      console.log('🔍 Loading user profile from database for user:', userId);
+      logger.log('🔍 Loading user profile from database for user:', userId);
 
       // Use AuthManager for authenticated request with automatic token refresh
       const data = await authManager.authenticatedRequest<{ profile: UserProfile | null }>(
@@ -99,18 +100,18 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (data.profile) {
         const profile = data.profile as UserProfile;
-        console.log('✅ Profile loaded from database');
+        logger.log('✅ Profile loaded from database');
         setUserProfile(profile);
 
         // Cache in localStorage
         safeStorage.setItem(USER_PROFILE_STORAGE_KEY_PREFIX + userId, JSON.stringify(profile));
       } else {
-        console.log('⚠️ No profile found in database');
+        logger.log('⚠️ No profile found in database');
 
         // Try localStorage as fallback
         const storedProfile = safeStorage.getItem(USER_PROFILE_STORAGE_KEY_PREFIX + userId);
         if (storedProfile) {
-          console.log('📱 Using localStorage fallback');
+          logger.log('📱 Using localStorage fallback');
           setUserProfile(JSON.parse(storedProfile));
         } else {
           setUserProfile(null);
@@ -127,7 +128,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Try localStorage as fallback
       const storedProfile = safeStorage.getItem(USER_PROFILE_STORAGE_KEY_PREFIX + userId);
       if (storedProfile) {
-        console.log('📱 Using localStorage fallback after database error');
+        logger.log('📱 Using localStorage fallback after database error');
         setUserProfile(JSON.parse(storedProfile));
       } else {
         setUserProfile(null);
@@ -138,12 +139,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Verify token and restore user session on mount
   useEffect(() => {
     const verifyToken = async () => {
-      console.log('🔍 UserProvider: Starting token verification for pathname:', pathname);
+      logger.log('🔍 UserProvider: Starting token verification for pathname:', pathname);
 
       // Skip auth verification for public pages (logout, login, register, etc.)
       const publicPages = ['/logout', '/login', '/register', '/verify-email', '/reset-password', '/admin/login', '/admin-login'];
       if (publicPages.some(page => pathname?.startsWith(page))) {
-        console.log('🔓 Skipping auth verification for public page:', pathname);
+        logger.log('🔓 Skipping auth verification for public page:', pathname);
         setLoading(false);
         return;
       }
@@ -155,30 +156,30 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!token) {
         token = getCookie(TOKEN_STORAGE_KEY);
         if (token) {
-          console.log('📝 Found token in cookie, syncing to localStorage');
+          logger.log('📝 Found token in cookie, syncing to localStorage');
           safeStorage.setItem(TOKEN_STORAGE_KEY, token);
         }
       }
 
       if (!token) {
-        console.log('🔓 No auth token found in localStorage or cookie');
+        logger.log('🔓 No auth token found in localStorage or cookie');
         setLoading(false);
         return;
       }
 
       try {
-        console.log('🔐 Verifying auth token for pathname:', pathname);
+        logger.log('🔐 Verifying auth token for pathname:', pathname);
         const response = await fetch('/api/auth/verify', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
 
-        console.log('🔍 Auth verify response status:', response.status, 'headers:', Object.fromEntries(response.headers.entries()));
+        logger.log('🔍 Auth verify response status:', response.status, 'headers:', Object.fromEntries(response.headers.entries()));
 
         if (response.ok) {
           const responseText = await response.text();
-          console.log('🔍 Auth verify response text:', responseText);
+          logger.log('🔍 Auth verify response text:', responseText);
 
           if (!responseText || responseText.trim() === '') {
             console.error('❌ Empty response from auth verify API');
@@ -193,11 +194,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
             throw new Error('Invalid JSON response from auth verify');
           }
 
-          console.log('✅ Token verified, user:', data.user, 'for pathname:', pathname);
+          logger.log('✅ Token verified, user:', data.user, 'for pathname:', pathname);
 
           // Check if user has verified email
           if (!data.user.emailVerified) {
-            console.log('❌ User email not verified, clearing session');
+            logger.log('❌ User email not verified, clearing session');
             safeStorage.removeItem(TOKEN_STORAGE_KEY);
             setUser(null);
             setUserProfile(null);
@@ -220,9 +221,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
           // Load user profile from database
           await loadUserProfile(data.user.id);
-          console.log('✅ User session restored for pathname:', pathname);
+          logger.log('✅ User session restored for pathname:', pathname);
         } else {
-          console.log('❌ Token verification failed for pathname:', pathname);
+          logger.log('❌ Token verification failed for pathname:', pathname);
           safeStorage.removeItem(TOKEN_STORAGE_KEY);
           setUser(null);
           setUserProfile(null);
@@ -252,7 +253,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const isProtectedPage = ((pathname?.startsWith('/dashboard')) || (pathname?.startsWith('/admin'))) && pathname !== '/admin/login';
 
-    console.log('📍 Auth redirect check:', {
+    logger.log('📍 Auth redirect check:', {
       pathname,
       isProtectedPage,
       hasUser: !!user,
@@ -262,17 +263,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // If not authenticated and on a protected page, redirect to appropriate login
     if (!user && isProtectedPage) {
       if (pathname?.startsWith('/admin')) {
-        console.log('🔒 Admin page accessed without auth, redirecting to admin login');
+        logger.log('🔒 Admin page accessed without auth, redirecting to admin login');
         router.replace('/admin/login');
       } else {
-        console.log('🔒 Protected page accessed without auth, redirecting to login');
+        logger.log('🔒 Protected page accessed without auth, redirecting to login');
         router.replace('/login');
       }
     }
   }, [user, loading, pathname, router]);
 
   const login = useCallback(async (email: string, password: string) => {
-    console.log('🔐 Attempting login for:', email);
+    logger.log('🔐 Attempting login for:', email);
 
     try {
       const response = await fetch('/api/auth/login', {
@@ -289,7 +290,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const data = await response.json();
-      console.log('✅ Login successful for:', email);
+      logger.log('✅ Login successful for:', email);
 
       // Check if email is verified
       if (!data.user.emailVerified) {
@@ -319,7 +320,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Check if user has seen the welcome tour
       const tourSeen = safeStorage.getItem('dating-assistant-tour-seen');
       if (!tourSeen) {
-        console.log('🎯 First login detected - will show welcome tour');
+        logger.log('🎯 First login detected - will show welcome tour');
         setShowWelcomeTour(true);
       }
     } catch (err: any) {
@@ -328,8 +329,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [loadUserProfile]);
 
-  const signup = useCallback(async (email: string, password: string, name?: string): Promise<{ user: User; requiresEmailVerification: boolean }> => {
-    console.log('📝 Attempting signup for:', email);
+  const signup = useCallback(async (email: string, password: string, name?: string, options?: { marketingConsent?: boolean }): Promise<{ user: User; requiresEmailVerification: boolean }> => {
+    logger.log('📝 Attempting signup for:', email);
 
     try {
       const response = await fetch('/api/auth/register', {
@@ -337,7 +338,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name: name || email.split('@')[0], email, password })
+        body: JSON.stringify({ name: name || email.split('@')[0], email, password, marketingConsent: options?.marketingConsent ?? false })
       });
 
       if (!response.ok) {
@@ -346,12 +347,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const data = await response.json();
-      console.log('✅ Signup successful for:', email);
+      logger.log('✅ Signup successful for:', email);
 
       // For unverified accounts, don't save token or set user state
       // The user needs to verify email first
       if (data.requiresEmailVerification) {
-        console.log('📧 Email verification required for:', email);
+        logger.log('📧 Email verification required for:', email);
         return {
           user: {
             ...data.user,
@@ -387,12 +388,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const logout = useCallback(async () => {
-    console.log('🚪 Logging out user - redirecting to logout page');
+    logger.log('🚪 Logging out user - redirecting to logout page');
 
     // Redirect to logout page which handles the full logout process
     router.push('/logout');
 
-    console.log('✅ Redirected to logout page');
+    logger.log('✅ Redirected to logout page');
   }, [router]);
 
   const updateProfile = useCallback(async (profile: UserProfile) => {
@@ -403,7 +404,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     startProfileUpdate(async () => {
       try {
-        console.log('💾 Saving profile to database for user:', user.id);
+        logger.log('💾 Saving profile to database for user:', user.id);
 
         // Use AuthManager for authenticated request with automatic token refresh
         await authManager.authenticatedRequest('/api/user/update-profile', {
@@ -415,11 +416,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
         // If we get here, the request was successful
-        console.log('✅ Profile saved to database successfully');
+        logger.log('✅ Profile saved to database successfully');
 
         // Also save to localStorage as cache
         safeStorage.setItem(USER_PROFILE_STORAGE_KEY_PREFIX + user.id, JSON.stringify(profile));
-        console.log('💾 Profile cached in localStorage');
+        logger.log('💾 Profile cached in localStorage');
 
         // Update state
         setUserProfile(profile);
@@ -429,10 +430,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const isNewUser = !userProfile || (!userProfile.name && !userProfile.age);
         const isInDashboard = pathname === '/dashboard';
         if (isNewUser && pathname !== '/dashboard' && !isInDashboard) {
-          console.log('➡️ Redirecting new user to dashboard after profile creation');
+          logger.log('➡️ Redirecting new user to dashboard after profile creation');
           router.push('/dashboard');
         } else {
-          console.log('📍 Profile updated for existing user or dashboard user, staying on current page');
+          logger.log('📍 Profile updated for existing user or dashboard user, staying on current page');
         }
       } catch (err) {
         console.error("❌ Failed to save user profile to database:", err);
@@ -447,7 +448,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           safeStorage.setItem(USER_PROFILE_STORAGE_KEY_PREFIX + user.id, JSON.stringify(profile));
           setUserProfile(profile);
           // Don't redirect to onboarding for existing users
-          console.log('📍 Profile saved to localStorage fallback, staying on current page');
+          logger.log('📍 Profile saved to localStorage fallback, staying on current page');
         } catch (localError) {
           console.error("❌ localStorage fallback also failed:", localError);
         }

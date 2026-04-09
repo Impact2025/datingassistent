@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Cron Job: Weekly Email Campaigns
  * Runs every Monday morning to schedule weekly digests
@@ -20,12 +21,12 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    console.log('🤖 [CRON] Starting weekly email campaigns...');
+    logger.log('🤖 [CRON] Starting weekly email campaigns...');
 
     // Run weekly campaigns
     await runWeeklyEmailCampaigns();
 
-    console.log('✅ [CRON] Weekly campaigns scheduled');
+    logger.log('✅ [CRON] Weekly campaigns scheduled');
 
     return NextResponse.json({
       success: true,

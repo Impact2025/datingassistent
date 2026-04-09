@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
+import { logger } from '@/lib/logger';
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -9,7 +10,7 @@ const sql = neon(process.env.DATABASE_URL!);
  */
 export async function GET() {
   try {
-    console.log('🎯 Initializing Journey Achievements tables...');
+    logger.log('🎯 Initializing Journey Achievements tables...');
 
     // 1. User Journey Progress - Detailed tracking per phase
     await sql`
@@ -166,7 +167,7 @@ export async function GET() {
     await sql`CREATE INDEX IF NOT EXISTS idx_notifications_user ON user_notifications(user_id, is_read)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_milestones_user ON journey_milestones(user_id)`;
 
-    console.log('✅ Journey Achievements tables initialized successfully!');
+    logger.log('✅ Journey Achievements tables initialized successfully!');
 
     return NextResponse.json({
       success: true,
