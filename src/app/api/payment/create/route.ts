@@ -156,9 +156,9 @@ export async function POST(request: NextRequest) {
     }
     const program = programResult.rows[0];
     const orderId = `ORDER-${timestamp}-${userId}-${programId}`;
-    // amount arrives in euros from the program checkout
-    const amountEuros = amount;
-    const amountCents = Math.round(amountEuros * 100);
+    // amount arrives in cents from the program checkout (price_beta/price_regular are stored in cents)
+    const amountCents = Math.round(amount);
+    const amountEuros = amountCents / 100;
 
     // Free order (100% coupon or free program)
     if (amountCents === 0) {
