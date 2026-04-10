@@ -51,9 +51,10 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
   const [error, setError] = useState<string | null>(null);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
-  // OTP login state (when email already exists)
+  // OTP login state (always required to verify email)
   const [otpMode, setOtpMode] = useState(false);
   const [otpUserId, setOtpUserId] = useState<number | null>(null);
+  const [isNewUser, setIsNewUser] = useState(true);
   const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
   const [isSendingCode, setIsSendingCode] = useState(false);
@@ -155,6 +156,7 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
 
           if (loginCodeResponse.ok) {
             setOtpUserId(loginCodeData.userId);
+            setIsNewUser(false);
             setOtpMode(true);
           } else {
             // Fallback: show friendly message with login link
@@ -174,7 +176,24 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
         localStorage.setItem('quiz_user_name', firstName.trim());
       }
 
-      onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
+      // Send OTP to verify the email is real before showing results
+      const loginCodeResponse = await fetch('/api/auth/send-login-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const loginCodeData = await loginCodeResponse.json();
+
+      if (loginCodeResponse.ok) {
+        setOtpUserId(loginCodeData.userId);
+        setIsNewUser(true);
+        setOtpMode(true);
+        setIsCreatingAccount(false);
+      } else {
+        // Fallback: just continue if OTP send fails
+        onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
+      }
+      return;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Er is een fout opgetreden';
       setError(message);
@@ -198,11 +217,13 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
 
               <div className="mb-6 text-center">
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                  Check je inbox
+                  {isNewUser ? 'Jouw analyse staat klaar' : 'Check je inbox'}
                 </h1>
                 <p className="text-gray-500 text-sm">
-                  Je hebt al een account. We hebben een inlogcode gestuurd naar{' '}
-                  <strong>{email}</strong>.
+                  {isNewUser
+                    ? <>We stuurden je persoonlijke analyse naar <strong>{email}</strong>. Vul de code in om hem te bekijken.</>
+                    : <>Je hebt al een account. We stuurden een code naar <strong>{email}</strong>.</>
+                  }
                 </p>
               </div>
 
