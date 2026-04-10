@@ -46,7 +46,7 @@ export const colors = {
   lightGray: '#e5e7eb',
   cream: '#f9fafb',
   white: '#ffffff',
-  background: '#f4f4f5',
+  background: '#efefef',
 };
 
 // Shared Styles
@@ -55,65 +55,65 @@ export const styles = {
     backgroundColor: colors.background,
     fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     margin: '0',
-    padding: '40px 24px',
+    padding: '48px 40px',
   },
   container: {
     backgroundColor: colors.white,
     margin: '0 auto',
-    maxWidth: '560px',
-    borderRadius: '8px',
+    maxWidth: '520px',
+    borderRadius: '4px',
     overflow: 'hidden' as const,
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.07)',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)',
   },
   header: {
     backgroundColor: colors.white,
-    padding: '36px 80px 28px 80px',
+    padding: '32px 56px 24px 56px',
     textAlign: 'center' as const,
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   heroGradient: {
     backgroundColor: colors.white,
-    padding: '36px 80px 32px 80px',
+    padding: '32px 56px 24px 56px',
     textAlign: 'center' as const,
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   content: {
-    padding: '40px 80px',
+    padding: '40px 56px',
   },
   footer: {
-    backgroundColor: colors.cream,
-    padding: '28px 80px',
+    backgroundColor: colors.white,
+    padding: '28px 56px',
     textAlign: 'center' as const,
     borderTop: `1px solid ${colors.lightGray}`,
   },
   heading1: {
     color: colors.dark,
-    fontSize: '28px',
+    fontSize: '26px',
     fontWeight: '700',
     lineHeight: '1.3',
     margin: '0 0 16px 0',
   },
   heading2: {
     color: colors.dark,
-    fontSize: '22px',
+    fontSize: '20px',
     fontWeight: '600',
     lineHeight: '1.3',
     margin: '0 0 16px 0',
   },
   paragraph: {
     color: '#4B5563',
-    fontSize: '16px',
-    lineHeight: '1.7',
+    fontSize: '15px',
+    lineHeight: '1.75',
     margin: '0 0 20px 0',
   },
   primaryButton: {
     backgroundColor: colors.primary,
-    borderRadius: '6px',
+    borderRadius: '4px',
     color: colors.white,
     display: 'inline-block',
-    fontSize: '15px',
+    fontSize: '14px',
     fontWeight: '600',
-    padding: '14px 32px',
+    padding: '13px 28px',
     textDecoration: 'none',
     textAlign: 'center' as const,
     letterSpacing: '0.01em',
@@ -121,19 +121,19 @@ export const styles = {
   secondaryButton: {
     backgroundColor: 'transparent',
     border: `1.5px solid ${colors.lightGray}`,
-    borderRadius: '6px',
+    borderRadius: '4px',
     color: colors.dark,
     display: 'inline-block',
-    fontSize: '15px',
+    fontSize: '14px',
     fontWeight: '500',
-    padding: '12px 24px',
+    padding: '11px 24px',
     textDecoration: 'none',
     textAlign: 'center' as const,
   },
   card: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: colors.white,
     border: `1px solid ${colors.lightGray}`,
-    borderRadius: '8px',
+    borderRadius: '4px',
     padding: '20px 24px',
     margin: '20px 0',
   },
@@ -143,13 +143,13 @@ export const styles = {
   },
   statValue: {
     color: colors.primary,
-    fontSize: '32px',
+    fontSize: '30px',
     fontWeight: '700',
     margin: '0',
   },
   statLabel: {
     color: colors.gray,
-    fontSize: '14px',
+    fontSize: '13px',
     margin: '4px 0 0 0',
   },
   link: {
@@ -164,20 +164,20 @@ export const styles = {
   badge: {
     backgroundColor: colors.primary,
     color: colors.white,
-    borderRadius: '20px',
-    padding: '4px 12px',
-    fontSize: '12px',
+    borderRadius: '3px',
+    padding: '3px 10px',
+    fontSize: '11px',
     fontWeight: '600',
     display: 'inline-block',
   },
   footerText: {
-    color: colors.gray,
-    fontSize: '14px',
+    color: colors.grayLight,
+    fontSize: '13px',
     margin: '0 0 8px 0',
   },
   footerLink: {
-    color: colors.primary,
-    fontSize: '14px',
+    color: colors.grayLight,
+    fontSize: '13px',
     textDecoration: 'none',
   },
 };
@@ -205,15 +205,15 @@ export function BaseEmail({ preview, children }: BaseEmailProps) {
   );
 }
 
-// Logo Component - Updated to new brand logo
+// Logo Component
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
   showText?: boolean;
 }
 
 export function EmailLogo({ size = 'md', showText = false }: LogoProps) {
-  const sizes = { sm: 32, md: 48, lg: 64 };
-  const textSizes = { sm: '16px', md: '20px', lg: '24px' };
+  const sizes = { sm: 28, md: 36, lg: 48 };
+  const textSizes = { sm: '14px', md: '17px', lg: '20px' };
   const logoSize = sizes[size];
 
   return (
@@ -229,7 +229,7 @@ export function EmailLogo({ size = 'md', showText = false }: LogoProps) {
           />
         </td>
         {showText && (
-          <td style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>
+          <td style={{ verticalAlign: 'middle', paddingLeft: '8px' }}>
             <span style={{
               fontSize: textSizes[size],
               fontFamily: '"Inter", Arial, sans-serif',
@@ -246,7 +246,7 @@ export function EmailLogo({ size = 'md', showText = false }: LogoProps) {
   );
 }
 
-// Header with gradient background - Brand "Warm Vertrouwen" gradient
+// HeroHeader — white background, title below logo
 interface HeroHeaderProps {
   title: string;
   subtitle?: string;
@@ -255,21 +255,20 @@ interface HeroHeaderProps {
 export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
   return (
     <Section style={styles.heroGradient}>
-      {/* Logo with brand text */}
       <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto 20px' }}>
         <tr>
           <td style={{ verticalAlign: 'middle' }}>
             <Img
               src="https://datingassistent.nl/images/LogoDA.png"
               alt="DatingAssistent"
-              width={36}
-              height={36}
+              width={32}
+              height={32}
               style={{ display: 'block' }}
             />
           </td>
           <td style={{ verticalAlign: 'middle', paddingLeft: '8px' }}>
             <span style={{
-              fontSize: '17px',
+              fontSize: '15px',
               fontFamily: '"Inter", Arial, sans-serif',
               fontWeight: '700',
               letterSpacing: '-0.02em',
@@ -284,7 +283,7 @@ export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
         {title}
       </Text>
       {subtitle && (
-        <Text style={{ ...styles.paragraph, color: colors.gray, margin: '8px 0 0', fontSize: '14px' }}>
+        <Text style={{ ...styles.paragraph, color: colors.gray, margin: '8px 0 0', fontSize: '13px' }}>
           {subtitle}
         </Text>
       )}
@@ -292,7 +291,7 @@ export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
   );
 }
 
-// Header with solid Warm Coral background (brand style - no gradient)
+// PinkHeader — now renders as clean white header, same as HeroHeader
 interface PinkHeaderProps {
   title: string;
   subtitle?: string;
@@ -301,40 +300,40 @@ interface PinkHeaderProps {
 export function PinkHeader({ title, subtitle }: PinkHeaderProps) {
   return (
     <Section style={{
-      backgroundColor: colors.primary,
-      padding: '36px 64px 32px 64px',
+      backgroundColor: colors.white,
+      padding: '32px 56px 24px 56px',
       textAlign: 'center' as const,
+      borderBottom: `1px solid ${colors.lightGray}`,
     }}>
-      {/* Logo with brand text */}
-      <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto' }}>
+      <table cellPadding="0" cellSpacing="0" style={{ margin: '0 auto 20px' }}>
         <tr>
           <td style={{ verticalAlign: 'middle' }}>
             <Img
               src="https://datingassistent.nl/images/LogoDA.png"
               alt="DatingAssistent"
-              width={44}
-              height={44}
+              width={32}
+              height={32}
               style={{ display: 'block' }}
             />
           </td>
-          <td style={{ verticalAlign: 'middle', paddingLeft: '10px' }}>
+          <td style={{ verticalAlign: 'middle', paddingLeft: '8px' }}>
             <span style={{
-              fontSize: '22px',
+              fontSize: '15px',
               fontFamily: '"Inter", Arial, sans-serif',
               fontWeight: '700',
               letterSpacing: '-0.02em',
-              color: colors.white,
+              color: colors.dark,
             }}>
               DatingAssistent
             </span>
           </td>
         </tr>
       </table>
-      <Text style={{ ...styles.heading1, color: colors.white, marginTop: '16px', marginBottom: '0' }}>
+      <Text style={{ ...styles.heading1, color: colors.dark, margin: '0' }}>
         {title}
       </Text>
       {subtitle && (
-        <Text style={{ ...styles.paragraph, color: 'rgba(255,255,255,0.9)', margin: '8px 0 0 0', fontSize: '15px' }}>
+        <Text style={{ ...styles.paragraph, color: colors.gray, margin: '8px 0 0', fontSize: '13px' }}>
           {subtitle}
         </Text>
       )}
@@ -381,8 +380,8 @@ interface FeatureCardProps {
 export function FeatureCard({ icon, title, description }: FeatureCardProps) {
   return (
     <Row style={{ marginBottom: '16px' }}>
-      <Column style={{ width: '48px', verticalAlign: 'top' }}>
-        <Text style={{ fontSize: '24px', margin: '0' }}>{icon}</Text>
+      <Column style={{ width: '40px', verticalAlign: 'top' }}>
+        <Text style={{ fontSize: '20px', margin: '0' }}>{icon}</Text>
       </Column>
       <Column>
         <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark, marginBottom: '4px' }}>
@@ -413,7 +412,7 @@ export function StatsGrid({ stats }: StatsGridProps) {
       <Row>
         {stats.map((stat, index) => (
           <Column key={index} style={styles.statBox}>
-            {stat.icon && <Text style={{ fontSize: '24px', margin: '0 0 8px 0' }}>{stat.icon}</Text>}
+            {stat.icon && <Text style={{ fontSize: '20px', margin: '0 0 6px 0' }}>{stat.icon}</Text>}
             <Text style={styles.statValue}>{stat.value}</Text>
             <Text style={styles.statLabel}>{stat.label}</Text>
           </Column>
@@ -423,7 +422,7 @@ export function StatsGrid({ stats }: StatsGridProps) {
   );
 }
 
-// Info Box / Callout
+// Info Box / Callout — all types: neutral, minimal left border only
 interface InfoBoxProps {
   type?: 'info' | 'success' | 'warning' | 'tip';
   title?: string;
@@ -431,29 +430,20 @@ interface InfoBoxProps {
 }
 
 export function InfoBox({ type = 'info', title, children }: InfoBoxProps) {
-  const typeColors = {
-    info: { bg: '#eff6ff', border: colors.info, icon: 'info' },
-    success: { bg: '#f0fdf4', border: colors.success, icon: 'check' },
-    warning: { bg: '#fefce8', border: colors.warning, icon: 'warning' },
-    tip: { bg: '#fef3f3', border: colors.primary, icon: 'tip' },
-  };
-
-  const config = typeColors[type];
-
   return (
     <Section style={{
-      backgroundColor: config.bg,
-      borderLeft: `3px solid ${config.border}`,
-      borderRadius: '0 10px 10px 0',
-      padding: '18px 22px',
-      margin: '28px 0',
+      backgroundColor: colors.cream,
+      borderLeft: `3px solid ${colors.lightGray}`,
+      borderRadius: '0 4px 4px 0',
+      padding: '16px 20px',
+      margin: '24px 0',
     }}>
       {title && (
-        <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark, marginBottom: '6px', fontSize: '14px' }}>
+        <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark, marginBottom: '4px', fontSize: '13px' }}>
           {title}
         </Text>
       )}
-      <Text style={{ ...styles.paragraph, margin: '0', fontSize: '14px', lineHeight: '1.6', color: colors.gray }}>
+      <Text style={{ ...styles.paragraph, margin: '0', fontSize: '13px', lineHeight: '1.65', color: colors.gray }}>
         {children}
       </Text>
     </Section>
@@ -470,7 +460,7 @@ export function ProgressBar({ progress, label }: ProgressBarProps) {
   return (
     <Section style={{ margin: '16px 0' }}>
       {label && (
-        <Text style={{ ...styles.paragraph, fontSize: '14px', marginBottom: '8px' }}>
+        <Text style={{ ...styles.paragraph, fontSize: '13px', marginBottom: '8px' }}>
           {label}
         </Text>
       )}
@@ -479,12 +469,12 @@ export function ProgressBar({ progress, label }: ProgressBarProps) {
           <td style={{
             backgroundColor: colors.lightGray,
             borderRadius: '10px',
-            height: '10px',
+            height: '8px',
           }}>
             <div style={{
               backgroundColor: colors.primary,
               borderRadius: '10px',
-              height: '10px',
+              height: '8px',
               width: `${Math.min(100, Math.max(0, progress))}%`,
             }} />
           </td>
@@ -494,7 +484,7 @@ export function ProgressBar({ progress, label }: ProgressBarProps) {
   );
 }
 
-// Email Footer - Updated with brand styling
+// Email Footer
 interface EmailFooterProps {
   unsubscribeUrl?: string;
   preferencesUrl?: string;
@@ -504,43 +494,39 @@ export function EmailFooter({ unsubscribeUrl, preferencesUrl }: EmailFooterProps
   const baseUrl = 'https://datingassistent.nl';
 
   return (
-    <Section style={{
-      ...styles.footer,
-      backgroundColor: colors.white,
-      borderTop: `1px solid ${colors.lightGray}`,
-    }}>
+    <Section style={styles.footer}>
       <EmailLogo size="sm" showText={true} />
 
-      <Text style={{ ...styles.footerText, marginTop: '16px', color: colors.grayLight, fontSize: '13px' }}>
+      <Text style={{ ...styles.footerText, marginTop: '16px', fontSize: '12px' }}>
         © {new Date().getFullYear()} DatingAssistent · Alle rechten voorbehouden
       </Text>
 
-      <Text style={{ ...styles.footerText, marginTop: '12px' }}>
+      <Text style={{ ...styles.footerText, marginTop: '10px' }}>
         <Link href={`${baseUrl}/privacy`} style={styles.footerLink}>Privacy</Link>
-        {' | '}
+        {' · '}
         <Link href={`${baseUrl}/algemene-voorwaarden`} style={styles.footerLink}>Voorwaarden</Link>
-        {' | '}
+        {' · '}
         <Link href={`${baseUrl}/help`} style={styles.footerLink}>Help</Link>
       </Text>
 
       {(unsubscribeUrl || preferencesUrl) && (
-        <Text style={{ ...styles.footerText, marginTop: '16px', fontSize: '12px', color: colors.grayLight }}>
+        <Text style={{ ...styles.footerText, marginTop: '10px', fontSize: '12px' }}>
           {preferencesUrl && (
-            <Link href={preferencesUrl} style={{ ...styles.footerLink, fontSize: '12px', color: colors.grayLight }}>
-              Email voorkeuren aanpassen
+            <Link href={preferencesUrl} style={styles.footerLink}>
+              Voorkeuren
             </Link>
           )}
-          {preferencesUrl && unsubscribeUrl && ' | '}
+          {preferencesUrl && unsubscribeUrl && ' · '}
           {unsubscribeUrl && (
-            <Link href={unsubscribeUrl} style={{ ...styles.footerLink, fontSize: '12px', color: colors.grayLight }}>
+            <Link href={unsubscribeUrl} style={styles.footerLink}>
               Uitschrijven
             </Link>
           )}
         </Text>
       )}
 
-      <Text style={{ ...styles.footerText, marginTop: '16px', fontSize: '11px', color: colors.grayLight }}>
-        DatingAssistent B.V. - Nederland
+      <Text style={{ ...styles.footerText, marginTop: '10px', fontSize: '11px' }}>
+        DatingAssistent B.V. · Nederland
       </Text>
     </Section>
   );
@@ -574,18 +560,18 @@ export function StepsList({ steps }: StepsListProps) {
     <Section style={{ margin: '24px 0' }}>
       {steps.map((step, index) => (
         <Row key={index} style={{ marginBottom: '20px' }}>
-          <Column style={{ width: '40px', verticalAlign: 'top' }}>
+          <Column style={{ width: '36px', verticalAlign: 'top' }}>
             <table cellPadding="0" cellSpacing="0">
               <tr>
                 <td style={{
                   backgroundColor: colors.primary,
                   borderRadius: '50%',
-                  width: '32px',
-                  height: '32px',
+                  width: '28px',
+                  height: '28px',
                   textAlign: 'center',
                   color: colors.white,
                   fontWeight: '600',
-                  fontSize: '13px',
+                  fontSize: '12px',
                 }}>
                   {index + 1}
                 </td>
@@ -615,16 +601,16 @@ interface FeatureItemProps {
 export function FeatureItem({ title, description }: FeatureItemProps) {
   return (
     <Row style={{ marginBottom: '16px' }}>
-      <Column style={{ width: '20px', verticalAlign: 'top', paddingTop: '2px' }}>
-        <Text style={{ margin: '0', fontSize: '12px', color: colors.primary, lineHeight: '1.7', fontWeight: '700' }}>
+      <Column style={{ width: '16px', verticalAlign: 'top', paddingTop: '3px' }}>
+        <Text style={{ margin: '0', fontSize: '11px', color: colors.primary, lineHeight: '1.7', fontWeight: '700' }}>
           &#x25B8;
         </Text>
       </Column>
       <Column>
-        <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark, marginBottom: '2px', fontSize: '15px' }}>
+        <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark, marginBottom: '2px', fontSize: '14px' }}>
           {title}
         </Text>
-        <Text style={{ ...styles.paragraph, fontSize: '14px', margin: '0', color: colors.gray }}>
+        <Text style={{ ...styles.paragraph, fontSize: '13px', margin: '0', color: colors.gray }}>
           {description}
         </Text>
       </Column>
@@ -640,36 +626,17 @@ interface AchievementBadgeProps {
 }
 
 export function AchievementBadge({ icon, title, rarity = 'common' }: AchievementBadgeProps) {
-  const rarityColors = {
-    common: { bg: '#f3f4f6', border: '#d1d5db' },
-    rare: { bg: '#dbeafe', border: '#3b82f6' },
-    epic: { bg: '#f3e8ff', border: '#9333ea' },
-    legendary: { bg: '#fef3c7', border: '#f59e0b' },
-  };
-
-  const config = rarityColors[rarity];
-
   return (
     <Section style={{
-      backgroundColor: config.bg,
-      border: `2px solid ${config.border}`,
-      borderRadius: '16px',
+      backgroundColor: colors.cream,
+      border: `1px solid ${colors.lightGray}`,
+      borderRadius: '4px',
       padding: '24px',
       textAlign: 'center',
       margin: '24px 0',
     }}>
-      <Text style={{ fontSize: '48px', margin: '0 0 12px 0' }}>{icon}</Text>
+      <Text style={{ fontSize: '40px', margin: '0 0 12px 0' }}>{icon}</Text>
       <Text style={{ ...styles.heading2, margin: '0' }}>{title}</Text>
-      <Text style={{
-        ...styles.badge,
-        backgroundColor: config.border,
-        marginTop: '12px',
-        textTransform: 'uppercase',
-        fontSize: '11px',
-        letterSpacing: '0.5px',
-      }}>
-        {rarity}
-      </Text>
     </Section>
   );
 }
