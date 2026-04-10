@@ -12,9 +12,8 @@
  */
 
 import { motion } from 'framer-motion';
-import { Sparkles, CheckCircle, Lock, Trophy, ArrowRight } from 'lucide-react';
+import { CheckCircle, Lock, ArrowRight, Video, Bot, MessageCircle, Users, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { TRANSFORMATIE_OTO } from '@/types/lead-activation.types';
 
 interface TransformatieOTOModalProps {
@@ -23,6 +22,8 @@ interface TransformatieOTOModalProps {
   onAccept: () => void;
   onDecline: () => void;
 }
+
+const featureIcons = [Video, Bot, MessageCircle, Users, Star];
 
 export function TransformatieOTOModal({
   score,
@@ -38,128 +39,129 @@ export function TransformatieOTOModal({
   );
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border-2 border-coral-200 dark:border-coral-700 overflow-hidden">
-      {/* Header - Attention Grabber */}
-      <div className="bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30 p-6 text-center border-b border-coral-100 dark:border-coral-700 relative">
-        {/* ONZE AANRADER Badge */}
-        <Badge className="absolute top-4 right-4 bg-coral-500 dark:bg-coral-600 text-white px-3 py-1 text-xs font-bold shadow-md">
-          ONZE AANRADER
-        </Badge>
+    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
+      {/* Header */}
+      <div className="bg-gray-950 dark:bg-gray-950 px-6 pt-7 pb-6 text-center relative">
+        {/* Badge */}
+        <div className="absolute top-4 right-4">
+          <span className="inline-flex items-center gap-1 bg-coral-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-full tracking-wide uppercase">
+            Aanbevolen
+          </span>
+        </div>
 
+        {/* Score transformation */}
         <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', bounce: 0.5 }}
-          className="w-16 h-16 rounded-full bg-gradient-to-br from-coral-400 to-coral-600 flex items-center justify-center mx-auto mb-4 shadow-lg"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-center gap-3 mb-5"
         >
-          <Trophy className="w-8 h-8 text-white" />
+          <div className="text-center">
+            <div className="text-4xl font-bold text-white">{score.toFixed(1)}</div>
+            <div className="text-[11px] text-gray-500 mt-0.5 uppercase tracking-wider">Nu</div>
+          </div>
+          <div className="flex flex-col items-center gap-0.5 px-2">
+            <ArrowRight className="w-5 h-5 text-coral-400" />
+            <span className="text-[10px] text-gray-600 uppercase tracking-widest">90 dagen</span>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-coral-400">8+</div>
+            <div className="text-[11px] text-gray-500 mt-0.5 uppercase tracking-wider">Doel</div>
+          </div>
         </motion.div>
 
-        {/* Headline - Gap Awareness */}
         <motion.h1
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-2"
+          transition={{ delay: 0.1 }}
+          className="text-xl font-bold text-white leading-snug"
         >
-          {headline}
+          Het Transformatie Programma
         </motion.h1>
-
-        {/* Subheadline */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-gray-600 dark:text-gray-300"
+          className="text-sm text-gray-400 mt-1.5"
         >
           {TRANSFORMATIE_OTO.subheadline}
         </motion.p>
       </div>
 
-      {/* Offer Card */}
-      <div className="p-6">
-        {/* Program Name */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-coral-100 to-coral-200 dark:from-coral-900/50 dark:to-coral-800/50 flex items-center justify-center">
-            <Sparkles className="w-6 h-6 text-coral-500 dark:text-coral-400" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-50">Het Transformatie Programma</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">De complete opleiding tot succesvol daten</p>
-          </div>
-        </div>
-
+      {/* Content */}
+      <div className="px-6 py-5">
         {/* Features */}
-        <div className="space-y-3 mb-6">
-          {TRANSFORMATIE_OTO.features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + index * 0.1 }}
-              className="flex items-center gap-3"
-            >
-              <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0" />
-              <span className="text-gray-700 dark:text-gray-300">{feature}</span>
-            </motion.div>
-          ))}
+        <div className="space-y-2.5 mb-5">
+          {TRANSFORMATIE_OTO.features.map((feature, index) => {
+            const Icon = featureIcons[index] ?? CheckCircle;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.25 + index * 0.07 }}
+                className="flex items-center gap-3 py-1"
+              >
+                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-coral-50 dark:bg-coral-900/20 flex items-center justify-center">
+                  <Icon className="w-4 h-4 text-coral-500 dark:text-coral-400" />
+                </div>
+                <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
+                <CheckCircle className="w-4 h-4 text-green-500 ml-auto flex-shrink-0" />
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Price Section */}
+        {/* Divider */}
+        <div className="border-t border-gray-100 dark:border-gray-800 mb-5" />
+
+        {/* Price */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="bg-gradient-to-r from-coral-50 to-coral-100 dark:from-coral-900/30 dark:to-coral-800/30 rounded-xl p-4 mb-6 text-center border border-coral-100 dark:border-coral-700"
+          className="text-center mb-4"
         >
-          {/* Original Price */}
           <div className="flex items-center justify-center gap-2 mb-1">
-            <span className="text-gray-400 dark:text-gray-500 line-through text-lg">
+            <span className="text-gray-400 dark:text-gray-500 line-through text-base">
               €{TRANSFORMATIE_OTO.originalPrice}
             </span>
-            <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 text-xs font-semibold rounded-full">
+            <span className="bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 text-xs font-bold px-2 py-0.5 rounded-full">
               -{discountPercentage}%
             </span>
           </div>
-
-          {/* Discounted Price */}
-          <div className="flex items-baseline justify-center gap-1">
-            <span className="text-4xl font-bold text-coral-600 dark:text-coral-400">
+          <div className="flex items-baseline justify-center gap-1.5">
+            <span className="text-5xl font-bold text-gray-900 dark:text-gray-50 tracking-tight">
               €{TRANSFORMATIE_OTO.discountedPrice}
             </span>
-            <span className="text-gray-500 dark:text-gray-400">eenmalig</span>
+            <span className="text-gray-500 dark:text-gray-400 text-sm">eenmalig</span>
           </div>
-
-          {/* Urgency */}
-          <p className="text-sm text-coral-600 dark:text-coral-400 mt-2 font-medium">
+          <p className="text-xs text-coral-600 dark:text-coral-400 mt-1.5 font-medium">
             Alleen nu voor nieuwe leden
           </p>
         </motion.div>
 
-        {/* Guarantee Badge */}
-        <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
-          <Lock className="w-4 h-4" />
+        {/* Guarantee */}
+        <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 mb-5">
+          <Lock className="w-3.5 h-3.5" />
           <span>30 dagen niet-goed-geld-terug garantie</span>
         </div>
 
-        {/* CTA Buttons */}
-        <div className="space-y-3">
-          {/* Primary CTA */}
+        {/* CTA */}
+        <div className="space-y-2.5">
           <Button
             onClick={onAccept}
-            className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-base rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+            className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-[15px] font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
           >
             {TRANSFORMATIE_OTO.ctaPrimary}
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4" />
           </Button>
 
-          {/* Secondary CTA */}
-          <Button
+          <button
             onClick={onDecline}
-            variant="ghost"
-            className="w-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 py-4"
+            className="w-full text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 py-2 transition-colors"
           >
             {TRANSFORMATIE_OTO.ctaSecondary}
-          </Button>
+          </button>
         </div>
       </div>
     </div>

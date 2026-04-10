@@ -20,7 +20,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight, Check, Copy, CheckCircle, Sparkles, Lightbulb } from 'lucide-react';
 import type { AttachmentPattern } from '@/lib/quiz/pattern/pattern-types';
 import { getPatternResult } from '@/lib/quiz/pattern/pattern-results';
-import { TransformatieOTOModal } from '@/components/onboarding/transformatie-oto-modal';
+import { PatternOTOModal } from './pattern-oto-modal';
 import { KickstartDownsellModal } from '@/components/onboarding/kickstart-downsell-modal';
 
 interface PatternResultWithOTOProps {
@@ -118,8 +118,9 @@ export function PatternResultWithOTO({
           animate={{ opacity: 1, scale: 1 }}
           className="max-w-lg w-full"
         >
-          <TransformatieOTOModal
-            score={anxietyScore}
+          <PatternOTOModal
+            pattern={pattern}
+            firstName={firstName}
             userId={userId}
             onAccept={handleOTOAccept}
             onDecline={handleOTODecline}
@@ -138,7 +139,7 @@ export function PatternResultWithOTO({
           className="max-w-lg w-full"
         >
           <KickstartDownsellModal
-            score={anxietyScore}
+            score={anxietyScore / 10}
             userId={userId}
             onAccept={handleDownsellAccept}
             onDecline={handleDownsellDecline}
