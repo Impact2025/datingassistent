@@ -61,7 +61,7 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
         'De exacte vragen om intenties te checken (zonder awkward te zijn)',
         'AI-coach voor wanneer je twijfelt',
       ],
-      buttonText: 'Start de 21-Dagen Kickstart',
+      buttonText: 'Ja, ik wil dit aanpakken',
       buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
@@ -125,7 +125,7 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
         'Waarom je aangetrokken bent tot mensen die je onzeker maken',
         'Concrete tools om rust te vinden — zonder afhankelijk te zijn van andermans reactie',
       ],
-      buttonText: 'Start de 21-Dagen Kickstart',
+      buttonText: 'Ja, ik wil dit aanpakken',
       buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
@@ -190,7 +190,7 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
         'Kleine, concrete stappen richting kwetsbaarheid',
         'Op jouw tempo, zonder druk',
       ],
-      buttonText: 'Start de 21-Dagen Kickstart',
+      buttonText: 'Ja, ik wil dit aanpakken',
       buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
@@ -254,7 +254,7 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
         'AI-coach voor de momenten dat het lastig wordt',
         'Kleine stappen die grote verandering brengen',
       ],
-      buttonText: 'Start de 21-Dagen Kickstart',
+      buttonText: 'Ja, ik wil dit aanpakken',
       buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
