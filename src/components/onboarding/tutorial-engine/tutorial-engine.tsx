@@ -355,7 +355,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'welcome',
           type: 'modal',
-          title: 'Welkom bij de Emotionele Ready Scan! 🎯',
+          title: 'Welkom bij de Emotionele Ready Scan!',
           content: 'Deze scan helpt je om eerlijk te bepalen of je emotioneel klaar bent om te daten. Geen oordeel, alleen inzichten die je helpen betere beslissingen te nemen.',
           position: 'center',
           showSkip: true
@@ -392,7 +392,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'profile-intro',
           type: 'modal',
-          title: 'Welkom bij Profiel Optimalisatie! 📸✍️',
+          title: 'Welkom bij Profiel Optimalisatie!',
           content: 'Je profiel is je eerste indruk. Laten we samen een profiel maken dat écht bij je past en matches aantrekt.',
           position: 'center',
           showSkip: true
@@ -427,7 +427,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'profile-builder-intro',
           type: 'modal',
-          title: 'Nu je profieltekst maken! ✍️',
+          title: 'Nu je profieltekst maken!',
           content: 'De Profiel Bouwer helpt je met AI om een tekst te schrijven die echt bij je past.',
           position: 'center',
           showSkip: true
@@ -444,7 +444,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'photo-importance',
           type: 'modal',
-          title: 'Foto\'s zijn 80% van je profiel! 📸',
+          title: 'Foto\'s zijn 80% van je profiel!',
           content: 'Mensen beslissen in 3 seconden of ze je leuk vinden, vooral gebaseerd op je foto\'s.',
           position: 'center',
           autoAdvance: true,
@@ -462,7 +462,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'platform-match-intro',
           type: 'modal',
-          title: 'Het juiste platform kiezen 🎯',
+          title: 'Het juiste platform kiezen',
           content: 'Niet alle apps zijn hetzelfde. De Platform Match tool helpt je de beste keuze maken.',
           position: 'center',
           showSkip: true
@@ -479,7 +479,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'completion-celebration',
           type: 'celebration',
-          title: 'Profiel Master geworden! 🏆',
+          title: 'Profiel Master geworden!',
           content: 'Je hebt nu alle tools om een winnend profiel te maken. Veel succes met daten!',
           position: 'center'
         }
@@ -498,7 +498,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'communication-intro',
           type: 'modal',
-          title: 'Welkom bij de Communicatie Hub! 💬✨',
+          title: 'Welkom bij de Communicatie Hub!',
           content: 'Goede communicatie is de sleutel tot succes in dating. Laten we je helpen om zelfverzekerd en effectief te communiceren.',
           position: 'center',
           showSkip: true
@@ -506,7 +506,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'understanding-yourself',
           type: 'modal',
-          title: 'Eerst jezelf begrijpen 📊',
+          title: 'Eerst jezelf begrijpen',
           content: 'Voordat je gaat communiceren, is het slim om je eigen communicatiestijl te kennen. Dit helpt bij betere matches.',
           position: 'center',
           autoAdvance: true,
@@ -533,7 +533,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'chat-coach-intro',
           type: 'modal',
-          title: 'Je persoonlijke Chat Coach 🤖',
+          title: 'Je persoonlijke Chat Coach',
           content: '24/7 beschikbaar voor advies over je gesprekken. Stel vragen en krijg directe hulp.',
           position: 'center',
           showSkip: true
@@ -550,7 +550,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'conversation-analysis',
           type: 'modal',
-          title: 'Gesprekken analyseren 📈',
+          title: 'Gesprekken analyseren',
           content: 'De GespreksAssistent analyseert je gesprekken en geeft feedback over wat goed gaat en wat beter kan.',
           position: 'center',
           showSkip: true
@@ -567,7 +567,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'openers-intro',
           type: 'modal',
-          title: 'Perfecte openingsberichten 💫',
+          title: 'Perfecte openingsberichten',
           content: 'Het eerste bericht bepaalt vaak of iemand reageert. Gebruik AI gegenereerde, persoonlijke openers.',
           position: 'center',
           autoAdvance: true,
@@ -594,7 +594,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'safety-first',
           type: 'modal',
-          title: 'Veiligheid gaat altijd voorop 🛡️',
+          title: 'Veiligheid gaat altijd voorop',
           content: 'Controleer altijd je gesprekken op rode vlaggen. Je veiligheid is het allerbelangrijkst.',
           position: 'center',
           autoAdvance: true,
@@ -612,7 +612,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'communication-mastery',
           type: 'celebration',
-          title: 'Communicatie Master geworden! 🏆',
+          title: 'Communicatie Master geworden!',
           content: 'Je hebt nu alle tools om zelfverzekerd en effectief te communiceren in dating. Veel succes met je gesprekken!',
           position: 'center'
         }
@@ -631,7 +631,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'ai-coach-welcome',
           type: 'modal',
-          title: 'Welkom bij je AI Relationship Coach! 🧠✨',
+          title: 'Welkom bij je AI Relationship Coach!',
           content: 'Dit is het meest geavanceerde hulpmiddel in DatingAssistent. De AI analyseert al je data en geeft je personalized coaching die niemand anders kan bieden.',
           position: 'center',
           showSkip: true
@@ -657,7 +657,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'personalized-plans-intro',
           type: 'modal',
-          title: 'Personalized Coaching Plannen 🎯',
+          title: 'Personalized Coaching Plannen',
           content: 'Op basis van je unieke profiel genereert de AI specifieke coaching plannen die perfect bij jou passen.',
           position: 'center',
           showSkip: true
@@ -674,7 +674,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'success-metrics-intro',
           type: 'modal',
-          title: 'Success Metrics - Jouw Voortgang in Cijfers 📊',
+          title: 'Success Metrics - Jouw Voortgang in Cijfers',
           content: 'Track je vooruitgang met concrete metrics. Zie hoeveel tools je hebt voltooid en hoe je confidence groeit.',
           position: 'center',
           autoAdvance: true,
@@ -692,7 +692,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'action-buttons-intro',
           type: 'modal',
-          title: 'Snelle Acties - Direct naar de Juiste Tools 🏃‍♂️',
+          title: 'Snelle Acties - Direct naar de Juiste Tools',
           content: 'Deze buttons brengen je direct naar de tools die je nu nodig hebt voor je volgende stap.',
           position: 'center',
           showSkip: true
@@ -736,7 +736,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'premium-upgrade-intro',
           type: 'modal',
-          title: 'Premium Features - Het Volgende Niveau 🚀',
+          title: 'Premium Features - Het Volgende Niveau',
           content: 'Upgrade naar premium voor nog diepere inzichten, real-time coaching, en geavanceerde AI analyses.',
           position: 'center',
           autoAdvance: true,
@@ -754,7 +754,7 @@ async function loadTutorial(tutorialId: string): Promise<Tutorial | null> {
         {
           id: 'ai-coach-mastery',
           type: 'celebration',
-          title: 'AI Relationship Coach Master geworden! 🏆🤖',
+          title: 'AI Relationship Coach Master geworden!',
           content: 'Je beheerst nu het krachtigste hulpmiddel in DatingAssistent. De AI coach zal je begeleiden naar dating succes zoals niemand anders kan!',
           position: 'center'
         }

@@ -71,19 +71,16 @@ export function getDefaultStats(
     {
       label: "Dagen actief",
       value: daysActive,
-      icon: "📅",
       color: "violet",
     },
     {
       label: "Tools gebruikt",
       value: toolsUsed,
-      icon: "🛠️",
       color: "pink",
     },
     {
       label: "Voltooid",
       value: `${completionPercentage}%`,
-      icon: "✅",
       color: "green",
     },
   ];

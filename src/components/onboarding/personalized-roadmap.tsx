@@ -365,7 +365,7 @@ export function PersonalizedRoadmap({ userType, userName, onContinue }: Personal
         <Card className="border-2 border-coral-200">
           <CardContent className="p-6 text-center space-y-4">
             <h3 className="text-lg font-semibold text-gray-900">
-              Klaar om te beginnen? 🚀
+              Klaar om te beginnen?
             </h3>
             <p className="text-gray-600">
               Download je gratis gids en ontdek het platform.

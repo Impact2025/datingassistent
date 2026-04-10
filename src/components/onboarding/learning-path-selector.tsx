@@ -29,7 +29,7 @@ export function LearningPathSelector({ onPathSelected, userTier }: LearningPathS
     return (
       <Card className="max-w-2xl mx-auto">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Welkom bij je Dating Reis! 🎯</CardTitle>
+          <CardTitle className="text-2xl">Welkom bij je Dating Reis!</CardTitle>
           <CardDescription className="text-lg">
             Laten we samen ontdekken welke leerroute het beste bij jou past
           </CardDescription>
@@ -115,7 +115,7 @@ export function LearningPathSelector({ onPathSelected, userTier }: LearningPathS
                         <p className="text-sm text-gray-600">{rec.reason}</p>
                         {rec.simplifiedPath && (
                           <p className="text-xs text-blue-600 mt-1">
-                            💡 Vereenvoudigd pad beschikbaar ({rec.simplifiedPath.length} modules)
+                            Vereenvoudigd pad beschikbaar ({rec.simplifiedPath.length} modules)
                           </p>
                         )}
                       </div>
@@ -226,38 +226,38 @@ function UserAssessmentForm({ onComplete }: { onComplete: (profile: UserProfile)
       id: 'experienceLevel',
       question: 'Wat is je ervaring met online daten?',
       options: [
-        { value: 'beginner', label: 'Beginner - Ik ben nieuw', emoji: '🌱' },
-        { value: 'intermediate', label: 'Gemiddeld - Ik heb wat ervaring', emoji: '🌿' },
-        { value: 'advanced', label: 'Gevorderd - Ik ben ervaren', emoji: '🌳' }
+        { value: 'beginner', label: 'Beginner - Ik ben nieuw', emoji: '' },
+        { value: 'intermediate', label: 'Gemiddeld - Ik heb wat ervaring', emoji: '' },
+        { value: 'advanced', label: 'Gevorderd - Ik ben ervaren', emoji: '' }
       ]
     },
     {
       id: 'mainGoal',
       question: 'Wat is je hoofddoel met deze cursussen?',
       options: [
-        { value: 'profile', label: 'Profiel verbeteren', emoji: '📸' },
-        { value: 'conversation', label: 'Beter converseren', emoji: '💬' },
-        { value: 'confidence', label: 'Meer zelfvertrouwen', emoji: '💪' },
-        { value: 'safety', label: 'Veiliger daten', emoji: '🛡️' },
-        { value: 'relationships', label: 'Betere relaties', emoji: '❤️' }
+        { value: 'profile', label: 'Profiel verbeteren', emoji: '' },
+        { value: 'conversation', label: 'Beter converseren', emoji: '' },
+        { value: 'confidence', label: 'Meer zelfvertrouwen', emoji: '' },
+        { value: 'safety', label: 'Veiliger daten', emoji: '' },
+        { value: 'relationships', label: 'Betere relaties', emoji: '' }
       ]
     },
     {
       id: 'timeCommitment',
       question: 'Hoeveel tijd wil je per week investeren?',
       options: [
-        { value: 'quick', label: '15-30 minuten (snel resultaat)', emoji: '⚡' },
-        { value: 'moderate', label: '1-2 uur (gebalanceerd)', emoji: '🕐' },
-        { value: 'intensive', label: '3+ uur (diepgaand)', emoji: '📚' }
+        { value: 'quick', label: '15-30 minuten (snel resultaat)', emoji: '' },
+        { value: 'moderate', label: '1-2 uur (gebalanceerd)', emoji: '' },
+        { value: 'intensive', label: '3+ uur (diepgaand)', emoji: '' }
       ]
     },
     {
       id: 'preferredFormat',
       question: 'Welke leervorm vind je prettigst?',
       options: [
-        { value: 'video', label: 'Video lessen', emoji: '🎬' },
-        { value: 'interactive', label: 'Interactieve oefeningen', emoji: '🎮' },
-        { value: 'mixed', label: 'Mix van alles', emoji: '🔄' }
+        { value: 'video', label: 'Video lessen', emoji: '' },
+        { value: 'interactive', label: 'Interactieve oefeningen', emoji: '' },
+        { value: 'mixed', label: 'Mix van alles', emoji: '' }
       ]
     }
   ];

@@ -94,7 +94,7 @@ export function ProgressCelebration({ step, onComplete }: ProgressCelebrationPro
               onClick={onComplete}
               className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white px-8 py-3 text-lg font-semibold"
             >
-              Verder met je journey! 🚀
+              Verder met je journey!
             </Button>
           </CardContent>
         </Card>

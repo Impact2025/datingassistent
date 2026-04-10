@@ -93,7 +93,7 @@ export const PRIORITY_ACTIONS: Record<
   profile: {
     toolSlug: "profiel-analyse",
     toolName: "AI Profiel Analyse",
-    toolIcon: "🔍",
+    toolIcon: "",
     toolDescription: "Laat AI je profiel analyseren en krijg concrete verbeterpunten",
     estimatedTime: "5 minuten",
     irisMessage: "Begin hier. Dit is de snelste manier om meer matches te krijgen.",
@@ -101,7 +101,7 @@ export const PRIORITY_ACTIONS: Record<
   conversation: {
     toolSlug: "chat-coach",
     toolName: "Chat Coach",
-    toolIcon: "💬",
+    toolIcon: "",
     toolDescription: "Real-time begeleiding bij je gesprekken",
     estimatedTime: "Doorlopend",
     irisMessage: "Laten we je gesprekken naar een hoger niveau tillen.",
@@ -109,7 +109,7 @@ export const PRIORITY_ACTIONS: Record<
   dating: {
     toolSlug: "date-prep",
     toolName: "Date Voorbereiding",
-    toolIcon: "📅",
+    toolIcon: "",
     toolDescription: "Bereid je perfect voor op je date",
     estimatedTime: "5 minuten",
     irisMessage: "Je bent klaar voor de volgende stap. Laten we je voorbereiden.",
@@ -117,7 +117,7 @@ export const PRIORITY_ACTIONS: Record<
   confidence: {
     toolSlug: "zelfbeeld-analyse",
     toolName: "Zelfbeeld Analyse",
-    toolIcon: "🪞",
+    toolIcon: "",
     toolDescription: "Ontdek je sterke punten en werk aan je mindset",
     estimatedTime: "10 minuten",
     irisMessage: "Laten we beginnen bij de basis: wie jij bent.",

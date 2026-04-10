@@ -30,12 +30,12 @@ export interface IntakeData {
 }
 
 const CHALLENGE_OPTIONS = [
-  { value: "weinig-matches", label: "Ik krijg te weinig matches", icon: "💔" },
-  { value: "gesprekken-dood", label: "Gesprekken lopen dood", icon: "💬" },
-  { value: "geen-dates", label: "Ik durf geen dates te plannen", icon: "📅" },
-  { value: "weet-niet-wat-zeggen", label: "Ik weet niet wat ik moet zeggen", icon: "🤔" },
-  { value: "fotos-niet-goed", label: "Mijn foto's zijn niet goed", icon: "📸" },
-  { value: "geen-zelfvertrouwen", label: "Ik mis zelfvertrouwen", icon: "💪" },
+  { value: "weinig-matches", label: "Ik krijg te weinig matches" },
+  { value: "gesprekken-dood", label: "Gesprekken lopen dood" },
+  { value: "geen-dates", label: "Ik durf geen dates te plannen" },
+  { value: "weet-niet-wat-zeggen", label: "Ik weet niet wat ik moet zeggen" },
+  { value: "fotos-niet-goed", label: "Mijn foto's zijn niet goed" },
+  { value: "geen-zelfvertrouwen", label: "Ik mis zelfvertrouwen" },
 ];
 
 export function IntakeChat({ onComplete, className }: IntakeChatProps) {
