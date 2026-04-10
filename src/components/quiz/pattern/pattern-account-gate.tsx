@@ -81,6 +81,18 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
     }
   };
 
+  const handleOtpPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+    if (!pasted) return;
+    const next = ['', '', '', '', '', ''];
+    pasted.split('').forEach((char, i) => { next[i] = char; });
+    setOtpDigits(next);
+    const nextEmpty = next.findIndex(d => d === '');
+    otpRefs.current[nextEmpty === -1 ? 5 : nextEmpty]?.focus();
+    if (next.every(d => d !== '')) verifyOtp(next.join(''));
+  };
+
   const verifyOtp = async (code: string) => {
     if (!otpUserId) return;
     setIsVerifyingOtp(true);
@@ -238,6 +250,7 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
                     value={digit}
                     onChange={e => handleOtpChange(i, e.target.value)}
                     onKeyDown={e => handleOtpKeyDown(i, e)}
+                    onPaste={handleOtpPaste}
                     className="w-11 h-14 text-center text-xl font-bold border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
                     disabled={isVerifyingOtp}
                   />
