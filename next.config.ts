@@ -63,6 +63,17 @@ const nextConfig: NextConfig = {
         destination: '/waarden-kompas',
         permanent: true,
       },
+      // Checkout slug corrections — old URLs with "-programma" suffix
+      {
+        source: '/checkout/transformatie-programma',
+        destination: '/checkout/transformatie',
+        permanent: false,
+      },
+      {
+        source: '/checkout/kickstart-programma',
+        destination: '/checkout/kickstart',
+        permanent: false,
+      },
     ];
   },
 
