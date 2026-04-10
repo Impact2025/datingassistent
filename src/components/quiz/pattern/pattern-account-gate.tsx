@@ -291,9 +291,9 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
             {/* What they unlock */}
             <div className="mb-6 space-y-2">
               {[
-                'Wat je patroon precies doet in dating',
+                'Je volledige patroon analyse',
                 'Je grootste valkuil (en hoe je hem omzeilt)',
-                'De concrete tip die jij vandaag kunt toepassen',
+                'Een concrete tip die je vandaag kunt toepassen',
               ].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm text-gray-600">
                   <Check className="w-4 h-4 text-coral-500 shrink-0" />
