@@ -20,24 +20,16 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useToast } from "@/hooks/use-toast";
 import { LoadingSpinner } from "../shared/loading-spinner";
 import { useSearchParams, usePathname } from "next/navigation";
-import { useTurnstile } from "../shared/turnstile";
 import { useDeviceDetection } from "@/hooks/use-device-detection";
-import { trackLogin, setUserProperties } from "@/lib/analytics/ga4-events";
 import { logger } from '@/lib/logger';
 import { safeStorage } from "@/lib/safe-storage";
 
 // ─── Schemas ────────────────────────────────────────────────────────────────
 
-const loginSchema = z.object({
-  email: z.string().email("Ongeldig e-mailadres."),
-  password: z.string().min(1, "Wachtwoord is vereist."),
-});
-
 const otpEmailSchema = z.object({
   email: z.string().email("Ongeldig e-mailadres."),
 });
 
-type LoginFormValues = z.infer<typeof loginSchema>;
 type OtpEmailFormValues = z.infer<typeof otpEmailSchema>;
 
 // ─── OTP Code Input ──────────────────────────────────────────────────────────
@@ -100,7 +92,6 @@ function OtpCodeInput({
       const data = await response.json();
 
       if (response.ok && data.success) {
-        // Persist token in localStorage so UserProvider can pick it up
         if (data.token) {
           safeStorage.setItem('datespark_auth_token', data.token);
           logger.log('Token saved to localStorage after OTP login');
@@ -156,27 +147,18 @@ function OtpCodeInput({
 // ─── Main LoginForm ──────────────────────────────────────────────────────────
 
 export function LoginForm() {
-  const { login, user } = useUser();
+  const { user } = useUser();
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const hasRedirectedRef = useRef(false);
   const { isMobile } = useDeviceDetection();
 
-  // OTP mode state — default to Inlogcode (magic link) tab
-  const [otpMode, setOtpMode] = useState(true);
   const [otpStep, setOtpStep] = useState<'email' | 'code'>('email');
   const [otpUserId, setOtpUserId] = useState<number | null>(null);
   const [otpEmail, setOtpEmail] = useState('');
   const [isSendingCode, setIsSendingCode] = useState(false);
 
-  // Cloudflare Turnstile - privacy-first bot protection
-  const { execute: executeTurnstile, isLoaded: isTurnstileLoaded } = useTurnstile(
-    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''
-  );
-
-  // Track user state changes
   useEffect(() => {
     logger.log('LoginForm - User state changed:', {
       userExists: !!user,
@@ -193,28 +175,28 @@ export function LoginForm() {
   const magicLinkError = searchParams.get('error');
   const registerUrl = plan && billing ? `/register?plan=${plan}&billing=${billing}` : '/register';
 
-  // Pre-fill email from URL param (e.g. when redirected from registration with existing email)
+  // OTP email form
+  const otpForm = useForm<OtpEmailFormValues>({
+    resolver: zodResolver(otpEmailSchema),
+    defaultValues: { email: "" },
+  });
+
+  // Pre-fill email from URL param
   useEffect(() => {
     if (prefillEmail) {
-      form.setValue('email', prefillEmail);
       otpForm.setValue('email', prefillEmail);
     }
   }, [prefillEmail]);
 
-  // Handle order_id after payment - this will be handled by an API route
+  // Handle order_id after payment
   useEffect(() => {
     const handlePostPaymentLogin = async () => {
       if (user && orderId) {
         try {
           const response = await fetch('/api/subscription/link-order', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              userId: user.id,
-              orderId: orderId,
-            }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: user.id, orderId }),
           });
 
           const data = await response.json();
@@ -237,21 +219,6 @@ export function LoginForm() {
 
     handlePostPaymentLogin();
   }, [user, orderId]);
-
-  // Password login form
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  // OTP email form
-  const otpForm = useForm<OtpEmailFormValues>({
-    resolver: zodResolver(otpEmailSchema),
-    defaultValues: { email: "" },
-  });
 
   // Auto-redirect after successful login
   useEffect(() => {
@@ -292,88 +259,6 @@ export function LoginForm() {
         </CardContent>
       </Card>
     );
-  }
-
-  // ─── Password login submit ─────────────────────────────────────────────────
-
-  async function onSubmit(data: LoginFormValues) {
-    if (isLoggingIn) return;
-    setIsLoggingIn(true);
-
-    if (!isTurnstileLoaded) {
-      toast({
-        title: "Fout",
-        description: "Beveiligingsverificatie wordt nog geladen. Probeer het opnieuw.",
-        variant: "destructive",
-      });
-      setIsLoggingIn(false);
-      return;
-    }
-
-    try {
-      const turnstileToken = await executeTurnstile('login');
-      if (!turnstileToken) {
-        toast({
-          title: "Fout",
-          description: "Beveiligingsverificatie mislukt. Probeer het opnieuw.",
-          variant: "destructive",
-        });
-        setIsLoggingIn(false);
-        return;
-      }
-
-      if (turnstileToken !== 'bypass_development') {
-        const verifyResponse = await fetch('/api/turnstile/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: turnstileToken, action: 'login' }),
-        });
-
-        if (!verifyResponse.ok) {
-          const errorData = await verifyResponse.json();
-          console.error('Turnstile verification failed:', errorData);
-          toast({
-            title: "Fout",
-            description: errorData.error || "Beveiligingsverificatie mislukt.",
-            variant: "destructive",
-          });
-          setIsLoggingIn(false);
-          return;
-        }
-
-        logger.log('Turnstile verification successful');
-      } else {
-        logger.log('Skipping Turnstile server verification in development mode');
-      }
-
-      logger.log('Attempting login with email:', data.email);
-      const result = await login(data.email, data.password);
-      logger.log('Login successful, result:', result);
-
-      trackLogin({
-        method: 'email',
-        user_id: result?.user?.id?.toString(),
-      });
-
-      if (result?.user) {
-        setUserProperties({ user_id: result.user.id?.toString() });
-      }
-    } catch (error: any) {
-      console.error('Login failed:', error);
-      let description = error.message || "Er is een onbekende fout opgetreden. Probeer het opnieuw.";
-
-      if (error.message.includes('Invalid email or password')) {
-        description = "De ingevoerde e-mail of wachtwoord is onjuist.";
-      }
-
-      toast({
-        title: "Login Mislukt",
-        description,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoggingIn(false);
-    }
   }
 
   // ─── OTP: send code submit ─────────────────────────────────────────────────
@@ -418,8 +303,6 @@ export function LoginForm() {
   // ─── OTP: after successful code verification ───────────────────────────────
 
   function handleOtpSuccess() {
-    // UserProvider will pick up the token from localStorage on next render /
-    // route change — trigger a full page navigation.
     if (returnUrl) {
       window.location.href = returnUrl;
       return;
@@ -455,168 +338,74 @@ export function LoginForm() {
             Deze inloglink is ongeldig. Vraag een nieuwe inlogcode aan.
           </div>
         )}
-
-        {/* Tab toggle */}
-        <div className="flex gap-1 mt-4 bg-muted rounded-lg p-1">
-          <button
-            type="button"
-            onClick={() => { setOtpMode(false); setOtpStep('email'); }}
-            className={`flex-1 text-sm py-1.5 rounded-md font-medium transition-colors ${
-              !otpMode
-                ? 'bg-background shadow text-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            Wachtwoord
-          </button>
-          <button
-            type="button"
-            onClick={() => { setOtpMode(true); setOtpStep('email'); }}
-            className={`flex-1 text-sm py-1.5 rounded-md font-medium transition-colors ${
-              otpMode
-                ? 'bg-background shadow text-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            Inlogcode
-          </button>
-        </div>
       </CardHeader>
 
-      {/* ── Password login ── */}
-      {!otpMode && (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>E-mailadres</FormLabel>
-                    <FormControl>
-                      <Input placeholder="jouw@email.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Wachtwoord</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-            <CardFooter className="flex-col gap-4">
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
-                disabled={isLoggingIn}
-              >
-                {isLoggingIn && <LoadingSpinner />}
-                Inloggen
-              </Button>
-              <div className="flex flex-col gap-2 w-full">
-                <p className="text-sm text-muted-foreground">
-                  Nog geen account?{" "}
-                  <Link href={registerUrl} className="font-semibold text-primary underline-offset-4 hover:underline">
-                    Registreer hier
-                  </Link>
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  <Link href="/forgot-password" className="font-semibold text-primary underline-offset-4 hover:underline">
-                    Wachtwoord vergeten?
-                  </Link>
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  <Link href="/resend-verification" className="font-semibold text-blue-600 underline-offset-4 hover:underline">
-                    Email niet geverifieerd?
-                  </Link>
-                </p>
+      <div>
+        <CardContent className="space-y-4">
+          {otpStep === 'email' && (
+            <Form {...otpForm}>
+              <form onSubmit={otpForm.handleSubmit(onSendOtpCode)} className="space-y-4">
+                <FormField
+                  control={otpForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>E-mailadres</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="jouw@email.com"
+                          inputMode="email"
+                          autoComplete="email"
+                          autoCapitalize="none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+                  disabled={isSendingCode}
+                >
+                  {isSendingCode ? <LoadingSpinner /> : 'Stuur inlogcode'}
+                </Button>
+              </form>
+            </Form>
+          )}
+
+          {otpStep === 'code' && otpUserId !== null && (
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground text-center">
+                We hebben een 6-cijferige code gestuurd naar{' '}
+                <span className="font-medium text-foreground">{otpEmail}</span>.
+                Voer de code hieronder in.
+              </p>
+              <OtpCodeInput userId={otpUserId} onSuccess={handleOtpSuccess} />
+              <div className="text-center">
+                <button
+                  type="button"
+                  className="text-sm text-muted-foreground hover:text-foreground underline"
+                  onClick={() => { setOtpStep('email'); setOtpUserId(null); }}
+                >
+                  Ander e-mailadres gebruiken
+                </button>
               </div>
-            </CardFooter>
-          </form>
-        </Form>
-      )}
+            </div>
+          )}
+        </CardContent>
 
-      {/* ── OTP login ── */}
-      {otpMode && (
-        <div>
-          <CardContent className="space-y-4">
-            {otpStep === 'email' && (
-              <Form {...otpForm}>
-                <form onSubmit={otpForm.handleSubmit(onSendOtpCode)} className="space-y-4">
-                  <FormField
-                    control={otpForm.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>E-mailadres</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="jouw@email.com"
-                            inputMode="email"
-                            autoComplete="email"
-                            autoCapitalize="none"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
-                    disabled={isSendingCode}
-                  >
-                    {isSendingCode ? <LoadingSpinner /> : 'Stuur inlogcode'}
-                  </Button>
-                </form>
-              </Form>
-            )}
-
-            {otpStep === 'code' && otpUserId !== null && (
-              <div className="space-y-4">
-                <p className="text-sm text-muted-foreground text-center">
-                  We hebben een 6-cijferige code gestuurd naar{' '}
-                  <span className="font-medium text-foreground">{otpEmail}</span>.
-                  Voer de code hieronder in.
-                </p>
-                <OtpCodeInput userId={otpUserId} onSuccess={handleOtpSuccess} />
-                <div className="text-center">
-                  <button
-                    type="button"
-                    className="text-sm text-muted-foreground hover:text-foreground underline"
-                    onClick={() => { setOtpStep('email'); setOtpUserId(null); }}
-                  >
-                    Ander e-mailadres gebruiken
-                  </button>
-                </div>
-              </div>
-            )}
-          </CardContent>
-
-          <CardFooter className="flex-col gap-2">
-            <p className="text-sm text-muted-foreground">
-              Nog geen account?{" "}
-              <Link href={registerUrl} className="font-semibold text-primary underline-offset-4 hover:underline">
-                Registreer hier
-              </Link>
-            </p>
-          </CardFooter>
-        </div>
-      )}
+        <CardFooter className="flex-col gap-2">
+          <p className="text-sm text-muted-foreground">
+            Nog geen account?{" "}
+            <Link href={registerUrl} className="font-semibold text-primary underline-offset-4 hover:underline">
+              Registreer hier
+            </Link>
+          </p>
+        </CardFooter>
+      </div>
     </Card>
   );
 }
