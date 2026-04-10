@@ -112,10 +112,36 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-sm text-gray-400 mb-12"
+            className="text-sm text-gray-400 mb-8"
           >
             Geen creditcard nodig • Analyse in 2 min
           </motion.p>
+
+          {/* Social proof: avatar stack + testimonial */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="flex items-center gap-3 mb-12 p-4 bg-gray-50 rounded-2xl border border-gray-100"
+          >
+            {/* Avatar stack */}
+            <div className="flex -space-x-2 flex-shrink-0">
+              {['F', 'M', 'L', 'S'].map((initial, i) => (
+                <div
+                  key={i}
+                  className="w-8 h-8 rounded-full border-2 border-white bg-coral-100 flex items-center justify-center text-xs font-semibold text-coral-600"
+                >
+                  {initial}
+                </div>
+              ))}
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-gray-900">
+                "Eindelijk begrijp ik waarom ik steeds dezelfde fout maak."
+              </p>
+              <p className="text-xs text-gray-400 mt-0.5">— Lotte, 28 · een van de {quizCount.toLocaleString('nl-NL')}+ deelnemers</p>
+            </div>
+          </motion.div>
 
           {/* What you'll learn */}
           <motion.div
@@ -152,7 +178,7 @@ export function PatternLandingHero({ onStartQuiz }: PatternLandingHeroProps) {
       >
         <div className="max-w-2xl mx-auto px-4">
           <p className="text-xs text-gray-400 text-center mb-3">
-            Gebaseerd op ECR-R attachment theory • {quizCount.toLocaleString('nl-NL')}+ ingevuld
+            Gebaseerd op ECR-R attachment theory
           </p>
           <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
             <span>© {new Date().getFullYear()} DatingAssistent</span>

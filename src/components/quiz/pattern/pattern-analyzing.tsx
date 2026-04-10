@@ -21,6 +21,9 @@ const STEPS = [
 export function PatternAnalyzing({ onComplete, firstName }: PatternAnalyzingProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  // Show a soft "still working..." message if the parent hasn't unmounted us
+  // after the 3-second animation (i.e. the API is slower than expected).
+  const [showExtended, setShowExtended] = useState(false);
 
   useEffect(() => {
     // Progress animation
@@ -38,12 +41,16 @@ export function PatternAnalyzing({ onComplete, firstName }: PatternAnalyzingProp
     const stepTimer1 = setTimeout(() => setCurrentStep(1), 1000);
     const stepTimer2 = setTimeout(() => setCurrentStep(2), 2000);
     const completeTimer = setTimeout(onComplete, 3000);
+    // Extended message fires 1.5s after the animation — only visible if
+    // the parent hasn't transitioned us away yet (slow API path).
+    const extendedTimer = setTimeout(() => setShowExtended(true), 4500);
 
     return () => {
       clearInterval(progressTimer);
       clearTimeout(stepTimer1);
       clearTimeout(stepTimer2);
       clearTimeout(completeTimer);
+      clearTimeout(extendedTimer);
     };
   }, [onComplete]);
 
@@ -106,6 +113,17 @@ export function PatternAnalyzing({ onComplete, firstName }: PatternAnalyzingProp
             </motion.div>
           ))}
         </div>
+
+        {/* Extended wait message — only visible when API is slower than animation */}
+        {showExtended && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-6 text-sm text-gray-400"
+          >
+            Bijna klaar, nog een moment...
+          </motion.p>
+        )}
       </div>
     </div>
   );

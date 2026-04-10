@@ -12,6 +12,9 @@
  *
  * Then upsells the PROGRAM (coaching, video modules, AI coach)
  * as the transformation path — not "more analysis".
+ *
+ * OTO and downsell are rendered as fixed overlays so the user can see
+ * their result behind the modal while making the purchase decision.
  */
 
 import { useState, useEffect } from 'react';
@@ -48,9 +51,9 @@ export function PatternResultWithOTO({
   const [otoState, setOtoState] = useState<OTOState>('result');
   const [showCTA, setShowCTA] = useState(false);
 
-  // Show CTA after user has had time to read the full analysis
+  // CTA delay: 2.5s (down from 4s) — enough to read the opening, not so long it's annoying
   useEffect(() => {
-    const timer = setTimeout(() => setShowCTA(true), 4000);
+    const timer = setTimeout(() => setShowCTA(true), 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -109,48 +112,9 @@ export function PatternResultWithOTO({
     }
   };
 
-  // OTO modals
-  if (otoState === 'oto') {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-coral-50 to-white flex items-center justify-center p-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-lg w-full"
-        >
-          <PatternOTOModal
-            pattern={pattern}
-            firstName={firstName}
-            userId={userId}
-            onAccept={handleOTOAccept}
-            onDecline={handleOTODecline}
-          />
-        </motion.div>
-      </div>
-    );
-  }
-
-  if (otoState === 'downsell') {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-lg w-full"
-        >
-          <KickstartDownsellModal
-            score={anxietyScore / 10}
-            userId={userId}
-            onAccept={handleDownsellAccept}
-            onDecline={handleDownsellDecline}
-          />
-        </motion.div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white relative">
+      {/* ── Full result — always rendered so it's visible behind the modal ── */}
       <div className="max-w-2xl mx-auto px-4 py-12 sm:py-16">
 
         {/* Header */}
@@ -378,6 +342,58 @@ export function PatternResultWithOTO({
 
         </div>
       </div>
+
+      {/* ── OTO overlay — rendered on top of the result so user keeps context ── */}
+      <AnimatePresence>
+        {otoState === 'oto' && (
+          <motion.div
+            key="oto-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 overflow-y-auto"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="max-w-lg w-full my-auto"
+            >
+              <PatternOTOModal
+                pattern={pattern}
+                firstName={firstName}
+                userId={userId}
+                onAccept={handleOTOAccept}
+                onDecline={handleOTODecline}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+
+        {otoState === 'downsell' && (
+          <motion.div
+            key="downsell-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 overflow-y-auto"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="max-w-lg w-full my-auto"
+            >
+              <KickstartDownsellModal
+                score={anxietyScore / 10}
+                userId={userId}
+                onAccept={handleDownsellAccept}
+                onDecline={handleDownsellDecline}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

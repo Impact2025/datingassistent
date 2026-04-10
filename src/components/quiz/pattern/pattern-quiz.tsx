@@ -4,18 +4,20 @@
  * Pattern Quiz Main Component - CONVERSION OPTIMIZED VERSION
  *
  * Orchestrates the complete Dating Pattern Quiz flow:
- * Landing → Questions (1-10) → Account Creation → Analyzing → Result with OTO
+ * Landing → Questions (1-10) → Preview → Account Gate → Analyzing → Result with OTO
  *
  * Features:
  * - localStorage progress saving
- * - Account creation during flow
+ * - Account creation during flow (OTP-free for new users)
+ * - Quiz submit runs in parallel with the analyzing animation (no stacked delays)
+ * - Inline error handling (no browser alerts)
  * - OTO modal sequence (Transformatie → Kickstart downsell)
  * - UTM tracking
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import type {
   QuizState,
   PatternQuizAnswers,
@@ -39,7 +41,6 @@ interface SavedProgress {
   savedAt: number;
 }
 
-// Helper to check if localStorage is available
 function isStorageAvailable(): boolean {
   try {
     const test = '__storage_test__';
@@ -51,7 +52,6 @@ function isStorageAvailable(): boolean {
   }
 }
 
-// Helper to save progress
 function saveProgress(data: Omit<SavedProgress, 'savedAt'>): void {
   if (!isStorageAvailable()) return;
   try {
@@ -62,7 +62,6 @@ function saveProgress(data: Omit<SavedProgress, 'savedAt'>): void {
   }
 }
 
-// Helper to load progress (max 24 hours old)
 function loadProgress(): SavedProgress | null {
   if (!isStorageAvailable()) return null;
   try {
@@ -70,15 +69,13 @@ function loadProgress(): SavedProgress | null {
     if (!saved) return null;
 
     const progress: SavedProgress = JSON.parse(saved);
-    const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+    const maxAge = 24 * 60 * 60 * 1000;
 
-    // Check if progress is still valid
     if (Date.now() - progress.savedAt > maxAge) {
       localStorage.removeItem(STORAGE_KEY);
       return null;
     }
 
-    // Don't restore if already completed
     if (progress.quizState === 'result' || progress.quizState === 'analyzing') {
       localStorage.removeItem(STORAGE_KEY);
       return null;
@@ -90,7 +87,6 @@ function loadProgress(): SavedProgress | null {
   }
 }
 
-// Helper to clear progress
 function clearProgress(): void {
   if (!isStorageAvailable()) return;
   try {
@@ -101,14 +97,12 @@ function clearProgress(): void {
 }
 
 interface PatternQuizProps {
-  /** Start directly on questions instead of landing page */
   skipLanding?: boolean;
 }
 
 export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
   const searchParams = useSearchParams();
 
-  // Quiz state
   const [quizState, setQuizState] = useState<QuizState>(
     skipLanding ? 'question' : 'landing'
   );
@@ -117,7 +111,6 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [acceptsMarketing, setAcceptsMarketing] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasRestoredProgress, setHasRestoredProgress] = useState(false);
 
   // Preview state — local pre-calculation shown before email gate
@@ -128,12 +121,19 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
 
   // Result state — confirmed by API after account creation
   const [resultId, setResultId] = useState<string | null>(null);
-  const [attachmentPattern, setAttachmentPattern] =
-    useState<AttachmentPattern | null>(null);
+  const [attachmentPattern, setAttachmentPattern] = useState<AttachmentPattern | null>(null);
   const [anxietyScore, setAnxietyScore] = useState(0);
   const [avoidanceScore, setAvoidanceScore] = useState(0);
   const [confidence, setConfidence] = useState(0);
   const [userId, setUserId] = useState<number | null>(null);
+
+  // Inline submit error (replaces browser alert)
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Coordination: analyzing animation + quiz submit API run in parallel.
+  // We transition to 'result' only when BOTH are done.
+  const apiResultReadyRef = useRef(false);
+  const analyzingDoneRef = useRef(false);
 
   // UTM tracking
   const [utmParams, setUtmParams] = useState<{
@@ -142,8 +142,6 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     campaign?: string;
   }>({});
 
-  // Capture UTM params on mount and persist to sessionStorage
-  // so the checkout page can read them even after navigation
   useEffect(() => {
     if (!searchParams) return;
     const source   = searchParams.get('utm_source')   || undefined;
@@ -164,7 +162,6 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
 
     const saved = loadProgress();
     if (saved && saved.currentQuestionIndex > 0) {
-      // Only restore if user has made progress
       setQuizState(saved.quizState);
       setCurrentQuestionIndex(saved.currentQuestionIndex);
       setAnswers(saved.answers);
@@ -176,23 +173,17 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
   useEffect(() => {
     if (!hasRestoredProgress) return;
     if (quizState === 'result' || quizState === 'analyzing') {
-      // Clear progress when quiz is completed
       clearProgress();
       return;
     }
     if (quizState === 'question' || quizState === 'email-gate') {
-      saveProgress({
-        quizState,
-        currentQuestionIndex,
-        answers,
-      });
+      saveProgress({ quizState, currentQuestionIndex, answers });
     }
   }, [quizState, currentQuestionIndex, answers, hasRestoredProgress]);
 
   const currentQuestion = PATTERN_QUESTIONS[currentQuestionIndex];
   const currentAnswer = answers[currentQuestion?.id?.toString()] || null;
 
-  // Handlers
   const handleStartQuiz = () => {
     setQuizState('question');
   };
@@ -209,17 +200,10 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     if (currentQuestionIndex < PATTERN_QUESTIONS.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Last question — merge the last answer explicitly before scoring.
-      // This guards against the stale-closure race: handleOptionClick calls
-      // onAnswer (async setAnswers) then setTimeout(() => onNext(), 300).
-      // The onNext captured in that closure is from the pre-update render,
-      // so answers may not include the last answer yet.
       const finalAnswers = lastAnswerValue && currentQuestion
         ? { ...answers, [currentQuestion.id.toString()]: lastAnswerValue }
         : answers;
 
-      // Persist the merged answers (including last question) into state
-      // so handleAccountSubmit sends all 10 answers to the API.
       setAnswers(finalAnswers);
 
       const localScore = calculatePatternScore(finalAnswers);
@@ -237,6 +221,7 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
       return;
     }
     if (quizState === 'email-gate') {
+      setSubmitError(null);
       setQuizState('preview');
       return;
     }
@@ -248,7 +233,13 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     }
   };
 
-  const handleAccountSubmit = async (
+  /**
+   * Called by PatternAccountGate once the user's account is ready (new or existing).
+   *
+   * CHANGE: We switch to 'analyzing' IMMEDIATELY so the animation starts right away.
+   * The quiz submit API runs in parallel — we transition to 'result' when BOTH complete.
+   */
+  const handleAccountSubmit = useCallback(async (
     submittedEmail: string,
     submittedFirstName: string,
     submittedAcceptsMarketing: boolean,
@@ -258,7 +249,14 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     setFirstName(submittedFirstName);
     setAcceptsMarketing(submittedAcceptsMarketing);
     setUserId(submittedUserId);
-    setIsSubmitting(true);
+    setSubmitError(null);
+
+    // Reset coordination flags for this run
+    apiResultReadyRef.current = false;
+    analyzingDoneRef.current = false;
+
+    // Show analyzing immediately — no stacked delay
+    setQuizState('analyzing');
 
     try {
       const response = await fetch('/api/quiz/pattern/submit', {
@@ -278,8 +276,7 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('Quiz submit error:', errorData);
-        throw new Error(errorData.error || 'Failed to submit quiz');
+        throw new Error(errorData.error || 'Inzending mislukt. Probeer het opnieuw.');
       }
 
       const data = await response.json();
@@ -290,22 +287,36 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
       setAvoidanceScore(data.avoidanceScore);
       setConfidence(data.confidence);
 
-      // Go to analyzing screen
-      setQuizState('analyzing');
+      // Signal that the API is done.
+      // If the analyzing animation has already completed, go to result immediately.
+      apiResultReadyRef.current = true;
+      if (analyzingDoneRef.current) {
+        setQuizState('result');
+      }
+      // else: stay in 'analyzing' — the animation's onComplete handler will transition us.
     } catch (error) {
-      console.error('Error submitting quiz:', error);
-      const message = error instanceof Error ? error.message : 'Onbekende fout';
-      alert(`Er ging iets mis: ${message}`);
-    } finally {
-      setIsSubmitting(false);
+      const message = error instanceof Error ? error.message : 'Er is een onbekende fout opgetreden.';
+      setSubmitError(message);
+      // Go back to email gate so user can try again
+      setQuizState('email-gate');
+      apiResultReadyRef.current = false;
+      analyzingDoneRef.current = false;
     }
-  };
+  }, [answers, utmParams]);
 
-  const handleAnalyzingComplete = () => {
-    setQuizState('result');
-  };
+  /**
+   * Called by PatternAnalyzing after its 3-second animation completes.
+   * If the API is already done, go straight to result.
+   * If the API is still running, flag that we're ready — it will complete the transition.
+   */
+  const handleAnalyzingComplete = useCallback(() => {
+    analyzingDoneRef.current = true;
+    if (apiResultReadyRef.current) {
+      setQuizState('result');
+    }
+    // else: stay on analyzing screen — API response will trigger the transition.
+  }, []);
 
-  // Render based on state
   return (
     <AnimatePresence mode="wait">
       {quizState === 'landing' && (
@@ -340,7 +351,11 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
           key="account-gate"
           onSubmit={handleAccountSubmit}
           onBack={handleBack}
-          isSubmitting={isSubmitting}
+          isSubmitting={false}
+          submitError={submitError}
+          onClearError={() => setSubmitError(null)}
+          initialEmail={email}
+          initialFirstName={firstName}
         />
       )}
 

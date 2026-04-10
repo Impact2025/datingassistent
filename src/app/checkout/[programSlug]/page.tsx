@@ -2,12 +2,12 @@
 
 import { logger } from '@/lib/logger';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState, Suspense } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useUser } from '@/providers/user-provider';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { CheckCircle, Lock, ArrowLeft, Tag, Clock, Target, Shield, Sparkles } from 'lucide-react';
+import { CheckCircle, Lock, ArrowLeft, Tag, Clock, Target, Shield, Sparkles, User } from 'lucide-react';
 
 interface ProgramData {
   id: number;
@@ -32,10 +32,12 @@ interface CouponData {
   message: string;
 }
 
-export default function CheckoutPage() {
+function CheckoutPageContent() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const programSlug = params.programSlug as string;
+  const isFromQuiz = searchParams.get('source') === 'quiz';
   const { user, loading: userLoading } = useUser();
 
   const [program, setProgram] = useState<ProgramData | null>(null);
@@ -304,7 +306,9 @@ export default function CheckoutPage() {
 
             {hasBetaDiscount && (
               <div className="flex items-center justify-between mb-2">
-                <span className="text-green-600 text-sm">Beta korting</span>
+                <span className="text-green-600 text-sm">
+                  {isFromQuiz ? 'Quiz aanbieding' : 'Korting'}
+                </span>
                 <span className="text-green-600 font-medium">-€{formatPrice(betaDiscount)}</span>
               </div>
             )}
@@ -385,6 +389,17 @@ export default function CheckoutPage() {
             </div>
           </div>
 
+          {/* Gebruikersidentiteit — bevestigt voor wie de aankoop is */}
+          {user && (
+            <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 rounded-xl px-4 py-3 mb-4">
+              <User className="w-4 h-4 flex-shrink-0" />
+              <span>
+                Ingelogd als <strong className="text-gray-900">{user.name}</strong>
+                {user.email && <span className="text-gray-400"> · {user.email}</span>}
+              </span>
+            </div>
+          )}
+
           {/* Error Message */}
           {error && (
             <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg mb-4 text-center">
@@ -437,5 +452,17 @@ export default function CheckoutPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="w-8 h-8 border-3 border-coral-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <CheckoutPageContent />
+    </Suspense>
   );
 }

@@ -6,14 +6,14 @@
  * Shown AFTER the preview (user has already seen partial results).
  * Collects only name + email. No password required.
  *
- * Account is created with a temporary auto-generated password.
- * User receives a "complete your account" email to set their own password.
+ * NEW USER flow: register → token returned directly → skip OTP → continue quiz.
+ * EXISTING USER flow: register fails (USER_ALREADY_EXISTS) → send OTP → verify → continue.
  *
  * Psychology: Friction is earned. User already confirmed the result is accurate.
  * Asking only for name + email maximises conversion at this step.
  */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Lock, Check, Mail } from 'lucide-react';
 
@@ -21,6 +21,12 @@ interface PatternAccountGateProps {
   onSubmit: (email: string, firstName: string, acceptsMarketing: boolean, userId: number) => void;
   onBack: () => void;
   isSubmitting: boolean;
+  /** Error from the parent's quiz submit API — shown inline in the form */
+  submitError?: string | null;
+  onClearError?: () => void;
+  /** Pre-fill form if user is returning after an error (parent state preserved) */
+  initialEmail?: string;
+  initialFirstName?: string;
 }
 
 /** Generate a temporary password meeting all requirements */
@@ -44,21 +50,28 @@ function generateTempPassword(): string {
     .join('');
 }
 
-export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAccountGateProps) {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
+export function PatternAccountGate({ onSubmit, onBack, isSubmitting, submitError, onClearError, initialEmail = '', initialFirstName = '' }: PatternAccountGateProps) {
+  const [email, setEmail] = useState(initialEmail);
+  const [firstName, setFirstName] = useState(initialFirstName);
   const [acceptsMarketing, setAcceptsMarketing] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
-  // OTP login state (always required to verify email)
+  // OTP login state — only used for EXISTING users who need to authenticate
   const [otpMode, setOtpMode] = useState(false);
   const [otpUserId, setOtpUserId] = useState<number | null>(null);
-  const [isNewUser, setIsNewUser] = useState(true);
   const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
   const [isSendingCode, setIsSendingCode] = useState(false);
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Auto-focus eerste OTP-vakje zodra het OTP-scherm verschijnt (mobile-friendly)
+  useEffect(() => {
+    if (otpMode) {
+      const timer = setTimeout(() => otpRefs.current[0]?.focus(), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [otpMode]);
 
   const isValidEmail = email.includes('@') && email.includes('.');
   const isValidName = firstName.trim().length >= 2;
@@ -105,12 +118,9 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Verificatie mislukt');
-      // Sync token to localStorage so UserProvider can read it on the next page
-      // (the httpOnly cookie is not accessible via document.cookie)
       if (data.token) {
         localStorage.setItem('datespark_auth_token', data.token);
       }
-      // Logged in — continue quiz flow
       onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Er is een fout opgetreden';
@@ -145,25 +155,23 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
     setError(null);
 
     try {
-      const tempPassword = generateTempPassword();
-
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: firstName.trim(),
           email: email.trim(),
-          password: tempPassword,
+          password: generateTempPassword(),
           needsPasswordSetup: true,
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        const message = errorData.error || 'Registratie mislukt';
+      const data = await response.json();
 
-        if (message.includes('al bij ons bekend') || message.includes('already exists') || message.includes('probleem met deze registratie')) {
-          // Email already exists — send a login code and switch to OTP mode
+      if (!response.ok) {
+        // Use errorCode for reliable detection — no string matching
+        if (data.errorCode === 'USER_ALREADY_EXISTS') {
+          // Existing user: send OTP code for authentication
           const loginCodeResponse = await fetch('/api/auth/send-login-code', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -173,52 +181,36 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
 
           if (loginCodeResponse.ok) {
             setOtpUserId(loginCodeData.userId);
-            setIsNewUser(false);
             setOtpMode(true);
           } else {
-            // Fallback: show friendly message with login link
             setError('Je hebt al een account. Ga naar de loginpagina om in te loggen.');
           }
-          setIsCreatingAccount(false);
           return;
         }
 
-        throw new Error(message);
+        throw new Error(data.error || 'Registratie mislukt');
       }
 
-      const data = await response.json();
-
+      // NEW USER: token is returned directly in the response body.
+      // Skip OTP entirely — save token and continue the quiz flow immediately.
+      if (data.token) {
+        localStorage.setItem('datespark_auth_token', data.token);
+      }
       if (typeof window !== 'undefined') {
         localStorage.setItem('quiz_user_id', data.user.id.toString());
         localStorage.setItem('quiz_user_name', firstName.trim());
       }
+      onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
 
-      // Send OTP to verify the email is real before showing results
-      const loginCodeResponse = await fetch('/api/auth/send-login-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-      const loginCodeData = await loginCodeResponse.json();
-
-      if (loginCodeResponse.ok) {
-        setOtpUserId(loginCodeData.userId);
-        setIsNewUser(true);
-        setOtpMode(true);
-        setIsCreatingAccount(false);
-      } else {
-        // Fallback: just continue if OTP send fails
-        onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
-      }
-      return;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Er is een fout opgetreden';
       setError(message);
+    } finally {
       setIsCreatingAccount(false);
     }
   };
 
-  // ── OTP Screen ────────────────────────────────────────────────────────────
+  // ── OTP Screen (existing users only) ─────────────────────────────────────
   if (otpMode) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
@@ -234,13 +226,11 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
 
               <div className="mb-6 text-center">
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                  {isNewUser ? 'Jouw analyse staat klaar' : 'Check je inbox'}
+                  Check je inbox
                 </h1>
                 <p className="text-gray-500 text-sm">
-                  {isNewUser
-                    ? <>We stuurden je persoonlijke analyse naar <strong>{email}</strong>. Vul de code in om hem te bekijken.</>
-                    : <>Je hebt al een account. We stuurden een code naar <strong>{email}</strong>.</>
-                  }
+                  Je hebt al een account. We stuurden een code naar{' '}
+                  <strong>{email}</strong>.
                 </p>
               </div>
 
@@ -386,17 +376,26 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
                 </span>
               </label>
 
-              {error && (
+              {(error || submitError) && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700"
                 >
-                  {error}{' '}
-                  {error.includes('loginpagina') && (
+                  {error || submitError}{' '}
+                  {(error || submitError || '').includes('loginpagina') && (
                     <a href={`/login?email=${encodeURIComponent(email)}`} className="underline font-medium">
                       Log in
                     </a>
+                  )}
+                  {submitError && (
+                    <button
+                      type="button"
+                      onClick={onClearError}
+                      className="ml-2 underline"
+                    >
+                      Wis fout
+                    </button>
                   )}
                 </motion.div>
               )}

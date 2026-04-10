@@ -100,7 +100,11 @@ export function PatternPreview({ pattern, anxietyScore, avoidanceScore, confiden
             </div>
           </div>
           <p className="text-xs text-gray-400 mt-3 text-center">
-            Profielbetrouwbaarheid: {confidence}%
+            {confidence >= 70
+              ? `Sterk patroon · ${confidence}% zekerheid`
+              : confidence >= 50
+                ? `Gemiddeld patroon · ${confidence}% zekerheid`
+                : `Gemengd patroon · ${confidence}% zekerheid`}
           </p>
         </motion.div>
 

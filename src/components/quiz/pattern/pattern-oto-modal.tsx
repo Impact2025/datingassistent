@@ -11,8 +11,9 @@
  * No fake numeric score — uses attachment theory correctly.
  */
 
+import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Lock, ArrowRight, Video, Bot, MessageCircle, Users, Map } from 'lucide-react';
+import { CheckCircle, Lock, ArrowRight, Video, Bot, MessageCircle, Users, Map, Clock } from 'lucide-react';
 import type { AttachmentPattern } from '@/lib/quiz/pattern/pattern-types';
 import { TRANSFORMATIE_OTO } from '@/types/lead-activation.types';
 
@@ -73,6 +74,39 @@ const discountPercentage = Math.round(
     100
 );
 
+// ─── Urgency: session-persistent countdown (15 min from first view) ───────────
+// Uses sessionStorage so the timer resets per browser session, not per render.
+
+function getOrCreateExpiry(): number {
+  if (typeof window === 'undefined') return Date.now() + 15 * 60 * 1000;
+  const stored = sessionStorage.getItem('oto_expiry');
+  if (stored) return parseInt(stored, 10);
+  const expiry = Date.now() + 15 * 60 * 1000;
+  sessionStorage.setItem('oto_expiry', expiry.toString());
+  return expiry;
+}
+
+function useCountdown(): string {
+  const [display, setDisplay] = React.useState('14:59');
+
+  React.useEffect(() => {
+    const expiry = getOrCreateExpiry();
+
+    const tick = () => {
+      const remaining = Math.max(0, expiry - Date.now());
+      const m = Math.floor(remaining / 60000);
+      const s = Math.floor((remaining % 60000) / 1000);
+      setDisplay(`${m}:${s.toString().padStart(2, '0')}`);
+    };
+
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return display;
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function PatternOTOModal({
@@ -82,6 +116,7 @@ export function PatternOTOModal({
   onDecline,
 }: PatternOTOModalProps) {
   const config = PATTERN_CONFIG[pattern];
+  const countdown = useCountdown();
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
@@ -178,6 +213,20 @@ export function PatternOTOModal({
 
         {/* Divider */}
         <div className="border-t border-gray-100 dark:border-gray-800 mb-5" />
+
+        {/* Urgency banner */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="flex items-center justify-center gap-2 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2 mb-4 text-sm text-amber-700"
+        >
+          <Clock className="w-4 h-4 flex-shrink-0" />
+          <span>
+            Welkomstkorting beschikbaar nog{' '}
+            <span className="font-bold tabular-nums">{countdown}</span>
+          </span>
+        </motion.div>
 
         {/* Price */}
         <motion.div
