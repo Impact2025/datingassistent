@@ -55,14 +55,14 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
     ctaSection: {
       headline: 'De volgende stap',
       paragraph:
-        'Je basis is goed. Maar "goed genoeg" is niet waarom je hier bent. In 21 dagen leer je hoe je sneller de juiste mensen herkent — en de verkeerde eerder loslaat. Geen tijdverspilling meer.',
+        'Je basis is goed. Maar "goed genoeg" is niet waarom je hier bent. Leer sneller de juiste mensen herkennen — en de verkeerde eerder loslaten. Geen tijdverspilling meer.',
       bullets: [
-        'Dagelijkse acties die je dating aanpak transformeren',
+        'Complete video academy — 12 modules op jouw tempo',
+        'AI-coach beschikbaar wanneer je twijfelt',
         'De exacte vragen om intenties te checken (zonder awkward te zijn)',
-        'AI-coach voor wanneer je twijfelt',
+        '3x live Q&A met een echte coach',
       ],
       buttonText: 'Ja, ik wil dit aanpakken',
-      buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
           'Ik dacht dat ik gewoon pech had in de liefde. Dit programma liet me zien dat ik steeds dezelfde fout maakte — en hoe ik dat kon doorbreken.',
@@ -119,14 +119,14 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
     ctaSection: {
       headline: 'Dit patroon doorbreken',
       paragraph:
-        'Ik ga eerlijk tegen je zijn: dit patroon los je niet op met één tip. Het zit diep. Maar in 21 dagen kun je de eerste stappen zetten om het te doorbreken.',
+        'Eerlijk: dit patroon los je niet op met één tip. Het zit diep. Maar met de juiste begeleiding kun je het doorbreken — stap voor stap.',
       bullets: [
+        'Complete video academy — 12 modules op jouw tempo',
+        'AI-coach voor rust op de momenten dat je onzeker wordt',
         'Hoe je het verschil herkent tussen intuïtie en angst',
-        'Waarom je aangetrokken bent tot mensen die je onzeker maken',
-        'Concrete tools om rust te vinden — zonder afhankelijk te zijn van andermans reactie',
+        '3x live Q&A met een echte coach',
       ],
       buttonText: 'Ja, ik wil dit aanpakken',
-      buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
           'Na 3 jaar swipen had ik het opgegeven. Dit programma liet me zien waarom ik steeds dezelfde fout maakte.',
@@ -184,14 +184,14 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
     ctaSection: {
       headline: 'De muur verlagen (zonder jezelf te verliezen)',
       paragraph:
-        'Ik ga je niet vertellen dat je moet veranderen wie je bent. Je onafhankelijkheid is waardevol. Maar in 21 dagen kun je kleine stappen zetten — op jouw tempo.',
+        'Je hoeft niet te veranderen wie je bent. Je onafhankelijkheid is waardevol. Maar met de juiste begeleiding kun je kleine stappen zetten — op jouw tempo, zonder druk.',
       bullets: [
-        'Hoe je verbinding kunt maken zonder jezelf te verliezen',
-        'Kleine, concrete stappen richting kwetsbaarheid',
-        'Op jouw tempo, zonder druk',
+        'Complete video academy — 12 modules, jij bepaalt het tempo',
+        'AI-coach die beschikbaar is zonder dat je iemand nodig hebt',
+        'Concrete stappen richting kwetsbaarheid die bij jou passen',
+        '3x live Q&A met een echte coach',
       ],
       buttonText: 'Ja, ik wil dit aanpakken',
-      buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
           'Ik dacht dat ik gewoon niet gemaakt was voor relaties. Dit programma liet me zien dat ik mezelf beschermde tegen iets dat ik eigenlijk wilde.',
@@ -248,14 +248,14 @@ export const PATTERN_RESULTS: Record<AttachmentPattern, PatternResultConfig> = {
     ctaSection: {
       headline: 'Dit vraagt om begeleiding',
       paragraph:
-        'Ik ga eerlijk zijn: van de vier patronen is dit degene die baat heeft bij structuur. Je hebt een externe spiegel nodig. Start met 21 dagen om het patroon te leren herkennen.',
+        'Eerlijk: van de vier patronen is dit degene die het meest baat heeft bij structuur en een externe spiegel. Je hebt iemand nodig die je helpt het patroon te doorbreken.',
       bullets: [
-        'Dagelijkse begeleiding die je helpt het patroon te herkennen',
-        'AI-coach voor de momenten dat het lastig wordt',
+        'Complete video academy — 12 modules met structuur en houvast',
+        'AI-coach beschikbaar op de momenten dat het lastig wordt',
         'Kleine stappen die grote verandering brengen',
+        '3x live Q&A met een echte coach',
       ],
       buttonText: 'Ja, ik wil dit aanpakken',
-      buttonTextSecondary: 'Of ga direct diep →',
       testimonial: {
         quote:
           'Ik dacht dat ik gewoon "moeilijk" was. Dit programma liet me zien dat het een patroon was — en dat patronen te doorbreken zijn.',
