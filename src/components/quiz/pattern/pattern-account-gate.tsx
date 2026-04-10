@@ -105,6 +105,11 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Verificatie mislukt');
+      // Sync token to localStorage so UserProvider can read it on the next page
+      // (the httpOnly cookie is not accessible via document.cookie)
+      if (data.token) {
+        localStorage.setItem('datespark_auth_token', data.token);
+      }
       // Logged in — continue quiz flow
       onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
     } catch (err: unknown) {
