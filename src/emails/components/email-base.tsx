@@ -67,22 +67,22 @@ export const styles = {
   },
   header: {
     backgroundColor: colors.white,
-    padding: '36px 64px 28px 64px',
+    padding: '36px 80px 28px 80px',
     textAlign: 'center' as const,
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   heroGradient: {
     backgroundColor: colors.white,
-    padding: '36px 64px 32px 64px',
+    padding: '36px 80px 32px 80px',
     textAlign: 'center' as const,
     borderBottom: `1px solid ${colors.lightGray}`,
   },
   content: {
-    padding: '40px 64px',
+    padding: '40px 80px',
   },
   footer: {
     backgroundColor: colors.cream,
-    padding: '28px 64px',
+    padding: '28px 80px',
     textAlign: 'center' as const,
     borderTop: `1px solid ${colors.lightGray}`,
   },
@@ -302,7 +302,7 @@ export function PinkHeader({ title, subtitle }: PinkHeaderProps) {
   return (
     <Section style={{
       backgroundColor: colors.primary,
-      padding: '36px 48px 32px 48px',
+      padding: '36px 64px 32px 64px',
       textAlign: 'center' as const,
     }}>
       {/* Logo with brand text */}
