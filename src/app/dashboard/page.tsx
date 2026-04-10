@@ -355,6 +355,14 @@ function DashboardPageContent() {
   // Check if user is admin (from database role)
   const [isAdminUser, setIsAdminUser] = useState(false);
 
+  // Quiz-lead state: detect users who completed the quiz but haven't purchased
+  const [quizLeadResult, setQuizLeadResult] = useState<{
+    id: number;
+    firstName: string;
+    attachmentPattern: string;
+    completedAt: string;
+  } | null | undefined>(undefined); // undefined = not yet fetched, null = no result found
+
   // Check for force parameter to bypass profile check (using searchParams from useSearchParams hook)
   const forceAccess = searchParams?.get('force') === 'true';
 
@@ -390,6 +398,32 @@ function DashboardPageContent() {
 
     checkAdminStatus();
   }, [user?.id, loading, userProfile, router]);
+
+  // Detect quiz leads: fetch quiz result when user has no profile and no enrollment
+  useEffect(() => {
+    if (loading || enrollmentLoading || !user?.id) return;
+    if (userProfile || kickstartState.hasEnrollment || transformatieState.hasEnrollment) return;
+    if (quizLeadResult !== undefined) return; // Already fetched
+
+    const fetchQuizResult = async () => {
+      try {
+        const token = localStorage.getItem('datespark_auth_token');
+        const response = await fetch('/api/quiz/pattern/my-result', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setQuizLeadResult(data.result ?? null);
+        } else {
+          setQuizLeadResult(null);
+        }
+      } catch {
+        setQuizLeadResult(null);
+      }
+    };
+
+    fetchQuizResult();
+  }, [loading, enrollmentLoading, user?.id, userProfile, kickstartState.hasEnrollment, transformatieState.hasEnrollment, quizLeadResult]);
 
   // Log enrollment status from React Query (for debugging)
   useEffect(() => {
@@ -735,15 +769,96 @@ function DashboardPageContent() {
   // This is the "wereldklasse" solution: full integration without requiring profile
   // Note: kickstartState.isChecking is already handled above in the main loading check
   if (!userProfile && !kickstartState.hasEnrollment && !transformatieState.hasEnrollment) {
-    // No profile and no Kickstart enrollment - show error
+    // Still fetching quiz result? Show loading
+    if (quizLeadResult === undefined) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center">
+          <div className="text-center">
+            <LoadingSpinner />
+            <p className="mt-4 text-sm text-gray-500">Even geduld...</p>
+          </div>
+        </div>
+      );
+    }
+
+    // Quiz lead: completed quiz but has no active program
+    const patternLabels: Record<string, string> = {
+      secure: 'Veilig Gehecht',
+      anxious: 'Angstig Gehecht',
+      avoidant: 'Vermijdend Gehecht',
+      disorganized: 'Gedesorganiseerd Gehecht',
+    };
+    const patternLabel = quizLeadResult
+      ? (patternLabels[quizLeadResult.attachmentPattern] ?? quizLeadResult.attachmentPattern)
+      : null;
+
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold">Welkom!</h2>
-          <p className="text-muted-foreground">Je profiel wordt geladen...</p>
-          <p className="text-sm text-muted-foreground">
-            Als dit lang duurt, probeer opnieuw in te loggen of neem contact op met support.
-          </p>
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center space-y-6">
+          <div className="flex justify-center">
+            <Image
+              src="/images/LogoDatingAssistent.png"
+              alt="DatingAssistent"
+              width={64}
+              height={64}
+              className="object-contain"
+              unoptimized
+            />
+          </div>
+
+          {quizLeadResult ? (
+            <>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Welkom terug, {quizLeadResult.firstName}!
+                </h2>
+                <p className="mt-2 text-gray-600">
+                  Je hebt de scan gedaan en je patroon is:{' '}
+                  <span className="font-semibold text-coral-600">{patternLabel}</span>.
+                </p>
+              </div>
+              <p className="text-gray-500 text-sm">
+                Je hebt nog geen programma geactiveerd. Start je traject om toegang te krijgen tot je persoonlijk dashboard.
+              </p>
+              <div className="space-y-3">
+                <Button
+                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white font-semibold py-3"
+                  onClick={() => router.push(`/checkout/transformatie?userId=${user?.id}&discount=true&source=quiz`)}
+                >
+                  Start mijn traject
+                </Button>
+                <button
+                  className="w-full text-sm text-gray-500 hover:text-gray-700 underline"
+                  onClick={() => router.push(`/quiz/dating-patroon/resultaat?id=${quizLeadResult.id}`)}
+                >
+                  Bekijk mijn scan resultaat
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Welkom!</h2>
+                <p className="mt-2 text-gray-600">
+                  Je hebt nog geen actief programma.
+                </p>
+              </div>
+              <div className="space-y-3">
+                <Button
+                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white font-semibold py-3"
+                  onClick={() => router.push('/select-package')}
+                >
+                  Bekijk programma&apos;s
+                </Button>
+                <p className="text-xs text-gray-400">
+                  Vragen? Neem contact op via{' '}
+                  <a href="mailto:support@datingassistent.nl" className="underline">
+                    support@datingassistent.nl
+                  </a>
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </div>
     );
