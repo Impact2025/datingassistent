@@ -13,9 +13,9 @@
  * Asking only for name + email maximises conversion at this step.
  */
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Lock, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Lock, Check, Mail } from 'lucide-react';
 
 interface PatternAccountGateProps {
   onSubmit: (email: string, firstName: string, acceptsMarketing: boolean, userId: number) => void;
@@ -51,9 +51,73 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
   const [error, setError] = useState<string | null>(null);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
+  // OTP login state (when email already exists)
+  const [otpMode, setOtpMode] = useState(false);
+  const [otpUserId, setOtpUserId] = useState<number | null>(null);
+  const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [isSendingCode, setIsSendingCode] = useState(false);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
   const isValidEmail = email.includes('@') && email.includes('.');
   const isValidName = firstName.trim().length >= 2;
   const canSubmit = isValidEmail && isValidName && !isSubmitting && !isCreatingAccount;
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (!/^\d*$/.test(value)) return;
+    const next = [...otpDigits];
+    next[index] = value;
+    setOtpDigits(next);
+    if (value && index < 5) otpRefs.current[index + 1]?.focus();
+    if (value && index === 5 && next.every(d => d !== '')) {
+      verifyOtp(next.join(''));
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const verifyOtp = async (code: string) => {
+    if (!otpUserId) return;
+    setIsVerifyingOtp(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/auth/verify-login-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: otpUserId, code }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Verificatie mislukt');
+      // Logged in — continue quiz flow
+      onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Er is een fout opgetreden';
+      setError(message);
+      setOtpDigits(['', '', '', '', '', '']);
+      otpRefs.current[0]?.focus();
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  };
+
+  const resendCode = async () => {
+    if (!otpUserId || isSendingCode) return;
+    setIsSendingCode(true);
+    setError(null);
+    try {
+      await fetch('/api/auth/send-login-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+    } finally {
+      setIsSendingCode(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +142,29 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Registratie mislukt');
+        const message = errorData.error || 'Registratie mislukt';
+
+        if (message.includes('al bij ons bekend') || message.includes('already exists') || message.includes('probleem met deze registratie')) {
+          // Email already exists — send a login code and switch to OTP mode
+          const loginCodeResponse = await fetch('/api/auth/send-login-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email.trim() }),
+          });
+          const loginCodeData = await loginCodeResponse.json();
+
+          if (loginCodeResponse.ok) {
+            setOtpUserId(loginCodeData.userId);
+            setOtpMode(true);
+          } else {
+            // Fallback: show friendly message with login link
+            setError('Je hebt al een account. Ga naar de loginpagina om in te loggen.');
+          }
+          setIsCreatingAccount(false);
+          return;
+        }
+
+        throw new Error(message);
       }
 
       const data = await response.json();
@@ -91,16 +177,99 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
       onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Er is een fout opgetreden';
-
-      if (message.includes('al bij ons bekend') || message.includes('already exists')) {
-        setError('Dit e-mailadres is al geregistreerd. Probeer in te loggen of gebruik een ander e-mailadres.');
-      } else {
-        setError(message);
-      }
+      setError(message);
       setIsCreatingAccount(false);
     }
   };
 
+  // ── OTP Screen ────────────────────────────────────────────────────────────
+  if (otpMode) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col">
+        <div className="flex-1 flex items-center justify-center px-4 py-12">
+          <div className="max-w-md w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className="flex items-center justify-center w-12 h-12 bg-coral-50 rounded-full mx-auto mb-6">
+                <Mail className="w-6 h-6 text-coral-500" />
+              </div>
+
+              <div className="mb-6 text-center">
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                  Check je inbox
+                </h1>
+                <p className="text-gray-500 text-sm">
+                  Je hebt al een account. We hebben een inlogcode gestuurd naar{' '}
+                  <strong>{email}</strong>.
+                </p>
+              </div>
+
+              <div className="flex gap-2 justify-center mb-6">
+                {otpDigits.map((digit, i) => (
+                  <input
+                    key={i}
+                    ref={el => { otpRefs.current[i] = el; }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={e => handleOtpChange(i, e.target.value)}
+                    onKeyDown={e => handleOtpKeyDown(i, e)}
+                    className="w-11 h-14 text-center text-xl font-bold border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
+                    disabled={isVerifyingOtp}
+                  />
+                ))}
+              </div>
+
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 text-center"
+                >
+                  {error}
+                </motion.div>
+              )}
+
+              {isVerifyingOtp && (
+                <div className="flex justify-center mb-4">
+                  <div className="w-5 h-5 border-2 border-coral-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+
+              <p className="text-center text-sm text-gray-500">
+                Geen code ontvangen?{' '}
+                <button
+                  type="button"
+                  onClick={resendCode}
+                  disabled={isSendingCode}
+                  className="text-coral-600 hover:text-coral-700 font-medium disabled:opacity-50"
+                >
+                  {isSendingCode ? 'Versturen...' : 'Stuur opnieuw'}
+                </button>
+              </p>
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-100 px-4 py-4">
+          <div className="max-w-md mx-auto">
+            <button
+              onClick={() => { setOtpMode(false); setOtpDigits(['', '', '', '', '', '']); setError(null); }}
+              className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm">Terug</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Registration Screen ───────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <div className="flex-1 flex items-center justify-center px-4 py-12">
@@ -184,7 +353,12 @@ export function PatternAccountGate({ onSubmit, onBack, isSubmitting }: PatternAc
                   animate={{ opacity: 1, y: 0 }}
                   className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700"
                 >
-                  {error}
+                  {error}{' '}
+                  {error.includes('loginpagina') && (
+                    <a href={`/login?email=${encodeURIComponent(email)}`} className="underline font-medium">
+                      Log in
+                    </a>
+                  )}
                 </motion.div>
               )}
 
