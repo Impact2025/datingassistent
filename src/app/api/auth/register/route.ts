@@ -67,7 +67,10 @@ export async function POST(request: NextRequest) {
 
     if (existingUser.rows.length > 0) {
       return NextResponse.json(
-        { error: 'Er is een probleem met deze registratie. Als je al een account hebt, log dan in.' },
+        {
+          error: 'Er is een probleem met deze registratie. Als je al een account hebt, log dan in.',
+          errorCode: 'USER_ALREADY_EXISTS',
+        },
         { status: 400 }
       );
     }
@@ -155,13 +158,15 @@ export async function POST(request: NextRequest) {
 
     // Quiz users (needsPasswordSetup) get auto-logged in immediately
     // so they can proceed through the OTO → checkout flow without interruption.
+    // Token is returned in both the cookie AND the response body so the
+    // client can skip OTP and sync to localStorage in one step.
     if (needsPasswordSetup) {
       const token = await signToken({
         id: user.id,
         email: user.email,
         displayName: user.name,
       });
-      const response = NextResponse.json(responseBody, { status: 201 });
+      const response = NextResponse.json({ ...responseBody, token }, { status: 201 });
       response.cookies.set(cookieConfig.name, token, cookieConfig.options);
       return response;
     }
