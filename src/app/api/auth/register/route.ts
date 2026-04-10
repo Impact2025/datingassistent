@@ -92,19 +92,17 @@ export async function POST(request: NextRequest) {
     const user = result.rows[0];
 
     if (needsPasswordSetup) {
-      // Send account-setup email with magic login link (non-blocking).
-      // Quiz users are already email_verified=true so we reuse the
-      // verification_token column (unused for them) as a one-time magic-login token.
+      // Send magic link email (non-blocking) so the user can log in later
+      // without needing a password. Token stored in verification_token column.
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
-      const setupUrl = `${baseUrl}/reset-password?userId=${user.id}`;
       const magicToken = generateVerificationToken();
       storeVerificationToken(user.id, magicToken).then(() => {
         const magicLoginUrl = `${baseUrl}/api/auth/magic-login?token=${magicToken}`;
         import('@/lib/email-service')
-          .then(({ sendAccountSetupEmail }) =>
-            sendAccountSetupEmail(user.email, user.name, setupUrl, magicLoginUrl)
+          .then(({ sendMagicLinkEmail }) =>
+            sendMagicLinkEmail(user.email, user.name, magicLoginUrl)
           )
-          .catch(e => console.warn('Account setup email failed (non-critical):', e));
+          .catch(e => console.warn('Magic link email failed (non-critical):', e));
       }).catch(e => console.warn('Magic token storage failed (non-critical):', e));
     } else {
       // Standard flow: send verification code

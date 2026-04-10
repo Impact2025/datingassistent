@@ -1,171 +1,28 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { useUser } from "@/providers/user-provider";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
 import { LoadingSpinner } from "../shared/loading-spinner";
 import { useSearchParams, usePathname } from "next/navigation";
 import { useDeviceDetection } from "@/hooks/use-device-detection";
 import { logger } from '@/lib/logger';
-import { safeStorage } from "@/lib/safe-storage";
-
-// ─── Schemas ────────────────────────────────────────────────────────────────
-
-const otpEmailSchema = z.object({
-  email: z.string().email("Ongeldig e-mailadres."),
-});
-
-type OtpEmailFormValues = z.infer<typeof otpEmailSchema>;
-
-// ─── OTP Code Input ──────────────────────────────────────────────────────────
-
-function OtpCodeInput({
-  userId,
-  onSuccess,
-}: {
-  userId: number;
-  onSuccess: () => void;
-}) {
-  const [digits, setDigits] = useState(['', '', '', '', '', '']);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
-  useEffect(() => {
-    inputRefs.current[0]?.focus();
-  }, []);
-
-  const handleChange = (index: number, value: string) => {
-    if (!/^\d*$/.test(value)) return;
-    const next = [...digits];
-    next[index] = value;
-    setDigits(next);
-    if (value && index < 5) inputRefs.current[index + 1]?.focus();
-    if (value && index === 5 && next.every(d => d !== '')) {
-      verifyCode(next.join(''));
-    }
-  };
-
-  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' && !digits[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handlePaste = (e: React.ClipboardEvent) => {
-    e.preventDefault();
-    const pasted = e.clipboardData.getData('text').replace(/\D/g, '');
-    if (pasted.length === 6) {
-      setDigits(pasted.split(''));
-      inputRefs.current[5]?.focus();
-      verifyCode(pasted);
-    }
-  };
-
-  const verifyCode = async (code: string) => {
-    if (isVerifying) return;
-    setIsVerifying(true);
-    setError(null);
-
-    try {
-      const response = await fetch('/api/auth/verify-login-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, code }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        if (data.token) {
-          safeStorage.setItem('datespark_auth_token', data.token);
-          logger.log('Token saved to localStorage after OTP login');
-        }
-        onSuccess();
-      } else {
-        setError(data.error || 'Verificatie mislukt. Probeer het opnieuw.');
-      }
-    } catch {
-      setError('Netwerkfout. Probeer het opnieuw.');
-    } finally {
-      setIsVerifying(false);
-    }
-  };
-
-  const fullCode = digits.join('');
-
-  return (
-    <div className="space-y-4">
-      {error && (
-        <p className="text-sm text-destructive text-center">{error}</p>
-      )}
-      <div className="flex justify-center gap-2" onPaste={handlePaste}>
-        {digits.map((digit, i) => (
-          <Input
-            key={i}
-            ref={el => { inputRefs.current[i] = el; }}
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            maxLength={1}
-            value={digit}
-            onChange={e => handleChange(i, e.target.value)}
-            onKeyDown={e => handleKeyDown(i, e)}
-            disabled={isVerifying}
-            className="w-11 h-12 text-center text-lg font-semibold focus:border-coral-500 focus:ring-coral-500 focus:ring-2"
-          />
-        ))}
-      </div>
-      <Button
-        type="button"
-        size="lg"
-        className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
-        disabled={isVerifying || fullCode.length !== 6}
-        onClick={() => verifyCode(fullCode)}
-      >
-        {isVerifying ? <LoadingSpinner /> : 'Inloggen met code'}
-      </Button>
-    </div>
-  );
-}
-
-// ─── Main LoginForm ──────────────────────────────────────────────────────────
 
 export function LoginForm() {
   const { user } = useUser();
-  const { toast } = useToast();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const hasRedirectedRef = useRef(false);
   const { isMobile } = useDeviceDetection();
 
-  const [otpStep, setOtpStep] = useState<'email' | 'code'>('email');
-  const [otpUserId, setOtpUserId] = useState<number | null>(null);
-  const [otpEmail, setOtpEmail] = useState('');
-  const [isSendingCode, setIsSendingCode] = useState(false);
-
-  useEffect(() => {
-    logger.log('LoginForm - User state changed:', {
-      userExists: !!user,
-      userEmail: user?.email,
-      userId: user?.id
-    });
-  }, [user]);
+  const [email, setEmail] = useState('');
+  const [step, setStep] = useState<'email' | 'sent'>('email');
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [resendCooldown, setResendCooldown] = useState(0);
 
   const plan = searchParams.get('plan');
   const billing = searchParams.get('billing');
@@ -175,149 +32,155 @@ export function LoginForm() {
   const magicLinkError = searchParams.get('error');
   const registerUrl = plan && billing ? `/register?plan=${plan}&billing=${billing}` : '/register';
 
-  // OTP email form
-  const otpForm = useForm<OtpEmailFormValues>({
-    resolver: zodResolver(otpEmailSchema),
-    defaultValues: { email: "" },
-  });
-
-  // Pre-fill email from URL param
   useEffect(() => {
-    if (prefillEmail) {
-      otpForm.setValue('email', prefillEmail);
-    }
+    if (prefillEmail) setEmail(prefillEmail);
   }, [prefillEmail]);
 
   // Handle order_id after payment
   useEffect(() => {
-    const handlePostPaymentLogin = async () => {
-      if (user && orderId) {
-        try {
-          const response = await fetch('/api/subscription/link-order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: user.id, orderId }),
-          });
-
-          const data = await response.json();
-
-          if (data.warning === 'missing_connection_string') {
-            console.warn('Subscription linking skipped: database connection string ontbreekt.');
-            return;
-          }
-
-          if (response.ok) {
-            logger.log('Subscription activated for user:', user.id);
-          } else {
-            console.warn('Failed to link order to user');
-          }
-        } catch (error) {
-          console.error('Failed to link order to user:', error);
-        }
-      }
-    };
-
-    handlePostPaymentLogin();
+    if (!user || !orderId) return;
+    fetch('/api/subscription/link-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user.id, orderId }),
+    }).catch(e => console.error('Failed to link order:', e));
   }, [user, orderId]);
 
-  // Auto-redirect after successful login
+  // Auto-redirect after login
   useEffect(() => {
     if (user && pathname === '/login' && !hasRedirectedRef.current) {
-      logger.log('Login successful, checking redirect destination...');
       hasRedirectedRef.current = true;
-
       if (returnUrl) {
-        logger.log('Redirecting to returnUrl:', returnUrl);
         setTimeout(() => { window.location.href = returnUrl; }, 500);
         return;
       }
-
-      const dashboardUrl = isMobile ? '/mobile-dashboard' : '/dashboard';
-      logger.log('Redirecting to:', dashboardUrl, 'for device type:', isMobile ? 'mobile' : 'desktop');
-      setTimeout(() => { window.location.href = dashboardUrl; }, 500);
+      const dest = isMobile ? '/mobile-dashboard' : '/dashboard';
+      logger.log('Redirecting to', dest);
+      setTimeout(() => { window.location.href = dest; }, 500);
     }
   }, [user, pathname, isMobile, returnUrl]);
 
-  // Show success message while redirecting
+  // Resend cooldown countdown
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const t = setTimeout(() => setResendCooldown(c => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [resendCooldown]);
+
   if (user && pathname === '/login') {
-    const destinationName = returnUrl
+    const dest = returnUrl
       ? (returnUrl.includes('onboarding') ? 'onboarding' : 'pagina')
       : (isMobile ? 'mobiele dashboard' : 'dashboard');
     return (
       <Card className="w-full max-w-md bg-card/50 shadow-2xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl">Login Succesvol!</CardTitle>
-          <CardDescription>
-            Welkom terug, {user.email}
-          </CardDescription>
+          <CardTitle className="text-3xl">Ingelogd!</CardTitle>
+          <CardDescription>Welkom terug, {user.email}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 text-center">
           <LoadingSpinner />
           <p className="text-sm text-muted-foreground">
-            Je wordt doorgestuurd naar je {destinationName}...
+            Je wordt doorgestuurd naar je {dest}...
           </p>
         </CardContent>
       </Card>
     );
   }
 
-  // ─── OTP: send code submit ─────────────────────────────────────────────────
-
-  async function onSendOtpCode(data: OtpEmailFormValues) {
-    if (isSendingCode) return;
-    setIsSendingCode(true);
-
-    try {
-      const response = await fetch('/api/auth/send-login-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.email }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast({
-          title: "Fout",
-          description: result.error || "Kon de inlogcode niet versturen. Probeer het opnieuw.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      setOtpUserId(result.userId);
-      setOtpEmail(data.email);
-      setOtpStep('code');
-      logger.log('Login code sent, userId:', result.userId);
-    } catch {
-      toast({
-        title: "Fout",
-        description: "Netwerkfout. Probeer het opnieuw.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSendingCode(false);
-    }
-  }
-
-  // ─── OTP: after successful code verification ───────────────────────────────
-
-  function handleOtpSuccess() {
-    if (returnUrl) {
-      window.location.href = returnUrl;
+  const sendMagicLink = async () => {
+    const trimmed = email.trim();
+    if (!trimmed.includes('@') || !trimmed.includes('.')) {
+      setError('Voer een geldig e-mailadres in.');
       return;
     }
-    const dashboardUrl = isMobile ? '/mobile-dashboard' : '/dashboard';
-    window.location.href = dashboardUrl;
+
+    setIsSending(true);
+    setError(null);
+
+    try {
+      const res = await fetch('/api/auth/send-magic-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: trimmed,
+          next: returnUrl || undefined,
+        }),
+      });
+
+      if (!res.ok && res.status !== 200) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Er is iets misgegaan.');
+      }
+
+      setStep('sent');
+      setResendCooldown(60);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Er is iets misgegaan.');
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') sendMagicLink();
+  };
+
+  // ── Step: sent ────────────────────────────────────────────────────────────
+  if (step === 'sent') {
+    return (
+      <Card className="w-full max-w-md bg-card/50 shadow-2xl">
+        <CardHeader className="text-center">
+          <div className="text-4xl mb-2">💌</div>
+          <CardTitle className="text-2xl">Check je inbox</CardTitle>
+          <CardDescription>
+            We hebben een inloglink gestuurd naar{' '}
+            <span className="font-semibold text-foreground">{email}</span>.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="rounded-lg bg-muted/50 p-4 text-sm text-muted-foreground space-y-1">
+            <p>Klik op de link in de email om in te loggen.</p>
+            <p>Geen email ontvangen? Check ook je spam.</p>
+          </div>
+
+          {error && (
+            <p className="text-sm text-destructive text-center">{error}</p>
+          )}
+
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full rounded-full"
+            disabled={resendCooldown > 0 || isSending}
+            onClick={sendMagicLink}
+          >
+            {isSending
+              ? <LoadingSpinner />
+              : resendCooldown > 0
+                ? `Opnieuw sturen (${resendCooldown}s)`
+                : 'Stuur opnieuw'
+            }
+          </Button>
+
+          <button
+            type="button"
+            className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => { setStep('email'); setError(null); }}
+          >
+            Ander e-mailadres gebruiken
+          </button>
+        </CardContent>
+      </Card>
+    );
   }
 
-  // ─── Render ────────────────────────────────────────────────────────────────
-
+  // ── Step: email ───────────────────────────────────────────────────────────
   return (
     <Card className="w-full max-w-md bg-card/50 shadow-2xl">
       <CardHeader className="text-center">
         <CardTitle className="text-3xl">Jouw DatingAssistent</CardTitle>
         <CardDescription>Vind liefde met een coach die altijd voor je klaarstaat.</CardDescription>
+
         {orderId && (
           <div className="mt-4 p-3 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-md text-sm">
             Betaling succesvol! Log in om toegang te krijgen tot je abonnement.
@@ -330,82 +193,56 @@ export function LoginForm() {
         )}
         {magicLinkError === 'expired_token' && (
           <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 rounded-md text-sm">
-            Je inloglink is verlopen. Voer je e-mailadres in om een nieuwe inlogcode te ontvangen.
+            Je inloglink is verlopen. Vraag hieronder een nieuwe aan.
           </div>
         )}
         {(magicLinkError === 'invalid_token' || magicLinkError === 'missing_token') && (
           <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-md text-sm">
-            Deze inloglink is ongeldig. Vraag een nieuwe inlogcode aan.
+            Deze inloglink is ongeldig. Vraag een nieuwe aan.
           </div>
         )}
       </CardHeader>
 
-      <div>
-        <CardContent className="space-y-4">
-          {otpStep === 'email' && (
-            <Form {...otpForm}>
-              <form onSubmit={otpForm.handleSubmit(onSendOtpCode)} className="space-y-4">
-                <FormField
-                  control={otpForm.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>E-mailadres</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="jouw@email.com"
-                          inputMode="email"
-                          autoComplete="email"
-                          autoCapitalize="none"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
-                  disabled={isSendingCode}
-                >
-                  {isSendingCode ? <LoadingSpinner /> : 'Stuur inlogcode'}
-                </Button>
-              </form>
-            </Form>
-          )}
+      <CardContent className="space-y-4">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium mb-1.5">
+            E-mailadres
+          </label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="jouw@email.com"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            onKeyDown={handleKeyDown}
+            autoComplete="email"
+            autoCapitalize="none"
+            inputMode="email"
+          />
+        </div>
 
-          {otpStep === 'code' && otpUserId !== null && (
-            <div className="space-y-4">
-              <p className="text-sm text-muted-foreground text-center">
-                We hebben een 6-cijferige code gestuurd naar{' '}
-                <span className="font-medium text-foreground">{otpEmail}</span>.
-                Voer de code hieronder in.
-              </p>
-              <OtpCodeInput userId={otpUserId} onSuccess={handleOtpSuccess} />
-              <div className="text-center">
-                <button
-                  type="button"
-                  className="text-sm text-muted-foreground hover:text-foreground underline"
-                  onClick={() => { setOtpStep('email'); setOtpUserId(null); }}
-                >
-                  Ander e-mailadres gebruiken
-                </button>
-              </div>
-            </div>
-          )}
-        </CardContent>
+        {error && (
+          <p className="text-sm text-destructive">{error}</p>
+        )}
 
-        <CardFooter className="flex-col gap-2">
-          <p className="text-sm text-muted-foreground">
-            Nog geen account?{" "}
-            <Link href={registerUrl} className="font-semibold text-primary underline-offset-4 hover:underline">
-              Registreer hier
-            </Link>
-          </p>
-        </CardFooter>
-      </div>
+        <Button
+          size="lg"
+          className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
+          disabled={isSending}
+          onClick={sendMagicLink}
+        >
+          {isSending ? <LoadingSpinner /> : 'Stuur inloglink'}
+        </Button>
+      </CardContent>
+
+      <CardFooter>
+        <p className="text-sm text-muted-foreground">
+          Nog geen account?{" "}
+          <Link href={registerUrl} className="font-semibold text-primary underline-offset-4 hover:underline">
+            Registreer hier
+          </Link>
+        </p>
+      </CardFooter>
     </Card>
   );
 }

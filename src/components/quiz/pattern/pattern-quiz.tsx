@@ -17,6 +17,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useUser } from '@/providers/user-provider';
 import { AnimatePresence, motion } from 'framer-motion';
 import type {
   QuizState,
@@ -102,6 +103,7 @@ interface PatternQuizProps {
 
 export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
   const searchParams = useSearchParams();
+  const { user } = useUser();
 
   const [quizState, setQuizState] = useState<QuizState>(
     skipLanding ? 'question' : 'landing'
@@ -168,6 +170,20 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     }
     setHasRestoredProgress(true);
   }, [hasRestoredProgress]);
+
+  // If a returning magic-link user lands back on the quiz already authenticated,
+  // auto-advance past the email gate so they don't have to interact again.
+  useEffect(() => {
+    if (!user || !hasRestoredProgress) return;
+    if (quizState !== 'email-gate') return;
+
+    const answeredCount = Object.keys(answers).length;
+    if (answeredCount < TOTAL_QUESTIONS) return;
+
+    // User is authenticated — pull their info and submit immediately
+    const storedName = (typeof window !== 'undefined' && localStorage.getItem('quiz_user_name')) || user.name || '';
+    handleAccountSubmit(user.email, storedName, true, user.id);
+  }, [user, hasRestoredProgress, quizState]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Save progress when answers or question index changes
   useEffect(() => {
