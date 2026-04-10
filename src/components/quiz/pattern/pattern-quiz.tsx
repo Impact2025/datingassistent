@@ -23,7 +23,7 @@ import type {
   PatternQuizAnswers,
   AttachmentPattern,
 } from '@/lib/quiz/pattern/pattern-types';
-import { PATTERN_QUESTIONS } from '@/lib/quiz/pattern/pattern-questions';
+import { PATTERN_QUESTIONS, TOTAL_QUESTIONS } from '@/lib/quiz/pattern/pattern-questions';
 import { calculatePatternScore } from '@/lib/quiz/pattern/pattern-scoring';
 import { PatternLandingHero } from './pattern-landing-hero';
 import { PatternQuestionComponent } from './pattern-question';
@@ -250,6 +250,18 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     setAcceptsMarketing(submittedAcceptsMarketing);
     setUserId(submittedUserId);
     setSubmitError(null);
+
+    // Guard: check all questions are answered before proceeding.
+    // This can happen if localStorage restored an incomplete 'email-gate' state.
+    const answeredCount = Object.keys(answers).length;
+    if (answeredCount < TOTAL_QUESTIONS) {
+      const firstMissingIndex = PATTERN_QUESTIONS.findIndex(
+        q => !answers[q.id.toString()]
+      );
+      setCurrentQuestionIndex(firstMissingIndex >= 0 ? firstMissingIndex : 0);
+      setQuizState('question');
+      return;
+    }
 
     // Reset coordination flags for this run
     apiResultReadyRef.current = false;
