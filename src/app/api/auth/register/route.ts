@@ -5,7 +5,7 @@ import { sql } from '@vercel/postgres';
 import { sendWelcomeEmail } from '@/lib/email-service';
 import { scheduleWelcomeEmail, scheduleProfileOptimizationReminder, scheduleWeeklyCheckin } from '@/lib/email-engagement';
 import { getClientIdentifier, rateLimitAuthEndpoint, createRateLimitHeaders } from '@/lib/rate-limit';
-import { generateVerificationCode, storeVerificationCode, sendVerificationCodeEmail } from '@/lib/email-verification';
+import { generateVerificationCode, storeVerificationCode, sendVerificationCodeEmail, generateVerificationToken, storeVerificationToken } from '@/lib/email-verification';
 import { startProgressiveTrial } from '@/lib/trial-management';
 import { notifyAdminNewLead } from '@/lib/admin-notifications';
 import { getJWTSecret } from '@/lib/jwt-secret';
@@ -92,15 +92,20 @@ export async function POST(request: NextRequest) {
     const user = result.rows[0];
 
     if (needsPasswordSetup) {
-      // Send account-setup email (non-blocking) — user can set their password
-      // after reading their quiz result. Uses a welcoming subject + copy,
-      // not the "Wachtwoord Reset" template which implies a prior password existed.
-      const setupUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/reset-password?userId=${user.id}`;
-      import('@/lib/email-service')
-        .then(({ sendAccountSetupEmail }) =>
-          sendAccountSetupEmail(user.email, user.name, setupUrl)
-        )
-        .catch(e => console.warn('Account setup email failed (non-critical):', e));
+      // Send account-setup email with magic login link (non-blocking).
+      // Quiz users are already email_verified=true so we reuse the
+      // verification_token column (unused for them) as a one-time magic-login token.
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+      const setupUrl = `${baseUrl}/reset-password?userId=${user.id}`;
+      const magicToken = generateVerificationToken();
+      storeVerificationToken(user.id, magicToken).then(() => {
+        const magicLoginUrl = `${baseUrl}/api/auth/magic-login?token=${magicToken}`;
+        import('@/lib/email-service')
+          .then(({ sendAccountSetupEmail }) =>
+            sendAccountSetupEmail(user.email, user.name, setupUrl, magicLoginUrl)
+          )
+          .catch(e => console.warn('Account setup email failed (non-critical):', e));
+      }).catch(e => console.warn('Magic token storage failed (non-critical):', e));
     } else {
       // Standard flow: send verification code
       const verificationCode = generateVerificationCode();

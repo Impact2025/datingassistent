@@ -190,6 +190,7 @@ export function LoginForm() {
   const orderId = searchParams.get('order_id');
   const returnUrl = searchParams.get('returnUrl');
   const prefillEmail = searchParams.get('email');
+  const magicLinkError = searchParams.get('error');
   const registerUrl = plan && billing ? `/register?plan=${plan}&billing=${billing}` : '/register';
 
   // Pre-fill email from URL param (e.g. when redirected from registration with existing email)
@@ -442,6 +443,16 @@ export function LoginForm() {
         {prefillEmail && !orderId && (
           <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-md text-sm">
             Je hebt al een account. Log in om verder te gaan.
+          </div>
+        )}
+        {magicLinkError === 'expired_token' && (
+          <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 rounded-md text-sm">
+            Je inloglink is verlopen. Voer je e-mailadres in om een nieuwe inlogcode te ontvangen.
+          </div>
+        )}
+        {(magicLinkError === 'invalid_token' || magicLinkError === 'missing_token') && (
+          <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-md text-sm">
+            Deze inloglink is ongeldig. Vraag een nieuwe inlogcode aan.
           </div>
         )}
 

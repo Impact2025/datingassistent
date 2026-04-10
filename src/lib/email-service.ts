@@ -262,20 +262,26 @@ Het DatingAssistent Team
 export async function sendAccountSetupEmail(
   userEmail: string,
   userName: string,
-  setupUrl: string
+  setupUrl: string,
+  magicLoginUrl?: string
 ): Promise<boolean> {
   const firstName = userName.split(' ')[0] || userName;
 
-  const html = `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="font-family: sans-serif; color: #111; max-width: 520px; margin: 0 auto; padding: 32px 16px;">
-  <h2 style="font-size: 22px; margin-bottom: 8px;">Hoi ${firstName}!</h2>
-  <p style="color: #555; line-height: 1.6;">
-    Je DatingAssistent account is aangemaakt. Stel een wachtwoord in zodat je later
-    altijd terug kunt naar je analyse en je voortgang kunt bijhouden.
+  const magicLoginButton = magicLoginUrl ? `
+  <p style="margin: 24px 0 12px;">
+    <a href="${magicLoginUrl}"
+       style="background:#E8637A;color:#fff;text-decoration:none;padding:14px 28px;border-radius:999px;font-weight:600;display:inline-block;">
+      Direct inloggen →
+    </a>
   </p>
+  <p style="color:#999;font-size:13px;margin-top:4px;">
+    Eén klik — je wordt direct ingelogd. Geldig voor 24 uur.
+  </p>
+  <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
+  <p style="color:#aaa;font-size:13px;">
+    Wil je ook een wachtwoord instellen voor later?
+    <a href="${setupUrl}" style="color:#E8637A;text-decoration:none;">Klik hier</a>.
+  </p>` : `
   <p style="margin: 28px 0;">
     <a href="${setupUrl}"
        style="background:#E8637A;color:#fff;text-decoration:none;padding:14px 28px;border-radius:999px;font-weight:600;display:inline-block;">
@@ -284,14 +290,37 @@ export async function sendAccountSetupEmail(
   </p>
   <p style="color:#999;font-size:13px;">
     Deze link is 24 uur geldig. Je hoeft dit nu niet te doen — je analyse is al zichtbaar.
+  </p>`;
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: sans-serif; color: #111; max-width: 520px; margin: 0 auto; padding: 32px 16px;">
+  <h2 style="font-size: 22px; margin-bottom: 8px;">Hoi ${firstName}!</h2>
+  <p style="color: #555; line-height: 1.6;">
+    Je DatingAssistent account is aangemaakt. Je analyse staat klaar.
   </p>
+  ${magicLoginButton}
   <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
   <p style="color:#bbb;font-size:12px;">DatingAssistent · Je hebt dit account zojuist aangemaakt via de quiz.</p>
 </body>
 </html>
   `.trim();
 
-  const text = `
+  const text = magicLoginUrl ? `
+Hoi ${firstName}!
+
+Je DatingAssistent account is aangemaakt. Je analyse staat klaar.
+
+Log direct in via deze link (geldig 24 uur):
+${magicLoginUrl}
+
+Wil je ook een wachtwoord instellen?
+${setupUrl}
+
+DatingAssistent
+  `.trim() : `
 Hoi ${firstName}!
 
 Je DatingAssistent account is aangemaakt. Stel een wachtwoord in zodat je later
