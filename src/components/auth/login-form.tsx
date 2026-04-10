@@ -164,8 +164,8 @@ export function LoginForm() {
   const hasRedirectedRef = useRef(false);
   const { isMobile } = useDeviceDetection();
 
-  // OTP mode state
-  const [otpMode, setOtpMode] = useState(false);
+  // OTP mode state — default to Inlogcode (magic link) tab
+  const [otpMode, setOtpMode] = useState(true);
   const [otpStep, setOtpStep] = useState<'email' | 'code'>('email');
   const [otpUserId, setOtpUserId] = useState<number | null>(null);
   const [otpEmail, setOtpEmail] = useState('');
@@ -418,7 +418,11 @@ export function LoginForm() {
 
   function handleOtpSuccess() {
     // UserProvider will pick up the token from localStorage on next render /
-    // route change — trigger a full page navigation to dashboard.
+    // route change — trigger a full page navigation.
+    if (returnUrl) {
+      window.location.href = returnUrl;
+      return;
+    }
     const dashboardUrl = isMobile ? '/mobile-dashboard' : '/dashboard';
     window.location.href = dashboardUrl;
   }

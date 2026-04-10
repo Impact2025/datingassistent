@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Sparkles, Lock, AlertCircle } from 'lucide-react';
+import { useUser } from '@/providers/user-provider';
 
 // Early bird configuration
 const EARLY_BIRD_DEADLINE = '1 maart 2026';
@@ -13,9 +14,15 @@ const isEarlyBirdActive = () => new Date() <= EARLY_BIRD_END_DATE;
 
 export function ProgramCards() {
   const router = useRouter();
+  const { user } = useUser();
 
   const handleSelectProgram = (slug: string) => {
-    router.push(`/register?program=${slug}`);
+    if (user) {
+      router.push(`/checkout/${slug}`);
+    } else {
+      const returnUrl = encodeURIComponent(`/checkout/${slug}`);
+      router.push(`/login?returnUrl=${returnUrl}`);
+    }
   };
 
   return (

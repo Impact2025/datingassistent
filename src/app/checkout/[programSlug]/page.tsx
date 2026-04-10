@@ -54,8 +54,9 @@ function CheckoutPageContent() {
   // Check authentication
   useEffect(() => {
     if (!userLoading && !user) {
-      // Redirect to register with program slug
-      router.push(`/register?program=${programSlug}`);
+      // Send unauthenticated users to login so existing accounts don't hit the register wall
+      const returnUrl = encodeURIComponent(`/checkout/${programSlug}`);
+      router.push(`/login?returnUrl=${returnUrl}`);
     }
   }, [user, userLoading, programSlug, router]);
 
