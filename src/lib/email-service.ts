@@ -249,6 +249,71 @@ Het DatingAssistent Team
 }
 
 /**
+ * Send account activation email for quiz-flow new users.
+ *
+ * These users registered without choosing a password — the system generated
+ * a temporary one. This email lets them set their own password at their
+ * convenience, AFTER they've already seen their quiz result.
+ *
+ * Intentionally different from sendPasswordResetEmail:
+ * - Subject: "Activeer je account" (not "Reset")
+ * - Copy: welcoming, no "reset request" language
+ */
+export async function sendAccountSetupEmail(
+  userEmail: string,
+  userName: string,
+  setupUrl: string
+): Promise<boolean> {
+  const firstName = userName.split(' ')[0] || userName;
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: sans-serif; color: #111; max-width: 520px; margin: 0 auto; padding: 32px 16px;">
+  <h2 style="font-size: 22px; margin-bottom: 8px;">Hoi ${firstName}!</h2>
+  <p style="color: #555; line-height: 1.6;">
+    Je DatingAssistent account is aangemaakt. Stel een wachtwoord in zodat je later
+    altijd terug kunt naar je analyse en je voortgang kunt bijhouden.
+  </p>
+  <p style="margin: 28px 0;">
+    <a href="${setupUrl}"
+       style="background:#E8637A;color:#fff;text-decoration:none;padding:14px 28px;border-radius:999px;font-weight:600;display:inline-block;">
+      Stel mijn wachtwoord in
+    </a>
+  </p>
+  <p style="color:#999;font-size:13px;">
+    Deze link is 24 uur geldig. Je hoeft dit nu niet te doen — je analyse is al zichtbaar.
+  </p>
+  <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
+  <p style="color:#bbb;font-size:12px;">DatingAssistent · Je hebt dit account zojuist aangemaakt via de quiz.</p>
+</body>
+</html>
+  `.trim();
+
+  const text = `
+Hoi ${firstName}!
+
+Je DatingAssistent account is aangemaakt. Stel een wachtwoord in zodat je later
+altijd terug kunt naar je analyse:
+
+${setupUrl}
+
+Deze link is 24 uur geldig. Je hoeft dit nu niet te doen — je analyse is al zichtbaar.
+
+DatingAssistent
+  `.trim();
+
+  return sendEmail({
+    to: userEmail,
+    from: SUPPORT_EMAIL,
+    subject: 'Activeer je DatingAssistent account',
+    html,
+    text,
+  });
+}
+
+/**
  * Send payment confirmation email using React Email template
  */
 export async function sendPaymentConfirmationEmail(

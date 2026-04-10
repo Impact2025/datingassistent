@@ -92,14 +92,15 @@ export async function POST(request: NextRequest) {
     const user = result.rows[0];
 
     if (needsPasswordSetup) {
-      // Send password-setup email (non-blocking) — user can ignore until after checkout
-      try {
-        const { sendPasswordResetEmail } = await import('@/lib/email-service');
-        const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/reset-password?userId=${user.id}`;
-        await sendPasswordResetEmail(user.email, user.name, resetUrl);
-      } catch (e) {
-        console.warn('Password setup email failed (non-critical):', e);
-      }
+      // Send account-setup email (non-blocking) — user can set their password
+      // after reading their quiz result. Uses a welcoming subject + copy,
+      // not the "Wachtwoord Reset" template which implies a prior password existed.
+      const setupUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/reset-password?userId=${user.id}`;
+      import('@/lib/email-service')
+        .then(({ sendAccountSetupEmail }) =>
+          sendAccountSetupEmail(user.email, user.name, setupUrl)
+        )
+        .catch(e => console.warn('Account setup email failed (non-critical):', e));
     } else {
       // Standard flow: send verification code
       const verificationCode = generateVerificationCode();
