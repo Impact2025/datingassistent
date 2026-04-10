@@ -416,7 +416,20 @@ export function RegistrationClientComponent() {
 
       // Set error message for display in form
       if (error.message.includes('Dit emailadres is al bij ons bekend') || error.message.includes('Als je al een account hebt')) {
-        setRegistrationError("existing_email");
+        // Build return URL so user lands at checkout after login
+        let returnUrl = '/dashboard';
+        if (isProgramPurchase && programSlug) {
+          returnUrl = `/checkout/${programSlug}`;
+        } else if (redirectAfterPayment === 'true' && planKey) {
+          returnUrl = `/checkout?plan=${planKey}&billing=${billingParam}`;
+        } else if (orderId) {
+          returnUrl = `/register?order_id=${orderId}`;
+        }
+        const emailEncoded = encodeURIComponent(data.email);
+        const returnEncoded = encodeURIComponent(returnUrl);
+        setIsRedirecting(true);
+        window.location.href = `/login?email=${emailEncoded}&returnUrl=${returnEncoded}`;
+        return;
       } else if (error.message.includes('Wachtwoord') || error.message.includes('Password')) {
         // Show the specific password error from the server
         setRegistrationError(error.message);

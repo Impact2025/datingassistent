@@ -189,7 +189,16 @@ export function LoginForm() {
   const billing = searchParams.get('billing');
   const orderId = searchParams.get('order_id');
   const returnUrl = searchParams.get('returnUrl');
+  const prefillEmail = searchParams.get('email');
   const registerUrl = plan && billing ? `/register?plan=${plan}&billing=${billing}` : '/register';
+
+  // Pre-fill email from URL param (e.g. when redirected from registration with existing email)
+  useEffect(() => {
+    if (prefillEmail) {
+      form.setValue('email', prefillEmail);
+      otpForm.setValue('email', prefillEmail);
+    }
+  }, [prefillEmail]);
 
   // Handle order_id after payment - this will be handled by an API route
   useEffect(() => {
@@ -424,6 +433,11 @@ export function LoginForm() {
         {orderId && (
           <div className="mt-4 p-3 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-md text-sm">
             Betaling succesvol! Log in om toegang te krijgen tot je abonnement.
+          </div>
+        )}
+        {prefillEmail && !orderId && (
+          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-md text-sm">
+            Je hebt al een account. Log in om verder te gaan.
           </div>
         )}
 
