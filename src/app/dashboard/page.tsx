@@ -299,7 +299,7 @@ function DashboardPageContent() {
       'tools': 'Tools',
       'profiel': 'Profiel',
       'settings': 'Instellingen',
-      'subscription': 'Abonnement',
+      'subscription': "Programma's",
     };
     const tabName = tabNames[newTab] || newTab;
     announce(`${tabName} tabblad geladen`, 'polite');
@@ -945,7 +945,7 @@ function DashboardPageContent() {
                       {activeTab === 'coach' && 'Coach'}
                       {activeTab === 'profiel' && 'Tools'}
                       {activeTab === 'tools' && 'Tools'}
-                      {activeTab === 'subscription' && 'Abonnement'}
+                      {activeTab === 'subscription' && "Programma's"}
                       {activeTab === 'data-management' && 'Data & Privacy'}
                       {activeTab === 'settings' && 'Instellingen'}
                       {!['home', 'pad', 'coach', 'profiel', 'tools', 'subscription', 'data-management', 'settings'].includes(activeTab) && 'Dashboard'}
