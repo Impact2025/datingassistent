@@ -19,7 +19,11 @@ interface VerificationResult {
   details?: {
     packageType?: string;
     programName?: string;
+    programSlug?: string;
     amount?: number;
+    paidAt?: string;
+    enrolled?: boolean;
+    nextAction?: string;
   };
 }
 
@@ -32,6 +36,7 @@ function PaymentSuccessContent() {
   const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
   const [pollCount, setPollCount] = useState(0);
   const [retryCount, setRetryCount] = useState(0);
+  const [countdown, setCountdown] = useState(3);
 
   const MAX_POLLS = 30; // 30 polls * 2 seconds = 60 seconds max wait
   const POLL_INTERVAL = 1500; // 1.5 seconds (faster polling for better UX)
@@ -107,14 +112,20 @@ function PaymentSuccessContent() {
     }
   }, [pollCount, paymentStatus]);
 
-  const handleContinue = () => {
-    // If we have a program enrollment, go directly to the program
-    if (verificationResult?.details?.nextAction) {
-      router.push(verificationResult.details.nextAction);
-    } else {
-      // Fallback to dashboard (old onboarding is disabled)
-      router.push('/dashboard');
+  // Auto-redirect countdown after successful verification
+  useEffect(() => {
+    if (paymentStatus !== 'success') return;
+    if (countdown <= 0) {
+      handleContinue();
+      return;
     }
+    const t = setTimeout(() => setCountdown(c => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [paymentStatus, countdown]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleContinue = () => {
+    const destination = verificationResult?.details?.nextAction || '/dashboard';
+    router.push(destination);
   };
 
   const handleRetry = () => {
@@ -368,6 +379,9 @@ function PaymentSuccessContent() {
                 }
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
+              <p className="text-center text-xs text-gray-400 mt-2">
+                Automatisch doorgestuurd over {countdown} seconde{countdown !== 1 ? 'n' : ''}...
+              </p>
             </motion.div>
 
             {/* Support */}

@@ -82,7 +82,7 @@ export function PatternResultWithOTO({
 
   const handleOTOAccept = () => {
     trackOTOEvent('oto_accepted', 'transformatie');
-    router.push(`/checkout/transformatie?userId=${userId}&discount=true&source=quiz`);
+    router.push('/checkout/transformatie?source=quiz');
   };
 
   const handleOTODecline = () => {
@@ -93,7 +93,7 @@ export function PatternResultWithOTO({
 
   const handleDownsellAccept = () => {
     trackOTOEvent('downsell_accepted', 'kickstart');
-    router.push(`/checkout/kickstart?userId=${userId}&discount=true&source=quiz`);
+    router.push('/checkout/kickstart?source=quiz');
   };
 
   const handleDownsellDecline = () => {

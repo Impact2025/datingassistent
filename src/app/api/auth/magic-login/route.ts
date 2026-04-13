@@ -46,11 +46,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/login?error=expired_token', request.url));
     }
 
-    // Clear token so it can't be reused
+    // Clear token so it can't be reused, and mark email as verified.
+    // This covers quiz users who registered but hadn't verified yet.
     await sql`
       UPDATE users
-      SET verification_token = NULL,
-          verification_expires_at = NULL
+      SET verification_token      = NULL,
+          verification_expires_at = NULL,
+          email_verified          = true
       WHERE id = ${user.id}
     `;
 

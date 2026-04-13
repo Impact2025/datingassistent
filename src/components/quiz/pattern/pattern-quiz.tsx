@@ -8,7 +8,7 @@
  *
  * Features:
  * - localStorage progress saving
- * - Account creation during flow (OTP-free for new users)
+ * - Magic link verification gate (no analysis without real inbox access)
  * - Quiz submit runs in parallel with the analyzing animation (no stacked delays)
  * - Inline error handling (no browser alerts)
  * - OTO modal sequence (Transformatie → Kickstart downsell)
@@ -171,8 +171,8 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     setHasRestoredProgress(true);
   }, [hasRestoredProgress]);
 
-  // If a returning magic-link user lands back on the quiz already authenticated,
-  // auto-advance past the email gate so they don't have to interact again.
+  // When a user returns via magic link they are now authenticated.
+  // Auto-advance past the email gate using the data they entered before leaving.
   useEffect(() => {
     if (!user || !hasRestoredProgress) return;
     if (quizState !== 'email-gate') return;
@@ -180,9 +180,12 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     const answeredCount = Object.keys(answers).length;
     if (answeredCount < TOTAL_QUESTIONS) return;
 
-    // User is authenticated — pull their info and submit immediately
-    const storedName = (typeof window !== 'undefined' && localStorage.getItem('quiz_user_name')) || user.name || '';
-    handleAccountSubmit(user.email, storedName, true, user.id);
+    // Restore form data that was saved to localStorage before the magic link redirect
+    const storedName    = (typeof window !== 'undefined' && localStorage.getItem('quiz_user_name'))    || user.name  || '';
+    const storedEmail   = (typeof window !== 'undefined' && localStorage.getItem('quiz_user_email'))   || user.email || '';
+    const storedMktg    = (typeof window !== 'undefined' && localStorage.getItem('quiz_user_marketing')) === '1';
+
+    handleAccountSubmit(storedEmail, storedName, storedMktg, user.id);
   }, [user, hasRestoredProgress, quizState]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Save progress when answers or question index changes

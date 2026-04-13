@@ -3,12 +3,16 @@
 /**
  * Pattern Quiz Account Gate
  *
- * Shown AFTER the preview. Collects only name + email — no password.
+ * Shown AFTER the preview. Collects name + email.
  *
- * NEW USER:      register → JWT returned → onSubmit called → quiz continues.
- * EXISTING USER: send magic link → show "check inbox" screen.
- *                User clicks link → authenticated → redirected back to quiz
- *                → quiz auto-resumes (handled by PatternQuiz orchestrator).
+ * ALL USERS (new or existing) go through the magic link flow:
+ *   1. User enters name + email → POST /api/quiz/pattern/request-access
+ *   2. Server creates account (if new) and sends a magic link to the inbox.
+ *   3. Show "check inbox" screen — analysis is NOT shown yet.
+ *   4. User clicks the link in their email → authenticated → redirected back.
+ *   5. PatternQuiz detects authenticated user and auto-advances to result.
+ *
+ * This ensures only people with real inbox access can see the analysis.
  */
 
 import { useState, useEffect } from 'react';
@@ -23,22 +27,6 @@ interface PatternAccountGateProps {
   onClearError?: () => void;
   initialEmail?: string;
   initialFirstName?: string;
-}
-
-function generateTempPassword(): string {
-  const upper   = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-  const lower   = 'abcdefghjkmnpqrstuvwxyz';
-  const nums    = '23456789';
-  const special = '!@#$%&*';
-  const all     = upper + lower + nums + special;
-  const required = [
-    upper[Math.floor(Math.random() * upper.length)],
-    lower[Math.floor(Math.random() * lower.length)],
-    nums[Math.floor(Math.random() * nums.length)],
-    special[Math.floor(Math.random() * special.length)],
-  ];
-  const extra = Array.from({ length: 8 }, () => all[Math.floor(Math.random() * all.length)]);
-  return [...required, ...extra].sort(() => Math.random() - 0.5).join('');
 }
 
 export function PatternAccountGate({
@@ -56,7 +44,7 @@ export function PatternAccountGate({
   const [error, setError] = useState<string | null>(null);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
-  // Magic link sent state — only for existing users
+  // Magic link sent state — shown for ALL users after form submit
   const [magicLinkSent, setMagicLinkSent] = useState(false);
   const [isSendingLink, setIsSendingLink] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
@@ -72,23 +60,24 @@ export function PatternAccountGate({
   const isValidName = firstName.trim().length >= 2;
   const canSubmit = isValidEmail && isValidName && !isSubmitting && !isCreatingAccount;
 
+  // Resend: call the same endpoint — user is already registered by now
   const sendMagicLink = async () => {
     if (isSendingLink) return;
     setIsSendingLink(true);
     setError(null);
     try {
-      await fetch('/api/auth/send-magic-link', {
+      await fetch('/api/quiz/pattern/request-access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: email.trim(),
-          next: '/quiz/dating-patroon',
+          firstName: firstName.trim(),
+          marketingConsent: acceptsMarketing,
         }),
       });
-      setMagicLinkSent(true);
       setResendCooldown(60);
     } catch {
-      setError('Kon de inloglink niet versturen. Probeer het opnieuw.');
+      setError('Kon de link niet opnieuw versturen. Probeer het opnieuw.');
     } finally {
       setIsSendingLink(false);
     }
@@ -102,37 +91,31 @@ export function PatternAccountGate({
     setError(null);
 
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch('/api/quiz/pattern/request-access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: firstName.trim(),
           email: email.trim(),
-          password: generateTempPassword(),
-          needsPasswordSetup: true,
+          firstName: firstName.trim(),
+          marketingConsent: acceptsMarketing,
         }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        if (data.errorCode === 'USER_ALREADY_EXISTS') {
-          // Existing user → send magic link instead of OTP
-          await sendMagicLink();
-          return;
-        }
-        throw new Error(data.error || 'Registratie mislukt');
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Er is een fout opgetreden');
       }
 
-      // New user — token returned immediately, continue quiz
-      if (data.token) {
-        localStorage.setItem('datespark_auth_token', data.token);
-      }
+      // Persist form data so PatternQuiz can restore it after the magic link redirect
       if (typeof window !== 'undefined') {
-        localStorage.setItem('quiz_user_id', data.user.id.toString());
+        localStorage.setItem('quiz_user_email', email.trim());
         localStorage.setItem('quiz_user_name', firstName.trim());
+        localStorage.setItem('quiz_user_marketing', acceptsMarketing ? '1' : '0');
       }
-      onSubmit(email.trim(), firstName.trim(), acceptsMarketing, data.user.id);
+
+      // Show "check inbox" screen — analysis only accessible after link click
+      setMagicLinkSent(true);
+      setResendCooldown(60);
 
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Er is een fout opgetreden');
@@ -160,12 +143,12 @@ export function PatternAccountGate({
                 Check je inbox
               </h1>
               <p className="text-gray-500 text-base leading-relaxed mb-2">
-                We stuurden een inloglink naar
+                We stuurden je analyse naar
               </p>
               <p className="font-semibold text-gray-900 mb-6">{email}</p>
 
               <div className="bg-gray-50 rounded-xl p-4 text-sm text-gray-500 text-left space-y-2 mb-8">
-                <p>Klik op de link in de email om in te loggen.</p>
+                <p>Klik op de link in de email om je volledige analyse te bekijken.</p>
                 <p>Je komt daarna automatisch terug op de quiz.</p>
                 <p>Geen email? Check ook je spam.</p>
               </div>
