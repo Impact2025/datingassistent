@@ -155,7 +155,7 @@ export const KICKSTART_DOWNSELL: OTOConfig = {
     'Kickstart Werkboek & Templates',
   ],
   ctaPrimary: 'Start met Kickstart €47',
-  ctaSecondary: 'Nee bedankt, naar dashboard',
+  ctaSecondary: 'Nee bedankt',
   redirectUrl: '/checkout/kickstart-programma',
 };
 

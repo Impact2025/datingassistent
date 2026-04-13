@@ -232,10 +232,9 @@ function CheckoutPageContent() {
   const hasBetaDiscount = program.price_beta && program.price_beta < program.price_regular;
   const betaDiscount = hasBetaDiscount ? program.price_regular - (program.price_beta || 0) : 0;
 
-  // Helper function to format price from cents to euros
-  const formatPrice = (cents: number) => {
-    const euros = cents / 100;
-    return euros % 1 === 0 ? euros.toFixed(0) : euros.toFixed(2);
+  // Helper function to format price (prices stored as euros in DB)
+  const formatPrice = (amount: number) => {
+    return amount % 1 === 0 ? amount.toFixed(0) : amount.toFixed(2);
   };
 
   return (
