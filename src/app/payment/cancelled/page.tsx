@@ -1,13 +1,24 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
+import { Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
 
-export default function PaymentCancelledPage() {
+function PaymentCancelledContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const programSlug = searchParams.get('program');
+
+  const handleRetry = () => {
+    if (programSlug) {
+      router.push(`/checkout/${programSlug}`);
+    } else {
+      router.push('/select-package');
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -28,7 +39,7 @@ export default function PaymentCancelledPage() {
             </p>
             <div className="space-y-2 pt-4">
               <Button
-                onClick={() => router.push('/select-package')}
+                onClick={handleRetry}
                 className="w-full"
               >
                 Probeer Opnieuw
@@ -46,5 +57,25 @@ export default function PaymentCancelledPage() {
       </main>
       <PublicFooter />
     </div>
+  );
+}
+
+export default function PaymentCancelledPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex flex-col">
+        <PublicHeader />
+        <main className="flex-grow flex items-center justify-center p-4">
+          <Card className="w-full max-w-md">
+            <CardContent className="p-8 text-center">
+              <p className="text-muted-foreground">Laden...</p>
+            </CardContent>
+          </Card>
+        </main>
+        <PublicFooter />
+      </div>
+    }>
+      <PaymentCancelledContent />
+    </Suspense>
   );
 }

@@ -247,7 +247,7 @@ export async function POST(request: NextRequest) {
       ],
       customer_email: dbUser.email,
       success_url: `${BASE_URL}/payment/success?order_id=${orderId}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${BASE_URL}/payment/cancelled?order_id=${orderId}`,
+      cancel_url: `${BASE_URL}/payment/cancelled?order_id=${orderId}&program=${programSlug}`,
       metadata: {
         payment_type: 'program',
         order_id: orderId,

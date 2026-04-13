@@ -170,7 +170,7 @@ function CheckoutPageContent() {
         body: JSON.stringify({
           programId: program.id,
           programSlug: program.slug,
-          amount: finalPrice,
+          amount: finalPrice * 100, // convert euros → cents for payment API
           couponCode: couponData?.valid ? couponData.code : null,
           utmSource,
           utmMedium,
