@@ -786,6 +786,7 @@ function DashboardPageContent() {
       secure: 'Veilig Gehecht',
       anxious: 'Angstig Gehecht',
       avoidant: 'Vermijdend Gehecht',
+      fearful_avoidant: 'Angstig-Vermijdend Gehecht',
       disorganized: 'Gedesorganiseerd Gehecht',
     };
     const patternLabel = quizLeadResult

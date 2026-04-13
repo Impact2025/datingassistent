@@ -321,7 +321,7 @@ async function migrate() {
           'De Transformatie 3.0',
           'Van Single naar Duurzame Relatie in 90 Dagen',
           'De enige datingcursus die je leert hoe je een relatie krijgt én houdt',
-          29700, 14700, 365,
+          297, 147, 365,
           'transformation',
           'Singles 25-45 jaar die klaar zijn met aanmodderen',
           '12 modules, 48 video lessen, 4 exclusieve AI tools',
@@ -340,8 +340,8 @@ async function migrate() {
           name = 'De Transformatie 3.0',
           tagline = 'Van Single naar Duurzame Relatie in 90 Dagen',
           transformation_promise = 'De enige datingcursus die je leert hoe je een relatie krijgt én houdt',
-          price_regular = 29700,
-          price_beta = 14700,
+          price_regular = 297,
+          price_beta = 147,
           duration_days = 365,
           tangible_proof = '12 modules, 48 video lessen, 4 exclusieve AI tools'
         WHERE id = ${programId}

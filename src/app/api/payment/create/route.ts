@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
     }
     const program = programResult.rows[0];
     const orderId = `ORDER-${timestamp}-${userId}-${programId}`;
-    // amount arrives in cents from the program checkout (price_beta/price_regular are stored in cents)
+    // amount arrives in cents from the program checkout (checkout multiplies euro price × 100)
     const amountCents = Math.round(amount);
     const amountEuros = amountCents / 100;
 
