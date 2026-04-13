@@ -24,20 +24,35 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Get token from Authorization header
+    // Get token from Authorization header, or fall back to the httpOnly cookie.
+    // The httpOnly cookie is set by /api/auth/magic-login and cannot be read by
+    // JavaScript (document.cookie), but the browser sends it automatically on
+    // same-origin requests — so we can read it here server-side.
     const authHeader = request.headers.get('authorization');
     logger.log('🔍 Auth header present:', !!authHeader);
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      logger.log('❌ No token provided');
+    let token: string | null = null;
+    let tokenSource: 'header' | 'cookie' = 'header';
+
+    if (authHeader?.startsWith('Bearer ')) {
+      token = authHeader.substring(7);
+      logger.log('🔍 Token extracted from Authorization header, length:', token.length);
+    } else {
+      // Fallback: read from the httpOnly cookie (magic-link flow)
+      token = request.cookies.get('datespark_auth_token')?.value ?? null;
+      if (token) {
+        tokenSource = 'cookie';
+        logger.log('🔍 Token extracted from httpOnly cookie, length:', token.length);
+      }
+    }
+
+    if (!token) {
+      logger.log('❌ No token provided (no Authorization header or cookie)');
       return NextResponse.json(
         { error: 'No token provided' },
         { status: 401 }
       );
     }
-
-    const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-    logger.log('🔍 Token extracted, length:', token.length);
 
     // Verify token using jose (same as auth.ts)
     let decoded;
@@ -89,7 +104,7 @@ export async function GET(request: NextRequest) {
 
     const user = result[0];
 
-    const responseData = {
+    const responseData: Record<string, unknown> = {
       user: {
         id: user.id,
         name: user.name,
@@ -100,6 +115,12 @@ export async function GET(request: NextRequest) {
         role: user.role,
       },
     };
+
+    // When validated via httpOnly cookie (magic-link flow), include the raw token
+    // in the response so the client can sync it to localStorage.
+    if (tokenSource === 'cookie') {
+      responseData.token = token;
+    }
 
     logger.log('✅ Returning user data:', responseData);
     return NextResponse.json(responseData, { status: 200 });

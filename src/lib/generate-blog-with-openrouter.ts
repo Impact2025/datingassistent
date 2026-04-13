@@ -111,11 +111,13 @@ ${input.extraKeywords ? `- Extra Keywords: ${input.extraKeywords}` : ''}
 - Meta description: MAX 155 karakters, bevat call-to-action
 - Slug: korte-url-slug (lowercase, hyphens)
 - Verwerk deze 3 interne anchor texts: "DatingAssistent gratis proberen", "AI datingcoach", "profiel verbeteren"
-- Voeg natuurlijk interne links toe naar:
-  * /register (registratie/start pagina)
-  * /features (diensten/features pagina)
-  * /dashboard (dashboard voor ingelogde gebruikers)
-  * /prijzen (prijzen pagina)
+- Voeg ALLEEN interne links toe naar deze EXACTE paden (GEEN andere paden verzinnen):
+  * /register (registratie/start pagina) — anchor text: "DatingAssistent gratis proberen" of "Start gratis"
+  * /features (diensten/features pagina) — anchor text: "AI datingcoach" of "onze features"
+  * /dashboard (dashboard) — anchor text: "profiel verbeteren" of "je dashboard"
+  * /prijzen (prijzen pagina) — anchor text: "bekijk de prijzen"
+- VERBODEN: links naar /help/, /blog/, /kennisbank/ of andere zelfbedachte paden
+- Gebruik NOOIT links naar pagina's die niet in bovenstaande lijst staan
 - Target deze 5 long-tail keywords natuurlijk in de tekst (gebaseerd op categorie ${input.category}):
   1. online daten tips ${input.year || '2025'}
   2. datingprofiel verbeteren

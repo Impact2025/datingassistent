@@ -162,7 +162,26 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (!token) {
-        logger.log('🔓 No auth token found in localStorage or cookie');
+        // Last resort: the magic-link flow sets an httpOnly cookie which
+        // JavaScript cannot read via document.cookie. But the browser sends
+        // it automatically on same-origin requests. Ask the server to verify
+        // it and return the token so we can sync it to localStorage.
+        logger.log('🔑 No JS-readable token found, trying httpOnly cookie session check');
+        try {
+          const cookieRes = await fetch('/api/auth/verify');
+          if (cookieRes.ok) {
+            const cookieData = await cookieRes.json();
+            if (cookieData.token && cookieData.user) {
+              safeStorage.setItem(TOKEN_STORAGE_KEY, cookieData.token);
+              token = cookieData.token;
+              logger.log('✅ Session restored from httpOnly cookie, token synced to localStorage');
+            }
+          }
+        } catch { /* silent — no cookie session either */ }
+      }
+
+      if (!token) {
+        logger.log('🔓 No auth token found anywhere');
         setLoading(false);
         return;
       }

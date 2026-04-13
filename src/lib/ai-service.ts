@@ -306,11 +306,12 @@ Herschrijf dit artikel naar een SEO-geoptimaliseerde blog voor DatingAssistent.n
    - Meta description: MAX 155 karakters, bevat call-to-action
    - Slug: korte-url-slug (lowercase, hyphens, gebaseerd op hoofdthema)
    - Identificeer 5-7 long-tail keywords uit het artikel
-   - Voeg natuurlijk interne links toe naar:
+   - Voeg ALLEEN interne links toe naar deze EXACTE paden (GEEN andere paden verzinnen):
      * / (homepage)
      * /features (diensten/features pagina)
      * /register (start/registratie pagina)
      * /prijzen (prijzen pagina)
+   - VERBODEN: links naar /help/, /blog/, /kennisbank/ of andere zelfbedachte paden
 
 5. **KWALITEIT:**
    - Minimaal 600-800 woorden
