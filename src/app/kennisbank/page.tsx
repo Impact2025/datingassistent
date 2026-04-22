@@ -24,6 +24,11 @@ import {
   Coffee,
   Send,
   Lock,
+  Smartphone,
+  HeartHandshake,
+  Compass,
+  Activity,
+  Target,
 } from 'lucide-react';
 import { getKennisbankCategories, getKennisbankIndex, getAllKennisbankArticles } from '@/lib/kennisbank';
 import { KennisbankSearch } from '@/components/kennisbank/kennisbank-search';
@@ -63,6 +68,11 @@ const categoryIcons: Record<string, React.ElementType> = {
   'eerste-date': Coffee,
   'eerste-berichten': Send,
   'veilig': Lock,
+  'datingapps': Smartphone,
+  'relatie': HeartHandshake,
+  'zelfontdekking': Compass,
+  'trends': Activity,
+  'niche': Target,
 };
 
 // Kleuren voor categorieën
@@ -126,6 +136,36 @@ const categoryColors: Record<string, { bg: string; text: string; border: string;
     text: 'text-red-700 dark:text-red-400',
     border: 'border-red-200 dark:border-red-800',
     gradient: 'from-red-500 to-orange-500',
+  },
+  'datingapps': {
+    bg: 'bg-fuchsia-50 dark:bg-fuchsia-950/30',
+    text: 'text-fuchsia-700 dark:text-fuchsia-400',
+    border: 'border-fuchsia-200 dark:border-fuchsia-800',
+    gradient: 'from-fuchsia-500 to-pink-500',
+  },
+  'relatie': {
+    bg: 'bg-teal-50 dark:bg-teal-950/30',
+    text: 'text-teal-700 dark:text-teal-400',
+    border: 'border-teal-200 dark:border-teal-800',
+    gradient: 'from-teal-500 to-emerald-500',
+  },
+  'zelfontdekking': {
+    bg: 'bg-violet-50 dark:bg-violet-950/30',
+    text: 'text-violet-700 dark:text-violet-400',
+    border: 'border-violet-200 dark:border-violet-800',
+    gradient: 'from-violet-500 to-purple-500',
+  },
+  'trends': {
+    bg: 'bg-sky-50 dark:bg-sky-950/30',
+    text: 'text-sky-700 dark:text-sky-400',
+    border: 'border-sky-200 dark:border-sky-800',
+    gradient: 'from-sky-500 to-blue-500',
+  },
+  'niche': {
+    bg: 'bg-orange-50 dark:bg-orange-950/30',
+    text: 'text-orange-700 dark:text-orange-400',
+    border: 'border-orange-200 dark:border-orange-800',
+    gradient: 'from-orange-500 to-amber-500',
   },
 };
 

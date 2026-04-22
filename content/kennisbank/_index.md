@@ -117,6 +117,91 @@ De eerste date is het moment waarop verwachtingen plaatsmaken voor echte mensen.
 
 - [**Eerste date: maak direct een echte connectie**](/kennisbank/eerste-date/) — Voorbereiding, gespreksflow en afsluiting
 - [Gespreksonderwerpen voor de eerste date](/kennisbank/eerste-date/gespreksonderwerpen/)
+- [De tweede date: zo bouw je verder op de eerste klik](/kennisbank/eerste-date/tweede-date/)
+- [Eerste date ideeen: 20 activiteiten die echt werken](/kennisbank/eerste-date/date-ideeen/)
+- [Wat aantrekken op de eerste date](/kennisbank/eerste-date/wat-aantrekken/)
+- [Rekening betalen op de eerste date: wie betaalt?](/kennisbank/eerste-date/rekening-betalen/)
+- [Eerste date tips voor als je sociale angst hebt](/kennisbank/eerste-date/sociale-angst-date/)
+- [Ochtenddates: waarom een koffie om 10 uur beter werkt](/kennisbank/eerste-date/ochtenddates/)
+- [Veiligheidschecklist voor de eerste date](/kennisbank/eerste-date/veiligheid-checklist/)
+
+---
+
+### Datingapps
+Tinder, Bumble, Hinge of iets anders? Ontdek welke app bij jou past en hoe je er het meeste uithaalt.
+
+- [**Datingapps in Nederland: welke app past bij jou in 2025?**](/kennisbank/datingapps/) — De complete vergelijking
+- [Tinder vs. Bumble vs. Hinge: welke app past bij jou?](/kennisbank/datingapps/tinder-vs-bumble-vs-hinge/)
+- [Hinge of Bumble: wat werkt beter voor serieuze relaties?](/kennisbank/datingapps/hinge-of-bumble/)
+- [Hoe werkt het Tinder-algoritme?](/kennisbank/datingapps/tinder-algoritme/)
+- [Betaald abonnement op een datingapp: wat levert het echt op?](/kennisbank/datingapps/premium-betalen/)
+- [Swipe fatigue: wanneer datingapps meer frustratie dan matches geven](/kennisbank/datingapps/swipe-fatigue/)
+- [e-Matching vs. Lexa vs. Relatieplanet: voor wie is wat?](/kennisbank/datingapps/nederlandse-apps/)
+- [Datingapps voor 50+: welke platforms werken het beste?](/kennisbank/datingapps/datingapps-50plus/)
+- [De beste apps voor LGBTQ+ dating in Nederland](/kennisbank/datingapps/lgbtq-apps/)
+- [AI in datingapps: wat Tinder, Bumble en Hinge echt doen](/kennisbank/datingapps/ai-features-apps/)
+- [Dating buiten de apps: hoe ontmoet je mensen in het echt?](/kennisbank/datingapps/buiten-de-apps/)
+
+---
+
+### Van date naar relatie
+De overgang van daten naar een relatie opbouwen. Communicatie, exclusiviteit, kwetsbaarheid en de eerste echte stappen.
+
+- [**Van date naar relatie: hoe bouw je iets duurzaams op**](/kennisbank/relatie/) — De complete gids
+- [Wanneer is het officieel? Het exclusiviteitsgesprek voeren](/kennisbank/relatie/exclusiviteit/)
+- [Communicatie in vroege relaties: hoe houd je het eerlijk?](/kennisbank/relatie/communicatie/)
+- [Grenzen stellen in dating en relaties](/kennisbank/relatie/grenzen/)
+- [De 5 talen van de liefde: welke taal spreek jij?](/kennisbank/relatie/liefdestalen/)
+- [Waarden afstemmen: willen jullie dezelfde richting op?](/kennisbank/relatie/waarden-afstemmen/)
+- [Kwetsbaar zijn in dating: waarom het moeilijk is en hoe je het oefent](/kennisbank/relatie/kwetsbaar-zijn/)
+- [Long distance dating: tips voor als de afstand groot is](/kennisbank/relatie/long-distance/)
+- [Micro-romance: waarom kleine gebaren grote impact hebben](/kennisbank/relatie/micro-romance/)
+- [Relatiecommunicatiepatronen die werken en die niet werken](/kennisbank/relatie/relatiepatronen/)
+- [Een relatie opbouwen na een scheiding: wat is er anders?](/kennisbank/relatie/relatie-na-scheiding/)
+
+---
+
+### Zelfontdekking en dating
+Weet wat je zoekt voordat je het vindt. Van dealbreakers tot datingpatronen, van waarden tot eerlijkheid.
+
+- [**Zelfontdekking en dating: weet wat je zoekt voordat je het vindt**](/kennisbank/zelfontdekking/) — Het fundament
+- [Wat wil je echt? Je ideale partner definiëren zonder wishful thinking](/kennisbank/zelfontdekking/wat-wil-je-echt/)
+- [Dealbreakers vs. nicetohaves: hoe maak je het verschil?](/kennisbank/zelfontdekking/dealbreakers/)
+- [Jouw datingwaarden ontdekken: het kompas voor je zoektocht](/kennisbank/zelfontdekking/datingwaarden/)
+- [Wat is jouw datingpatroon? Inzicht in je herhalende gedrag](/kennisbank/zelfontdekking/datingpatroon/)
+- [Dating detox: wanneer is even pauzeren de slimste zet?](/kennisbank/zelfontdekking/dating-detox/)
+- [Radicale eerlijkheid in dating: voordelen en risicos](/kennisbank/zelfontdekking/radicale-eerlijkheid/)
+- [Eenzaamheid vs. alleen zijn: wat daten ermee te maken heeft](/kennisbank/zelfontdekking/eenzaamheid/)
+- [Je verleden als les: patronen herkennen in je datinggeschiedenis](/kennisbank/zelfontdekking/verleden-als-les/)
+
+---
+
+### Datingtrends 2025
+Van boy sober tot run clubs, van AI tot freak matching. De grote verschuivingen in hoe we daten.
+
+- [**Datingtrends 2025: wat verandert er in hoe we liefde zoeken?**](/kennisbank/trends/) — Het complete overzicht
+- [Dating trends 2025: wat is in en wat is definitief uit?](/kennisbank/trends/dating-trends-2025/)
+- [AI en daten: kansen, risicos en wat het voor jou betekent](/kennisbank/trends/ai-en-daten/)
+- [Boy sober: waarom steeds meer mensen een datingpauze nemen](/kennisbank/trends/boy-sober/)
+- [Freak matching: authenticiteit als nieuwe standaard in dating](/kennisbank/trends/freak-matching/)
+- [Run clubs als nieuwe Tinder: offline datingtrends in 2025](/kennisbank/trends/run-clubs/)
+- [Hoe sociale media je datingleven beinvloeden](/kennisbank/trends/sociale-media/)
+- [Dating wrapped: wat jouw datingjaar je heeft geleerd](/kennisbank/trends/dating-wrapped/)
+
+---
+
+### Daten voor jouw situatie
+Als standaard datingadvies niet past: ADHD, autisme, chronische ziekte, LGBTQ+, sociale angst en meer.
+
+- [**Daten voor jouw situatie: als standaard datingadvies niet past**](/kennisbank/niche/) — De complete gids
+- [Daten met ADHD: hoe je impulsiviteit en vergeetachtigheid managet](/kennisbank/niche/adhd-dating/)
+- [Daten met autisme: sociaal navigeren in de datingwereld](/kennisbank/niche/autisme-dating/)
+- [Daten met een chronische ziekte of beperking](/kennisbank/niche/chronische-ziekte/)
+- [LGBTQ+ dating in Nederland: platforms, veiligheid en community](/kennisbank/niche/lgbtq-dating/)
+- [Sociale angst en daten: van online naar echt contact](/kennisbank/niche/sociale-angst/)
+- [Daten als hoogopgeleide: waarom het soms moeilijker is](/kennisbank/niche/hoogopgeleide/)
+- [Intercultureel daten in Nederland: kansen en uitdagingen](/kennisbank/niche/intercultureel/)
+- [Asynchroon daten: voor mensen met een drukke agenda](/kennisbank/niche/asynchroon/)
 
 ---
 
