@@ -1,5 +1,5 @@
-import { DatingStyleFlow } from '@/components/dating-style/dating-style-flow';
+import { redirect } from 'next/navigation';
 
 export default function DatingStijlPage() {
-  return <DatingStyleFlow />;
+  redirect('/dashboard?tab=datingstijl');
 }

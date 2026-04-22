@@ -1,5 +1,5 @@
-import { WaardenKompasTool } from '@/components/waarden-kompas/WaardenKompasTool';
+import { redirect } from 'next/navigation';
 
 export default function WaardenKompasPage() {
-  return <WaardenKompasTool />;
+  redirect('/dashboard?tab=waarden-kompas');
 }
