@@ -175,14 +175,23 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
     webpackMemoryOptimizations: true,
-    webpackBuildWorker: true,
+    webpackBuildWorker: false,
+    parallelServerCompiles: false,
+    parallelServerBuildTraces: false,
   },
 
   // Limit webpack parallelism to reduce peak memory during build
-  webpack: (config: any) => {
+  webpack: (config: any, { isServer }: any) => {
     config.parallelism = 1;
+    // Geen source maps in productie → ~30% minder geheugen
+    if (!isServer && process.env.NODE_ENV === 'production') {
+      config.devtool = false;
+    }
     return config;
   },
+
+  // Geen browser source maps in productie
+  productionBrowserSourceMaps: false,
 
   // Turbopack configuration (moved from experimental.turbo)
   turbopack: {
