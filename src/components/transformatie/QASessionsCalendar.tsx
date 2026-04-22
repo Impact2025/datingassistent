@@ -153,21 +153,8 @@ export function QASessionsCalendar() {
     );
   }
 
-  // Show friendly empty state when no sessions exist
   if (sessions.length === 0) {
-    return (
-      <Card className="border-gray-200 bg-gradient-to-br from-gray-50 to-white">
-        <CardContent className="p-8 text-center">
-          <div className="w-16 h-16 bg-coral-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Calendar className="w-8 h-8 text-coral-500" />
-          </div>
-          <h3 className="font-semibold text-gray-900 mb-2">Geen Q&A sessies gepland</h3>
-          <p className="text-sm text-gray-600 max-w-xs mx-auto">
-            Er zijn momenteel geen live Q&A sessies ingepland. Check later terug voor updates!
-          </p>
-        </CardContent>
-      </Card>
-    );
+    return null;
   }
 
   return (
@@ -264,19 +251,6 @@ export function QASessionsCalendar() {
                 </motion.div>
               );
             })}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* No Upcoming Sessions */}
-      {upcomingSessions.length === 0 && (
-        <Card className="border-gray-200">
-          <CardContent className="p-8 text-center">
-            <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-600 mb-1">Geen aankomende Q&A sessies</p>
-            <p className="text-sm text-gray-500">
-              Check later voor nieuwe sessies
-            </p>
           </CardContent>
         </Card>
       )}
