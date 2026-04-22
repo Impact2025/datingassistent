@@ -305,7 +305,9 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); m=d.get\\('metadata',{}\\).get\\('vulnerabilities',{}\\); print\\('Vulnerabilities:', m\\)\")",
       "Bash(set NODE_OPTIONS=--max-old-space-size=4096)",
       "Bash(git:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(npx kill-port *)",
+      "Bash(python -c \"import sys,json; models=json.load\\(sys.stdin\\)['data']; [print\\(m['id']\\) for m in models if 'anthropic' in m['id']]\")"
     ],
     "deny": [],
     "ask": []

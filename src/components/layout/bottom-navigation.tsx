@@ -13,7 +13,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { MessageCircle, User, Sparkles, LayoutGrid, Heart, Compass } from 'lucide-react';
+import { User, Sparkles, Heart, Compass } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
@@ -98,7 +98,7 @@ export function BottomNavigation() {
 
   const programNavItem = getProgramNavItem();
 
-  // World-class navigation items with clear hierarchy
+  // Vereenvoudigde navigatie: 3 tabs (Coach is floating button, Tools embedded in Reis)
   const navItems = [
     {
       href: '/dashboard',
@@ -110,22 +110,6 @@ export function BottomNavigation() {
       isLogo: true,
     },
     programNavItem, // Dynamic: Mijn Reis / Kickstart / Ontdek
-    {
-      href: '/dashboard?tab=coach',
-      icon: MessageCircle,
-      label: 'Coach',
-      active: currentTab === 'coach',
-      color: 'text-gray-600 dark:text-gray-400',
-      activeColor: 'text-blue-500',
-    },
-    {
-      href: '/dashboard?tab=tools',
-      icon: LayoutGrid,
-      label: 'Tools',
-      active: currentTab === 'tools',
-      color: 'text-gray-600 dark:text-gray-400',
-      activeColor: 'text-emerald-500',
-    },
     {
       href: '/dashboard?tab=profiel',
       icon: User,

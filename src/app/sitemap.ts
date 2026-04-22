@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { sql } from '@vercel/postgres';
+import { getAllKennisbankArticles } from '@/lib/kennisbank';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -120,5 +121,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching courses for sitemap:', error);
   }
 
-  return [...staticPages, ...blogPages, ...coursePages];
+  let kennisbankPages: MetadataRoute.Sitemap = [];
+  try {
+    const articles = getAllKennisbankArticles();
+    kennisbankPages = [
+      {
+        url: `${baseUrl}/kennisbank`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      },
+      ...articles.map((article) => ({
+        url: `${baseUrl}/kennisbank/${article.slug}`,
+        lastModified: new Date(article.date),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      })),
+    ];
+  } catch (error) {
+    console.error('Error fetching kennisbank articles for sitemap:', error);
+  }
+
+  return [...staticPages, ...blogPages, ...coursePages, ...kennisbankPages];
 }

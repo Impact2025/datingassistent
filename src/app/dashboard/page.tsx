@@ -56,6 +56,11 @@ import {
 // ============================================
 
 // GROUP 1: Core navigation tabs (most frequently used - preload candidates)
+const VandaagTab = dynamicImport(() => import('@/components/dashboard/vandaag-tab').then(mod => ({ default: mod.VandaagTab })), {
+  loading: () => <HomeTabSkeleton />,
+  ssr: false
+});
+
 const SmartHomeTab = dynamicImport(() => import('@/components/dashboard/smart-home-tab').then(mod => ({ default: mod.SmartHomeTab })), {
   loading: () => <HomeTabSkeleton />,
   ssr: false
@@ -185,6 +190,8 @@ const DatingWeekNotificationModal = dynamicImport(() => import('@/components/das
 
 // Settings Header - Shows navigation for settings tabs
 import { SettingsHeader } from '@/components/dashboard/settings-header';
+import { FloatingCoachButton } from '@/components/dashboard/floating-coach-button';
+import { AppShellDesktop } from '@/components/layout/app-shell-desktop';
 
 // ============================================
 // WORLD-CLASS: Prefetch core tabs for instant navigation
@@ -193,7 +200,7 @@ const prefetchCoreTabs = () => {
   // Prefetch the 4 main navigation tabs after initial load
   // This ensures instant tab switching for the most common user journeys
   const prefetchPromises = [
-    import('@/components/dashboard/smart-home-tab'),
+    import('@/components/dashboard/vandaag-tab'),
     import('@/components/dashboard/enhanced-pad-tab'),
     import('@/components/dashboard/coach-tab'),
     import('@/components/dashboard/profiel-tab-new'),
@@ -676,7 +683,7 @@ function DashboardPageContent() {
 
     switch (activeTab) {
       case 'home':
-        return <SmartHomeTab onTabChange={handleTabChange} userId={user?.id} userProfile={userProfile} />;
+        return <VandaagTab onTabChange={handleTabChange} userId={user?.id} />;
       case 'pad':
         return <EnhancedPadTab onTabChange={handleTabChange} userId={user?.id} />;
       case 'coach':
@@ -850,11 +857,6 @@ function DashboardPageContent() {
     );
   }
 
-  // Check if this is mobile access to specific tabs
-  const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
-  const tab = urlParams?.get('tab');
-  const isMobileTabAccess = tab && ['subscription', 'data-management', 'chat-coach'].includes(tab);
-
   // Check if mobile device
   const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
 
@@ -882,7 +884,7 @@ function DashboardPageContent() {
 
   return (
     <>
-      {isMobileTabAccess || isMobileDevice ? (
+      {isMobileDevice ? (
         // Mobile layout
         isFullScreenOnboarding ? (
           // FULL-SCREEN ONBOARDING MODE - No header, no bottom nav, full viewport
@@ -942,107 +944,90 @@ function DashboardPageContent() {
               )}
             </div>
 
+            <FloatingCoachButton
+              onClick={() => handleTabChange('coach')}
+              isActive={activeTab === 'coach'}
+            />
             <BottomNavigation />
           </div>
         )
       ) : (
-        // Desktop layout
-        <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white">
-          <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
-            <div className="space-y-6">
-              <Header
-                onSettingsClick={() => handleTabChange('settings')}
-                onSubscriptionClick={() => handleTabChange('subscription')}
-              />
+        // Desktop layout — App Shell met sidebar navigatie
+        <AppShellDesktop
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          showNavigation={!showOnboarding && !showKickstartOnboarding && !showDayZero && !showTransformatieOnboarding}
+        >
+          {/* Trial Progress Banner */}
+          {user?.id && !showKickstartOnboarding && !showOnboarding && !showDayZero && !showTransformatieOnboarding && (
+            <TrialProgress userId={user.id} />
+          )}
 
-              {/* Trial Progress Banner - Only show for trial users and not during onboarding */}
-              {user?.id && !showKickstartOnboarding && !showOnboarding && !showDayZero && !showTransformatieOnboarding && <TrialProgress userId={user.id} />}
-
-              <main className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20">
-              {/* Hide navigation during any onboarding or day-0 */}
-              {!showOnboarding && !showKickstartOnboarding && !showDayZero && !showTransformatieOnboarding && (
-                useNewNav
-                  ? <MainNavNew activeTab={activeTab} onTabChange={handleTabChange} />
-                  : <MainNav activeTab={activeTab} onTabChange={handleTabChange} />
-              )}
-              <div className={showDayZero || showTransformatieOnboarding ? "" : "mt-6"}>
-                {/* Show Kickstart onboarding if needed - takes priority */}
-                {showKickstartOnboarding ? (
-                  <div className="min-h-[600px]">
-                    <KickstartOnboardingFlow
-                      userName={user?.name?.split(' ')[0]}
-                      onComplete={handleKickstartOnboardingComplete}
-                    />
-                  </div>
-                ) : showDayZero ? (
-                  /* Show Day Zero experience after intake chat */
-                  <DayZeroExperience
-                    onComplete={handleDayZeroComplete}
-                    embedded={true}
-                  />
-                ) : showTransformatieOnboarding ? (
-                  /* Show Transformatie Dating Snapshot - World-class onboarding */
-                  <div className="min-h-[600px]">
-                    <DatingSnapshotFlow
-                      onComplete={handleTransformatieOnboardingComplete}
-                    />
-                  </div>
-                ) : showOnboarding ? (
-                  /* Show regular onboarding if needed */
-                  <OnboardingFlow
-                    journeyState={journeyState}
-                    userName={user?.name}
-                    handlers={handlers}
-                  />
-                ) : (
-                  /* Show regular dashboard content only when not onboarding */
-                  tabContent
-                )}
+          <main className="rounded-2xl bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm p-6 shadow-xl border border-white/30 dark:border-gray-800">
+            {showKickstartOnboarding ? (
+              <div className="min-h-[600px]">
+                <KickstartOnboardingFlow
+                  userName={user?.name?.split(' ')[0]}
+                  onComplete={handleKickstartOnboardingComplete}
+                />
               </div>
-            </main>
-
-
-            {/* AI Context Notifications */}
-            <AIContextNotifications />
-
-            {/* Monday Dating Week Notification Modal */}
-            <DatingWeekNotificationModal
-              isOpen={datingWeekNotificationOpen}
-              onClose={() => setDatingWeekNotificationOpen(false)}
-              onComplete={(data) => {
-                debugLog.success('Dating week log completed:', data);
-                // Could add success notification here
-              }}
+            ) : showDayZero ? (
+              <DayZeroExperience
+                onComplete={handleDayZeroComplete}
+                embedded={true}
               />
+            ) : showTransformatieOnboarding ? (
+              <div className="min-h-[600px]">
+                <DatingSnapshotFlow
+                  onComplete={handleTransformatieOnboardingComplete}
+                />
+              </div>
+            ) : showOnboarding ? (
+              <OnboardingFlow
+                journeyState={journeyState}
+                userName={user?.name}
+                handlers={handlers}
+              />
+            ) : (
+              tabContent
+            )}
+          </main>
 
-              <footer className="text-center text-sm text-muted-foreground space-y-4">
-                <div className="flex justify-center items-center gap-2">
-                  <span>Volg ons:</span>
-                  <SocialMediaLinks size="sm" />
-                </div>
-                <div>
-                  <p>&copy; 2025 DatingAssistent. Alle rechten voorbehouden.</p>
-                  <p>
-                    Jouw data is veilig en AVG-proof.{' '}
-                    <button
-                      onClick={() => handleTabChange('data-management')}
-                      className="underline hover:text-primary bg-transparent border-none p-0 cursor-pointer"
-                    >
-                      Beheer je data
-                    </button>.
-                  </p>
-                </div>
-              </footer>
+          <AIContextNotifications />
+
+          <DatingWeekNotificationModal
+            isOpen={datingWeekNotificationOpen}
+            onClose={() => setDatingWeekNotificationOpen(false)}
+            onComplete={(data) => {
+              debugLog.success('Dating week log completed:', data);
+            }}
+          />
+
+          <footer className="text-center text-sm text-muted-foreground space-y-3 pb-4">
+            <div className="flex justify-center items-center gap-2">
+              <span>Volg ons:</span>
+              <SocialMediaLinks size="sm" />
             </div>
-          </div>
+            <div>
+              <p>&copy; 2025 DatingAssistent. Alle rechten voorbehouden.</p>
+              <p>
+                Jouw data is veilig en AVG-proof.{' '}
+                <button
+                  onClick={() => handleTabChange('data-management')}
+                  className="underline hover:text-primary bg-transparent border-none p-0 cursor-pointer"
+                >
+                  Beheer je data
+                </button>.
+              </p>
+            </div>
+          </footer>
 
-          {/* Iris Proactive Invite - Only popup for registered members (no floating button) */}
           {irisInviteVisible && !showKickstartOnboarding && !showTransformatieOnboarding && (
             <ProactiveInvite
               onAccept={() => {
                 setIrisInviteVisible(false);
                 dismissInvite();
-                handleTabChange('coach'); // Open Coach tab when accepting
+                handleTabChange('coach');
               }}
               onDismiss={() => {
                 setIrisInviteVisible(false);
@@ -1055,7 +1040,7 @@ function DashboardPageContent() {
               agentName="Iris"
             />
           )}
-        </div>
+        </AppShellDesktop>
       )}
     </>
   );

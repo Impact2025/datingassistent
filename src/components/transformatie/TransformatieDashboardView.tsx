@@ -40,6 +40,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { ModuleSidebar } from './ModuleSidebar';
 import { QASessionsCalendar } from './QASessionsCalendar';
+import { ModuleToolCard } from '@/components/journey/module-tool-card';
 import type { TransformatieModule, TransformatieLesson, LessonProgress as LessonProgressType } from '@/app/api/transformatie/route';
 
 interface TransformatieDashboardViewProps {
@@ -986,38 +987,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             )}
 
             {/* AI Tool Recommendation */}
-            {currentModule?.ai_tool_name && (
-              <Card className="border-coral-200 bg-gradient-to-r from-coral-50 to-rose-50">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-coral-100 flex items-center justify-center">
-                      <Sparkles className="w-5 h-5 text-coral-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">
-                        AI Tool: {currentModule.ai_tool_name}
-                      </p>
-                      <p className="text-xs text-gray-600">
-                        Gebruik deze tool om de les te verdiepen
-                      </p>
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-coral-300 text-coral-700 hover:bg-coral-100"
-                      onClick={() => {
-                        const toolRoute = AI_TOOL_ROUTES[currentModule.ai_tool_name || ''];
-                        if (toolRoute) {
-                          router.push(toolRoute);
-                        }
-                      }}
-                    >
-                      Openen
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            <ModuleToolCard toolName={currentModule?.ai_tool_name} />
 
             {/* Navigation */}
             <div className="flex justify-between pt-4">
@@ -1075,20 +1045,22 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             </Button>
 
             {/* Lesson Progress Dots */}
-            <div className="flex items-center gap-1.5 px-2">
+            <div className="flex items-center px-2">
               {currentModule?.lessons.slice(0, 5).map((lesson, idx) => (
                 <button
                   key={lesson.id}
                   onClick={() => handleSelectLesson(lesson)}
-                  className={cn(
-                    "w-2.5 h-2.5 rounded-full transition-all",
+                  className="w-8 h-8 flex items-center justify-center"
+                >
+                  <span className={cn(
+                    "rounded-full transition-all block",
                     lesson.id === currentLesson?.id
-                      ? "bg-coral-500 w-4"
+                      ? "bg-coral-500 w-4 h-2.5"
                       : lesson.progress?.status === 'completed'
-                        ? "bg-green-500"
-                        : "bg-gray-300"
-                  )}
-                />
+                        ? "bg-green-500 w-2.5 h-2.5"
+                        : "bg-gray-300 w-2.5 h-2.5"
+                  )} />
+                </button>
               ))}
               {(currentModule?.lessons.length || 0) > 5 && (
                 <span className="text-xs text-gray-400">+{(currentModule?.lessons.length || 0) - 5}</span>

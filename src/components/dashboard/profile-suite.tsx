@@ -109,6 +109,10 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
   }, [userTier]);
 
   // 🎯 ALLE TOOLS GEORGANISEERD IN CATEGORIEËN
+  // Kleuren zijn systematisch per categorie:
+  //   profiel → coral/purple palette
+  //   communicatie → blue/indigo palette
+  //   dating → rose/orange palette
   const allTools = [
     // PROFIEL & PERSOONLIJKHEID
     {
@@ -118,7 +122,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: Heart,
       description: "Ontdek je hechtingsdynamiek - de basis van hoe je liefhebt en verbindt",
       component: <AttachmentAssessmentFlow />,
-      badge: "AI-PRO",
+      badge: undefined,
       color: "from-purple-500 to-coral-500",
       featured: true
     },
@@ -129,8 +133,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: Sparkles,
       description: "Ben je klaar voor dating? Ontdek je emotionele beschikbaarheid",
       component: <EmotioneleReadinessFlow />,
-      badge: "AI",
-      color: "from-blue-500 to-cyan-500"
+      badge: undefined,
+      color: "from-coral-500 to-rose-500"
     },
     {
       id: "zelfbeeld",
@@ -139,8 +143,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: UserCircle2,
       description: "AI-gedreven profiel analyse voor optimale eerste indruk",
       component: <ZelfbeeldFlow />,
-      badge: "AI-PRO",
-      color: "from-purple-500 to-indigo-500"
+      badge: undefined,
+      color: "from-purple-500 to-violet-600"
     },
     {
       id: "dating-stijl",
@@ -149,8 +153,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: Users,
       description: "Ontdek je dating stijl en blinde vlekken",
       component: <DatingStyleFlow />,
-      badge: "AI",
-      color: "from-orange-500 to-red-500"
+      badge: undefined,
+      color: "from-rose-500 to-coral-400"
     },
     {
       id: "profile-builder",
@@ -160,7 +164,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Maak je ideale profieltekst met AI hulp",
       component: <InteractiveProfileCoach />,
       badge: "Aanbevolen",
-      color: "from-green-500 to-emerald-500"
+      color: "from-coral-500 to-purple-500"
     },
     {
       id: "photo-analysis",
@@ -169,8 +173,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: Camera,
       description: "AI feedback op je profielfoto's",
       component: <PhotoAnalysisTab />,
-      badge: "AI",
-      color: "from-indigo-500 to-coral-500"
+      badge: undefined,
+      color: "from-violet-500 to-purple-600"
     },
     {
       id: "platform-match",
@@ -179,8 +183,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: Target,
       description: "Welke dating app past bij jou?",
       component: <PlatformMatchTool />,
-      badge: "AI",
-      color: "from-teal-500 to-cyan-500"
+      badge: undefined,
+      color: "from-coral-400 to-rose-500"
     },
     {
       id: "skills-scan",
@@ -190,7 +194,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Ontdek je sterke punten",
       component: <SkillsAssessmentTab />,
       badge: "Nieuw",
-      color: "from-coral-500 to-rose-500"
+      color: "from-purple-400 to-coral-500"
     },
     {
       id: "stats",
@@ -199,8 +203,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: CheckCircle2,
       description: "Overzicht van je voortgang",
       component: <StatsTab />,
-      badge: "Overzicht",
-      color: "from-gray-500 to-slate-500"
+      badge: undefined,
+      color: "from-gray-400 to-slate-500"
     },
 
     // COMMUNICATIE
@@ -211,7 +215,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: MessageCircle,
       description: "Stel vragen aan je AI dating coach",
       component: <ChatCoachTab />,
-      badge: "24/7",
+      badge: undefined,
       color: "from-blue-500 to-indigo-600",
       featured: true
     },
@@ -222,8 +226,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: MessageCircle,
       description: "AI analyse van je dating gesprekken",
       component: <GespreksAssistent onTabChange={onTabChange} />,
-      badge: "AI",
-      color: "from-indigo-500 to-purple-600"
+      badge: undefined,
+      color: "from-indigo-500 to-blue-600"
     },
     {
       id: "openers",
@@ -232,8 +236,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: Sparkles,
       description: "Genereer effectieve openingsberichten",
       component: <OpeningszinnenTool />,
-      badge: "Persoonlijk",
-      color: "from-coral-500 to-rose-600"
+      badge: undefined,
+      color: "from-blue-400 to-cyan-500"
     },
     {
       id: "icebreakers",
@@ -242,8 +246,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: Zap,
       description: "Perfecte gesprekstarters voor elke situatie",
       component: <IJsbrekerGeneratorTool />,
-      badge: "Context",
-      color: "from-purple-500 to-coral-600"
+      badge: undefined,
+      color: "from-cyan-500 to-blue-500"
     },
     {
       id: "safety",
@@ -252,8 +256,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: Shield,
       description: "Analyseer gesprekken op veiligheid en rode vlaggen",
       component: <VeiligheidscheckTool />,
-      badge: "Essentieel",
-      color: "from-emerald-500 to-teal-600"
+      badge: undefined,
+      color: "from-indigo-500 to-blue-700"
     },
 
     // DATING & RELATIES
@@ -265,7 +269,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Plan geslaagde dates met checklists en ideeën",
       component: <DatePlannerTab />,
       badge: "Populair",
-      color: "from-rose-500 to-coral-600",
+      color: "from-rose-500 to-orange-500",
       featured: true
     },
     {
@@ -275,8 +279,8 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       icon: CalendarHeart,
       description: "Krijg inspiratie voor unieke en leuke dates",
       component: <DateIdeasProForm />,
-      badge: "AI",
-      color: "from-orange-500 to-rose-600"
+      badge: undefined,
+      color: "from-orange-500 to-rose-500"
     }
   ];
 
@@ -300,9 +304,6 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
 
     return filtered;
   }, [activeCategory, searchQuery, allTools]);
-
-  // Featured tools (shown prominently)
-  const featuredTools = allTools.filter(tool => tool.featured);
 
   // Category counts
   const categoryCounts = {
@@ -459,53 +460,6 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
             </CardContent>
           </Card>
         </div>
-      )}
-
-      {/* Featured Tools - Uitgelicht */}
-      {!searchQuery && activeCategory === "all" && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-yellow-500" />
-              Uitgelichte Tools
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {featuredTools.map((tool) => {
-                const Icon = tool.icon;
-                return (
-                  <Card
-                    key={tool.id}
-                    className="cursor-pointer transition-all duration-200 border-2 border-coral-200 hover:border-coral-400 hover:shadow-lg bg-gradient-to-br from-white to-coral-50 dark:from-gray-800 dark:to-coral-900/10"
-                    onClick={() => openToolModal(tool.id)}
-                  >
-                    <CardContent className="p-5">
-                      <div className="flex items-start gap-3">
-                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tool.color} flex items-center justify-center shadow-lg flex-shrink-0`}>
-                          <Icon className="h-6 w-6 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-sm text-gray-900 dark:text-gray-50 mb-1">
-                            {tool.label}
-                          </h3>
-                          <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
-                            {tool.description}
-                          </p>
-                          {tool.badge && (
-                            <Badge variant="secondary" className="mt-2 text-[10px]">
-                              {tool.badge}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
       )}
 
       {/* Categorieën Tabs */}

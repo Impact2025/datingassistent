@@ -1,5 +1,4 @@
-import { KickstartToolkit } from '@/components/tools-tiers/kickstart-toolkit';
-import { BottomNavigation } from '@/components/layout/bottom-navigation';
+import { KickstartToolkitShell } from './kickstart-toolkit-shell';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,10 +8,5 @@ export const metadata = {
 };
 
 export default function KickstartToolkitPage() {
-  return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      <KickstartToolkit />
-      <BottomNavigation />
-    </div>
-  );
+  return <KickstartToolkitShell />;
 }

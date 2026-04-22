@@ -39,8 +39,18 @@ export async function GET(request: NextRequest) {
 
     const user = result.rows[0];
 
-    // Check expiry
-    const expiresAt = new Date(user.verification_expires_at);
+    // Check expiry — parse as UTC to avoid local-timezone offset bugs.
+    // PostgreSQL TIMESTAMP (without TZ) returns strings like "2026-04-22 09:41:00"
+    // which JS parses as LOCAL time instead of UTC, causing false expiry in UTC+x zones.
+    const rawExpiry = user.verification_expires_at;
+    let expiresAt: Date;
+    if (rawExpiry instanceof Date) {
+      expiresAt = rawExpiry;
+    } else {
+      const s = String(rawExpiry);
+      const hasTimezone = s.endsWith('Z') || /[+\-]\d{2}:?\d{2}$/.test(s);
+      expiresAt = new Date(hasTimezone ? s.replace(' ', 'T') : s.replace(' ', 'T') + 'Z');
+    }
     if (expiresAt < new Date()) {
       logger.log(`Magic-login: token expired for user ${user.id}`);
       return NextResponse.redirect(new URL('/login?error=expired_token', request.url));

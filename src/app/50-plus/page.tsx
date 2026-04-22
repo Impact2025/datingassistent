@@ -48,11 +48,6 @@ import { SimplifiedJourney50Plus } from '@/components/landing/50plus/simplified-
 // Note: In Next.js App Router, metadata can only be exported from Server Components
 // This page will need a separate metadata export or layout wrapper
 
-// Early bird configuration
-const EARLY_BIRD_DEADLINE = '1 maart 2026';
-const EARLY_BIRD_END_DATE = new Date('2026-03-01T23:59:59');
-const isEarlyBirdActive = () => new Date() <= EARLY_BIRD_END_DATE;
-
 const colors = {
   deepPurple: 'var(--color-deep-purple, #722F37)',
   dustyRose: 'var(--color-dusty-rose, #E3867D)',
@@ -301,20 +296,6 @@ function PricingSection40Plus() {
     <section className="py-24 px-4" style={{ backgroundColor: colors.cream }}>
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          {/* Early Bird Badge */}
-          {isEarlyBirdActive() && (
-            <motion.div
-              className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full shadow-lg text-white"
-              style={{ background: 'linear-gradient(135deg, #f59e0b, #ea580c)' }}
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <Zap className="w-4 h-4" />
-              <span className="font-semibold text-sm">Early Bird Actie - Geldig tot {EARLY_BIRD_DEADLINE}</span>
-            </motion.div>
-          )}
-
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ color: colors.deepPurple }}>
             Investeer in jezelf
           </h2>

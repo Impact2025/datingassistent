@@ -7,11 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Sparkles, Lock, AlertCircle } from 'lucide-react';
 import { useUser } from '@/providers/user-provider';
 
-// Early bird configuration
-const EARLY_BIRD_DEADLINE = '1 maart 2026';
-const EARLY_BIRD_END_DATE = new Date('2026-03-01T23:59:59');
-const isEarlyBirdActive = () => new Date() <= EARLY_BIRD_END_DATE;
-
 export function ProgramCards() {
   const router = useRouter();
   const { user } = useUser();
@@ -115,11 +110,6 @@ export function ProgramCards() {
 
             {/* Pricing */}
             <div className="text-center py-4 border-y border-gray-100 dark:border-gray-700">
-              {isEarlyBirdActive() && (
-                <Badge className="bg-green-500 dark:bg-green-600 text-white px-3 py-1 text-xs font-bold mb-2">
-                  EARLYBIRD t/m {EARLY_BIRD_DEADLINE}
-                </Badge>
-              )}
               <div className="flex items-baseline justify-center gap-3 mb-2">
                 <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
                   €297
@@ -186,11 +176,6 @@ export function ProgramCards() {
 
             {/* Pricing */}
             <div className="text-center py-4 border-y border-amber-100 dark:border-amber-800/30">
-              {isEarlyBirdActive() && (
-                <Badge className="bg-green-500 dark:bg-green-600 text-white px-3 py-1 text-xs font-bold mb-2">
-                  EARLYBIRD t/m {EARLY_BIRD_DEADLINE}
-                </Badge>
-              )}
               <div className="flex items-baseline justify-center gap-3 mb-2">
                 <span className="text-2xl text-gray-400 dark:text-gray-500 line-through">
                   €997

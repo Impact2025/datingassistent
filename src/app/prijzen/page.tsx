@@ -24,13 +24,7 @@ import {
   Infinity,
   ArrowRight,
   Star,
-  Zap
 } from 'lucide-react';
-
-// Early bird configuration
-const EARLY_BIRD_DEADLINE = '1 maart 2026';
-const EARLY_BIRD_END_DATE = new Date('2026-03-01T23:59:59');
-const isEarlyBirdActive = () => new Date() <= EARLY_BIRD_END_DATE;
 
 // Program data based on Value Stack strategy
 const programs = [
@@ -157,13 +151,6 @@ export default function PrijzenPage() {
       <section className="py-16 md:py-24 bg-gradient-to-br from-coral-50 via-cream to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            {/* Early Bird Badge */}
-            {isEarlyBirdActive() && (
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-2 rounded-full shadow-lg">
-                <Zap className="w-4 h-4" />
-                <span className="font-semibold text-sm">Early Bird Actie - Geldig tot {EARLY_BIRD_DEADLINE}</span>
-              </div>
-            )}
             <Badge variant="outline" className="border-coral-200 dark:border-coral-700 text-coral-600 dark:text-coral-400 px-4 py-1">
               Investeer in jezelf
             </Badge>

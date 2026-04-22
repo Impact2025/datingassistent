@@ -65,7 +65,22 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. 🚀 Haal VERRIJKTE Iris context op (met ALLE 7 assessments!)
-    const irisContext = await getEnrichedIrisContext(userId);
+    // Fail-safe: als DB down is geeft dit een lege basiscontext terug zodat AI blijft werken
+    let irisContext: Awaited<ReturnType<typeof getEnrichedIrisContext>>;
+    try {
+      irisContext = await getEnrichedIrisContext(userId);
+    } catch (ctxError) {
+      console.warn('⚠️ Iris context ophalen mislukt (DB?), doorgaan met lege context:', ctxError);
+      irisContext = {
+        gebruiker: { naam: 'Gebruiker', leeftijd: null, geslacht: null, regio: null },
+        dating: { status: null, situatie: null, doelen: [], apps: [] },
+        voortgang: { actieve_cursus: null, voltooide_lessen: [], streak: 0 },
+        cursus: { huidige_cursus: null, huidige_les: null, les_context: null },
+        aiContext: null,
+        patronen: [],
+        recente_stemming: null,
+      } as any;
+    }
 
     // 3. Override met huidige context indien meegegeven
     if (context_cursus_slug) {

@@ -225,32 +225,9 @@ export function LockedToolCard({
                 {tool.label}
               </h3>
 
-              {tool.badge && (
-                <Badge variant="secondary" className="text-[10px] px-1 py-0">
-                  {tool.badge}
-                </Badge>
-              )}
-
               <p className="text-[11px] text-gray-600 dark:text-gray-400 leading-tight line-clamp-2">
                 {tool.description}
               </p>
-
-              {/* Usage indicator */}
-              <div className="flex items-center justify-center gap-1 pt-1">
-                <div className="flex gap-0.5">
-                  {Array.from({ length: limit || 3 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className={cn(
-                        "w-1.5 h-1.5 rounded-full transition-colors",
-                        i < (typeof remaining === 'number' ? (limit || 3) - remaining : 0)
-                          ? "bg-gray-300 dark:bg-gray-600"
-                          : "bg-coral-500"
-                      )}
-                    />
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </CardContent>
@@ -286,7 +263,7 @@ export function LockedToolCard({
               </Badge>
             )}
 
-            <p className="text-[11px] text-gray-600 dark:text-gray-400 leading-tight line-clamp-2">
+            <p className="text-[11px] text-gray-600 dark:text-gray-400 leading-tight line-clamp-2 mt-1">
               {tool.description}
             </p>
           </div>
