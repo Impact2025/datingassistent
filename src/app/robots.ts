@@ -1,21 +1,21 @@
 import { MetadataRoute } from 'next';
-import SEOManager from '@/lib/seo/seo-manager';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://datingassistent.nl';
+  const baseUrl = 'https://datingassistent.nl';
 
   return {
     rules: {
       userAgent: '*',
       allow: '/',
       disallow: [
-        '/admin/',
-        '/api/admin/',
+        '/login',
+        '/register',
+        '/profiel',
+        '/chat',
         '/dashboard/',
-        '/api/user/',
-        '/api/auth/',
+        '/admin/',
+        '/api/',
         '/_next/',
-        '/api/health',
       ],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
