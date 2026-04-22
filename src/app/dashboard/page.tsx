@@ -198,6 +198,26 @@ const AttachmentAssessmentFlow = dynamicImport(() => import('@/components/attach
   ssr: false
 });
 
+const EmotioneleReadinessFlow = dynamicImport(() => import('@/components/emotional-readiness/emotionele-readiness-flow').then(mod => ({ default: mod.EmotioneleReadinessFlow })), {
+  loading: () => <ToolsTabSkeleton />,
+  ssr: false
+});
+
+const LevensvisieFlow = dynamicImport(() => import('@/components/levensvisie/levensvisie-flow').then(mod => ({ default: mod.LevensvisieFlow })), {
+  loading: () => <ToolsTabSkeleton />,
+  ssr: false
+});
+
+const RelatiepatronenFlow = dynamicImport(() => import('@/components/relatiepatronen/relatiepatronen-flow').then(mod => ({ default: mod.RelatiepatronenFlow })), {
+  loading: () => <ToolsTabSkeleton />,
+  ssr: false
+});
+
+const BlindVlekkenFlow = dynamicImport(() => import('@/components/blind-vlekken/blind-vlekken-flow').then(mod => ({ default: mod.BlindVlekkenFlow })), {
+  loading: () => <ToolsTabSkeleton />,
+  ssr: false
+});
+
 // Settings Header - Shows navigation for settings tabs
 import { SettingsHeader } from '@/components/dashboard/settings-header';
 import { FloatingCoachButton } from '@/components/dashboard/floating-coach-button';
@@ -737,6 +757,14 @@ function DashboardPageContent() {
       case 'hechtingsstijl':
       case 'hechtingsstijl-redirect':
         return <AttachmentAssessmentFlow />;
+      case 'emotionele-readiness':
+        return <EmotioneleReadinessFlow />;
+      case 'levensvisie':
+        return <LevensvisieFlow />;
+      case 'relatiepatronen':
+        return <RelatiepatronenFlow />;
+      case 'blind-vlekken':
+        return <BlindVlekkenFlow />;
       default:
         return <DashboardTab onTabChange={handleTabChange} />;
     }
