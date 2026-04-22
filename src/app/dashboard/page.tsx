@@ -3,13 +3,13 @@
 import { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import dynamicImport from 'next/dynamic';
-import Image from 'next/image';
 import { useUser } from '@/providers/user-provider';
 import { Header } from '@/components/layout/header';
 import { MainNav } from '@/components/layout/main-nav';
 import { Button } from '@/components/ui/button';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
+import { Logo } from '@/components/shared/logo';
 import { AIContextNotifications } from '@/components/shared/ai-context-notifications';
 import { SocialMediaLinks } from '@/components/shared/social-media-links';
 
@@ -737,15 +737,7 @@ function DashboardPageContent() {
         <div className="text-center">
           {/* Logo */}
           <div className="flex justify-center mb-8 animate-pulse">
-            <Image
-              src="/images/LogoDatingAssistent.png"
-              alt="DatingAssistent Logo"
-              width={80}
-              height={80}
-              className="object-contain"
-              priority
-              unoptimized
-            />
+            <Logo iconSize={56} textSize="xl" />
           </div>
 
           {/* Loading spinner */}
@@ -797,14 +789,7 @@ function DashboardPageContent() {
       <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center space-y-6">
           <div className="flex justify-center">
-            <Image
-              src="/images/LogoDatingAssistent.png"
-              alt="DatingAssistent"
-              width={64}
-              height={64}
-              className="object-contain"
-              unoptimized
-            />
+            <Logo iconSize={48} textSize="lg" />
           </div>
 
           {quizLeadResult ? (
@@ -926,34 +911,7 @@ function DashboardPageContent() {
             <div className="bg-white/95 backdrop-blur-md border-b border-coral-100 px-4 py-3 sticky top-0 z-40 shadow-sm">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  {/* Logo with gradient border */}
-                  <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md ring-2 ring-coral-100">
-                    <Image
-                      src="/images/LogoDatingAssistent.png"
-                      alt="DatingAssistent Logo"
-                      width={40}
-                      height={40}
-                      className="object-contain"
-                      priority
-                      unoptimized
-                    />
-                  </div>
-                  <div>
-                    <h1 className="text-base font-bold text-gray-900 leading-tight">
-                      {activeTab === 'home' && 'Dashboard'}
-                      {activeTab === 'pad' && 'Jouw Pad'}
-                      {activeTab === 'coach' && 'Coach'}
-                      {activeTab === 'profiel' && 'Tools'}
-                      {activeTab === 'tools' && 'Tools'}
-                      {activeTab === 'subscription' && "Programma's"}
-                      {activeTab === 'data-management' && 'Data & Privacy'}
-                      {activeTab === 'settings' && 'Instellingen'}
-                      {!['home', 'pad', 'coach', 'profiel', 'tools', 'subscription', 'data-management', 'settings'].includes(activeTab) && 'Dashboard'}
-                    </h1>
-                    <p className="text-xs text-gray-500">
-                      {user?.name ? `Welkom, ${user.name.split(' ')[0]}` : 'DatingAssistent'}
-                    </p>
-                  </div>
+                  <Logo iconSize={28} textSize="sm" />
                 </div>
                 {/* Settings button with enhanced styling */}
                 <Button
