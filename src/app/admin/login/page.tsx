@@ -353,11 +353,11 @@ export default function AdminLoginPage() {
 
   if (step === 'credentials') {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+      <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-coral-500 hover:bg-coral-600">
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-2xl shadow-blue-500/30">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-2xl mb-4 shadow-2xl shadow-blue-500/30">
               <Shield className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">Admin Panel</h1>
@@ -415,7 +415,7 @@ export default function AdminLoginPage() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 text-base font-medium shadow-lg"
+                  className="w-full bg-coral-500 hover:bg-coral-600 text-white py-3 text-base font-medium shadow-lg"
                   disabled={loading}
                 >
                   {loading ? (
@@ -459,11 +459,11 @@ export default function AdminLoginPage() {
 
   if (step === '2fa') {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+      <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-coral-500 hover:bg-coral-600">
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-4 shadow-2xl shadow-green-500/30">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-2xl mb-4 shadow-2xl shadow-green-500/30">
               <Smartphone className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">2FA Verificatie</h1>
@@ -494,7 +494,7 @@ export default function AdminLoginPage() {
 
               <Button
                 onClick={handle2FAVerify}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 text-base font-medium shadow-lg"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white py-3 text-base font-medium shadow-lg"
                 disabled={loading || twoFACode.length !== 6}
               >
                 {loading ? (
@@ -583,11 +583,11 @@ export default function AdminLoginPage() {
 
   if (step === '2fa-setup' && twoFAState?.setupData) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+      <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-coral-500 hover:bg-coral-600">
         <div className="w-full max-w-lg">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl mb-4 shadow-2xl shadow-orange-500/30">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-2xl mb-4 shadow-2xl shadow-orange-500/30">
               <Shield className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">2FA Vereist</h1>
@@ -648,7 +648,7 @@ export default function AdminLoginPage() {
 
               <Button
                 onClick={handle2FASetupVerify}
-                className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white py-3 text-base font-medium shadow-lg"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white py-3 text-base font-medium shadow-lg"
                 disabled={loading || twoFACode.length !== 6}
               >
                 {loading ? (
@@ -687,11 +687,11 @@ export default function AdminLoginPage() {
 
   if (step === 'backup-codes-display' && twoFAState?.backupCodes) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+      <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-coral-500 hover:bg-coral-600">
         <div className="w-full max-w-lg">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-4 shadow-2xl shadow-green-500/30">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-2xl mb-4 shadow-2xl shadow-green-500/30">
               <CheckCircle className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">2FA Geactiveerd!</h1>
@@ -752,7 +752,7 @@ export default function AdminLoginPage() {
               {/* Continue button */}
               <Button
                 onClick={() => router.push("/admin")}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 text-base font-medium shadow-lg"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white py-3 text-base font-medium shadow-lg"
               >
                 <CheckCircle className="w-5 h-5 mr-2" />
                 Ik heb de codes opgeslagen - Doorgaan

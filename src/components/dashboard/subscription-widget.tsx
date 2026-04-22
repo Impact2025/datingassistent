@@ -133,7 +133,7 @@ export function SubscriptionWidget({ userId }: SubscriptionWidgetProps) {
                 }}
               >
                 <div className="flex items-center gap-3 flex-1">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-coral-500 hover:bg-coral-600 rounded-lg flex items-center justify-center">
                     <Calendar className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -223,7 +223,7 @@ export function SubscriptionWidget({ userId }: SubscriptionWidgetProps) {
             </p>
             <Button
               onClick={() => router.push('/dashboard?tab=subscription')}
-              className="bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600"
+              className="bg-coral-500 hover:bg-coral-600"
             >
               Bekijk Abonnementen
             </Button>

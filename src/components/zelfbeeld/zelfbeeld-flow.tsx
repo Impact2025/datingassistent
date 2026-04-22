@@ -278,7 +278,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
       <div className="p-6">
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-14 h-14 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
+            <div className="w-14 h-14 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
               <Camera className="w-7 h-7 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">Profiel Analyse</h2>
@@ -323,7 +323,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
 
           <Button
             onClick={handleStart}
-            className="w-full h-12 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 shadow-sm"
+            className="w-full h-12 bg-coral-500 hover:bg-coral-600 shadow-sm"
           >
             Start Analyse
             <ArrowRight className="w-4 h-4 ml-2" />
@@ -452,7 +452,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
             <Button
               onClick={handleSubmit}
               disabled={!bioValid || loading}
-              className="flex-1 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 shadow-sm"
+              className="flex-1 bg-coral-500 hover:bg-coral-600 shadow-sm"
             >
               Analyseer
               <Sparkles className="w-4 h-4 ml-2" />
@@ -519,7 +519,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
       <div className="p-6 pb-12">
         <div className="max-w-5xl mx-auto space-y-5">
           <div className="text-center space-y-2">
-            <Badge className="bg-gradient-to-r from-coral-500 to-coral-600 text-white border-0">Je Analyse</Badge>
+            <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0">Je Analyse</Badge>
             <h2 className="text-2xl font-bold text-gray-900">
               {analysis?.firstImpression?.personaTitle || 'Je Resultaten'}
             </h2>
@@ -565,7 +565,7 @@ export function ZelfbeeldFlow({ onClose }: { onClose?: () => void }) {
               <CardContent className="space-y-2">
                 {analysis.firstImpression.thirtySecond.map((item: string, i: number) => (
                   <div key={i} className="flex items-start gap-2 text-sm">
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-coral-500 to-coral-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <div className="w-6 h-6 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center flex-shrink-0 shadow-sm">
                       <span className="text-xs font-bold text-white">{i + 1}</span>
                     </div>
                     <p className="text-gray-700">{item}</p>

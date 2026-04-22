@@ -105,7 +105,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
               </div>
               <Button
                 onClick={onClose}
-                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 h-auto flex items-center gap-2 shadow-sm"
+                className="bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 h-auto flex items-center gap-2 shadow-sm"
               >
                 <Save className="w-4 h-4" />
                 <span className="font-semibold">Bewaar & Sluiten</span>
@@ -263,7 +263,7 @@ export function BlindVlekkenFlow({ onClose }: BlindVlekkenFlowProps) {
               {onClose && (
                 <Button
                   onClick={onClose}
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600"
+                  className="w-full bg-coral-500 hover:bg-coral-600"
                 >
                   Terug naar Dashboard
                 </Button>

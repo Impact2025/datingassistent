@@ -27,7 +27,7 @@ const userTypes = {
   A: {
     title: "De Starter",
     description: "Je staat aan het begin van je dating journey. Perfect! We beginnen met sterke fundamenten.",
-    color: "from-coral-500 to-rose-500",
+    color: "bg-coral-500",
     bgColor: "bg-coral-50",
     borderColor: "border-coral-200",
     icon: Sparkles,
@@ -239,7 +239,7 @@ export function PersonalizedRoadmap({ userType, userName, onContinue }: Personal
             </div>
 
             <Link href={typeData.leadMagnet.downloadUrl} download>
-              <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700">
+              <Button className="w-full bg-coral-500 hover:bg-coral-600">
                 <Download className="w-4 h-4 mr-2" />
                 Download Nu Gratis
               </Button>
@@ -347,7 +347,7 @@ export function PersonalizedRoadmap({ userType, userName, onContinue }: Personal
             </div>
 
             <Link href={typeData.recommendedPlan.url}>
-              <Button className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700">
+              <Button className="w-full bg-coral-500 hover:bg-coral-600">
                 Bekijk Plannen
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -374,7 +374,7 @@ export function PersonalizedRoadmap({ userType, userName, onContinue }: Personal
             <Button
               onClick={onContinue}
               size="lg"
-              className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
+              className="bg-coral-500 hover:bg-coral-600"
             >
               Ga naar Dashboard
               <ArrowRight className="w-5 h-5 ml-2" />

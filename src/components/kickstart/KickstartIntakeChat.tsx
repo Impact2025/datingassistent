@@ -675,7 +675,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
         </div>
         <div className="w-full bg-coral-100 rounded-full h-1 mt-2 overflow-hidden">
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-coral-500 to-coral-600"
+            className="h-full rounded-full bg-coral-500 hover:bg-coral-600"
             initial={{ width: 0 }}
             animate={{ width: `${progressPercentage}%` }}
             transition={{ duration: 0.5, ease: "easeOut" }}
@@ -816,7 +816,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
                 else if (currentStep === 15) handleIdealOutcomeSubmit();
               }}
               disabled={!inputValue.trim()}
-              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-coral-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
+              className="w-full bg-coral-500 hover:bg-coral-600 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-coral-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
             >
               Volgende
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1" />
@@ -847,7 +847,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
             <Button
               onClick={handleAgeSubmit}
               disabled={!numberValue || parseInt(numberValue) < 18 || parseInt(numberValue) > 99}
-              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-coral-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
+              className="w-full bg-coral-500 hover:bg-coral-600 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg shadow-coral-200/50 disabled:opacity-50 disabled:shadow-none transition-all"
             >
               Volgende
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1" />
@@ -894,7 +894,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
                     "min-h-[44px] px-3 py-2.5 rounded-xl border-2 font-medium transition-all",
                     "active:scale-[0.97] flex items-center justify-start gap-2",
                     selectedChips.includes(option.value)
-                      ? "border-coral-600 bg-gradient-to-br from-coral-500 to-coral-600 text-white shadow-md"
+                      ? "border-coral-600 bg-coral-500 hover:bg-coral-600 text-white shadow-md"
                       : "border-gray-200 bg-white text-gray-700 active:border-coral-300"
                   )}
                 >
@@ -909,7 +909,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
             <Button
               onClick={handleDatingAppsConfirm}
               disabled={selectedChips.length === 0}
-              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 rounded-xl py-3 text-sm sm:text-base font-semibold"
+              className="w-full bg-coral-500 hover:bg-coral-600 rounded-xl py-3 text-sm sm:text-base font-semibold"
             >
               Bevestig ({selectedChips.length})
             </Button>
@@ -930,7 +930,7 @@ export function KickstartIntakeChat({ onComplete, className }: KickstartIntakeCh
             />
             <Button
               onClick={handleConfidenceLevelConfirm}
-              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 rounded-xl py-3 text-sm sm:text-base font-semibold"
+              className="w-full bg-coral-500 hover:bg-coral-600 rounded-xl py-3 text-sm sm:text-base font-semibold"
             >
               Bevestig
             </Button>

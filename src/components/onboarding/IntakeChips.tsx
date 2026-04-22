@@ -83,7 +83,7 @@ export function IntakeChips({
               "active:scale-[0.97]",
               "text-left",
               isSelected(option.value)
-                ? "bg-gradient-to-br from-coral-500 to-coral-600 text-white border-coral-600 shadow-md"
+                ? "bg-coral-500 hover:bg-coral-600 text-white border-coral-600 shadow-md"
                 : "bg-white text-gray-900 border-gray-200 active:border-coral-400 active:bg-coral-50"
             )}
           >

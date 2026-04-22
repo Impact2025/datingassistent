@@ -121,7 +121,7 @@ export default function RootLayout({
             `,
           }}
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
         <meta name="theme-color" content="#FF7B54" />
         {/* CSS Loading Fallback - DISABLED to debug ERR_FAILED */}
         <meta name="mobile-web-app-capable" content="yes" />

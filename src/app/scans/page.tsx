@@ -204,7 +204,7 @@ export default function ScansPage() {
               Ontdek je dating patterns en unlock personalized inzichten
             </p>
             <Link href="/dashboard">
-              <Button className="bg-gradient-to-r from-purple-600 to-coral-600">
+              <Button className="bg-coral-500 hover:bg-coral-600">
                 Naar Dashboard
               </Button>
             </Link>
@@ -230,7 +230,7 @@ function ScanOverviewCard({ scan, metadata, delay }: ScanOverviewCardProps) {
       border: 'border-coral-200',
       text: 'text-coral-700',
       badge: 'bg-coral-100 text-coral-700',
-      button: 'from-coral-600 to-coral-700 hover:from-coral-700 hover:to-coral-800',
+      button: 'bg-coral-500',
       icon: 'text-coral-600'
     },
     purple: {
@@ -411,7 +411,7 @@ function ScanOverviewCard({ scan, metadata, delay }: ScanOverviewCardProps) {
               <p className="text-gray-700 mb-4">Je hebt deze scan nog niet gedaan</p>
               <Button
                 onClick={() => router.push(metadata.href)}
-                className="bg-gradient-to-r from-purple-600 to-coral-600"
+                className="bg-coral-500 hover:bg-coral-600"
               >
                 Start Scan
               </Button>

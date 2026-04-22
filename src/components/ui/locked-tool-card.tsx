@@ -66,7 +66,7 @@ export function LockedToolCard({
       case 'transformatie':
         return { label: 'PRO', icon: Sparkles, color: 'from-purple-500 to-coral-500' };
       default:
-        return { label: 'Upgrade', icon: Zap, color: 'from-coral-500 to-rose-500' };
+        return { label: 'Upgrade', icon: Zap, color: 'bg-coral-500' };
     }
   };
 
@@ -172,7 +172,7 @@ export function LockedToolCard({
               size="sm"
               className={cn(
                 "h-7 text-[10px] bg-gradient-to-r hover:opacity-90",
-                tierBadge?.color || "from-coral-500 to-purple-500"
+                tierBadge?.color || "bg-coral-500"
               )}
             >
               Ontgrendel
@@ -282,10 +282,10 @@ export function LockedIndicator({
   upgradeTier: ProgramTier | null
 }) {
   const tierConfig: Record<ProgramTier, { label: string; icon: typeof Crown; color: string }> = {
-    free: { label: 'Upgrade', icon: Zap, color: 'from-coral-500 to-rose-500' },
+    free: { label: 'Upgrade', icon: Zap, color: 'bg-coral-500' },
     vip: { label: 'VIP', icon: Crown, color: 'from-amber-500 to-yellow-400' },
     transformatie: { label: 'PRO', icon: Sparkles, color: 'from-purple-500 to-coral-500' },
-    kickstart: { label: 'Upgrade', icon: Zap, color: 'from-coral-500 to-rose-500' },
+    kickstart: { label: 'Upgrade', icon: Zap, color: 'bg-coral-500' },
   };
 
   const config = upgradeTier ? tierConfig[upgradeTier] : tierConfig.kickstart;

@@ -72,10 +72,10 @@ export default function OfflinePage() {
       {/* Header */}
       <header className="p-4 flex items-center justify-center border-b border-coral-100">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
             <Heart className="w-6 h-6 text-white" />
           </div>
-          <span className="font-bold text-xl bg-gradient-to-r from-coral-600 to-rose-600 bg-clip-text text-transparent">
+          <span className="font-bold text-xl bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
             DatingAssistent
           </span>
         </div>
@@ -106,7 +106,7 @@ export default function OfflinePage() {
         <button
           onClick={handleRetry}
           disabled={isRetrying}
-          className="group mb-8 px-8 py-4 bg-gradient-to-r from-coral-500 to-rose-500 text-white rounded-2xl font-semibold shadow-lg shadow-coral-500/25 hover:shadow-xl hover:shadow-coral-500/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+          className="group mb-8 px-8 py-4 bg-coral-500 hover:bg-coral-600 text-white rounded-2xl font-semibold shadow-lg shadow-coral-500/25 hover:shadow-xl hover:shadow-coral-500/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
         >
           <RefreshCw className={`w-5 h-5 ${isRetrying ? "animate-spin" : "group-hover:rotate-180 transition-transform duration-500"}`} />
           {isRetrying ? "Verbinden..." : "Opnieuw proberen"}

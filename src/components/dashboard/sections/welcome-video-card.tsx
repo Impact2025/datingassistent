@@ -112,7 +112,7 @@ export const WelcomeVideoCard = React.memo(function WelcomeVideoCard({
             /* Fallback when video doesn't load */
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center p-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center mx-auto mb-3">
+                <div className="w-16 h-16 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center mx-auto mb-3">
                   <span className="text-2xl font-bold text-white">I</span>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">Iris, je persoonlijke coach</p>

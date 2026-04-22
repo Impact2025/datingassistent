@@ -157,7 +157,7 @@ function VibeCheckContent() {
             </Button>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                   <Camera className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -258,7 +258,7 @@ function VibeCheckContent() {
                   <Button
                     onClick={analyzeImage}
                     disabled={isAnalyzing}
-                    className="w-full bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600 text-white py-6"
+                    className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6"
                   >
                     {isAnalyzing ? (
                       <>
@@ -338,7 +338,7 @@ function VibeCheckContent() {
                     </div>
                     <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div
-                        className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all"
+                        className="absolute left-0 top-0 h-full bg-coral-500 hover:bg-coral-600 rounded-full transition-all"
                         style={{ width: `${analysis.vibeScores.toegankelijkMysterieus}%` }}
                       />
                     </div>
@@ -355,7 +355,7 @@ function VibeCheckContent() {
                     </div>
                     <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div
-                        className="absolute left-0 top-0 h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full transition-all"
+                        className="absolute left-0 top-0 h-full bg-coral-500 hover:bg-coral-600 rounded-full transition-all"
                         style={{ width: `${analysis.vibeScores.serieuseSpeels}%` }}
                       />
                     </div>
@@ -372,7 +372,7 @@ function VibeCheckContent() {
                     </div>
                     <div className="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div
-                        className="absolute left-0 top-0 h-full bg-gradient-to-r from-rose-400 to-rose-600 rounded-full transition-all"
+                        className="absolute left-0 top-0 h-full bg-coral-500 hover:bg-coral-600 rounded-full transition-all"
                         style={{ width: `${analysis.vibeScores.rustigAvontuurlijk}%` }}
                       />
                     </div>

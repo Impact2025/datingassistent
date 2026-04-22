@@ -359,8 +359,8 @@ export function ChatCoachTab() {
         onComplete={() => logger.log('Chat Coach onboarding completed!')}
       />
 
-      {/* Main Chat Container - ChatGPT Style */}
-      <div className="flex h-full max-h-[calc(100vh-200px)] bg-background rounded-lg border overflow-hidden">
+      {/* Main Chat Container */}
+      <div className="flex h-full bg-background rounded-xl md:rounded-lg border overflow-hidden" style={{ maxHeight: 'calc(100dvh - 180px)' }}>
         {/* History Sidebar */}
         {showHistory && (
           <div className="w-80 border-r bg-muted/30 flex flex-col">

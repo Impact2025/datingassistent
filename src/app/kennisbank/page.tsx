@@ -20,6 +20,10 @@ import {
   Sparkles,
   Shield,
   TrendingUp,
+  Star,
+  Coffee,
+  Send,
+  Lock,
 } from 'lucide-react';
 import { getKennisbankCategories, getKennisbankIndex, getAllKennisbankArticles } from '@/lib/kennisbank';
 import { KennisbankSearch } from '@/components/kennisbank/kennisbank-search';
@@ -55,6 +59,10 @@ const categoryIcons: Record<string, React.ElementType> = {
   'daten-als-introvert': Users,
   'opnieuw-daten': Heart,
   'profiel-optimaliseren': Shield,
+  'zelfvertrouwen': Star,
+  'eerste-date': Coffee,
+  'eerste-berichten': Send,
+  'veilig': Lock,
 };
 
 // Kleuren voor categorieën
@@ -87,13 +95,37 @@ const categoryColors: Record<string, { bg: string; text: string; border: string;
     bg: 'bg-coral-50 dark:bg-coral-950/30',
     text: 'text-coral-700 dark:text-coral-400',
     border: 'border-coral-200 dark:border-coral-800',
-    gradient: 'from-coral-500 to-rose-500',
+    gradient: 'bg-coral-500',
   },
   'profiel-optimaliseren': {
     bg: 'bg-cyan-50 dark:bg-cyan-950/30',
     text: 'text-cyan-700 dark:text-cyan-400',
     border: 'border-cyan-200 dark:border-cyan-800',
     gradient: 'from-cyan-500 to-blue-500',
+  },
+  'zelfvertrouwen': {
+    bg: 'bg-yellow-50 dark:bg-yellow-950/30',
+    text: 'text-yellow-700 dark:text-yellow-400',
+    border: 'border-yellow-200 dark:border-yellow-800',
+    gradient: 'from-yellow-500 to-amber-500',
+  },
+  'eerste-date': {
+    bg: 'bg-rose-50 dark:bg-rose-950/30',
+    text: 'text-rose-700 dark:text-rose-400',
+    border: 'border-rose-200 dark:border-rose-800',
+    gradient: 'from-rose-500 to-pink-500',
+  },
+  'eerste-berichten': {
+    bg: 'bg-indigo-50 dark:bg-indigo-950/30',
+    text: 'text-indigo-700 dark:text-indigo-400',
+    border: 'border-indigo-200 dark:border-indigo-800',
+    gradient: 'from-indigo-500 to-violet-500',
+  },
+  'veilig': {
+    bg: 'bg-red-50 dark:bg-red-950/30',
+    text: 'text-red-700 dark:text-red-400',
+    border: 'border-red-200 dark:border-red-800',
+    gradient: 'from-red-500 to-orange-500',
   },
 };
 

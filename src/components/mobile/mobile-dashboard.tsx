@@ -57,7 +57,7 @@ const TABS: Tab[] = [
     icon: Home,
     color: 'text-gray-500',
     activeColor: 'text-coral-600',
-    bgGradient: 'from-coral-500 to-rose-500',
+    bgGradient: 'bg-coral-500',
   },
   {
     id: 'tools',
@@ -230,7 +230,7 @@ function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
       {/* Sliding Indicator */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gray-100">
         <div
-          className="h-full bg-gradient-to-r from-coral-500 to-coral-600 transition-all duration-300 ease-out"
+          className="h-full bg-coral-500 hover:bg-coral-600 transition-all duration-300 ease-out"
           style={{
             width: `${100 / TABS.length}%`,
             transform: `translateX(${activeIndex * 100}%)`,
@@ -381,7 +381,7 @@ function AccessDeniedScreen({ onLogin, onRegister }: { onLogin: () => void; onRe
             <div className="space-y-3">
               <Button
                 onClick={onLogin}
-                className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600 text-white py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
                 size="lg"
               >
                 <LogIn className="w-5 h-5 mr-2" />

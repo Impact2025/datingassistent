@@ -19,9 +19,9 @@ export function AppShellDesktop({
   return (
     <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex">
 
-      {/* Left Sidebar — sticky, full viewport height */}
+      {/* Left Sidebar — sticky, full viewport height, hidden on mobile via CSS as safety net */}
       {showNavigation && (
-        <aside className="w-60 flex-shrink-0 bg-white/95 dark:bg-gray-950/95 backdrop-blur-md border-r border-gray-100 dark:border-gray-800 sticky top-0 h-screen overflow-y-auto z-30 shadow-[1px_0_12px_rgba(0,0,0,0.04)]">
+        <aside className="hidden md:flex md:flex-col w-60 flex-shrink-0 bg-white/95 dark:bg-gray-950/95 backdrop-blur-md border-r border-gray-100 dark:border-gray-800 sticky top-0 h-screen overflow-y-auto z-30 shadow-[1px_0_12px_rgba(0,0,0,0.04)]">
           <SidebarNav activeTab={activeTab} onTabChange={onTabChange} />
         </aside>
       )}

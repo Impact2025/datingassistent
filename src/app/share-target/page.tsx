@@ -43,7 +43,7 @@ function ShareTargetContent() {
     <div className="min-h-screen bg-gradient-to-br from-coral-50 via-white to-rose-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
         {/* Header */}
-        <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
           <Share2 className="w-8 h-8 text-white" />
         </div>
 

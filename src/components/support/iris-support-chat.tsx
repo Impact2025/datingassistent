@@ -284,7 +284,7 @@ export function IrisSupportChat({
         )}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-coral-500 to-coral-600 p-4 flex-shrink-0">
+        <div className="bg-coral-500 hover:bg-coral-600 p-4 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
@@ -342,7 +342,7 @@ export function IrisSupportChat({
                     )}>
                       {/* Avatar */}
                       {message.type === 'iris' && (
-                        <div className="w-8 h-8 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center flex-shrink-0">
                           <Sparkles className="w-4 h-4 text-white" />
                         </div>
                       )}
@@ -356,7 +356,7 @@ export function IrisSupportChat({
                       <div className={cn(
                         'px-4 py-3 rounded-2xl',
                         message.type === 'user'
-                          ? 'bg-gradient-to-r from-coral-500 to-coral-600 text-white'
+                          ? 'bg-coral-500 hover:bg-coral-600 text-white'
                           : message.type === 'system'
                           ? 'bg-blue-50 text-blue-900 border border-blue-200'
                           : 'bg-gray-100 text-gray-900'
@@ -404,7 +404,7 @@ export function IrisSupportChat({
                   className="flex justify-start"
                 >
                   <div className="flex gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center">
                       <Sparkles className="w-4 h-4 text-white" />
                     </div>
                     <div className="px-4 py-3 bg-gray-100 rounded-2xl">
@@ -501,7 +501,7 @@ export function IrisSupportChat({
                 <Button
                   onClick={() => handleSendMessage()}
                   disabled={!input.trim() || isTyping}
-                  className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-4 rounded-xl"
+                  className="bg-coral-500 hover:bg-coral-600 text-white px-4 rounded-xl"
                 >
                   {isTyping ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

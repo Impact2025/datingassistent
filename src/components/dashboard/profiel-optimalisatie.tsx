@@ -31,7 +31,7 @@ export function ProfielOptimalisatie({
         <CardContent className="p-8 md:p-12">
           {/* Header Icon */}
           <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 bg-gradient-to-br from-coral-500 to-coral-600 rounded-3xl flex items-center justify-center shadow-lg">
+            <div className="w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-3xl flex items-center justify-center shadow-lg">
               <Target className="w-10 h-10 text-white" />
             </div>
           </div>
@@ -157,7 +157,7 @@ export function ProfielOptimalisatie({
           {/* CTA Button */}
           <Button
             onClick={onStartAssessment}
-            className="w-full bg-gradient-to-r from-coral-600 to-coral-700 hover:from-coral-700 hover:to-coral-800 text-white py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+            className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
           >
             Start Assessment
             <ArrowRight className="w-5 h-5 ml-2" />

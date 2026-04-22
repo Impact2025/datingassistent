@@ -56,7 +56,7 @@ export const VandaagTab = React.memo(function VandaagTab({ onTabChange, userId }
         >
           <button
             onClick={() => router.push('/transformatie')}
-            className="w-full relative overflow-hidden rounded-2xl bg-gradient-to-br from-coral-500 via-rose-500 to-coral-600 p-5 text-left active:scale-[0.99] transition-transform"
+            className="w-full relative overflow-hidden rounded-2xl bg-coral-500 hover:bg-coral-600 p-5 text-left active:scale-[0.99] transition-transform"
           >
             <div className="absolute top-0 right-0 w-36 h-36 bg-white/10 rounded-full blur-3xl -translate-y-8 translate-x-8 pointer-events-none" />
             <div className="relative z-10">
@@ -122,7 +122,7 @@ export const VandaagTab = React.memo(function VandaagTab({ onTabChange, userId }
         onClick={() => onTabChange?.('coach')}
         className="w-full flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all active:scale-[0.99] text-left"
       >
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center flex-shrink-0">
+        <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center flex-shrink-0">
           <MessageCircle className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1 min-w-0">

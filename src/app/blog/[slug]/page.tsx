@@ -333,7 +333,7 @@ export default async function BlogPostPage({
                       className="w-16 h-16 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-r from-coral-400 to-coral-600 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                       <User className="h-8 w-8 text-white" />
                     </div>
                   )}

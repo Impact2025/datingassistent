@@ -121,7 +121,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
         <div className="relative">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-coral-600 bg-clip-text text-transparent">
+              <h2 className="text-3xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
                 Discussies
               </h2>
               <p className="text-muted-foreground mt-1">
@@ -131,7 +131,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
             <Button
               onClick={() => setShowNewPostForm(!showNewPostForm)}
               size="lg"
-              className="bg-gradient-to-r from-primary to-coral-600 hover:from-primary/90 hover:to-coral-600/90 shadow-lg"
+              className="bg-coral-500 hover:bg-coral-600 shadow-lg"
             >
               <Lucide.Plus className="h-5 w-5 mr-2" />
               Nieuwe Discussie
@@ -150,7 +150,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
         <Card className="border-2 border-primary/20 shadow-xl bg-gradient-to-br from-card to-card/50">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-primary to-coral-600 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                 <Lucide.Edit className="h-5 w-5 text-white" />
               </div>
               <div>
@@ -186,7 +186,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
               <Button
                 onClick={handleCreatePost}
                 disabled={!newPost.title.trim() || !newPost.content.trim()}
-                className="bg-gradient-to-r from-primary to-coral-600 hover:from-primary/90 hover:to-coral-600/90"
+                className="bg-coral-500 hover:bg-coral-600"
               >
                 <Lucide.Send className="h-4 w-4 mr-2" />
                 Publiceren
@@ -221,7 +221,7 @@ export function ForumPosts({ categoryId }: { categoryId: number }) {
                 </div>
                 <Button
                   onClick={() => setShowNewPostForm(true)}
-                  className="mt-4 bg-gradient-to-r from-primary to-coral-600"
+                  className="mt-4 bg-coral-500 hover:bg-coral-600"
                 >
                   <Lucide.Plus className="h-4 w-4 mr-2" />
                   Start de eerste discussie

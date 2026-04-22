@@ -39,7 +39,7 @@ export function GroeiDoelenModule({ onTabChange, userId }: GroeiDoelenModuleProp
         </p>
         <Button
           onClick={() => router.push('/ai-relationship-coach')}
-          className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700"
+          className="bg-coral-500 hover:bg-coral-600"
         >
           Start Integrated Coaching
         </Button>
@@ -58,7 +58,7 @@ export function GroeiDoelenModule({ onTabChange, userId }: GroeiDoelenModuleProp
         </p>
         <Button
           onClick={() => router.push('/premium-coaching')}
-          className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
+          className="bg-coral-500 hover:bg-coral-600"
         >
           Start Premium Coaching
         </Button>

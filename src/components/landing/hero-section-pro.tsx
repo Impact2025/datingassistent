@@ -4,7 +4,7 @@ import { CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react';
 
 export function HeroSectionPro() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
+    <section className="relative overflow-hidden bg-coral-500 hover:bg-coral-600 text-white">
       <div className="absolute inset-0">
         <div className="absolute top-16 left-1/3 w-96 h-96 bg-primary/30 blur-3xl opacity-70" />
         <div className="absolute -bottom-24 right-0 w-[32rem] h-[32rem] bg-coral-500/20 blur-3xl opacity-80" />

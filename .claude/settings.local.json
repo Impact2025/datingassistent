@@ -307,7 +307,16 @@
       "Bash(git:*)",
       "Bash(python3:*)",
       "Bash(npx kill-port *)",
-      "Bash(python -c \"import sys,json; models=json.load\\(sys.stdin\\)['data']; [print\\(m['id']\\) for m in models if 'anthropic' in m['id']]\")"
+      "Bash(python -c \"import sys,json; models=json.load\\(sys.stdin\\)['data']; [print\\(m['id']\\) for m in models if 'anthropic' in m['id']]\")",
+      "Bash(python *)",
+      "Bash(bash /tmp/check_routes.sh)",
+      "Bash(sort -t: -k2)",
+      "Bash(sed -i 's/^date: \"2026-04-22\"/date: \"2026-02-01\"/' content/kennisbank/daten-als-introvert/online-daten-introvert.md)",
+      "Bash(sed -i 's/^date: \"2026-04-22\"/date: \"2026-02-07\"/' content/kennisbank/hechtingsstijlen/anxious-avoidant.md)",
+      "Bash(sed -i 's/^date: \"2026-04-22\"/date: \"2026-02-14\"/' content/kennisbank/hechtingsstijlen/trauma-bond.md)",
+      "Bash(sed -i 's/^date: \"2026-04-22\"/date: \"2026-02-20\"/' content/kennisbank/opnieuw-daten/na-scheiding.md)",
+      "Bash(sed -i 's/^date: \"2026-04-22\"/date: \"2026-02-27\"/' content/kennisbank/zelfvertrouwen/index.md)",
+      "Bash(sort -t'\"' -k2)"
     ],
     "deny": [],
     "ask": []

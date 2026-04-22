@@ -105,7 +105,7 @@ export function RouteOverview({ profileData, onStartStep }: RouteOverviewProps) 
         {/* Header */}
         <div className="space-y-6">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gray-900 to-gray-700 flex items-center justify-center flex-shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center flex-shrink-0">
               <Sparkles className="w-7 h-7 text-white" />
             </div>
             <div className="flex-1">
@@ -139,7 +139,7 @@ export function RouteOverview({ profileData, onStartStep }: RouteOverviewProps) 
               <div className="relative">
                 <Progress value={overallProgress} className="h-2 bg-gray-100 dark:bg-gray-700" />
                 <div
-                  className="absolute top-0 left-0 h-2 bg-gradient-to-r from-gray-900 to-gray-700 dark:from-gray-100 dark:to-gray-300 rounded-full transition-all duration-500"
+                  className="absolute top-0 left-0 h-2 bg-coral-500 hover:bg-coral-600 dark:from-gray-100 dark:to-gray-300 rounded-full transition-all duration-500"
                   style={{ width: `${overallProgress}%` }}
                 />
               </div>

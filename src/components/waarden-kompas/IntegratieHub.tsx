@@ -51,7 +51,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
         'Vroegtijdige detectie van rode vlaggen',
         'Betere beslissingen over wie te daten'
       ],
-      route: '/tools'
+      route: '/dashboard?tab=tools&category=analysis'
     },
     {
       id: 'date_planner',
@@ -75,7 +75,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
         'Hogere response rates door echtheid',
         'Betere eerste gesprekken'
       ],
-      route: '/tools'
+      route: '/dashboard?tab=tools&category=communication'
     }
   ];
 
@@ -119,7 +119,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
       {/* Header */}
       <Card className="text-center">
         <CardContent className="pt-8 pb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mx-auto mb-6">
             <Target className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -143,7 +143,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
-              className="bg-gradient-to-r from-purple-500 to-coral-500 h-3 rounded-full transition-all duration-300"
+              className="bg-coral-500 hover:bg-coral-600 h-3 rounded-full transition-all duration-300"
               style={{ width: `${(completedCount / totalCount) * 100}%` }}
             />
           </div>
@@ -218,7 +218,7 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
       {completedCount === totalCount && (
         <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
           <CardContent className="pt-8 pb-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">

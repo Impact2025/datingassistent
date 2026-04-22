@@ -42,7 +42,7 @@ export function AchievementPopup({
           >
             <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
               {/* Header with confetti effect */}
-              <div className="bg-gradient-to-r from-violet-500 to-coral-500 p-6 text-center relative overflow-hidden">
+              <div className="bg-coral-500 hover:bg-coral-600 p-6 text-center relative overflow-hidden">
                 {/* Decorative elements */}
                 <div className="absolute inset-0 overflow-hidden">
                   {[...Array(20)].map((_, i) => (

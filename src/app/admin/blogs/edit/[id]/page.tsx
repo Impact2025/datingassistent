@@ -848,7 +848,7 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
                 Terug
               </Button>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-coral-500 to-coral-600 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
                   {isNewBlog ? 'Nieuwe Blog Post' : 'Bewerk Blog Post'}
                 </h1>
                 <p className="text-sm text-gray-500">
@@ -910,7 +910,7 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
                 size="sm"
                 onClick={() => handleSave(true)}
                 disabled={saving}
-                className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white"
+                className="bg-coral-500 hover:bg-coral-600 text-white"
               >
                 <Eye className="w-4 h-4 mr-2" />
                 Publiceren
@@ -927,28 +927,28 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
           <TabsList className="grid w-full grid-cols-4 bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
             <TabsTrigger
               value="editor"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-coral-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-coral-500 data-[state=active]:text-white"
             >
               <FileText className="w-4 h-4 mr-2" />
               Editor
             </TabsTrigger>
             <TabsTrigger
               value="seo"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-coral-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-coral-500 data-[state=active]:text-white"
             >
               <Search className="w-4 h-4 mr-2" />
               SEO
             </TabsTrigger>
             <TabsTrigger
               value="social"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-coral-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-coral-500 data-[state=active]:text-white"
             >
               <Share2 className="w-4 h-4 mr-2" />
               Social Media
             </TabsTrigger>
             <TabsTrigger
               value="instellingen"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-coral-500 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-coral-500 data-[state=active]:text-white"
             >
               <Settings className="w-4 h-4 mr-2" />
               Instellingen
@@ -999,7 +999,7 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
               </div>
               <Button
                 onClick={() => handleAutoInsertLinks()}
-                className="bg-gradient-to-r from-coral-500 to-purple-600 hover:from-coral-600 hover:to-purple-700 text-white"
+                className="bg-coral-500 hover:bg-coral-600 text-white"
               >
                 <Sparkles className="w-4 h-4 mr-2" />
                 Automatisch Invoegen

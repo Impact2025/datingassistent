@@ -151,7 +151,7 @@ export function GespreksAssistent({ onTabChange }: GespreksAssistentProps) {
                     <div className="text-center space-y-4">
                       <div className={`w-14 h-14 mx-auto rounded-full flex items-center justify-center transition-colors ${
                         isActive
-                          ? 'bg-gradient-to-r from-coral-500 to-coral-600 text-white'
+                          ? 'bg-coral-500 hover:bg-coral-600 text-white'
                           : 'bg-gray-100 text-gray-600'
                       }`}>
                         <Icon className="w-7 h-7" />

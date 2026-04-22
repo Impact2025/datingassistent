@@ -259,7 +259,7 @@ function VragenPageContent() {
             </Button>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-coral-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -302,7 +302,7 @@ function VragenPageContent() {
             {/* New Session Button */}
             <Button
               onClick={() => setShowNewSession(true)}
-              className="w-full bg-gradient-to-r from-rose-500 to-coral-500 hover:from-rose-600 hover:to-coral-600 text-white py-6"
+              className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6"
             >
               <Plus className="w-5 h-5 mr-2" />
               Start nieuwe sessie
@@ -474,7 +474,7 @@ function VragenPageContent() {
               <Button
                 onClick={submitAnswer}
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-rose-500 to-coral-500 hover:from-rose-600 hover:to-coral-600 text-white py-6"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -498,7 +498,7 @@ function VragenPageContent() {
           >
             <Card className="border-rose-200 dark:border-rose-700 bg-gradient-to-r from-rose-50 to-coral-50 dark:from-rose-900/30 dark:to-coral-900/30">
               <CardContent className="p-8 text-center">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-rose-400 to-coral-500 flex items-center justify-center mx-auto mb-6">
+                <div className="w-20 h-20 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center mx-auto mb-6">
                   <Trophy className="w-10 h-10 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">

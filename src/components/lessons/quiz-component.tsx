@@ -138,11 +138,11 @@ export function QuizComponent({
               transition={{ type: 'spring', delay: 0.2 }}
             >
               {passed ? (
-                <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-full shadow-2xl">
+                <div className="inline-flex items-center justify-center w-24 h-24 bg-coral-500 hover:bg-coral-600 rounded-full shadow-2xl">
                   <Trophy className="w-12 h-12 text-white" />
                 </div>
               ) : (
-                <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-2xl">
+                <div className="inline-flex items-center justify-center w-24 h-24 bg-coral-500 hover:bg-coral-600 rounded-full shadow-2xl">
                   <RotateCcw className="w-12 h-12 text-white" />
                 </div>
               )}
@@ -185,7 +185,7 @@ export function QuizComponent({
                   {(!hasMaxAttempts || attemptsRemaining! > 0) && (
                     <Button
                       onClick={handleRetry}
-                      className="w-full bg-gradient-to-r from-coral-500 to-coral-600"
+                      className="w-full bg-coral-500 hover:bg-coral-600"
                       size="lg"
                     >
                       <RotateCcw className="w-5 h-5 mr-2" />
@@ -227,7 +227,7 @@ export function QuizComponent({
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
           <motion.div
-            className="h-2 rounded-full bg-gradient-to-r from-coral-500 to-coral-600"
+            className="h-2 rounded-full bg-coral-500 hover:bg-coral-600"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5 }}
@@ -247,7 +247,7 @@ export function QuizComponent({
           <Card>
             <CardHeader>
               <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-coral-500 to-coral-600 text-white font-bold flex-shrink-0">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 text-white font-bold flex-shrink-0">
                   {currentQuestionIndex + 1}
                 </div>
                 <div className="flex-1">
@@ -359,7 +359,7 @@ export function QuizComponent({
                   <Button
                     onClick={handleSubmitAnswer}
                     disabled={selectedAnswer === null || isSubmitting}
-                    className="w-full bg-gradient-to-r from-coral-500 to-coral-600"
+                    className="w-full bg-coral-500 hover:bg-coral-600"
                     size="lg"
                   >
                     Bevestig antwoord
@@ -367,7 +367,7 @@ export function QuizComponent({
                 ) : (
                   <Button
                     onClick={handleNextQuestion}
-                    className="w-full bg-gradient-to-r from-coral-500 to-coral-600"
+                    className="w-full bg-coral-500 hover:bg-coral-600"
                     size="lg"
                   >
                     {currentQuestionIndex < questions.length - 1 ? (

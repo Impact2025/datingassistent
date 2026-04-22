@@ -196,7 +196,7 @@ export default function AssessmentStepPage() {
                   <Button
                     onClick={handleNext}
                     disabled={!selectedAnswer || isLoading}
-                    className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading ? (
                       <>

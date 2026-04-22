@@ -386,7 +386,7 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
             </p>
             <Button
               onClick={markeerLesAlsVoltooid}
-              className="bg-gradient-to-r from-coral-500 to-coral-600"
+              className="bg-coral-500 hover:bg-coral-600"
             >
               <CheckCircle className="w-4 h-4 mr-2" />
               Les voltooien

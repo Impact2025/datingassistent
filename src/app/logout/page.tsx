@@ -24,7 +24,7 @@ const motivationalMessages = [
     icon: Heart,
     title: "Succes met je dating journey!",
     message: "Blijf jezelf en blijf groeien. We zien je graag snel terug!",
-    color: "from-coral-500 to-rose-500"
+    color: "bg-coral-500"
   },
   {
     icon: Sparkles,

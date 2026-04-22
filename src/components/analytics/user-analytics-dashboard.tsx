@@ -119,7 +119,7 @@ export function UserAnalyticsDashboard({ userId }: UserAnalyticsDashboardProps) 
           <Card className="border-2 border-coral-200 hover:border-coral-300 transition-colors">
             <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                   <CheckCircle className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -146,7 +146,7 @@ export function UserAnalyticsDashboard({ userId }: UserAnalyticsDashboardProps) 
           <Card className="border-2 border-purple-200 hover:border-purple-300 transition-colors">
             <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                   <Clock className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -172,7 +172,7 @@ export function UserAnalyticsDashboard({ userId }: UserAnalyticsDashboardProps) 
           <Card className="border-2 border-yellow-200 hover:border-yellow-300 transition-colors">
             <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                   <Award className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -196,7 +196,7 @@ export function UserAnalyticsDashboard({ userId }: UserAnalyticsDashboardProps) 
           <Card className="border-2 border-orange-200 hover:border-orange-300 transition-colors">
             <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                   <Zap className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">

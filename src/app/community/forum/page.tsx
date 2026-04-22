@@ -121,7 +121,7 @@ export default function ForumPage() {
                       Ontdek verhalen, deel ervaringen en vind steun bij anderen
                     </p>
                   </div>
-                  <Button asChild size="sm" className="bg-gradient-to-r from-primary to-coral-600 hover:from-primary/90 hover:to-coral-600/90">
+                  <Button asChild size="sm" className="bg-coral-500 hover:bg-coral-600">
                     <a href="/dashboard/community">
                       <Lucide.LayoutDashboard className="h-4 w-4 mr-2" />
                       Dashboard

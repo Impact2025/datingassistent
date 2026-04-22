@@ -328,7 +328,7 @@ export default function CoursesContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 bg-gradient-to-r from-coral-500 to-coral-600">
+      <section className="py-24 px-4 bg-coral-500 hover:bg-coral-600">
         <div className="max-w-4xl mx-auto text-center">
           <div className="space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold text-white">

@@ -63,7 +63,7 @@ export function AIAnalysisLoader({ progress, currentPhase, userName }: AIAnalysi
       <div className="w-full max-w-md mb-8">
         <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-coral-500 to-purple-500"
+            className="h-full bg-coral-500 hover:bg-coral-600"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5, ease: 'easeOut' }}

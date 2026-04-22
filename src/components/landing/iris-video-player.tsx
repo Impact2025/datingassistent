@@ -58,7 +58,7 @@ export function IrisVideoPlayer({
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
         {/* Decorative gradient border */}
-        <div className="absolute inset-0 bg-gradient-to-r from-coral-500 via-deep-purple to-coral-500 rounded-3xl p-[3px] -z-10" />
+        <div className="absolute inset-0 bg-coral-500 hover:bg-coral-600 rounded-3xl p-[3px] -z-10" />
 
         <div className="relative aspect-video rounded-3xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #F5E6E8, #E3867D)' }}>
           <video
@@ -105,7 +105,7 @@ export function IrisVideoPlayer({
                     animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
-                  <div className="relative w-20 h-20 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-coral-500/50 transition-shadow">
+                  <div className="relative w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-coral-500/50 transition-shadow">
                     <Play className="w-8 h-8 text-white ml-1" fill="white" />
                   </div>
                 </motion.div>
@@ -167,7 +167,7 @@ export function IrisVideoPlayer({
           >
             <div className="text-center px-4">
               <Link href={ctaHref}>
-                <Button className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-10 py-6 text-xl font-semibold shadow-xl rounded-full flex items-center justify-center gap-3">
+                <Button className="bg-coral-500 hover:bg-coral-600 text-white px-10 py-6 text-xl font-semibold shadow-xl rounded-full flex items-center justify-center gap-3">
                   {ctaText}
                   <ArrowRight className="w-6 h-6" />
                 </Button>

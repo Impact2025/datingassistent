@@ -84,7 +84,7 @@ export function LockedFeature({
           </p>
           <Button
             onClick={handleUpgrade}
-            className="bg-gradient-to-r from-coral-500 to-purple-600 hover:from-coral-600 hover:to-purple-700"
+            className="bg-coral-500 hover:bg-coral-600"
           >
             <TierIcon className="h-4 w-4 mr-2" />
             {cta.buttonText}
@@ -123,7 +123,7 @@ export function LockedFeature({
 
       <Button
         onClick={handleUpgrade}
-        className="bg-gradient-to-r from-coral-500 to-purple-600 hover:from-coral-600 hover:to-purple-700"
+        className="bg-coral-500 hover:bg-coral-600"
       >
         <TierIcon className="h-4 w-4 mr-2" />
         {cta.buttonText}
@@ -184,7 +184,7 @@ export function UpgradeBadge({ feature, className }: UpgradeBadgeProps) {
     <span
       className={cn(
         'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium',
-        'bg-gradient-to-r from-purple-500 to-coral-500 text-white',
+        'bg-coral-500 hover:bg-coral-600 text-white',
         className
       )}
     >
@@ -259,11 +259,11 @@ function getTierLabel(tier: ProgramTier) {
 function getTierColors(tier: ProgramTier) {
   switch (tier) {
     case 'vip':
-      return 'bg-gradient-to-r from-yellow-500 to-amber-500 text-white';
+      return 'bg-coral-500 hover:bg-coral-600 text-white';
     case 'transformatie':
-      return 'bg-gradient-to-r from-purple-500 to-coral-500 text-white';
+      return 'bg-coral-500 hover:bg-coral-600 text-white';
     case 'kickstart':
-      return 'bg-gradient-to-r from-coral-500 to-rose-500 text-white';
+      return 'bg-coral-500 hover:bg-coral-600 text-white';
     default:
       return 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
   }

@@ -94,7 +94,7 @@ function MobileSubscriptionPageContent() {
           <Card className="border-0 bg-gradient-to-r from-coral-50 to-coral-100 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center">
                   <CheckIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -152,7 +152,7 @@ function MobileSubscriptionPageContent() {
 
               <Button
                 onClick={() => router.push('/select-package')}
-                className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600 text-white"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white"
                 size="lg"
               >
                 <Crown className="w-5 h-5 mr-2" />

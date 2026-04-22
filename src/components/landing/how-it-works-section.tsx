@@ -96,7 +96,7 @@ export function HowItWorksSection({ className }: HowItWorksSectionProps) {
 
               <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 h-full">
                 {/* Step number badge */}
-                <div className="absolute -top-4 left-6 w-8 h-8 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
+                <div className="absolute -top-4 left-6 w-8 h-8 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
                   {step.number}
                 </div>
 

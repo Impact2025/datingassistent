@@ -361,7 +361,7 @@ export function ClicheTransformer({ onComplete }: ClicheTransformerProps) {
                 <Button
                   onClick={handleNextStep}
                   disabled={transformedText.length < 20}
-                  className="flex-1 gap-2 bg-gradient-to-r from-purple-600 to-blue-600"
+                  className="flex-1 gap-2 bg-coral-500 hover:bg-coral-600"
                 >
                   <Zap className="w-4 h-4" />
                   Analyseer mijn transformatie
@@ -480,7 +480,7 @@ export function ClicheTransformer({ onComplete }: ClicheTransformerProps) {
 
                 <Button
                   onClick={handleNextExercise}
-                  className="gap-2 bg-gradient-to-r from-purple-600 to-blue-600"
+                  className="gap-2 bg-coral-500 hover:bg-coral-600"
                 >
                   {currentIndex < CLICHE_EXERCISES.length - 1 ? (
                     <>

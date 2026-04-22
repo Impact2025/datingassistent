@@ -109,7 +109,7 @@ export function WeekReview({ userId, weekNumber, onComplete }: WeekReviewProps) 
       >
         <Card className="border-2 shadow-xl bg-gradient-to-br from-purple-50 to-blue-50">
           <CardContent className="pt-8 pb-6 text-center">
-            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mb-4">
               <TrendingUp className="h-10 w-10 text-white" />
             </div>
             <h2 className="text-3xl font-bold mb-3">
@@ -389,7 +389,7 @@ export function WeekReview({ userId, weekNumber, onComplete }: WeekReviewProps) 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <Card className="bg-gradient-to-r from-purple-500 to-blue-600 text-white border-0">
+        <Card className="bg-coral-500 hover:bg-coral-600 text-white border-0">
           <CardContent className="p-6 text-center">
             <h3 className="text-2xl font-bold mb-2">
               Klaar voor Week {weekNumber + 1}? 🚀

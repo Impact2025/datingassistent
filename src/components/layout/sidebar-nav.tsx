@@ -50,7 +50,7 @@ export function SidebarNav({ activeTab, onTabChange }: SidebarNavProps) {
         onClick={() => onTabChange('profiel')}
         className="flex items-center gap-3 px-3 py-2.5 mb-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
       >
-        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-coral-400 to-rose-500 flex items-center justify-center flex-shrink-0 shadow-sm">
+        <div className="w-9 h-9 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center flex-shrink-0 shadow-sm">
           <span className="text-white font-bold text-sm">{avatarLetter}</span>
         </div>
         <div className="flex-1 min-w-0 text-left">

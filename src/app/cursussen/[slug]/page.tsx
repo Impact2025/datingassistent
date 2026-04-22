@@ -186,7 +186,7 @@ export default function CursusDetailPage() {
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                 <div
-                  className="bg-gradient-to-r from-coral-500 to-coral-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-coral-500 hover:bg-coral-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progressPercentage}%` }}
                 />
               </div>
@@ -242,7 +242,7 @@ export default function CursusDetailPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-start gap-4 flex-1">
-                        <div className="shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center text-base font-semibold text-white shadow-sm">
+                        <div className="shrink-0 w-12 h-12 rounded-lg bg-coral-500 hover:bg-coral-600 flex items-center justify-center text-base font-semibold text-white shadow-sm">
                           {les.volgorde}
                         </div>
 
@@ -274,7 +274,7 @@ export default function CursusDetailPage() {
                           <PrimaryButton
                             size="sm"
                             disabled={!canStart}
-                            className={!canStart ? 'opacity-50 cursor-not-allowed' : 'bg-gradient-to-br from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700'}
+                            className={!canStart ? 'opacity-50 cursor-not-allowed' : 'bg-coral-500 hover:bg-coral-600'}
                           >
                             {getStatusLabel(status)}
                           </PrimaryButton>

@@ -68,9 +68,9 @@ export default function LeaderboardPage() {
   };
 
   const getRankBadge = (rank: number) => {
-    if (rank === 1) return 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-white';
-    if (rank === 2) return 'bg-gradient-to-r from-gray-300 to-gray-500 text-white';
-    if (rank === 3) return 'bg-gradient-to-r from-amber-400 to-amber-600 text-white';
+    if (rank === 1) return 'bg-coral-500 hover:bg-coral-600 text-white';
+    if (rank === 2) return 'bg-coral-500 hover:bg-coral-600 text-white';
+    if (rank === 3) return 'bg-coral-500 hover:bg-coral-600 text-white';
     if (rank <= 10) return 'bg-purple-100 text-purple-700';
     return 'bg-gray-100 text-gray-700';
   };

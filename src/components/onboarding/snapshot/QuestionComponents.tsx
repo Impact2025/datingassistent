@@ -173,7 +173,7 @@ export function SliderQuestion({ question, value, onChange, error }: SliderQuest
         {/* Track background */}
         <div className="relative h-3 sm:h-4 bg-gray-100 rounded-full overflow-hidden">
           <motion.div
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-coral-400 to-coral-500 rounded-full"
+            className="absolute inset-y-0 left-0 bg-coral-500 hover:bg-coral-600 rounded-full"
             style={{ width: `${percentage}%` }}
             initial={false}
             animate={{ width: `${percentage}%` }}

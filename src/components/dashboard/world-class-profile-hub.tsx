@@ -86,8 +86,8 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
       title: 'Profiel Optimalisatie',
       subtitle: 'Bouw een profiel dat werkt (+250% matches)',
       action: () => setShowProfielOptimalisatie(true),
-      gradient: 'from-coral-500 to-coral-600',
-      iconBg: 'bg-gradient-to-br from-coral-500 to-coral-600',
+      gradient: 'bg-coral-500',
+      iconBg: 'bg-coral-500 hover:bg-coral-600',
       glowColor: 'shadow-coral-500/50',
       badge: 'Nieuw'
     },
@@ -98,7 +98,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
       subtitle: 'AI assessment van je profiel',
       action: () => setShowAnalysis(true),
       gradient: 'from-blue-500 to-cyan-500',
-      iconBg: 'bg-gradient-to-br from-blue-500 to-cyan-500',
+      iconBg: 'bg-coral-500 hover:bg-coral-600',
       glowColor: 'shadow-blue-500/50'
     },
     {
@@ -108,7 +108,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
       subtitle: 'Professionele foto tips',
       action: () => setShowPhotoAnalysis(true),
       gradient: 'from-purple-500 to-coral-500',
-      iconBg: 'bg-gradient-to-br from-purple-500 to-coral-500',
+      iconBg: 'bg-coral-500 hover:bg-coral-600',
       glowColor: 'shadow-purple-500/50'
     },
     {
@@ -118,7 +118,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
       subtitle: 'AI-gedreven bio verbetering',
       action: () => router.push('/tools?tool=ai-bio-generator'),
       gradient: 'from-green-500 to-emerald-500',
-      iconBg: 'bg-gradient-to-br from-green-500 to-emerald-500',
+      iconBg: 'bg-coral-500 hover:bg-coral-600',
       glowColor: 'shadow-green-500/50'
     },
     {
@@ -127,8 +127,8 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
       title: 'Chat Coach',
       subtitle: 'Persoonlijk gesprek advies',
       action: () => router.push('/chat'),
-      gradient: 'from-coral-500 to-rose-500',
-      iconBg: 'bg-gradient-to-br from-coral-500 to-rose-500',
+      gradient: 'bg-coral-500',
+      iconBg: 'bg-coral-500 hover:bg-coral-600',
       glowColor: 'shadow-coral-500/50'
     }
   ];
@@ -224,24 +224,24 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
       <div className="max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
         {/* Hero Section with Animated Gradient */}
         <div className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-coral-500 via-purple-500 to-blue-500 opacity-10 blur-3xl animate-pulse"></div>
+          <div className="absolute inset-0 bg-coral-500 hover:bg-coral-600 opacity-10 blur-3xl animate-pulse"></div>
           <Card className="relative border-0 shadow-2xl bg-white/80 backdrop-blur-sm">
             <CardContent className="p-6 sm:p-8">
               <div className="flex items-start justify-between mb-6">
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-coral-500 to-purple-600 flex items-center justify-center shadow-lg shadow-coral-500/50">
+                    <div className="w-12 h-12 rounded-2xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-lg shadow-coral-500/50">
                       <Trophy className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 via-coral-900 to-purple-900 bg-clip-text text-transparent">
+                      <h1 className="text-2xl sm:text-3xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
                         Profiel Hub
                       </h1>
                       <p className="text-sm text-gray-600">Je centrale command center</p>
                     </div>
                   </div>
                 </div>
-                <Badge className="bg-gradient-to-r from-coral-500 to-purple-600 text-white border-0 shadow-lg">
+                <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0 shadow-lg">
                   <Sparkles className="w-3 h-3 mr-1" />
                   Pro
                 </Badge>
@@ -255,7 +255,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
                     <p className="text-sm text-gray-600">Optimaliseer voor betere matches</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-4xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent">
+                    <div className="text-4xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
                       {profileStatus.completeness}%
                     </div>
                   </div>
@@ -268,7 +268,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
                     className="h-3 bg-gray-200"
                   />
                   <div
-                    className="absolute top-0 left-0 h-3 rounded-full bg-gradient-to-r from-coral-500 via-purple-500 to-blue-500 transition-all duration-1000 shadow-lg"
+                    className="absolute top-0 left-0 h-3 rounded-full bg-coral-500 hover:bg-coral-600 transition-all duration-1000 shadow-lg"
                     style={{ width: `${profileStatus.completeness}%` }}
                   >
                     <div className="absolute inset-0 bg-white/30 animate-pulse rounded-full"></div>
@@ -362,7 +362,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
 
           <CardContent className="p-6 sm:p-8 relative">
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-yellow-500/50">
+              <div className="w-12 h-12 bg-coral-500 hover:bg-coral-600 rounded-2xl flex items-center justify-center shadow-lg shadow-yellow-500/50">
                 <Zap className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -374,9 +374,9 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
             <div className="space-y-3">
               {aiInsights.map((insight, idx) => {
                 const colorConfig = {
-                  blue: { bg: 'from-blue-50 to-cyan-50', border: 'border-blue-200', icon: 'bg-gradient-to-br from-blue-500 to-cyan-500', text: 'text-blue-900' },
-                  green: { bg: 'from-green-50 to-emerald-50', border: 'border-green-200', icon: 'bg-gradient-to-br from-green-500 to-emerald-500', text: 'text-green-900' },
-                  purple: { bg: 'from-purple-50 to-coral-50', border: 'border-purple-200', icon: 'bg-gradient-to-br from-purple-500 to-coral-500', text: 'text-purple-900' }
+                  blue: { bg: 'from-blue-50 to-cyan-50', border: 'border-blue-200', icon: 'bg-coral-500 hover:bg-coral-600', text: 'text-blue-900' },
+                  green: { bg: 'from-green-50 to-emerald-50', border: 'border-green-200', icon: 'bg-coral-500 hover:bg-coral-600', text: 'text-green-900' },
+                  purple: { bg: 'from-purple-50 to-coral-50', border: 'border-purple-200', icon: 'bg-coral-500 hover:bg-coral-600', text: 'text-purple-900' }
                 }[insight.color];
 
                 return (
@@ -404,7 +404,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
             {/* CTA Button with Gradient */}
             <Button
               onClick={() => setShowAnalysis(true)}
-              className="w-full mt-6 h-12 bg-gradient-to-r from-coral-500 via-purple-500 to-blue-500 hover:from-coral-600 hover:via-purple-600 hover:to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group"
+              className="w-full mt-6 h-12 bg-coral-500 hover:bg-coral-600 hover:from-coral-600 hover:via-purple-600 hover:to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group"
             >
               <Target className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
               Volledige AI Analyse Starten
@@ -417,7 +417,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
         <Card className="border-0 shadow-xl bg-gradient-to-br from-white to-coral-50/50">
           <CardContent className="p-6 sm:p-8">
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-coral-500 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg shadow-coral-500/50">
+              <div className="w-12 h-12 bg-coral-500 hover:bg-coral-600 rounded-2xl flex items-center justify-center shadow-lg shadow-coral-500/50">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -434,7 +434,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
 
               <div className="relative h-2 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-coral-500 to-purple-600 transition-all duration-1000"
+                  className="absolute top-0 left-0 h-full bg-coral-500 hover:bg-coral-600 transition-all duration-1000"
                   style={{ width: `${profileStatus.completeness}%` }}
                 >
                   <div className="absolute inset-0 bg-white/30 animate-pulse"></div>

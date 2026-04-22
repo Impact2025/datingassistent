@@ -83,7 +83,7 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
                 ease: "easeInOut"
               }}
             >
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-coral-400 to-purple-400" />
+              <div className="w-32 h-32 rounded-full bg-coral-500 hover:bg-coral-600" />
             </motion.div>
 
             <motion.div
@@ -99,11 +99,11 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
                 delay: 0.3
               }}
             >
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-coral-400 to-purple-400" />
+              <div className="w-32 h-32 rounded-full bg-coral-500 hover:bg-coral-600" />
             </motion.div>
 
             {/* Center icon */}
-            <div className="relative w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center shadow-2xl">
+            <div className="relative w-32 h-32 mx-auto rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-2xl">
               <AnimatePresence mode="wait">
                 {currentStepData && (
                   <motion.div
@@ -152,7 +152,7 @@ export function AnalyzingScreen({ onComplete }: AnalyzingScreenProps) {
             </div>
             <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-coral-500 to-coral-600"
+                className="h-full bg-coral-500 hover:bg-coral-600"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.3 }}

@@ -449,7 +449,7 @@ export function SmartContactForm({
         disabled={isSubmitting}
         className={cn(
           'w-full py-4 rounded-xl font-medium',
-          'bg-gradient-to-r from-coral-500 to-purple-600',
+          'bg-coral-500 hover:bg-coral-600',
           'hover:from-coral-600 hover:to-purple-700',
           'text-white shadow-lg hover:shadow-xl',
           'transition-all duration-200'

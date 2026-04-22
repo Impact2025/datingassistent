@@ -97,7 +97,7 @@ export function ProactiveInvite({
           : 'opacity-0 translate-y-4 scale-95'
       }`}>
         {/* Iris branded header */}
-        <div className="bg-gradient-to-r from-coral-500 to-coral-600 px-4 py-3">
+        <div className="bg-coral-500 hover:bg-coral-600 px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -146,7 +146,7 @@ export function ProactiveInvite({
           <div className="flex gap-2">
             <Button
               onClick={handleAccept}
-              className="flex-1 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white shadow-md"
+              className="flex-1 bg-coral-500 hover:bg-coral-600 text-white shadow-md"
               size="sm"
             >
               <Heart className="w-4 h-4 mr-2" />

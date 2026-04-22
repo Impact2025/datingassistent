@@ -74,7 +74,7 @@ export function EssentialsHub() {
         </div>
 
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
             <Gift className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -83,7 +83,7 @@ export function EssentialsHub() {
           </div>
         </div>
 
-        <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0">
+        <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0">
           <Gift className="w-3 h-3 mr-1" />
           100% Gratis - Geen upgrade nodig
         </Badge>
@@ -154,7 +154,7 @@ export function EssentialsHub() {
                   <div className="flex gap-3">
                     <Button
                       onClick={() => router.push('/kickstart-toolkit')}
-                      className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                      className="bg-coral-500 hover:bg-coral-600 text-white"
                     >
                       <Zap className="w-4 h-4 mr-2" />
                       Bekijk Kickstart Toolkit

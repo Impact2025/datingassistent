@@ -286,7 +286,7 @@ export function DailyEngagement({ userId, onEngagementComplete }: DailyEngagemen
                                 size="sm"
                                 onClick={() => handleEngagementResponse(engagement.id, currentResponse)}
                                 disabled={!currentResponse.trim()}
-                                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                                className="bg-coral-500 hover:bg-coral-600"
                               >
                                 Verstuur
                               </Button>
@@ -327,7 +327,7 @@ export function DailyEngagement({ userId, onEngagementComplete }: DailyEngagemen
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-coral-500 to-coral-600 text-white">
+          <Card className="border-0 shadow-lg bg-coral-500 hover:bg-coral-600 text-white">
             <CardContent className="p-6 text-center">
               <h3 className="text-xl font-bold mb-2">
                 Klaar voor meer momentum?

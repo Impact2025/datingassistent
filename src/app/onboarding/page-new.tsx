@@ -298,7 +298,7 @@ export default function NewOnboardingPage() {
             <div className="space-y-8">
               <Card className="border-2 border-coral-200 shadow-lg">
                 <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Sparkles className="w-8 h-8 text-white" />
                   </div>
                   <h1 className="text-3xl font-bold mb-3">Welkom bij DatingAssistent</h1>
@@ -319,7 +319,7 @@ export default function NewOnboardingPage() {
           {state.currentStep === 'welcome' && (
             <Card className="border-2 border-coral-200 shadow-lg">
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-coral-500 to-coral-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle className="text-3xl">
@@ -358,7 +358,7 @@ export default function NewOnboardingPage() {
                   <Button
                     onClick={handleWelcomeComplete}
                     size="lg"
-                    className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 px-8"
+                    className="bg-coral-500 hover:bg-coral-600 px-8"
                   >
                     Start Jouw Dating Startpunt
                   </Button>

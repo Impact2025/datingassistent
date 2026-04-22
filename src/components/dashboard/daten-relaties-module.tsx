@@ -104,7 +104,7 @@ export function DatenRelatiesModule({ onTabChange }: DatenRelatiesModuleProps) {
         </p>
         <Button
           onClick={() => router.push('/levensvisie')}
-          className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
+          className="bg-coral-500 hover:bg-coral-600"
         >
           Start Toekomst Analyse
         </Button>

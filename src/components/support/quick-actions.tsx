@@ -193,7 +193,7 @@ export function QuickActions({
                 <div className={cn(
                   'flex-shrink-0 w-10 h-10 rounded-lg',
                   'flex items-center justify-center',
-                  'bg-gradient-to-br from-coral-500 to-coral-600',
+                  'bg-coral-500 hover:bg-coral-600',
                   'group-hover:scale-110 transition-transform duration-200'
                 )}>
                   <Icon className="w-5 h-5 text-white" />

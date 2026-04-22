@@ -317,7 +317,7 @@ export default function ScanDetailPage() {
           className="text-center"
         >
           <Link href="/scans">
-            <Button className="bg-gradient-to-r from-purple-600 to-coral-600">
+            <Button className="bg-coral-500 hover:bg-coral-600">
               Bekijk Al Je Scans
             </Button>
           </Link>

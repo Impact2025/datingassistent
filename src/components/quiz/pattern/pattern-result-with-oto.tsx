@@ -257,7 +257,7 @@ export function PatternResultWithOTO({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="p-8 bg-gradient-to-br from-coral-500 to-coral-600 text-white rounded-2xl"
+                className="p-8 bg-coral-500 hover:bg-coral-600 text-white rounded-2xl"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <Sparkles className="w-6 h-6" />

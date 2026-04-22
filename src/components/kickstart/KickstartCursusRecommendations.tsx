@@ -98,7 +98,7 @@ const typeLabels = {
 const typeColors = {
   deepDive: 'from-blue-500 to-blue-600',
   bonus: 'from-purple-500 to-purple-600',
-  nextStep: 'from-coral-500 to-coral-600',
+  nextStep: 'bg-coral-500',
   tool: 'from-emerald-500 to-emerald-600',
 };
 
@@ -328,7 +328,7 @@ function RecommendationCard({ recommendation }: { recommendation: CursusRecommen
         {/* Premium locked overlay indicator */}
         {!hasAccess && recommendation.isPremium && (
           <div className="absolute top-0 right-0">
-            <div className="bg-gradient-to-l from-amber-500 to-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-bl-lg flex items-center gap-1.5 shadow-sm">
+            <div className="bg-coral-500 hover:bg-coral-600 text-white text-xs font-semibold px-3 py-1 rounded-bl-lg flex items-center gap-1.5 shadow-sm">
               <Lock className="h-3 w-3" />
               <span>Premium</span>
             </div>

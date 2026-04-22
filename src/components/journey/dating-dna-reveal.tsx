@@ -100,7 +100,7 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
             <Card className="border-0 shadow-lg bg-white/90 backdrop-blur-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3 text-lg">
-                  <div className="p-2 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full">
+                  <div className="p-2 bg-coral-500 hover:bg-coral-600 rounded-full">
                     <IconComponent className="w-5 h-5 text-white" />
                   </div>
                   {item.label}
@@ -121,7 +121,7 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
       case 'personalityType':
         return (
           <div className="text-center py-4">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h3 className="text-2xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent mb-2">
               {dna.personalityType}
             </h3>
             <p className="text-gray-600">
@@ -235,10 +235,10 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-full mb-6">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent mb-4">
             Jouw Dating DNA
           </h1>
           <p className="text-lg text-gray-600">
@@ -264,7 +264,7 @@ export function DatingDNAReveal({ dna, onContinue }: DatingDNARevealProps) {
               transition={{ duration: 0.5 }}
               className="text-center"
             >
-              <Card className="border-0 shadow-xl bg-gradient-to-r from-coral-500 to-coral-600 text-white">
+              <Card className="border-0 shadow-xl bg-coral-500 hover:bg-coral-600 text-white">
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold mb-4">
                     Klaar voor de volgende stap?

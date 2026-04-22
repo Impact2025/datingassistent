@@ -140,7 +140,7 @@ export function DeviceGuard({
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-coral-50 via-coral-25 to-white p-4">
       <Card className="max-w-lg w-full shadow-xl border-0 bg-white/95 backdrop-blur-sm">
         <CardHeader className="text-center pb-4">
-          <div className="w-20 h-20 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-10 h-10 text-white" />
           </div>
           <CardTitle className="text-2xl font-bold text-gray-900">
@@ -169,7 +169,7 @@ export function DeviceGuard({
 
             <Button
               onClick={() => router.push(redirectPath)}
-              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
+              className="w-full bg-coral-500 hover:bg-coral-600"
               size="lg"
             >
               <RefreshCw className="w-5 h-5 mr-2" />

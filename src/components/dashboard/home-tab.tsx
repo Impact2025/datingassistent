@@ -36,7 +36,7 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
                      hover:shadow-md hover:border-coral-300 transition-all group"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-coral-500 hover:bg-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
@@ -54,7 +54,7 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
                      hover:shadow-md hover:border-coral-300 transition-all group"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-coral-500 hover:bg-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
@@ -72,7 +72,7 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
                      hover:shadow-md hover:border-coral-300 transition-all group text-left"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-coral-500 hover:bg-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <TrendingUp className="w-5 h-5 text-white" />
               </div>
@@ -90,7 +90,7 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
                      hover:shadow-md hover:border-coral-300 transition-all group text-left"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-coral-500 hover:bg-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <Target className="w-5 h-5 text-white" />
               </div>
@@ -108,7 +108,7 @@ export function HomeTab({ onTabChange, userId }: HomeTabProps) {
                      hover:shadow-md hover:border-coral-300 transition-all group"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-coral-500 to-coral-600 rounded-lg flex items-center justify-center shadow-sm
+              <div className="w-10 h-10 bg-coral-500 hover:bg-coral-600 rounded-lg flex items-center justify-center shadow-sm
                             group-hover:shadow-md transition-all">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>

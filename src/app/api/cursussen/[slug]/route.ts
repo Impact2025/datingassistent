@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { verifyToken, cookieConfig } from '@/lib/jwt-config';
 import { resolveSlug } from '@/lib/cursus-slug-utils';
 import { logger } from '@/lib/logger';
+import { getCursusAccess } from '@/lib/cursus-access';
 
 /**
  * GET /api/cursussen/[slug]
@@ -25,10 +26,9 @@ export async function GET(
       logger.log(`🔄 Slug alias resolved: ${rawSlug} -> ${slug}`);
     }
 
-    // Try to get user from JWT token
     let userId: number | null = null;
     let userSubscription: string | null = null;
-    let purchasedCursusIds: number[] = [];
+    let enrolledProgramSlugs: string[] = [];
 
     try {
       const cookieStore = await cookies();
@@ -39,7 +39,6 @@ export async function GET(
         if (user) {
           userId = user.id;
 
-          // Get user's subscription type
           const userResult = await sql`
             SELECT subscription_type FROM users WHERE id = ${userId}
           `;
@@ -47,15 +46,13 @@ export async function GET(
             userSubscription = userResult.rows[0].subscription_type;
           }
 
-          // Get user's purchased courses (via payment_transactions)
-          const purchasedResult = await sql`
-            SELECT DISTINCT c.id
-            FROM cursussen c
-            JOIN payment_transactions pt ON pt.cursus_id = c.id
-            WHERE pt.user_id = ${userId}
-              AND pt.status = 'completed'
+          const enrollmentsResult = await sql`
+            SELECT p.slug
+            FROM program_enrollments pe
+            JOIN programs p ON p.id = pe.program_id
+            WHERE pe.user_id = ${userId} AND pe.status = 'active'
           `;
-          purchasedCursusIds = purchasedResult.rows.map((r: any) => r.id);
+          enrolledProgramSlugs = enrollmentsResult.rows.map((r: any) => r.slug);
         }
       }
     } catch (authError) {
@@ -177,11 +174,7 @@ export async function GET(
       };
     }
 
-    // Determine access
-    const isGratis = cursus.cursus_type === 'gratis';
-    const isVip = userSubscription === 'vip' || userSubscription === 'expert' || userSubscription === 'groeier';
-    const isPurchased = purchasedCursusIds.includes(cursus.id);
-    const hasAccess = isGratis || isVip || isPurchased;
+    const hasAccess = getCursusAccess(cursus.cursus_type, userSubscription, enrolledProgramSlugs);
 
     return NextResponse.json({
       cursus: {

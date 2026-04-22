@@ -269,7 +269,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
           {/* Quick navigation header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-md">
                 <span className="text-white font-bold text-lg">T</span>
               </div>
               <div>
@@ -302,7 +302,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 lg:p-8">
+    <div className="p-2 lg:p-6">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <motion.div
@@ -326,7 +326,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
                   variant="default"
                   size="sm"
                   onClick={() => setViewMode('transformatie')}
-                  className="bg-gradient-to-r from-coral-500 to-rose-500"
+                  className="bg-coral-500 hover:bg-coral-600"
                 >
                   <Sparkles className="w-4 h-4 mr-2" />
                   Ga naar Transformatie
@@ -337,7 +337,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
                   variant="default"
                   size="sm"
                   onClick={() => setViewMode('kickstart')}
-                  className="bg-gradient-to-r from-coral-500 to-coral-600"
+                  className="bg-coral-500 hover:bg-coral-600"
                 >
                   <Rocket className="w-4 h-4 mr-2" />
                   Ga naar Kickstart
@@ -518,7 +518,7 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
               </p>
               <Button
                 onClick={() => onTabChange?.('coach')}
-                className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
+                className="bg-coral-500 hover:bg-coral-600"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Start Gesprek met Iris

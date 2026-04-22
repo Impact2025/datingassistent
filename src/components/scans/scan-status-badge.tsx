@@ -198,7 +198,7 @@ export function RetakeCountdown({ canRetakeAt, className }: RetakeCountdownProps
       {/* Progress bar */}
       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
         <div
-          className="bg-gradient-to-r from-coral-500 to-coral-600 h-full rounded-full transition-all duration-500"
+          className="bg-coral-500 hover:bg-coral-600 h-full rounded-full transition-all duration-500"
           style={{ width: `${Math.min(percentage, 100)}%` }}
         />
       </div>

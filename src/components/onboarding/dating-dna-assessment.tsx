@@ -136,7 +136,7 @@ const questions: Question[] = [
 ];
 
 const colorMap: Record<string, string> = {
-  pink: "from-coral-500 to-rose-500",
+  pink: "bg-coral-500",
   purple: "from-purple-500 to-indigo-500",
   rose: "from-rose-500 to-coral-500",
   blue: "from-blue-500 to-cyan-500",
@@ -347,8 +347,8 @@ export function DatingDNAAssessment({ onComplete }: DatingDNAAssessmentProps) {
           className={cn(
             "w-32 transition-all",
             isLastQuestion
-              ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
-              : "bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
+              ? "bg-coral-500 hover:bg-coral-600"
+              : "bg-coral-500 hover:bg-coral-600"
           )}
         >
           {isLastQuestion ? "Voltooien" : "Volgende"}

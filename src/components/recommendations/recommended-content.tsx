@@ -245,7 +245,7 @@ export function RecommendedContent({
                         <CardContent className="p-4">
                           {/* Icon & Type */}
                           <div className="flex items-center justify-between mb-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center text-white">
+                            <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center text-white">
                               {getRecommendationIcon(rec.type)}
                             </div>
                             <Badge

@@ -42,7 +42,7 @@ const programIcons: Record<string, any> = {
 
 const programColors: Record<string, string> = {
   kickstart: 'from-blue-500 to-blue-600',
-  transformatie: 'from-coral-500 to-coral-600',
+  transformatie: 'bg-coral-500',
   'vip-reis': 'from-purple-500 to-indigo-600'
 };
 
@@ -162,7 +162,7 @@ export default function AssessmentResultPage() {
   }
 
   const Icon = programIcons[program.tier] || Sparkles;
-  const gradientColor = programColors[program.tier] || 'from-coral-500 to-coral-600';
+  const gradientColor = programColors[program.tier] || 'bg-coral-500';
   const showBetaPrice = program.price_beta && program.price_beta < program.price_regular;
 
   return (
@@ -175,7 +175,7 @@ export default function AssessmentResultPage() {
           transition={{ type: 'spring', duration: 0.5 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-full shadow-2xl mb-6">
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-coral-500 hover:bg-coral-600 rounded-full shadow-2xl mb-6">
             <CheckCircle className="w-12 h-12 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-3">
@@ -188,7 +188,7 @@ export default function AssessmentResultPage() {
 
         {/* Confidence Badge */}
         <div className="text-center mb-8">
-          <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 text-lg">
+          <Badge className="bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 text-lg">
             <TrendingUp className="w-5 h-5 mr-2" />
             {recommendation.confidence}% match met jouw situatie
           </Badge>
@@ -215,7 +215,7 @@ export default function AssessmentResultPage() {
                   <div className="space-y-3">
                     <Button
                       onClick={handleRegister}
-                      className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg shadow-lg"
+                      className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg shadow-lg"
                     >
                       <UserPlus className="w-5 h-5 mr-2" />
                       Gratis account maken
@@ -230,7 +230,7 @@ export default function AssessmentResultPage() {
 
             <CardHeader className="text-center pb-4">
               <div className="inline-flex items-center justify-center mx-auto mb-4">
-                <Badge className="bg-gradient-to-r from-coral-500 to-coral-600 text-white px-4 py-2">
+                <Badge className="bg-coral-500 hover:bg-coral-600 text-white px-4 py-2">
                   ⭐ Aanbevolen voor jou
                 </Badge>
               </div>

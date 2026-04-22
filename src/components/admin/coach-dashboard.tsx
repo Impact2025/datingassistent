@@ -616,7 +616,7 @@ export function CoachDashboard() {
             <Button
               onClick={() => generateAnalyticsReport()}
               disabled={generatingReports}
-              className="bg-gradient-to-r from-purple-600 to-blue-600"
+              className="bg-coral-500 hover:bg-coral-600"
             >
               <BarChart3 className="w-4 h-4 mr-2" />
               Genereer Analytics Rapport
@@ -826,7 +826,7 @@ export function CoachDashboard() {
               <h2 className="text-2xl font-bold">AI Prompt Management</h2>
               <p className="text-muted-foreground">Beheer en customize AI prompts voor verschillende doeleinden</p>
             </div>
-            <Button className="bg-gradient-to-r from-purple-600 to-blue-600">
+            <Button className="bg-coral-500 hover:bg-coral-600">
               <FileText className="w-4 h-4 mr-2" />
               Nieuwe Prompt
             </Button>

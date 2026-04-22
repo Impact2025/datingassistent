@@ -222,7 +222,7 @@ export function ChatWidget({
       <div className={`fixed ${position === 'bottom-right' ? 'bottom-10 right-4' : 'bottom-10 left-4'} z-50`}>
         <Button
           onClick={() => setIsOpen(true)}
-          className="rounded-full w-14 h-14 sm:w-16 sm:h-16 shadow-lg hover:shadow-xl transition-all hover:scale-105 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 border-2 border-white/30"
+          className="rounded-full w-14 h-14 sm:w-16 sm:h-16 shadow-lg hover:shadow-xl transition-all hover:scale-105 bg-coral-500 hover:bg-coral-600 border-2 border-white/30"
         >
           <div className="relative">
             <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
@@ -238,7 +238,7 @@ export function ChatWidget({
     <div className={`fixed ${position === 'bottom-right' ? 'bottom-10 right-4' : 'bottom-10 left-4'} z-50`}>
       <Card className={`w-96 sm:w-96 ${isMinimized ? 'h-14' : 'h-[28rem]'} shadow-2xl border-2 transition-all duration-300 max-w-[calc(100vw-2rem)] flex flex-col`}>
         {/* Header - Iris branded */}
-        <CardHeader className="pb-2 cursor-pointer flex-shrink-0 bg-gradient-to-r from-coral-500 to-coral-600 text-white rounded-t-lg" onClick={() => setIsMinimized(!isMinimized)}>
+        <CardHeader className="pb-2 cursor-pointer flex-shrink-0 bg-coral-500 hover:bg-coral-600 text-white rounded-t-lg" onClick={() => setIsMinimized(!isMinimized)}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Avatar className="w-8 h-8 border-2 border-white/30">
@@ -301,7 +301,7 @@ export function ChatWidget({
                         {message.senderType === 'agent' ? (
                           <>
                             <AvatarImage src="/images/iris-avatar.png" alt="Iris" />
-                            <AvatarFallback className="bg-gradient-to-br from-coral-400 to-coral-600 text-white text-xs">
+                            <AvatarFallback className="bg-coral-500 hover:bg-coral-600 text-white text-xs">
                               <Sparkles className="w-3 h-3" />
                             </AvatarFallback>
                           </>
@@ -314,7 +314,7 @@ export function ChatWidget({
                       <div
                         className={`px-3 py-2 rounded-lg text-sm whitespace-pre-wrap ${
                           message.senderType === 'user'
-                            ? 'bg-gradient-to-r from-coral-500 to-coral-600 text-white'
+                            ? 'bg-coral-500 hover:bg-coral-600 text-white'
                             : 'bg-gray-100 text-gray-900'
                         }`}
                       >
@@ -339,7 +339,7 @@ export function ChatWidget({
                     <div className="flex gap-2 max-w-[80%]">
                       <Avatar className="w-7 h-7 flex-shrink-0">
                         <AvatarImage src="/images/iris-avatar.png" alt="Iris" />
-                        <AvatarFallback className="bg-gradient-to-br from-coral-400 to-coral-600 text-white text-xs">
+                        <AvatarFallback className="bg-coral-500 hover:bg-coral-600 text-white text-xs">
                           <Sparkles className="w-3 h-3" />
                         </AvatarFallback>
                       </Avatar>

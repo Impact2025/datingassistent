@@ -378,7 +378,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             <div className="relative">
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-coral-200 dark:border-coral-700 hover:border-coral-300 dark:hover:border-coral-600 hover:shadow-xl transition-all space-y-6">
                 <div className="flex items-start justify-between">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center flex-shrink-0 shadow-lg">
                     <span className="text-2xl font-bold text-white">1</span>
                   </div>
                   <span className="text-xs font-semibold text-coral-600 dark:text-coral-400 bg-coral-50 dark:bg-coral-900/30 px-3 py-1 rounded-full">Het Fundament</span>
@@ -404,7 +404,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             <div className="relative">
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-blue-200 dark:border-blue-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-xl transition-all space-y-6">
                 <div className="flex items-start justify-between">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center flex-shrink-0 shadow-lg">
                     <span className="text-2xl font-bold text-white">2</span>
                   </div>
                   <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">Actie & Ontwikkeling</span>
@@ -430,7 +430,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
             <div className="relative">
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-purple-200 dark:border-purple-700 hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-xl transition-all space-y-6">
                 <div className="flex items-start justify-between">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-coral-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center flex-shrink-0 shadow-lg">
                     <span className="text-2xl font-bold text-white">3</span>
                   </div>
                   <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-3 py-1 rounded-full">Meesterschap</span>
@@ -708,7 +708,7 @@ export function LandingPageContent({ hero }: LandingPageContentProps) {
                     <p className="text-xs text-coral-700 dark:text-coral-400 italic mb-4">
                       "Krijg binnen 2 minuten inzicht in jouw valkuilen"
                     </p>
-                    <Button className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all">
+                    <Button className="w-full bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all">
                       Gratis Starten
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>

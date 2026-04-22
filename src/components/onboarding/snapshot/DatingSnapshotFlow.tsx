@@ -634,7 +634,7 @@ export function DatingSnapshotFlow({
           className="w-full max-w-md my-auto sm:my-0"
         >
           <div className="bg-white rounded-3xl shadow-2xl shadow-coral-200/30 border border-coral-100/50 overflow-hidden">
-            <div className="bg-gradient-to-br from-coral-500 to-coral-600 p-6 text-center text-white">
+            <div className="bg-coral-500 hover:bg-coral-600 p-6 text-center text-white">
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -661,7 +661,7 @@ export function DatingSnapshotFlow({
               <div className="space-y-3">
                 <Button
                   onClick={handleRestoreProgress}
-                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-5 rounded-xl font-semibold"
+                  className="w-full bg-coral-500 hover:bg-coral-600 text-white py-5 rounded-xl font-semibold"
                 >
                   Doorgaan waar ik was
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -731,7 +731,7 @@ export function DatingSnapshotFlow({
         >
           <div className="bg-white rounded-3xl shadow-2xl shadow-coral-200/30 border border-coral-100/50 overflow-hidden">
             {/* Header with Iris */}
-            <div className="bg-gradient-to-br from-coral-500 to-coral-600 p-8 text-center text-white relative overflow-visible">
+            <div className="bg-coral-500 hover:bg-coral-600 p-8 text-center text-white relative overflow-visible">
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -812,7 +812,7 @@ export function DatingSnapshotFlow({
               >
                 <Button
                   onClick={handleStart}
-                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50"
+                  className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50"
                 >
                   Start de Dating Snapshot
                   <ArrowRight className="w-5 h-5 ml-2" />
@@ -857,7 +857,7 @@ export function DatingSnapshotFlow({
             aria-label={`Voortgang: ${Math.round(overallProgress)}%`}
           >
             <motion.div
-              className="h-full bg-gradient-to-r from-coral-500 to-coral-600"
+              className="h-full bg-coral-500 hover:bg-coral-600"
               initial={{ width: 0 }}
               animate={{ width: `${overallProgress}%` }}
               transition={{ duration: 0.3 }}
@@ -948,7 +948,7 @@ export function DatingSnapshotFlow({
             <Button
               onClick={handleNext}
               disabled={isSubmitting}
-              className="flex-1 min-h-[48px] bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white touch-manipulation active:scale-[0.98] transition-transform"
+              className="flex-1 min-h-[48px] bg-coral-500 hover:bg-coral-600 text-white touch-manipulation active:scale-[0.98] transition-transform"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">
@@ -1308,7 +1308,7 @@ export function DatingSnapshotFlow({
           >
             <Button
               onClick={handleComplete}
-              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50"
+              className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50"
             >
               Start Module 1
               <ArrowRight className="w-5 h-5 ml-2" />

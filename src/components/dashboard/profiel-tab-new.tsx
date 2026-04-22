@@ -20,7 +20,7 @@ export const ProfielTab = memo(function ProfielTab({
   userProfile
 }: ProfielTabProps) {
   return (
-    <div className="min-h-screen">
+    <div>
       <WorldClassProfileHub embedded={true} />
     </div>
   );

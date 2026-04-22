@@ -220,7 +220,7 @@ export default function ProWelcomePage() {
             <Card className="border-0 shadow-2xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
               <CardContent className="p-8 text-center space-y-6">
                 <div className="space-y-4">
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent">
+                  <h1 className="text-3xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
                     Welkom bij DatingAssistent Pro! 🎉
                   </h1>
                   <p className="text-lg text-muted-foreground">
@@ -252,7 +252,7 @@ export default function ProWelcomePage() {
                   </Button>
                   <Button
                     onClick={handleVideoComplete}
-                    className="gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
+                    className="gap-2 bg-coral-500 hover:bg-coral-600"
                   >
                     <Play className="w-4 h-4" />
                     Verder naar vragen
@@ -327,7 +327,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleNext}
                     disabled={!canProceed()}
-                    className="flex-1 gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-coral-500 hover:bg-coral-600"
                   >
                     Volgende
                     <ArrowRight className="w-4 h-4" />
@@ -388,7 +388,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleNext}
                     disabled={!canProceed()}
-                    className="flex-1 gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-coral-500 hover:bg-coral-600"
                   >
                     Volgende
                     <ArrowRight className="w-4 h-4" />
@@ -445,7 +445,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleNext}
                     disabled={!canProceed()}
-                    className="flex-1 gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-coral-500 hover:bg-coral-600"
                   >
                     Volgende
                     <ArrowRight className="w-4 h-4" />
@@ -504,7 +504,7 @@ export default function ProWelcomePage() {
                   <Button
                     onClick={handleComplete}
                     disabled={!canProceed() || isLoading}
-                    className="flex-1 gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
+                    className="flex-1 gap-2 bg-coral-500 hover:bg-coral-600"
                   >
                     {isLoading ? (
                       <>
@@ -532,7 +532,7 @@ export default function ProWelcomePage() {
                 </div>
 
                 <div className="space-y-4">
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent">
+                  <h2 className="text-3xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
                     Perfect! Je setup is compleet 🎉
                   </h2>
                   <p className="text-lg text-muted-foreground">
@@ -545,7 +545,7 @@ export default function ProWelcomePage() {
 
                 <Button
                   onClick={() => router.push('/dashboard')}
-                  className="gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-purple-600"
+                  className="gap-2 bg-coral-500 hover:bg-coral-600"
                 >
                   Direct naar Dashboard
                   <ArrowRight className="w-4 h-4" />

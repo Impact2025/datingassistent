@@ -175,7 +175,7 @@ export function PersonalizedOnboardingSection({
           className="bg-gradient-to-r from-violet-50 to-coral-50 rounded-2xl p-4 border border-coral-100"
         >
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-coral-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center text-white font-bold flex-shrink-0">
               I
             </div>
             <div>

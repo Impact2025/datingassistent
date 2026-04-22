@@ -56,7 +56,7 @@ export function ProgressCelebration({ step, onComplete }: ProgressCelebrationPro
           <CardContent className="p-8 text-center">
             {/* Success icon */}
             <div className="mb-6">
-              <div className="w-20 h-20 mx-auto bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mb-4">
+              <div className="w-20 h-20 mx-auto bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mb-4">
                 <Trophy className="w-10 h-10 text-white" />
               </div>
 
@@ -92,7 +92,7 @@ export function ProgressCelebration({ step, onComplete }: ProgressCelebrationPro
             {/* Continue button */}
             <Button
               onClick={onComplete}
-              className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white px-8 py-3 text-lg font-semibold"
+              className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-3 text-lg font-semibold"
             >
               Verder met je journey!
             </Button>

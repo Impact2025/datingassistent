@@ -229,7 +229,7 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
             <Button
               onClick={() => setStep('input')}
               disabled={!selectedApp}
-              className="w-full bg-gradient-to-r from-purple-600 to-coral-600"
+              className="w-full bg-coral-500 hover:bg-coral-600"
               size="lg"
             >
               Verder
@@ -353,7 +353,7 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
             <Button
               onClick={handleAnalyze}
               disabled={!bio.trim()}
-              className="w-full bg-gradient-to-r from-purple-600 to-coral-600"
+              className="w-full bg-coral-500 hover:bg-coral-600"
               size="lg"
             >
               <Sparkles className="w-4 h-4 mr-2" />
@@ -405,7 +405,7 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
             className="space-y-6"
           >
             {/* Header met score */}
-            <Card className="bg-gradient-to-br from-purple-600 to-coral-600 text-white border-0">
+            <Card className="bg-coral-500 hover:bg-coral-600 text-white border-0">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>

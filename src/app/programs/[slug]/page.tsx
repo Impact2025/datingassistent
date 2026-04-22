@@ -122,7 +122,7 @@ export default function ProgramDashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-coral-500 to-coral-600 text-white">
+      <div className="bg-coral-500 hover:bg-coral-600 text-white">
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -297,7 +297,7 @@ export default function ProgramDashboardPage() {
                               </div>
                               <div className="w-full bg-gray-200 rounded-full h-2">
                                 <div
-                                  className="bg-gradient-to-r from-coral-500 to-coral-600 h-2 rounded-full transition-all"
+                                  className="bg-coral-500 hover:bg-coral-600 h-2 rounded-full transition-all"
                                   style={{ width: `${moduleProgress}%` }}
                                 />
                               </div>
@@ -340,7 +340,7 @@ export default function ProgramDashboardPage() {
                               }`}
                             >
                               <div className="flex items-center gap-4 flex-1">
-                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-coral-500 to-coral-600 text-white">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 text-white">
                                   {lesson.is_completed ? (
                                     <CheckCircle className="w-5 h-5" />
                                   ) : (

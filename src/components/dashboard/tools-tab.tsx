@@ -1,0 +1,449 @@
+"use client";
+
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  Camera,
+  MessageCircle,
+  Image,
+  Target,
+  Shield,
+  Heart,
+  Compass,
+  User,
+  Sparkles,
+  Battery,
+  Ghost,
+} from 'lucide-react';
+import { GuidedFlow } from '@/components/dashboard/guided-flow';
+import { ToolModal, ToolModalHeader, getToolMetadata, hasModalComponent } from '@/components/tools';
+
+interface Tool {
+  id: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  route: string;
+  category: 'profile' | 'communication' | 'analysis' | 'safety' | 'transformatie';
+  popular?: boolean;
+  tier?: 'free' | 'kickstart' | 'transformatie';
+}
+
+function ToolsTabContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [showGuidedFlow, setShowGuidedFlow] = useState(false);
+
+  const [activeModal, setActiveModal] = useState<{
+    isOpen: boolean;
+    route: string | null;
+    title: string;
+    subtitle: string;
+    component: React.ComponentType<any> | null;
+  }>({
+    isOpen: false,
+    route: null,
+    title: '',
+    subtitle: '',
+    component: null,
+  });
+
+  useEffect(() => {
+    const tool = searchParams?.get('tool');
+    const category = searchParams?.get('category');
+
+    if (tool) {
+      const toolCategoryMap: Record<string, string> = {
+        'profile': 'profile',
+        'profiel': 'profile',
+        'chat': 'communication',
+        'date': 'analysis',
+        'date-planner': 'analysis',
+        'bio-generator': 'profile',
+        'ai-bio-generator': 'profile',
+        'foto-checker': 'profile',
+        'ai-foto-checker': 'profile',
+        'conversatie-starter': 'communication',
+        'ai-conversatie-starter': 'communication',
+        'gespreks-ehbo': 'safety',
+        'ai-gespreks-ehbo': 'safety',
+        'confidence-coach': 'analysis',
+        'ai-confidence-coach': 'analysis',
+        'ai-profiel-coach': 'analysis',
+        'waarden-kompas': 'analysis',
+        'waardenkompas': 'analysis',
+        'kompas': 'analysis'
+      };
+      const mappedCategory = toolCategoryMap[tool.toLowerCase()];
+      if (mappedCategory) setSelectedCategory(mappedCategory);
+    } else if (category) {
+      setSelectedCategory(category);
+    }
+  }, [searchParams]);
+
+  const tools: Tool[] = [
+    {
+      id: 'waarden-kompas',
+      icon: <Compass className="w-6 h-6" />,
+      title: 'Waarden Kompas™',
+      description: 'Ontdek je kernwaarden voor betere matches',
+      route: '/waarden-kompas',
+      category: 'analysis',
+      popular: true,
+    },
+    {
+      id: 'profile-coach',
+      icon: <Camera className="w-6 h-6" />,
+      title: 'Profiel Coach',
+      description: 'Foto, bio en profiel optimalisatie',
+      route: '/profiel',
+      category: 'profile',
+      popular: true,
+    },
+    {
+      id: 'ai-bio-generator',
+      icon: <Heart className="w-6 h-6" />,
+      title: 'AI Bio Generator',
+      description: 'Professionele bio varianten genereren',
+      route: '/tools/ai-bio-generator',
+      category: 'profile',
+      popular: true,
+    },
+    {
+      id: 'ai-foto-checker',
+      icon: <Image className="w-6 h-6" />,
+      title: 'AI Foto Checker',
+      description: 'Professionele foto beoordeling',
+      route: '/profiel',
+      category: 'profile',
+    },
+    {
+      id: 'chat-coach',
+      icon: <MessageCircle className="w-6 h-6" />,
+      title: 'Chat Coach',
+      description: 'Gespreksanalyse en advies',
+      route: '/chat',
+      category: 'communication',
+      popular: true,
+    },
+    {
+      id: 'ai-conversatie-starter',
+      icon: <MessageCircle className="w-6 h-6" />,
+      title: 'AI Conversatie Starter',
+      description: 'Slimme openingszinnen genereren',
+      route: '/chat',
+      category: 'communication',
+    },
+    {
+      id: 'ai-gespreks-ehbo',
+      icon: <Shield className="w-6 h-6" />,
+      title: 'AI Gespreks EHBO',
+      description: 'Problematische gesprekken analyseren',
+      route: '/chat',
+      category: 'communication',
+    },
+    {
+      id: 'date-planner',
+      icon: <Target className="w-6 h-6" />,
+      title: 'Date Planner',
+      description: 'Perfecte date ideeën',
+      route: '/date-planner',
+      category: 'analysis',
+      popular: true,
+    },
+    {
+      id: 'ai-confidence-coach',
+      icon: <Target className="w-6 h-6" />,
+      title: 'AI Confidence Coach',
+      description: 'Zelfvertrouwen en mindset coaching',
+      route: '/groei',
+      category: 'analysis',
+    },
+    {
+      id: 'ai-profiel-coach',
+      icon: <User className="w-6 h-6" />,
+      title: 'AI Profiel Coach',
+      description: 'Profiel analyse en optimalisatie',
+      route: '/profiel',
+      category: 'analysis',
+    },
+    {
+      id: 'vibe-check',
+      icon: <Camera className="w-6 h-6" />,
+      title: 'Vibe Check',
+      description: 'Ontdek hoe je foto emotioneel overkomt',
+      route: '/tools/vibe-check',
+      category: 'transformatie',
+      tier: 'transformatie',
+      popular: true,
+    },
+    {
+      id: 'energie-batterij',
+      icon: <Battery className="w-6 h-6" />,
+      title: 'Energie Batterij',
+      description: 'Meet je sociale energie en voorkom burnout',
+      route: '/tools/energie-batterij',
+      category: 'transformatie',
+      tier: 'transformatie',
+    },
+    {
+      id: '36-vragen',
+      icon: <Heart className="w-6 h-6" />,
+      title: '36 Vragen',
+      description: 'Bouw diepere verbinding met je date',
+      route: '/tools/36-vragen',
+      category: 'transformatie',
+      tier: 'transformatie',
+      popular: true,
+    },
+    {
+      id: 'ghosting-reframer',
+      icon: <Ghost className="w-6 h-6" />,
+      title: 'Ghosting Reframer',
+      description: 'Verwerk afwijzing op een gezonde manier',
+      route: '/tools/ghosting-reframer',
+      category: 'transformatie',
+      tier: 'transformatie',
+    },
+  ];
+
+  const categories = [
+    { id: 'all', label: 'Alles', count: tools.length },
+    { id: 'transformatie', label: 'Transformatie', count: tools.filter(t => t.category === 'transformatie').length },
+    { id: 'profile', label: 'Profiel', count: tools.filter(t => t.category === 'profile').length },
+    { id: 'communication', label: 'Communicatie', count: tools.filter(t => t.category === 'communication').length },
+    { id: 'analysis', label: 'Analyse', count: tools.filter(t => t.category === 'analysis').length },
+    { id: 'safety', label: 'Veiligheid', count: tools.filter(t => t.category === 'safety').length },
+  ];
+
+  const filteredTools = selectedCategory === 'all'
+    ? tools
+    : tools.filter(tool => tool.category === selectedCategory);
+
+  const handleToolClick = (route: string, title: string, description: string) => {
+    if (hasModalComponent(route)) {
+      const metadata = getToolMetadata(route);
+      if (metadata) {
+        setActiveModal({
+          isOpen: true,
+          route,
+          title: metadata.title,
+          subtitle: metadata.subtitle,
+          component: metadata.component,
+        });
+      }
+    } else {
+      router.push(route);
+    }
+  };
+
+  const closeModal = () => {
+    setActiveModal({ isOpen: false, route: null, title: '', subtitle: '', component: null });
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'profile': return 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300';
+      case 'communication': return 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300';
+      case 'analysis': return 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300';
+      case 'safety': return 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300';
+      case 'transformatie': return 'bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300';
+      default: return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
+    }
+  };
+
+  return (
+    <div className="pb-6">
+      {/* Header */}
+      <div className="mb-4">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">AI Tools</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-300">Kies je dating tool</p>
+      </div>
+
+      {/* Category Filter and Guide Button */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex gap-2 overflow-x-auto pb-1 flex-1">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                selectedCategory === category.id
+                  ? 'bg-coral-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+              }`}
+            >
+              {category.label} ({category.count})
+            </button>
+          ))}
+        </div>
+
+        <Button
+          onClick={() => setShowGuidedFlow(true)}
+          className="ml-4 bg-coral-500 hover:bg-coral-600 text-white shadow-lg flex-shrink-0"
+          size="sm"
+        >
+          <Sparkles className="w-4 h-4 mr-2" />
+          Persoonlijke Gids
+        </Button>
+      </div>
+
+      {/* 3-Tier Tool Showcase */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <Card
+          className="cursor-pointer overflow-hidden border-2 border-green-300 dark:border-green-700 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 hover:shadow-lg transition-all"
+          onClick={() => router.push('/essentials')}
+        >
+          <CardContent className="p-4">
+            <Badge className="bg-green-500 text-white border-0 mb-2">🆓 GRATIS</Badge>
+            <h3 className="font-bold text-gray-900 dark:text-white mb-1">Essentials</h3>
+            <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">Badges, Activity Logger, Stats & meer</p>
+            <Button size="sm" variant="outline" className="border-green-500 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50 w-full">
+              Ontdek →
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card
+          className="cursor-pointer overflow-hidden border-2 border-blue-300 dark:border-blue-700 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 hover:shadow-lg transition-all"
+          onClick={() => router.push('/kickstart-toolkit')}
+        >
+          <CardContent className="p-4">
+            <Badge className="bg-blue-500 text-white border-0 mb-2">💎 KICKSTART</Badge>
+            <h3 className="font-bold text-gray-900 dark:text-white mb-1">Kickstart Toolkit</h3>
+            <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">5 AI tools met dagelijkse limieten</p>
+            <Button size="sm" variant="outline" className="border-blue-500 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 w-full">
+              Ontdek →
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card
+          className="cursor-pointer overflow-hidden border-2 border-purple-300 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-coral-50 dark:from-purple-900/30 dark:to-coral-900/30 hover:shadow-lg transition-all"
+          onClick={() => router.push('/pro-arsenal')}
+        >
+          <CardContent className="p-4">
+            <Badge className="bg-purple-500 text-white border-0 mb-2">⭐ PREMIUM</Badge>
+            <h3 className="font-bold text-gray-900 dark:text-white mb-1">Pro Arsenal</h3>
+            <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">Premium tools + unlimited access</p>
+            <Button size="sm" className="bg-coral-500 hover:bg-coral-600 text-white w-full">
+              Ontdek →
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Transformatie 3.0 Tools Highlight */}
+      <Card className="mb-6 border-2 border-coral-300 dark:border-coral-700 bg-gradient-to-br from-coral-50 to-rose-50 dark:from-coral-900/30 dark:to-rose-900/30 overflow-hidden">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0 mb-2">✨ TRANSFORMATIE 3.0</Badge>
+              <h3 className="font-bold text-gray-900 dark:text-white mb-1">4 Nieuwe AI Tools</h3>
+              <p className="text-xs text-gray-600 dark:text-gray-300">
+                Vibe Check • Energie Batterij • 36 Vragen • Ghosting Reframer
+              </p>
+            </div>
+            <Button
+              size="sm"
+              onClick={() => setSelectedCategory('transformatie')}
+              className="bg-coral-500 hover:bg-coral-600 text-white"
+            >
+              Bekijk →
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Tool Cards */}
+      <div className="grid grid-cols-1 gap-4 max-w-md mx-auto">
+        {filteredTools.map((tool) => (
+          <Card
+            key={tool.id}
+            className="cursor-pointer hover:shadow-md transition-shadow border-0 bg-white dark:bg-gray-800"
+            onClick={() => handleToolClick(tool.route, tool.title, tool.description)}
+          >
+            <CardContent className="p-4">
+              <div className="flex flex-col items-center text-center space-y-3">
+                <div className="w-12 h-12 bg-coral-50 dark:bg-coral-900/30 rounded-xl flex items-center justify-center">
+                  <div className="text-coral-600 dark:text-coral-400">{tool.icon}</div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-center gap-2">
+                    <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{tool.title}</h3>
+                    {tool.popular && (
+                      <Badge className="text-xs bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300">🔥</Badge>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-600 dark:text-gray-300 leading-tight">{tool.description}</p>
+                </div>
+                <Badge variant="secondary" className={`text-xs ${getCategoryColor(tool.category)}`}>
+                  {tool.category}
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {filteredTools.length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-4xl mb-4">🔍</div>
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Geen tools gevonden</h3>
+          <p className="text-gray-600 dark:text-gray-300 text-sm">Probeer een andere categorie</p>
+        </div>
+      )}
+
+      {showGuidedFlow && (
+        <GuidedFlow
+          onComplete={() => setShowGuidedFlow(false)}
+          onClose={() => setShowGuidedFlow(false)}
+        />
+      )}
+
+      <ToolModal isOpen={activeModal.isOpen} onClose={closeModal}>
+        <ToolModalHeader
+          title={activeModal.title}
+          subtitle={activeModal.subtitle}
+          onBack={closeModal}
+          onClose={closeModal}
+        />
+        <div className="flex-1 overflow-y-auto p-4">
+          {activeModal.component && (
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center min-h-[400px]">
+                  <div className="text-center space-y-4">
+                    <div className="w-12 h-12 border-3 border-gray-300 dark:border-gray-600 border-t-coral-500 rounded-full animate-spin mx-auto" />
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Tool laden...</p>
+                  </div>
+                </div>
+              }
+            >
+              <activeModal.component onClose={closeModal} />
+            </Suspense>
+          )}
+        </div>
+      </ToolModal>
+    </div>
+  );
+}
+
+export function ToolsTab() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center py-12">
+        <div className="text-center space-y-4">
+          <div className="text-4xl">🔧</div>
+          <p className="text-gray-600 dark:text-gray-300">Tools laden...</p>
+        </div>
+      </div>
+    }>
+      <ToolsTabContent />
+    </Suspense>
+  );
+}

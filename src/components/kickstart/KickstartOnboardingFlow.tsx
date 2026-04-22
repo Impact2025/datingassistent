@@ -158,7 +158,7 @@ export function KickstartOnboardingFlow({
             {/* Premium Card - overflow-visible for avatar to extend above */}
             <div className="bg-white rounded-3xl shadow-2xl shadow-coral-200/30 border border-coral-100/50 overflow-visible relative">
               {/* Video Section - rounded top, overflow visible for avatar */}
-              <div className="relative bg-gradient-to-br from-coral-500 to-coral-600 rounded-t-3xl overflow-visible">
+              <div className="relative bg-coral-500 hover:bg-coral-600 rounded-t-3xl overflow-visible">
                 <div className="aspect-video relative overflow-visible">
                   {/* Video - Always loaded, visibility controlled */}
                   <video
@@ -178,7 +178,7 @@ export function KickstartOnboardingFlow({
 
                   {/* Thumbnail Overlay - Hidden when playing */}
                   <div className={cn(
-                    "absolute inset-0 bg-gradient-to-b from-coral-500 via-coral-500 to-coral-600 flex flex-col items-center justify-between text-white transition-opacity duration-300 rounded-t-3xl overflow-visible",
+                    "absolute inset-0 bg-coral-500 hover:bg-coral-600 flex flex-col items-center justify-between text-white transition-opacity duration-300 rounded-t-3xl overflow-visible",
                     videoPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
                   )}>
                     {/* Top section: Avatar positioned outside container */}
@@ -275,7 +275,7 @@ export function KickstartOnboardingFlow({
                 >
                   <Button
                     onClick={() => setCurrentStep('chat')}
-                    className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50 hover:shadow-xl hover:shadow-coral-300/50 transition-all group"
+                    className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50 hover:shadow-xl hover:shadow-coral-300/50 transition-all group"
                   >
                     Laten we beginnen
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

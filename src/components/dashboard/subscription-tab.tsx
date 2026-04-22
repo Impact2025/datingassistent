@@ -134,7 +134,7 @@ export function SubscriptionTab() {
                 className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-700"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-coral-500 hover:bg-coral-600 rounded-lg flex items-center justify-center">
                     <Calendar className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -197,7 +197,7 @@ export function SubscriptionTab() {
               >
                 {program.featured && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-gradient-to-r from-coral-500 to-coral-600 text-white px-3 py-1">
+                    <Badge className="bg-coral-500 hover:bg-coral-600 text-white px-3 py-1">
                       Onze Aanrader
                     </Badge>
                   </div>

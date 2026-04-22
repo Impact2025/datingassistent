@@ -67,7 +67,7 @@ export function DashboardTabNew({ onTabChange }: { onTabChange?: (tab: string) =
       title: "Jouw profiel",
       description: "Bekijk en optimaliseer je profiel",
       action: "profiel",
-      color: "from-coral-500 to-rose-500"
+      color: "bg-coral-500"
     },
     {
       icon: MessageCircle,

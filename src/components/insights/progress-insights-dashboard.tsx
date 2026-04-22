@@ -324,7 +324,7 @@ export function ProgressInsightsDashboard() {
                   transition={{ delay: index * 0.1 }}
                   className="flex items-center gap-3 p-3 bg-white rounded-lg border border-green-200"
                 >
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white font-bold">
+                  <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center text-white font-bold">
                     {time.day.substring(0, 2)}
                   </div>
                   <div className="flex-1">

@@ -330,7 +330,7 @@ export function IrisVideoPlayer({
       className={cn(
         'relative w-full max-w-2xl mx-auto',
         'rounded-2xl sm:rounded-3xl overflow-hidden',
-        'bg-gradient-to-br from-coral-900 to-purple-900',
+        'bg-coral-500 hover:bg-coral-600',
         'shadow-2xl shadow-coral-900/30',
         className
       )}
@@ -391,7 +391,7 @@ export function IrisVideoPlayer({
         {videoState === 'loading' && (
           <motion.div
             {...fadeIn}
-            className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-coral-900 to-purple-900"
+            className="absolute inset-0 flex flex-col items-center justify-center bg-coral-500 hover:bg-coral-600"
           >
             <motion.div
               animate={{ scale: [1, 1.05, 1] }}
@@ -412,7 +412,7 @@ export function IrisVideoPlayer({
         {videoState === 'error' && (
           <motion.div
             {...fadeIn}
-            className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-coral-900 to-purple-900 p-6"
+            className="absolute inset-0 flex flex-col items-center justify-center bg-coral-500 hover:bg-coral-600 p-6"
           >
             <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mb-4">
               <AlertCircle className="w-8 h-8 text-red-400" />

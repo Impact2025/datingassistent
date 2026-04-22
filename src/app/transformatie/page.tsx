@@ -175,7 +175,7 @@ function TransformatieContent() {
             {/* Transformatie Title Bar */}
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-gray-700">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coral-500 to-rose-500 flex items-center justify-center shadow-md">
+                <div className="w-10 h-10 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-md">
                   <span className="text-white font-bold text-lg">T</span>
                 </div>
                 <div>

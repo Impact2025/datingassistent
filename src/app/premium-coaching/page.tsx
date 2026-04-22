@@ -277,7 +277,7 @@ export default function PremiumCoachingPage() {
           <div className="grid md:grid-cols-3 gap-4">
             <Button
               onClick={() => router.push('/dashboard?tab=groei-doelen')}
-              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
+              className="h-auto p-4 flex flex-col gap-2 bg-coral-500 hover:bg-coral-600"
             >
               <Target className="w-6 h-6" />
               <span className="font-medium">Personalized Goals</span>
@@ -286,7 +286,7 @@ export default function PremiumCoachingPage() {
 
             <Button
               onClick={() => router.push('/dashboard?tab=leren-ontwikkelen')}
-              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-purple-500 to-coral-600 hover:from-purple-600 hover:to-coral-700"
+              className="h-auto p-4 flex flex-col gap-2 bg-coral-500 hover:bg-coral-600"
             >
               <Trophy className="w-6 h-6" />
               <span className="font-medium">VIP Learning Path</span>
@@ -295,7 +295,7 @@ export default function PremiumCoachingPage() {
 
             <Button
               onClick={() => router.push('/dashboard?tab=subscription')}
-              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700"
+              className="h-auto p-4 flex flex-col gap-2 bg-coral-500 hover:bg-coral-600"
             >
               <Crown className="w-6 h-6" />
               <span className="font-medium">Manage Subscription</span>

@@ -193,7 +193,7 @@ export function BadgeShowcase({ userId, onBadgeClick }: BadgeShowcaseProps) {
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-full mb-4">
             <Trophy className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
@@ -210,7 +210,7 @@ export function BadgeShowcase({ userId, onBadgeClick }: BadgeShowcaseProps) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <Card className="border-0 shadow-xl bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+          <Card className="border-0 shadow-xl bg-coral-500 hover:bg-coral-600 text-white">
             <CardContent className="p-6">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
@@ -442,7 +442,7 @@ export function BadgeShowcase({ userId, onBadgeClick }: BadgeShowcaseProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+          <Card className="border-0 shadow-lg bg-coral-500 hover:bg-coral-600 text-white">
             <CardContent className="p-6 text-center">
               <h3 className="text-xl font-bold mb-2">
                 Elke badge brengt je dichterbij succes! 💪

@@ -202,7 +202,7 @@ function MeerPageContent() {
       icon: <Wrench className="w-5 h-5" />,
       title: 'Dating Tools',
       subtitle: 'Profiel, foto\'s, openers en meer',
-      route: '/tools',
+      route: '/dashboard?tab=tools',
       type: 'navigation',
     },
     {
@@ -370,7 +370,7 @@ function MeerPageContent() {
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
-                      className="bg-gradient-to-r from-coral-400 to-coral-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-coral-500 hover:bg-coral-600 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${getUserProgress()}%` }}
                     ></div>
                   </div>

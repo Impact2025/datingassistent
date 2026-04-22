@@ -205,7 +205,7 @@ export function QuickWinsToday({ userId, onTabChange }: QuickWinsTodayProps) {
             <div className="mb-4">
               <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-coral-500 to-coral-600"
+                  className="h-full bg-coral-500 hover:bg-coral-600"
                   initial={{ width: 0 }}
                   animate={{ width: `${(completedCount / 3) * 100}%` }}
                   transition={{ duration: 0.5 }}

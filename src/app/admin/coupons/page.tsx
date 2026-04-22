@@ -256,7 +256,7 @@ export default function CouponsPage() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
             Coupon Beheer
           </h1>
           <p className="text-gray-600 mt-2">Beheer kortingscodes en promoties voor je pakketten</p>
@@ -471,7 +471,7 @@ export default function CouponsPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                className="w-full bg-coral-500 hover:bg-coral-600"
               >
                 <Plus className="mr-2 h-4 w-4" />
                 Coupon Aanmaken

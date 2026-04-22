@@ -39,7 +39,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
         </p>
         <Button
           onClick={() => router.push('/datingstijl')}
-          className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700"
+          className="bg-coral-500 hover:bg-coral-600"
         >
           Start Stijl Scan
         </Button>
@@ -59,7 +59,7 @@ export function CommunicationHub({ onTabChange }: CommunicationHubProps) {
         </p>
         <Button
           onClick={() => router.push('/blind-vlekken')}
-          className="bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700"
+          className="bg-coral-500 hover:bg-coral-600"
         >
           Start Advanced Scan
         </Button>

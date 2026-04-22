@@ -34,6 +34,7 @@ import type {
 } from '@/types/kickstart.types';
 import { trackLessonStart, trackLessonComplete, trackVideoStart, trackVideoComplete } from '@/lib/analytics/ga4-events';
 import { KickstartCursusRecommendations } from './KickstartCursusRecommendations';
+import { ModuleToolCard } from '@/components/journey/module-tool-card';
 import { UnlockCelebration } from '@/components/achievements/UnlockCelebration';
 import type { Achievement } from '@/types/achievement.types';
 import { IrisIntro } from '@/components/iris/IrisIntro';
@@ -1173,6 +1174,11 @@ export function DayViewer({
           </TabsContent>
         )}
       </Tabs>
+
+      {/* AI Tool Aanbeveling */}
+      {day.ai_tool && (
+        <ModuleToolCard toolName={day.ai_tool} className="mt-6" />
+      )}
 
       {/* Cursus Aanbevelingen */}
       <KickstartCursusRecommendations

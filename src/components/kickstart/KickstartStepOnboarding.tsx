@@ -199,7 +199,7 @@ function ProgressBar({ current, total }: ProgressBarProps) {
       </div>
       <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-gradient-to-r from-coral-500 to-coral-600 rounded-full"
+          className="h-full bg-coral-500 hover:bg-coral-600 rounded-full"
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -446,7 +446,7 @@ export function KickstartStepOnboarding({
               {/* CTA */}
               <Button
                 onClick={nextStep}
-                className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg rounded-xl shadow-lg"
+                className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg rounded-xl shadow-lg"
               >
                 Start intake gesprek
                 <ChevronRight className="w-5 h-5 ml-2" />
@@ -479,7 +479,7 @@ export function KickstartStepOnboarding({
             <Button
               onClick={nextStep}
               disabled={!formData.preferredName?.trim()}
-              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+              className="w-full bg-coral-500 hover:bg-coral-600 disabled:opacity-50 text-white py-4 text-base rounded-xl"
             >
               Volgende
               <ChevronRight className="w-5 h-5 ml-2" />
@@ -597,7 +597,7 @@ export function KickstartStepOnboarding({
                 <Button
                   onClick={nextStep}
                   disabled={!formData.age || formData.age < 18}
-                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                  className="w-full bg-coral-500 hover:bg-coral-600 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                 >
                   Volgende
                   <ChevronRight className="w-5 h-5 ml-2" />
@@ -711,7 +711,7 @@ export function KickstartStepOnboarding({
                     }
                   }}
                   disabled={!formData.datingApps?.length}
-                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                  className="w-full bg-coral-500 hover:bg-coral-600 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                 >
                   Volgende
                   <ChevronRight className="w-5 h-5 ml-2" />
@@ -779,7 +779,7 @@ export function KickstartStepOnboarding({
                       }
                     }}
                     disabled={!formData.biggestFrustration?.trim()}
-                    className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                    className="w-full bg-coral-500 hover:bg-coral-600 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                   >
                     Volgende
                     <ChevronRight className="w-5 h-5 ml-2" />
@@ -891,7 +891,7 @@ export function KickstartStepOnboarding({
               key={formData.confidenceLevel}
               initial={{ scale: 1.2 }}
               animate={{ scale: 1 }}
-              className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg"
+              className="w-20 h-20 mx-auto mb-6 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg"
             >
               {formData.confidenceLevel || 5}
             </motion.div>
@@ -918,7 +918,7 @@ export function KickstartStepOnboarding({
             <Button
               onClick={nextStep}
               disabled={!formData.confidenceLevel}
-              className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+              className="w-full bg-coral-500 hover:bg-coral-600 disabled:opacity-50 text-white py-4 text-base rounded-xl"
             >
               Volgende
               <ChevronRight className="w-5 h-5 ml-2" />
@@ -951,7 +951,7 @@ export function KickstartStepOnboarding({
                 <Button
                   onClick={() => setDeepStep(2)}
                   disabled={!formData.biggestFear?.trim()}
-                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                  className="w-full bg-coral-500 hover:bg-coral-600 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                 >
                   Volgende
                   <ChevronRight className="w-5 h-5 ml-2" />
@@ -976,7 +976,7 @@ export function KickstartStepOnboarding({
                 <Button
                   onClick={handleComplete}
                   disabled={!formData.idealOutcome?.trim()}
-                  className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 disabled:opacity-50 text-white py-4 text-base rounded-xl"
+                  className="w-full bg-coral-500 hover:bg-coral-600 disabled:opacity-50 text-white py-4 text-base rounded-xl"
                 >
                   Afronden
                   <Sparkles className="w-5 h-5 ml-2" />

@@ -118,7 +118,7 @@ const TransformatieHeroCard = React.memo(function TransformatieHeroCard({
     >
       <div
         onClick={onClick}
-        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-coral-500 via-rose-500 to-coral-600 p-5 cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
+        className="relative overflow-hidden rounded-2xl bg-coral-500 hover:bg-coral-600 p-5 cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
       >
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
@@ -325,7 +325,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
+    <div className="bg-gray-50 dark:bg-gray-900 p-2 sm:p-4 lg:p-6 rounded-xl">
       <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
         {/* Welcome Video */}
         {showWelcomeVideo && (
@@ -554,7 +554,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                     </p>
                     <Button
                       onClick={() => handleSuggestionClick(nextAction)}
-                      className="w-full sm:w-auto bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
+                      className="w-full sm:w-auto bg-coral-500 hover:bg-coral-600"
                       size="default"
                     >
                       {nextAction.actionText}
@@ -733,7 +733,7 @@ export const SmartHomeTab = React.memo(function SmartHomeTab({
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Button
                         onClick={() => router.push('/kickstart-toolkit')}
-                        className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white w-full sm:w-auto"
+                        className="bg-coral-500 hover:bg-coral-600 text-white w-full sm:w-auto"
                         size="default"
                       >
                         <Rocket className="w-4 h-4 mr-2" />

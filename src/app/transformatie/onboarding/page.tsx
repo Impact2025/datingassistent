@@ -35,7 +35,7 @@ export default function TransformatieOnboardingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-coral-25 to-white flex items-center justify-center">
       <div className="text-center">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-coral-500 flex items-center justify-center shadow-xl mx-auto mb-6">
+        <div className="w-16 h-16 rounded-2xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-xl mx-auto mb-6">
           <Sparkles className="w-8 h-8 text-white" />
         </div>
         <Loader2 className="w-8 h-8 animate-spin text-purple-500 mx-auto mb-4" />

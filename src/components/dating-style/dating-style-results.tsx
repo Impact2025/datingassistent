@@ -79,7 +79,7 @@ export function DatingStyleResults({ data, onRestart, onClose, styleIcon, styleC
               </div>
               <Button
                 onClick={onClose}
-                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 h-auto flex items-center gap-2 shadow-sm"
+                className="bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 h-auto flex items-center gap-2 shadow-sm"
               >
                 <Download className="w-4 h-4" />
                 <span className="font-semibold">Bewaar & Sluiten</span>
@@ -403,7 +403,7 @@ export function DatingStyleResults({ data, onRestart, onClose, styleIcon, styleC
         </Button>
 
         <Button
-          className="flex-1 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white flex items-center gap-2"
+          className="flex-1 bg-coral-500 hover:bg-coral-600 text-white flex items-center gap-2"
           onClick={() => {
             if (navigator.share) {
               navigator.share({

@@ -235,7 +235,7 @@ export function ChatAnalysisTab({ onTabChange }: ChatAnalysisTabProps) {
             onClick={analyzeChat}
             disabled={isAnalyzing || !chatContent.trim() || !platform}
             size="lg"
-            className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white shadow-sm"
+            className="w-full bg-coral-500 hover:bg-coral-600 text-white shadow-sm"
           >
             {isAnalyzing ? (
               <>
@@ -494,7 +494,7 @@ export function ChatAnalysisTab({ onTabChange }: ChatAnalysisTabProps) {
                 </Button>
                 <Button
                   onClick={() => onTabChange?.('strategy-advisor')}
-                  className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white shadow-sm"
+                  className="bg-coral-500 hover:bg-coral-600 text-white shadow-sm"
                 >
                   <Zap className="w-4 h-4 mr-2" />
                   Strategie Tips

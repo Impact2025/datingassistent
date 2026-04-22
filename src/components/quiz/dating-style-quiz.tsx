@@ -256,7 +256,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
                   <div className="space-y-6">
                     {/* Question Header */}
                     <div className="text-center space-y-3">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center shadow-lg">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-lg">
                         {currentQuestion && <currentQuestion.icon className="w-8 h-8 text-white" />}
                       </div>
                       <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -311,7 +311,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
                   /* Email Capture Step */
                   <div className="space-y-6">
                     <div className="text-center space-y-3">
-                      <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center shadow-lg">
+                      <div className="w-16 h-16 mx-auto rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-lg">
                         <Mail className="w-8 h-8 text-white" />
                       </div>
                       <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -353,7 +353,7 @@ export function DatingStyleQuiz({ onComplete }: DatingStyleQuizProps) {
                       <Button
                         onClick={handleSubmit}
                         disabled={!email || !email.includes('@') || isSubmitting}
-                        className="w-full h-12 text-base bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
+                        className="w-full h-12 text-base bg-coral-500 hover:bg-coral-600"
                       >
                         {isSubmitting ? (
                           <>

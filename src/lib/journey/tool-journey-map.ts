@@ -154,6 +154,54 @@ const GOAL_TRACKER: JourneyTool = {
   isScan: false,
 };
 
+const DATING_STIJL_SCAN: JourneyTool = {
+  name: 'Dating Stijl Scan',
+  description: 'Ontdek je datingpatronen en blinde vlekken',
+  duration: '15 min',
+  route: '/datingstijl',
+  icon: 'Target',
+  color: 'purple',
+  cta: 'Start Dating Stijl Scan',
+  journeyPhase: 1,
+  isScan: true,
+};
+
+const AI_FOTO_CHECK: JourneyTool = {
+  name: 'AI Foto Check',
+  description: "Laat AI je profielfoto's beoordelen voor meer matches",
+  duration: '5 min',
+  route: '/dashboard?tab=profiel-persoonlijkheid',
+  icon: 'Camera',
+  color: 'amber',
+  cta: "Check mijn foto's",
+  journeyPhase: 2,
+  isScan: false,
+};
+
+const PROFIEL_COACH: JourneyTool = {
+  name: 'Profiel Coach',
+  description: 'AI-begeleiding bij het schrijven van je perfecte bio',
+  duration: '15 min',
+  route: '/dashboard?tab=profiel-persoonlijkheid',
+  icon: 'User',
+  color: 'blue',
+  cta: 'Open Profiel Coach',
+  journeyPhase: 2,
+  isScan: false,
+};
+
+const IJSBREKER_GENERATOR: JourneyTool = {
+  name: 'IJsbreker Generator',
+  description: 'Genereer persoonlijke openingsberichten die reacties krijgen',
+  duration: '5 min',
+  route: '/dashboard?tab=communicatie-matching',
+  icon: 'MessageCircle',
+  color: 'green',
+  cta: 'Genereer IJsbrekers',
+  journeyPhase: 3,
+  isScan: false,
+};
+
 // ─── Transformatie: ai_tool_name (DB) → tool config ──────────────────────────
 
 export const TRANSFORMATIE_TOOL_MAP: Record<string, JourneyTool> = {
@@ -200,47 +248,19 @@ export const TRANSFORMATIE_TOOL_MAP: Record<string, JourneyTool> = {
   'Ghosting Reframer':     GHOSTING_REFRAMER,
   // Module 12 — Onbreekbare Mindset
   'Goal Tracker':          GOAL_TRACKER,
-  // Extra tools referenced in AI_TOOL_ROUTES
-  'Dating Stijl Scan': {
-    name: 'Dating Stijl Scan',
-    description: 'Ontdek je datingpatronen en blinde vlekken',
-    duration: '15 min',
-    route: '/dating-stijl-scan',
-    icon: 'Target',
-    color: 'purple',
-    cta: 'Start Dating Stijl Scan',
-    journeyPhase: 1,
-    isScan: true,
-  },
+  // Kickstart dag-tools
+  'AI Foto Check':         AI_FOTO_CHECK,
+  'Profiel Coach':         PROFIEL_COACH,
+  'IJsbreker Generator':   IJSBREKER_GENERATOR,
+  // Zelfkennis scans (ook in PHASE_TOOLS_MAP fase 1)
+  'Dating Stijl Scan':     DATING_STIJL_SCAN,
   'Emotionele Readiness':  EMOTIONELE_READINESS,
-  'Foto Advies': {
-    name: 'Foto Analyse',
-    description: "AI-feedback op je profielfoto's voor meer matches",
-    duration: '5 min',
-    route: '/foto',
-    icon: 'Camera',
-    color: 'amber',
-    cta: "Analyseer mijn foto's",
-    journeyPhase: 2,
-    isScan: false,
-  },
-  'Bio Generator': {
-    name: 'Bio Generator',
-    description: "Genereer een unieke profieltekst die jou écht laat zien",
-    duration: '8 min',
-    route: '/dashboard?tab=profiel',
-    icon: 'FileText',
-    color: 'green',
-    cta: 'Genereer mijn bio',
-    journeyPhase: 2,
-    isScan: false,
-  },
 };
 
 // ─── 5-fase reis: fase nummer → tools (in volgorde van introductie) ───────────
 
 export const PHASE_TOOLS_MAP: Record<number, JourneyTool[]> = {
-  1: [HECHTINGSSTIJL, EMOTIONELE_READINESS, WAARDEN_KOMPAS],
+  1: [HECHTINGSSTIJL, EMOTIONELE_READINESS, DATING_STIJL_SCAN, WAARDEN_KOMPAS],
   2: [
     {
       name: 'Profiel Bouwer',

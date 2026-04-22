@@ -61,7 +61,7 @@ export function HeroSection() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <Link href="/quiz/dating-patroon">
-                <Button className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-6 text-lg font-semibold shadow-xl hover:shadow-2xl hover:shadow-coral-500/25 transition-all rounded-full flex items-center justify-center gap-2">
+                <Button className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-6 text-lg font-semibold shadow-xl hover:shadow-2xl hover:shadow-coral-500/25 transition-all rounded-full flex items-center justify-center gap-2">
                   Start de Gratis Quiz
                   <ArrowRight className="w-5 h-5" />
                 </Button>

@@ -247,7 +247,7 @@ export function DatingStyleQuestionnaire({ onComplete, onBack }: DatingStyleQues
                   <Button
                     onClick={() => setCurrentQuestionIndex(1)}
                     disabled={!microIntake.huidigeDatingStatus || !microIntake.gewensteRelatieType || !microIntake.appGebruik}
-                    className="flex-1 bg-gradient-to-r from-purple-500 to-coral-600"
+                    className="flex-1 bg-coral-500 hover:bg-coral-600"
                   >
                     Start Vragen
                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -374,7 +374,7 @@ export function DatingStyleQuestionnaire({ onComplete, onBack }: DatingStyleQues
                 <Button
                   onClick={handleNext}
                   disabled={!responses[currentQuestion.id] || submitting}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-coral-600 hover:from-purple-600 hover:to-coral-700"
+                  className="flex-1 bg-coral-500 hover:bg-coral-600"
                 >
                   {submitting ? (
                     <>

@@ -57,7 +57,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-2xl mb-4">
             <Shield className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Panel</h1>
@@ -107,7 +107,7 @@ export default function AdminLoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3 rounded-lg font-medium transition-all disabled:opacity-50 flex items-center justify-center"
+              className="w-full bg-coral-500 hover:bg-coral-600 text-white py-3 rounded-lg font-medium transition-all disabled:opacity-50 flex items-center justify-center"
               disabled={loading}
             >
               {loading ? (

@@ -506,7 +506,7 @@ export default function LessonPlayerPage() {
                   </p>
                   <Button
                     asChild
-                    className="bg-gradient-to-r from-coral-500 to-coral-600 w-full sm:w-auto"
+                    className="bg-coral-500 hover:bg-coral-600 w-full sm:w-auto"
                   >
                     <a href={lesson.download_url} download>
                       <Download className="w-4 h-4 mr-2" />
@@ -555,7 +555,7 @@ export default function LessonPlayerPage() {
                   <Button
                     onClick={handleNext}
                     disabled={!next_lesson.is_unlocked}
-                    className="w-full justify-start bg-gradient-to-r from-coral-500 to-coral-600 text-sm sm:text-base min-h-[44px]"
+                    className="w-full justify-start bg-coral-500 hover:bg-coral-600 text-sm sm:text-base min-h-[44px]"
                   >
                     {next_lesson.is_unlocked ? (
                       <>

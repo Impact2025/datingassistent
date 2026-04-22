@@ -77,35 +77,35 @@ const CHANNEL_ICONS = {
 // Color schemes
 const CHANNEL_COLORS = {
   live_chat: {
-    bg: 'bg-gradient-to-br from-coral-500 to-coral-600',
+    bg: 'bg-coral-500 hover:bg-coral-600',
     bgHover: 'hover:from-coral-600 hover:to-coral-700',
     light: 'bg-coral-50',
     border: 'border-coral-200 hover:border-coral-400',
     text: 'text-coral-600',
   },
   email: {
-    bg: 'bg-gradient-to-br from-blue-500 to-indigo-600',
+    bg: 'bg-coral-500 hover:bg-coral-600',
     bgHover: 'hover:from-blue-600 hover:to-indigo-700',
     light: 'bg-blue-50',
     border: 'border-blue-200 hover:border-blue-400',
     text: 'text-blue-600',
   },
   phone: {
-    bg: 'bg-gradient-to-br from-green-500 to-emerald-600',
+    bg: 'bg-coral-500 hover:bg-coral-600',
     bgHover: 'hover:from-green-600 hover:to-emerald-700',
     light: 'bg-green-50',
     border: 'border-green-200 hover:border-green-400',
     text: 'text-green-600',
   },
   video_call: {
-    bg: 'bg-gradient-to-br from-amber-500 to-orange-600',
+    bg: 'bg-coral-500 hover:bg-coral-600',
     bgHover: 'hover:from-amber-600 hover:to-orange-700',
     light: 'bg-amber-50',
     border: 'border-amber-200 hover:border-amber-400',
     text: 'text-amber-600',
   },
   whatsapp: {
-    bg: 'bg-gradient-to-br from-green-500 to-green-600',
+    bg: 'bg-coral-500 hover:bg-coral-600',
     bgHover: 'hover:from-green-600 hover:to-green-700',
     light: 'bg-green-50',
     border: 'border-green-200 hover:border-green-400',
@@ -153,7 +153,7 @@ export function SupportChannelCards({
             {/* Premium Badge */}
             {channel.premiumOnly && (
               <div className="absolute top-3 right-3">
-                <span className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white text-xs font-medium">
+                <span className="flex items-center gap-1 px-2 py-1 bg-coral-500 hover:bg-coral-600 rounded-full text-white text-xs font-medium">
                   <Crown className="w-3 h-3" />
                   Premium
                 </span>

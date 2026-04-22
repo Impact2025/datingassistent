@@ -15,7 +15,7 @@ export function PremiumGate({ title, description, features, onUpgrade }: Premium
   return (
     <Card className="border-2 border-amber-200 dark:border-amber-700 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 shadow-lg">
       <CardHeader className="text-center pb-6">
-        <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
+        <div className="w-16 h-16 mx-auto mb-4 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center shadow-lg">
           <Crown className="w-8 h-8 text-white" />
         </div>
         <CardTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
@@ -46,7 +46,7 @@ export function PremiumGate({ title, description, features, onUpgrade }: Premium
 
         {/* Premium Badge */}
         <div className="text-center">
-          <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 text-sm font-semibold">
+          <Badge className="bg-coral-500 hover:bg-coral-600 text-white px-4 py-2 text-sm font-semibold">
             <Crown className="w-4 h-4 mr-2" />
             Premium Feature
           </Badge>
@@ -55,7 +55,7 @@ export function PremiumGate({ title, description, features, onUpgrade }: Premium
         {/* CTA Button */}
         <Button
           onClick={handleUpgrade}
-          className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all"
+          className="w-full bg-coral-500 hover:bg-coral-600 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all"
           size="lg"
         >
           <Crown className="w-5 h-5 mr-2" />

@@ -112,7 +112,7 @@ export function ModuleContainer({ moduleSlug }: ModuleContainerProps) {
 
         <div className="bg-white rounded-2xl p-6 shadow-sm">
           <div className="flex items-start gap-4 mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <div className="w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-xl flex items-center justify-center">
               <span className="text-2xl">🧠</span>
             </div>
             <div className="flex-1">

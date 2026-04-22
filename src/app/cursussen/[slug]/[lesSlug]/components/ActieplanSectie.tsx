@@ -32,7 +32,7 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
               <Calendar className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
@@ -114,7 +114,7 @@ export function ActieplanSectie({ sectie, isCompleted, onComplete }: ActieplanSe
             </div>
             <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-coral-500 to-coral-600 transition-all duration-300"
+                className="h-full bg-coral-500 hover:bg-coral-600 transition-all duration-300"
                 style={{ width: `${(completedActions.length / acties.length) * 100}%` }}
               />
             </div>

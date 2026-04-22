@@ -71,7 +71,7 @@ export function ProArsenal() {
       <div className="max-w-4xl mx-auto px-4 py-12">
         <Card className="border-2 border-purple-300 dark:border-purple-700 bg-gradient-to-br from-purple-50 to-coral-50 dark:from-purple-900/30 dark:to-coral-900/30">
           <CardContent className="p-8 text-center">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-500 to-coral-500 flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
               <Lock className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-2xl font-bold mb-4 dark:text-white">Pro Arsenal</h2>
@@ -115,7 +115,7 @@ export function ProArsenal() {
             <div className="flex gap-3 justify-center">
               <Button
                 onClick={() => router.push('/pricing')}
-                className="bg-gradient-to-r from-purple-500 to-coral-500 hover:from-purple-600 hover:to-coral-600 text-white"
+                className="bg-coral-500 hover:bg-coral-600 text-white"
               >
                 <Crown className="w-4 h-4 mr-2" />
                 Upgrade naar Transformatie
@@ -146,7 +146,7 @@ export function ProArsenal() {
         </div>
 
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-coral-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
             <Crown className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -155,7 +155,7 @@ export function ProArsenal() {
           </div>
         </div>
 
-        <Badge className="bg-gradient-to-r from-purple-500 to-coral-500 text-white border-0">
+        <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0">
           <Crown className="w-3 h-3 mr-1" />
           Premium Member - Unlimited Access
         </Badge>

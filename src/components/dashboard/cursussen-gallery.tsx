@@ -12,7 +12,8 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Clock, BookOpen, TrendingUp, CheckCircle, Lock, Play, Star, Search, Filter } from 'lucide-react';
+import { Clock, BookOpen, TrendingUp, CheckCircle, Lock, Play, Star, Search, ArrowRight } from 'lucide-react';
+import { getMinimumPlanForCursusType } from '@/lib/cursus-access';
 import { cn } from '@/lib/utils';
 import type { CursusWithProgress } from '@/types/cursus.types';
 
@@ -75,9 +76,9 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
 
   const getCursusTypeBadge = (type: string) => {
     if (type === 'gratis') {
-      return <Badge className="bg-gradient-to-br from-coral-500 to-coral-600 text-white border-0">Gratis</Badge>;
+      return <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0">Gratis</Badge>;
     }
-    return <Badge className="bg-gradient-to-br from-coral-500 to-coral-600 text-white border-0">Premium</Badge>;
+    return <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0">Premium</Badge>;
   };
 
   if (loading) {
@@ -198,7 +199,7 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
                       <div className="flex flex-col gap-2">
                         {getCursusTypeBadge(cursus.cursus_type)}
                         {isCompleted && (
-                          <Badge className="bg-gradient-to-br from-coral-500 to-coral-600 text-white border-0 flex items-center gap-1">
+                          <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0 flex items-center gap-1">
                             <CheckCircle className="w-3 h-3" />
                             Voltooid
                           </Badge>
@@ -269,8 +270,8 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
                       className={cn(
                         "w-full rounded-full shadow-lg hover:shadow-xl transition-all",
                         isLocked
-                          ? "bg-gradient-to-br from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white"
-                          : "bg-gradient-to-br from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white"
+                          ? "bg-coral-500 hover:bg-coral-600 text-white"
+                          : "bg-coral-500 hover:bg-coral-600 text-white"
                       )}
                     >
                       {isLocked ? (

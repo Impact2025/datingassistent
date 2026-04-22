@@ -134,7 +134,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Ben je klaar voor dating? Ontdek je emotionele beschikbaarheid",
       component: <EmotioneleReadinessFlow />,
       badge: undefined,
-      color: "from-coral-500 to-rose-500"
+      color: "bg-coral-500"
     },
     {
       id: "zelfbeeld",
@@ -164,7 +164,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Maak je ideale profieltekst met AI hulp",
       component: <InteractiveProfileCoach />,
       badge: "Aanbevolen",
-      color: "from-coral-500 to-purple-500"
+      color: "bg-coral-500"
     },
     {
       id: "photo-analysis",
@@ -184,7 +184,7 @@ export function ProfileSuite({ onTabChange }: ProfileSuiteProps) {
       description: "Welke dating app past bij jou?",
       component: <PlatformMatchTool />,
       badge: undefined,
-      color: "from-coral-400 to-rose-500"
+      color: "bg-coral-500"
     },
     {
       id: "skills-scan",

@@ -27,7 +27,7 @@ export function Progress({
 
   const variantClasses = {
     default: 'bg-primary-500',
-    gradient: 'bg-gradient-to-r from-primary-500 to-accent-500',
+    gradient: 'bg-coral-500 hover:bg-coral-600',
   };
 
   return (

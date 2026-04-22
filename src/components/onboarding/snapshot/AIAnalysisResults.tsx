@@ -74,7 +74,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
           className="bg-white rounded-2xl p-5 sm:p-6 shadow-lg shadow-blue-100/50 border border-blue-100"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-200">
+            <div className="w-11 h-11 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center text-white shadow-lg shadow-blue-200">
               <Battery className="w-5 h-5" />
             </div>
             <div>
@@ -131,7 +131,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
           className="bg-white rounded-2xl p-5 sm:p-6 shadow-lg shadow-purple-100/50 border border-purple-100"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-purple-200">
+            <div className="w-11 h-11 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center text-white shadow-lg shadow-purple-200">
               <Heart className="w-5 h-5" />
             </div>
             <div className="flex-1">
@@ -196,7 +196,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
           className="bg-white rounded-2xl p-5 sm:p-6 shadow-lg shadow-orange-100/50 border border-orange-100"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white shadow-lg shadow-orange-200">
+            <div className="w-11 h-11 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center text-white shadow-lg shadow-orange-200">
               <Target className="w-5 h-5" />
             </div>
             <div>
@@ -247,7 +247,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
             className="bg-gradient-to-br from-coral-50 to-purple-50 rounded-2xl p-5 sm:p-6 border border-coral-200"
           >
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-coral-500 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-coral-200">
+              <div className="w-11 h-11 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center text-white shadow-lg shadow-coral-200">
                 <Lightbulb className="w-5 h-5" />
               </div>
               <div>
@@ -366,7 +366,7 @@ export function AIAnalysisResults({ analysis, userName, onContinue }: AIAnalysis
       >
         <Button
           onClick={onContinue}
-          className="w-full bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50 touch-manipulation active:scale-[0.98] transition-transform"
+          className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50 touch-manipulation active:scale-[0.98] transition-transform"
         >
           Start Module 1
           <ArrowRight className="w-5 h-5 ml-2" />

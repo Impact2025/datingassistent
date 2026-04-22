@@ -283,7 +283,7 @@ function BlogContent() {
                     setSearchQuery('');
                     setSelectedTag(null);
                   }}
-                  className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
+                  className="bg-coral-500 hover:bg-coral-600"
                 >
                   Alles tonen
                 </Button>

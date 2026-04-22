@@ -420,7 +420,7 @@ export function InteractiveProfileBuilder({ onComplete, initialProfile = '' }: P
         <Button
           onClick={completeProfile}
           disabled={!finalProfile}
-          className="bg-gradient-to-r from-purple-600 to-coral-600 hover:from-purple-700 hover:to-coral-700"
+          className="bg-coral-500 hover:bg-coral-600"
         >
           <CheckCircle className="w-4 h-4 mr-2" />
           Profiel Opslaan ({profileScore} punten)

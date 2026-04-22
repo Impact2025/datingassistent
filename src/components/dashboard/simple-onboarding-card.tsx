@@ -80,7 +80,7 @@ export function SimpleOnboardingCard({ onTabChange }: { onTabChange?: (tab: stri
     <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-background">
       <CardHeader className="text-center pb-4">
         <div className="flex justify-center mb-3">
-          <div className="rounded-full bg-gradient-to-br from-green-400 to-blue-500 p-3">
+          <div className="rounded-full bg-coral-500 hover:bg-coral-600 p-3">
             <Sparkles className="h-6 w-6 text-white" />
           </div>
         </div>

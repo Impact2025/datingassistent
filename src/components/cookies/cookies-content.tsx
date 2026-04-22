@@ -105,7 +105,7 @@ export default function CookiesContent() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="px-8 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700">
+              <Button size="lg" className="px-8 bg-coral-500 hover:bg-coral-600">
                 <Settings className="mr-2 w-5 h-5" />
                 Cookie Voorkeuren
               </Button>
@@ -436,7 +436,7 @@ export default function CookiesContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-coral-500 via-purple-600 to-coral-600 text-white">
+      <section className="py-16 bg-coral-500 hover:bg-coral-600 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-4">Vragen over Cookies?</h2>

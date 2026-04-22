@@ -60,7 +60,7 @@ export function ProgressBar({
             "h-full rounded-full",
             variant === "default" && "bg-coral-500",
             variant === "gradient" &&
-              "bg-gradient-to-r from-violet-500 to-coral-500"
+              "bg-coral-500 hover:bg-coral-600"
           )}
         />
       </div>

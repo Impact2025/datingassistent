@@ -28,7 +28,7 @@ export default function ReadingProgressBar() {
 
   return (
     <div
-      className="fixed top-0 left-0 h-1 bg-gradient-to-r from-coral-500 to-coral-600 z-50 transition-all duration-150"
+      className="fixed top-0 left-0 h-1 bg-coral-500 hover:bg-coral-600 z-50 transition-all duration-150"
       style={{ width: `${progress}%` }}
     />
   );

@@ -59,7 +59,7 @@ function ResultContent() {
             <h2 className="text-2xl font-bold text-gray-900">Resultaat niet gevonden</h2>
             <p className="text-gray-600">Check je e-mail voor de link naar je resultaten.</p>
             <Link href="/quiz">
-              <Button className="bg-gradient-to-r from-coral-500 to-coral-600">
+              <Button className="bg-coral-500 hover:bg-coral-600">
                 Doe de quiz opnieuw
               </Button>
             </Link>

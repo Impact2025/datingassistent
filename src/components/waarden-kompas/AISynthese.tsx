@@ -68,7 +68,7 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
       <div className="max-w-4xl mx-auto">
         <Card>
           <CardContent className="pt-12 pb-12 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-coral-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+            <div className="w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -114,7 +114,7 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
       {/* Header */}
       <Card className="text-center">
         <CardContent className="pt-8 pb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -257,7 +257,7 @@ export function AISynthese({ sessionId, onComplete }: AISyntheseProps) {
             </p>
             <Button
               onClick={onComplete}
-              className="bg-gradient-to-r from-coral-500 to-purple-500 hover:from-coral-600 hover:to-purple-600 text-white font-semibold px-8 py-3"
+              className="bg-coral-500 hover:bg-coral-600 text-white font-semibold px-8 py-3"
               size="lg"
             >
               Integreer in Mijn Tools

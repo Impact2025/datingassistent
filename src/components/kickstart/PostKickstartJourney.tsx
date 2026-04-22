@@ -64,7 +64,7 @@ const scenarios: JourneyScenario[] = [
     emoji: '💫',
     title: 'Ik heb iemand ontmoet!',
     description: 'Het gaat goed, ik wil het goed doen',
-    color: 'from-coral-500 to-rose-600',
+    color: 'bg-coral-500',
   },
   {
     id: 'in_relationship',
@@ -138,7 +138,7 @@ export function PostKickstartJourney({ userName, completedDays, className }: Pro
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 p-8 text-white shadow-xl"
+        className="relative overflow-hidden rounded-2xl bg-coral-500 hover:bg-coral-600 p-8 text-white shadow-xl"
       >
         {/* Confetti decoration */}
         <div className="absolute inset-0 overflow-hidden">
@@ -300,8 +300,8 @@ export function PostKickstartJourney({ userName, completedDays, className }: Pro
                           className={cn(
                             'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl shadow-sm',
                             rec.type === 'primary'
-                              ? 'bg-gradient-to-br from-coral-500 to-rose-600 text-white'
-                              : 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white'
+                              ? 'bg-coral-500 hover:bg-coral-600 text-white'
+                              : 'bg-coral-500 hover:bg-coral-600 text-white'
                           )}
                         >
                           {rec.type === 'primary' ? (
@@ -346,8 +346,8 @@ export function PostKickstartJourney({ userName, completedDays, className }: Pro
                               size="sm"
                               className={cn(
                                 rec.type === 'primary'
-                                  ? 'bg-gradient-to-r from-coral-500 to-rose-600 hover:from-coral-600 hover:to-rose-700'
-                                  : 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
+                                  ? 'bg-coral-500 hover:bg-coral-600'
+                                  : 'bg-coral-500 hover:bg-coral-600'
                               )}
                             >
                               Bekijk cursus

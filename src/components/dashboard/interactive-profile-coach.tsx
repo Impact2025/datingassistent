@@ -2007,7 +2007,7 @@ function InteractiveProfileCoachInner() {
                 <Button
                   onClick={handleNext}
                   disabled={!canProceed()}
-                  className="gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
+                  className="gap-2 bg-coral-500 hover:bg-coral-600"
                 >
                   <Target className="w-4 h-4" />
                   Genereer Profielen

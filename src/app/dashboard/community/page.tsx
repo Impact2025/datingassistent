@@ -171,7 +171,7 @@ export default function CommunityDashboard() {
                       Jouw persoonlijke commandocentrum voor community activiteit
                     </p>
                   </div>
-                  <Button asChild size="sm" className="bg-gradient-to-r from-primary to-coral-600 hover:from-primary/90 hover:to-coral-600/90">
+                  <Button asChild size="sm" className="bg-coral-500 hover:bg-coral-600">
                     <a href="/community/forum">
                       <Lucide.MessageSquare className="h-4 w-4 mr-2" />
                       Naar Forum
@@ -359,7 +359,7 @@ export default function CommunityDashboard() {
                             <span>Wekelijkse community samenvatting</span>
                           </label>
                         </div>
-                        <Button size="sm" className="w-full bg-gradient-to-r from-primary to-coral-600">
+                        <Button size="sm" className="w-full bg-coral-500 hover:bg-coral-600">
                           <Lucide.Save className="h-3 w-3 mr-2" />
                           Opslaan
                         </Button>

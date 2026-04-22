@@ -29,7 +29,7 @@ export function CompletionScreen({ profileData, onViewDashboard }: CompletionScr
         {/* Score Card */}
         <Card className="p-8 md:p-12 border-0 shadow-2xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 text-center">
           <div className="space-y-6">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 mb-4">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-coral-500 hover:bg-coral-600 mb-4">
               <Trophy className="w-10 h-10 text-white" />
             </div>
 

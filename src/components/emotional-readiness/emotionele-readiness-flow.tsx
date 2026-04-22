@@ -180,7 +180,7 @@ function IntroCard({ onStart }: IntroCardProps) {
         <Button
           onClick={onStart}
           size="lg"
-          className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"
+          className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"
         >
           Start Scan
           <Sparkles className="w-5 h-5 ml-2" />

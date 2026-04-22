@@ -85,7 +85,7 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                 repeat: Infinity,
                 ease: 'linear',
               }}
-              className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-purple-300 to-coral-300 blur-3xl"
+              className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-coral-500 hover:bg-coral-600 blur-3xl"
             />
             <motion.div
               animate={{
@@ -97,7 +97,7 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                 repeat: Infinity,
                 ease: 'linear',
               }}
-              className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-coral-300 to-purple-300 blur-3xl"
+              className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-coral-500 hover:bg-coral-600 blur-3xl"
             />
           </div>
 
@@ -114,7 +114,7 @@ export function IrisIntro({ dayNumber, dayTopic, onDismiss }: IrisIntroProps) {
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-coral-400 flex items-center justify-center shadow-md"
+                  className="w-12 h-12 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-md"
                 >
                   <Sparkles className="w-6 h-6 text-white" />
                 </motion.div>

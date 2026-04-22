@@ -222,7 +222,7 @@ function HelpContent({
         <Button
           onClick={onTutorialStart}
           size="sm"
-          className="w-full gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+          className="w-full gap-2 bg-coral-500 hover:bg-coral-600"
         >
           {isTutorialCompleted ? (
             <>

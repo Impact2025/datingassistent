@@ -147,7 +147,7 @@ export function RelatiepatronenFlow({ onClose }: RelatiepatronenFlowProps) {
         </CardContent>
       </Card>
       <div className="flex justify-center">
-        <Button onClick={startAssessment} className="bg-gradient-to-r from-purple-500 to-coral-600 text-white px-8 py-6 text-lg">
+        <Button onClick={startAssessment} className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-6 text-lg">
           Start Reflectie <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
       </div>
@@ -220,7 +220,7 @@ export function RelatiepatronenFlow({ onClose }: RelatiepatronenFlowProps) {
           </CardContent>
         </Card>
         {onClose && (
-          <Button onClick={onClose} className="w-full bg-gradient-to-r from-purple-500 to-coral-600">
+          <Button onClick={onClose} className="w-full bg-coral-500 hover:bg-coral-600">
             Terug naar Dashboard
           </Button>
         )}

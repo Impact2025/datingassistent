@@ -280,7 +280,7 @@ export function ProfileTransformationQuiz() {
                 case 'hook-importance': return { icon: '🎯', color: 'from-blue-500 to-purple-600', bg: 'from-blue-50 to-purple-50' };
                 case 'show-dont-tell': return { icon: '📖', color: 'from-green-500 to-teal-600', bg: 'from-green-50 to-teal-50' };
                 case 'specificity-power': return { icon: '🔍', color: 'from-orange-500 to-red-600', bg: 'from-orange-50 to-red-50' };
-                case 'emotional-connection': return { icon: '❤️', color: 'from-coral-500 to-rose-600', bg: 'from-coral-50 to-rose-50' };
+                case 'emotional-connection': return { icon: '❤️', color: 'bg-coral-500', bg: 'from-coral-50 to-rose-50' };
                 case 'call-to-action': return { icon: '💬', color: 'from-indigo-500 to-blue-600', bg: 'from-indigo-50 to-blue-50' };
                 case 'authenticity-balance': return { icon: '⚖️', color: 'from-amber-500 to-orange-600', bg: 'from-amber-50 to-orange-50' };
                 case 'length-optimization': return { icon: '📏', color: 'from-emerald-500 to-green-600', bg: 'from-emerald-50 to-green-50' };

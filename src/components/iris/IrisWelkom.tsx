@@ -11,7 +11,7 @@ export function IrisWelkom({ bericht }: IrisWelkomProps) {
     <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/30 dark:to-accent-900/30
                     rounded-xl p-4 border border-primary-100 dark:border-primary-800 mb-6">
       <div className="flex gap-3">
-        <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-accent-500
+        <div className="w-8 h-8 bg-coral-500 hover:bg-coral-600
                         rounded-full flex items-center justify-center flex-shrink-0">
           <Sparkles className="w-4 h-4 text-white" />
         </div>

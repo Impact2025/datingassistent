@@ -61,7 +61,7 @@ export function TransformationProgress({
               )}%`,
             }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="h-full bg-gradient-to-r from-violet-500 to-coral-500 rounded-full"
+            className="h-full bg-coral-500 hover:bg-coral-600 rounded-full"
           />
         </div>
       </div>
@@ -153,7 +153,7 @@ function PhaseRow({ phase, index, isLast }: PhaseRowProps) {
                   "h-full rounded-full",
                   isComplete
                     ? "bg-coral-500"
-                    : "bg-gradient-to-r from-violet-400 to-coral-400"
+                    : "bg-coral-500 hover:bg-coral-600"
                 )}
               />
             </div>

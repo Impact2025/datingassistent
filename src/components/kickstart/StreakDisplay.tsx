@@ -116,7 +116,7 @@ export function StreakDisplay({ variant = 'full', className }: StreakDisplayProp
   // Full variant (for dashboard card)
   return (
     <Card className={cn('border-orange-100 shadow-sm overflow-hidden', className)}>
-      <div className="bg-gradient-to-r from-orange-500 to-amber-500 px-6 py-4">
+      <div className="bg-coral-500 hover:bg-coral-600 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">

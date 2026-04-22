@@ -77,7 +77,7 @@ export function DatingStyleIntro({
             onClick={onStart}
             disabled={loading || (!canRetake && hasPreviousAssessment)}
             size="lg"
-            className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+            className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
           >
             {loading ? (
               <>

@@ -75,11 +75,11 @@ export function WelcomeScreen({ onStartJourney, userName }: WelcomeScreenProps) 
                   transition={{ delay: 0.2, duration: 0.6 }}
                   className="space-y-4"
                 >
-                  <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-coral-500 to-coral-600 rounded-full mb-6">
+                  <div className="inline-flex items-center justify-center w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-full mb-6">
                     <Heart className="w-10 h-10 text-white" />
                   </div>
 
-                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-coral-600 to-purple-600 bg-clip-text text-transparent">
+                  <h1 className="text-3xl md:text-4xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
                     Welkom bij je Dating Journey! {userName && ` ${userName}`}
                   </h1>
 
@@ -139,7 +139,7 @@ export function WelcomeScreen({ onStartJourney, userName }: WelcomeScreenProps) 
                   <Button
                     onClick={onStartJourney}
                     size="lg"
-                    className="w-full md:w-auto px-12 py-4 text-lg font-semibold bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    className="w-full md:w-auto px-12 py-4 text-lg font-semibold bg-coral-500 hover:bg-coral-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                   >
                     Start mijn DatingScan 🚀
                   </Button>

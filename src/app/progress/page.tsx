@@ -45,7 +45,7 @@ export default function ProgressPage() {
             </div>
 
             <Link href="/leaderboard">
-              <Button className="bg-gradient-to-r from-purple-600 to-coral-600 hover:from-purple-700 hover:to-coral-700">
+              <Button className="bg-coral-500 hover:bg-coral-600">
                 <Trophy className="w-4 h-4 mr-2" />
                 Leaderboard
               </Button>

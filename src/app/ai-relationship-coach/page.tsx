@@ -204,7 +204,7 @@ export default function AIRelationshipCoachPage() {
             <Button
               data-tutorial="goals-button"
               onClick={() => router.push('/dashboard?tab=groei-doelen')}
-              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+              className="h-auto p-4 flex flex-col gap-2 bg-coral-500 hover:bg-coral-600"
             >
               <Target className="w-6 h-6" />
               <span className="font-medium">Doelen Beheren</span>
@@ -214,7 +214,7 @@ export default function AIRelationshipCoachPage() {
             <Button
               data-tutorial="skills-button"
               onClick={() => router.push('/dashboard?tab=leren-ontwikkelen')}
-              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-purple-500 to-coral-600 hover:from-purple-600 hover:to-coral-700"
+              className="h-auto p-4 flex flex-col gap-2 bg-coral-500 hover:bg-coral-600"
             >
               <Brain className="w-6 h-6" />
               <span className="font-medium">Skills Ontwikkelen</span>
@@ -224,7 +224,7 @@ export default function AIRelationshipCoachPage() {
             <Button
               data-tutorial="chat-coach-button"
               onClick={() => router.push('/dashboard?tab=communicatie-matching')}
-              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700"
+              className="h-auto p-4 flex flex-col gap-2 bg-coral-500 hover:bg-coral-600"
             >
               <Users className="w-6 h-6" />
               <span className="font-medium">Chat Coach</span>
@@ -234,7 +234,7 @@ export default function AIRelationshipCoachPage() {
             <Button
               data-tutorial="date-planning-button"
               onClick={() => router.push('/dashboard?tab=daten-relaties')}
-              className="h-auto p-4 flex flex-col gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+              className="h-auto p-4 flex flex-col gap-2 bg-coral-500 hover:bg-coral-600"
             >
               <Heart className="w-6 h-6" />
               <span className="font-medium">Date Planning</span>
@@ -252,7 +252,7 @@ export default function AIRelationshipCoachPage() {
               </p>
               <Button
                 onClick={() => router.push('/select-package')}
-                className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
+                className="bg-coral-500 hover:bg-coral-600"
               >
                 Upgrade naar Premium
               </Button>

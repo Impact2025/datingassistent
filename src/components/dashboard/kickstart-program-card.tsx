@@ -121,7 +121,7 @@ export function KickstartProgramCard({ program }: KickstartProgramCardProps) {
             <Button
               onClick={handleContinue}
               size="sm"
-              className="gap-2 px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
+              className="gap-2 px-6 py-2 bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
             >
               {isCompleted ? (
                 <>

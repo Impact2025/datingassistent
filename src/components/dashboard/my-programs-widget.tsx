@@ -109,7 +109,7 @@ export function MyProgramsWidget() {
 
   const tierColors = {
     kickstart: 'from-blue-500 to-blue-600',
-    transformatie: 'from-coral-500 to-coral-600',
+    transformatie: 'bg-coral-500',
     'vip-reis': 'from-purple-500 to-indigo-600'
   };
 
@@ -159,7 +159,7 @@ export function MyProgramsWidget() {
               </p>
               <Button
                 onClick={() => router.push('/#programmas')}
-                className="bg-gradient-to-r from-coral-500 to-coral-600"
+                className="bg-coral-500 hover:bg-coral-600"
               >
                 Ontdek programma's
               </Button>

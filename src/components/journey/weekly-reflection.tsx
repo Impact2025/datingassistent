@@ -262,7 +262,7 @@ export function WeeklyReflection({ userId, weekStart, onComplete, onSkip }: Week
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <Card className="border-0 shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+            <Card className="border-0 shadow-xl bg-coral-500 hover:bg-coral-600 text-white">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5" />
@@ -354,7 +354,7 @@ export function WeeklyReflection({ userId, weekStart, onComplete, onSkip }: Week
             <Button
               onClick={handleComplete}
               disabled={isSubmitting}
-              className="px-8 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
+              className="px-8 bg-coral-500 hover:bg-coral-600"
             >
               {isSubmitting ? 'Opslaan...' : 'Reflectie Voltooien ✨'}
             </Button>
@@ -403,7 +403,7 @@ export function WeeklyReflection({ userId, weekStart, onComplete, onSkip }: Week
           >
             <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
               <CardHeader className="text-center pb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-coral-500 hover:bg-coral-600 rounded-full mb-4">
                   {CurrentIcon && <CurrentIcon className="w-8 h-8 text-white" />}
                 </div>
                 <CardTitle className="text-xl md:text-2xl">
@@ -434,7 +434,7 @@ export function WeeklyReflection({ userId, weekStart, onComplete, onSkip }: Week
                   <Button
                     onClick={handleAnswerSubmit}
                     disabled={!currentAnswer.trim()}
-                    className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                    className="flex items-center gap-2 bg-coral-500 hover:bg-coral-600"
                   >
                     {currentStep === REFLECTION_QUESTIONS.length - 1 ? 'Genereer Inzichten' : 'Volgende'}
                     <ArrowRight className="w-4 h-4" />
@@ -452,7 +452,7 @@ export function WeeklyReflection({ userId, weekStart, onComplete, onSkip }: Week
           transition={{ delay: 0.5 }}
           className="mt-8"
         >
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-coral-500 to-coral-600 text-white">
+          <Card className="border-0 shadow-lg bg-coral-500 hover:bg-coral-600 text-white">
             <CardContent className="p-6 text-center">
               <h3 className="text-lg font-bold mb-2">Deze Week</h3>
               <div className="flex justify-center gap-6 text-sm">

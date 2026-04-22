@@ -158,7 +158,7 @@ export function InstallPrompt() {
       >
         <div className="bg-white rounded-2xl shadow-2xl border border-coral-100 overflow-hidden">
           {/* Animated gradient header */}
-          <div className="relative bg-gradient-to-r from-coral-500 via-rose-500 to-coral-600 p-5 text-white overflow-hidden">
+          <div className="relative bg-coral-500 hover:bg-coral-600 p-5 text-white overflow-hidden">
             {/* Animated background shapes */}
             <div className="absolute inset-0 overflow-hidden">
               <motion.div
@@ -268,7 +268,7 @@ export function InstallPrompt() {
               transition={{ delay: 0.6 }}
               onClick={handleInstall}
               disabled={isInstalling}
-              className="flex-1 py-3 px-4 bg-gradient-to-r from-coral-500 to-rose-500 text-white font-semibold rounded-xl shadow-lg shadow-coral-500/25 hover:shadow-xl hover:shadow-coral-500/30 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-2"
+              className="flex-1 py-3 px-4 bg-coral-500 hover:bg-coral-600 text-white font-semibold rounded-xl shadow-lg shadow-coral-500/25 hover:shadow-xl hover:shadow-coral-500/30 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-2"
             >
               {isInstalling ? (
                 <motion.div
@@ -324,7 +324,7 @@ export function InstallButton() {
       animate={{ opacity: 1, scale: 1 }}
       onClick={handleInstall}
       disabled={isInstalling}
-      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-coral-500 to-rose-500 text-white text-sm font-medium rounded-xl hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50"
+      className="flex items-center gap-2 px-4 py-2 bg-coral-500 hover:bg-coral-600 text-white text-sm font-medium rounded-xl hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50"
     >
       {isInstalling ? (
         <motion.div

@@ -19,7 +19,7 @@ export function IrisInlineFeedback({ feedback, isLoading }: IrisInlineFeedbackPr
                  rounded-xl p-4 border border-coral-100 dark:border-coral-800"
     >
       <div className="flex gap-3">
-        <div className="w-8 h-8 bg-gradient-to-r from-coral-500 to-coral-600
+        <div className="w-8 h-8 bg-coral-500 hover:bg-coral-600
                         rounded-full flex items-center justify-center flex-shrink-0">
           <Sparkles className="w-4 h-4 text-white" />
         </div>

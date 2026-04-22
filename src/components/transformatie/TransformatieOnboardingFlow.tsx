@@ -146,7 +146,7 @@ export function TransformatieOnboardingFlow({
 
                   {/* Thumbnail Overlay */}
                   <div className={cn(
-                    "absolute inset-0 bg-gradient-to-b from-coral-500 via-coral-500 to-coral-600 flex flex-col items-center justify-between text-white transition-opacity duration-300 rounded-t-3xl overflow-visible",
+                    "absolute inset-0 bg-coral-500 hover:bg-coral-600 flex flex-col items-center justify-between text-white transition-opacity duration-300 rounded-t-3xl overflow-visible",
                     videoPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
                   )}>
                     {/* Avatar positioned outside container */}

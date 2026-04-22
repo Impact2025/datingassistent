@@ -315,7 +315,7 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
           {loading && currentStep === 'questionnaire' && (
             <div className="p-12 text-center">
               <div className="mb-8">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-coral-500 rounded-full animate-pulse mb-6">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-full animate-pulse mb-6">
                   <Sparkles className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">

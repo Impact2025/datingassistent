@@ -276,7 +276,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
         </Button>
         <Button
           onClick={handleYearGoalSubmit}
-          className="flex items-center gap-2 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700"
+          className="flex items-center gap-2 bg-coral-500 hover:bg-coral-600"
         >
           Genereer Maand Doelen
           <ArrowRight className="w-4 h-4" />
@@ -384,7 +384,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
             <Button
               onClick={handleMonthGoalsContinue}
               disabled={selectedMonthGoal === null && !customMonthGoal.trim()}
-              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50"
+              className="flex items-center gap-2 bg-coral-500 hover:bg-coral-600 disabled:opacity-50"
             >
               Genereer Week Doelen
               <ArrowRight className="w-4 h-4" />
@@ -553,7 +553,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
             <Button
               onClick={handleComplete}
               disabled={selectedWeekGoals.length === 0}
-              className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 disabled:opacity-50"
+              className="flex items-center gap-2 bg-coral-500 hover:bg-coral-600 disabled:opacity-50"
             >
               Start mijn Journey! ({selectedWeekGoals.length} doelen)
               <Sparkles className="w-4 h-4" />
@@ -570,7 +570,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
       animate={{ opacity: 1, scale: 1 }}
       className="text-center space-y-6"
     >
-      <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-500 to-blue-600 rounded-full mb-6">
+      <div className="inline-flex items-center justify-center w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-full mb-6">
         <CheckCircle className="w-10 h-10 text-white" />
       </div>
 
@@ -586,7 +586,7 @@ export function GoalsWizard({ onComplete, onBack, personalityScan }: GoalsWizard
       <Button
         onClick={handleComplete}
         size="lg"
-        className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white px-8 py-4 text-lg"
+        className="bg-coral-500 hover:bg-coral-600 text-white px-8 py-4 text-lg"
       >
         Naar Profiel Optimalisatie
         <ArrowRight className="w-5 h-5 ml-2" />

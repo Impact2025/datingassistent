@@ -18,7 +18,7 @@ export function UpdatePrompt() {
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
         className="fixed top-4 left-4 right-4 z-50 md:left-1/2 md:-translate-x-1/2 md:max-w-md"
       >
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl shadow-2xl p-4 text-white">
+        <div className="bg-coral-500 hover:bg-coral-600 rounded-2xl shadow-2xl p-4 text-white">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
               <Sparkles className="w-7 h-7" />

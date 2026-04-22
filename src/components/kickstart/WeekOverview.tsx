@@ -205,7 +205,7 @@ export function KickstartStats({
   const percentage = Math.round((completedDays / totalDays) * 100);
 
   return (
-    <Card className="bg-gradient-to-r from-coral-500 to-coral-600 text-white">
+    <Card className="bg-coral-500 hover:bg-coral-600 text-white">
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">

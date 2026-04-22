@@ -117,10 +117,10 @@ export function VibeMeter({
               <div
                 className={cn(
                   "h-full rounded-full transition-all duration-700 ease-out",
-                  status === 'excellent' && "bg-gradient-to-r from-green-400 to-green-600",
-                  status === 'good' && "bg-gradient-to-r from-blue-400 to-blue-600",
-                  status === 'needs-work' && "bg-gradient-to-r from-orange-400 to-orange-600",
-                  status === 'neutral' && "bg-gradient-to-r from-gray-400 to-gray-600"
+                  status === 'excellent' && "bg-coral-500 hover:bg-coral-600",
+                  status === 'good' && "bg-coral-500 hover:bg-coral-600",
+                  status === 'needs-work' && "bg-coral-500 hover:bg-coral-600",
+                  status === 'neutral' && "bg-coral-500 hover:bg-coral-600"
                 )}
                 style={{ width: `${value}%` }}
               />

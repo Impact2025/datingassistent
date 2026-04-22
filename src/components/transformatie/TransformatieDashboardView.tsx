@@ -844,7 +844,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                     {/* Video Progress Bar */}
                     <div className="h-1 bg-gray-200 rounded-full overflow-hidden mb-4">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-coral-500 to-rose-500"
+                        className="h-full bg-coral-500 hover:bg-coral-600"
                         initial={{ width: 0 }}
                         animate={{ width: `${videoProgress}%` }}
                         transition={{ duration: 0.1 }}

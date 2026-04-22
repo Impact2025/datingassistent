@@ -27,7 +27,7 @@ const FEATURED_TOOLS = [
     label: 'Profiel Optimalisatie',
     icon: Target,
     description: 'Bouw een profiel dat werkt',
-    color: 'from-coral-500 to-coral-600',
+    color: 'bg-coral-500',
   },
   {
     id: FEATURED_TOOL_IDS.HECHTINGSSTIJL,

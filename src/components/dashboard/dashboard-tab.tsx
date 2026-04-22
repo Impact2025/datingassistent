@@ -101,7 +101,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
       title: "Jouw profiel",
       description: "Bekijk en optimaliseer",
       action: "profiel-analyse",
-      color: "from-coral-500 to-rose-500"
+      color: "bg-coral-500"
     },
     {
       icon: MessageCircle,
@@ -157,7 +157,7 @@ export function DashboardTab({ onTabChange }: { onTabChange?: (tab: string) => v
       title: "Dating Stijl Scan",
       description: "Stijl & blinde vlekken",
       action: "datingstijl",
-      color: "from-coral-500 to-rose-500"
+      color: "bg-coral-500"
     },
     {
       icon: BookOpen,

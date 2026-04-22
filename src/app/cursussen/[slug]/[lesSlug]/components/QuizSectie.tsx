@@ -180,7 +180,7 @@ export function QuizSectie({ sectie, isCompleted, onComplete }: QuizSectieProps)
           </div>
           <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-coral-500 to-coral-600 transition-all duration-300"
+              className="h-full bg-coral-500 hover:bg-coral-600 transition-all duration-300"
               style={{ width: `${((currentQuestion + 1) / vragen.length) * 100}%` }}
             />
           </div>

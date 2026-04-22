@@ -38,7 +38,7 @@ export function ForumSearch({ onSearch, isLoading }: ForumSearchProps) {
     <Card className="border-2 border-primary/10 shadow-lg bg-gradient-to-r from-card via-card to-card/95">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-r from-primary to-coral-600 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
             <Lucide.Search className="h-5 w-5 text-white" />
           </div>
           <div>
@@ -101,7 +101,7 @@ export function ForumSearch({ onSearch, isLoading }: ForumSearchProps) {
               <Button
                 onClick={handleSearch}
                 disabled={!query.trim() || isLoading}
-                className="w-full sm:w-auto h-10 bg-gradient-to-r from-primary to-coral-600 hover:from-primary/90 hover:to-coral-600/90"
+                className="w-full sm:w-auto h-10 bg-coral-500 hover:bg-coral-600"
                 size="lg"
               >
                 {isLoading ? (

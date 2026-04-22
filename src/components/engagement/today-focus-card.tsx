@@ -264,7 +264,7 @@ export function TodayFocusCard({ userId }: TodayFocusCardProps) {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
-        className="rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-5 text-white relative overflow-hidden shadow-md"
+        className="rounded-2xl bg-coral-500 hover:bg-coral-600 p-5 text-white relative overflow-hidden shadow-md"
       >
         {/* Decoratieve blur-cirkels */}
         <div className="absolute inset-0 pointer-events-none">
@@ -363,7 +363,7 @@ export function TodayFocusCard({ userId }: TodayFocusCardProps) {
               onClick={handleDone}
               className={cn(
                 "flex-1 font-semibold rounded-xl h-11 shadow-sm text-white",
-                "bg-gradient-to-r from-coral-500 to-rose-500 hover:from-coral-600 hover:to-rose-600",
+                "bg-coral-500 hover:bg-coral-600",
                 "transition-all active:scale-[0.98]"
               )}
             >

@@ -19,7 +19,7 @@ export function WelcomeScreen({ onStart, onSkipToRoute }: WelcomeScreenProps) {
       <div className="max-w-2xl w-full space-y-8">
         {/* Hero Section */}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-900 to-gray-700 mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-coral-500 hover:bg-coral-600 mb-4">
             <Target className="w-8 h-8 text-white" />
           </div>
 

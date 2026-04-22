@@ -158,7 +158,7 @@ export function HeroSlider() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-full px-4 py-2 mb-6 border border-primary/20 shadow-lg">
               <Icon className="w-4 h-4 text-primary animate-pulse" />
-              <span className="text-sm font-medium bg-gradient-to-r from-primary to-coral-600 bg-clip-text text-transparent">
+              <span className="text-sm font-medium bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
                 10+ Jaar Ervaring • AI-Powered • 25K+ Gebruikers
               </span>
             </div>
@@ -235,7 +235,7 @@ export function HeroSlider() {
             <div className="absolute -bottom-4 -right-4 z-10 animate-bounce delay-700">
               <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur rounded-2xl p-3 border border-primary/20 shadow-xl">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                     <Star className="w-4 h-4 text-white" />
                   </div>
                   <div>

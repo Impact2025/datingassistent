@@ -254,7 +254,7 @@ export function InstellingenTab({ blogData, updateBlogData }: InstellingenTabPro
               className={cn(
                 'flex-1 h-12',
                 blogData.header_type === 'color'
-                  ? 'bg-gradient-to-r from-coral-500 to-coral-600 text-white hover:from-coral-600 hover:to-coral-700'
+                  ? 'bg-coral-500 hover:bg-coral-600 text-white hover:from-coral-600 hover:to-coral-700'
                   : 'border-gray-300 hover:bg-gray-50'
               )}
               onClick={() => updateBlogData({ header_type: 'color' })}

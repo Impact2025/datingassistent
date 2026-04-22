@@ -528,7 +528,7 @@ export default function PrijzenPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-16 md:py-24 px-4 bg-gradient-to-r from-coral-500 to-coral-600">
+      <section className="py-16 md:py-24 px-4 bg-coral-500 hover:bg-coral-600">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
             Klaar om te investeren in jezelf?

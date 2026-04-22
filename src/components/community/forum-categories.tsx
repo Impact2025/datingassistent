@@ -66,7 +66,7 @@ export function ForumCategories() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-coral-600 bg-clip-text text-transparent">
+        <h2 className="text-3xl font-bold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
           Ontdek onze Community
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -150,7 +150,7 @@ export function ForumCategories() {
           <CardContent className="p-8">
             <div className="space-y-4">
               <div className="flex justify-center">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-r from-primary to-coral-600 flex items-center justify-center">
+                <div className="h-16 w-16 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                   <Lucide.Heart className="h-8 w-8 text-white" />
                 </div>
               </div>

@@ -90,7 +90,7 @@ Eerste date: koffie, wandeling of iets anders dat we samen bedenken?`,
       {/* WOW Header */}
       <Card className="border-2 shadow-xl bg-gradient-to-br from-green-50 to-blue-50">
         <CardContent className="pt-8 pb-6 text-center">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto w-20 h-20 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center mb-4">
             <Sparkles className="h-10 w-10 text-white" />
           </div>
           <h2 className="text-3xl font-bold mb-3">
@@ -279,7 +279,7 @@ Eerste date: koffie, wandeling of iets anders dat we samen bedenken?`,
       </Card>
 
       {/* CTA */}
-      <div className="bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg p-6 text-center">
+      <div className="bg-coral-500 hover:bg-coral-600 text-white rounded-lg p-6 text-center">
         <h3 className="text-2xl font-bold mb-2">
           Holy shit, ik heb nu al resultaat! 🎉
         </h3>

@@ -713,7 +713,7 @@ function FunnelStep({
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all"
+              className="bg-coral-500 hover:bg-coral-600 h-2 rounded-full transition-all"
               style={{ width: `${percentage}%` }}
             />
           </div>

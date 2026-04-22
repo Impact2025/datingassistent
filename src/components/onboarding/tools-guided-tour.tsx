@@ -237,7 +237,7 @@ export function ToolsGuidedTour({
         {/* Progress bar */}
         <div className="h-1 bg-gray-100 dark:bg-gray-800">
           <div
-            className="h-full bg-gradient-to-r from-coral-500 to-purple-500 transition-all duration-500"
+            className="h-full bg-coral-500 hover:bg-coral-600 transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -258,7 +258,7 @@ export function ToolsGuidedTour({
               Stap {currentStep + 1} van {tourSteps.length}
             </Badge>
             {userTier === 'kickstart' && (
-              <Badge className="bg-gradient-to-r from-coral-500 to-rose-500 text-white text-xs">
+              <Badge className="bg-coral-500 hover:bg-coral-600 text-white text-xs">
                 <Rocket className="w-3 h-3 mr-1" />
                 Kickstart
               </Badge>
@@ -394,7 +394,7 @@ export function ToolsGuidedTour({
                 className={cn(
                   "gap-1",
                   isLastStep
-                    ? "bg-gradient-to-r from-coral-500 to-purple-500 hover:from-coral-600 hover:to-purple-600"
+                    ? "bg-coral-500 hover:bg-coral-600"
                     : "bg-coral-500 hover:bg-coral-600"
                 )}
               >

@@ -193,7 +193,7 @@ export function VerificationCodeInput({
           <Button
             onClick={() => handleVerifyCode(fullCode)}
             disabled={isVerifying || fullCode.length !== 6}
-            className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white font-semibold rounded-full shadow-lg"
+            className="w-full sm:w-auto px-8 py-3 bg-coral-500 hover:bg-coral-600 text-white font-semibold rounded-full shadow-lg"
           >
             {isVerifying ? (
               <>

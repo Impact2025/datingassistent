@@ -229,7 +229,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Sidebar */}
       <aside className={cn(
-        "w-72 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 shadow-2xl flex-shrink-0",
+        "w-72 bg-coral-500 hover:bg-coral-600 shadow-2xl flex-shrink-0",
         "fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out lg:relative lg:transform-none",
         sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}>
@@ -238,7 +238,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="p-6 border-b border-slate-700/50">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-coral-250 to-coral-500 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 bg-coral-500 hover:bg-coral-600 rounded-xl flex items-center justify-center shadow-lg">
                   <Shield className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -273,7 +273,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   className={cn(
                     "w-full flex items-center space-x-3 px-4 py-3 text-left rounded-xl transition-all duration-200 group",
                     isActive
-                      ? "bg-gradient-to-r from-blue-600 to-coral-600 text-white shadow-lg shadow-blue-500/20"
+                      ? "bg-coral-500 hover:bg-coral-600 text-white shadow-lg shadow-blue-500/20"
                       : "text-slate-300 hover:bg-slate-700/50 hover:text-white"
                   )}
                 >
@@ -290,7 +290,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                         {item.name}
                       </div>
                       {(item as any).badge && (
-                        <Badge className="bg-gradient-to-r from-coral-500 to-purple-500 text-white text-[10px] px-1.5 py-0 h-4">
+                        <Badge className="bg-coral-500 hover:bg-coral-600 text-white text-[10px] px-1.5 py-0 h-4">
                           {(item as any).badge}
                         </Badge>
                       )}
@@ -311,7 +311,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="p-4 border-t border-slate-700/50">
             <div className="mb-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-coral-500 hover:bg-coral-600 rounded-full flex items-center justify-center">
                   <span className="text-xs font-bold text-white">
                     {user?.email?.charAt(0).toUpperCase() || 'A'}
                   </span>
@@ -347,7 +347,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             >
               <Menu className="w-5 h-5" />
             </Button>
-            <h1 className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-coral-600 bg-clip-text text-transparent">
+            <h1 className="text-lg font-semibold bg-coral-500 hover:bg-coral-600 bg-clip-text text-transparent">
               Admin Dashboard
             </h1>
             <div className="w-10" /> {/* Spacer */}

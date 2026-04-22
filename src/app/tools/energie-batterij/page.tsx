@@ -191,7 +191,7 @@ function EnergieBatterijContent() {
             </Button>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
                   <Battery className="w-5 h-5 text-white" />
                 </div>
                 <div>

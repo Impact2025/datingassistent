@@ -47,8 +47,7 @@ export function ToolSectie({ sectie, isCompleted, onComplete }: ToolSectieProps)
       // External URL - open in new tab
       window.open(content.toolUrl, '_blank');
     } else {
-      // Fallback to tools page
-      router.push('/tools');
+      router.push('/dashboard?tab=tools');
     }
   };
 
@@ -57,7 +56,7 @@ export function ToolSectie({ sectie, isCompleted, onComplete }: ToolSectieProps)
       <CardContent className="p-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-coral-500 to-coral-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-coral-500 hover:bg-coral-600 flex items-center justify-center">
               <Wrench className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{sectie.titel}</h3>
