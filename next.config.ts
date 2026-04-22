@@ -183,6 +183,13 @@ const nextConfig: NextConfig = {
   // Experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    webpackMemoryOptimizations: true,
+  },
+
+  // Limit webpack parallelism to reduce peak memory during build
+  webpack: (config: any) => {
+    config.parallelism = 1;
+    return config;
   },
 
   // Turbopack configuration (moved from experimental.turbo)
