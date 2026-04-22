@@ -276,6 +276,7 @@ export interface ReflectieAntwoord {
 // =============================================================================
 
 export interface CursusWithProgress extends Cursus {
+  hasAccess?: boolean;
   user_progress?: {
     voltooide_lessen: number;
     totaal_lessen: number;

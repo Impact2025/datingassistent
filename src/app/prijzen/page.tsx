@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -138,6 +138,8 @@ const comparisonData = [
 
 export default function PrijzenPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const highlightedPlan = searchParams.get('plan');
 
   const handleSelectProgram = (programId: string) => {
     router.push(`/register?program=${programId}`);
@@ -175,21 +177,41 @@ export default function PrijzenPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {programs.map((program) => {
               const Icon = program.icon;
+              const isHighlighted = highlightedPlan === program.id;
 
               return (
                 <Card
                   key={program.id}
+                  id={`plan-${program.id}`}
                   className={`relative flex flex-col h-full transition-all duration-300 hover:shadow-xl ${
-                    program.popular
+                    isHighlighted
+                      ? 'border-2 border-coral-500 dark:border-coral-400 shadow-xl lg:scale-105 lg:-my-4 z-10 ring-4 ring-coral-200 dark:ring-coral-900'
+                      : program.popular
                       ? 'border-2 border-coral-500 dark:border-coral-400 shadow-lg lg:scale-105 lg:-my-4 z-10'
                       : 'border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
+                  {/* Highlighted badge (from cursus page) */}
+                  {isHighlighted && !program.popular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-coral-500 hover:bg-coral-500 text-white px-4 py-1 text-sm font-semibold shadow-lg">
+                        Inclusief cursustoegang
+                      </Badge>
+                    </div>
+                  )}
+
                   {/* Popular Badge */}
-                  {program.popular && (
+                  {program.popular && !isHighlighted && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                       <Badge className="bg-coral-500 hover:bg-coral-500 text-white px-4 py-1 text-sm font-semibold shadow-lg">
                         Onze Aanrader
+                      </Badge>
+                    </div>
+                  )}
+                  {program.popular && isHighlighted && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-coral-500 hover:bg-coral-500 text-white px-4 py-1 text-sm font-semibold shadow-lg">
+                        Onze Aanrader · Inclusief cursustoegang
                       </Badge>
                     </div>
                   )}

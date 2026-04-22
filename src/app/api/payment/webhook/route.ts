@@ -212,6 +212,15 @@ async function fulfillProgram(
   `;
   logger.log('✅ Enrollment created');
 
+  // Keep subscription_type in sync so cursus access checks work
+  if (program_slug) {
+    await sql`
+      UPDATE users
+      SET subscription_type = ${program_slug}, updated_at = NOW()
+      WHERE id = ${userId}
+    `.catch((e: unknown) => console.error('⚠️ subscription_type sync failed (non-fatal):', e));
+  }
+
   // Increment coupon usage
   if (coupon_code) {
     await sql`

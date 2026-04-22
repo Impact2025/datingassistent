@@ -199,6 +199,12 @@ export async function POST(request: NextRequest) {
         VALUES (${userId}, ${programId}, ${orderId}, 'active', NOW())
       `;
 
+      // Sync subscription_type so cursus access checks work
+      await sql`
+        UPDATE users SET subscription_type = ${programSlug}, updated_at = NOW()
+        WHERE id = ${userId}
+      `.catch((e: unknown) => console.error('⚠️ subscription_type sync failed:', e));
+
       if (normalizedCouponCode) {
         await sql`
           UPDATE coupons

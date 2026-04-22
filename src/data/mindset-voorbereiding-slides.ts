@@ -106,7 +106,7 @@ export const mindsetVoorbereidingSlides: SlideDeck = {
       title: 'Module 1 Voltooid',
       subtitle: 'Je hebt het fundament gelegd. In Module 2 gaan we hierop bouwen en je profiel onweerstaanbaar maken.',
       emoji: '🎉',
-      backgroundColor: 'from-coral-500 to-rose-500'
+      backgroundColor: 'bg-coral-500'
     }
   ]
 };

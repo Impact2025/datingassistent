@@ -8,12 +8,26 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
       disallow: [
+        // Authenticatie
         '/login',
         '/register',
+        '/forgot-password',
+        '/reset-password',
+        '/verify-email',
+        '/resend-verification',
+        '/auth-error',
+        '/logout',
+        // Gebruikersomgeving (achter login)
+        '/dashboard/',
         '/profiel',
         '/chat',
-        '/dashboard/',
+        '/kickstart/',
+        // Betalingsafhandeling (geen indexeerbare content)
+        '/payment/',
+        '/checkout/',
+        // Beheer
         '/admin/',
+        // Technisch
         '/api/',
         '/_next/',
       ],

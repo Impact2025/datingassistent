@@ -176,137 +176,152 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
             const progress = cursus.user_progress;
             const isStarted = progress && progress.voltooide_lessen > 0;
             const isCompleted = progress && progress.percentage === 100;
-            const hasAccess = cursus.hasAccess !== false; // Default to true for backwards compat
+            const hasAccess = cursus.hasAccess !== false;
             const isLocked = !hasAccess && cursus.cursus_type !== 'gratis';
+
+            const minimumPlan = getMinimumPlanForCursusType(cursus.cursus_type);
+            const prijs = cursus.prijs ? `€${cursus.prijs}` : null;
+
+            // Build the pricing URL with the right plan pre-selected
+            const prijzenHref = minimumPlan
+              ? `/prijzen?plan=${minimumPlan}`
+              : '/prijzen';
 
             const CursusCard = (
               <Card
                 className={cn(
-                  "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full relative",
+                  "group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full relative flex flex-col",
                   isCompleted && "border-green-500 border-2",
                   isStarted && !isCompleted && "border-coral-300",
                   isLocked && "opacity-90"
                 )}
               >
-                  {/* Header with badges */}
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg leading-tight group-hover:text-coral-600 transition-colors">
-                          {cursus.titel}
-                        </CardTitle>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        {getCursusTypeBadge(cursus.cursus_type)}
-                        {isCompleted && (
-                          <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0 flex items-center gap-1">
-                            <CheckCircle className="w-3 h-3" />
-                            Voltooid
-                          </Badge>
-                        )}
-                      </div>
+                {/* Header with badges */}
+                <CardHeader>
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex-1">
+                      <CardTitle className="text-lg leading-tight group-hover:text-coral-600 transition-colors">
+                        {cursus.titel}
+                      </CardTitle>
                     </div>
-
-                    {cursus.subtitel && (
-                      <CardDescription className="line-clamp-2">
-                        {cursus.subtitel}
-                      </CardDescription>
-                    )}
-                  </CardHeader>
-
-                  <CardContent className="space-y-4">
-                    {/* Beschrijving */}
-                    <p className="text-sm text-muted-foreground line-clamp-3">
-                      {cursus.beschrijving}
-                    </p>
-
-                    {/* Meta info */}
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>{cursus.duur_minuten} min</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <BookOpen className="w-3.5 h-3.5" />
-                        <span>{progress?.totaal_lessen || 0} lessen</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        <span>{getLevelLabel(cursus.niveau)}</span>
-                      </div>
+                    <div className="flex flex-col gap-2 items-end">
+                      {getCursusTypeBadge(cursus.cursus_type)}
+                      {isCompleted && (
+                        <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0 flex items-center gap-1">
+                          <CheckCircle className="w-3 h-3" />
+                          Voltooid
+                        </Badge>
+                      )}
                     </div>
+                  </div>
 
-                    {/* Progress bar (if started) */}
-                    {isStarted && progress && (
-                      <div className="space-y-2 pt-2">
-                        <div className="flex justify-between text-xs">
-                          <span className="text-muted-foreground">Voortgang</span>
-                          <span className="font-semibold text-coral-600">
-                            {progress.voltooide_lessen} / {progress.totaal_lessen} lessen
-                          </span>
-                        </div>
-                        <Progress value={progress.percentage} className="h-2" />
+                  {cursus.subtitel && (
+                    <CardDescription className="line-clamp-2">
+                      {cursus.subtitel}
+                    </CardDescription>
+                  )}
+                </CardHeader>
+
+                <CardContent className="space-y-4 flex-1">
+                  <p className="text-sm text-muted-foreground line-clamp-3">
+                    {cursus.beschrijving}
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>{cursus.duur_minuten} min</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>{progress?.totaal_lessen || 0} lessen</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <TrendingUp className="w-3.5 h-3.5" />
+                      <span>{getLevelLabel(cursus.niveau)}</span>
+                    </div>
+                  </div>
+
+                  {isStarted && progress && (
+                    <div className="space-y-2 pt-2">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">Voortgang</span>
+                        <span className="font-semibold text-coral-600">
+                          {progress.voltooide_lessen} / {progress.totaal_lessen} lessen
+                        </span>
                       </div>
-                    )}
+                      <Progress value={progress.percentage} className="h-2" />
+                    </div>
+                  )}
 
-                    {/* Doelen preview (max 2) */}
-                    {cursus.doelen && cursus.doelen.length > 0 && (
-                      <div className="space-y-1.5 pt-2 border-t">
-                        <p className="text-xs font-semibold text-muted-foreground">Je leert:</p>
-                        <ul className="space-y-1">
-                          {cursus.doelen.slice(0, 2).map((doel, idx) => (
-                            <li key={idx} className="text-xs flex items-start gap-2">
-                              <CheckCircle className="w-3 h-3 text-coral-500 shrink-0 mt-0.5" />
-                              <span className="line-clamp-1">{doel}</span>
-                            </li>
-                          ))}
-                        </ul>
+                  {cursus.doelen && cursus.doelen.length > 0 && (
+                    <div className="space-y-1.5 pt-2 border-t">
+                      <p className="text-xs font-semibold text-muted-foreground">Je leert:</p>
+                      <ul className="space-y-1">
+                        {cursus.doelen.slice(0, 2).map((doel: string, idx: number) => (
+                          <li key={idx} className="text-xs flex items-start gap-2">
+                            <CheckCircle className="w-3 h-3 text-coral-500 shrink-0 mt-0.5" />
+                            <span className="line-clamp-1">{doel}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Locked: show price + plan context */}
+                  {isLocked && prijs && (
+                    <div className="pt-2 border-t">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Losse cursus</span>
+                        <span className="font-bold text-gray-900 dark:text-white">{prijs}</span>
                       </div>
-                    )}
-                  </CardContent>
+                      {minimumPlan && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Of via het{' '}
+                          <span className="capitalize font-medium text-coral-600">{minimumPlan}</span>
+                          {' '}abonnement
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
 
-                  <CardFooter className="pt-0">
-                    <Button
-                      className={cn(
-                        "w-full rounded-full shadow-lg hover:shadow-xl transition-all",
-                        isLocked
-                          ? "bg-coral-500 hover:bg-coral-600 text-white"
-                          : "bg-coral-500 hover:bg-coral-600 text-white"
-                      )}
-                    >
-                      {isLocked ? (
-                        <>
-                          <Lock className="w-4 h-4 mr-2" />
-                          Kopen
-                        </>
-                      ) : isCompleted ? (
-                        <>
-                          <Star className="w-4 h-4 mr-2" />
-                          Bekijk opnieuw
-                        </>
-                      ) : isStarted ? (
-                        <>
-                          <Play className="w-4 h-4 mr-2" />
-                          Verder gaan
-                        </>
-                      ) : (
-                        cursus.cursus_type === 'gratis' ? 'Gratis starten' : 'Bekijk cursus'
-                      )}
-                    </Button>
-                  </CardFooter>
-                </Card>
+                <CardFooter className="pt-0 mt-auto">
+                  <Button
+                    className="w-full rounded-full shadow-lg hover:shadow-xl transition-all bg-coral-500 hover:bg-coral-600 text-white"
+                  >
+                    {isLocked ? (
+                      <>
+                        <Lock className="w-4 h-4 mr-2" />
+                        Bekijk abonnementen
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </>
+                    ) : isCompleted ? (
+                      <>
+                        <Star className="w-4 h-4 mr-2" />
+                        Bekijk opnieuw
+                      </>
+                    ) : isStarted ? (
+                      <>
+                        <Play className="w-4 h-4 mr-2" />
+                        Verder gaan
+                      </>
+                    ) : (
+                      cursus.cursus_type === 'gratis' ? 'Gratis starten' : 'Bekijk cursus'
+                    )}
+                  </Button>
+                </CardFooter>
+              </Card>
             );
 
-            // Determine the correct href based on access
-            const cursusHref = isLocked ? '/prijzen' : `/cursussen/${cursus.slug}`;
+            const cursusHref = isLocked ? prijzenHref : `/cursussen/${cursus.slug}`;
 
             return (
               <div key={cursus.id}>
                 {onCursusSelect ? (
-                  // When using callback, only call for non-locked courses
                   <div onClick={isLocked ? undefined : () => onCursusSelect(cursus.slug)}>
                     {isLocked ? (
-                      <Link href="/prijzen">{CursusCard}</Link>
+                      <Link href={prijzenHref}>{CursusCard}</Link>
                     ) : (
                       CursusCard
                     )}

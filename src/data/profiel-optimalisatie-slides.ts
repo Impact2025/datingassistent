@@ -8,7 +8,7 @@ export const profielOptimalisatieSlides: SlideDeck = {
       title: 'Module 2: Profiel Optimalisatie',
       subtitle: 'Van onzichtbaar naar onweerstaanbaar met bewezen technieken.',
       emoji: '✨',
-      backgroundColor: 'from-coral-500 to-rose-500'
+      backgroundColor: 'bg-coral-500'
     },
     {
       type: 'content',

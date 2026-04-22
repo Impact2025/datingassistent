@@ -3,100 +3,120 @@ import { sql } from '@vercel/postgres';
 import { getAllKennisbankArticles } from '@/lib/kennisbank';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+
+const baseUrl = 'https://datingassistent.nl';
+
+// Reflects when a page was last meaningfully updated.
+// Update this date whenever you make significant content changes to that page.
+const DATES = {
+  homepage:    new Date('2026-04-01'),
+  pricing:     new Date('2026-04-01'),
+  features:    new Date('2026-03-01'),
+  blog:        new Date(),             // always fresh (new posts appear here)
+  kennisbank:  new Date('2026-04-01'),
+  cursussen:   new Date('2026-04-01'),
+  landingpage: new Date('2026-03-01'),
+  static:      new Date('2025-12-01'),
+  legal:       new Date('2025-06-01'),
+};
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://datingassistent.nl';
-
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: `${baseUrl}`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'weekly' as const,
+      url: baseUrl,
+      lastModified: DATES.homepage,
+      changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/prijzen`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.pricing,
+      changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/40-plus`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/50-plus`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/features`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.features,
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'weekly' as const,
+      lastModified: DATES.blog,
+      changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/cursussen`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.cursussen,
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/kennisbank`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'weekly' as const,
+      lastModified: DATES.kennisbank,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    // Doelgroep landingspagina's
+    {
+      url: `${baseUrl}/30-plus`,
+      lastModified: DATES.landingpage,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/40-plus`,
+      lastModified: DATES.landingpage,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/50-plus`,
+      lastModified: DATES.landingpage,
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/over-ons`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/faq`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
       url: `${baseUrl}/veiligheid`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
       url: `${baseUrl}/privacyverklaring`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.legal,
+      changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/algemene-voorwaarden`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.legal,
+      changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/cookies`,
-      lastModified: new Date('2025-01-01'),
-      changeFrequency: 'monthly' as const,
+      lastModified: DATES.legal,
+      changeFrequency: 'yearly',
       priority: 0.3,
     },
   ];
@@ -113,8 +133,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     blogPages = blogResult.rows.map((blog) => ({
       url: `${baseUrl}/blog/${blog.slug}`,
       lastModified: new Date(blog.updated_at || blog.publish_date),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     }));
   } catch (error) {
     console.error('Error fetching blog posts for sitemap:', error);
@@ -132,7 +152,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     coursePages = coursesResult.rows.map((cursus) => ({
       url: `${baseUrl}/cursussen/${cursus.slug}`,
       lastModified: new Date(cursus.updated_at),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'monthly' as const,
       priority: 0.7,
     }));
   } catch (error) {
@@ -142,14 +162,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let kennisbankPages: MetadataRoute.Sitemap = [];
   try {
     const articles = getAllKennisbankArticles();
-    kennisbankPages = [
-      ...articles.map((article) => ({
-        url: `${baseUrl}/kennisbank/${article.slug}`,
-        lastModified: new Date(article.date),
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      })),
-    ];
+    kennisbankPages = articles.map((article) => ({
+      url: `${baseUrl}/kennisbank/${article.slug}`,
+      lastModified: new Date(article.date),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
   } catch (error) {
     console.error('Error fetching kennisbank articles for sitemap:', error);
   }
