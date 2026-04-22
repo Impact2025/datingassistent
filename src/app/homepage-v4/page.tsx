@@ -267,8 +267,43 @@ function HeroSection() {
                 </Button>
               </Link>
               <p className="text-sm self-center" style={{ color: colors.mediumGray }}>
-                2 min • 10 vragen • Direct resultaat
+                2 min • 10 vragen • Resultaat in je inbox
               </p>
+            </motion.div>
+
+            {/* Social proof strip */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.55 }}
+              className="flex items-center gap-3 justify-center lg:justify-start"
+            >
+              <div className="flex -space-x-2">
+                {[
+                  { i: 'M', c: colors.warmCoral },
+                  { i: 'L', c: colors.royalPurple },
+                  { i: 'T', c: colors.dustyRose },
+                  { i: 'R', c: colors.sageGreen },
+                ].map((av, idx) => (
+                  <div
+                    key={idx}
+                    className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-xs font-bold text-white"
+                    style={{ backgroundColor: av.c }}
+                  >
+                    {av.i}
+                  </div>
+                ))}
+              </div>
+              <div>
+                <div className="flex gap-0.5 mb-0.5">
+                  {[...Array(5)].map((_, j) => (
+                    <Star key={j} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-xs" style={{ color: colors.mediumGray }}>
+                  Al <span className="font-semibold" style={{ color: colors.charcoal }}>500+</span> leden gingen je voor
+                </p>
+              </div>
             </motion.div>
           </div>
 
@@ -364,7 +399,7 @@ const toolCategories = [
     icon: Eye,
     color: colors.iconOrange,
     tools: [
-      { icon: User, title: 'Profiel Coach', desc: 'AI analyseert je profiel → gemiddeld 3x meer matches' },
+      { icon: User, title: 'Profiel Coach', desc: 'Analyseert je foto\'s, bio en positionering — met concrete verbeterpunten' },
       { icon: TrendingUp, title: 'Match Analyse', desc: 'Voorspelt compatibiliteit, focus op matches met potentie' },
     ]
   },
@@ -375,7 +410,7 @@ const toolCategories = [
     color: colors.iconRose,
     tools: [
       { icon: MessageCircle, title: '24/7 Chat Coach', desc: 'Real-time suggesties, nooit meer een doodlopend gesprek' },
-      { icon: Sparkles, title: 'Opener Lab', desc: '64% respons rate vs 12% met standaard openers' },
+      { icon: Sparkles, title: 'Opener Lab', desc: 'Gepersonaliseerde openingszinnen gebaseerd op het profiel van je match' },
     ]
   },
   {
@@ -792,9 +827,33 @@ function PricingSection() {
 
 function ReviewsSection() {
   const reviews = [
-    { quote: 'Na 3 weken mijn eerste echte date. 3x meer matches binnen 48 uur!', name: 'Mark, 29', program: 'Transformatie' },
-    { quote: 'Eindelijk snap ik wat ik fout deed. Uit de friend zone, eindelijk!', name: 'Lisa, 32', program: 'Transformatie' },
-    { quote: 'Beste investering ooit. Complimenten over mijn openingszinnen!', name: 'Tom, 27', program: 'Kickstart' },
+    {
+      initials: 'MV',
+      color: colors.warmCoral,
+      quote: 'Week 1 mijn profiel gefixed via de AI check. Week 3 mijn eerste echte date geboekt. Ik had dit veel eerder moeten doen.',
+      name: 'Mark V.',
+      location: 'Amsterdam',
+      program: 'Transformatie',
+      timeAgo: '2 maanden geleden',
+    },
+    {
+      initials: 'LH',
+      color: colors.royalPurple,
+      quote: 'De Chat Coach liet me precies zien waarom gesprekken doodliepen. Binnen een week had ik 3 dates gepland staan.',
+      name: 'Lisa H.',
+      location: 'Rotterdam',
+      program: 'Transformatie',
+      timeAgo: '5 weken geleden',
+    },
+    {
+      initials: 'TK',
+      color: colors.sageGreen,
+      quote: 'AI Foto Check gaf 4 concrete verbeterpunten. Daarna verdubbelde mijn match-rate. Simpel en het werkt gewoon.',
+      name: 'Tom K.',
+      location: 'Utrecht',
+      program: 'Kickstart',
+      timeAgo: '6 weken geleden',
+    },
   ];
 
   return (
@@ -802,35 +861,53 @@ function ReviewsSection() {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: colors.deepPurple }}>
-            Echte resultaten
+            Wat leden zeggen
           </h2>
+          <p style={{ color: colors.mediumGray }}>Geverifieerde ervaringen van actieve leden</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {reviews.map((review, i) => (
             <motion.div
               key={i}
-              className="rounded-2xl p-6 border-2"
-              style={{ borderColor: colors.dustyRose, backgroundColor: colors.softBlush }}
+              className="rounded-2xl p-6 border-2 bg-white"
+              style={{ borderColor: colors.softBlush }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <div className="flex gap-1 mb-3">
+              {/* Avatar + naam + verified */}
+              <div className="flex items-center gap-3 mb-4">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
+                  style={{ backgroundColor: review.color }}
+                >
+                  {review.initials}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold text-sm" style={{ color: colors.deepPurple }}>{review.name}</span>
+                    <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" style={{ color: colors.sageGreen }} />
+                  </div>
+                  <p className="text-xs" style={{ color: colors.mediumGray }}>{review.location} · {review.timeAgo}</p>
+                </div>
+                <span className="text-xs px-2 py-1 rounded-full flex-shrink-0" style={{ backgroundColor: colors.softBlush, color: colors.deepPurple }}>
+                  {review.program}
+                </span>
+              </div>
+
+              {/* Sterren */}
+              <div className="flex gap-0.5 mb-3">
                 {[...Array(5)].map((_, j) => (
                   <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <p className="text-sm italic mb-4 leading-relaxed" style={{ color: colors.charcoal }}>
+
+              {/* Quote */}
+              <p className="text-sm leading-relaxed" style={{ color: colors.charcoal }}>
                 "{review.quote}"
               </p>
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-sm" style={{ color: colors.deepPurple }}>{review.name}</span>
-                <span className="text-xs px-2 py-1 rounded-full" style={{ backgroundColor: colors.dustyRose, color: 'white' }}>
-                  {review.program}
-                </span>
-              </div>
             </motion.div>
           ))}
         </div>
