@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -136,7 +137,7 @@ const comparisonData = [
   },
 ];
 
-export default function PrijzenPage() {
+function PrijzenPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const highlightedPlan = searchParams.get('plan');
@@ -580,5 +581,13 @@ export default function PrijzenPage() {
 
       <PublicFooter />
     </div>
+  );
+}
+
+export default function PrijzenPage() {
+  return (
+    <Suspense fallback={null}>
+      <PrijzenPageContent />
+    </Suspense>
   );
 }
