@@ -188,6 +188,16 @@ const DatingWeekNotificationModal = dynamicImport(() => import('@/components/das
   ssr: false
 });
 
+const DatingStyleFlow = dynamicImport(() => import('@/components/dating-style/dating-style-flow').then(mod => ({ default: mod.DatingStyleFlow })), {
+  loading: () => <ToolsTabSkeleton />,
+  ssr: false
+});
+
+const AttachmentAssessmentFlow = dynamicImport(() => import('@/components/attachment-assessment/attachment-assessment-flow').then(mod => ({ default: mod.AttachmentAssessmentFlow })), {
+  loading: () => <ToolsTabSkeleton />,
+  ssr: false
+});
+
 // Settings Header - Shows navigation for settings tabs
 import { SettingsHeader } from '@/components/dashboard/settings-header';
 import { FloatingCoachButton } from '@/components/dashboard/floating-coach-button';
@@ -534,15 +544,6 @@ function DashboardPageContent() {
       router.push('/select-package');
       // Reset to dashboard after navigation
       setActiveTab('dashboard');
-    } else if (activeTab === 'hechtingsstijl-redirect' || activeTab === 'hechtingsstijl') {
-      debugLog.navigate('Navigating to /hechtingsstijl...');
-      router.push('/hechtingsstijl');
-      // Reset to dashboard after navigation
-      setActiveTab('dashboard');
-    } else if (activeTab === 'datingstijl') {
-      router.push('/datingstijl');
-      // Reset to dashboard after navigation
-      setActiveTab('dashboard');
     }
 
     // REDIRECT LEGACY DUPLICATE TABS TO CONSOLIDATED MODULES
@@ -731,6 +732,11 @@ function DashboardPageContent() {
         return <DatingActivityLogger userId={user?.id || 0} />;
       case 'waarden-kompas':
         return <WaardenKompasTool />;
+      case 'datingstijl':
+        return <DatingStyleFlow />;
+      case 'hechtingsstijl':
+      case 'hechtingsstijl-redirect':
+        return <AttachmentAssessmentFlow />;
       default:
         return <DashboardTab onTabChange={handleTabChange} />;
     }
