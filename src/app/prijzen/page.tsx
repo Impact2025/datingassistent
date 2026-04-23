@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { GrowingCounter } from '@/components/ui/growing-counter';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { PublicHeader } from '@/components/layout/public-header';
@@ -442,7 +443,7 @@ function PrijzenPageContent() {
               <div className="w-12 h-12 mx-auto rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-3">
                 <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
-              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">500+ Tevreden klanten</p>
+              <p className="text-sm font-medium text-gray-900 dark:text-gray-100"><GrowingCounter /> Tevreden klanten</p>
               <p className="text-xs text-gray-500 dark:text-gray-400">Bewezen resultaten</p>
             </div>
             <div className="text-center">

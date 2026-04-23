@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { GrowingCounter } from '@/components/ui/growing-counter';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -301,7 +302,7 @@ function HeroSection() {
                   ))}
                 </div>
                 <p className="text-xs" style={{ color: colors.mediumGray }}>
-                  Al <span className="font-semibold" style={{ color: colors.charcoal }}>500+</span> leden gingen je voor
+                  Al <span className="font-semibold" style={{ color: colors.charcoal }}><GrowingCounter /></span> leden gingen je voor
                 </p>
               </div>
             </motion.div>
