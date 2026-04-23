@@ -617,7 +617,7 @@ export default function BlogEditorPage() {
 
         // If we found a good match, try to link it
         if (bestMatch && bestScore >= 2) { // Lowered from 3 to 2 for linking threshold
-          const url = bestType === 'kb' ? `/help/${bestMatch.slug}` : `/blog/${bestMatch.slug}`;
+          const url = bestType === 'kb' ? `/kennisbank/${bestMatch.slug}` : `/blog/${bestMatch.slug}`;
 
           if (tryReplaceWithLink(phrase, url, bestMatch.title)) {
             linksInserted++;
