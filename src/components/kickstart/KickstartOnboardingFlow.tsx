@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import type { KickstartIntakeData } from '@/types/kickstart-onboarding.types';
 import { cn } from '@/lib/utils';
 import { IrisAvatar } from '@/components/onboarding/IrisAvatar';
+import { Article9ConsentModal, useArticle9Consent } from '@/components/privacy/Article9ConsentModal';
 
 interface KickstartOnboardingFlowProps {
   userName?: string;
@@ -47,6 +48,7 @@ export function KickstartOnboardingFlow({
   const [age, setAge] = useState('');
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
+  const { showModal, checkConsent, handleAccept, handleDecline } = useArticle9Consent();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleStartProgram = async () => {
@@ -96,10 +98,20 @@ export function KickstartOnboardingFlow({
     setCurrentStep('success');
   };
 
-  const handleConfirmStart = () => {
-    if (completedData) {
-      onComplete(completedData);
-    }
+  const handleConfirmStart = async () => {
+    if (!completedData) return;
+    const consented = await checkConsent();
+    if (consented) onComplete(completedData);
+    // else: Article9ConsentModal shown; onComplete called after accept
+  };
+
+  const handleConsentAccept = () => {
+    handleAccept();
+    if (completedData) onComplete(completedData);
+  };
+
+  const handleConsentDecline = () => {
+    handleDecline();
   };
 
   const handlePlayVideo = async () => {
@@ -142,6 +154,13 @@ export function KickstartOnboardingFlow({
       'bg-gradient-to-b from-coral-50/50 to-white',
       className
     )}>
+      {showModal && (
+        <Article9ConsentModal
+          categories={['sexual_preference', 'psychological', 'reflections']}
+          onAccept={handleConsentAccept}
+          onDecline={handleConsentDecline}
+        />
+      )}
 
       <AnimatePresence mode="wait">
         {/* STEP 1: Welcome Screen - Premium & Engaging */}

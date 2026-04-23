@@ -11,6 +11,7 @@ import { AttachmentIntro } from './attachment-intro';
 import { AttachmentQuestionnaire } from './attachment-questionnaire';
 import { AttachmentResults } from './attachment-results';
 import { useUser } from '@/providers/user-provider';
+import { Article9ConsentModal, useArticle9Consent } from '@/components/privacy/Article9ConsentModal';
 
 export type AttachmentStyle = 'veilig' | 'angstig' | 'vermijdend' | 'angstig_vermijdend';
 
@@ -45,6 +46,7 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
   const [currentStep, setCurrentStep] = useState<AssessmentStep>('intro');
   const [assessmentData, setAssessmentData] = useState<AssessmentData | null>(null);
   const [loading, setLoading] = useState(false);
+  const { showModal, checkConsent, handleAccept, handleDecline } = useArticle9Consent();
 
   const getStepProgress = () => {
     switch (currentStep) {
@@ -73,7 +75,7 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
     }
   };
 
-  const handleStartAssessment = async () => {
+  const doStartAssessment = async () => {
     if (!user?.id) {
       alert('Je moet ingelogd zijn om de QuickScan te starten.');
       return;
@@ -137,6 +139,21 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleStartAssessment = async () => {
+    const consented = await checkConsent();
+    if (consented) await doStartAssessment();
+    // else: Article9ConsentModal is shown; doStartAssessment called after accept
+  };
+
+  const handleConsentAccept = async () => {
+    handleAccept();
+    await doStartAssessment();
+  };
+
+  const handleConsentDecline = () => {
+    handleDecline();
   };
 
   const handleQuestionnaireComplete = async (responses: Array<{ questionId: number; type: string; category: string; value: number; timeMs: number }>) => {
@@ -257,6 +274,13 @@ export function AttachmentAssessmentFlow({ onClose }: AttachmentAssessmentFlowPr
 
   return (
     <div className="space-y-6">
+      {showModal && (
+        <Article9ConsentModal
+          categories={['psychological']}
+          onAccept={handleConsentAccept}
+          onDecline={handleConsentDecline}
+        />
+      )}
       {/* Header Card */}
       <Card className="bg-white border-0 shadow-sm">
         <CardContent className="p-8 relative">
