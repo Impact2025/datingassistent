@@ -31,7 +31,7 @@ export function PublicFooter() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/#programmas" className="text-sm text-foreground/80 hover:text-primary transition-colors">
+                    <Link href="/prijzen" className="text-sm text-foreground/80 hover:text-primary transition-colors">
                       Prijzen
                     </Link>
                   </li>
@@ -47,7 +47,7 @@ export function PublicFooter() {
                 <h3 className="font-semibold mb-4 text-foreground">Over ons</h3>
                 <ul className="space-y-2">
                   <li>
-                    <Link href="/#over-ons" className="text-sm text-foreground/80 hover:text-primary transition-colors">
+                    <Link href="/over-ons" className="text-sm text-foreground/80 hover:text-primary transition-colors">
                       Ons verhaal
                     </Link>
                   </li>
