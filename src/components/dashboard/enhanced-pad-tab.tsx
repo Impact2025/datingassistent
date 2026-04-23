@@ -60,7 +60,7 @@ interface JourneyPhase {
   estimatedTime: string;
 }
 
-type ViewMode = 'programs' | 'kickstart' | 'transformatie' | 'journey';
+type ViewMode = 'kickstart' | 'transformatie' | 'journey';
 
 export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId }: EnhancedPadTabProps) {
   const router = useRouter();
@@ -68,22 +68,27 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
   const [overallProgress, setOverallProgress] = useState(15);
   const [loading, setLoading] = useState(true);
   const [enrolledPrograms, setEnrolledPrograms] = useState<EnrolledProgram[]>([]);
-  const [viewMode, setViewMode] = useState<ViewMode>('programs');
 
   // Use cached enrollment hooks (React Query) - prevents duplicate API calls
   const { isEnrolled: hasTransformatie, isLoading: transformatieLoading } = useTransformatieEnrollment();
   const { isEnrolled: hasKickstart, isLoading: kickstartLoading } = useKickstartEnrollment();
 
-  // Set initial view mode based on cached enrollment status
+  const enrollmentResolved = !transformatieLoading && !kickstartLoading;
+
+  // Determine view mode from enrollment — no intermediate 'programs' state
+  const [viewMode, setViewMode] = useState<ViewMode | null>(null);
+
   useEffect(() => {
-    if (!transformatieLoading && !kickstartLoading) {
+    if (enrollmentResolved && viewMode === null) {
       if (hasTransformatie) {
         setViewMode('transformatie');
       } else if (hasKickstart) {
         setViewMode('kickstart');
+      } else {
+        setViewMode('journey');
       }
     }
-  }, [hasTransformatie, hasKickstart, transformatieLoading, kickstartLoading]);
+  }, [enrollmentResolved, hasTransformatie, hasKickstart, viewMode]);
 
   // Fetch enrolled programs for detailed progress info (only if enrolled)
   useEffect(() => {
@@ -250,13 +255,12 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
     }
   };
 
-  if (loading) {
+  if (loading || viewMode === null) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-coral-500 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Je programma's laden...</p>
-        </div>
+      <div className="p-6 space-y-4 animate-pulse">
+        <div className="h-6 bg-gray-100 dark:bg-gray-800 rounded-xl w-1/3" />
+        <div className="h-40 bg-gray-100 dark:bg-gray-800 rounded-2xl" />
+        <div className="h-32 bg-gray-100 dark:bg-gray-800 rounded-2xl" />
       </div>
     );
   }

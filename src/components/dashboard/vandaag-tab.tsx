@@ -7,9 +7,8 @@ import { Heart, Play, MessageCircle, ArrowRight, CheckCircle, Flame } from 'luci
 import { useUser } from '@/providers/user-provider';
 import { useTransformatieEnrollment, useKickstartEnrollment } from '@/hooks/use-enrollment-status';
 import { useKickstartProgress } from '@/hooks/use-kickstart';
-import { TodayFocusCard } from '@/components/engagement/today-focus-card';
 import { useScanManager } from '@/hooks/use-scan-manager';
-import { ScanCard } from './scan-card';
+import { JourneyNextStepCard } from './journey-next-step-card';
 import { ToolModal } from '@/components/tools/tool-modal';
 
 interface VandaagTabProps {
@@ -40,7 +39,7 @@ export const VandaagTab = React.memo(function VandaagTab({ onTabChange, userId }
   const currentModule = Math.min(Math.floor(completedLessons / 4) + 1, 12);
   const currentLesson = (completedLessons % 4) + 1;
 
-  const scanNotDone = scanStatus?.hechtingsstijl && !scanStatus.hechtingsstijl.isCompleted;
+  const isFreeUser = !hasKickstart && !hasTransformatie;
 
   // Kickstart day info
   const todayDayNumber = nextDay ?? 1;
@@ -123,8 +122,8 @@ export const VandaagTab = React.memo(function VandaagTab({ onTabChange, userId }
         </motion.div>
       )}
 
-      {/* Hero Card: Transformatie of fallback (alleen als geen Kickstart) */}
-      {!hasKickstart && hasTransformatie ? (
+      {/* Hero Card: Transformatie (alleen als geen Kickstart) */}
+      {!hasKickstart && hasTransformatie && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -153,8 +152,6 @@ export const VandaagTab = React.memo(function VandaagTab({ onTabChange, userId }
                   <span className="text-sm font-bold text-white">Ga verder</span>
                 </div>
               </div>
-
-              {/* Progress bar */}
               <div className="bg-white/20 rounded-full h-1.5 overflow-hidden">
                 <motion.div
                   className="h-full bg-white rounded-full"
@@ -170,24 +167,15 @@ export const VandaagTab = React.memo(function VandaagTab({ onTabChange, userId }
             </div>
           </button>
         </motion.div>
-      ) : scanNotDone ? (
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35 }}
-        >
-          <ScanCard
-            icon={<Heart className="w-6 h-6" />}
-            title="Ontdek je hechtingsstijl"
-            subtitle="Leer hoe je hechtingsstijl je dating gedrag beïnvloedt"
-            quote='"Wetenschappelijk onderbouwde inzichten voor betere relaties"'
-            actionLabel="Start test (5 min)"
-            onAction={() => openScan('hechtingsstijl')}
-            color="pink"
-          />
-        </motion.div>
-      ) : (
-        <TodayFocusCard userId={userId} />
+      )}
+
+      {/* Journey progress card voor vrije gebruikers */}
+      {isFreeUser && (
+        <JourneyNextStepCard
+          scanStatus={scanStatus}
+          onScanOpen={openScan}
+          onTabChange={onTabChange}
+        />
       )}
 
       {/* Coach teaser */}
