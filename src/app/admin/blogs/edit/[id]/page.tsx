@@ -291,64 +291,6 @@ export default function BlogEditorPage() {
   // AI ACTIONS
   // =========================================================================
 
-  const handleFormatAndSEO = async () => {
-    if (!blogData.content || !blogData.title || !blogData.category) {
-      toast({
-        title: 'Onvolledige data',
-        description: 'Vul eerst titel, categorie en content in',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    toast({
-      title: 'AI Format & SEO',
-      description: 'Bezig met optimaliseren...',
-    });
-
-    try {
-      const response = await fetch('/api/ai/format-blog', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          rawContent: blogData.content,
-          title: blogData.title,
-          category: blogData.category,
-          focusKeyword: blogData.seo_title?.split(' ')[0],
-          targetLength: 'medium',
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Optimalisatie mislukt');
-      }
-
-      // Update blog data with formatted content and metadata
-      updateBlogData({
-        content: data.formattedContent,
-        seo_title: data.metadata.seoTitle,
-        seo_description: data.metadata.seoDescription,
-        social_title: data.metadata.socialTitle,
-        social_description: data.metadata.socialDescription,
-        reading_time: Math.ceil(data.structure.wordCount / 200),
-      });
-
-      toast({
-        title: 'Succesvol!',
-        description: 'Content is geoptimaliseerd met AI',
-      });
-    } catch (error) {
-      console.error('Format & SEO error:', error);
-      toast({
-        title: 'Fout',
-        description: error instanceof Error ? error.message : 'Optimalisatie mislukt',
-        variant: 'destructive',
-      });
-    }
-  };
-
   const handleMetadataOnly = async () => {
     if (!blogData.content || !blogData.title) {
       toast({
@@ -859,15 +801,6 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
 
             {/* AI Action Buttons */}
             <div className="flex items-center space-x-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleFormatAndSEO}
-                className="border-green-200 text-green-700 hover:bg-green-50"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                Format & SEO
-              </Button>
               <Button
                 variant="outline"
                 size="sm"
