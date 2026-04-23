@@ -63,6 +63,12 @@ const nextConfig: NextConfig = {
         destination: '/waarden-kompas',
         permanent: true,
       },
+      // /help/* → /kennisbank/* (auto-link functie gebruikte verkeerde prefix)
+      {
+        source: '/help/:path*',
+        destination: '/kennisbank/:path*',
+        permanent: false,
+      },
       // Checkout slug corrections — old URLs with "-programma" suffix
       {
         source: '/checkout/transformatie-programma',
