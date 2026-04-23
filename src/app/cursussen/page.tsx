@@ -1,16 +1,26 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { GraduationCap, Sparkles, TrendingUp, Award } from 'lucide-react';
 import { CursussenGallery } from '@/components/dashboard/cursussen-gallery';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
+import { useUser } from '@/providers/user-provider';
 
-/**
- * Cursussen Overzicht Pagina
- * Minimalistisch, professioneel design zoals dashboard homepage
- */
 export default function CursussenPage() {
+  const { user } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/dashboard?tab=pad');
+    }
+  }, [user, router]);
+
+  if (user) return null;
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
       <PublicHeader />

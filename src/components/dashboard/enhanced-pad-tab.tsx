@@ -291,6 +291,30 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
           <div className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-xl border border-white/20">
             <TransformatieDashboardView onBack={() => setViewMode('journey')} />
           </div>
+
+          {/* Extra cursussen bij abonnement */}
+          <div className="mt-6 rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center">
+                  <BookOpen className="w-4 h-4 text-purple-600" />
+                </div>
+                <div>
+                  <p className="font-semibold text-sm text-gray-900">Extra cursussen</p>
+                  <p className="text-xs text-gray-500">Inclusief bij jouw Transformatie abonnement</p>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onTabChange?.('cursussen')}
+                className="border-gray-200 text-gray-700 hover:bg-gray-50 text-xs"
+              >
+                Bekijk cursussen
+                <ArrowRight className="w-3 h-3 ml-1" />
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -298,7 +322,34 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
 
   // Show Kickstart when in kickstart mode - clean minimalist design within dashboard
   if (viewMode === 'kickstart' && hasKickstart && userId) {
-    return <KickstartDashboard onBack={() => setViewMode('journey')} />;
+    return (
+      <div>
+        <KickstartDashboard onBack={() => setViewMode('journey')} />
+        {/* Extra cursussen bij abonnement */}
+        <div className="mx-4 mb-6 rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center">
+                <BookOpen className="w-4 h-4 text-purple-600" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-gray-900">Extra cursussen</p>
+                <p className="text-xs text-gray-500">Inclusief bij jouw Kickstart abonnement</p>
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onTabChange?.('cursussen')}
+              className="border-gray-200 text-gray-700 hover:bg-gray-50 text-xs"
+            >
+              Bekijk cursussen
+              <ArrowRight className="w-3 h-3 ml-1" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
