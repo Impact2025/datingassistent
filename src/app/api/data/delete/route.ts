@@ -2,6 +2,7 @@ import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { verifyToken } from '@/lib/auth';
+import { sendEmail } from '@/lib/email-service';
 
 export async function POST(request: NextRequest) {
   try {
@@ -102,12 +103,21 @@ export async function POST(request: NextRequest) {
       WHERE id = ${user.id}
     `;
 
-    // TODO: Send confirmation email
-    // For now, we'll log it
     logger.log(`✅ Account deletion request created for user ${user.id}, scheduled for ${deletionDate.toISOString()}`);
 
-    // In a real implementation, you would send an email here
-    // await sendDeletionConfirmationEmail(user.email, requestId, deletionDate);
+    const cancelUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard?tab=privacy&action=cancel-delete&requestId=${requestId}`;
+    await sendEmail({
+      to: (user as any).email,
+      subject: 'Bevestiging: verwijderverzoek ontvangen — DatingAssistent',
+      html: `
+        <p>We hebben je verzoek ontvangen om je account te verwijderen.</p>
+        <p><strong>Geplande verwijdering:</strong> ${deletionDate.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+        <p>Je hebt 30 dagen de tijd om dit te herroepen. Je account en gegevens blijven tot die datum intact.</p>
+        <p><a href="${cancelUrl}" style="background:#e85d4a;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;">Verwijderverzoek intrekken</a></p>
+        <p>Vragen? Mail naar <a href="mailto:privacy@datingassistent.nl">privacy@datingassistent.nl</a></p>
+        <p>DatingAssistent Team</p>
+      `,
+    }).catch(console.error);
 
     return NextResponse.json({
       message: 'Account deletion request submitted successfully',

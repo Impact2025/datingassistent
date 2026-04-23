@@ -182,7 +182,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
       headers: {
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9001',
+        'HTTP-Referer': process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:9001',
         'X-Title': 'DatingAssistent Photo Analysis'
       },
       body: JSON.stringify({

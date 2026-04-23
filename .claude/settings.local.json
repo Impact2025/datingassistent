@@ -316,7 +316,9 @@
       "Bash(sed -i 's/^date: \"2026-04-22\"/date: \"2026-02-14\"/' content/kennisbank/hechtingsstijlen/trauma-bond.md)",
       "Bash(sed -i 's/^date: \"2026-04-22\"/date: \"2026-02-20\"/' content/kennisbank/opnieuw-daten/na-scheiding.md)",
       "Bash(sed -i 's/^date: \"2026-04-22\"/date: \"2026-02-27\"/' content/kennisbank/zelfvertrouwen/index.md)",
-      "Bash(sort -t'\"' -k2)"
+      "Bash(sort -t'\"' -k2)",
+      "WebSearch",
+      "WebFetch(domain:openrouter.ai)"
     ],
     "deny": [],
     "ask": []

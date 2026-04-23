@@ -28,6 +28,10 @@
     {
       "path": "/api/cron/weekly-campaigns",
       "schedule": "0 10 * * 3"
+    },
+    {
+      "path": "/api/cron/gdpr-cleanup",
+      "schedule": "0 2 * * *"
     }
   ]
 }

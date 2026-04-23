@@ -24,6 +24,21 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const data: KickstartIntakeData = body.data;
 
+    // Art. 9 AVG: controleer uitdrukkelijke toestemming voor bijzondere categorieën
+    // (seksuele voorkeur via lookingFor, psychologische data via biggestFear etc.)
+    const consentCheck = await sql`
+      SELECT article9_consent FROM users WHERE id = ${userId}
+    `;
+    if (!consentCheck.rows[0]?.article9_consent) {
+      return NextResponse.json(
+        {
+          error: 'article9_consent_required',
+          message: 'Uitdrukkelijke toestemming voor bijzondere categorieën persoonsgegevens vereist (Art. 9 AVG).',
+        },
+        { status: 403 }
+      );
+    }
+
     // Validate required fields
     if (!data.preferredName || !data.age) {
       return NextResponse.json(

@@ -1,26 +1,21 @@
 'use client';
 
-/**
- * Microsoft Clarity Integration - AVG Compliant
- *
- * Provides heatmaps, session recordings, and behavioral analytics.
- * Free alternative to Hotjar with unlimited sessions.
- *
- * PRIVACY NOTICE:
- * - Laadt ALLEEN met analytics consent
- * - Neemt scherm, muisbewegingen en clicks op
- * - Verstuurt data naar Microsoft servers
- *
- * Setup:
- * 1. Create account at https://clarity.microsoft.com
- * 2. Add your site
- * 3. Get your Clarity Project ID
- * 4. Add NEXT_PUBLIC_CLARITY_PROJECT_ID to .env
- */
-
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { hasAnalyticsConsent } from '@/components/cookie-consent';
 import { logger } from '@/lib/logger';
+
+// Routes met Art.9-data (seksuele voorkeur, psychologische data, reflecties)
+// Op deze routes wordt sessie-opname gestopt zodat gevoelige invoer niet bij
+// Microsoft terechtkomt (AVG art. 5 lid 1 sub f + art. 9).
+const SENSITIVE_ROUTE_PREFIXES = [
+  '/kickstart',
+  '/hechtingsstijl',
+  '/dashboard',
+  '/transformatie',
+  '/snapshot',
+  '/onboarding',
+];
 
 declare global {
   interface Window {
@@ -35,27 +30,28 @@ interface ClarityProps {
 export function MicrosoftClarity({ projectId }: ClarityProps) {
   const clarityId = projectId || process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
   const [shouldLoad, setShouldLoad] = useState(false);
+  const pathname = usePathname();
+
+  // Stop sessie-opname op gevoelige routes (AVG art. 9 - bijzondere categorieën)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.clarity) return;
+    const isSensitive = SENSITIVE_ROUTE_PREFIXES.some(p => pathname.startsWith(p));
+    if (isSensitive) {
+      window.clarity('stop');
+      logger.log('[Clarity] ⛔ Sessie-opname gestopt op gevoelige route:', pathname);
+    }
+  }, [pathname]);
 
   useEffect(() => {
-    // Check initial consent
     const checkConsent = () => {
       const hasConsent = hasAnalyticsConsent();
       setShouldLoad(hasConsent);
-
-      if (!hasConsent) {
-        logger.log('[Clarity] Blocked - Analytics consent required');
-      }
+      if (!hasConsent) logger.log('[Clarity] Blocked - Analytics consent required');
     };
 
     checkConsent();
-
-    // Listen for consent changes
-    const handleConsentUpdate = () => {
-      checkConsent();
-    };
-
-    window.addEventListener('consentUpdated', handleConsentUpdate);
-    return () => window.removeEventListener('consentUpdated', handleConsentUpdate);
+    window.addEventListener('consentUpdated', checkConsent);
+    return () => window.removeEventListener('consentUpdated', checkConsent);
   }, []);
 
   useEffect(() => {

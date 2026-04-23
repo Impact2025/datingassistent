@@ -45,7 +45,7 @@ export async function sendSMS(message: SMSMessage): Promise<SMSResponse> {
       body: message.body,
       from: message.from || process.env.TWILIO_PHONE_NUMBER,
       to: message.to,
-      statusCallback: message.statusCallback || `${process.env.NEXT_PUBLIC_APP_URL}/api/sms/webhook`
+      statusCallback: message.statusCallback || `${process.env.NEXT_PUBLIC_BASE_URL}/api/sms/webhook`
     });
 
     logger.log(`✅ SMS sent successfully to ${message.to}, SID: ${twilioMessage.sid}`);

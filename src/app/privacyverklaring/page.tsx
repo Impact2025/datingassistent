@@ -104,9 +104,86 @@ export default function PrivacyPage() {
               <div className="space-y-3">
                 <h2 className="text-2xl font-semibold">5. Bewaartermijnen</h2>
                 <p className="text-sm sm:text-base leading-relaxed text-foreground/80">
-                  Persoonsgegevens worden niet langer bewaard dan noodzakelijk. Gebruikers kunnen te allen tijde verzoeken hun gegevens te
-                  laten verwijderen.
+                  Persoonsgegevens worden niet langer bewaard dan noodzakelijk voor het doel waarvoor zij zijn verzameld (Art. 5 lid 1 sub e AVG). Onderstaande termijnen worden automatisch gehandhaafd via nachtelijke opschoningsprocessen.
                 </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse border border-border">
+                    <thead className="bg-muted">
+                      <tr>
+                        <th className="border border-border px-3 py-2 text-left font-semibold">Datacategorie</th>
+                        <th className="border border-border px-3 py-2 text-left font-semibold">Bewaartermijn</th>
+                        <th className="border border-border px-3 py-2 text-left font-semibold">Grondslag</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-foreground/80">
+                      <tr>
+                        <td className="border border-border px-3 py-2">Account- en profielgegevens</td>
+                        <td className="border border-border px-3 py-2">Tot verwijdering door gebruiker</td>
+                        <td className="border border-border px-3 py-2">Contractuitvoering</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2">AI coach-gesprekken</td>
+                        <td className="border border-border px-3 py-2">12 maanden na gesprek</td>
+                        <td className="border border-border px-3 py-2">Art. 5(1)(e) AVG — dataminimalisatie</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2">Activiteitslog</td>
+                        <td className="border border-border px-3 py-2">24 maanden</td>
+                        <td className="border border-border px-3 py-2">Gerechtvaardigd belang (beveiliging)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2">Betaal- en ordergegevens</td>
+                        <td className="border border-border px-3 py-2">7 jaar</td>
+                        <td className="border border-border px-3 py-2">Fiscale bewaarplicht (art. 52 AWR)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2">Verwijderd account (geanonimiseerd)</td>
+                        <td className="border border-border px-3 py-2">30 dagen cooling-off, daarna permanent</td>
+                        <td className="border border-border px-3 py-2">Art. 17 AVG — recht op vergetelheid</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2">Analytics (Google Analytics)</td>
+                        <td className="border border-border px-3 py-2">Geanonimiseerd na 14 maanden</td>
+                        <td className="border border-border px-3 py-2">Toestemming (cookie consent)</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-border px-3 py-2">Sessie-opnames (Microsoft Clarity)</td>
+                        <td className="border border-border px-3 py-2">Maximaal 30 dagen</td>
+                        <td className="border border-border px-3 py-2">Toestemming — niet actief op gevoelige pagina&apos;s</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h2 className="text-2xl font-semibold">5a. AI-modellen en gegevensverwerking</h2>
+                <p className="text-sm sm:text-base leading-relaxed text-foreground/80">
+                  DatingAssistent maakt gebruik van AI-taalmodellen voor gepersonaliseerde coaching. Vóór verzending naar externe AI-diensten worden alle directe persoonsidentificatoren verwijderd of gegeneraliseerd (pseudonimisering).
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse border border-border">
+                    <thead className="bg-muted">
+                      <tr>
+                        <th className="border border-border px-3 py-2 text-left font-semibold">Model / aanbieder</th>
+                        <th className="border border-border px-3 py-2 text-left font-semibold">Toegang via</th>
+                        <th className="border border-border px-3 py-2 text-left font-semibold">Data die wordt gedeeld</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-foreground/80">
+                      <tr>
+                        <td className="border border-border px-3 py-2 font-medium">Claude (Anthropic)</td>
+                        <td className="border border-border px-3 py-2">OpenRouter</td>
+                        <td className="border border-border px-3 py-2">Gepseudonimiseerde chatberichten, leeftijdsrange, geanonimiseerde profielcontext</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <ul className="list-disc pl-6 space-y-1 text-sm text-foreground/80">
+                  <li><strong>Pseudonimisering:</strong> naam, exacte leeftijd en locatie worden vervangen door categorieën vóór verzending.</li>
+                  <li><strong>Geen AI-training:</strong> conform onze DPA met OpenRouter/Anthropic worden jouw gegevens niet gebruikt voor het trainen van AI-modellen.</li>
+                  <li><strong>Geen user-ID doorgifte:</strong> het is voor de AI-aanbieder niet mogelijk jou te identificeren op basis van de verzonden data.</li>
+                </ul>
               </div>
 
               <div className="space-y-3">

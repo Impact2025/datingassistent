@@ -28,8 +28,8 @@ import { useUser } from '@/providers/user-provider';
 
 interface DataRequest {
   id: string;
-  type: 'export' | 'delete' | 'modify';
-  status: 'pending' | 'processing' | 'completed' | 'failed';
+  type: 'export' | 'delete' | 'modify' | 'restrict' | 'object';
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'cancelled';
   requestedAt: string;
   completedAt?: string;
   data?: any;
@@ -43,6 +43,21 @@ export function DataManagementTab() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
   const [deleteReason, setDeleteReason] = useState('');
+
+  // Art.9 consent status
+  const [article9Consent, setArticle9Consent] = useState<{ hasConsent: boolean; consentAt: string | null } | null>(null);
+
+  // Beperking (Art. 18)
+  const [restrictReason, setRestrictReason] = useState('');
+  const [restrictToelichting, setRestrictToelichting] = useState('');
+  const [isRestricted, setIsRestricted] = useState(false);
+
+  // Bezwaar (Art. 21)
+  const [objectGround, setObjectGround] = useState('');
+  const [objectToelichting, setObjectToelichting] = useState('');
+
+  // Cancel delete
+  const [hasPendingDelete, setHasPendingDelete] = useState(false);
 
   // Edit profile state
   const [editMode, setEditMode] = useState(false);
@@ -66,7 +81,18 @@ export function DataManagementTab() {
 
   useEffect(() => {
     loadRequests();
+    loadConsentStatus();
   }, []);
+
+  const loadConsentStatus = async () => {
+    try {
+      const res = await fetch('/api/user/article9-consent');
+      if (res.ok) {
+        const data = await res.json();
+        setArticle9Consent(data);
+      }
+    } catch {}
+  };
 
   const loadRequests = async () => {
     try {
@@ -77,7 +103,10 @@ export function DataManagementTab() {
 
       if (response.ok) {
         const data = await response.json();
-        setRequests(data.requests || []);
+        const reqs: DataRequest[] = data.requests || [];
+        setRequests(reqs);
+        setHasPendingDelete(reqs.some(r => r.type === 'delete' && r.status === 'pending'));
+        setIsRestricted(reqs.some(r => r.type === 'restrict' && r.status === 'pending'));
       }
     } catch (error) {
       console.error('Failed to load requests:', error);
@@ -202,17 +231,85 @@ export function DataManagementTab() {
     }
   };
 
+  const handleCancelDelete = async () => {
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem('datespark_auth_token');
+      const res = await fetch('/api/data/cancel-delete', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (res.ok) {
+        alert('Verwijderverzoek ingetrokken. Je account blijft actief.');
+        setHasPendingDelete(false);
+        loadRequests();
+      }
+    } catch {}
+    setIsLoading(false);
+  };
+
+  const handleRestrict = async () => {
+    if (!restrictReason) { alert('Selecteer een reden.'); return; }
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem('datespark_auth_token');
+      const res = await fetch('/api/data/restrict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ reason: restrictReason, toelichting: restrictToelichting }),
+      });
+      const data = await res.json();
+      alert(data.message || 'Verzoek ingediend.');
+      loadRequests();
+    } catch {}
+    setIsLoading(false);
+  };
+
+  const handleLiftRestriction = async () => {
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem('datespark_auth_token');
+      await fetch('/api/data/restrict', { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+      setIsRestricted(false);
+      loadRequests();
+    } catch {}
+    setIsLoading(false);
+  };
+
+  const handleObject = async () => {
+    if (!objectGround) { alert('Selecteer een grond.'); return; }
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem('datespark_auth_token');
+      const res = await fetch('/api/data/object', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ ground: objectGround, toelichting: objectToelichting }),
+      });
+      const data = await res.json();
+      alert(data.message || 'Bezwaar ingediend.');
+      setObjectGround('');
+      setObjectToelichting('');
+      loadRequests();
+    } catch {}
+    setIsLoading(false);
+  };
+
+  const handleRevokeArticle9 = async () => {
+    if (!confirm('Weet je zeker dat je de Art.9-toestemming wilt intrekken? Dit stopt toekomstige verwerking van gevoelige categorieën.')) return;
+    await fetch('/api/user/article9-consent', { method: 'DELETE' });
+    loadConsentStatus();
+  };
+
   const getTypeLabel = (type: string) => {
-    switch (type) {
-      case 'export':
-        return 'Data Export';
-      case 'delete':
-        return 'Account Verwijdering';
-      case 'modify':
-        return 'Gegevens Wijziging';
-      default:
-        return type;
-    }
+    const labels: Record<string, string> = {
+      export:   'Data Export',
+      delete:   'Account Verwijdering',
+      modify:   'Gegevens Wijziging',
+      restrict: 'Beperkingsverzoek',
+      object:   'Bezwaarrecht',
+    };
+    return labels[type] || type;
   };
 
   if (!user) {
@@ -241,10 +338,12 @@ export function DataManagementTab() {
 
       {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 gap-1">
           <TabsTrigger value="overview">Overzicht</TabsTrigger>
           <TabsTrigger value="export">Exporteren</TabsTrigger>
-          <TabsTrigger value="modify">Wijzigen</TabsTrigger>
+          <TabsTrigger value="modify">Corrigeren</TabsTrigger>
+          <TabsTrigger value="restrict">Beperken</TabsTrigger>
+          <TabsTrigger value="object">Bezwaar</TabsTrigger>
           <TabsTrigger value="delete">Verwijderen</TabsTrigger>
         </TabsList>
 
@@ -311,7 +410,41 @@ export function DataManagementTab() {
             </Card>
           </div>
 
-          {/* Recent Requests */}
+          {/* Toestemmingsstatus */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Lock className="w-5 h-5" />
+                Jouw Toestemmingen
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center justify-between p-3 rounded-lg border">
+                <div>
+                  <p className="font-medium text-sm">Art. 9 — Bijzondere categorieën</p>
+                  <p className="text-xs text-muted-foreground">Seksuele voorkeur + psychologische data</p>
+                  {article9Consent?.consentAt && (
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Gegeven op {new Date(article9Consent.consentAt).toLocaleDateString('nl-NL')}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  {article9Consent?.hasConsent
+                    ? <Badge className="bg-green-500">Akkoord</Badge>
+                    : <Badge variant="secondary">Niet gegeven</Badge>
+                  }
+                  {article9Consent?.hasConsent && (
+                    <Button variant="outline" size="sm" onClick={handleRevokeArticle9}>
+                      Intrekken
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Recente Verzoeken */}
           {requests.length > 0 && (
             <Card>
               <CardHeader>
@@ -444,6 +577,117 @@ export function DataManagementTab() {
           </Card>
         </TabsContent>
 
+        {/* Beperken Tab — Art. 18 */}
+        <TabsContent value="restrict" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <EyeOff className="w-5 h-5" />
+                Beperking van Verwerking (Art. 18 AVG)
+              </CardTitle>
+              <p className="text-muted-foreground text-sm">
+                Je kunt verzoeken dat je gegevens tijdelijk niet worden verwerkt, maar alleen worden bewaard.
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {isRestricted ? (
+                <Alert>
+                  <Lock className="h-4 w-4" />
+                  <AlertDescription>
+                    Er is momenteel een actief beperkingsverzoek. Verwerking is beperkt tot opslag.
+                    <Button variant="link" className="p-0 h-auto ml-2" onClick={handleLiftRestriction}>
+                      Beperking opheffen
+                    </Button>
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <>
+                  <div>
+                    <Label htmlFor="restrict-reason">Reden</Label>
+                    <select
+                      id="restrict-reason"
+                      value={restrictReason}
+                      onChange={e => setRestrictReason(e.target.value)}
+                      className="w-full mt-1 border rounded-md p-2 text-sm bg-background"
+                    >
+                      <option value="">Selecteer een reden…</option>
+                      <option value="accuracy_dispute">Juistheid van gegevens wordt betwist</option>
+                      <option value="unlawful_processing">Verwerking is onrechtmatig</option>
+                      <option value="no_longer_needed">Gegevens niet meer nodig voor oorspronkelijk doel</option>
+                      <option value="objection_pending">Bezwaar ingediend — lopende beslissing</option>
+                    </select>
+                  </div>
+                  <div>
+                    <Label htmlFor="restrict-toelichting">Toelichting (optioneel)</Label>
+                    <Textarea
+                      id="restrict-toelichting"
+                      value={restrictToelichting}
+                      onChange={e => setRestrictToelichting(e.target.value)}
+                      placeholder="Aanvullende informatie…"
+                      className="mt-1"
+                    />
+                  </div>
+                  <Button onClick={handleRestrict} disabled={isLoading || !restrictReason}>
+                    {isLoading ? <LoadingSpinner /> : <Unlock className="w-4 h-4 mr-2" />}
+                    Beperkingsverzoek Indienen
+                  </Button>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Bezwaar Tab — Art. 21 */}
+        <TabsContent value="object" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="w-5 h-5" />
+                Bezwaarrecht (Art. 21 AVG)
+              </CardTitle>
+              <p className="text-muted-foreground text-sm">
+                Je kunt bezwaar maken tegen verwerking van je gegevens op grond van gerechtvaardigd belang of voor direct marketing.
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Alert>
+                <AlertDescription>
+                  Bezwaar tegen <strong>direct marketing</strong> wordt altijd onmiddellijk gehonoreerd (art. 21 lid 3 AVG).
+                  Andere gronden worden binnen 30 dagen beoordeeld.
+                </AlertDescription>
+              </Alert>
+              <div>
+                <Label htmlFor="object-ground">Grond voor bezwaar</Label>
+                <select
+                  id="object-ground"
+                  value={objectGround}
+                  onChange={e => setObjectGround(e.target.value)}
+                  className="w-full mt-1 border rounded-md p-2 text-sm bg-background"
+                >
+                  <option value="">Selecteer een grond…</option>
+                  <option value="direct_marketing">Direct marketing (e-mail, pushberichten)</option>
+                  <option value="legitimate_interest">Gerechtvaardigd belang</option>
+                  <option value="scientific_research">Wetenschappelijk/statistisch gebruik</option>
+                </select>
+              </div>
+              <div>
+                <Label htmlFor="object-toelichting">Toelichting (optioneel)</Label>
+                <Textarea
+                  id="object-toelichting"
+                  value={objectToelichting}
+                  onChange={e => setObjectToelichting(e.target.value)}
+                  placeholder="Omschrijf je bezwaar…"
+                  className="mt-1"
+                />
+              </div>
+              <Button onClick={handleObject} disabled={isLoading || !objectGround}>
+                {isLoading ? <LoadingSpinner /> : <Shield className="w-4 h-4 mr-2" />}
+                Bezwaar Indienen
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Delete Tab */}
         <TabsContent value="delete" className="space-y-6">
           <Card className="border-red-200 dark:border-red-800">
@@ -465,7 +709,24 @@ export function DataManagementTab() {
                 </AlertDescription>
               </Alert>
 
-              {!showDeleteConfirm ? (
+              {hasPendingDelete && (
+                <Alert className="border-amber-200 bg-amber-50 dark:bg-amber-900/20">
+                  <Clock className="h-4 w-4 text-amber-600" />
+                  <AlertDescription className="text-amber-800 dark:text-amber-200">
+                    Er is een actief verwijderverzoek. Je account wordt binnen 30 dagen verwijderd.
+                    <Button
+                      variant="link"
+                      className="p-0 h-auto ml-2 text-amber-800 dark:text-amber-200 underline"
+                      onClick={handleCancelDelete}
+                      disabled={isLoading}
+                    >
+                      Verwijderverzoek intrekken
+                    </Button>
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {!hasPendingDelete && !showDeleteConfirm && (
                 <Button
                   onClick={() => setShowDeleteConfirm(true)}
                   variant="destructive"
@@ -474,7 +735,8 @@ export function DataManagementTab() {
                   <Trash2 className="w-4 h-4" />
                   Account Verwijderen Aanvragen
                 </Button>
-              ) : (
+              )}
+              {!hasPendingDelete && showDeleteConfirm && (
                 <div className="space-y-4 p-4 border border-red-200 rounded-lg bg-red-50 dark:bg-red-900/10">
                   <div>
                     <Label htmlFor="confirmation">

@@ -34,6 +34,20 @@ export async function POST(request: NextRequest) {
         }
       }
 
+      // Art. 9 AVG: controleer uitdrukkelijke toestemming voor psychologische data
+      const consentCheck = await sql`
+        SELECT article9_consent FROM users WHERE id = ${userId}
+      `;
+      if (!consentCheck.rows[0]?.article9_consent) {
+        return NextResponse.json(
+          {
+            error: 'article9_consent_required',
+            message: 'Uitdrukkelijke toestemming voor bijzondere categorieën persoonsgegevens vereist (Art. 9 AVG).',
+          },
+          { status: 403 }
+        );
+      }
+
       try {
         // Start new assessment
         const assessment = await sql`
