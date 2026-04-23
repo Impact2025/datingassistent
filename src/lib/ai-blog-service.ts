@@ -193,23 +193,6 @@ async function callAIWithFallback(
     return response;
   } catch (error) {
     console.error(`AI call failed with ${model}:`, error);
-
-    // Fallback to GPT-3.5 if primary model fails
-    if (model !== OPENROUTER_MODELS.GPT_35_TURBO) {
-      logger.log('Falling back to GPT-3.5 Turbo...');
-      return await client.createChatCompletion(
-        OPENROUTER_MODELS.GPT_35_TURBO,
-        [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: prompt },
-        ],
-        {
-          max_tokens: options.max_tokens || 4000,
-          temperature: options.temperature || 0.4,
-        }
-      );
-    }
-
     throw error;
   }
 }

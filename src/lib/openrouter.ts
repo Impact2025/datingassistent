@@ -221,11 +221,11 @@ export const openRouter: OpenRouterClient = new Proxy({} as OpenRouterClient, {
  */
 export const OPENROUTER_MODELS = {
   // Claude modellen (Anthropic) — OpenRouter IDs
-  CLAUDE_35_HAIKU: 'anthropic/claude-3-5-haiku-20241022',
-  CLAUDE_35_SONNET: 'anthropic/claude-3-5-sonnet-20241022',
-  CLAUDE_SONNET: 'anthropic/claude-3-5-sonnet-20241022',
-  CLAUDE_HAIKU: 'anthropic/claude-3-5-haiku-20241022',
-  CLAUDE_3_HAIKU: 'anthropic/claude-3-haiku',
+  CLAUDE_35_HAIKU: 'anthropic/claude-sonnet-4.6',
+  CLAUDE_35_SONNET: 'anthropic/claude-sonnet-4.6',
+  CLAUDE_SONNET: 'anthropic/claude-sonnet-4.6',
+  CLAUDE_HAIKU: 'anthropic/claude-sonnet-4.6',
+  CLAUDE_3_HAIKU: 'anthropic/claude-sonnet-4.6',
 
   // GPT modellen (OpenAI)
   GPT_4_TURBO: 'openai/gpt-4-turbo',
