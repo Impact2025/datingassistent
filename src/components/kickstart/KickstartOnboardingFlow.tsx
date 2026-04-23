@@ -11,25 +11,19 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles,
-  ChevronRight,
   Volume2,
   VolumeX,
   CheckCircle,
-  Rocket,
   Heart,
   Target,
   Zap,
-  Star,
   ArrowRight,
   Play,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { KickstartIntakeChat } from '@/components/kickstart/KickstartIntakeChat';
 import type { KickstartIntakeData } from '@/types/kickstart-onboarding.types';
 import { cn } from '@/lib/utils';
-import Confetti from 'react-confetti';
 import { IrisAvatar } from '@/components/onboarding/IrisAvatar';
-import { logger } from '@/lib/logger';
 
 interface KickstartOnboardingFlowProps {
   userName?: string;
@@ -37,7 +31,7 @@ interface KickstartOnboardingFlowProps {
   className?: string;
 }
 
-type OnboardingStep = 'welcome' | 'chat' | 'processing' | 'success';
+type OnboardingStep = 'welcome' | 'processing' | 'success';
 
 export function KickstartOnboardingFlow({
   userName,
@@ -45,45 +39,64 @@ export function KickstartOnboardingFlow({
   className,
 }: KickstartOnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState<OnboardingStep>('welcome');
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [completedData, setCompletedData] = useState<KickstartIntakeData | null>(null);
-  const [isMuted, setIsMuted] = useState(false); // Sound ON by default
+  const [isMuted, setIsMuted] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [processingStep, setProcessingStep] = useState(0);
+  const [preferredName, setPreferredName] = useState(userName?.split(' ')[0] ?? '');
+  const [age, setAge] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [ageError, setAgeError] = useState('');
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Get window size for confetti
-  useEffect(() => {
-    const updateSize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-    updateSize();
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
+  const handleStartProgram = async () => {
+    let valid = true;
+    if (!preferredName.trim()) {
+      setNameError('Vul je naam in');
+      valid = false;
+    } else {
+      setNameError('');
+    }
+    const ageNum = parseInt(age, 10);
+    if (!age || isNaN(ageNum) || ageNum < 18 || ageNum > 99) {
+      setAgeError('Vul een geldige leeftijd in (18-99)');
+      valid = false;
+    } else {
+      setAgeError('');
+    }
+    if (!valid) return;
 
-  const handleChatComplete = async (data: KickstartIntakeData) => {
+    const data: KickstartIntakeData = {
+      preferredName: preferredName.trim(),
+      age: ageNum,
+      gender: 'man',
+      lookingFor: 'vrouwen',
+      region: '',
+      datingStatus: 'single',
+      singleDuration: '6-12-months',
+      datingApps: [],
+      weeklyMatches: '0-2',
+      biggestFrustration: '',
+      profileDescription: 'no-idea',
+      biggestDifficulty: 'getting-matches',
+      relationshipGoal: 'dates-first',
+      confidenceLevel: 5,
+      biggestFear: '',
+      idealOutcome: '',
+    };
+
     setCompletedData(data);
     setCurrentStep('processing');
 
-    // Animated processing steps
-    const steps = [0, 1, 2, 3];
-    for (let i = 0; i < steps.length; i++) {
+    for (let i = 0; i < 4; i++) {
       await new Promise((resolve) => setTimeout(resolve, 600));
       setProcessingStep(i + 1);
     }
-
     await new Promise((resolve) => setTimeout(resolve, 400));
-
     setCurrentStep('success');
-    // Confetti disabled for minimal/professional look
   };
 
-  const handleStartProgram = () => {
+  const handleConfirmStart = () => {
     if (completedData) {
       onComplete(completedData);
     }
@@ -125,24 +138,10 @@ export function KickstartOnboardingFlow({
 
   return (
     <div className={cn(
-      // Full viewport on mobile for chat, centered for other steps
-      currentStep === 'chat'
-        ? 'h-[100dvh] w-full'
-        : 'min-h-[100dvh] sm:min-h-[600px] flex items-center justify-center',
+      'min-h-[100dvh] sm:min-h-[600px] flex items-center justify-center',
       'bg-gradient-to-b from-coral-50/50 to-white',
       className
     )}>
-      {/* Confetti effect */}
-      {showConfetti && (
-        <Confetti
-          width={windowSize.width}
-          height={windowSize.height}
-          recycle={false}
-          numberOfPieces={300}
-          colors={['#ff6b6b', '#ff8787', '#ff9999', '#ffabab', '#ffbdbd']}
-          gravity={0.3}
-        />
-      )}
 
       <AnimatePresence mode="wait">
         {/* STEP 1: Welcome Screen - Premium & Engaging */}
@@ -246,7 +245,7 @@ export function KickstartOnboardingFlow({
               {/* Content Section */}
               <div className="p-6 sm:p-8">
                 {/* What you'll get */}
-                <div className="space-y-3 mb-8">
+                <div className="space-y-3 mb-6">
                   {[
                     { icon: Target, text: '21 dagen persoonlijke begeleiding' },
                     { icon: Sparkles, text: 'Tips op maat voor jouw situatie' },
@@ -267,51 +266,63 @@ export function KickstartOnboardingFlow({
                   ))}
                 </div>
 
+                {/* Quick-start: naam + leeftijd */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1 }}
+                  className="space-y-3 mb-6"
+                >
+                  <div>
+                    <input
+                      type="text"
+                      value={preferredName}
+                      onChange={(e) => setPreferredName(e.target.value)}
+                      placeholder="Hoe mag ik je noemen?"
+                      className={cn(
+                        "w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-coral-300 focus:border-transparent transition-all",
+                        nameError ? "border-red-300" : "border-gray-200"
+                      )}
+                    />
+                    {nameError && <p className="mt-1 text-xs text-red-500">{nameError}</p>}
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      placeholder="Jouw leeftijd"
+                      min={18}
+                      max={99}
+                      className={cn(
+                        "w-full px-4 py-3 rounded-xl border bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-coral-300 focus:border-transparent transition-all",
+                        ageError ? "border-red-300" : "border-gray-200"
+                      )}
+                    />
+                    {ageError && <p className="mt-1 text-xs text-red-500">{ageError}</p>}
+                  </div>
+                </motion.div>
+
                 {/* CTA Button */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1 }}
+                  transition={{ delay: 1.1 }}
                 >
                   <Button
-                    onClick={() => setCurrentStep('chat')}
+                    onClick={handleStartProgram}
                     className="w-full bg-coral-500 hover:bg-coral-600 text-white py-6 text-lg font-semibold rounded-2xl shadow-lg shadow-coral-200/50 hover:shadow-xl hover:shadow-coral-300/50 transition-all group"
                   >
-                    Laten we beginnen
+                    Start mijn Kickstart
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
-
-                  {/* Time estimate */}
-                  <p className="mt-4 text-center text-sm text-gray-400">
-                    Duurt slechts 2-3 minuten
-                  </p>
                 </motion.div>
               </div>
             </div>
           </motion.div>
         )}
 
-        {/* STEP 2: Chat Onboarding - FULL SCREEN MOBILE */}
-        {currentStep === 'chat' && (
-          <motion.div
-            key="chat"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="w-full h-full sm:max-w-2xl sm:mx-auto sm:h-auto sm:px-4 sm:py-6 sm:flex sm:items-center"
-          >
-            {/* Chat Container - FULL SCREEN mobile, card desktop */}
-            <div className="bg-white h-full w-full sm:h-auto sm:rounded-3xl sm:shadow-2xl sm:shadow-coral-200/20 sm:border sm:border-coral-100/50 sm:overflow-hidden">
-              {/* Chat - FULL HEIGHT on mobile */}
-              <div className="h-full sm:h-[min(calc(100vh-150px),700px)] sm:min-h-[550px]">
-                <KickstartIntakeChat onComplete={handleChatComplete} className="h-full" />
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 3: Processing - Animated Steps */}
+        {/* STEP 2: Processing - Animated Steps */}
         {currentStep === 'processing' && (
           <motion.div
             key="processing"
@@ -386,7 +397,7 @@ export function KickstartOnboardingFlow({
           </motion.div>
         )}
 
-        {/* STEP 4: Success - Minimal & Professional */}
+        {/* STEP 3: Success - Minimal & Professional */}
         {currentStep === 'success' && (
           <motion.div
             key="success"
@@ -449,7 +460,7 @@ export function KickstartOnboardingFlow({
                 transition={{ delay: 0.35 }}
               >
                 <Button
-                  onClick={handleStartProgram}
+                  onClick={handleConfirmStart}
                   className="w-full bg-gray-900 hover:bg-gray-800 text-white py-5 text-base font-medium rounded-xl transition-colors"
                 >
                   Start dag 1

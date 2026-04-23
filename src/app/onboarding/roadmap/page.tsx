@@ -94,15 +94,16 @@ export default function RoadmapPage() {
 
       const result = await response.json();
 
+      const redirectUrl = `/dashboard?onboarding=complete&path=${path}`;
       if (result.success && result.achievements?.length > 0) {
         setEarnedAchievements(result.achievements);
         setShowAchievement(true);
       } else {
-        router.push("/dashboard");
+        router.push(redirectUrl);
       }
     } catch (error) {
       console.error("Error completing onboarding:", error);
-      router.push("/dashboard");
+      router.push(`/dashboard?onboarding=complete&path=${path}`);
     }
   };
 
@@ -111,7 +112,7 @@ export default function RoadmapPage() {
       setCurrentAchievementIndex((prev) => prev + 1);
     } else {
       setShowAchievement(false);
-      router.push("/dashboard");
+      router.push(`/dashboard?onboarding=complete&path=${path}`);
     }
   };
 

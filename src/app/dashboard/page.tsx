@@ -16,9 +16,6 @@ import { SocialMediaLinks } from '@/components/shared/social-media-links';
 // World-class: React Query hooks for cached enrollment status
 import { useEnrollmentStatus } from '@/hooks/use-enrollment-status';
 
-// Import centralized onboarding system
-import { useJourneyState } from '@/hooks/use-journey-state';
-
 // Import Kickstart onboarding - World-class integrated flow
 import { KickstartOnboardingFlow } from '@/components/kickstart/KickstartOnboardingFlow';
 import { DayZeroExperience } from '@/components/kickstart/DayZeroExperience';
@@ -27,6 +24,9 @@ import type { KickstartIntakeData } from '@/types/kickstart-onboarding.types';
 // Import Transformatie onboarding - World-class Dating Snapshot Flow
 import { DatingSnapshotFlow } from '@/components/onboarding/snapshot';
 import type { UserOnboardingProfile } from '@/types/dating-snapshot.types';
+
+// First-action modal: shown after free onboarding completes
+import { FirstActionModal } from '@/components/onboarding/FirstActionModal';
 
 // NIEUWE 4-TAB NAVIGATIE SYSTEEM (Masterplan)
 import { MainNavNew } from '@/components/layout/main-nav-new';
@@ -115,11 +115,6 @@ const DashboardTab = dynamicImport(() => import('@/components/dashboard/dashboar
 
 const CommunityTab = dynamicImport(() => import('@/components/dashboard/community-tab').then(mod => ({ default: mod.CommunityTab })), {
   loading: () => <CommunityTabSkeleton />,
-  ssr: false
-});
-
-const OnboardingFlow = dynamicImport(() => import('@/components/dashboard/onboarding-flow').then(mod => ({ default: mod.OnboardingFlow })), {
-  loading: () => <DashboardSkeleton />,
   ssr: false
 });
 
@@ -273,6 +268,8 @@ function DashboardPageContent() {
   const [checkinModalOpen, setCheckinModalOpen] = useState(false);
   const [journeyDay, setJourneyDay] = useState(1);
   const [datingWeekNotificationOpen, setDatingWeekNotificationOpen] = useState(false);
+  const [showFirstActionModal, setShowFirstActionModal] = useState(false);
+  const [onboardingPath, setOnboardingPath] = useState<'profile' | 'conversation' | 'dating' | 'confidence'>('profile');
 
   // Iris proactive invite for registered members
   const { shouldShowInvite, dismissInvite } = useProactiveInvite();
@@ -362,22 +359,24 @@ function DashboardPageContent() {
     }
   }, [searchParams, pathname, useNewNav]);
 
-  // Use centralized journey state hook
-  const {
-    showOnboarding,
-    journeyState,
-    isInitializingOnboarding,
-    journeyCheckComplete,
-    handlers
-  } = useJourneyState({
-    userId: user?.id,
-    userProfile,
-    enabled: !loading && !!user
-  });
+  // Show FirstActionModal after completing free onboarding
+  useEffect(() => {
+    const onboardingParam = searchParams?.get('onboarding');
+    const pathParam = searchParams?.get('path') as 'profile' | 'conversation' | 'dating' | 'confidence' | null;
+    if (onboardingParam === 'complete' && !kickstartState.needsOnboarding && !transformatieState.needsOnboarding) {
+      setOnboardingPath(pathParam ?? 'profile');
+      setShowFirstActionModal(true);
+    }
+  }, [searchParams, kickstartState.needsOnboarding, transformatieState.needsOnboarding]);
+
+  const handleDismissFirstActionModal = useCallback(() => {
+    setShowFirstActionModal(false);
+    router.replace('/dashboard');
+  }, [router]);
 
   // Show Iris invite after 30 seconds for logged-in users (not during any onboarding)
   useEffect(() => {
-    if (!user || loading || showOnboarding || kickstartState.needsOnboarding || transformatieState.needsOnboarding) return;
+    if (!user || loading || kickstartState.needsOnboarding || transformatieState.needsOnboarding) return;
 
     const timer = setTimeout(() => {
       if (shouldShowInvite) {
@@ -386,7 +385,7 @@ function DashboardPageContent() {
     }, 30000); // 30 seconds
 
     return () => clearTimeout(timer);
-  }, [user, loading, showOnboarding, kickstartState.needsOnboarding, transformatieState.needsOnboarding, shouldShowInvite]);
+  }, [user, loading, kickstartState.needsOnboarding, transformatieState.needsOnboarding, shouldShowInvite]);
 
   // WORLD-CLASS: Prefetch core tabs after initial dashboard load
   useEffect(() => {
@@ -499,9 +498,6 @@ function DashboardPageContent() {
           return;
         }
 
-        // Only check API if not in test mode and journey is complete
-        if (journeyCheckComplete === false) return;
-
         try {
           const response = await fetch('/api/dating-log/last-log', {
             headers: {
@@ -556,9 +552,7 @@ function DashboardPageContent() {
       if (interval) clearInterval(interval);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [user?.id, loading, journeyCheckComplete, kickstartState.needsOnboarding]);
-
-  // Journey data is now loaded by the useJourneyState hook
+  }, [user?.id, loading, kickstartState.needsOnboarding]);
 
   // Handle navigation redirects - always call this hook before any early returns
   useEffect(() => {
@@ -962,15 +956,7 @@ function DashboardPageContent() {
 
             {/* Mobile Content */}
             <div className="px-4 pt-4 pb-6">
-              {showOnboarding ? (
-                <OnboardingFlow
-                  journeyState={journeyState}
-                  userName={user?.name}
-                  handlers={handlers}
-                />
-              ) : (
-                tabContent
-              )}
+              {tabContent}
             </div>
 
             <BottomNavigation />
@@ -981,10 +967,10 @@ function DashboardPageContent() {
         <AppShellDesktop
           activeTab={activeTab}
           onTabChange={handleTabChange}
-          showNavigation={!showOnboarding && !showKickstartOnboarding && !showDayZero && !showTransformatieOnboarding}
+          showNavigation={!showKickstartOnboarding && !showDayZero && !showTransformatieOnboarding}
         >
           {/* Trial Progress Banner */}
-          {user?.id && !showKickstartOnboarding && !showOnboarding && !showDayZero && !showTransformatieOnboarding && (
+          {user?.id && !showKickstartOnboarding && !showDayZero && !showTransformatieOnboarding && (
             <TrialProgress userId={user.id} />
           )}
 
@@ -1007,12 +993,6 @@ function DashboardPageContent() {
                   onComplete={handleTransformatieOnboardingComplete}
                 />
               </div>
-            ) : showOnboarding ? (
-              <OnboardingFlow
-                journeyState={journeyState}
-                userName={user?.name}
-                handlers={handlers}
-              />
             ) : (
               tabContent
             )}
@@ -1066,6 +1046,14 @@ function DashboardPageContent() {
             />
           )}
         </AppShellDesktop>
+      )}
+
+      {showFirstActionModal && (
+        <FirstActionModal
+          path={onboardingPath}
+          userName={user?.name}
+          onDismiss={handleDismissFirstActionModal}
+        />
       )}
     </>
   );

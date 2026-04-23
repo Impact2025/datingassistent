@@ -5,7 +5,7 @@
  * Links: Week/Dag navigatie | Rechts: Dag content
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Play,
@@ -22,6 +22,9 @@ import {
   Loader2,
   AlertCircle,
   RefreshCcw,
+  Trophy,
+  Flame,
+  ArrowRight,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -54,6 +57,10 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
   const [dayProgress, setDayProgress] = useState<DayProgress | null>(null);
   const [loadingDay, setLoadingDay] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Day completion celebration
+  const [showDayCompletion, setShowDayCompletion] = useState(false);
+  const completionShownForDay = useRef<number | null>(null);
 
   // Day content state
   const [activeTab, setActiveTab] = useState<'video' | 'quiz' | 'reflectie' | 'werkboek'>('video');
@@ -259,6 +266,20 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
     return Math.round((completed / total) * 100);
   };
 
+  const completionPercent = calculateCompletion();
+
+  // Show celebration when day is 100% complete (only once per day)
+  useEffect(() => {
+    if (
+      completionPercent === 100 &&
+      !saving &&
+      currentDayNumber !== completionShownForDay.current
+    ) {
+      completionShownForDay.current = currentDayNumber;
+      setShowDayCompletion(true);
+    }
+  }, [completionPercent, saving, currentDayNumber]);
+
   // Loading state
   if (loading) {
     return (
@@ -291,8 +312,6 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
       </div>
     );
   }
-
-  const completionPercent = calculateCompletion();
 
   return (
     <div className="flex flex-col lg:flex-row min-h-[calc(100vh-180px)] gap-6">
@@ -798,6 +817,93 @@ export function KickstartDashboardView({ userId, onBack }: KickstartDashboardVie
           </Card>
         )}
       </div>
+
+      {/* Dag Voltooid Overlay */}
+      <AnimatePresence>
+        {showDayCompletion && currentDay && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 280 }}
+              className="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden"
+            >
+              {/* Celebration header */}
+              <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 px-6 pt-8 pb-10 text-center relative">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.1, type: 'spring', bounce: 0.6 }}
+                  className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4"
+                >
+                  <Trophy className="w-10 h-10 text-white" />
+                </motion.div>
+                <h2 className="text-white text-2xl font-bold mb-1">
+                  Dag {currentDay.dag_nummer} voltooid!
+                </h2>
+                <p className="text-emerald-100 text-sm">
+                  {daySummaries.filter((d) => d.status === 'completed').length} van 21 dagen klaar
+                </p>
+              </div>
+
+              {/* Content */}
+              <div className="px-6 py-6 space-y-4">
+                {/* Streak indicator */}
+                <div className="flex items-center justify-center gap-2 bg-amber-50 rounded-xl py-3">
+                  <Flame className="w-5 h-5 text-amber-500" />
+                  <span className="text-sm font-semibold text-amber-700">
+                    Blijf je streak in stand houden!
+                  </span>
+                </div>
+
+                {/* Next day preview */}
+                {currentDayNumber < 21 && (() => {
+                  const nextDay = daySummaries.find((d) => d.dag_nummer === currentDayNumber + 1);
+                  return nextDay ? (
+                    <div className="bg-gray-50 rounded-xl p-4">
+                      <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">
+                        Morgen
+                      </p>
+                      <p className="font-semibold text-gray-900">
+                        Dag {currentDayNumber + 1}: {nextDay.titel}
+                      </p>
+                    </div>
+                  ) : null;
+                })()}
+
+                {/* CTA */}
+                <div className="space-y-2">
+                  {currentDayNumber < 21 && (
+                    <button
+                      onClick={() => {
+                        setShowDayCompletion(false);
+                        handleSelectDay(currentDayNumber + 1);
+                      }}
+                      disabled={daySummaries.find((d) => d.dag_nummer === currentDayNumber + 1)?.status === 'locked'}
+                      className="w-full flex items-center justify-center gap-2 py-3.5 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      <span>Volgende dag bekijken</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setShowDayCompletion(false)}
+                    className="w-full py-3 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                  >
+                    {currentDayNumber < 21 ? 'Tot morgen!' : 'Bekijk overzicht'}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
