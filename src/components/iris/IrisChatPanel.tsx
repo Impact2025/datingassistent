@@ -71,18 +71,16 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
 
     setInput('');
 
-    // Voeg gebruiker bericht toe
     setBerichten(prev => [...prev, {
       id: Date.now().toString(),
       type: 'gebruiker',
       tekst: vraag
     }]);
 
-    // Iris "analyseert..."
+    const irisId = (Date.now() + 1).toString();
     setIsTyping(true);
 
     try {
-      // 🚀 WERELDKLASSE: Gebruik nieuwe Iris API
       const response = await fetch('/api/iris/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,60 +91,78 @@ export function IrisChatPanel({ onClose, initialContext, variant = 'default' }: 
         })
       });
 
-      const data = await response.json();
-
-      // 🔒 Handle limit reached error
-      if (response.status === 429 || data.error === 'limit_reached') {
-        setLimitReached(true);
-        if (data.usageStatus) {
-          updateFromResponse(data.usageStatus);
-        }
-        setBerichten(prev => [...prev, {
-          id: (Date.now() + 1).toString(),
-          type: 'iris',
-          tekst: `⏳ ${data.message || 'Je hebt je dagelijkse limiet bereikt. Probeer het morgen weer!'}`,
-          sentiment: 'neutraal',
-        }]);
-        return;
-      }
-
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      const antwoord = data.response || 'Hmm, ik kon geen antwoord vinden.';
-
-      // 🚀 Update mode & suggestions
-      if (data.mode) setCurrentMode(data.mode);
-      if (data.proactiveSuggestions) setProactiveSuggestions(data.proactiveSuggestions);
-      if (data.followUpSuggestions) setFollowUpSuggestions(data.followUpSuggestions);
-
-      // 🔒 Update usage status from response
-      if (data.usageStatus) {
-        updateFromResponse(data.usageStatus);
-        // Check if limit is now reached after this message
-        if (!data.usageStatus.allowed) {
+      // Handle non-stream error responses (auth, limit)
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await response.json();
+        if (response.status === 429 || data.error === 'limit_reached') {
           setLimitReached(true);
+          if (data.usageStatus) updateFromResponse(data.usageStatus);
+          setBerichten(prev => [...prev, {
+            id: irisId,
+            type: 'iris',
+            tekst: `⏳ ${data.message || 'Je hebt je dagelijkse limiet bereikt. Probeer het morgen weer!'}`,
+            sentiment: 'neutraal',
+          }]);
+          return;
         }
+        throw new Error(data.error || 'Onbekende fout');
       }
 
-      setBerichten(prev => [...prev, {
-        id: (Date.now() + 1).toString(),
-        type: 'iris',
-        tekst: antwoord,
-        mode: data.mode,
-        sentiment: data.sentiment,
-        topics: data.topics,
-        emotionalTone: data.emotionalTone,
-      }]);
+      // Add placeholder and start streaming
+      setBerichten(prev => [...prev, { id: irisId, type: 'iris', tekst: '', mode: 'general', sentiment: 'neutraal' }]);
+      setIsTyping(false);
+
+      const reader = response.body!.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          try {
+            const event = JSON.parse(line.slice(6));
+            if (event.type === 'chunk') {
+              setBerichten(prev => prev.map(b =>
+                b.id === irisId ? { ...b, tekst: b.tekst + event.content } : b
+              ));
+            } else if (event.type === 'done') {
+              if (event.mode) {
+                setCurrentMode(event.mode);
+                setBerichten(prev => prev.map(b => b.id === irisId ? { ...b, mode: event.mode } : b));
+              }
+              if (event.proactiveSuggestions) setProactiveSuggestions(event.proactiveSuggestions);
+              if (event.followUpSuggestions) setFollowUpSuggestions(event.followUpSuggestions);
+              if (event.usageStatus) {
+                updateFromResponse(event.usageStatus);
+                if (!event.usageStatus.allowed) setLimitReached(true);
+              }
+            } else if (event.type === 'error') {
+              setBerichten(prev => prev.map(b =>
+                b.id === irisId ? { ...b, tekst: `😔 ${event.error}` } : b
+              ));
+            }
+          } catch {
+            // skip malformed SSE lines
+          }
+        }
+      }
     } catch (error) {
       console.error('Iris chat error:', error);
-      setBerichten(prev => [...prev, {
-        id: (Date.now() + 1).toString(),
-        type: 'iris',
-        tekst: '😔 Oeps, er ging iets mis. Probeer het nog eens!',
-        sentiment: 'negatief',
-      }]);
+      setBerichten(prev => {
+        const hasPlaceholder = prev.some(b => b.id === irisId);
+        if (hasPlaceholder) {
+          return prev.map(b => b.id === irisId ? { ...b, tekst: '😔 Oeps, er ging iets mis. Probeer het nog eens!' } : b);
+        }
+        return [...prev, { id: irisId, type: 'iris' as const, tekst: '😔 Oeps, er ging iets mis. Probeer het nog eens!', sentiment: 'negatief' }];
+      });
     } finally {
       setIsTyping(false);
     }

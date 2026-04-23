@@ -183,9 +183,7 @@ export function ChatCoachTab() {
 
         const response = await fetch('/api/coach/chat', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             message: messageToSend,
             userId: userId,
@@ -193,21 +191,47 @@ export function ChatCoachTab() {
           }),
         });
 
-        if (!response.ok) {
+        // Handle non-stream errors
+        const contentType = response.headers.get('content-type') || '';
+        if (!response.ok || contentType.includes('application/json')) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(errorData.message || `API fout: ${response.status}`);
         }
 
-        const data = await response.json();
+        // Streaming: add placeholder and stream chunks into it
+        setMessages(prev => [...prev, { role: 'model', content: '' }]);
 
-        // Validate response structure
-        if (!data.response) {
-          console.error('Invalid API response:', data);
-          throw new Error('Onverwachte API response - geen antwoord ontvangen');
+        const reader = response.body!.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n\n');
+          buffer = lines.pop() || '';
+
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            try {
+              const event = JSON.parse(line.slice(6));
+              if (event.type === 'chunk') {
+                setMessages(prev => {
+                  const updated = [...prev];
+                  updated[updated.length - 1] = { role: 'model', content: updated[updated.length - 1].content + event.content };
+                  return updated;
+                });
+              } else if (event.type === 'error') {
+                throw new Error(event.error);
+              }
+            } catch (parseError) {
+              if (parseError instanceof SyntaxError) continue;
+              throw parseError;
+            }
+          }
         }
-
-        const aiResponse: Message = { role: "model", content: data.response };
-        setMessages([...newMessages, aiResponse]);
 
         // Track completion milestones in database
         const userMessageCount = newMessages.filter(m => m.role === 'user').length;

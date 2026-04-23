@@ -85,33 +85,29 @@ export async function POST(request: NextRequest) {
     }
 
     // 3. Build AI prompt met context
-    const systemPrompt = `Je bent Iris, een empathische en professionele AI dating coach.
-
+    const systemPrompt = `Je bent Iris, dating coach van DatingAssistent.nl. Jij kent het profiel van deze persoon. Gebruik dat. Wees nooit generiek.
 ${userContext ? `\n=== GEBRUIKER CONTEXT ===\n${userContext}\n` : ''}
+JOUW STEM:
+Je schrijft zoals een goede vriendin die ook expert is: direct, warm, geen wollige taal. Niet "Ik begrijp dat je je zo voelt" maar "Dat klinkt uitputtend, snap ik." Je valideert concreet.
 
-=== JOUW ROL ===
-- Je bent warm, professioneel en motiverend
-- Je geeft concrete, actionable dating advies
-- Je bent direct maar respectvol
-- Je gebruikt Nederlandse taal op een natuurlijke manier
-- Je verwijst naar relevante tools wanneer passend
+NOOIT:
+- "Dat is heel normaal!" of "Goed dat je dit deelt!"
+- Lijstjes van 5+ tips — liever 1 scherpe observatie
+- Meer dan 1 vervolgvraag per bericht
+- Advies dat ook op iemand anders van toepassing is
 
-=== GEDRAGSREGELS ===
-1. Ken de user: gebruik hun naam, hechtingsstijl, dating stijl waar relevant
-2. Personaliseer: match advies aan hun journey fase en goals
-3. Wees specifiek: geen algemene adviezen, maar concrete acties
-4. Tool suggesties: als user vraagt over foto's, bio, gesprekken → verwijs subtiel naar tools
-5. Empathie eerst: erken gevoelens voordat je advies geeft
-6. Motiveer: eindig met bemoedigende woorden of concrete volgende stap
+ALTIJD:
+- Koppel advies aan wat je weet over deze persoon
+- Eindig met één concrete actie — niet een lijst
+- Maximaal 120 woorden tenzij analyse gevraagd wordt
+- Emoji's spaarzaam (max 1 per bericht)
 
-=== CONVERSATIE STIJL ===
-- Kort en krachtig (max 3-4 zinnen per response)
-- Gebruik emoji's spaarzaam (max 1-2 per bericht)
-- Stel verdiepende vragen
-- Focus op wat werkt, niet alleen wat mis gaat
-- Vier kleine successen
+DENK EERST (intern): Wat heeft deze persoon nu écht nodig — validatie, spiegel, of actie?
 
-Beantwoord de gebruiker op een persoonlijke, coachende manier.`;
+VOORBEELD — hoe Iris klinkt:
+Vraag: "Ik krijg weinig matches"
+Iris: "Weinig matches betekent bijna altijd: profielfoto's of bio. Welke foto staat als eerste? Stuur hem eens door, dan kijk ik mee."`;
+
 
     // Build conversation history for AI
     const messages = [
@@ -123,68 +119,51 @@ Beantwoord de gebruiker op een persoonlijke, coachende manier.`;
       { role: 'user' as const, content: message }
     ];
 
-    // 4. Call AI with timeout and error handling
-    let aiResponse: string;
+    // 4. Stream AI response
+    const client = getOpenRouterClient();
+    const encoder = new TextEncoder();
 
-    try {
-      const client = getOpenRouterClient();
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of client.streamChatCompletion(
+            OPENROUTER_MODELS.CLAUDE_35_SONNET,
+            messages,
+            { temperature: 0.7, max_tokens: 600 }
+          )) {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`));
+          }
 
-      // Add timeout protection
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error('AI request timeout')), 30000); // 30 second timeout
-      });
+          logger.log(`💬 Coach chat | User ${userId} | Context: ${contextEnriched ? 'enriched' : 'basic'}`);
 
-      const aiPromise = client.createChatCompletion(
-        OPENROUTER_MODELS.CLAUDE_35_SONNET,
-        messages,
-        {
-          temperature: 0.7,
-          max_tokens: 500
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+            type: 'done',
+            toolSuggestions: toolSuggestions.length > 0 ? toolSuggestions : undefined,
+            context: contextEnriched ? 'enriched' : 'basic',
+          })}\n\n`));
+
+        } catch (streamError: any) {
+          console.error(`Coach stream error for user ${userId}:`, streamError);
+          let fallback = 'Hmm, ik heb even een momentje nodig. Kun je je vraag opnieuw stellen?';
+          if (streamError.message?.includes('timeout')) fallback = 'Mijn antwoord duurde te lang. Kun je je vraag opnieuw stellen?';
+          if (streamError.message?.includes('rate limit')) fallback = 'Ik verwerk momenteel veel berichten. Probeer het over een minuutje opnieuw.';
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'error', error: fallback })}\n\n`));
+        } finally {
+          controller.close();
         }
-      );
-
-      aiResponse = await Promise.race([aiPromise, timeoutPromise]);
-
-    } catch (aiError: any) {
-      console.error('AI API error:', aiError);
-
-      // Provide fallback response based on error type
-      if (aiError.message?.includes('timeout')) {
-        aiResponse = "Sorry, mijn antwoord duurde te lang. Kun je je vraag opnieuw stellen? 🙏";
-      } else if (aiError.message?.includes('rate limit')) {
-        aiResponse = "Ik heb momenteel veel berichten te verwerken. Probeer het over een minuutje opnieuw. 😊";
-      } else if (aiError.message?.includes('insufficient_quota') || aiError.message?.includes('quota')) {
-        aiResponse = "Er is momenteel een technisch probleem. Ons team is op de hoogte. Probeer het later opnieuw. 🔧";
-      } else {
-        // Generic fallback
-        aiResponse = "Hmm, ik heb even een momentje nodig. Kun je je vraag opnieuw stellen? 💭";
       }
+    });
 
-      // Log the error for monitoring
-      console.error(`AI fallback triggered for user ${userId}: ${aiError.message}`);
-    }
-
-    // 5. Log conversation for learning and monitoring
-    try {
-      logger.log(`💬 Coach chat | User ${userId} | Message length: ${message.length} | Context: ${contextEnriched ? 'enriched' : 'basic'}`);
-    } catch (logError) {
-      // Silent fail on logging
-    }
-
-    return NextResponse.json({
-      response: aiResponse,
-      toolSuggestions: toolSuggestions.length > 0 ? toolSuggestions : undefined,
-      context: contextEnriched ? 'enriched' : 'basic',
-      metadata: {
-        contextEnriched,
-        toolSuggestionsCount: toolSuggestions.length
-      }
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
     });
 
   } catch (error: any) {
     console.error('Critical error in coach chat:', error);
-
-    // Return user-friendly error message
     return NextResponse.json({
       error: 'server_error',
       message: 'Er ging iets mis bij het verwerken van je bericht. Probeer het opnieuw.'

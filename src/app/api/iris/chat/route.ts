@@ -111,58 +111,64 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = `${baseSystemPrompt}\n\n${modePrompt}`;
 
-    // 5. 🚀 Call Claude API via OpenRouter
+    // 5. Stream response via OpenRouter
     const openrouter = getOpenRouterClient();
-    const irisResponse = await openrouter.createChatCompletion(
-      OPENROUTER_MODELS.CLAUDE_35_SONNET,
-      [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: message },
-      ],
-      { max_tokens: 2048 }
-    );
+    const encoder = new TextEncoder();
+    let fullResponse = '';
 
-    // 6. 🧠 AI-powered conversation analysis
-    const conversationAnalysis = await analyzeConversationWithAI(message, irisResponse);
-    const sentiment = conversationAnalysis.sentiment;
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of openrouter.streamChatCompletion(
+            OPENROUTER_MODELS.CLAUDE_35_SONNET,
+            [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: message },
+            ],
+            { max_tokens: 2048 }
+          )) {
+            fullResponse += chunk;
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`));
+          }
 
-    // 7. 💡 Genereer proactive suggestions (async, don't wait)
-    const proactiveSuggestions = await generateProactiveSuggestions(userId).catch(() => []);
-    const followUpSuggestions = await generateFollowUpSuggestions(userId).catch(() => []);
+          // Track usage and get updated status
+          await trackIrisUsage(userId);
+          const updatedUsageStatus = await checkIrisLimit(userId).catch(() => null);
 
-    // 8. 💾 Sla gesprek op met enhanced metadata
-    await saveIrisConversation(
-      userId,
-      message,
-      irisResponse,
-      context_type,
-      context_cursus_slug,
-      context_les_slug,
-      context_tool_id,
-      sentiment
-    );
+          // Send done event with mode and usage info
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+            type: 'done',
+            mode: detectedMode,
+            usageStatus: updatedUsageStatus,
+          })}\n\n`));
 
-    // 9. 📊 Track Iris usage (for daily limits)
-    await trackIrisUsage(userId);
+          // Fire-and-forget background ops
+          Promise.all([
+            analyzeConversationWithAI(message, fullResponse).then(analysis =>
+              Promise.all([
+                saveIrisConversation(userId, message, fullResponse, context_type, context_cursus_slug, context_les_slug, context_tool_id, analysis.sentiment),
+                updateIrisContext(userId, { recente_stemming: analysis.sentiment as any }),
+              ])
+            ),
+            generateProactiveSuggestions(userId),
+            generateFollowUpSuggestions(userId),
+          ]).catch(console.error);
 
-    // 10. ⚙️ Update stemming in context
-    await updateIrisContext(userId, {
-      recente_stemming: sentiment as any,
+        } catch (streamError) {
+          console.error('Iris stream error:', streamError);
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'error', error: 'Er ging iets mis met Iris. Probeer het opnieuw.' })}\n\n`));
+        } finally {
+          controller.close();
+        }
+      }
     });
 
-    // 11. 📈 Get updated usage status for frontend
-    const updatedUsageStatus = await checkIrisLimit(userId);
-
-    // 12. 🚀 Return WERELDKLASSE response met usage info
-    return NextResponse.json({
-      response: irisResponse,
-      sentiment,
-      mode: detectedMode,
-      topics: conversationAnalysis.topics,
-      emotionalTone: conversationAnalysis.emotionalTone,
-      proactiveSuggestions: proactiveSuggestions.slice(0, 3),  // Top 3
-      followUpSuggestions: followUpSuggestions.slice(0, 3),  // Top 3
-      usageStatus: updatedUsageStatus,  // 🔒 Usage info for UI
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
     });
 
   } catch (error) {
