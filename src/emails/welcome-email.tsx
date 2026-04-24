@@ -75,7 +75,7 @@ export default function WelcomeEmail({
   subscriptionType = 'core',
   dashboardUrl = 'https://datingassistent.nl/dashboard',
 }: WelcomeEmailProps) {
-  const tier = tierFeatures[subscriptionType] || tierFeatures.core;
+  const tier = tierFeatures[subscriptionType] || tierFeatures.free;
   const preferencesUrl = `${dashboardUrl}/settings/email-preferences`;
   const isProgram = isProgramSubscription(subscriptionType);
 

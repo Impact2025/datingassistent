@@ -96,7 +96,7 @@ export async function sendWelcomeEmail(
   userEmail: string,
   userName: string,
   loginUrl: string,
-  subscriptionType: 'sociaal' | 'core' | 'pro' | 'premium' | 'kickstart' | 'transformatie' | 'vip' | 'free' = 'core'
+  subscriptionType: 'sociaal' | 'core' | 'pro' | 'premium' | 'kickstart' | 'transformatie' | 'vip' | 'free' = 'free'
 ): Promise<boolean> {
   const isProgram = subscriptionType === 'kickstart' || subscriptionType === 'transformatie';
   const programName = subscriptionType === 'transformatie' ? 'De Transformatie' : subscriptionType === 'kickstart' ? '21-Dagen Kickstart' : null;

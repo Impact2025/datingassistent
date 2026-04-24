@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { getValidToken } from '@/lib/client-auth';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronRight,
@@ -115,7 +116,7 @@ export function ProfileAnalysis({ onAnalysisComplete }: ProfileAnalysisProps) {
     setError(null);
 
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = getValidToken();
       const response = await fetch('/api/profile-optimization', {
         method: 'POST',
         headers: {

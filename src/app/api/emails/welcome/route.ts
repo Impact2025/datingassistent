@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const loginUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/login`;
 
     // Send welcome email
-    const emailSent = await sendWelcomeEmail(userEmail, userName, loginUrl, subscriptionType || 'core');
+    const emailSent = await sendWelcomeEmail(userEmail, userName, loginUrl, subscriptionType || 'free');
 
     if (emailSent) {
       logger.log(`✅ Welcome email sent successfully to ${userEmail}`);
