@@ -962,40 +962,42 @@ function DashboardPageContent() {
             <BottomNavigation />
           </div>
         )
+      ) : isFullScreenOnboarding ? (
+        // Desktop full-screen onboarding — zelfde aanpak als mobiel, buiten AppShellDesktop
+        // Gebruik fixed inset-0 z-50 zonder backdrop-filter ouder, zodat DatingSnapshotFlow
+        // zijn eigen fixed inset-0 overlay correct kan renderen t.o.v. het viewport
+        <div className="fixed inset-0 bg-gradient-to-br from-coral-50 via-white to-coral-50 z-50 overflow-hidden">
+          {showKickstartOnboarding ? (
+            <KickstartOnboardingFlow
+              userName={user?.name?.split(' ')[0]}
+              onComplete={handleKickstartOnboardingComplete}
+              className="h-full"
+            />
+          ) : showDayZero ? (
+            <DayZeroExperience
+              onComplete={handleDayZeroComplete}
+              embedded={false}
+            />
+          ) : showTransformatieOnboarding ? (
+            <DatingSnapshotFlow
+              onComplete={handleTransformatieOnboardingComplete}
+            />
+          ) : null}
+        </div>
       ) : (
         // Desktop layout — App Shell met sidebar navigatie
         <AppShellDesktop
           activeTab={activeTab}
           onTabChange={handleTabChange}
-          showNavigation={!showKickstartOnboarding && !showDayZero && !showTransformatieOnboarding}
+          showNavigation={true}
         >
           {/* Trial Progress Banner */}
-          {user?.id && !showKickstartOnboarding && !showDayZero && !showTransformatieOnboarding && (
+          {user?.id && (
             <TrialProgress userId={user.id} />
           )}
 
           <main className="rounded-2xl bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm p-6 shadow-xl border border-white/30 dark:border-gray-800">
-            {showKickstartOnboarding ? (
-              <div className="min-h-[600px]">
-                <KickstartOnboardingFlow
-                  userName={user?.name?.split(' ')[0]}
-                  onComplete={handleKickstartOnboardingComplete}
-                />
-              </div>
-            ) : showDayZero ? (
-              <DayZeroExperience
-                onComplete={handleDayZeroComplete}
-                embedded={true}
-              />
-            ) : showTransformatieOnboarding ? (
-              <div className="min-h-[600px]">
-                <DatingSnapshotFlow
-                  onComplete={handleTransformatieOnboardingComplete}
-                />
-              </div>
-            ) : (
-              tabContent
-            )}
+            {tabContent}
           </main>
 
           <AIContextNotifications />
@@ -1027,7 +1029,7 @@ function DashboardPageContent() {
             </div>
           </footer>
 
-          {irisInviteVisible && !showKickstartOnboarding && !showTransformatieOnboarding && (
+          {irisInviteVisible && (
             <ProactiveInvite
               onAccept={() => {
                 setIrisInviteVisible(false);
