@@ -3,67 +3,45 @@ import { logger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect, Suspense, useCallback, useMemo } from 'react';
+import { useState, useEffect, Suspense, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2, Settings, LogOut, CreditCard, Sun, Moon } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
 import { TransformatieDashboardView } from '@/components/transformatie/TransformatieDashboardView';
 import { DatingSnapshotFlow } from '@/components/onboarding/snapshot';
 import type { UserOnboardingProfile } from '@/types/dating-snapshot.types';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
-import { Button } from '@/components/ui/button';
-import { useUser } from '@/providers/user-provider';
-import { useTheme } from '@/providers/theme-provider';
-import { Logo } from '@/components/shared/logo';
-import { TierBadge } from '@/components/ui/locked-feature';
-import { useAccessControl } from '@/hooks/use-access-control';
 import { useTransformatieEnrollment } from '@/hooks/use-enrollment-status';
+import { AppShellDesktop } from '@/components/layout/app-shell-desktop';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Logo } from '@/components/shared/logo';
 
 function TransformatieContent() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { user, userProfile, logout } = useUser();
-  const { theme, setTheme, actualTheme, mounted } = useTheme();
-  const { userTier, isLoading: tierLoading } = useAccessControl();
+  const isMobile = useIsMobile();
 
-  // OPTIMIZED: Use cached enrollment status from React Query
-  const { data: transformatieData, isLoading: enrollmentLoading, isEnrolled, needsOnboarding } = useTransformatieEnrollment();
+  const { isLoading: enrollmentLoading, isEnrolled, needsOnboarding } = useTransformatieEnrollment();
+  const [onboardingJustCompleted, setOnboardingJustCompleted] = useState(false);
 
-  // Derive loading and enrolled states
-  const loading = enrollmentLoading;
-  const enrolled = isEnrolled;
-
-  const toggleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark');
-    } else if (theme === 'dark') {
-      setTheme('light');
-    } else {
-      setTheme(actualTheme === 'dark' ? 'light' : 'dark');
-    }
-  };
-
-  // Redirect to dashboard if not enrolled
   useEffect(() => {
     if (!enrollmentLoading && !isEnrolled) {
       router.push('/dashboard');
     }
   }, [enrollmentLoading, isEnrolled, router]);
 
-  // Local state to track onboarding completion (prevents race condition)
-  const [onboardingJustCompleted, setOnboardingJustCompleted] = useState(false);
-
-  // Handle onboarding completion (Dating Snapshot)
   const handleOnboardingComplete = useCallback(async (profile: UserOnboardingProfile) => {
     logger.log('✅ Dating Snapshot completed:', profile.displayName);
-    // The DatingSnapshotFlow already saves to API, just update local state
     setOnboardingJustCompleted(true);
-    // Invalidate cache to refetch enrollment status
     queryClient.invalidateQueries({ queryKey: ['enrollment-status'] });
   }, [queryClient]);
 
-  if (loading) {
+  const handleTabChange = useCallback((tab: string) => {
+    router.push(`/dashboard?tab=${tab}`);
+  }, [router]);
+
+  if (enrollmentLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
@@ -86,129 +64,54 @@ function TransformatieContent() {
     );
   }
 
-  if (!enrolled) {
-    return null;
+  if (!isEnrolled) return null;
+
+  if (needsOnboarding && !onboardingJustCompleted) {
+    return <DatingSnapshotFlow onComplete={handleOnboardingComplete} />;
   }
 
-  // Show onboarding if needed (but NOT if just completed - prevents race condition)
-  if (needsOnboarding && !onboardingJustCompleted) {
+  // Mobiele layout — zelfde patroon als dashboard
+  if (isMobile) {
     return (
-      <DatingSnapshotFlow
-        onComplete={handleOnboardingComplete}
-      />
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pb-28 safe-area-bottom">
+        <div className="bg-white/98 dark:bg-gray-950/98 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 sticky top-0 z-40">
+          <div className="flex items-center justify-between px-4 h-14">
+            <Logo iconSize={26} textSize="sm" />
+          </div>
+        </div>
+        <div className="px-4 pt-4 pb-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-coral-500 flex items-center justify-center shadow-md">
+              <span className="text-white font-bold text-lg">T</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Transformatie</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">12 modules • DESIGN → ACTION → SURRENDER</p>
+            </div>
+          </div>
+          <TransformatieDashboardView onBack={() => router.push('/dashboard')} />
+        </div>
+        <BottomNavigation />
+      </div>
     );
   }
 
+  // Desktop layout — AppShellDesktop geeft dezelfde navigatie als het dashboard
   return (
-    <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
-      <div className="mx-auto w-full max-w-4xl p-4 sm:p-6 lg:p-8">
-        <div className="space-y-6">
-          {/* Header - Consistent with Dashboard */}
-          <header className="flex items-center justify-between pb-6" role="banner">
-            <div>
-              <div className="mb-2">
-                <Logo iconSize={40} textSize="lg" />
-              </div>
-              <div className="flex items-center gap-2">
-                <p className="text-sm text-muted-foreground md:text-base" role="status" aria-live="polite">
-                  Welkom terug, {userProfile?.name || user?.name}!
-                </p>
-                {!tierLoading && userTier !== 'free' && (
-                  <TierBadge tier={userTier} size="sm" />
-                )}
-              </div>
-            </div>
-            <nav className="flex items-center space-x-2" role="navigation" aria-label="Gebruikersmenu">
-              {mounted && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={toggleTheme}
-                  aria-label={actualTheme === 'dark' ? 'Schakel naar licht thema' : 'Schakel naar donker thema'}
-                  title={actualTheme === 'dark' ? 'Licht thema' : 'Donker thema'}
-                  suppressHydrationWarning
-                  noFocusRing
-                  type="button"
-                >
-                  <Sun className="h-5 w-5" aria-hidden="true" />
-                  <Moon className="h-5 w-5" aria-hidden="true" />
-                </Button>
-              )}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => router.push('/dashboard?tab=subscription')}
-                aria-label="Open abonnement instellingen"
-                title="Mijn Abonnement"
-                noFocusRing
-                type="button"
-              >
-                <CreditCard className="h-5 w-5" aria-hidden="true" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => router.push('/dashboard?tab=settings')}
-                aria-label="Open instellingen"
-                title="Instellingen"
-                noFocusRing
-                type="button"
-              >
-                <Settings className="h-5 w-5" aria-hidden="true" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => logout()}
-                aria-label="Uitloggen uit je account"
-                title="Uitloggen"
-                noFocusRing
-                type="button"
-              >
-                <LogOut className="h-5 w-5" aria-hidden="true" />
-              </Button>
-            </nav>
-          </header>
-
-          {/* Main Content Card */}
-          <main className="rounded-2xl bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm p-4 shadow-2xl sm:p-6 border border-white/20 dark:border-gray-700/20">
-            {/* Transformatie Title Bar */}
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-gray-700">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-md">
-                  <span className="text-white font-bold text-lg">T</span>
-                </div>
-                <div>
-                  <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Transformatie</h1>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">12 modules • DESIGN → ACTION → SURRENDER</p>
-                </div>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push('/dashboard')}
-                className="border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
-                ← Terug naar Dashboard
-              </Button>
-            </div>
-
-            {/* TransformatieDashboardView */}
-            <TransformatieDashboardView onBack={() => router.push('/dashboard')} />
-          </main>
-
-          {/* Footer */}
-          <footer className="text-center text-sm text-muted-foreground">
-            <p>&copy; 2025 DatingAssistent. Alle rechten voorbehouden.</p>
-          </footer>
+    <AppShellDesktop activeTab="pad" onTabChange={handleTabChange} showNavigation={true}>
+      <main className="rounded-2xl bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm p-6 shadow-xl border border-white/30 dark:border-gray-800">
+        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-gray-700">
+          <div className="w-10 h-10 rounded-xl bg-coral-500 flex items-center justify-center shadow-md">
+            <span className="text-white font-bold text-lg">T</span>
+          </div>
+          <div>
+            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Transformatie</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">12 modules • DESIGN → ACTION → SURRENDER</p>
+          </div>
         </div>
-      </div>
-
-      {/* Bottom Navigation for Mobile */}
-      <div className="pb-24 md:pb-0">
-        <BottomNavigation />
-      </div>
-    </div>
+        <TransformatieDashboardView onBack={() => handleTabChange('home')} />
+      </main>
+    </AppShellDesktop>
   );
 }
 
