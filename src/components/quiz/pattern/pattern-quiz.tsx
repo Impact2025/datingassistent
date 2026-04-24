@@ -198,6 +198,30 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     handleAccountSubmit(storedEmail, storedName, storedMktg, user.id);
   }, [user, hasRestoredProgress, quizState]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // When a logged-in user arrives (e.g. via magic link on a different device)
+  // with no localStorage answers, fetch their saved DB result directly.
+  useEffect(() => {
+    if (!user || !hasRestoredProgress) return;
+    if (quizState !== 'landing') return;
+    if (Object.keys(answers).length > 0) return;
+
+    fetch('/api/quiz/pattern/my-result', { credentials: 'include' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.result) return;
+        const r = data.result;
+        setFirstName(r.firstName || user.name || '');
+        setAttachmentPattern(r.attachmentPattern);
+        setAnxietyScore(r.anxietyScore);
+        setAvoidanceScore(r.avoidanceScore);
+        setConfidence(r.confidence);
+        setUserId(user.id);
+        setQuizState('result');
+      })
+      .catch(() => { /* silent — user sees landing */ });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, hasRestoredProgress, quizState]);
+
   // Save progress when answers or question index changes
   useEffect(() => {
     if (!hasRestoredProgress) return;
