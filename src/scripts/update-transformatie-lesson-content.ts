@@ -3,7 +3,7 @@
  * Run: npx tsx src/scripts/update-transformatie-lesson-content.ts
  */
 import { sql } from '@vercel/postgres';
-import { logger } from '@/lib/logger';
+const log = (...args: any[]) => console.log(...args);
 
 interface LessonUpdate {
   moduleOrder: number;
@@ -880,7 +880,7 @@ const lessons: LessonUpdate[] = [
 ];
 
 async function main() {
-  logger.log('🚀 Transformatie 3.0 — Lesson content update\n');
+  log('🚀 Transformatie 3.0 — Lesson content update\n');
 
   const programResult = await sql`
     SELECT id FROM programs WHERE slug = 'transformatie' LIMIT 1
@@ -892,7 +892,7 @@ async function main() {
   }
 
   const programId = programResult.rows[0].id;
-  logger.log(`✓ Programma gevonden (ID: ${programId})\n`);
+  log(`✓ Programma gevonden (ID: ${programId})\n`);
 
   let updated = 0;
   let failed = 0;
@@ -913,7 +913,7 @@ async function main() {
       `;
 
       if (result.rowCount && result.rowCount > 0) {
-        logger.log(`  ✓ Module ${lesson.moduleOrder} · Les ${lesson.lessonOrder}`);
+        log(`  ✓ Module ${lesson.moduleOrder} · Les ${lesson.lessonOrder}`);
         updated++;
       } else {
         console.warn(`  ⚠️ Niet gevonden: Module ${lesson.moduleOrder} · Les ${lesson.lessonOrder}`);
@@ -925,7 +925,7 @@ async function main() {
     }
   }
 
-  logger.log(`\n✅ Klaar: ${updated} lessen bijgewerkt, ${failed} mislukt`);
+  log(`\n✅ Klaar: ${updated} lessen bijgewerkt, ${failed} mislukt`);
 }
 
 main().catch(console.error);
