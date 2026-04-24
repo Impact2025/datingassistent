@@ -52,6 +52,21 @@ interface TransformatieDashboardViewProps {
 const SIDEBAR_COLLAPSED_KEY = 'transformatie_sidebar_collapsed';
 const VIDEO_PROGRESS_KEY = 'transformatie_video_progress';
 
+// Detect video URL type and return embed URL for iframe-based players
+function parseVideoUrl(url: string | null): {
+  type: 'youtube' | 'vimeo' | 'loom' | 'mp4' | 'none';
+  embedUrl: string;
+} {
+  if (!url) return { type: 'none', embedUrl: '' };
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+  if (ytMatch) return { type: 'youtube', embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?rel=0&modestbranding=1` };
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeoMatch) return { type: 'vimeo', embedUrl: `https://player.vimeo.com/video/${vimeoMatch[1]}?byline=0&portrait=0&title=0` };
+  const loomMatch = url.match(/loom\.com\/(?:share|embed)\/([a-zA-Z0-9]+)/);
+  if (loomMatch) return { type: 'loom', embedUrl: `https://www.loom.com/embed/${loomMatch[1]}?hide_owner=true&hide_share=true` };
+  return { type: 'mp4', embedUrl: url };
+}
+
 // Tool name to route mapping
 const AI_TOOL_ROUTES: Record<string, string> = {
   'Waarden Kompas': '/waarden-kompas',
@@ -815,11 +830,26 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                     </p>
                   </div>
                 )}
+
+                {/* Leerdoelen */}
+                {currentLesson.content?.objectives && currentLesson.content.objectives.length > 0 && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Na deze les</p>
+                    <ul className="space-y-1">
+                      {currentLesson.content.objectives.map((obj, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                          <Target className="w-3.5 h-3.5 text-coral-500 shrink-0 mt-0.5" />
+                          {obj}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
             {/* Video Section */}
-            <Card className="border-gray-200 shadow-sm">
+            <Card className="border-gray-200 shadow-sm overflow-hidden">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Play className="w-5 h-5" />
@@ -827,66 +857,126 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                   {isVideoComplete && <CheckCircle className="w-4 h-4 text-green-500 ml-auto" />}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-4 lg:p-6">
-                {currentLesson.video_url ? (
-                  <div className="relative">
-                    <div className="aspect-video bg-gray-900 rounded-lg mb-2 overflow-hidden">
-                      <video
-                        ref={videoRef}
-                        controls
-                        className="w-full h-full"
-                        preload="metadata"
-                      >
-                        <source src={currentLesson.video_url} type="video/mp4" />
-                        Je browser ondersteunt geen video playback.
-                      </video>
-                    </div>
-                    {/* Video Progress Bar */}
-                    <div className="h-1 bg-gray-200 rounded-full overflow-hidden mb-4">
-                      <motion.div
-                        className="h-full bg-coral-500 hover:bg-coral-600"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${videoProgress}%` }}
-                        transition={{ duration: 0.1 }}
-                      />
-                    </div>
-                    {/* Video Controls Hint */}
-                    <div className="hidden lg:flex items-center justify-center gap-4 text-xs text-gray-400 mb-4">
-                      <span className="flex items-center gap-1">
-                        <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-xs">Spatie</kbd>
-                        Play/Pause
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-xs">F</kbd>
-                        Fullscreen
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center mb-4">
-                    <div className="text-center text-gray-500">
-                      <Play className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                      <p>Video komt binnenkort beschikbaar</p>
-                    </div>
-                  </div>
-                )}
+              <CardContent className="p-0">
+                {(() => {
+                  const { type, embedUrl } = parseVideoUrl(currentLesson.video_url);
 
-                {!isVideoComplete ? (
-                  <Button
-                    onClick={handleVideoComplete}
-                    className="w-full bg-gray-900 hover:bg-gray-800 text-white"
-                    disabled={saving}
-                  >
-                    Markeer als bekeken
-                  </Button>
-                ) : (
-                  <div className="flex items-center justify-center gap-2 text-green-600 p-3 bg-green-50 rounded-lg border border-green-200">
-                    <CheckCircle className="w-5 h-5" />
-                    Video voltooid
-                  </div>
-                )}
+                  if (type === 'youtube' || type === 'vimeo' || type === 'loom') {
+                    return (
+                      <div className="px-4 lg:px-6 pb-4 lg:pb-6">
+                        <div className="aspect-video rounded-xl overflow-hidden bg-gray-900 mb-4 shadow-md">
+                          <iframe
+                            src={embedUrl}
+                            className="w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                            allowFullScreen
+                            loading="lazy"
+                          />
+                        </div>
+                        {!isVideoComplete ? (
+                          <Button onClick={handleVideoComplete} className="w-full bg-gray-900 hover:bg-gray-800 text-white" disabled={saving}>
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Markeer als bekeken
+                          </Button>
+                        ) : (
+                          <div className="flex items-center justify-center gap-2 text-green-600 p-3 bg-green-50 rounded-lg border border-green-200">
+                            <CheckCircle className="w-5 h-5" />
+                            Video voltooid
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+
+                  if (type === 'mp4') {
+                    return (
+                      <div className="px-4 lg:px-6 pb-4 lg:pb-6">
+                        <div className="aspect-video bg-gray-900 rounded-xl mb-2 overflow-hidden shadow-md">
+                          <video ref={videoRef} controls className="w-full h-full" preload="metadata">
+                            <source src={embedUrl} type="video/mp4" />
+                          </video>
+                        </div>
+                        <div className="h-1 bg-gray-200 rounded-full overflow-hidden mb-4">
+                          <motion.div
+                            className="h-full bg-coral-500"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${videoProgress}%` }}
+                            transition={{ duration: 0.1 }}
+                          />
+                        </div>
+                        {!isVideoComplete ? (
+                          <Button onClick={handleVideoComplete} className="w-full bg-gray-900 hover:bg-gray-800 text-white" disabled={saving}>
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Markeer als bekeken
+                          </Button>
+                        ) : (
+                          <div className="flex items-center justify-center gap-2 text-green-600 p-3 bg-green-50 rounded-lg border border-green-200">
+                            <CheckCircle className="w-5 h-5" />
+                            Video voltooid
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+
+                  // No video yet — rich placeholder
+                  return (
+                    <div>
+                      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 px-8 py-10 flex flex-col items-center justify-center text-center gap-4">
+                        <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-2">
+                          <Play className="w-8 h-8 text-white/60" />
+                        </div>
+                        {currentLesson.content?.quote ? (
+                          <>
+                            <p className="text-white/90 text-lg font-medium italic leading-relaxed max-w-md">
+                              "{currentLesson.content.quote}"
+                            </p>
+                            <p className="text-white/40 text-xs">Video wordt binnenkort toegevoegd</p>
+                          </>
+                        ) : (
+                          <p className="text-white/60 text-sm">Video wordt binnenkort toegevoegd</p>
+                        )}
+                      </div>
+                      <div className="px-4 lg:px-6 py-4">
+                        {!isVideoComplete ? (
+                          <Button onClick={handleVideoComplete} className="w-full bg-gray-900 hover:bg-gray-800 text-white" disabled={saving}>
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Markeer als bekeken
+                          </Button>
+                        ) : (
+                          <div className="flex items-center justify-center gap-2 text-green-600 p-3 bg-green-50 rounded-lg border border-green-200">
+                            <CheckCircle className="w-5 h-5" />
+                            Video voltooid
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
               </CardContent>
             </Card>
+
+            {/* Sleutelinzichten */}
+            {currentLesson.content?.takeaways && currentLesson.content.takeaways.length > 0 && (
+              <Card className="border-amber-200 bg-amber-50/50 shadow-sm">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2 text-amber-900">
+                    <Sparkles className="w-5 h-5 text-amber-600" />
+                    Sleutelinzichten
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {currentLesson.content.takeaways.map((insight, i) => (
+                    <div key={i} className="flex gap-3 items-start p-3 rounded-lg bg-white border border-amber-100 shadow-sm">
+                      <div className="w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                        {i + 1}
+                      </div>
+                      <p className="text-sm text-gray-800 leading-relaxed">{insight}</p>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
 
             {/* Reflectie Section */}
             <Card className="border-gray-200 shadow-sm">
@@ -901,10 +991,10 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Spiegel */}
-                <div className="space-y-2 p-4 rounded-lg border border-gray-200 bg-gray-50">
-                  <Badge className="bg-blue-100 text-blue-700 border-0">Spiegel</Badge>
-                  <p className="text-sm text-gray-700">
-                    Wat betekent "{currentModule?.mindset_hook}" voor jou persoonlijk?
+                <div className="space-y-2 p-4 rounded-lg border border-blue-100 bg-blue-50/50">
+                  <Badge className="bg-blue-100 text-blue-700 border-0 text-xs">🪞 Spiegel</Badge>
+                  <p className="text-sm font-medium text-gray-800 leading-relaxed">
+                    {currentLesson.reflectie?.spiegel || `Wat betekent "${currentModule?.mindset_hook}" voor jou persoonlijk?`}
                   </p>
                   <Textarea
                     value={reflectieAnswers.spiegel || ''}
@@ -913,21 +1003,24 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                     }
                     onBlur={() => handleReflectieSave('spiegel', reflectieAnswers.spiegel || '')}
                     placeholder="Schrijf je reflectie hier..."
-                    className="min-h-[80px]"
+                    className="min-h-[100px] bg-white border-blue-200 focus:border-blue-400 resize-none"
                   />
-                  {(reflectieAnswers.spiegel?.length || 0) > 10 && (
-                    <div className="flex items-center gap-1 text-green-600 text-xs">
-                      <CheckCircle className="w-3 h-3" />
-                      Opgeslagen
-                    </div>
-                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400">{reflectieAnswers.spiegel?.length || 0} tekens</span>
+                    {(reflectieAnswers.spiegel?.length || 0) > 10 && (
+                      <div className="flex items-center gap-1 text-green-600 text-xs font-medium">
+                        <CheckCircle className="w-3 h-3" />
+                        Opgeslagen
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Identiteit */}
-                <div className="space-y-2 p-4 rounded-lg border border-gray-200 bg-gray-50">
-                  <Badge className="bg-amber-100 text-amber-700 border-0">Identiteit</Badge>
-                  <p className="text-sm text-gray-700">
-                    Hoe past dit bij wie je bent in de liefde?
+                <div className="space-y-2 p-4 rounded-lg border border-amber-100 bg-amber-50/50">
+                  <Badge className="bg-amber-100 text-amber-700 border-0 text-xs">🌱 Identiteit</Badge>
+                  <p className="text-sm font-medium text-gray-800 leading-relaxed">
+                    {currentLesson.reflectie?.identiteit || 'Hoe past dit bij wie je bent in de liefde?'}
                   </p>
                   <Textarea
                     value={reflectieAnswers.identiteit || ''}
@@ -936,21 +1029,24 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                     }
                     onBlur={() => handleReflectieSave('identiteit', reflectieAnswers.identiteit || '')}
                     placeholder="Schrijf je reflectie hier..."
-                    className="min-h-[80px]"
+                    className="min-h-[100px] bg-white border-amber-200 focus:border-amber-400 resize-none"
                   />
-                  {(reflectieAnswers.identiteit?.length || 0) > 10 && (
-                    <div className="flex items-center gap-1 text-green-600 text-xs">
-                      <CheckCircle className="w-3 h-3" />
-                      Opgeslagen
-                    </div>
-                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400">{reflectieAnswers.identiteit?.length || 0} tekens</span>
+                    {(reflectieAnswers.identiteit?.length || 0) > 10 && (
+                      <div className="flex items-center gap-1 text-green-600 text-xs font-medium">
+                        <CheckCircle className="w-3 h-3" />
+                        Opgeslagen
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Actie */}
-                <div className="space-y-2 p-4 rounded-lg border border-gray-200 bg-gray-50">
-                  <Badge className="bg-rose-100 text-rose-700 border-0">Actie</Badge>
-                  <p className="text-sm text-gray-700">
-                    Wat is een concrete stap die je kunt nemen na deze les?
+                <div className="space-y-2 p-4 rounded-lg border border-rose-100 bg-rose-50/50">
+                  <Badge className="bg-rose-100 text-rose-700 border-0 text-xs">⚡ Actie</Badge>
+                  <p className="text-sm font-medium text-gray-800 leading-relaxed">
+                    {currentLesson.reflectie?.actie || 'Wat is een concrete stap die je kunt nemen na deze les?'}
                   </p>
                   <Textarea
                     value={reflectieAnswers.actie || ''}
@@ -958,15 +1054,18 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                       setReflectieAnswers({ ...reflectieAnswers, actie: e.target.value })
                     }
                     onBlur={() => handleReflectieSave('actie', reflectieAnswers.actie || '')}
-                    placeholder="Schrijf je reflectie hier..."
-                    className="min-h-[80px]"
+                    placeholder="Schrijf je concrete actie hier..."
+                    className="min-h-[100px] bg-white border-rose-200 focus:border-rose-400 resize-none"
                   />
-                  {(reflectieAnswers.actie?.length || 0) > 10 && (
-                    <div className="flex items-center gap-1 text-green-600 text-xs">
-                      <CheckCircle className="w-3 h-3" />
-                      Opgeslagen
-                    </div>
-                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400">{reflectieAnswers.actie?.length || 0} tekens</span>
+                    {(reflectieAnswers.actie?.length || 0) > 10 && (
+                      <div className="flex items-center gap-1 text-green-600 text-xs font-medium">
+                        <CheckCircle className="w-3 h-3" />
+                        Opgeslagen
+                      </div>
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </Card>

@@ -192,20 +192,22 @@ export async function getUserById(userId: number) {
  */
 export async function verifyAuth(request: Request): Promise<SessionUser | null> {
   try {
-    // Try to get token from cookie first
+    // Try cookie first
     const token = await getAuthCookie();
-
-    if (!token) {
-      // Fallback: try Authorization header
-      const authHeader = request.headers.get('Authorization');
-      if (authHeader && authHeader.startsWith('Bearer ')) {
-        const bearerToken = authHeader.substring(7);
-        return verifyToken(bearerToken);
-      }
-      return null;
+    if (token) {
+      const user = await verifyToken(token);
+      if (user) return user;
+      // Cookie token invalid/expired — fall through to Authorization header
     }
 
-    return verifyToken(token);
+    // Fallback: Authorization header (used when cookie is absent or expired)
+    const authHeader = request.headers.get('Authorization');
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const bearerToken = authHeader.substring(7);
+      return verifyToken(bearerToken);
+    }
+
+    return null;
   } catch (error) {
     console.error('Auth verification error:', error);
     return null;

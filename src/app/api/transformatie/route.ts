@@ -26,6 +26,18 @@ export interface TransformatieModule {
   };
 }
 
+export interface LessonReflectie {
+  spiegel: string;
+  identiteit: string;
+  actie: string;
+}
+
+export interface LessonContent {
+  takeaways: string[];
+  objectives: string[];
+  quote: string;
+}
+
 export interface TransformatieLesson {
   id: number;
   module_id: number;
@@ -37,6 +49,8 @@ export interface TransformatieLesson {
   duration_minutes: number;
   video_url: string | null;
   is_published: boolean;
+  reflectie: LessonReflectie | null;
+  content: LessonContent | null;
   progress: LessonProgress | null;
 }
 
@@ -168,6 +182,8 @@ export async function GET(request: NextRequest) {
           duration_minutes: lesson.duration_minutes,
           video_url: lesson.video_url,
           is_published: lesson.is_published,
+          reflectie: lesson.reflectie || null,
+          content: lesson.content || null,
           progress: userProgress.find((p) => p.lesson_id === lesson.id) || null,
         })),
         progress: {

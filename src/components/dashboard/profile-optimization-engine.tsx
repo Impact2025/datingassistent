@@ -31,6 +31,7 @@ import {
   Edit3,
   BarChart3
 } from 'lucide-react';
+import { getValidToken } from '@/lib/client-auth';
 
 interface ProfileAnalysis {
   overallScore: number;
@@ -130,11 +131,12 @@ function ProfileOptimizationEngineInner() {
     setLoading(true);
 
     try {
+      const token = getValidToken();
       const response = await fetch('/api/profile-optimization', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
           profileData,
