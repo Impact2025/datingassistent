@@ -65,7 +65,7 @@ export interface EmailTemplateData {
   firstName: string;
   email: string;
   userId: number;
-  subscriptionType: 'sociaal' | 'core' | 'pro' | 'premium';
+  subscriptionType: 'sociaal' | 'core' | 'pro' | 'premium' | 'kickstart' | 'transformatie' | 'vip' | 'free';
   [key: string]: any;
 }
 

@@ -94,11 +94,13 @@ function getEmailContent(emailType: EmailType, data: EmailTemplateData): {
       component: (
         <WelcomeEmail
           firstName={data.firstName}
-          subscriptionType={data.subscriptionType}
+          subscriptionType={data.subscriptionType as any}
           dashboardUrl={`${BASE_URL}/dashboard`}
         />
       ),
-      subject: `Welkom ${data.firstName}! Je dating journey begint nu 🚀`,
+      subject: (data.subscriptionType === 'transformatie' || data.subscriptionType === 'kickstart')
+        ? `Welkom bij ${data.subscriptionType === 'transformatie' ? 'De Transformatie' : '21-Dagen Kickstart'}, ${data.firstName}! Je programma staat klaar`
+        : `Welkom ${data.firstName}! Je dating journey begint nu 🚀`,
       textVersion: getWelcomeTextVersion(data),
     },
 
@@ -867,8 +869,53 @@ function getWelcomeTextVersion(data: EmailTemplateData): string {
     sociaal: 'Sociaal',
     core: 'Core',
     pro: 'Pro',
-    premium: 'Premium'
+    premium: 'Premium',
+    kickstart: '21-Dagen Kickstart',
+    transformatie: 'De Transformatie',
+    vip: 'VIP',
+    free: 'Gratis',
   };
+
+  const isProgram = data.subscriptionType === 'kickstart' || data.subscriptionType === 'transformatie';
+  const tierName = tierNames[data.subscriptionType] || 'Core';
+
+  if (isProgram) {
+    const durationDays = data.subscriptionType === 'transformatie' ? 90 : 21;
+    return `
+Welkom bij ${tierName}!
+
+Hoi ${data.firstName},
+
+Gefeliciteerd! Je hebt zojuist ${tierName} geactiveerd. Je staat op het punt een geweldige transformatie door te maken.
+
+Je programma is actief — ga direct aan de slag!
+
+Zo ga je van start:
+
+1. 🚀 Start Dag 1 van ${tierName}
+   Je programma staat klaar op het dashboard.
+
+2. ⏱️ Dagelijks 15-20 minuten
+   Werk elke dag aan je groei. ${durationDays} dagen, stap voor stap.
+
+3. 🤖 AI coach voor al je vragen
+   Stel vragen wanneer je twijfelt of meer wilt weten.
+
+Naar je programma: ${BASE_URL}/dashboard
+
+Pro tip: Zet een dagelijkse reminder in je agenda. Consistentie is de sleutel tot succes!
+
+Heb je vragen? Antwoord gewoon op deze email - we helpen je graag!
+
+Succes!
+Vincent & het DatingAssistent team
+
+---
+DatingAssistent - 10+ jaar ervaring in dating coaching
+Dashboard: ${BASE_URL}/dashboard
+Email Voorkeuren: ${BASE_URL}/dashboard/settings/email-preferences
+    `.trim();
+  }
 
   return `
 Welkom bij DatingAssistent!
@@ -877,7 +924,7 @@ Hoi ${data.firstName},
 
 Wat geweldig dat je er bent! Je hebt zojuist de eerste stap gezet naar succesvol en zelfverzekerd daten.
 
-Je ${tierNames[data.subscriptionType]} pakket is actief.
+Je ${tierName} pakket is actief.
 
 Hier zijn je eerste 3 stappen:
 

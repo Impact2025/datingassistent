@@ -96,19 +96,43 @@ export async function sendWelcomeEmail(
   userEmail: string,
   userName: string,
   loginUrl: string,
-  subscriptionType: 'sociaal' | 'core' | 'pro' | 'premium' = 'core'
+  subscriptionType: 'sociaal' | 'core' | 'pro' | 'premium' | 'kickstart' | 'transformatie' | 'vip' | 'free' = 'core'
 ): Promise<boolean> {
+  const isProgram = subscriptionType === 'kickstart' || subscriptionType === 'transformatie';
+  const programName = subscriptionType === 'transformatie' ? 'De Transformatie' : subscriptionType === 'kickstart' ? '21-Dagen Kickstart' : null;
+  const durationDays = subscriptionType === 'transformatie' ? 90 : 21;
+
   try {
     const html = await render(
       WelcomeEmail({
         firstName: userName,
-        subscriptionType,
+        subscriptionType: subscriptionType as any,
         dashboardUrl: loginUrl || `${BASE_URL}/dashboard`,
       }),
       { pretty: true }
     );
 
-    const textContent = `
+    const textContent = isProgram ? `
+Welkom bij ${programName}!
+
+Hoi ${userName}!
+
+Gefeliciteerd! Je hebt zojuist ${programName} geactiveerd. Je staat op het punt een geweldige transformatie door te maken.
+
+Zo ga je van start:
+1. Start Dag 1 van ${programName} — je programma staat klaar op het dashboard
+2. Dagelijks 15-20 minuten — ${durationDays} dagen consequent voor echte resultaten
+3. AI coach voor al je vragen — stel vragen wanneer je twijfelt
+
+Naar je programma: ${loginUrl || `${BASE_URL}/dashboard`}
+
+Pro tip: Zet een dagelijkse reminder in je agenda. Consistentie is de sleutel tot succes!
+
+Heb je vragen? Reply op deze email of mail naar ${SUPPORT_EMAIL}
+
+Succes met je transformatie!
+Vincent & het DatingAssistent team
+    `.trim() : `
 Welkom bij DatingAssistent!
 
 Hoi ${userName}!
@@ -134,10 +158,14 @@ Succes met je dating journey!
 Vincent & het DatingAssistent team
     `.trim();
 
+    const subject = isProgram
+      ? `Welkom bij ${programName}, ${userName}! Je programma staat klaar`
+      : `Welkom ${userName}! Je dating journey begint nu`;
+
     return sendEmail({
       to: userEmail,
       from: FROM_EMAIL,
-      subject: `Welkom ${userName}! Je dating journey begint nu`,
+      subject,
       html,
       text: textContent
     });
@@ -771,6 +799,8 @@ export async function sendProgramEnrollmentEmail(
   programSlug: string,
   dayOneUrl: string
 ): Promise<boolean> {
+  const durationDays = programSlug === 'transformatie' ? 90 : 21;
+
   try {
     const html = await render(
       ProgramEnrollmentEmail({
@@ -778,7 +808,7 @@ export async function sendProgramEnrollmentEmail(
         programName,
         programSlug,
         dayOneUrl,
-        durationDays: 21,
+        durationDays,
         dailyTimeMinutes: 15,
       }),
       { pretty: true }
@@ -796,11 +826,11 @@ Je bent klaar om te starten! Je account is geactiveerd en dag 1 staat voor je kl
 Start nu met Dag 1: ${dayOneUrl}
 
 Wat kun je verwachten?
-1. Elke dag nieuwe content en praktische oefeningen
-2. Directe feedback en persoonlijke begeleiding
+1. Elke dag nieuwe content en praktische oefeningen gedurende ${durationDays} dagen
+2. Directe feedback en persoonlijke begeleiding van je AI coach
 3. Meetbare resultaten en voortgang tracking
 
-Pro tip: Zet een dagelijkse reminder in je agenda om elke dag 15-20 minuten aan je transformatie te werken. Consistentie is de sleutel tot succes!
+Pro tip: Zet een dagelijkse reminder in je agenda om elke dag 15-20 minuten aan ${programName} te werken. Consistentie is de sleutel tot succes!
 
 Vragen? Mail ons op ${SUPPORT_EMAIL}
 
