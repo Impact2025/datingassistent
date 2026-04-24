@@ -62,8 +62,18 @@ export interface RecentActivity {
   conversationsCoached?: number;
 }
 
+export interface OnboardingData {
+  primaryGoal?: string;
+  biggestChallenge?: string;
+  experienceLevel?: number;
+  recommendedPath?: string;
+  irisPersonality?: string;
+  completedAt?: Date;
+}
+
 export interface CoachContext {
   user: UserProfile;
+  onboarding: OnboardingData;
   assessments: AssessmentResults;
   journey: JourneyProgress;
   goals: UserGoals;

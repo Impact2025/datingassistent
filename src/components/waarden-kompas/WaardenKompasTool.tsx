@@ -8,12 +8,10 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Compass, ArrowRight, CheckCircle, Sparkles, Target, Heart, Zap, ArrowLeft, HelpCircle, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Logo } from '@/components/shared/logo';
 import { MiniIntake } from './MiniIntake';
 import { WaardenOnderzoek } from './WaardenOnderzoek';
 import { AISynthese } from './AISynthese';
 import { IntegratieHub } from './IntegratieHub';
-import { ToolProgressIndicator } from '@/components/ui/tool-progress-indicator';
 
 export type WaardenKompasPhase = 'intake' | 'onderzoek' | 'synthese' | 'integratie' | 'completed';
 
@@ -314,14 +312,6 @@ export function WaardenKompasTool({ className }: WaardenKompasToolProps) {
             </div>
           </CardContent>
         </Card>
-
-        {/* Progress Indicator */}
-        <ToolProgressIndicator
-          toolId="waarden-kompas"
-          toolName="Waarden Kompas"
-          totalActions={4}
-          showDetails={true}
-        />
 
         {/* Phase Content */}
         <div className="space-y-8">

@@ -6,7 +6,7 @@
 
 import { sql } from '@vercel/postgres';
 import { getAgeRange } from '../ai-privacy';
-import type { CoachContext, UserProfile, AssessmentResults, JourneyProgress, UserGoals, RecentActivity } from './types';
+import type { CoachContext, UserProfile, AssessmentResults, JourneyProgress, UserGoals, RecentActivity, OnboardingData } from './types';
 import { logger } from '@/lib/logger';
 
 export async function buildCoachContext(userId: number): Promise<CoachContext> {
@@ -14,20 +14,24 @@ export async function buildCoachContext(userId: number): Promise<CoachContext> {
     // 1. Haal user profiel op
     const userProfile = await getUserProfile(userId);
 
-    // 2. Haal assessment resultaten op
+    // 2. Haal onboarding data op
+    const onboarding = await getOnboardingData(userId);
+
+    // 3. Haal assessment resultaten op
     const assessments = await getAssessmentResults(userId);
 
-    // 3. Haal journey progress op
+    // 4. Haal journey progress op
     const journey = await getJourneyProgress(userId);
 
-    // 4. Haal goals op
+    // 5. Haal goals op
     const goals = await getUserGoals(userId);
 
-    // 5. Haal recent activity op
+    // 6. Haal recent activity op
     const activity = await getRecentActivity(userId);
 
     return {
       user: userProfile,
+      onboarding,
       assessments,
       journey,
       goals,
@@ -62,6 +66,33 @@ async function getUserProfile(userId: number): Promise<UserProfile> {
     lookingFor: undefined,
     subscriptionType: user.subscription_type || 'free'
   };
+}
+
+async function getOnboardingData(userId: number): Promise<OnboardingData> {
+  try {
+    const result = await sql`
+      SELECT primary_goal, biggest_challenge, experience_level,
+             recommended_path, iris_personality, completed_at
+      FROM user_onboarding
+      WHERE user_id = ${userId}
+    `;
+
+    if (result.rows.length > 0) {
+      const o = result.rows[0];
+      return {
+        primaryGoal: o.primary_goal,
+        biggestChallenge: o.biggest_challenge,
+        experienceLevel: o.experience_level,
+        recommendedPath: o.recommended_path,
+        irisPersonality: o.iris_personality,
+        completedAt: o.completed_at
+      };
+    }
+  } catch (error) {
+    logger.log('No onboarding data');
+  }
+
+  return {};
 }
 
 async function getAssessmentResults(userId: number): Promise<AssessmentResults> {
@@ -278,6 +309,25 @@ export function contextToPrompt(context: CoachContext): string {
     parts.push(`, zoekt: ${context.user.lookingFor}`);
   }
   parts.push(', Nederland.'); // Privacy: alleen land, geen specifieke locatie
+
+  // Onboarding intake
+  if (context.onboarding.primaryGoal || context.onboarding.biggestChallenge) {
+    parts.push('\n\nOnboarding intake:');
+    if (context.onboarding.primaryGoal) {
+      parts.push(`\nHoofddoel: ${context.onboarding.primaryGoal}.`);
+    }
+    if (context.onboarding.biggestChallenge) {
+      parts.push(`\nGrootste uitdaging: ${context.onboarding.biggestChallenge}.`);
+    }
+    if (context.onboarding.experienceLevel !== undefined) {
+      const levels = ['geen', 'weinig', 'enige', 'redelijk', 'veel'];
+      const label = levels[context.onboarding.experienceLevel] ?? context.onboarding.experienceLevel;
+      parts.push(`\nErvaringsniveau dating apps: ${label}.`);
+    }
+    if (context.onboarding.recommendedPath) {
+      parts.push(`\nAanbevolen pad: ${context.onboarding.recommendedPath}.`);
+    }
+  }
 
   // Assessments
   if (context.assessments.hechtingsstijl) {
