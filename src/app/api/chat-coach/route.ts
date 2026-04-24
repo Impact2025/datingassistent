@@ -42,11 +42,11 @@ export async function POST(request: NextRequest) {
       `;
     }
 
-    // Generate AI analysis
-    const aiAnalysis = await generateConversationAnalysis(conversationText, conversationType, messages);
-
-    // Get user context from other tools (if available)
+    // Get user context (including kernwaarden) before analysis
     const userContext = await getUserContext(userId || 1);
+
+    // Generate AI analysis with user context
+    const aiAnalysis = await generateConversationAnalysis(conversationText, conversationType, messages, userContext);
 
     // Store analysis
     const analysis = await sql`
@@ -187,110 +187,69 @@ function countEmojis(text: string): number {
   return (text.match(emojiRegex) || []).length;
 }
 
-async function generateConversationAnalysis(conversationText: string, type: string, messages: any[]) {
+async function generateConversationAnalysis(
+  conversationText: string,
+  type: string,
+  messages: any[],
+  userContext: Awaited<ReturnType<typeof getUserContext>>
+) {
   const client = getOpenRouterClient();
 
-  const prompt = `
-  Analyseer deze ${type} conversatie en geef een Nederlandse beoordeling:
+  const kernwaardenSection = userContext.coreValues?.length
+    ? `\nGEBRUIKER KERNWAARDEN (uit Waarden Kompas):
+${userContext.coreValues.map((v: string) => `• ${v}`).join('\n')}
+Rode vlaggen voor deze gebruiker: ${userContext.redFlags?.slice(0, 3).join('; ') || 'onbekend'}
 
-  CONVERSATIE:
-  ${conversationText}
+Gebruik deze kernwaarden om de analyse te PERSONALISEREN: detecteer of de gesprekspartner tekenen toont die passen of botsen met deze waarden.\n`
+    : '';
 
-  DETAILS:
-  - Aantal berichten: ${messages.length}
-  - Gebruiker berichten: ${messages.filter(m => m.isUser).length}
-  - Andere berichten: ${messages.filter(m => !m.isUser).length}
+  const prompt = `Je bent een Nederlandse dating communicatie coach. Analyseer deze ${type} conversatie en geef een eerlijke, gepersonaliseerde beoordeling in JSON.
+${kernwaardenSection}
+CONVERSATIE:
+${conversationText}
 
-  Geef een gedetailleerde analyse met:
-  1. scores: overall (0-100), engagement, authenticity, balance, clarity
-  2. summary: korte samenvatting van de conversatie
-  3. strengths: array van 3-4 sterke punten
-  4. improvements: array van 3-4 verbeterpunten
-  5. redFlags: array van eventuele rode vlaggen
-  6. conversationFlow: analyse van de flow
-  7. toneAnalysis: toon analyse
-  8. pacingFeedback: tempo feedback
-  9. questionQuality: kwaliteit van vragen
-  10. responseDepth: diepgang van antwoorden
-  11. suggestedOpeners: 3 betere openingsberichten
-  12. betterResponses: 3 verbeterde antwoorden
-  13. conversationStarters: 3 nieuwe gespreksstarters
-  14. boundaryScripts: 2 grens stellende scripts
-  15. escalationTips: 3 tips voor escalatie
+DETAILS:
+- Berichten totaal: ${messages.length}
+- Gebruiker berichten: ${messages.filter(m => m.isUser).length}
+${userContext.attachmentAlignment ? `- Hechtingsstijl gebruiker: ${userContext.attachmentAlignment}` : ''}
 
-  Wees eerlijk maar bemoedigend, focus op moderne dating communicatie.
-  `;
+Geef een JSON object terug met deze exacte structuur:
+{
+  "scores": {"overall": 0-100, "engagement": 0-100, "authenticity": 0-100, "balance": 0-100, "clarity": 0-100},
+  "summary": "Persoonlijke samenvatting van 2-3 zinnen",
+  "strengths": ["sterke punt 1", "sterke punt 2", "sterke punt 3"],
+  "improvements": ["verbeterpunt 1", "verbeterpunt 2", "verbeterpunt 3"],
+  "redFlags": ["rode vlag indien aanwezig"],
+  "conversationFlow": "Analyse van de flow",
+  "toneAnalysis": "Toon analyse",
+  "pacingFeedback": "Tempo feedback",
+  "questionQuality": "Kwaliteit van vragen",
+  "responseDepth": "Diepgang van antwoorden",
+  "suggestedOpeners": ["opener 1", "opener 2", "opener 3"],
+  "betterResponses": ["beter antwoord 1", "beter antwoord 2", "beter antwoord 3"],
+  "conversationStarters": ["starter 1", "starter 2", "starter 3"],
+  "boundaryScripts": ["script 1", "script 2"],
+  "escalationTips": ["tip 1", "tip 2", "tip 3"]
+}
+
+Wees eerlijk maar bemoedigend. Geef ALLEEN het JSON object terug.`;
 
   try {
     const response = await client.createChatCompletion(
       OPENROUTER_MODELS.CLAUDE_35_HAIKU,
       [{ role: 'user', content: prompt }],
-      {
-        temperature: 0.7,
-        max_tokens: 2000
-      }
+      { temperature: 0.7, max_tokens: 2000 }
     );
 
-    const content = response;
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON in response');
 
-    // Parse the AI response - in a real implementation, you'd want more robust parsing
-    return {
-      scores: {
-        overall: 75,
-        engagement: 70,
-        authenticity: 80,
-        balance: 65,
-        clarity: 75
-      },
-      summary: "Deze conversatie toont interesse en pogingen tot verbinding, maar mist wat diepgang en wederzijdse uitwisseling.",
-      strengths: [
-        "Toont oprechte interesse in de ander",
-        "Gebruikt humor op natuurlijke wijze",
-        "Stelt vragen om gesprek gaande te houden",
-        "Reageert timely op berichten"
-      ],
-      improvements: [
-        "Meer specifieke vragen stellen over interesses",
-        "Dieper ingaan op gedeelde ervaringen",
-        "Grenzen bewaken bij persoonlijke vragen",
-        "Meer balans tussen geven en nemen"
-      ],
-      redFlags: [
-        "Sommige vragen voelen oppervlakkig aan",
-        "Teveel focus op eigen verhalen"
-      ],
-      conversationFlow: "De conversatie begint sterk maar verliest momentum. Er is sprake van wederzijdse interesse maar weinig verdieping.",
-      toneAnalysis: "Vriendelijk en benaderbaar, met een positieve energie die aansluit bij dating context.",
-      pacingFeedback: "Goede snelheid in eerste berichten, maar latere replies zouden sneller kunnen voor meer momentum.",
-      questionQuality: "Vragen zijn algemeen - meer specifieke vragen zouden leiden tot interessantere gesprekken.",
-      responseDepth: "Antwoorden zijn adequaat maar missen persoonlijke inzichten die verbinding versterken.",
-      suggestedOpeners: [
-        "Hey! Zag je bio over [specifieke interesse] - ik ben daar ook gek op. Wat is jouw favoriete [ding] daarmee?",
-        "Hoi! Je foto van [locatie/activiteit] ziet er geweldig uit. Ben je daar vaak?",
-        "Hey daar! Ik moest even berichten want je lijkt me iemand die [persoonlijkheidskenmerk] heeft - klopt dat?"
-      ],
-      betterResponses: [
-        "Dat klinkt interessant! Ik heb laatst zelf [gerelateerde ervaring] gedaan - hoe ben jij daarachter gekomen?",
-        "Goede vraag! Voor mij is [persoonlijk antwoord] belangrijk omdat [reden]. Hoe zie jij dat?",
-        "Haha, dat herken ik! Bij mij gebeurde iets gelijkaardigs toen [kort verhaal delen]."
-      ],
-      conversationStarters: [
-        "Wat is het leukste avontuur dat je dit jaar hebt beleefd?",
-        "Als je één ding kon veranderen aan dating apps, wat zou dat zijn?",
-        "Wat is je guilty pleasure waar je niet vaak over praat?"
-      ],
-      boundaryScripts: [
-        "Dat is een persoonlijke vraag - ik praat daar liever over als we elkaar beter kennen.",
-        "Ik vind dit gesprek leuk, maar ik wil het graag rustig aan doen."
-      ],
-      escalationTips: [
-        "Stel vragen die emotionele diepgang vragen",
-        "Deel kwetsbare verhalen op het juiste moment",
-        "Zoek naar gedeelde waarden en toekomstvisies",
-        "Creëer anticipatie door hints over vervolg dates"
-      ]
-    };
+    const parsed = JSON.parse(jsonMatch[0]);
 
+    // Validate essential fields
+    if (!parsed.scores || !parsed.summary) throw new Error('Missing required fields');
+
+    return parsed;
   } catch (error) {
     console.error('AI conversation analysis failed:', error);
     return {
@@ -308,28 +267,52 @@ async function generateConversationAnalysis(conversationText: string, type: stri
       betterResponses: ["Dat klinkt leuk! Ik heb zelf..."],
       conversationStarters: ["Wat doe je voor werk?"],
       boundaryScripts: ["Dat is persoonlijk"],
-      escalationTips: ["Stel diepere vragen"]
+      escalationTips: ["Stel diepere vragen"],
     };
   }
 }
 
 async function getUserContext(userId: number) {
   try {
-    // Try to get context from other tools
-    const attachmentResult = await sql`SELECT primary_style FROM hechtingsstijl_results WHERE assessment_id IN (SELECT id FROM hechtingsstijl_assessments WHERE user_id = ${userId} ORDER BY created_at DESC LIMIT 1)`;
-    const datingStyleResult = await sql`SELECT primary_style FROM dating_style_results WHERE assessment_id IN (SELECT id FROM dating_style_assessments WHERE user_id = ${userId} ORDER BY created_at DESC LIMIT 1)`;
-    const readinessResult = await sql`SELECT readiness_level FROM emotionele_readiness_results WHERE assessment_id IN (SELECT id FROM emotionele_readiness_assessments WHERE user_id = ${userId} ORDER BY created_at DESC LIMIT 1)`;
+    const [attachmentResult, datingStyleResult, readinessResult, waardenResult] = await Promise.all([
+      sql`SELECT primary_style FROM hechtingsstijl_results WHERE assessment_id IN (SELECT id FROM hechtingsstijl_assessments WHERE user_id = ${userId} ORDER BY created_at DESC LIMIT 1)`,
+      sql`SELECT primary_style FROM dating_style_results WHERE assessment_id IN (SELECT id FROM dating_style_assessments WHERE user_id = ${userId} ORDER BY created_at DESC LIMIT 1)`,
+      sql`SELECT readiness_level FROM emotionele_readiness_results WHERE assessment_id IN (SELECT id FROM emotionele_readiness_assessments WHERE user_id = ${userId} ORDER BY created_at DESC LIMIT 1)`,
+      sql`SELECT core_values, red_flags, green_flags FROM waarden_kompas_results WHERE user_id = ${userId} ORDER BY generated_at DESC LIMIT 1`,
+    ]);
+
+    // Extract core value names from JSON
+    let coreValues: string[] = [];
+    let redFlags: string[] = [];
+    let greenFlags: string[] = [];
+
+    if (waardenResult.rows.length > 0) {
+      const row = waardenResult.rows[0];
+      const rawValues = typeof row.core_values === 'string' ? JSON.parse(row.core_values) : row.core_values;
+      const rawRedFlags = typeof row.red_flags === 'string' ? JSON.parse(row.red_flags) : row.red_flags;
+      const rawGreenFlags = typeof row.green_flags === 'string' ? JSON.parse(row.green_flags) : row.green_flags;
+
+      coreValues = Array.isArray(rawValues) ? rawValues.map((v: any) => v.name || v) : [];
+      redFlags = Array.isArray(rawRedFlags) ? rawRedFlags : [];
+      greenFlags = Array.isArray(rawGreenFlags) ? rawGreenFlags : [];
+    }
 
     return {
-      compatibleStyles: (datingStyleResult as any).length > 0 ? [(datingStyleResult as any)[0].primary_style] : [],
-      attachmentAlignment: (attachmentResult as any).length > 0 ? (attachmentResult as any)[0].primary_style : null,
-      readinessLevel: (readinessResult as any).length > 0 ? (readinessResult as any)[0].readiness_level : null
+      compatibleStyles: datingStyleResult.rows.length > 0 ? [datingStyleResult.rows[0].primary_style] : [],
+      attachmentAlignment: attachmentResult.rows.length > 0 ? attachmentResult.rows[0].primary_style : null,
+      readinessLevel: readinessResult.rows.length > 0 ? readinessResult.rows[0].readiness_level : null,
+      coreValues,
+      redFlags,
+      greenFlags,
     };
   } catch (error) {
     return {
       compatibleStyles: [],
       attachmentAlignment: null,
-      readinessLevel: null
+      readinessLevel: null,
+      coreValues: [],
+      redFlags: [],
+      greenFlags: [],
     };
   }
 }

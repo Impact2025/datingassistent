@@ -4,6 +4,7 @@
  */
 
 import { chatCompletion } from './ai-service';
+import { sql } from '@vercel/postgres';
 
 export interface DatePlanRequest {
   // From Date Ideas integration
@@ -98,7 +99,9 @@ class DatePlannerAIService {
    */
   async generateDatePlan(request: DatePlanRequest, userId: string): Promise<DatePlanResponse> {
     try {
-      const prompt = this.buildPrompt(request);
+      // Fetch user's core values from Waarden Kompas for personalization
+      const coreValues = await fetchUserCoreValues(userId);
+      const prompt = this.buildPrompt(request, coreValues);
       const messages = [
         {
           role: 'system' as const,
@@ -137,7 +140,7 @@ class DatePlannerAIService {
   /**
    * Build the AI prompt from request data
    */
-  private buildPrompt(request: DatePlanRequest): string {
+  private buildPrompt(request: DatePlanRequest, coreValues: string[] = []): string {
     const dateTimeStr = request.dateTime
       ? request.dateTime.toLocaleString('nl-NL', {
           weekday: 'long',
@@ -148,6 +151,12 @@ class DatePlannerAIService {
           minute: '2-digit'
         })
       : 'Datum nog niet bekend';
+
+    const waardenSection = coreValues.length > 0
+      ? `\nKERNWAARDEN GEBRUIKER (uit Waarden Kompas — verwerk dit in alle suggesties):
+${coreValues.map(v => `• ${v}`).join('\n')}
+→ Kies gespreksthema's, activiteiten en openers die bij deze waarden passen.\n`
+      : '';
 
     return `
 Date type: ${request.dateType}
@@ -163,6 +172,7 @@ Onzekerheden: ${request.insecurities?.join(', ') || 'Geen specifieke onzekerhede
 Doelen: ${request.userGoals || 'Leuke connectie maken'}
 Vibe: ${request.vibe}
 Activiteiten: ${request.activities?.join(', ') || 'Geen specifieke activiteiten'}
+${waardenSection}
 
 Maak een uitgebreid Date Plan met Nederlandse focus:
 1. Korte, motiverende mindset intro (2-3 zinnen)
@@ -362,3 +372,22 @@ OUTPUT FORMAT: Geef een JSON object terug met deze exacte structuur:
 
 // Singleton instance
 export const datePlannerAI = new DatePlannerAIService();
+
+async function fetchUserCoreValues(userId: string): Promise<string[]> {
+  try {
+    const result = await sql`
+      SELECT core_values
+      FROM waarden_kompas_results
+      WHERE user_id = ${parseInt(userId, 10)}
+      ORDER BY generated_at DESC
+      LIMIT 1
+    `;
+    if (result.rows.length === 0) return [];
+
+    const raw = result.rows[0].core_values;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    return Array.isArray(parsed) ? parsed.map((v: any) => v.name || v).filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+}
