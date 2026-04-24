@@ -214,7 +214,7 @@ export function ProfileTabContent({ user, userProfile }: ProfileTabContentProps)
             icon={Edit3}
             label="Profiel Bewerken"
             description="Naam, bio en voorkeuren"
-            onClick={() => router.push('/dashboard?tab=profiel')}
+            onClick={() => router.push('/dashboard?tab=profiel-persoonlijkheid')}
           />
           <MenuItem
             icon={Camera}
