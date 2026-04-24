@@ -137,80 +137,87 @@ export async function GET(request: NextRequest) {
 }
 
 async function generateSuccessMetrics(activities: any[], timeRange: string): Promise<SuccessMetrics> {
-  // Calculate basic metrics from activities
   const totalActivities = activities.length;
   const profileActivities = activities.filter(a => a.activity_type === 'profile_analysis').length;
   const chatActivities = activities.filter(a => a.activity_type === 'chat_coach').length;
   const dateActivities = activities.filter(a => a.activity_type === 'date_planner').length;
+  const openerActivities = activities.filter(a => a.activity_type === 'opener_generated').length;
+  const totalPoints = activities.reduce((sum: number, a: any) => sum + (a.points_earned || 0), 0);
 
-  // Generate weekly progress
+  // Weekly progress — deterministic, based on real activity data
   const weeklyProgress = [];
-  const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+  for (let i = 3; i >= 0; i--) {
+    const weekEnd = new Date();
+    weekEnd.setDate(weekEnd.getDate() - i * 7);
+    const weekStart = new Date(weekEnd);
+    weekStart.setDate(weekStart.getDate() - 7);
 
-  for (let i = 0; i < 4; i++) {
     const weekActivities = activities.filter(a => {
-      const activityDate = new Date(a.created_at);
-      const weekStart = new Date();
-      weekStart.setDate(weekStart.getDate() - (i * 7));
-      const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekEnd.getDate() + 7);
-      return activityDate >= weekStart && activityDate < weekEnd;
+      const d = new Date(a.created_at);
+      return d >= weekStart && d < weekEnd;
     });
+    const weekPoints = weekActivities.reduce((sum: number, a: any) => sum + (a.points_earned || 0), 0);
+    const weekOpeners = weekActivities.filter(a => a.activity_type === 'opener_generated').length;
+    const weekChat = weekActivities.filter(a => a.activity_type === 'chat_coach').length;
 
-    weeklyProgress.unshift({
-      week: weeks[3 - i],
-      score: Math.min(100, 20 + (weekActivities.length * 15) + Math.random() * 20),
+    weeklyProgress.push({
+      week: `Week ${4 - i}`,
+      score: Math.min(100, Math.round(20 + weekActivities.length * 12 + weekPoints / 5)),
       activities: weekActivities.length,
-      matches: Math.floor(Math.random() * 5),
-      conversations: Math.floor(Math.random() * 10)
+      matches: Math.floor(weekOpeners * 0.4),
+      conversations: weekChat
     });
   }
 
-  // Calculate overall score based on activity diversity and frequency
-  const activityDiversity = [profileActivities, chatActivities, dateActivities].filter(count => count > 0).length;
-  const activityFrequency = totalActivities / (timeRange === 'week' ? 7 : timeRange === 'month' ? 30 : 90);
-  const overallScore = Math.min(100, Math.max(0,
-    (activityDiversity * 20) +
-    (activityFrequency * 30) +
-    (totalActivities * 2) +
-    Math.random() * 20
-  ));
+  // Overall score — deterministic
+  const activityDiversity = [profileActivities, chatActivities, dateActivities, openerActivities].filter(c => c > 0).length;
+  const days = timeRange === 'week' ? 7 : timeRange === 'month' ? 30 : 90;
+  const activityFrequency = totalActivities / days;
+  const overallScore = Math.min(100, Math.max(0, Math.round(
+    activityDiversity * 15 +
+    Math.floor(activityFrequency * 40) +
+    Math.min(totalActivities * 2, 30)
+  )));
 
-  // Generate key metrics (mock data for now)
+  // Key metrics — proxy berekeningen op basis van echte activiteiten
   const keyMetrics = {
-    profileViews: Math.floor(Math.random() * 200) + 50,
-    messagesSent: totalActivities * 3 + Math.floor(Math.random() * 20),
-    responseRate: Math.floor(Math.random() * 40) + 30,
-    matchRate: Math.floor(Math.random() * 20) + 5,
-    conversationDepth: Math.floor(Math.random() * 4) + 4,
-    dateSuccess: Math.floor(Math.random() * 50) + 20
+    profileViews: profileActivities * 25 + totalActivities * 3,
+    messagesSent: openerActivities + chatActivities * 5,
+    responseRate: Math.min(80, 20 + profileActivities * 5 + chatActivities * 3),
+    matchRate: Math.min(50, 5 + openerActivities * 2),
+    conversationDepth: Math.min(10, 3 + chatActivities),
+    dateSuccess: Math.min(100, dateActivities * 15 + (totalActivities > 10 ? 20 : 0))
   };
 
-  // Generate trends
-  const trends = [
+  // Trends — gebaseerd op verschil laatste vs vorige week
+  const lastWeek = weeklyProgress[3]?.activities ?? 0;
+  const prevWeek = weeklyProgress[2]?.activities ?? 0;
+  const activityChange = prevWeek > 0 ? Math.round(Math.abs((lastWeek - prevWeek) / prevWeek) * 100) : 0;
+
+  const trends: SuccessMetrics['trends'] = [
     {
-      direction: overallScore > 60 ? 'up' : 'stable' as 'up' | 'down' | 'stable',
-      percentage: Math.floor(Math.random() * 20) + 5,
+      direction: lastWeek > prevWeek ? 'up' : lastWeek < prevWeek ? 'down' : 'stable',
+      percentage: activityChange,
       metric: 'Algemene activiteit'
     },
     {
-      direction: keyMetrics.responseRate > 40 ? 'up' : 'down' as 'up' | 'down' | 'stable',
-      percentage: Math.floor(Math.random() * 15) + 3,
+      direction: keyMetrics.responseRate > 40 ? 'up' : 'stable',
+      percentage: Math.max(0, keyMetrics.responseRate - 30),
       metric: 'Response rate'
     },
     {
-      direction: keyMetrics.matchRate > 10 ? 'up' : 'stable' as 'up' | 'down' | 'stable',
-      percentage: Math.floor(Math.random() * 25) + 5,
+      direction: keyMetrics.matchRate > 10 ? 'up' : 'stable',
+      percentage: keyMetrics.matchRate,
       metric: 'Match kwaliteit'
     }
   ];
 
-  // Generate insights based on metrics
-  const insights = [];
+  // Insights — gebaseerd op echte scores
+  const insights: SuccessMetrics['insights'] = [];
 
   if (overallScore >= 80) {
     insights.push({
-      type: 'success' as const,
+      type: 'success',
       title: 'Uitstekende voortgang!',
       description: 'Je bent zeer actief en consistent. Blijf dit niveau vasthouden voor optimale resultaten.',
       actionable: false
@@ -219,7 +226,7 @@ async function generateSuccessMetrics(activities: any[], timeRange: string): Pro
 
   if (keyMetrics.responseRate < 40) {
     insights.push({
-      type: 'improvement' as const,
+      type: 'improvement',
       title: 'Verbeter je openingsberichten',
       description: 'Je response rate is lager dan gemiddeld. Probeer meer persoonlijke en interessante openingsberichten.',
       actionable: true
@@ -228,7 +235,7 @@ async function generateSuccessMetrics(activities: any[], timeRange: string): Pro
 
   if (activityDiversity < 3) {
     insights.push({
-      type: 'tip' as const,
+      type: 'tip',
       title: 'Gebruik meer tools',
       description: 'Je gebruikt slechts een beperkt aantal tools. Probeer de Profiel Coach en Date Planner voor betere resultaten.',
       actionable: true
@@ -237,22 +244,32 @@ async function generateSuccessMetrics(activities: any[], timeRange: string): Pro
 
   if (keyMetrics.conversationDepth < 6) {
     insights.push({
-      type: 'improvement' as const,
+      type: 'improvement',
       title: 'Diepere gesprekken voeren',
       description: 'Je gesprekken blijven oppervlakkig. Stel meer open vragen om de gesprekken te verdiepen.',
       actionable: true
     });
   }
 
-  // Generate predictions
+  if (insights.length === 0) {
+    insights.push({
+      type: 'tip',
+      title: 'Blijf actief!',
+      description: 'Gebruik DatingAssistent dagelijks om je dating skills te verbeteren en meer resultaten te behalen.',
+      actionable: true
+    });
+  }
+
+  // Predictions — deterministisch
+  const weeklyRate = totalActivities / (days / 7);
   const predictions = {
-    nextWeekActivity: Math.max(5, Math.floor(totalActivities / 7 * 1.2)),
-    expectedMatches: Math.max(1, Math.floor(keyMetrics.matchRate / 10)),
-    confidence: Math.floor(Math.random() * 20) + 70
+    nextWeekActivity: Math.max(1, Math.round(weeklyRate * 1.1)),
+    expectedMatches: Math.max(0, Math.floor(keyMetrics.matchRate / 10)),
+    confidence: 75
   };
 
   return {
-    overallScore: Math.round(overallScore),
+    overallScore,
     weeklyProgress,
     keyMetrics,
     trends,

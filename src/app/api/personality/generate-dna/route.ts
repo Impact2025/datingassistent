@@ -59,51 +59,32 @@ Genereer een JSON object met de volgende structuur:
 
 Antwoord ALLEEN met het JSON object, geen extra text.`;
 
-    // TEMPORARY: Skip AI call and use fallback for testing
-    logger.log('🧪 Using fallback DNA generation for testing');
     let dnaResults;
 
     try {
-      // Always use fallback for now to test the new structure
-      dnaResults = {
-        personalityType: "Jouw Unieke Dating Stijl",
-        datingStyle: "Je hebt een authentieke en oprechte benadering van daten, wat een sterke basis is voor betekenisvolle connecties.",
-        coreStrengths: [
-          scanData.strengthSelf || scanData.strength_self || "Je bent oprecht en authentiek",
-          "Je bent gemotiveerd om te groeien",
-          "Je neemt je dating leven serieus"
+      const aiResponse = await chatCompletion(
+        [
+          {
+            role: 'system',
+            content: 'Je bent een expert dating psycholoog. Geef altijd een geldig JSON antwoord, geen extra tekst.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
         ],
-        growthAreas: [
-          scanData.weaknessSelf || scanData.weakness_self || "Meer zelfvertrouwen opbouwen",
-          "Consistentie in dating",
-          "Betere communicatie vaardigheden"
-        ],
-        communicationStyle: "Je communiceert op een oprechte manier en bent bereid om te leren en groeien.",
-        confidenceLevel: (scanData.comfortLevel || scanData.comfort_level || 5) >= 7 ? "high" : (scanData.comfortLevel || scanData.comfort_level || 5) >= 4 ? "medium" : "low",
-        recommendedApproach: "Begin met kleine, consistente stappen. Focus eerst op het verbeteren van je profiel en bouw dan langzaam je zelfvertrouwen op.",
-        keyInsights: [
-          "Je bent eerlijk over je verbeterpunten - dat is de eerste stap naar groei",
-          "Je hebt duidelijke doelen - dat geeft richting aan je dating journey",
-          "Je bent bereid tijd te investeren - dat verhoogt je kans op succes"
-        ],
-        actionItems: [
-          "Gebruik de Profiel Analyse tool om je foto's en bio te verbeteren",
-          "Oefen met de Chat Coach voor persoonlijke openingszinnen",
-          `Besteed ${scanData.weeklyCommitment || scanData.weekly_commitment || '1-2h'} per week aan DatingAssistent tools`
-        ],
-        appRecommendations: {
-          primaryTools: ["Profiel Analyse", "Chat Coach", "Opener Generator"],
-          usageTips: [
-            "Start elke sessie met Profiel Analyse om je voortgang te meten",
-            "Gebruik Chat Coach dagelijks voor 10 minuten oefenen",
-            "Genereer 3-5 nieuwe openers per week met de Opener Generator"
-          ],
-          weeklyRoutine: `Besteed ${scanData.weeklyCommitment || scanData.weekly_commitment || '1-2h'} per week: Ma/di - Profiel verbeteren, Wo/do - Chat oefenen, Vr/za - Nieuwe openers maken`,
-          expectedOutcomes: "Na 2 weken: Betere profiel, meer zelfvertrouwen in gesprekken. Na 4 weken: Meer matches en betekenisvollere gesprekken."
+        {
+          provider: 'openrouter',
+          maxTokens: 1200,
+          temperature: 0.7
         }
-      };
+      );
 
-      logger.log('✅ Generated DNA Results:', dnaResults);
+      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON in AI response');
+      dnaResults = JSON.parse(jsonMatch[0]);
+
+      logger.log('✅ Generated DNA Results via AI');
 
       return NextResponse.json({
         success: true,
