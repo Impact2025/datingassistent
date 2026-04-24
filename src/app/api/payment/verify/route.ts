@@ -132,6 +132,19 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
+    // Require authentication so users can't enumerate other users' orders.
+    const { getCurrentUser } = await import('@/lib/auth');
+    const currentUser = await getCurrentUser();
+    if (!currentUser) {
+      return NextResponse.json<PaymentVerifyResponse>({
+        success: false,
+        status: 'failed',
+        orderId,
+        message: 'Niet ingelogd',
+        errorCode: 'UNAUTHORIZED'
+      }, { status: 401 });
+    }
+
     // Check orders table first (for package purchases)
     const orderResult = await sql`
       SELECT
@@ -141,6 +154,7 @@ export async function GET(request: NextRequest) {
       FROM orders o
       LEFT JOIN users u ON o.user_id = u.id
       WHERE o.id = ${orderId}
+        AND o.user_id = ${currentUser.id}
       LIMIT 1
     `;
 
@@ -154,6 +168,7 @@ export async function GET(request: NextRequest) {
         FROM payment_transactions pt
         LEFT JOIN programs p ON pt.program_id = p.id
         WHERE pt.order_id = ${orderId}
+          AND pt.user_id = ${currentUser.id}
         LIMIT 1
       `;
 

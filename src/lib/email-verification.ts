@@ -1,6 +1,6 @@
 import { logger } from '@/lib/logger';
 import { sql } from '@vercel/postgres';
-import { randomBytes } from 'crypto';
+import { randomBytes, randomInt, timingSafeEqual } from 'crypto';
 // Note: sendEmail import removed to avoid client-side issues
 // Import only when needed in server-side code
 
@@ -215,10 +215,11 @@ export async function resendVerificationEmail(email: string): Promise<{ success:
 // ============================================
 
 /**
- * Generate a 6-digit verification code
+ * Generate a 6-digit verification code using a cryptographically secure RNG.
+ * Math.random() is NOT suitable for security-sensitive codes.
  */
 export function generateVerificationCode(): string {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  return randomInt(100000, 1000000).toString();
 }
 
 /**
@@ -339,11 +340,20 @@ export async function verifyEmailWithCode(userId: number, code: string): Promise
       return { success: false, error: 'Verification code has expired' };
     }
 
-    // Check code match
-    logger.log(`🔍 Comparing codes: input "${code}" vs stored "${user.verification_code}"`);
-    if (user.verification_code !== code) {
+    // Check code match using constant-time comparison to prevent timing attacks.
+    const storedCode = user.verification_code ?? '';
+    let codesMatch = false;
+    try {
+      codesMatch = storedCode.length === code.length &&
+        timingSafeEqual(Buffer.from(storedCode), Buffer.from(code));
+    } catch {
+      codesMatch = false;
+    }
+
+    logger.log(`🔍 Comparing codes for user ${userId}: match=${codesMatch}`);
+
+    if (!codesMatch) {
       logger.log(`❌ Code mismatch for user ${userId}`);
-      // Increment attempts
       await sql`
         UPDATE users
         SET code_attempts = code_attempts + 1

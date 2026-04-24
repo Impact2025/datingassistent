@@ -1,8 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sql } from '@vercel/postgres';
+import { sql, db } from '@vercel/postgres';
 import { getCurrentUser } from '@/lib/auth';
 import { stripe } from '@/lib/stripe';
 import { logger } from '@/lib/logger';
+import { getPackagePrice, type PackageType, type BillingPeriod } from '@/lib/packages';
+import { applyCoupon } from '@/lib/coupon-service';
+
+const SLUG_TIER: Record<string, number> = { free: 0, kickstart: 1, transformatie: 2, vip: 3 };
+
+async function syncSubscriptionTypeSafely(userId: number, newSlug: string): Promise<void> {
+  const incomingTier = SLUG_TIER[newSlug] ?? 0;
+  const higherSlugs = Object.entries(SLUG_TIER)
+    .filter(([, t]) => t > incomingTier)
+    .map(([s]) => s);
+
+  const client = await db.connect();
+  try {
+    await client.query(
+      `UPDATE users SET subscription_type = $1, updated_at = NOW()
+       WHERE id = $2
+         AND (subscription_type IS NULL
+              OR subscription_type NOT IN (SELECT unnest($3::text[])))`,
+      [newSlug, userId, higherSlugs]
+    );
+  } finally {
+    client.release();
+  }
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -59,8 +83,22 @@ export async function POST(request: NextRequest) {
     // ─── SUBSCRIPTION PACKAGE FLOW ────────────────────────────────────────────
     if (isSubscription) {
       const orderId = `ORDER-${timestamp}-${userId}-${packageType}`;
-      // amount arrives in cents from the checkout UI (getPackagePrice returns cents)
-      const amountCents = Math.round(amount);
+
+      // SERVER-SIDE PRICE VALIDATION: never trust the client's amount.
+      const canonicalCents = getPackagePrice(packageType as PackageType, billingPeriod as BillingPeriod);
+      let authorizedCents = canonicalCents;
+      if (normalizedCouponCode) {
+        const couponResult = await applyCoupon(normalizedCouponCode, packageType as any, canonicalCents / 100);
+        if (couponResult?.valid && couponResult.newAmount !== undefined) {
+          authorizedCents = Math.round(couponResult.newAmount * 100);
+        }
+      }
+      const clientCents = Math.round(amount);
+      if (Math.abs(clientCents - authorizedCents) > 1) {
+        logger.log(`⚠️ Subscription price mismatch — user ${userId} sent ${clientCents}¢, server expects ${authorizedCents}¢`);
+        return NextResponse.json({ error: 'Prijs mismatch. Ververs de pagina en probeer opnieuw.' }, { status: 400 });
+      }
+      const amountCents = authorizedCents;
 
       // Free package (100% coupon)
       if (amountCents === 0) {
@@ -156,8 +194,23 @@ export async function POST(request: NextRequest) {
     }
     const program = programResult.rows[0];
     const orderId = `ORDER-${timestamp}-${userId}-${programId}`;
-    // amount arrives in cents from the program checkout (checkout multiplies euro price × 100)
-    const amountCents = Math.round(amount);
+
+    // SERVER-SIDE PRICE VALIDATION: recalculate from DB, never trust client amount.
+    const programPriceEuros: number = program.price_beta || program.price_regular || 0;
+    const canonicalProgramCents = Math.round(programPriceEuros * 100);
+    let authorizedProgramCents = canonicalProgramCents;
+    if (normalizedCouponCode) {
+      const couponResult = await applyCoupon(normalizedCouponCode, programSlug as any, programPriceEuros);
+      if (couponResult?.valid && couponResult.newAmount !== undefined) {
+        authorizedProgramCents = Math.round(couponResult.newAmount * 100);
+      }
+    }
+    const clientProgramCents = Math.round(amount);
+    if (Math.abs(clientProgramCents - authorizedProgramCents) > 1) {
+      logger.log(`⚠️ Program price mismatch — user ${userId} sent ${clientProgramCents}¢, server expects ${authorizedProgramCents}¢`);
+      return NextResponse.json({ error: 'Prijs mismatch. Ververs de pagina en probeer opnieuw.' }, { status: 400 });
+    }
+    const amountCents = authorizedProgramCents;
     const amountEuros = amountCents / 100;
 
     // Free order (100% coupon or free program)
@@ -199,11 +252,9 @@ export async function POST(request: NextRequest) {
         VALUES (${userId}, ${programId}, ${orderId}, 'active', NOW())
       `;
 
-      // Sync subscription_type so cursus access checks work
-      await sql`
-        UPDATE users SET subscription_type = ${programSlug}, updated_at = NOW()
-        WHERE id = ${userId}
-      `.catch((e: unknown) => console.error('⚠️ subscription_type sync failed:', e));
+      // Sync subscription_type — only promote, never demote to a lower tier.
+      await syncSubscriptionTypeSafely(userId, programSlug)
+        .catch((e: unknown) => console.error('⚠️ subscription_type sync failed:', e));
 
       if (normalizedCouponCode) {
         await sql`
@@ -233,6 +284,29 @@ export async function POST(request: NextRequest) {
         payment_url: `${BASE_URL}/payment/success?order_id=${orderId}`,
         paymentUrl: `${BASE_URL}/payment/success?order_id=${orderId}`,
       });
+    }
+
+    // Dedup: if a pending session already exists for this user+program, reuse it.
+    const pendingTx = await sql`
+      SELECT order_id, stripe_session_id FROM payment_transactions
+      WHERE user_id = ${userId} AND program_id = ${programId}
+        AND status = 'pending' AND stripe_session_id IS NOT NULL
+      ORDER BY created_at DESC LIMIT 1
+    `;
+    if (pendingTx.rows.length > 0) {
+      const existingRow = pendingTx.rows[0];
+      try {
+        const existingSession = await stripe.checkout.sessions.retrieve(existingRow.stripe_session_id);
+        if (existingSession.status === 'open' && existingSession.url) {
+          logger.log('♻️ Reusing existing Stripe session:', existingRow.order_id);
+          return NextResponse.json({
+            success: true,
+            order_id: existingRow.order_id,
+            payment_url: existingSession.url,
+            paymentUrl: existingSession.url,
+          });
+        }
+      } catch { /* session expired or invalid — create a new one below */ }
     }
 
     // Paid program — create Stripe Checkout Session

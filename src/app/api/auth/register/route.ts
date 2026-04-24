@@ -82,6 +82,7 @@ export async function POST(request: NextRequest) {
     // through the OTO → checkout flow without an email verification interruption.
     // They receive a password-setup email instead.
     const emailVerified = needsPasswordSetup ? true : false;
+    let emailFailed = false;
 
     const result = await sql`
       INSERT INTO users (name, email, password_hash, email_verified, created_at, updated_at)
@@ -111,6 +112,8 @@ export async function POST(request: NextRequest) {
       const verificationEmailSent = await sendVerificationCodeEmail(user.email, user.name, verificationCode);
       if (!verificationEmailSent) {
         console.error(`❌ Failed to send verification email to ${user.email}`);
+        // Surface email failure so the UI can offer a "Resend code" button immediately.
+        emailFailed = true;
       }
     }
 
@@ -153,11 +156,14 @@ export async function POST(request: NextRequest) {
       },
       message: needsPasswordSetup
         ? 'Account aangemaakt. Je kunt direct verder.'
-        : plan === 'pro'
-          ? 'Account aangemaakt! Je 3-daagse Pro trial begint zodra je email verifieert.'
-          : 'Account aangemaakt. Controleer je email voor verificatie.',
+        : emailFailed
+          ? 'Account aangemaakt, maar het versturen van de verificatiecode mislukte. Gebruik de "Nieuwe code" knop.'
+          : plan === 'pro'
+            ? 'Account aangemaakt! Je 3-daagse Pro trial begint zodra je email verifieert.'
+            : 'Account aangemaakt. Controleer je email voor verificatie.',
       requiresEmailVerification: !needsPasswordSetup,
       trialStarted: plan === 'pro',
+      emailFailed,
     };
 
     // Quiz users (needsPasswordSetup) get auto-logged in immediately

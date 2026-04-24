@@ -359,6 +359,10 @@ export function RegistrationClientComponent() {
       setShowCodeVerification(true);
       setIsSigningUp(false);
 
+      if (result.emailFailed) {
+        setVerificationError('Het versturen van de verificatiecode mislukte. Gebruik de "Stuur nieuwe code" knop hieronder.');
+      }
+
       // Note: Verification code is already sent by the registration API
       logger.log('✅ Verification code already sent by registration API');
       return;

@@ -1,12 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sql } from '@vercel/postgres';
+import { sql, db } from '@vercel/postgres';
 import { stripe, constructStripeEvent } from '@/lib/stripe';
 import type Stripe from 'stripe';
 import { logger } from '@/lib/logger';
 
+// Tier hierarchy for subscription_type sync: only promote, never demote.
+const SLUG_TIER: Record<string, number> = {
+  free: 0, kickstart: 1, transformatie: 2, vip: 3,
+  sociaal: 1, core: 2, pro: 3, premium: 4,
+};
+function slugTier(slug: string): number {
+  return SLUG_TIER[slug?.toLowerCase()] ?? 0;
+}
+
 export const dynamic = 'force-dynamic';
 
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
+
+if (!WEBHOOK_SECRET && process.env.NODE_ENV === 'production') {
+  // Crash at module load time so the deploy fails loudly rather than silently accepting unsigned events.
+  throw new Error('FATAL: STRIPE_WEBHOOK_SECRET is not set in production. Refusing to start.');
+}
 
 /**
  * POST /api/payment/webhook
@@ -129,25 +143,37 @@ async function fulfillSubscription(
 ) {
   const { order_id, user_id, package_type, billing_period, coupon_code } = meta;
   const userId = parseInt(user_id, 10);
-  const amountPaid = (session.amount_total ?? 0) / 100; // euros
+  const amountPaid = (session.amount_total ?? 0) / 100;
 
-  // IDEMPOTENCY: skip if already completed
-  const existing = await sql`
-    SELECT status FROM orders WHERE id = ${order_id} LIMIT 1
-  `;
-  if (existing.rows[0]?.status === 'completed') {
-    logger.log('ℹ️ Subscription order already completed, skipping');
-    return;
+  const client = await db.connect();
+  try {
+    await client.query('BEGIN');
+
+    // IDEMPOTENCY: lock the row so concurrent webhook replays wait here.
+    const existing = await client.query(
+      `SELECT status FROM orders WHERE id = $1 LIMIT 1 FOR UPDATE`,
+      [order_id]
+    );
+    if (existing.rows[0]?.status === 'completed') {
+      await client.query('ROLLBACK');
+      logger.log('ℹ️ Subscription order already completed, skipping');
+      return;
+    }
+
+    await client.query(
+      `UPDATE orders SET status = 'completed', paid_at = NOW(), updated_at = NOW() WHERE id = $1`,
+      [order_id]
+    );
+
+    await client.query('COMMIT');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
   }
 
-  // Update orders table
-  await sql`
-    UPDATE orders
-    SET status = 'completed', paid_at = NOW(), updated_at = NOW()
-    WHERE id = ${order_id}
-  `;
-
-  // Activate subscription
+  // Outside the transaction: subscription activation and side-effects
   const { createOrUpdateSubscription } = await import('@/lib/neon-subscription');
   await createOrUpdateSubscription(userId, {
     packageType: package_type as any,
@@ -158,7 +184,6 @@ async function fulfillSubscription(
     amount: amountPaid,
   });
 
-  // Increment coupon usage
   if (coupon_code) {
     await sql`
       UPDATE coupons
@@ -188,38 +213,61 @@ async function fulfillProgram(
   const userId = parseInt(user_id, 10);
   const programIdInt = parseInt(program_id, 10);
 
-  // IDEMPOTENCY: skip if already completed
-  const existing = await sql`
-    SELECT status FROM payment_transactions WHERE order_id = ${order_id} LIMIT 1
-  `;
-  if (existing.rows[0]?.status === 'completed') {
-    logger.log('ℹ️ Program transaction already completed, skipping');
-    return;
+  // Atomic: lock the row so concurrent webhook replays wait. If already completed, skip.
+  const client = await db.connect();
+  try {
+    await client.query('BEGIN');
+
+    const existing = await client.query(
+      `SELECT status FROM payment_transactions WHERE order_id = $1 LIMIT 1 FOR UPDATE`,
+      [order_id]
+    );
+    if (existing.rows[0]?.status === 'completed') {
+      await client.query('ROLLBACK');
+      logger.log('ℹ️ Program transaction already completed, skipping');
+      return;
+    }
+
+    await client.query(
+      `UPDATE payment_transactions SET status = 'completed', paid_at = NOW(), updated_at = NOW() WHERE order_id = $1`,
+      [order_id]
+    );
+
+    await client.query(
+      `INSERT INTO program_enrollments (user_id, program_id, order_id, status, enrolled_at)
+       VALUES ($1, $2, $3, 'active', NOW())
+       ON CONFLICT (user_id, program_id, order_id) DO NOTHING`,
+      [userId, programIdInt, order_id]
+    );
+
+    // Only promote subscription_type — never demote to a lower tier.
+    if (program_slug) {
+      await client.query(
+        `UPDATE users
+         SET subscription_type = $1, updated_at = NOW()
+         WHERE id = $2
+           AND (subscription_type IS NULL
+                OR subscription_type NOT IN (SELECT unnest($3::text[])))`,
+        [
+          program_slug,
+          userId,
+          // slugs that are HIGHER than the incoming one — don't overwrite those
+          Object.entries(SLUG_TIER)
+            .filter(([, tier]) => tier > slugTier(program_slug))
+            .map(([s]) => s),
+        ]
+      );
+    }
+
+    await client.query('COMMIT');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
   }
 
-  // Update payment_transactions
-  await sql`
-    UPDATE payment_transactions
-    SET status = 'completed', paid_at = NOW(), updated_at = NOW()
-    WHERE order_id = ${order_id}
-  `;
-
-  // Create enrollment (idempotent)
-  await sql`
-    INSERT INTO program_enrollments (user_id, program_id, order_id, status, enrolled_at)
-    VALUES (${userId}, ${programIdInt}, ${order_id}, 'active', NOW())
-    ON CONFLICT (user_id, program_id, order_id) DO NOTHING
-  `;
   logger.log('✅ Enrollment created');
-
-  // Keep subscription_type in sync so cursus access checks work
-  if (program_slug) {
-    await sql`
-      UPDATE users
-      SET subscription_type = ${program_slug}, updated_at = NOW()
-      WHERE id = ${userId}
-    `.catch((e: unknown) => console.error('⚠️ subscription_type sync failed (non-fatal):', e));
-  }
 
   // Increment coupon usage
   if (coupon_code) {

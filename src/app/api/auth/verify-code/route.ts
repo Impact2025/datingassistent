@@ -1,11 +1,8 @@
 import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyEmailWithCode } from '@/lib/email-verification';
-import { SignJWT } from 'jose';
+import { signToken, cookieConfig } from '@/lib/jwt-config';
 import { scheduleWelcomeEmail, scheduleProfileOptimizationReminder, scheduleWeeklyCheckin } from '@/lib/email-engagement';
-import { getJWTSecret } from '@/lib/jwt-secret';
-
-const JWT_SECRET = getJWTSecret();
 
 export async function POST(request: NextRequest) {
   try {
@@ -49,17 +46,14 @@ export async function POST(request: NextRequest) {
       // Non-blocking error
     }
 
-    // Create JWT token for the verified user
-    const jwtToken = await new SignJWT({
-      userId: user.id,
-      email: user.email
-    })
-      .setProtectedHeader({ alg: 'HS256' })
-      .setIssuedAt()
-      .setExpirationTime('7d')
-      .sign(JWT_SECRET);
+    // Create JWT token using the canonical signToken() so payload format is consistent
+    // across all auth paths (register, login, magic-link, verify-code).
+    const jwtToken = await signToken({
+      id: user.id,
+      email: user.email,
+      displayName: user.name,
+    });
 
-    // Set the JWT token as an httpOnly cookie for security
     const response = NextResponse.json({
       success: true,
       message: 'Email verified successfully',
@@ -69,16 +63,10 @@ export async function POST(request: NextRequest) {
         email: user.email,
         emailVerified: true,
       },
-      token: jwtToken, // Also return token for immediate use
+      token: jwtToken,
     });
 
-    response.cookies.set('datespark_auth_token', jwtToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/'
-    });
+    response.cookies.set(cookieConfig.name, jwtToken, cookieConfig.options);
 
     logger.log(`✅ Email verified for user ${user.id} (${user.email})`);
 

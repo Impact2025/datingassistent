@@ -24,7 +24,7 @@ interface UserContextType {
   error: string | null;
   login: (email: string, pass: string) => Promise<void>;
   logout: () => Promise<void>;
-  signup: (email: string, pass: string, name?: string) => Promise<{ user: User; requiresEmailVerification: boolean }>;
+  signup: (email: string, pass: string, name?: string) => Promise<{ user: User; requiresEmailVerification: boolean; emailFailed?: boolean }>;
   updateProfile: (profile: UserProfile) => void;
   isUpdatingProfile: boolean;
   refreshUser: () => Promise<void>;
@@ -348,7 +348,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [loadUserProfile]);
 
-  const signup = useCallback(async (email: string, password: string, name?: string, options?: { marketingConsent?: boolean }): Promise<{ user: User; requiresEmailVerification: boolean }> => {
+  const signup = useCallback(async (email: string, password: string, name?: string, options?: { marketingConsent?: boolean }): Promise<{ user: User; requiresEmailVerification: boolean; emailFailed?: boolean }> => {
     logger.log('📝 Attempting signup for:', email);
 
     try {
@@ -379,6 +379,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
             subscriptionType: data.user.subscriptionType ?? null,
           },
           requiresEmailVerification: true,
+          emailFailed: data.emailFailed ?? false,
         };
       }
 

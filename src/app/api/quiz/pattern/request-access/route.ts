@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { sql } from '@vercel/postgres';
 import { getClientIdentifier, rateLimitAuthEndpoint, createRateLimitHeaders } from '@/lib/rate-limit';
 import { generateVerificationToken } from '@/lib/email-verification';
+import { sendQuizMagicLinkEmail } from '@/lib/email-service';
 import { logger } from '@/lib/logger';
 
 /**
@@ -94,12 +95,11 @@ export async function POST(request: NextRequest) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
     const magicUrl = `${baseUrl}/api/auth/magic-login?token=${token}&next=${encodeURIComponent('/quiz/dating-patroon')}`;
 
-    // Send quiz-specific magic link email (non-blocking)
-    import('@/lib/email-service')
-      .then(({ sendQuizMagicLinkEmail }) =>
-        sendQuizMagicLinkEmail(normalizedEmail, userName, magicUrl)
-      )
-      .catch(e => console.warn('Quiz magic link email failed:', e));
+    // Send quiz-specific magic link email — awaited so Vercel doesn't kill the lambda early
+    const emailSent = await sendQuizMagicLinkEmail(normalizedEmail, userName, magicUrl);
+    if (!emailSent) {
+      console.error(`❌ Quiz magic link email failed for ${normalizedEmail}`);
+    }
 
     return NextResponse.json({ success: true });
 

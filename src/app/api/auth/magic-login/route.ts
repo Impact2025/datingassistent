@@ -3,6 +3,16 @@ import { sql } from '@vercel/postgres';
 import { signToken, cookieConfig } from '@/lib/jwt-config';
 import { logger } from '@/lib/logger';
 
+// Only allow relative internal paths — blocks open redirect abuse.
+function safeRedirect(next: string | null | undefined): string {
+  if (!next) return '/dashboard';
+  // Must be a relative path starting with / but not // (protocol-relative)
+  if (next.startsWith('/') && !next.startsWith('//') && !next.includes('://')) {
+    return next;
+  }
+  return '/dashboard';
+}
+
 /**
  * Magic-link login endpoint.
  *
@@ -19,7 +29,7 @@ import { logger } from '@/lib/logger';
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get('token');
-  const next = searchParams.get('next') || '/dashboard';
+  const next = safeRedirect(searchParams.get('next'));
 
   if (!token) {
     return NextResponse.redirect(new URL('/login?error=missing_token', request.url));
@@ -35,7 +45,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { token, next = '/dashboard' } = await request.json();
+    const body = await request.json();
+    const token = body.token;
+    const next = safeRedirect(body.next);
 
     if (!token) {
       return NextResponse.json({ error: 'Token ontbreekt.' }, { status: 400 });

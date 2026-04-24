@@ -4,6 +4,12 @@ import { getClientIdentifier, rateLimitAuthEndpoint, createRateLimitHeaders } fr
 import { generateVerificationToken } from '@/lib/email-verification';
 import { logger } from '@/lib/logger';
 
+function safeRedirect(next: string | null | undefined): string {
+  if (!next) return '/dashboard';
+  if (next.startsWith('/') && !next.startsWith('//') && !next.includes('://')) return next;
+  return '/dashboard';
+}
+
 export async function POST(request: NextRequest) {
   const identifier = getClientIdentifier(request);
   const rateLimit = await rateLimitAuthEndpoint(identifier);
@@ -16,7 +22,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { email, next } = await request.json();
+    const body = await request.json();
+    const { email } = body;
+    const next = safeRedirect(body.next);
 
     if (!email) {
       return NextResponse.json({ error: 'E-mailadres is vereist' }, { status: 400 });
