@@ -137,6 +137,11 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
   const apiResultReadyRef = useRef(false);
   const analyzingDoneRef = useRef(false);
 
+  // Prevent the magic-link auto-submit from re-triggering if it fails once.
+  // Without this, a 400 response resets quizState to 'email-gate', the dep
+  // changes, the effect fires again, and we get an infinite retry loop.
+  const autoSubmitAttemptedRef = useRef(false);
+
   // UTM tracking
   const [utmParams, setUtmParams] = useState<{
     source?: string;
@@ -173,12 +178,17 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
 
   // When a user returns via magic link they are now authenticated.
   // Auto-advance past the email gate using the data they entered before leaving.
+  // The ref guard prevents an infinite loop: if handleAccountSubmit fails and
+  // resets quizState back to 'email-gate', this effect must NOT re-trigger.
   useEffect(() => {
     if (!user || !hasRestoredProgress) return;
     if (quizState !== 'email-gate') return;
+    if (autoSubmitAttemptedRef.current) return;
 
     const answeredCount = Object.keys(answers).length;
     if (answeredCount < TOTAL_QUESTIONS) return;
+
+    autoSubmitAttemptedRef.current = true;
 
     // Restore form data that was saved to localStorage before the magic link redirect
     const storedName    = (typeof window !== 'undefined' && localStorage.getItem('quiz_user_name'))    || user.name  || '';
