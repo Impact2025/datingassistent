@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       logger.log(`Quiz: new user ${userId} created for ${normalizedEmail}`);
     } else {
       userId = existingUser.rows[0].id;
-      userName = existingUser.rows[0].name;
+      userName = normalizedName; // Use the name they entered now
       logger.log(`Quiz: existing user ${userId} requesting access`);
     }
 

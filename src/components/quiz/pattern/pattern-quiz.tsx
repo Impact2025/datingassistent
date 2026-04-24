@@ -200,10 +200,13 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
 
   // When a logged-in user arrives (e.g. via magic link on a different device)
   // with no localStorage answers, fetch their saved DB result directly.
+  // Also handles the case where localStorage restored quizState='email-gate' but
+  // answers are incomplete — auto-advance can't fire, so we fall back to the DB.
   useEffect(() => {
     if (!user || !hasRestoredProgress) return;
-    if (quizState !== 'landing') return;
-    if (Object.keys(answers).length > 0) return;
+    const atLanding = quizState === 'landing';
+    const stuckAtGate = quizState === 'email-gate' && Object.keys(answers).length < TOTAL_QUESTIONS;
+    if (!atLanding && !stuckAtGate) return;
 
     fetch('/api/quiz/pattern/my-result', { credentials: 'include' })
       .then((res) => res.json())
