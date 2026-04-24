@@ -268,56 +268,51 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
   // Show Transformatie when in transformatie mode - premium cursus ervaring
   if (viewMode === 'transformatie' && hasTransformatie) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white p-4 lg:p-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Quick navigation header */}
-          <div className="flex items-center justify-between mb-6">
+      <div className="space-y-6">
+        {/* Quick navigation header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-md">
+              <span className="text-white font-bold text-lg">T</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Transformatie</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">12 modules • DESIGN → ACTION → SURRENDER</p>
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setViewMode('journey')}
+            className="border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+          >
+            ← Overzicht
+          </Button>
+        </div>
+
+        <TransformatieDashboardView onBack={() => setViewMode('journey')} />
+
+        {/* Extra cursussen bij abonnement */}
+        <div className="rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm p-5">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-coral-500 hover:bg-coral-600 flex items-center justify-center shadow-md">
-                <span className="text-white font-bold text-lg">T</span>
+              <div className="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center">
+                <BookOpen className="w-4 h-4 text-purple-600" />
               </div>
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">Transformatie</h1>
-                <p className="text-sm text-gray-500">12 modules • DESIGN → ACTION → SURRENDER</p>
+                <p className="font-semibold text-sm text-gray-900 dark:text-white">Extra cursussen</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Inclusief bij jouw Transformatie abonnement</p>
               </div>
             </div>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setViewMode('journey')}
-              className="border-gray-200 text-gray-700 hover:bg-gray-50"
+              onClick={() => onTabChange?.('cursussen')}
+              className="border-gray-200 text-gray-700 hover:bg-gray-50 text-xs"
             >
-              ← Overzicht
+              Bekijk cursussen
+              <ArrowRight className="w-3 h-3 ml-1" />
             </Button>
-          </div>
-
-          {/* TransformatieDashboardView embedded */}
-          <div className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 shadow-xl border border-white/20">
-            <TransformatieDashboardView onBack={() => setViewMode('journey')} />
-          </div>
-
-          {/* Extra cursussen bij abonnement */}
-          <div className="mt-6 rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center">
-                  <BookOpen className="w-4 h-4 text-purple-600" />
-                </div>
-                <div>
-                  <p className="font-semibold text-sm text-gray-900">Extra cursussen</p>
-                  <p className="text-xs text-gray-500">Inclusief bij jouw Transformatie abonnement</p>
-                </div>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onTabChange?.('cursussen')}
-                className="border-gray-200 text-gray-700 hover:bg-gray-50 text-xs"
-              >
-                Bekijk cursussen
-                <ArrowRight className="w-3 h-3 ml-1" />
-              </Button>
-            </div>
           </div>
         </div>
       </div>
@@ -327,10 +322,10 @@ export const EnhancedPadTab = memo(function EnhancedPadTab({ onTabChange, userId
   // Show Kickstart when in kickstart mode - clean minimalist design within dashboard
   if (viewMode === 'kickstart' && hasKickstart && userId) {
     return (
-      <div>
+      <div className="space-y-6">
         <KickstartDashboard onBack={() => setViewMode('journey')} />
         {/* Extra cursussen bij abonnement */}
-        <div className="mx-4 mb-6 rounded-2xl bg-white border border-gray-100 shadow-sm p-5">
+        <div className="rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center">
