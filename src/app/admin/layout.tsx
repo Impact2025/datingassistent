@@ -177,8 +177,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   const handleLogout = () => {
-    // Implement logout logic
-    router.push('/login');
+    router.push('/logout');
   };
 
   // Show loading spinner while checking authentication or admin status
