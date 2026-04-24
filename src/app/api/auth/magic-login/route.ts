@@ -6,15 +6,15 @@ import { logger } from '@/lib/logger';
 /**
  * Magic-link login endpoint.
  *
- * Quiz users who registered with needsPasswordSetup=true get a one-time
- * magic-login URL in their account-setup email. Clicking it here:
- *   1. Validates the stored verification_token
- *   2. Issues a fresh JWT (cookie + Location header for client localStorage)
- *   3. Clears the token so it can't be reused
- *   4. Redirects to ?next= or /dashboard
+ * GET: Email/scanner-safe redirect to the confirmation page. This prevents
+ * security scanners (Avira, Outlook Safe Links, etc.) from consuming the
+ * one-time token by pre-fetching the URL from the email.
  *
- * The token is stored in the `verification_token` column which is unused for
- * already-verified (quiz) users, so we can safely repurpose it here.
+ * POST: Called by the confirmation page after the user clicks "Log in".
+ *   1. Validates the stored verification_token
+ *   2. Issues a fresh JWT (httpOnly cookie)
+ *   3. Clears the token so it can't be reused
+ *   4. Returns { success: true } — client redirects to ?next=
  */
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -25,7 +25,22 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL('/login?error=missing_token', request.url));
   }
 
+  // Redirect to the confirmation page — no token consumption here.
+  // Scanners follow this redirect and get an HTML page; only real user clicks proceed.
+  const confirmUrl = new URL('/magic-login', request.url);
+  confirmUrl.searchParams.set('token', token);
+  confirmUrl.searchParams.set('next', next);
+  return NextResponse.redirect(confirmUrl);
+}
+
+export async function POST(request: NextRequest) {
   try {
+    const { token, next = '/dashboard' } = await request.json();
+
+    if (!token) {
+      return NextResponse.json({ error: 'Token ontbreekt.' }, { status: 400 });
+    }
+
     const result = await sql`
       SELECT id, name, email, verification_token, verification_expires_at, email_verified
       FROM users
@@ -33,31 +48,27 @@ export async function GET(request: NextRequest) {
     `;
 
     if (result.rows.length === 0) {
-      logger.log(`Magic-login: token not found`);
-      return NextResponse.redirect(new URL('/login?error=invalid_token', request.url));
+      logger.log(`Magic-login POST: token not found`);
+      return NextResponse.json({ error: 'Deze inloglink is ongeldig. Vraag een nieuwe aan.' }, { status: 400 });
     }
 
     const user = result.rows[0];
 
     // Check expiry — parse as UTC to avoid local-timezone offset bugs.
-    // PostgreSQL TIMESTAMP (without TZ) returns strings like "2026-04-22 09:41:00"
-    // which JS parses as LOCAL time instead of UTC, causing false expiry in UTC+x zones.
     const rawExpiry = user.verification_expires_at;
     let expiresAt: Date;
     if (rawExpiry instanceof Date) {
       expiresAt = rawExpiry;
     } else {
       const s = String(rawExpiry);
-      const hasTimezone = s.endsWith('Z') || /[+\-]\d{2}:?\d{2}$/.test(s);
+      const hasTimezone = s.endsWith('Z') || /[+-]\d{2}:?\d{2}$/.test(s);
       expiresAt = new Date(hasTimezone ? s.replace(' ', 'T') : s.replace(' ', 'T') + 'Z');
     }
     if (expiresAt < new Date()) {
-      logger.log(`Magic-login: token expired for user ${user.id}`);
-      return NextResponse.redirect(new URL('/login?error=expired_token', request.url));
+      logger.log(`Magic-login POST: token expired for user ${user.id}`);
+      return NextResponse.json({ error: 'Deze inloglink is verlopen. Vraag een nieuwe aan.' }, { status: 400 });
     }
 
-    // Clear token so it can't be reused, and mark email as verified.
-    // This covers quiz users who registered but hadn't verified yet.
     await sql`
       UPDATE users
       SET verification_token      = NULL,
@@ -66,23 +77,20 @@ export async function GET(request: NextRequest) {
       WHERE id = ${user.id}
     `;
 
-    // Issue JWT
     const jwtToken = await signToken({
       id: user.id,
       email: user.email,
       displayName: user.name,
     });
 
-    logger.log(`Magic-login: issued JWT for user ${user.id}`);
+    logger.log(`Magic-login POST: issued JWT for user ${user.id}`);
 
-    // Set the JWT as an httpOnly cookie — UserProvider syncs it to localStorage on mount.
-    const redirectUrl = new URL(next, request.url);
-    const response = NextResponse.redirect(redirectUrl);
+    const response = NextResponse.json({ success: true });
     response.cookies.set(cookieConfig.name, jwtToken, cookieConfig.options);
     return response;
 
   } catch (error) {
-    console.error('Magic-login error:', error);
-    return NextResponse.redirect(new URL('/login?error=server_error', request.url));
+    console.error('Magic-login POST error:', error);
+    return NextResponse.json({ error: 'Er is iets misgegaan. Probeer het opnieuw.' }, { status: 500 });
   }
 }
