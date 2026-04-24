@@ -13,7 +13,7 @@ import { useTimeoutLoading } from '@/hooks/use-timeout-loading';
 import { sql } from '@vercel/postgres';
 import { logger } from '@/lib/logger';
 
-const ADMIN_EMAILS = ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'];
+const ADMIN_EMAILS = ['info@datingassistent.nl', 'v.munster@weareimpact.nl'];
 
 interface Review {
   id: number;

@@ -139,10 +139,10 @@ function Module3ErrorFallback({ error, resetError }: Module3ErrorFallbackProps) 
             <p>
               Neem contact op met onze support via{' '}
               <a
-                href="mailto:support@datingassistent.nl"
+                href="mailto:info@datingassistent.nl"
                 className="text-primary hover:underline"
               >
-                support@datingassistent.nl
+                info@datingassistent.nl
               </a>
             </p>
           </div>

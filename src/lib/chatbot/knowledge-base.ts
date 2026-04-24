@@ -60,7 +60,7 @@ export const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
     intent: 'support',
     question: 'Ik kan niet inloggen',
     answer:
-      'Reset eerst je wachtwoord via https://datingassistent.nl/forgot-password. Blijft het probleem? Kies “Praat met medewerker” of mail support@datingassistent.nl.',
+      'Reset eerst je wachtwoord via https://datingassistent.nl/forgot-password. Blijft het probleem? Kies “Praat met medewerker” of mail info@datingassistent.nl.',
     quickReplies: [
       { label: 'Wachtwoord resetten', payload: 'support-reset-password' },
       { label: 'Contact support', payload: 'support-contact' },
@@ -143,7 +143,7 @@ export const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
     intent: 'support',
     question: 'Contact met support',
     answer:
-      'Je bereikt ons via WhatsApp, support@datingassistent.nl of telefonisch via 06 14470977 (ma-vr 09:00-17:00). Voor urgentie kun je "Praat met medewerker" kiezen.',
+      'Je bereikt ons via WhatsApp, info@datingassistent.nl of telefonisch via 06 14470977 (ma-vr 09:00-17:00). Voor urgentie kun je "Praat met medewerker" kiezen.',
     tags: ['support', 'contact'],
   },
   {

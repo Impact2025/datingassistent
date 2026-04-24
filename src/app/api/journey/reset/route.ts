@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const { userId } = await request.json();
 
     // Only allow resetting journey for the authenticated user or admin
-    if (user.id !== parseInt(userId) && !['v_mun@hotmail.com', 'v.munster@weareimpact.nl'].includes(user.email)) {
+    if (user.id !== parseInt(userId) && !['info@datingassistent.nl', 'v.munster@weareimpact.nl'].includes(user.email)) {
       return NextResponse.json(
         { error: 'Unauthorized to reset this journey' },
         { status: 403 }

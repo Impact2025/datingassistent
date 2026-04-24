@@ -112,8 +112,8 @@ export default function ProgramEnrollmentEmail({
 
         <Text style={styles.paragraph}>
           Vragen? We staan voor je klaar! Mail ons op{' '}
-          <a href="mailto:support@datingassistent.nl" style={styles.link}>
-            support@datingassistent.nl
+          <a href="mailto:info@datingassistent.nl" style={styles.link}>
+            info@datingassistent.nl
           </a>
         </Text>
       </Section>

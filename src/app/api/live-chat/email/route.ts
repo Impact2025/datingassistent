@@ -276,7 +276,7 @@ async function sendEmailReply(
   // In production, integrate with your email service (SendGrid, AWS SES, etc.)
   logger.log(`📤 Sending email reply to ${to}`);
   logger.log(`Subject: Re: ${subject}`);
-  logger.log(`From: ${agentName} <support@datingsassistent.nl>`);
+  logger.log(`From: ${agentName} <info@datingassistent.nl>`);
   logger.log(`Message: ${message}`);
 
   // Store agent's reply as message
@@ -306,7 +306,7 @@ async function sendEmailReply(
 
   const msg = {
     to: to,
-    from: 'support@datingsassistent.nl',
+    from: 'info@datingassistent.nl',
     subject: `Re: ${subject}`,
     text: message,
     html: message.replace(/\n/g, '<br>'),

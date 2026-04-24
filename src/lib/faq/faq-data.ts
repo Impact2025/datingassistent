@@ -180,14 +180,14 @@ export const FAQ_DATA: FAQItem[] = [
   {
     id: 'inlog-problemen',
     question: 'Wat als ik problemen heb met inloggen?',
-    answer: 'Controleer je internetverbinding en probeer een andere browser of incognito modus. Als dat niet helpt, gebruik de wachtwoord reset functie of neem contact op met support via support@datingassistent.nl.',
+    answer: 'Controleer je internetverbinding en probeer een andere browser of incognito modus. Als dat niet helpt, gebruik de wachtwoord reset functie of neem contact op met support via info@datingassistent.nl.',
     category: 'technisch',
     order: 4,
   },
   {
     id: 'betaling-mislukt',
     question: 'Mijn betaling is mislukt, wat nu?',
-    answer: 'Controleer je betaalmethode en probeer opnieuw via het Stripe-betaalscherm. Als het probleem blijft bestaan, neem contact op met support via support@datingassistent.nl.',
+    answer: 'Controleer je betaalmethode en probeer opnieuw via het Stripe-betaalscherm. Als het probleem blijft bestaan, neem contact op met support via info@datingassistent.nl.',
     category: 'technisch',
     order: 5,
   },
@@ -253,7 +253,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     id: 'contact-support',
     question: 'Hoe kan ik contact opnemen met support?',
-    answer: 'Je kunt ons bereiken via de AI-chat (Iris) in de app, per e-mail via support@datingassistent.nl, of telefonisch op 06 14470977 (maandag t/m vrijdag 09:00–17:00).',
+    answer: 'Je kunt ons bereiken via de AI-chat (Iris) in de app, per e-mail via info@datingassistent.nl, of telefonisch op 06 14470977 (maandag t/m vrijdag 09:00–17:00).',
     category: 'account',
     order: 3,
   },
@@ -292,7 +292,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     id: 'bedrijven',
     question: 'Kunnen bedrijven DatingAssistent gebruiken?',
-    answer: 'Neem contact op via support@datingassistent.nl voor zakelijke mogelijkheden.',
+    answer: 'Neem contact op via info@datingassistent.nl voor zakelijke mogelijkheden.',
     category: 'doelgroepen',
     order: 5,
   },

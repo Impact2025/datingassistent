@@ -317,9 +317,9 @@ export default function FAQPage() {
                 Ons support team staat voor je klaar
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-3">
-                <Link href="mailto:support@datingassistent.nl">
+                <Link href="mailto:info@datingassistent.nl">
                   <Button variant="outline" className="rounded-full">
-                    support@datingassistent.nl
+                    info@datingassistent.nl
                   </Button>
                 </Link>
                 <Link href="/#contact">

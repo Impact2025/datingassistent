@@ -879,8 +879,8 @@ function DashboardPageContent() {
                 </Button>
                 <p className="text-xs text-gray-400">
                   Vragen? Neem contact op via{' '}
-                  <a href="mailto:support@datingassistent.nl" className="underline">
-                    support@datingassistent.nl
+                  <a href="mailto:info@datingassistent.nl" className="underline">
+                    info@datingassistent.nl
                   </a>
                 </p>
               </div>

@@ -241,7 +241,7 @@ function PaymentSuccessContent() {
                 </Button>
               </div>
               <p className="text-xs text-gray-500">
-                Hulp nodig? Mail <a href="mailto:support@datingassistent.nl" className="text-gray-700 hover:underline">support@datingassistent.nl</a>
+                Hulp nodig? Mail <a href="mailto:info@datingassistent.nl" className="text-gray-700 hover:underline">info@datingassistent.nl</a>
               </p>
             </CardContent>
           </Card>
@@ -386,7 +386,7 @@ function PaymentSuccessContent() {
 
             {/* Support */}
             <p className="text-xs text-gray-500">
-              Vragen? Mail ons op <a href="mailto:support@datingassistent.nl" className="text-gray-700 hover:underline">support@datingassistent.nl</a>
+              Vragen? Mail ons op <a href="mailto:info@datingassistent.nl" className="text-gray-700 hover:underline">info@datingassistent.nl</a>
             </p>
           </CardContent>
         </Card>

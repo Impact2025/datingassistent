@@ -260,7 +260,7 @@ export function SmartContactForm({
             <div>
               <p className="font-medium text-red-800">Er ging iets mis</p>
               <p className="text-sm text-red-600">
-                Probeer het opnieuw of neem contact op via support@datingassistent.nl
+                Probeer het opnieuw of neem contact op via info@datingassistent.nl
               </p>
             </div>
           </motion.div>

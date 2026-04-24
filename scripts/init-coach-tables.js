@@ -122,8 +122,7 @@ async function initCoachTables() {
     // Insert some sample data for testing
     console.log('📝 Adding sample data...');
 
-    // Get admin user (assuming v_mun@hotmail.com is admin)
-    const adminUser = await sql`SELECT id FROM users WHERE email = 'v_mun@hotmail.com' LIMIT 1`;
+    const adminUser = await sql`SELECT id FROM users WHERE email = 'info@datingassistent.nl' LIMIT 1`;
 
     if (adminUser.rows.length > 0) {
       const coachId = adminUser.rows[0].id;

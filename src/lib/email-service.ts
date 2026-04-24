@@ -27,7 +27,7 @@ const resend = process.env.RESEND_API_KEY
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@datingassistent.nl';
-const SUPPORT_EMAIL = 'support@datingassistent.nl';
+const SUPPORT_EMAIL = 'info@datingassistent.nl';
 const BILLING_EMAIL = 'billing@datingassistent.nl';
 
 interface EmailData {

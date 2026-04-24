@@ -111,7 +111,7 @@ Met vriendelijke groet,
 Het DatingAssistent Team
 
 ---
-Vragen? support@datingassistent.nl
+Vragen? info@datingassistent.nl
 Privacy: https://datingassistent.nl/privacy
 Voorwaarden: https://datingassistent.nl/algemene-voorwaarden
     `.trim();
@@ -409,7 +409,7 @@ Deze code verloopt over 60 minuten. Deel deze code niet met anderen.
 
 Niet aangevraagd? Negeer deze email.
 
-Heb je vragen? support@datingassistent.nl
+Heb je vragen? info@datingassistent.nl
 
 ---
 DatingAssistent - De dating coach die altijd beschikbaar is

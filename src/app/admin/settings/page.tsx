@@ -197,7 +197,7 @@ export default function AdminSettings() {
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Support Email</label>
-              <Input defaultValue="support@datingassistent.nl" disabled />
+              <Input defaultValue="info@datingassistent.nl" disabled />
             </div>
           </div>
 

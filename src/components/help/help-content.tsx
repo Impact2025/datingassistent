@@ -46,7 +46,7 @@ export default function HelpContent() {
       availability: "24/7",
       responseTime: "< 24 uur",
       action: "E-mail sturen",
-      href: "mailto:support@datingassistent.nl",
+      href: "mailto:info@datingassistent.nl",
       color: "bg-green-50 border-green-200"
     },
     {
@@ -432,7 +432,7 @@ export default function HelpContent() {
                       Voor niet-urgente vragen en gedetailleerde hulp.
                     </p>
                     <div className="space-y-2">
-                      <p className="font-medium">support@datingassistent.nl</p>
+                      <p className="font-medium">info@datingassistent.nl</p>
                       <p className="text-sm text-gray-500">Response binnen 24 uur</p>
                     </div>
                   </CardContent>

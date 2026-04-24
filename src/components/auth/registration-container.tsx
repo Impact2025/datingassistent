@@ -69,7 +69,7 @@ export function RegistrationContainer() {
   // Redirect admin users to admin dashboard
   useEffect(() => {
     if (user) {
-      const isAdminUser = user.email && ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'].includes(user.email);
+      const isAdminUser = user.email && ['info@datingassistent.nl', 'v.munster@weareimpact.nl'].includes(user.email);
       if (isAdminUser) {
         logger.log('➡️ Admin user registered, redirecting to admin dashboard');
         window.location.href = '/admin';
@@ -87,7 +87,7 @@ export function RegistrationContainer() {
       logger.log('🔵 User created:', newUser?.uid);
 
       // Check if this is an admin user
-      const isAdminUser = newUser?.email && ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'].includes(newUser.email);
+      const isAdminUser = newUser?.email && ['info@datingassistent.nl', 'v.munster@weareimpact.nl'].includes(newUser.email);
       
       if (isAdminUser) {
         // For admin users, just redirect to admin dashboard

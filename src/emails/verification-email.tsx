@@ -136,8 +136,8 @@ export default function VerificationEmail({
         <Text style={styles.paragraph}>
           Heb je geen account aangemaakt? Negeer dan deze email of neem
           contact op met{' '}
-          <a href="mailto:support@datingassistent.nl" style={styles.link}>
-            support@datingassistent.nl
+          <a href="mailto:info@datingassistent.nl" style={styles.link}>
+            info@datingassistent.nl
           </a>.
         </Text>
       </Section>

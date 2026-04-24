@@ -130,8 +130,8 @@ export default function WelcomeEmail({
 
         <Text style={{ ...styles.paragraph, marginTop: '24px' }}>
           Heb je vragen? Reply gewoon op deze email of mail naar{' '}
-          <a href="mailto:support@datingassistent.nl" style={styles.link}>
-            support@datingassistent.nl
+          <a href="mailto:info@datingassistent.nl" style={styles.link}>
+            info@datingassistent.nl
           </a>
           . We helpen je graag!
         </Text>

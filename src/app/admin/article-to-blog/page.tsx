@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const ADMIN_EMAILS = ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'];
+const ADMIN_EMAILS = ['info@datingassistent.nl', 'v.munster@weareimpact.nl'];
 
 export default function ArticleToBlog() {
   const { user, loading } = useUser();

@@ -105,8 +105,8 @@ export default function SubscriptionCancelledEmail({
 
         <Text style={{ ...styles.paragraph, fontSize: '14px', color: '#9ca3af', marginTop: '24px' }}>
           Heb je vragen over je opzegging? Neem contact op met{' '}
-          <a href="mailto:support@datingassistent.nl" style={styles.link}>
-            support@datingassistent.nl
+          <a href="mailto:info@datingassistent.nl" style={styles.link}>
+            info@datingassistent.nl
           </a>
         </Text>
       </Section>

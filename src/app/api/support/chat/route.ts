@@ -222,7 +222,7 @@ export async function POST(request: NextRequest) {
 
     // Return a friendly fallback response
     return NextResponse.json({
-      response: 'Er ging iets mis aan mijn kant. Mijn excuses! Je kunt ook direct contact opnemen via support@datingassistent.nl of bel ons op 020-1234567.',
+      response: 'Er ging iets mis aan mijn kant. Mijn excuses! Je kunt ook direct contact opnemen via info@datingassistent.nl of bel ons op 020-1234567.',
       category: 'general',
       sentiment: 'neutraal',
       escalationNeeded: true,

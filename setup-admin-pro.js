@@ -58,7 +58,7 @@ async function setupAdmin() {
 
     // Step 3: Ensure other admin emails also have admin role
     console.log('3️⃣  Ensuring other admin users have correct role...');
-    const otherAdmins = ['v_mun@hotmail.com', 'kak2@365ways.nl'];
+    const otherAdmins = ['info@datingassistent.nl', 'kak2@365ways.nl'];
 
     for (const email of otherAdmins) {
       const result = await sql`

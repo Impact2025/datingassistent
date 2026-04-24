@@ -138,7 +138,7 @@ const bcrypt = require('bcryptjs');
 async function createAdminAgent() {
   try {
     // Check if admin already exists
-    const existing = await sql\`SELECT id FROM chat_agents WHERE email = 'admin@datingsassistent.nl'\`;
+    const existing = await sql\`SELECT id FROM chat_agents WHERE email = 'admin@datingassistent.nl'\`;
 
     if (existing.rows.length > 0) {
       console.log('✅ Admin agent already exists');
@@ -153,13 +153,13 @@ async function createAdminAgent() {
         name, email, password_hash, role, department, is_available,
         max_concurrent_chats, avg_response_time, created_at, updated_at
       ) VALUES (
-        'System Administrator', 'admin@datingsassistent.nl', \${hashedPassword},
+        'System Administrator', 'admin@datingassistent.nl', \${hashedPassword},
         'supervisor', 'management', true, 10, 15, NOW(), NOW()
       )
     \`;
 
     console.log('✅ Admin agent created');
-    console.log('📧 Email: admin@datingsassistent.nl');
+    console.log('📧 Email: admin@datingassistent.nl');
     console.log('🔑 Password: ChangeThisPassword123!');
     console.log('⚠️  Please change the password after first login!');
 
@@ -216,7 +216,7 @@ if curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000" | grep -q "200
     print_success ""
     print_success "📋 Next Steps:"
     echo "  1. Visit http://localhost:3000/admin/login"
-    echo "  2. Login with: admin@datingsassistent.nl / ChangeThisPassword123!"
+    echo "  2. Login with: admin@datingassistent.nl / ChangeThisPassword123!"
     echo "  3. Change the default password immediately"
     echo "  4. Configure WhatsApp Business API (see LIVE_CHAT_DEPLOYMENT_GUIDE.md)"
     echo "  5. Set up email integration (SendGrid/Mailgun)"

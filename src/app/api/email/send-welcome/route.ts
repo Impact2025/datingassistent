@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
           <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
             <p style="color: #666; font-size: 14px;">
               Heb je vragen? Neem contact op met onze support via 
-              <a href="mailto:support@datingassistent.nl" style="color: #FF7B54;">support@datingassistent.nl</a>
+              <a href="mailto:info@datingassistent.nl" style="color: #FF7B54;">info@datingassistent.nl</a>
             </p>
             <p style="color: #999; font-size: 12px; margin-top: 20px;">
               © ${new Date().getFullYear()} DatingAssistent. Alle rechten voorbehouden.

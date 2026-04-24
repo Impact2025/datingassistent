@@ -103,7 +103,7 @@ export default function ContactForm() {
       description: "Stuur ons een bericht voor gedetailleerde hulp",
       availability: "Response < 24 uur",
       action: "E-mail sturen",
-      href: "mailto:support@datingassistent.nl",
+      href: "mailto:info@datingassistent.nl",
       color: "bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800"
     }
   ];

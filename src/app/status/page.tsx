@@ -257,7 +257,7 @@ export default function StatusPage() {
                     <Link href="/help">Help Center</Link>
                   </Button>
                   <Button variant="outline" asChild>
-                    <Link href="mailto:support@datingassistent.nl">E-mail Support</Link>
+                    <Link href="mailto:info@datingassistent.nl">E-mail Support</Link>
                   </Button>
                 </div>
               </CardContent>

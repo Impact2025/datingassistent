@@ -207,7 +207,7 @@ export default function TermsPage() {
                 <p>Heintje Hoeksteeg 11a, 1012 GR Amsterdam</p>
                 <p>KVK: 70285888 &mdash; BTW: NL858236369B01</p>
                 <p>
-                  E-mail: <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@DatingAssistent.nl</Link> &mdash; Tel: <Link href="tel:+31614470977" className="text-primary underline">06 14470977</Link>
+                  E-mail: <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@datingassistent.nl</Link> &mdash; Tel: <Link href="tel:+31614470977" className="text-primary underline">06 14470977</Link>
                 </p>
                 <p>
                   Website: <Link href="https://www.datingassistent.nl" className="text-primary underline">www.DatingAssistent.nl</Link>

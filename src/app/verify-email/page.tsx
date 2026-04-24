@@ -148,8 +148,8 @@ function VerifyEmailContent() {
           </div>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-4">
             Hulp nodig? Neem contact op met{' '}
-            <a href="mailto:support@datingassistent.nl" className="text-blue-500 hover:underline">
-              support@datingassistent.nl
+            <a href="mailto:info@datingassistent.nl" className="text-blue-500 hover:underline">
+              info@datingassistent.nl
             </a>
           </p>
         </div>

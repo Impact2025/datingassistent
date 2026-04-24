@@ -12,7 +12,7 @@ async function verifyAdminAccess(request: NextRequest): Promise<boolean> {
     const token = authHeader.substring(7);
     const user = await verifyToken(token);
 
-    return user?.email ? ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'].includes(user.email) : false;
+    return user?.email ? ['info@datingassistent.nl', 'v.munster@weareimpact.nl'].includes(user.email) : false;
   } catch (error) {
     return false;
   }

@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     const { payload } = await jwtVerify(token, JWT_SECRET);
 
     // Check if user is admin
-    const adminEmails = ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'];
+    const adminEmails = ['info@datingassistent.nl', 'v.munster@weareimpact.nl'];
     if (!adminEmails.includes(payload.email as string)) {
       return NextResponse.json(
         { error: 'Admin access required' },

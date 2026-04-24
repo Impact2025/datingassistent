@@ -277,7 +277,7 @@ Nooit meer "Hoi, hoe gaat het?" - laat de AI unieke openers genereren.
 
 Neem contact op met support:
 - Live chat (direct)
-- Email: support@datingassistent.nl
+- Email: info@datingassistent.nl
 - We lossen het binnen 24 uur op
 
 ## Geld-terug garantie

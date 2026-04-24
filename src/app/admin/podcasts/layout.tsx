@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { LoadingSpinner } from '@/components/shared/loading-spinner';
 
-const ADMIN_EMAILS = ['v_mun@hotmail.com', 'v.munster@weareimpact.nl'];
+const ADMIN_EMAILS = ['info@datingassistent.nl', 'v.munster@weareimpact.nl'];
 
 export default function PodcastsLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useUser();

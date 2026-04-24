@@ -54,7 +54,7 @@ export default function PrivacyPage() {
                   <p>Adres: Heintje Hoeksteeg 11a, 1012 GR Amsterdam</p>
                   <p>KVK: 70285888</p>
                   <p>BTW: NL858236369B01</p>
-                  <p>E-mail: <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@DatingAssistent.nl</Link></p>
+                  <p>E-mail: <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@datingassistent.nl</Link></p>
                   <p>Telefoon: <Link href="tel:+31614470977" className="text-primary underline">06 14470977</Link></p>
                   <p>Website: <Link href="https://www.datingassistent.nl" className="text-primary underline">www.DatingAssistent.nl</Link></p>
                 </div>
@@ -269,7 +269,7 @@ export default function PrivacyPage() {
                   <li>Gegevensoverdraagbaarheid.</li>
                 </ul>
                 <p className="text-sm sm:text-base leading-relaxed text-foreground/80">
-                  Verzoeken kunnen worden gericht aan <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@DatingAssistent.nl</Link>. DatingAssistent reageert binnen 30 dagen.
+                  Verzoeken kunnen worden gericht aan <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@datingassistent.nl</Link>. DatingAssistent reageert binnen 30 dagen.
                 </p>
               </div>
 
@@ -310,7 +310,7 @@ export default function PrivacyPage() {
                 <p><strong>Contact:</strong></p>
                 <p>DatingAssistent (WeAreImpact)</p>
                 <p>Heintje Hoeksteeg 11a, 1012 GR Amsterdam</p>
-                <p>E-mail: <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@DatingAssistent.nl</Link> &mdash; Tel: <Link href="tel:+31614470977" className="text-primary underline">06 14470977</Link></p>
+                <p>E-mail: <Link href="mailto:info@datingassistent.nl" className="text-primary underline">info@datingassistent.nl</Link> &mdash; Tel: <Link href="tel:+31614470977" className="text-primary underline">06 14470977</Link></p>
               </div>
             </div>
           </section>

@@ -34,7 +34,7 @@ export class EmailCoachService {
         to: userEmail,
         subject,
         html: htmlContent,
-        from: 'coach@datingsassistent.nl'
+        from: 'coach@datingassistent.nl'
       });
 
       logger.log(`✅ Monthly report sent to ${userName} (${userEmail})`);
@@ -63,7 +63,7 @@ export class EmailCoachService {
         to: userEmail,
         subject,
         html: htmlContent,
-        from: 'coach@datingsassistent.nl'
+        from: 'coach@datingassistent.nl'
       });
 
       logger.log(`✅ Weekly review sent to ${userName} (${userEmail})`);
@@ -94,7 +94,7 @@ export class EmailCoachService {
         to: coachEmail,
         subject,
         html: htmlContent,
-        from: 'system@datingsassistent.nl'
+        from: 'system@datingassistent.nl'
       });
 
       logger.log(`✅ Coach notification sent to ${coachName} (${coachEmail})`);
@@ -278,7 +278,7 @@ export class EmailCoachService {
             </div>
 
             <div style="text-align: center; margin: 30px 0;">
-              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingsassistent.nl'}/dashboard" class="button">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/dashboard" class="button">
                 📱 Naar Mijn Dashboard
               </a>
             </div>
@@ -371,7 +371,7 @@ export class EmailCoachService {
             </div>
 
             <div style="text-align: center; margin: 30px 0;">
-              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingsassistent.nl'}/dashboard" class="button">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/dashboard" class="button">
                 📱 Naar Mijn Dashboard
               </a>
             </div>
@@ -442,7 +442,7 @@ export class EmailCoachService {
             `).join('')}
 
             <div style="text-align: center; margin: 30px 0;">
-              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingsassistent.nl'}/admin/coach" class="button">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/admin/coach" class="button">
                 👁️ Naar Coach Dashboard
               </a>
             </div>
@@ -725,7 +725,7 @@ export class EmailCoachService {
       to: coachEmail,
       subject,
       html: htmlContent,
-      from: 'system@datingsassistent.nl'
+      from: 'system@datingassistent.nl'
     });
 
     logger.log(`✅ Consolidated monthly reports sent to coach (${coachEmail})`);
@@ -746,7 +746,7 @@ export class EmailCoachService {
       to: coachEmail,
       subject,
       html: htmlContent,
-      from: 'system@datingsassistent.nl'
+      from: 'system@datingassistent.nl'
     });
 
     logger.log(`✅ Consolidated weekly reviews sent to coach (${coachEmail})`);
