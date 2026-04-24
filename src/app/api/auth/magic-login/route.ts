@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
 
     if (result.rows.length === 0) {
       logger.log(`Magic-login POST: token not found`);
-      return NextResponse.json({ error: 'Deze inloglink is ongeldig. Vraag een nieuwe aan.' }, { status: 400 });
+      return NextResponse.json({ error: 'Deze inloglink is ongeldig.' }, { status: 400 });
     }
 
     const user = result.rows[0];
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     }
     if (expiresAt < new Date()) {
       logger.log(`Magic-login POST: token expired for user ${user.id}`);
-      return NextResponse.json({ error: 'Deze inloglink is verlopen. Vraag een nieuwe aan.' }, { status: 400 });
+      return NextResponse.json({ error: 'Deze inloglink is verlopen.' }, { status: 400 });
     }
 
     await sql`
