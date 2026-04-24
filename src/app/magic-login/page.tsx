@@ -56,10 +56,14 @@ function MagicLoginContent() {
             {error}
           </p>
         )}
-        {!token ? (
-          <p className="text-sm text-center text-gray-500">
-            Ongeldige inloglink. Vraag via de loginpagina een nieuwe aan.
-          </p>
+        {!token || error ? (
+          <Button
+            onClick={() => router.push("/login")}
+            size="lg"
+            className="w-full"
+          >
+            Nieuwe inloglink aanvragen
+          </Button>
         ) : (
           <Button
             onClick={handleLogin}
