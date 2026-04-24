@@ -175,15 +175,15 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
     if (!status.hasBio) {
       list.push({ id: 'no-bio', priority: 'high', impact: 40, icon: MessageCircle, color: 'red',
         text: 'Je hebt nog geen bio — profielen met een bio krijgen 3× meer matches',
-        actionLabel: 'Bio schrijven', onAction: () => router.push('/tools?tool=ai-bio-generator'), source: 'profile' });
+        actionLabel: 'Bio schrijven', onAction: () => router.push('/tools/ai-bio-generator'), source: 'profile' });
     } else if (status.bioLength < 80) {
       list.push({ id: 'short-bio', priority: 'high', impact: 25, icon: MessageCircle, color: 'blue',
         text: `Je bio (${status.bioLength} tekens) is te kort — voeg meer persoonlijkheid toe`,
-        actionLabel: 'Bio uitbreiden', onAction: () => router.push('/tools?tool=ai-bio-generator'), source: 'profile' });
+        actionLabel: 'Bio uitbreiden', onAction: () => router.push('/tools/ai-bio-generator'), source: 'profile' });
     } else if (profile.bio && !profile.bio.includes('?')) {
       list.push({ id: 'bio-no-question', priority: 'medium', impact: 15, icon: MessageCircle, color: 'green',
         text: 'Eindig je bio met een vraag — verlaagt de drempel om jou te benadelen',
-        actionLabel: 'Bio optimaliseren', onAction: () => router.push('/tools?tool=ai-bio-generator'), source: 'profile' });
+        actionLabel: 'Bio optimaliseren', onAction: () => router.push('/tools/ai-bio-generator'), source: 'profile' });
     }
 
     // No photos
@@ -251,7 +251,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
   }
 
   const nextStep = (): { label: string; action: () => void } | null => {
-    if (!profileStatus.hasBio)       return { label: 'Schrijf je bio', action: () => router.push('/tools?tool=ai-bio-generator') };
+    if (!profileStatus.hasBio)       return { label: 'Schrijf je bio', action: () => router.push('/tools/ai-bio-generator') };
     if (!profileStatus.hasPhotos)    return { label: 'Voeg foto\'s toe', action: () => setShowPhotoAnalysis(true) };
     if (!profileStatus.hasInterests) return { label: 'Vul interesses in', action: () => {} };
     if (!profileStatus.hasLocation)  return { label: 'Voeg locatie toe', action: () => {} };
@@ -267,7 +267,7 @@ export function WorldClassProfileHub({ embedded = false }: WorldClassProfileHubP
     { id: 'profiel-optimalisatie', icon: Target,       title: 'Profiel Optimalisatie', subtitle: 'Bouw een profiel dat werkt (+250% matches)', action: () => setShowProfielOptimalisatie(true) },
     { id: 'analyze',               icon: Brain,        title: 'Profiel Analyse',        subtitle: 'AI assessment van je profiel',               action: () => setShowAnalysis(true) },
     { id: 'photos',                icon: Camera,       title: 'Foto Optimalisatie',     subtitle: 'Professionele foto tips',                    action: () => setShowPhotoAnalysis(true) },
-    { id: 'bio',                   icon: Wand2,        title: 'Bio Coach',              subtitle: 'AI-gedreven bio verbetering',                action: () => router.push('/tools?tool=ai-bio-generator') },
+    { id: 'bio',                   icon: Wand2,        title: 'Bio Coach',              subtitle: 'AI-gedreven bio verbetering',                action: () => router.push('/tools/ai-bio-generator') },
     { id: 'chat-coach',            icon: MessageCircle,title: 'Chat Coach',             subtitle: 'Persoonlijk gesprek advies',                 action: () => router.push('/chat') },
   ];
 

@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@/providers/user-provider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+import { useToast } from '@/hooks/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 import {
   Sparkles,
   Copy,
@@ -15,16 +18,17 @@ import {
   ArrowLeft,
   Heart,
   Star,
-  Zap
+  Zap,
+  Save,
+  AlertCircle,
 } from 'lucide-react';
 import { TutorialModal, TutorialStep, useTutorialCompletion } from '@/components/ui/tutorial-modal';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
+import { getValidToken } from '@/lib/client-auth';
 
 interface BioSuggestion {
   id: string;
   content: string;
-  style: 'fun' | 'serious' | 'flirty' | 'mysterious';
-  length: 'short' | 'medium' | 'long';
   score: number;
 }
 
@@ -85,8 +89,8 @@ const TUTORIAL_STEPS: TutorialStep[] = [
   },
   {
     id: 'review-edit',
-    title: 'Bio\'s beoordelen en aanpassen',
-    description: 'Bekijk de gegenereerde bio\'s en pas ze aan naar je smaak.',
+    title: 'Bio\'s beoordelen en opslaan',
+    description: 'Bekijk de gegenereerde bio\'s en sla de beste op in je profiel.',
     content: (
       <div className="space-y-2 text-sm">
         <div><strong>Let op deze elementen:</strong></div>
@@ -111,7 +115,7 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     content: (
       <div className="space-y-3 text-sm">
         <div className="p-3 bg-green-50 rounded-lg">
-          <div className="font-medium text-green-800 mb-1">✅ Do\'s</div>
+          <div className="font-medium text-green-800 mb-1">✅ Do's</div>
           <ul className="text-green-700 space-y-1">
             <li>• Gebruik actieve taal ("ik klim bergen" vs "ik hou van bergen")</li>
             <li>• Voeg 1-2 emoji's toe voor visuele interesse</li>
@@ -120,7 +124,7 @@ const TUTORIAL_STEPS: TutorialStep[] = [
           </ul>
         </div>
         <div className="p-3 bg-red-50 rounded-lg">
-          <div className="font-medium text-red-800 mb-1">❌ Don\'ts</div>
+          <div className="font-medium text-red-800 mb-1">❌ Don'ts</div>
           <ul className="text-red-700 space-y-1">
             <li>• Vermijd negatieve taal</li>
             <li>• Niet te lang of te kort</li>
@@ -135,60 +139,99 @@ const TUTORIAL_STEPS: TutorialStep[] = [
 ];
 
 export function AiBioGenerator() {
+  const router = useRouter();
+  const { user, userProfile } = useUser();
+  const { toast } = useToast();
+
   const [userInput, setUserInput] = useState('');
   const [suggestions, setSuggestions] = useState<BioSuggestion[]>([]);
   const [selectedStyle, setSelectedStyle] = useState<'fun' | 'serious' | 'flirty' | 'mysterious'>('fun');
   const [selectedLength, setSelectedLength] = useState<'short' | 'medium' | 'long'>('medium');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [savedId, setSavedId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { isCompleted: tutorialCompleted, markCompleted } = useTutorialCompletion('ai-bio-generator');
 
-  // Auto-show tutorial for first-time users
   useEffect(() => {
     if (!tutorialCompleted) {
-      const timer = setTimeout(() => setShowTutorial(true), 1000);
+      const timer = setTimeout(() => setShowTutorial(true), 800);
       return () => clearTimeout(timer);
     }
   }, [tutorialCompleted]);
 
   const generateBios = async () => {
     if (!userInput.trim()) return;
-
     setIsGenerating(true);
+    setError(null);
+    setSuggestions([]);
+
     try {
-      // Simulate AI generation - in real app this would call an API
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      const mockSuggestions: BioSuggestion[] = [
-        {
-          id: '1',
-          content: 'Avontuurlijke koffieliefhebber die van bergbeklimmen en spontane roadtrips houdt. Zoek iemand om samen nieuwe plekken te ontdekken en quality time door te brengen ☕🏔️',
-          style: selectedStyle,
-          length: selectedLength,
-          score: 92
+      const token = getValidToken();
+      const res = await fetch('/api/tools/bio-generator', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        {
-          id: '2',
-          content: 'Creatieve ziel met een passie voor fotografie en goede gesprekken bij kaarslicht. Waardeer authenticiteit en zoek iemand om diepere connecties mee te maken 📸✨',
-          style: selectedStyle,
-          length: selectedLength,
-          score: 88
-        },
-        {
-          id: '3',
-          content: 'Fitness enthusiast die geloofd in work-life balance en avontuurlijke vakanties. Zoek een partner om samen sterker te worden, zowel fysiek als mentaal 💪🌅',
-          style: selectedStyle,
-          length: selectedLength,
-          score: 85
-        }
-      ];
+        body: JSON.stringify({ userInput, style: selectedStyle, length: selectedLength }),
+      });
 
-      setSuggestions(mockSuggestions);
-    } catch (error) {
-      console.error('Error generating bios:', error);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Fout ${res.status}`);
+      }
+
+      const data = await res.json();
+      setSuggestions(data.bios || []);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Onbekende fout';
+      setError(msg);
+      toast({ title: 'Generatie mislukt', description: msg, variant: 'destructive' });
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const useBio = async (suggestion: BioSuggestion) => {
+    if (!user?.id) {
+      toast({ title: 'Niet ingelogd', description: 'Log opnieuw in om door te gaan.', variant: 'destructive' });
+      return;
+    }
+    setSavingId(suggestion.id);
+
+    try {
+      const token = getValidToken();
+      const currentProfile = userProfile || {};
+      const updatedProfile = { ...currentProfile, bio: suggestion.content };
+
+      const res = await fetch('/api/user/update-profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ userId: user.id, profile: updatedProfile }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Fout ${res.status}`);
+      }
+
+      setSavedId(suggestion.id);
+      toast({
+        title: 'Bio opgeslagen!',
+        description: 'Je profiel is bijgewerkt. Je bio is nu zichtbaar op je profiel.',
+      });
+      setTimeout(() => router.push('/dashboard?tab=profiel'), 1500);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Opslaan mislukt';
+      toast({ title: 'Opslaan mislukt', description: msg, variant: 'destructive' });
+    } finally {
+      setSavingId(null);
     }
   };
 
@@ -197,28 +240,25 @@ export function AiBioGenerator() {
       await navigator.clipboard.writeText(content);
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);
-    } catch (error) {
-      console.error('Failed to copy:', error);
+    } catch {
+      toast({ title: 'Kopiëren mislukt', description: 'Selecteer de tekst handmatig.', variant: 'destructive' });
     }
   };
 
   const getStyleIcon = (style: string) => {
-    switch (style) {
-      case 'fun': return '🎉';
-      case 'serious': return '💼';
-      case 'flirty': return '😘';
-      case 'mysterious': return '🔮';
-      default: return '📝';
-    }
+    const icons: Record<string, string> = { fun: '🎉', serious: '💼', flirty: '😘', mysterious: '🔮' };
+    return icons[style] || '📝';
   };
 
-  const getLengthLabel = (length: string) => {
-    switch (length) {
-      case 'short': return 'Kort (60-80 karakters)';
-      case 'medium': return 'Medium (80-120 karakters)';
-      case 'long': return 'Lang (120-150 karakters)';
-      default: return 'Medium';
-    }
+  const getLengthRange = (len: string) => {
+    const ranges: Record<string, string> = { short: '60-80', medium: '80-120', long: '120-150' };
+    return ranges[len] || '80-120';
+  };
+
+  const charCountColor = (len: number) => {
+    if (len < 20) return 'text-gray-400';
+    if (len < 50) return 'text-amber-500';
+    return 'text-green-500';
   };
 
   return (
@@ -230,57 +270,54 @@ export function AiBioGenerator() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => window.history.back()}
+              onClick={() => router.back()}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">AI Bio Generator</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Professionele bio varianten genereren</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">Genereer bio's die 3× meer matches opleveren</p>
             </div>
           </div>
-
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowTutorial(true)}
-              className="border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              <HelpCircle className="w-4 h-4 mr-2" />
-              Handleiding
-            </Button>
-            {suggestions.length > 0 && (
-              <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-coral-200 dark:border-coral-700">
-                {suggestions.length} bio's gegenereerd
-              </Badge>
-            )}
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowTutorial(true)}
+            className="border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+          >
+            <HelpCircle className="w-4 h-4 mr-2" />
+            Handleiding
+          </Button>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto p-6 space-y-8">
         {/* Input Section */}
         <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl">
-          <CardHeader className="pb-6">
+          <CardHeader className="pb-4">
             <CardTitle className="text-xl flex items-center gap-3 dark:text-white">
               <div className="w-8 h-8 bg-coral-100 dark:bg-coral-900/50 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-coral-600 dark:text-coral-400" />
               </div>
               Vertel ons over jezelf
             </CardTitle>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
-              Hoe meer details je geeft, hoe beter de bio's worden
+            <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+              Hoe meer details je geeft, hoe beter en persoonlijker de bio's worden
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
-            <Textarea
-              placeholder="Bijv: Ik ben een 28-jarige marketeer die van hardlopen houdt, regelmatig reist, en op zoek is naar iemand om diepe gesprekken mee te voeren en samen te lachen..."
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              className="min-h-[120px] resize-none"
-            />
+            <div className="space-y-1">
+              <Textarea
+                placeholder="Bijv: 28-jarige marketeer, hou van hardlopen en bergen, reist graag naar plekken buiten de toeristische route. Op zoek naar iemand met wie ik diepgaande gesprekken kan voeren én samen kunnen lachen..."
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                className="min-h-[120px] resize-none"
+              />
+              <div className={`text-xs text-right ${charCountColor(userInput.length)}`}>
+                {userInput.length} karakters{userInput.length < 50 && userInput.length > 0 && ' — voeg meer details toe voor betere resultaten'}
+              </div>
+            </div>
 
             {/* Style Selection */}
             <div className="space-y-3">
@@ -290,11 +327,11 @@ export function AiBioGenerator() {
                   { value: 'fun', label: 'Leuk & Energiek', icon: '🎉' },
                   { value: 'serious', label: 'Serieus & Betrouwbaar', icon: '💼' },
                   { value: 'flirty', label: 'Speels & Flirterig', icon: '😘' },
-                  { value: 'mysterious', label: 'Mysterieus & Intrigerend', icon: '🔮' }
+                  { value: 'mysterious', label: 'Mysterieus & Intrigerend', icon: '🔮' },
                 ].map((style) => (
                   <button
                     key={style.value}
-                    onClick={() => setSelectedStyle(style.value as any)}
+                    onClick={() => setSelectedStyle(style.value as typeof selectedStyle)}
                     className={`p-4 text-left rounded-xl border-2 transition-all ${
                       selectedStyle === style.value
                         ? 'border-coral-500 bg-coral-50 dark:bg-coral-900/30 text-coral-700 dark:text-coral-300'
@@ -315,24 +352,32 @@ export function AiBioGenerator() {
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bio Lengte</label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 'short', label: 'Kort' },
-                  { value: 'medium', label: 'Medium' },
-                  { value: 'long', label: 'Lang' }
-                ].map((length) => (
+                  { value: 'short', label: 'Kort', desc: '60-80 tekens' },
+                  { value: 'medium', label: 'Medium', desc: '80-120 tekens' },
+                  { value: 'long', label: 'Lang', desc: '120-150 tekens' },
+                ].map((len) => (
                   <button
-                    key={length.value}
-                    onClick={() => setSelectedLength(length.value as any)}
+                    key={len.value}
+                    onClick={() => setSelectedLength(len.value as typeof selectedLength)}
                     className={`p-4 text-center rounded-xl border-2 transition-all ${
-                      selectedLength === length.value
+                      selectedLength === len.value
                         ? 'border-coral-500 bg-coral-50 dark:bg-coral-900/30 text-coral-700 dark:text-coral-300'
                         : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-800'
                     }`}
                   >
-                    <span className="text-sm font-medium">{length.label}</span>
+                    <div className="text-sm font-medium">{len.label}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{len.desc}</div>
                   </button>
                 ))}
               </div>
             </div>
+
+            {error && (
+              <div className="flex items-center gap-2 p-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg text-sm">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                {error}
+              </div>
+            )}
 
             <Button
               onClick={generateBios}
@@ -355,7 +400,7 @@ export function AiBioGenerator() {
           </CardContent>
         </Card>
 
-        {/* Results Section */}
+        {/* Results */}
         {suggestions.length > 0 && (
           <div className="space-y-6">
             <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl">
@@ -368,7 +413,7 @@ export function AiBioGenerator() {
                     Jouw Bio Suggesties
                   </CardTitle>
                   <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-coral-200 dark:border-coral-700">
-                    {getStyleIcon(selectedStyle)} {selectedStyle} • {getLengthLabel(selectedLength)}
+                    {getStyleIcon(selectedStyle)} {selectedStyle} · {getLengthRange(selectedLength)} tekens
                   </Badge>
                 </div>
               </CardHeader>
@@ -376,21 +421,19 @@ export function AiBioGenerator() {
                 {suggestions.map((suggestion) => (
                   <Card key={suggestion.id} className="bg-gray-50 dark:bg-gray-700 border-0 rounded-xl">
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <Badge className="bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 border-green-200 dark:border-green-700">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Badge className="bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 border-green-200">
                             <Star className="w-3 h-3 mr-1" />
-                            {suggestion.score}% match
+                            {suggestion.score}% match kans
                           </Badge>
-                          <Badge variant="outline" className="border-gray-300 dark:border-gray-500">
-                            {suggestion.length}
-                          </Badge>
+                          <span className="text-xs text-gray-400">{suggestion.content.length} tekens</span>
                         </div>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => copyToClipboard(suggestion.content, suggestion.id)}
-                          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600"
+                          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1"
                         >
                           {copiedId === suggestion.id ? (
                             <CheckCircle className="w-4 h-4 text-green-500" />
@@ -400,29 +443,37 @@ export function AiBioGenerator() {
                         </Button>
                       </div>
 
-                      <p className="text-gray-700 dark:text-gray-200 leading-relaxed mb-4 text-sm">
+                      <p className="text-gray-700 dark:text-gray-200 leading-relaxed mb-5 text-sm">
                         {suggestion.content}
                       </p>
 
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">{suggestion.content.length} karakters</span>
-                        <div className="flex gap-3">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => copyToClipboard(suggestion.content, suggestion.id)}
-                            className="border-gray-300 dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600"
-                          >
-                            Kopiëren
-                          </Button>
-                          <Button
-                            size="sm"
-                            className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all"
-                          >
-                            <Heart className="w-3 h-3 mr-1" />
-                            Gebruiken
-                          </Button>
-                        </div>
+                      <div className="flex gap-3">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => copyToClipboard(suggestion.content, suggestion.id)}
+                          className="border-gray-300 dark:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600 flex-1"
+                        >
+                          {copiedId === suggestion.id ? (
+                            <><CheckCircle className="w-3 h-3 mr-1 text-green-500" /> Gekopieerd</>
+                          ) : (
+                            <><Copy className="w-3 h-3 mr-1" /> Kopiëren</>
+                          )}
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={() => useBio(suggestion)}
+                          disabled={savingId === suggestion.id || savedId === suggestion.id}
+                          className="bg-coral-500 hover:bg-coral-600 text-white rounded-full shadow hover:shadow-md transition-all flex-1"
+                        >
+                          {savedId === suggestion.id ? (
+                            <><CheckCircle className="w-3 h-3 mr-1" /> Opgeslagen!</>
+                          ) : savingId === suggestion.id ? (
+                            <><RefreshCw className="w-3 h-3 mr-1 animate-spin" /> Opslaan...</>
+                          ) : (
+                            <><Save className="w-3 h-3 mr-1" /> Gebruiken</>
+                          )}
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
@@ -430,23 +481,33 @@ export function AiBioGenerator() {
               </CardContent>
             </Card>
 
-            {/* Tips Card */}
-            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-0 rounded-xl">
-              <CardContent className="p-6">
+            {/* Tip */}
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-0 rounded-xl">
+              <CardContent className="p-5">
                 <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Zap className="w-4 h-4 text-blue-600" />
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Zap className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-blue-900 mb-2">Pro Tip</h3>
-                    <p className="text-sm text-blue-700 leading-relaxed">
-                      Test verschillende stijlen om te zien welke het beste bij je past.
-                      Een goede bio kan je match rate met 300% verhogen!
+                    <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-1">Pro Tip</h3>
+                    <p className="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
+                      Klik <strong>Gebruiken</strong> om een bio direct in je profiel op te slaan.
+                      Of kopieer de tekst en pas hem aan naar je eigen smaak — de AI geeft je een sterke basis.
                     </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
+
+            <Button
+              variant="outline"
+              onClick={generateBios}
+              disabled={isGenerating}
+              className="w-full border-gray-200 dark:border-gray-600"
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Nieuwe varianten genereren
+            </Button>
           </div>
         )}
 
@@ -455,28 +516,36 @@ export function AiBioGenerator() {
           <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl">
             <CardContent className="p-12 text-center">
               <div className="w-20 h-20 bg-coral-100 dark:bg-coral-900/50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Sparkles className="w-10 h-10 text-coral-600 dark:text-coral-400" />
+                <Heart className="w-10 h-10 text-coral-600 dark:text-coral-400" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">
-                Klaar om je bio te verbeteren?
+                Klaar om je bio te schrijven?
               </h3>
               <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
-                Vertel ons over jezelf en laat onze AI professionele bio varianten voor je genereren
+                Vertel iets over jezelf hierboven — de AI genereert 3 unieke bio-varianten op basis van jouw persoonlijkheid en stijl.
               </p>
-              <Button
-                variant="outline"
-                onClick={() => setShowTutorial(true)}
-                className="border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 px-6 py-3"
-              >
-                <HelpCircle className="w-4 h-4 mr-2" />
-                Hoe werkt het?
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowTutorial(true)}
+                  className="border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  <HelpCircle className="w-4 h-4 mr-2" />
+                  Hoe werkt het?
+                </Button>
+                <Button
+                  onClick={() => document.querySelector('textarea')?.focus()}
+                  className="bg-coral-500 hover:bg-coral-600 text-white rounded-full"
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Begin nu
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}
       </div>
 
-      {/* Tutorial Modal */}
       <TutorialModal
         isOpen={showTutorial}
         onClose={() => setShowTutorial(false)}
@@ -489,6 +558,7 @@ export function AiBioGenerator() {
         difficulty="beginner"
       />
 
+      <Toaster />
       <BottomNavigation />
     </div>
   );
