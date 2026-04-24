@@ -14,9 +14,8 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    // Verify authentication
-    const authResult = await verifyAuth(request);
-    if (!authResult.valid || !authResult.user) {
+    const user = await verifyAuth(request);
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

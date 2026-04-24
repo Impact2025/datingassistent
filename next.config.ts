@@ -268,7 +268,6 @@ const sentryConfig = {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   widenClientFileUpload: false, // was true: caused extremely slow builds by uploading node_modules
-  tunnelRoute: '/monitoring',
   hideSourceMaps: true,
   disableLogger: true,
 };

@@ -124,11 +124,10 @@ self.addEventListener('fetch', (event) => {
   // Network-first for everything else (JS, CSS, etc)
   event.respondWith(
     fetch(event.request)
-      .then((response) => {
-        return response;
-      })
       .catch(() => {
-        return caches.match(event.request);
+        return caches.match(event.request).then(cached =>
+          cached || new Response('', { status: 503, statusText: 'Offline' })
+        );
       })
   );
 });
