@@ -91,7 +91,7 @@ export function AssignmentChecklist({
               exit={{ opacity: 0, y: 4 }}
               className="mt-2 ml-8 text-xs text-green-600 font-medium"
             >
-              Gedaan! ✓
+              Gedaan
             </motion.div>
           )}
         </AnimatePresence>

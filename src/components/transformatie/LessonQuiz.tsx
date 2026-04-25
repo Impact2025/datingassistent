@@ -131,7 +131,7 @@ export function LessonQuiz({ lessonId, onComplete, onSkip }: LessonQuizProps) {
             )}
           </div>
           <h3 className="text-lg font-bold text-gray-800 mb-1">
-            {finalScore === 100 ? 'Perfect! 🎉' : finalScore >= 67 ? 'Goed gedaan!' : 'Bijna!'}
+            {finalScore === 100 ? 'Perfect' : finalScore >= 67 ? 'Goed gedaan' : 'Bijna'}
           </h3>
           <p className="text-3xl font-black text-purple-600">{finalScore}%</p>
           {bestScore !== null && finalScore > bestScore && (

@@ -44,6 +44,7 @@ import { ModuleToolCard } from '@/components/journey/module-tool-card';
 import { AssignmentChecklist } from './AssignmentChecklist';
 import { LessonQuiz } from './LessonQuiz';
 import { BadgeNotification } from './BadgeNotification';
+import { BadgeShowcase } from './BadgeShowcase';
 import type { TransformatieModule, TransformatieLesson, LessonProgress as LessonProgressType } from '@/app/api/transformatie/route';
 
 interface TransformatieDashboardViewProps {
@@ -121,6 +122,8 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
   // Interactive features state
   const [showQuiz, setShowQuiz] = useState(false);
   const [pendingBadges, setPendingBadges] = useState<any[]>([]);
+  const [earnedBadges, setEarnedBadges] = useState<any[]>([]);
+  const [allBadges, setAllBadges] = useState<any[]>([]);
   const [aiFeedback, setAiFeedback] = useState<Record<string, string>>({});
   const [loadingFeedback, setLoadingFeedback] = useState<Record<string, boolean>>({});
 
@@ -162,6 +165,13 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             setReflectieAnswers(firstLesson.progress?.reflectie_answers || {});
           }
         }
+      }
+      // Fetch badge data alongside overview
+      const badgeResponse = await fetch('/api/transformatie/progress');
+      if (badgeResponse.ok) {
+        const badgeData = await badgeResponse.json();
+        setEarnedBadges(badgeData.badges || []);
+        setAllBadges(badgeData.allBadges || []);
       }
     } catch (err) {
       console.error('Error fetching overview:', err);
@@ -360,6 +370,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
       const json = await res.json();
       if (json.newBadges?.length > 0) {
         setPendingBadges(json.newBadges);
+        setEarnedBadges(prev => [...prev, ...json.newBadges]);
       }
       // Refresh overview
       await fetchOverview();
@@ -799,7 +810,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
         }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
       >
-        <div className="sticky top-4 w-[340px]">
+        <div className="sticky top-4 w-[340px] space-y-4">
           <ModuleSidebar
             modules={modules}
             phases={phases}
@@ -809,6 +820,15 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             onSelectLesson={handleSelectLesson}
             overallProgress={overallProgress}
           />
+          {allBadges.length > 0 && (
+            <div className="bg-white rounded-xl border border-gray-200 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Award className="w-3.5 h-3.5 text-gray-500" />
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Badges</span>
+              </div>
+              <BadgeShowcase earnedBadges={earnedBadges} allBadges={allBadges} />
+            </div>
+          )}
         </div>
       </motion.div>
 
@@ -1050,7 +1070,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
               <CardContent className="space-y-4">
                 {/* Spiegel */}
                 <div className="space-y-2 p-4 rounded-lg border border-blue-100 bg-blue-50/50">
-                  <Badge className="bg-blue-100 text-blue-700 border-0 text-xs">🪞 Spiegel</Badge>
+                  <Badge className="bg-blue-100 text-blue-700 border-0 text-xs">Spiegel</Badge>
                   <p className="text-sm font-medium text-gray-800 leading-relaxed">
                     {currentLesson.reflectie?.spiegel || `Wat betekent "${currentModule?.mindset_hook}" voor jou persoonlijk?`}
                   </p>
@@ -1094,7 +1114,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
 
                 {/* Identiteit */}
                 <div className="space-y-2 p-4 rounded-lg border border-amber-100 bg-amber-50/50">
-                  <Badge className="bg-amber-100 text-amber-700 border-0 text-xs">🌱 Identiteit</Badge>
+                  <Badge className="bg-amber-100 text-amber-700 border-0 text-xs">Identiteit</Badge>
                   <p className="text-sm font-medium text-gray-800 leading-relaxed">
                     {currentLesson.reflectie?.identiteit || 'Hoe past dit bij wie je bent in de liefde?'}
                   </p>
@@ -1138,7 +1158,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
 
                 {/* Actie */}
                 <div className="space-y-2 p-4 rounded-lg border border-rose-100 bg-rose-50/50">
-                  <Badge className="bg-rose-100 text-rose-700 border-0 text-xs">⚡ Actie</Badge>
+                  <Badge className="bg-rose-100 text-rose-700 border-0 text-xs">Actie</Badge>
                   <p className="text-sm font-medium text-gray-800 leading-relaxed">
                     {currentLesson.reflectie?.actie || 'Wat is een concrete stap die je kunt nemen na deze les?'}
                   </p>

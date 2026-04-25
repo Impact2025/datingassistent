@@ -60,13 +60,18 @@ export async function POST(request: NextRequest) {
       answer: answer.trim(),
     });
 
-    // Track AI feedback usage for badge
+    // Track AI feedback usage for badge (direct SQL — no self-fetch in server context)
     if (lessonId) {
-      await fetch('/api/transformatie/progress', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lessonId, aiFeedbackUsed: true }),
-      }).catch(() => {});
+      try {
+        const badge = await sql`SELECT id FROM transformatie_badges WHERE slug = 'eerste-ai-feedback'`;
+        if (badge.rows.length > 0) {
+          await sql`
+            INSERT INTO transformatie_user_badges (user_id, badge_id)
+            VALUES (${user.id}, ${badge.rows[0].id})
+            ON CONFLICT (user_id, badge_id) DO NOTHING
+          `;
+        }
+      } catch {}
     }
 
     return NextResponse.json({ success: true, feedback: result.feedback });

@@ -46,7 +46,7 @@ export function BadgeNotification({ badges, onDismiss }: BadgeNotificationProps)
         <div className="bg-white rounded-2xl shadow-xl border border-yellow-200 overflow-hidden">
           <div className="bg-gradient-to-r from-yellow-400 to-amber-400 px-4 py-2 flex items-center justify-between">
             <span className="text-xs font-bold text-white uppercase tracking-wide">
-              🏅 Badge verdiend!
+              Badge verdiend
             </span>
             <button onClick={onDismiss} className="text-white/80 hover:text-white transition-colors">
               <X className="w-3.5 h-3.5" />

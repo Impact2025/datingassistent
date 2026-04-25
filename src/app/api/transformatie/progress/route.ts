@@ -344,6 +344,8 @@ export async function GET(request: NextRequest) {
       ORDER BY tub.earned_at DESC
     `;
 
+    const allBadgesResult = await sql`SELECT * FROM transformatie_badges ORDER BY id`;
+
     const totalLessons = totalLessonsResult.rows[0].count;
     const completedLessons = progressResult.rows.filter(p => p.status === 'completed').length;
     const assignmentsCompleted = progressResult.rows.filter(p => p.assignment_completed).length;
@@ -370,6 +372,7 @@ export async function GET(request: NextRequest) {
       success: true,
       progress: progressResult.rows,
       badges: userBadges.rows,
+      allBadges: allBadgesResult.rows,
       stats: {
         totalLessons,
         completedLessons,
