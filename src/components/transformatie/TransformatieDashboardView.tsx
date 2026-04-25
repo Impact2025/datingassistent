@@ -7,6 +7,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -89,6 +90,7 @@ const AI_TOOL_ROUTES: Record<string, string> = {
 
 export function TransformatieDashboardView({ userId, onBack }: TransformatieDashboardViewProps) {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   // Refs
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -367,13 +369,18 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ lessonId: currentLesson.id, ...data }),
       });
+      if (!res.ok) {
+        console.error('Progress save failed:', res.status);
+        return;
+      }
       const json = await res.json();
       if (json.newBadges?.length > 0) {
         setPendingBadges(json.newBadges);
         setEarnedBadges(prev => [...prev, ...json.newBadges]);
       }
-      // Refresh overview
+      // Refresh overview + invalideer sidebar cache
       await fetchOverview();
+      queryClient.invalidateQueries({ queryKey: ['enrollment-status'] });
     } catch (err) {
       console.error('Error saving progress:', err);
     } finally {
@@ -522,19 +529,35 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
     }
   };
 
-  // Calculate lesson completion
+  // Calculate lesson completion — only count elements the lesson actually has
   const calculateLessonCompletion = () => {
     if (!currentLesson) return 0;
 
-    let total = 1; // video
-    let completed = isVideoComplete ? 1 : 0;
+    let total = 0;
+    let completed = 0;
 
-    // Reflectie
-    total++;
-    const reflectieComplete = ['spiegel', 'identiteit', 'actie'].every(
-      (k) => (reflectieAnswers[k]?.length || 0) > 10
+    // Video — alleen tellen als de les een video heeft
+    if (currentLesson.video_url) {
+      total++;
+      if (isVideoComplete) completed++;
+    }
+
+    // Reflectie — alleen tellen als de les vragen heeft
+    const hasReflectie = currentLesson.reflectie && (
+      currentLesson.reflectie.spiegel ||
+      currentLesson.reflectie.identiteit ||
+      currentLesson.reflectie.actie
     );
-    if (reflectieComplete) completed++;
+    if (hasReflectie) {
+      total++;
+      const reflectieComplete = ['spiegel', 'identiteit', 'actie'].every(
+        (k) => (reflectieAnswers[k]?.length || 0) > 10
+      );
+      if (reflectieComplete) completed++;
+    }
+
+    // Les zonder video/reflectie is direct voltooibaar
+    if (total === 0) return 100;
 
     return Math.round((completed / total) * 100);
   };
