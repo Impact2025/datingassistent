@@ -49,16 +49,14 @@ export async function POST(request: NextRequest) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
     const nextParam = next !== '/dashboard' ? `&next=${encodeURIComponent(next)}` : '';
 
-    // Deduplication: reuse an existing valid token if sent within the last 3 minutes.
-    // This prevents the mailserver from seeing multiple identical emails in quick
-    // succession (a common spam/rate-limit trigger).
+    // Deduplication: if there's a valid token created within the last hour, reuse it.
+    // Prevents multiple emails in quick succession (spam/rate-limit trigger on receiving server).
     const existingResult = await sql`
-      SELECT verification_token, verification_expires_at
+      SELECT verification_token
       FROM users
       WHERE id = ${user.id}
         AND verification_token IS NOT NULL
-        AND verification_expires_at > NOW()
-        AND verification_expires_at > NOW() + INTERVAL '57 minutes'
+        AND verification_expires_at > NOW() + INTERVAL '23 hours'
     `;
 
     if (existingResult.rows.length > 0) {
@@ -71,10 +69,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
-    // Generate a secure token with 1-hour expiry
+    // Generate a secure token with 24-hour expiry (allows for delayed email delivery)
     const token = generateVerificationToken();
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 1);
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     await sql`
       UPDATE users

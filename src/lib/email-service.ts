@@ -446,7 +446,7 @@ export async function sendMagicLinkEmail(
               <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 20px 0;">
 
               <p style="font-size:12px;color:#aaa;line-height:1.6;margin:0;">
-                Deze link is <strong>1 uur geldig</strong> en kan slechts eenmalig worden gebruikt.<br>
+                Deze link is <strong>24 uur geldig</strong> en kan slechts eenmalig worden gebruikt.<br>
                 Heb je dit niet aangevraagd? Je hoeft niets te doen — de link vervalt vanzelf.
               </p>
             </td>
@@ -481,7 +481,7 @@ Gebruik de link hieronder om in te loggen. Geen wachtwoord nodig.
 
 ${magicUrl}
 
-De link is 1 uur geldig en kan slechts eenmalig worden gebruikt.
+De link is 24 uur geldig en kan slechts eenmalig worden gebruikt.
 
 Heb je dit niet aangevraagd? Dan hoef je niets te doen — de link vervalt vanzelf.
 
