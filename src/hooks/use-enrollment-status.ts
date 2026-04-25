@@ -77,6 +77,14 @@ async function fetchEnrollmentStatus(): Promise<EnrollmentStatus> {
   });
 
   if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      return {
+        authenticated: false,
+        kickstart: { isEnrolled: false, onboardingCompleted: false, dayZeroCompleted: false },
+        transformatie: { isEnrolled: false, onboardingCompleted: false },
+        vip: { isEnrolled: false },
+      };
+    }
     throw new Error('Failed to fetch enrollment status');
   }
 
@@ -90,6 +98,7 @@ export function useEnrollmentStatus(options?: { enabled?: boolean }) {
     queryFn: fetchEnrollmentStatus,
     staleTime: 30 * 1000, // 30 seconds
     gcTime: 5 * 60 * 1000, // 5 minutes
+    retry: false,
     enabled: options?.enabled ?? true,
     // Return default values while loading
     placeholderData: {

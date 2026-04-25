@@ -770,6 +770,15 @@ function DashboardPageContent() {
     }
   }, [activeTab, user?.id, userProfile, handleTabChange, checkinModalOpen, journeyDay, handleCheckinComplete]);
 
+  // Not authenticated and done loading → UserProvider will redirect, just show spinner
+  if (!isLoading && !user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-coral-50 via-coral-25 to-white flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   // While loading user data or checking Kickstart/Transformatie enrollment, show a loading state
   // This prevents the flash where dashboard is shown before onboarding
   if (isLoading || kickstartState.isChecking || !kickstartState.checkComplete || transformatieState.isChecking || !transformatieState.checkComplete) {
