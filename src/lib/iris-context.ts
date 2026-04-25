@@ -201,7 +201,7 @@ async function getUserReflections(userId: number): Promise<UserReflection[]> {
         created_at
       FROM user_reflections
       WHERE user_id = ${userId}
-        AND program_slug = 'kickstart'
+        AND program_slug IN ('kickstart', 'transformatie', 'vip')
       ORDER BY day_number DESC, question_type
       LIMIT 15
     `;
@@ -650,20 +650,27 @@ export async function saveIrisConversation(
 
 function determineCoachingPhase(
   kickstart: KickstartOnboardingData | null | undefined,
-  transformatie: TransformatieOnboardingData | null | undefined
-): 'DESIGN' | 'ACTION' | 'SURRENDER' {
+  transformatie: TransformatieOnboardingData | null | undefined,
+  moduleProgress?: ModuleProgress[]
+): 'DESIGN' | 'ACTION' | 'SURRENDER' | 'GRATIS' {
+  // Kickstart: fase op basis van dag (meest betrouwbaar)
   if (kickstart?.current_day) {
     if (kickstart.current_day <= 7) return 'DESIGN';
     if (kickstart.current_day <= 17) return 'ACTION';
     return 'SURRENDER';
   }
-  // Transformatie: gebruik biggest_challenge als hint
-  if (transformatie?.biggest_challenge) {
-    const bc = transformatie.biggest_challenge.toLowerCase();
-    if (bc.includes('accepter') || bc.includes('loslat') || bc.includes('verwerk')) return 'SURRENDER';
-    if (bc.includes('actie') || bc.includes('stap') || bc.includes('doe') || bc.includes('profi')) return 'ACTION';
+  // Transformatie: gebruik de phase van de actieve module (DESIGN/ACTION/SURRENDER)
+  if (moduleProgress && moduleProgress.length > 0) {
+    const activeModule = moduleProgress.find(m => !m.isCompleted) ?? moduleProgress[moduleProgress.length - 1];
+    const phase = activeModule.phase?.toUpperCase();
+    if (phase === 'DESIGN' || phase === 'ACTION' || phase === 'SURRENDER') return phase;
   }
-  return 'ACTION';
+  // Transformatie zonder module progress: gebruik onboarding fase-hints
+  if (transformatie) {
+    return 'DESIGN'; // Begin van Transformatie = altijd DESIGN tenzij modules zeggen anders
+  }
+  // Geen programma: expliciete GRATIS fase
+  return 'GRATIS';
 }
 
 export function buildIrisSystemPrompt(context: EnrichedIrisContext): string {
@@ -1258,14 +1265,15 @@ BELANGRIJKE INZICHTEN DIE DE GEBRUIKER DEELDE:
 ${context.performance.reflectie_inzichten.map(i => `- "${i}"`).join('\n')}`);
   }
 
-  // Coaching-fase instructies
-  const coachingFase = determineCoachingPhase(context.kickstart, context.transformatie);
+  // Coaching-fase instructies (programma-aware)
+  const coachingFase = determineCoachingPhase(context.kickstart, context.transformatie, context.moduleProgress);
   const faseInstructies: Record<string, string> = {
     DESIGN: `COACHING FASE — DESIGN: De gebruiker is nog aan het ontdekken wat ze willen. Wees vraagstellend en verkenend. Help verhelderen, niet pushen. Geen "ga nu daten" — eerst: wat zoek je écht?`,
     ACTION: `COACHING FASE — ACTION: De gebruiker is klaar voor actie. Wees concreet en actiegericht. Geef kleine, haalbare stappen. Houd ze verantwoordelijk voor wat ze zeiden te gaan doen.`,
     SURRENDER: `COACHING FASE — SURRENDER: De gebruiker werkt aan acceptatie en loslaten. Wees reflectief en zacht. Focus op wat ze kunnen controleren. Geen druk om te presteren.`,
+    GRATIS: `COACHING FASE — VERKENNING: Deze persoon heeft nog geen programma. Ze zijn aan het oriënteren. Wees uitnodigend en warm, niet dwingend. Help ze ontdekken wat ze zoeken. Verwijs niet actief naar betaalde programma's tenzij ze er zelf naar vragen.`,
   };
-  parts.push(`\n${faseInstructies[coachingFase]}`);
+  parts.push(`\n${faseInstructies[coachingFase] ?? faseInstructies['ACTION']}`);
 
   // 🚀 WERELDKLASSE COACHING INSTRUCTIES
   parts.push(`

@@ -41,11 +41,12 @@ export async function GET() {
       return NextResponse.json({ welcome: null });
     }
 
-    // Haal naam op (kickstart heeft preferred_name, fallback naar users.name)
+    // Naam ophalen: kickstart → transformatie → users.name → fallback
     const nameResult = await sql`
-      SELECT COALESCE(k.preferred_name, u.name, 'je') as naam
+      SELECT COALESCE(k.preferred_name, t.preferred_name, u.name, 'je') as naam
       FROM users u
       LEFT JOIN kickstart_onboarding k ON k.user_id = u.id
+      LEFT JOIN transformatie_onboarding t ON t.user_id = u.id
       WHERE u.id = ${userId}
       LIMIT 1
     `;
