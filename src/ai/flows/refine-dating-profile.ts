@@ -9,7 +9,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { chatCompletion } from '@/lib/ai-service'; // Import the chatCompletion function from our AI service
+import { cachedChatCompletion } from '@/lib/ai-service';
 
 const RefineDatingProfileInputSchema = z.object({
   name: z.string().describe('Your name or nickname.'),
@@ -112,10 +112,10 @@ The profile should be approximately 2-3 paragraphs long and written entirely in 
       }
     ];
     
-    const response = await chatCompletion(messages, {
+    const response = await cachedChatCompletion(messages, {
       provider: 'openrouter',
       maxTokens: 800,
-      temperature: 0.7
+      temperature: 0.85
     });
     
     return {

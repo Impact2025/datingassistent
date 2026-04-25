@@ -116,6 +116,15 @@ export async function POST(request: NextRequest) {
     const encoder = new TextEncoder();
     let fullResponse = '';
 
+    // Bouw gespreksgeschiedenis als echte AI-message-turns (max 10 beurten = 20 messages)
+    const historyMessages = (irisContext.recente_gesprekken ?? [])
+      .slice(0, 10)
+      .reverse()
+      .flatMap(g => [
+        { role: 'user' as const, content: g.message },
+        { role: 'assistant' as const, content: g.response },
+      ]);
+
     const stream = new ReadableStream({
       async start(controller) {
         try {
@@ -123,6 +132,7 @@ export async function POST(request: NextRequest) {
             OPENROUTER_MODELS.CLAUDE_35_SONNET,
             [
               { role: 'system', content: systemPrompt },
+              ...historyMessages,
               { role: 'user', content: message },
             ],
             { max_tokens: 2048 }

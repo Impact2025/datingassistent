@@ -286,6 +286,53 @@ async function getUserGoals(userId: number): Promise<UserGoals | null> {
   }
 }
 
+interface ModuleProgress {
+  moduleOrder: number;
+  title: string;
+  phase: string;
+  completedLessons: number;
+  totalLessons: number;
+  isCompleted: boolean;
+  lastActivity: Date | null;
+}
+
+async function getTransformatieModuleProgress(userId: number): Promise<ModuleProgress[]> {
+  try {
+    const result = await sql`
+      SELECT
+        tm.module_order,
+        tm.title,
+        tm.phase,
+        COUNT(tl.id)::int as total_lessons,
+        COUNT(CASE WHEN tlp.status = 'completed' THEN 1 END)::int as completed_lessons,
+        MAX(tlp.completed_at) as last_activity
+      FROM transformatie_modules tm
+      JOIN transformatie_lessons tl ON tl.module_id = tm.id AND tl.is_published = true
+      LEFT JOIN transformatie_lesson_progress tlp ON tlp.lesson_id = tl.id AND tlp.user_id = ${userId}
+      WHERE tm.is_published = true
+      GROUP BY tm.id, tm.module_order, tm.title, tm.phase
+      HAVING
+        COUNT(CASE WHEN tlp.status = 'completed' THEN 1 END) > 0
+        OR COUNT(CASE WHEN tlp.status = 'in_progress' THEN 1 END) > 0
+      ORDER BY tm.module_order
+      LIMIT 6
+    `;
+
+    return result.rows.map(row => ({
+      moduleOrder: row.module_order,
+      title: row.title,
+      phase: row.phase,
+      completedLessons: row.completed_lessons,
+      totalLessons: row.total_lessons,
+      isCompleted: row.completed_lessons >= row.total_lessons && row.total_lessons > 0,
+      lastActivity: row.last_activity ? new Date(row.last_activity) : null,
+    }));
+  } catch (error) {
+    logger.log('No transformatie module progress found');
+    return [];
+  }
+}
+
 /**
  * 🤖 Haal gecachte AI Snapshot analyse op
  * Dit is de wereldklasse AI-gegenereerde dating profiel analyse
@@ -385,12 +432,13 @@ export async function getIrisContext(userId: number): Promise<IrisContextForProm
 export interface EnrichedIrisContext extends IrisContextForPrompt {
   aiContext: any;
   kickstart?: KickstartOnboardingData | null;
-  transformatie?: TransformatieOnboardingData | null; // 🚀 Transformatie 3.0 onboarding
+  transformatie?: TransformatieOnboardingData | null;
   reflections?: UserReflection[];
-  patterns?: Pattern[]; // 🧠 Iris Memory Magic - detected patterns in reflections
+  patterns?: Pattern[];
   datingLog?: DatingLogActivity[];
   goals?: UserGoals | null;
-  aiSnapshotAnalysis?: SnapshotAIAnalysis | null; // 🤖 AI-powered Dating Snapshot analysis
+  aiSnapshotAnalysis?: SnapshotAIAnalysis | null;
+  moduleProgress?: ModuleProgress[];
 }
 
 /**
@@ -412,7 +460,8 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     reflections,
     datingLogData,
     goalsData,
-    aiSnapshotAnalysis
+    aiSnapshotAnalysis,
+    moduleProgressData
   ] = await Promise.all([
     getIrisContext(userId),
     AIContextManager.getUserContext(userId),
@@ -421,7 +470,8 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     getUserReflections(userId),
     getDatingLogActivity(userId),
     getUserGoals(userId),
-    getAISnapshotAnalysis(userId)
+    getAISnapshotAnalysis(userId),
+    getTransformatieModuleProgress(userId)
   ]);
 
   // 🧠 Detect patterns from reflections (Iris Memory Magic!)
@@ -441,10 +491,11 @@ export async function getEnrichedIrisContext(userId: number): Promise<EnrichedIr
     kickstart: kickstartData,
     transformatie: transformatieData,
     reflections: reflections,
-    patterns: patterns, // 🧠 Iris Memory - top 2 detected patterns
+    patterns: patterns,
     datingLog: datingLogData,
     goals: goalsData,
-    aiSnapshotAnalysis: aiSnapshotAnalysis, // 🤖 AI Snapshot analysis
+    aiSnapshotAnalysis: aiSnapshotAnalysis,
+    moduleProgress: moduleProgressData,
   };
 }
 
@@ -596,6 +647,25 @@ export async function saveIrisConversation(
  * - Dating log (echte dating activiteit)
  * - User goals (jaar/maand/week doelen)
  */
+
+function determineCoachingPhase(
+  kickstart: KickstartOnboardingData | null | undefined,
+  transformatie: TransformatieOnboardingData | null | undefined
+): 'DESIGN' | 'ACTION' | 'SURRENDER' {
+  if (kickstart?.current_day) {
+    if (kickstart.current_day <= 7) return 'DESIGN';
+    if (kickstart.current_day <= 17) return 'ACTION';
+    return 'SURRENDER';
+  }
+  // Transformatie: gebruik biggest_challenge als hint
+  if (transformatie?.biggest_challenge) {
+    const bc = transformatie.biggest_challenge.toLowerCase();
+    if (bc.includes('accepter') || bc.includes('loslat') || bc.includes('verwerk')) return 'SURRENDER';
+    if (bc.includes('actie') || bc.includes('stap') || bc.includes('doe') || bc.includes('profi')) return 'ACTION';
+  }
+  return 'ACTION';
+}
+
 export function buildIrisSystemPrompt(context: EnrichedIrisContext): string {
   const parts: string[] = [];
 
@@ -674,6 +744,29 @@ WAT JE WEET OVER DEZE GEBRUIKER:`);
       if (aiContext.attachmentStyle.relationshipPatterns?.length > 0) {
         parts.push(`- Relatie patronen: ${aiContext.attachmentStyle.relationshipPatterns.slice(0, 2).join('; ')}`);
       }
+    }
+
+    // Hechtingsstijl-specifieke coaching-toon instructies
+    if (aiContext.attachmentStyle?.primaryStyle) {
+      const stijl = aiContext.attachmentStyle.primaryStyle.toLowerCase();
+      const readinessScore = aiContext.emotioneelReadiness?.readinessScore ?? 10;
+
+      let toonInstructie = '';
+      if (stijl.includes('angstig') || stijl.includes('anxious') || stijl.includes('preoccupied')) {
+        toonInstructie = `COACHING TOON (angstige hechtingsstijl): Geef duidelijke, concrete antwoorden — vermijd open einden die twijfel vergroten. Valideer eerst ("Snap ik, dat voelt onzeker"), dan pas advies. Leg het "waarom" uit achter je aanbevelingen. Wees voorspelbaar en consistent in je toon.`;
+      } else if (stijl.includes('vermijdend') || stijl.includes('avoidant') || stijl.includes('dismissing')) {
+        toonInstructie = `COACHING TOON (vermijdende hechtingsstijl): Wees pragmatisch en feitelijk — minder emotionele taal. Geen dwingende vragen of druk. Respecteer autonomie: "Je kunt zelf bepalen of...". Stel max 1 vraag per bericht. Geef ruimte.`;
+      } else if (stijl.includes('gedesorganiseerd') || stijl.includes('disorganized') || stijl.includes('fearful')) {
+        toonInstructie = `COACHING TOON (gedesorganiseerde hechtingsstijl): Extra consistent en voorspelbaar. Kleine stappen. Geen grote confrontaties. Valideer sterk voordat je richting geeft.`;
+      } else {
+        toonInstructie = `COACHING TOON (veilige hechtingsstijl): Directe, warme aanpak. Mag uitdagender zijn — deze persoon kan een spiegel hebben. Balanceer validatie met actiegericht advies.`;
+      }
+
+      if (readinessScore < 4) {
+        toonInstructie += ` ⚠️ LAGE EMOTIONELE READINESS (${readinessScore}/10): Geen "ga lekker daten!"-energie. Focus op zelfkennis, healing en kleine stappen. Geen druk om snel te daten.`;
+      }
+
+      parts.push(`\n${toonInstructie}`);
     }
 
     // 2. WAARDEN KOMPAS (Values)
@@ -1117,6 +1210,33 @@ Dit laat ze voelen dat je hun hele reis hebt gevolgd.`);
     }
   }
 
+  // Transformatie module-voortgang
+  const moduleProgress = context.moduleProgress;
+  if (moduleProgress && moduleProgress.length > 0) {
+    const completed = moduleProgress.filter(m => m.isCompleted);
+    const inProgress = moduleProgress.filter(m => !m.isCompleted);
+
+    parts.push(`\n📚 TRANSFORMATIE MODULE VOORTGANG:`);
+
+    if (completed.length > 0) {
+      const recent = completed.slice(-2); // laatste 2 voltooide
+      recent.forEach(m => {
+        const daysAgo = m.lastActivity
+          ? Math.floor((Date.now() - m.lastActivity.getTime()) / (1000 * 60 * 60 * 24))
+          : null;
+        const when = daysAgo !== null ? (daysAgo === 0 ? 'vandaag' : daysAgo === 1 ? 'gisteren' : `${daysAgo} dagen geleden`) : '';
+        parts.push(`- ✅ Module ${m.moduleOrder}: "${m.title}" (${m.phase})${when ? ` — voltooid ${when}` : ''}`);
+      });
+    }
+
+    if (inProgress.length > 0) {
+      const current = inProgress[0];
+      parts.push(`- 🔄 Bezig: Module ${current.moduleOrder}: "${current.title}" (${current.completedLessons}/${current.totalLessons} lessen)`);
+    }
+
+    parts.push(`Gebruik dit! Vraag hoe het met de module gaat. Verwijs naar inzichten uit voltooide modules.`);
+  }
+
   // Cursus context
   if (context.cursus.les_context) {
     parts.push(`
@@ -1138,14 +1258,14 @@ BELANGRIJKE INZICHTEN DIE DE GEBRUIKER DEELDE:
 ${context.performance.reflectie_inzichten.map(i => `- "${i}"`).join('\n')}`);
   }
 
-  // Recente gesprekken samenvatting
-  if (context.recente_gesprekken.length > 0) {
-    parts.push(`
-RECENTE GESPREKSONDERWERPEN:
-${context.recente_gesprekken.slice(0, 3).map(g => 
-  `- Gebruiker vroeg: "${g.message.substring(0, 50)}..." (${g.sentiment})`
-).join('\n')}`);
-  }
+  // Coaching-fase instructies
+  const coachingFase = determineCoachingPhase(context.kickstart, context.transformatie);
+  const faseInstructies: Record<string, string> = {
+    DESIGN: `COACHING FASE — DESIGN: De gebruiker is nog aan het ontdekken wat ze willen. Wees vraagstellend en verkenend. Help verhelderen, niet pushen. Geen "ga nu daten" — eerst: wat zoek je écht?`,
+    ACTION: `COACHING FASE — ACTION: De gebruiker is klaar voor actie. Wees concreet en actiegericht. Geef kleine, haalbare stappen. Houd ze verantwoordelijk voor wat ze zeiden te gaan doen.`,
+    SURRENDER: `COACHING FASE — SURRENDER: De gebruiker werkt aan acceptatie en loslaten. Wees reflectief en zacht. Focus op wat ze kunnen controleren. Geen druk om te presteren.`,
+  };
+  parts.push(`\n${faseInstructies[coachingFase]}`);
 
   // 🚀 WERELDKLASSE COACHING INSTRUCTIES
   parts.push(`

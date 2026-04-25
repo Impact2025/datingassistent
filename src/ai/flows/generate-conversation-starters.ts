@@ -13,7 +13,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { chatCompletion } from '@/lib/ai-service'; // Import the chatCompletion function from our AI service
+import { cachedChatCompletion } from '@/lib/ai-service';
 
 const GenerateConversationStartersInputSchema = z.object({
   profileText: z.string().describe('The profile text of the potential match.'),
@@ -69,10 +69,10 @@ const generateConversationStartersFlow = ai.defineFlow(
       }
     ];
     
-    const response = await chatCompletion(messages, {
+    const response = await cachedChatCompletion(messages, {
       provider: 'openrouter',
       maxTokens: 500,
-      temperature: 0.7
+      temperature: 0.85
     });
     
     // Parse the JSON response

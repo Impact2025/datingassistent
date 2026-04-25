@@ -2,13 +2,11 @@
 
 import { useState, useTransition, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
-import { Send, Sparkles, Lightbulb, HelpCircle, CheckCircle2, History, Plus, MessageSquare, Heart, Shield, Calendar, User, MoreVertical, Trash2, Download, Copy } from "lucide-react";
+import { Send, Sparkles, HelpCircle, Copy } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
-import { useUser } from "@/providers/user-provider";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -16,189 +14,115 @@ import { useCoachingTracker } from "@/hooks/use-coaching-tracker";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { ToolOnboardingOverlay, useOnboardingOverlay } from "@/components/shared/tool-onboarding-overlay";
 import { getOnboardingSteps, getToolDisplayName } from "@/lib/tool-onboarding-content";
-import { ContextualTooltip } from "@/components/shared/contextual-tooltip";
 import { useToolCompletion } from "@/hooks/use-tool-completion";
 import { useAIContext } from "@/hooks/use-ai-context";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { logger } from '@/lib/logger';
+import { useUser } from "@/providers/user-provider";
 
 type Message = {
   role: "user" | "model";
   content: string;
 };
 
+const DEFAULT_WELCOME: Message = {
+  role: "model",
+  content: "👋 **Hallo! Ik ben Coach Iris, je persoonlijke AI dating coach.**\n\nIk help je met:\n• Dating profiel optimalisatie\n• Gesprekstechnieken en flirten\n• Date planning en advies\n• Omgaan met afwijzing\n• Relatie vragen\n\nStel me gerust je vraag! 💕"
+};
+
 export function ChatCoachTab() {
   const { toast } = useToast();
-  const { user, userProfile } = useUser();
-  const { trackCustomEvent, isFirstTime, isFromOnboarding } = useCoachingTracker('chat-coach');
+  const { userProfile } = useUser();
+  const { trackCustomEvent } = useCoachingTracker('chat-coach');
   const { showOverlay, setShowOverlay } = useOnboardingOverlay('chat-coach');
   const {
-    isCompleted: isActionCompleted,
     markAsCompleted: markCompleted,
-    completedActions = [],
-    progressPercentage = 0,
-    isLoading: progressLoading
   } = useToolCompletion('chat-coach');
 
-  // AI Context integration
-  const { context: aiContext, trackToolUsage, getContextSummary } = useAIContext();
-  
-  // Create progress object for backward compatibility
-  const progress = {
-    completedActions: completedActions?.length || 0,
-    progressPercentage: progressPercentage || 0,
-    actionsCompleted: completedActions || []
-  };
+  const { trackToolUsage } = useAIContext();
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([DEFAULT_WELCOME]);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isResponding, startResponding] = useTransition();
-  const [showHistory, setShowHistory] = useState(false);
-  const [conversations, setConversations] = useState<Array<{id: string, title: string, messages: Message[], timestamp: Date}>>([]);
-  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
+  const [usageLimitReached, setUsageLimitReached] = useState(false);
+  const [usageInfo, setUsageInfo] = useState<{ used: number; limit: number; resetTimeHuman: string } | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Initialize with welcome message and load from localStorage
+  // Gepersonaliseerd welkomstbericht bij terugkeer (eenmalig per sessie)
   useEffect(() => {
-    if (!isInitialized) {
-      try {
-        // Load saved conversations from localStorage
-        const savedConversations = localStorage.getItem('chat_coach_conversations');
-        if (savedConversations) {
-          const parsed = JSON.parse(savedConversations);
-          setConversations(parsed.map((c: any) => ({
-            ...c,
-            timestamp: new Date(c.timestamp)
-          })));
+    if (sessionStorage.getItem('iris_welcomed')) return;
+
+    fetch('/api/iris/welcome')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.welcome) {
+          setMessages([{ role: 'model', content: data.welcome }]);
         }
+        sessionStorage.setItem('iris_welcomed', '1');
+      })
+      .catch(() => {
+        sessionStorage.setItem('iris_welcomed', '1');
+      });
+  }, []);
 
-        // Load current conversation from localStorage
-        const savedMessages = localStorage.getItem('chat_coach_current_messages');
-        if (savedMessages) {
-          const parsed = JSON.parse(savedMessages);
-          setMessages(parsed);
-        } else {
-          // Set welcome message if no saved conversation
-          setMessages([{
-            role: "model",
-            content: "👋 **Hallo! Ik ben Coach Iris, je persoonlijke AI dating coach.**\n\nIk help je met:\n• Dating profiel optimalisatie\n• Gesprekstechnieken en flirten\n• Date planning en advies\n• Omgaan met afwijzing\n• Relatie vragen\n\nStel me gerust je vraag! 💕"
-          }]);
-        }
-      } catch (error) {
-        console.error('Failed to load saved conversations:', error);
-        // Set default welcome message on error
-        setMessages([{
-          role: "model",
-          content: "👋 **Hallo! Ik ben Coach Iris.**\n\nWaarmee kan ik je helpen met dating? 💕"
-        }]);
-      }
-      setIsInitialized(true);
-    }
-  }, [isInitialized]);
-
-  // Save messages to localStorage whenever they change
+  // Auto-scroll
   useEffect(() => {
-    if (isInitialized && messages.length > 0) {
-      try {
-        localStorage.setItem('chat_coach_current_messages', JSON.stringify(messages));
-      } catch (error) {
-        console.error('Failed to save messages:', error);
-      }
-    }
-  }, [messages, isInitialized]);
-
-  // Save conversations to localStorage whenever they change
-  useEffect(() => {
-    if (isInitialized && conversations.length > 0) {
-      try {
-        localStorage.setItem('chat_coach_conversations', JSON.stringify(conversations));
-      } catch (error) {
-        console.error('Failed to save conversations:', error);
-      }
-    }
-  }, [conversations, isInitialized]);
-
-  useEffect(() => {
-    if (scrollAreaRef.current) {
-        // A simple way to scroll to the bottom.
-        // In a real app you might use a library or a more robust solution.
-        setTimeout(() => {
-            const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-            if (viewport) {
-                viewport.scrollTop = viewport.scrollHeight;
-            }
-        }, 100);
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
-  // Listen for tutorial trigger events from parent
+  // Tutorial trigger
   useEffect(() => {
     const handleTutorialTrigger = (event: CustomEvent) => {
-      if (event.detail?.toolId === 'chat') {
-        setShowOverlay(true);
-      }
+      if (event.detail?.toolId === 'chat') setShowOverlay(true);
     };
-
     window.addEventListener('open-tool-tutorial', handleTutorialTrigger as EventListener);
-
-    return () => {
-      window.removeEventListener('open-tool-tutorial', handleTutorialTrigger as EventListener);
-    };
+    return () => window.removeEventListener('open-tool-tutorial', handleTutorialTrigger as EventListener);
   }, []);
 
-
   const handleSendMessage = async () => {
-    if (!currentMessage.trim()) return;
+    if (!currentMessage.trim() || usageLimitReached) return;
 
     const newMessage: Message = { role: "user", content: currentMessage };
-    const newMessages = [...messages, newMessage];
-    setMessages(newMessages);
+    const previousMessages = messages;
+    const updatedMessages = [...messages, newMessage];
+    setMessages(updatedMessages);
     const messageToSend = currentMessage;
     setCurrentMessage("");
 
-    // Track tool usage
     await trackToolUsage('chat-coach');
 
     startResponding(async () => {
       try {
-        // Get user ID from user object
-        const userId = user?.id;
-
-        if (!userId) {
-          throw new Error('Gebruikersprofiel niet gevonden. Log opnieuw in.');
-        }
-
-        // Build conversation history in the format the API expects
-        const conversationHistory = messages.map(msg => ({
-          type: msg.role === 'user' ? 'user' : 'assistant',
-          content: msg.content
-        }));
-
-        const response = await fetch('/api/coach/chat', {
+        const response = await fetch('/api/iris/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             message: messageToSend,
-            userId: userId,
-            conversationHistory: conversationHistory,
+            context_type: 'general',
           }),
         });
 
-        // Handle non-stream errors
-        const contentType = response.headers.get('content-type') || '';
-        if (!response.ok || contentType.includes('application/json')) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.message || `API fout: ${response.status}`);
+        // 429 = daglimiet bereikt (JSON response van iris route)
+        if (response.status === 429) {
+          const data = await response.json();
+          setUsageLimitReached(true);
+          if (data.usageStatus) setUsageInfo(data.usageStatus);
+          toast({
+            title: "Daglimiet bereikt",
+            description: data.message || "Je hebt je dagelijkse limiet bereikt.",
+            variant: "destructive",
+          });
+          setMessages(previousMessages);
+          return;
         }
 
-        // Streaming: add placeholder and stream chunks into it
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.message || `API fout: ${response.status}`);
+        }
+
+        // Streaming response verwerken
         setMessages(prev => [...prev, { role: 'model', content: '' }]);
 
         const reader = response.body!.getReader();
@@ -220,9 +144,17 @@ export function ChatCoachTab() {
               if (event.type === 'chunk') {
                 setMessages(prev => {
                   const updated = [...prev];
-                  updated[updated.length - 1] = { role: 'model', content: updated[updated.length - 1].content + event.content };
+                  updated[updated.length - 1] = {
+                    role: 'model',
+                    content: updated[updated.length - 1].content + event.content
+                  };
                   return updated;
                 });
+              } else if (event.type === 'done') {
+                if (event.usageStatus) {
+                  setUsageInfo(event.usageStatus);
+                  if (!event.usageStatus.allowed) setUsageLimitReached(true);
+                }
               } else if (event.type === 'error') {
                 throw new Error(event.error);
               }
@@ -233,272 +165,89 @@ export function ChatCoachTab() {
           }
         }
 
-        // Track completion milestones in database
-        const userMessageCount = newMessages.filter(m => m.role === 'user').length;
-        if (userMessageCount === 1) {
-          await markCompleted('first_question', {
-            messageLength: currentMessage.length,
-            timestamp: new Date().toISOString()
-          });
-        }
-        if (userMessageCount >= 3) {
-          await markCompleted('conversation_continued', {
-            messageCount: userMessageCount,
-            timestamp: new Date().toISOString()
-          });
-        }
-        if (userMessageCount >= 5) {
-          await markCompleted('practice_completed', {
-            messageCount: userMessageCount,
-            timestamp: new Date().toISOString()
-          });
-        }
+        // Milestone tracking
+        const userCount = updatedMessages.filter(m => m.role === 'user').length;
+        if (userCount === 1) await markCompleted('first_question', { timestamp: new Date().toISOString() });
+        if (userCount >= 3) await markCompleted('conversation_continued', { messageCount: userCount, timestamp: new Date().toISOString() });
+        if (userCount >= 5) await markCompleted('practice_completed', { messageCount: userCount, timestamp: new Date().toISOString() });
 
-        // Track chat message
-        await trackCustomEvent('chat_message_sent', {
-          messageLength: currentMessage.length,
-          conversationType: 'practice'
-        });
+        await trackCustomEvent('chat_message_sent', { messageLength: messageToSend.length, conversationType: 'general' });
+
       } catch (error) {
-        console.error('Chat coach error:', error);
+        console.error('Coach Iris error:', error);
 
-        // Provide specific error messages based on error type
         let errorTitle = "Fout";
-        let errorDescription = "De AI-coach kon niet antwoorden. Probeer het opnieuw.";
+        let errorDescription = "Coach Iris kon niet antwoorden. Probeer het opnieuw.";
 
         if (error instanceof Error) {
-          if (error.message.includes('Gebruikersprofiel')) {
-            errorTitle = "Geen gebruikersprofiel";
-            errorDescription = "Je bent niet ingelogd. Ververs de pagina en log opnieuw in.";
-          } else if (error.message.includes('401') || error.message.includes('403')) {
-            errorTitle = "Authenticatie fout";
-            errorDescription = "Je sessie is verlopen. Log opnieuw in.";
-          } else if (error.message.includes('429')) {
-            errorTitle = "Te veel verzoeken";
-            errorDescription = "Je hebt te veel berichten verstuurd. Wacht even voordat je verder gaat.";
-          } else if (error.message.includes('500') || error.message.includes('502') || error.message.includes('503')) {
-            errorTitle = "Server fout";
-            errorDescription = "Er is een probleem met de server. We werken eraan - probeer het over een minuut opnieuw.";
+          if (error.message.includes('401') || error.message.includes('403')) {
+            errorTitle = "Sessie verlopen";
+            errorDescription = "Log opnieuw in.";
           } else if (error.message.includes('network') || error.message.includes('fetch')) {
             errorTitle = "Netwerkfout";
-            errorDescription = "Controleer je internetverbinding en probeer opnieuw.";
-          } else if (error.message.includes('API fout')) {
-            errorDescription = error.message;
+            errorDescription = "Controleer je internetverbinding.";
           }
         }
 
-        toast({
-          title: errorTitle,
-          description: errorDescription,
-          variant: "destructive",
-        });
-
-        // Remove the user's message if the API call fails to maintain conversation integrity
-        setMessages(messages);
+        toast({ title: errorTitle, description: errorDescription, variant: "destructive" });
+        setMessages(previousMessages);
       }
     });
   };
-  
+
   const getUserInitials = () => {
     if (!userProfile?.name) return 'U';
     return userProfile.name.charAt(0).toUpperCase();
-  }
-
-  // Auto-scroll to bottom when new messages arrive
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages]);
-
-  const startNewConversation = () => {
-    // Save current conversation if it has meaningful content
-    if (messages.length > 1) {
-      // Get first user message for title
-      const firstUserMessage = messages.find(m => m.role === 'user');
-      const title = firstUserMessage
-        ? firstUserMessage.content.slice(0, 50) + (firstUserMessage.content.length > 50 ? "..." : "")
-        : "Nieuwe chat";
-
-      const newConversation = {
-        id: Date.now().toString(),
-        title,
-        messages: [...messages],
-        timestamp: new Date()
-      };
-      setConversations(prev => [newConversation, ...prev]);
-    }
-
-    // Start fresh with welcome message
-    setMessages([{
-      role: "model",
-      content: "👋 **Hallo! Ik ben Coach Iris.**\n\nWaar kan ik je mee helpen? Stel gerust je vraag over dating! 💕"
-    }]);
-    setCurrentConversationId(null);
-    setShowHistory(false);
-
-    // Clear localStorage for current messages
-    try {
-      localStorage.removeItem('chat_coach_current_messages');
-    } catch (error) {
-      console.error('Failed to clear current messages:', error);
-    }
-  };
-
-  const loadConversation = (conversationId: string) => {
-    const conversation = conversations.find(c => c.id === conversationId);
-    if (conversation) {
-      setMessages(conversation.messages);
-      setCurrentConversationId(conversationId);
-      setShowHistory(false);
-    }
-  };
-
-  const deleteConversation = (conversationId: string) => {
-    setConversations(prev => prev.filter(c => c.id !== conversationId));
-    if (currentConversationId === conversationId) {
-      setMessages([{
-        role: "model",
-        content: "👋 **Hallo! Ik ben Coach Iris.**\n\nWaar kan ik je mee helpen? Stel gerust je vraag over dating! 💕"
-      }]);
-      setCurrentConversationId(null);
-      // Clear localStorage
-      try {
-        localStorage.removeItem('chat_coach_current_messages');
-      } catch (error) {
-        console.error('Failed to clear messages:', error);
-      }
-    }
   };
 
   return (
     <>
-      {/* Onboarding Overlay */}
       <ToolOnboardingOverlay
         toolName="chat-coach"
         displayName={getToolDisplayName('chat-coach')}
         steps={getOnboardingSteps('chat-coach')}
         open={showOverlay}
         onOpenChange={setShowOverlay}
-        onComplete={() => logger.log('Chat Coach onboarding completed!')}
+        onComplete={() => {}}
       />
 
-      {/* Main Chat Container */}
       <div className="flex h-full bg-background rounded-xl md:rounded-lg border overflow-hidden" style={{ maxHeight: 'calc(100dvh - 180px)' }}>
-        {/* History Sidebar */}
-        {showHistory && (
-          <div className="w-80 border-r bg-muted/30 flex flex-col">
-            <div className="p-4 border-b">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold">Chat History</h3>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowHistory(false)}
-                  className="h-8 w-8 p-0"
-                >
-                  ✕
-                </Button>
-              </div>
-              <Button
-                onClick={startNewConversation}
-                className="w-full gap-2"
-                size="sm"
-              >
-                <Plus className="w-4 h-4" />
-                Nieuwe Chat
-              </Button>
-            </div>
-
-            <ScrollArea className="flex-1">
-              <div className="p-2 space-y-1">
-                {conversations.map((conversation) => (
-                  <div
-                    key={conversation.id}
-                    className={`p-3 rounded-lg cursor-pointer hover:bg-accent transition-colors ${
-                      currentConversationId === conversation.id ? 'bg-accent' : ''
-                    }`}
-                    onClick={() => loadConversation(conversation.id)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{conversation.title}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {conversation.timestamp.toLocaleDateString('nl-NL')}
-                        </p>
-                      </div>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100">
-                            <MoreVertical className="h-3 w-3" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => deleteConversation(conversation.id)}>
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Verwijderen
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          </div>
-        )}
-
-        {/* Main Chat Area */}
         <div className="flex-1 flex flex-col">
-          {/* Header - Hidden on Mobile to Save Space */}
+          {/* Header */}
           <div className="hidden md:flex items-center justify-between p-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="flex items-center gap-3">
               <Avatar className="h-8 w-8 bg-primary">
-                <AvatarFallback>
-                  <Sparkles className="h-4 w-4" />
-                </AvatarFallback>
+                <AvatarFallback><Sparkles className="h-4 w-4" /></AvatarFallback>
               </Avatar>
               <div>
                 <h2 className="text-lg font-semibold">Coach Iris</h2>
                 <p className="text-xs text-muted-foreground">Altijd beschikbaar • Persoonlijk advies</p>
               </div>
             </div>
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowHistory(!showHistory)}
-                className="gap-2"
-              >
-                <History className="w-4 h-4" />
-                <span className="hidden sm:inline">History</span>
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowOverlay(true)}
-                className="gap-2"
-              >
-                <HelpCircle className="w-4 h-4" />
-                <span className="hidden sm:inline">Help</span>
-              </Button>
-            </div>
+            <Button variant="outline" size="sm" onClick={() => setShowOverlay(true)} className="gap-2">
+              <HelpCircle className="w-4 h-4" />
+              <span className="hidden sm:inline">Help</span>
+            </Button>
           </div>
 
-          {/* Messages Area */}
-          <ScrollArea className={`flex-1 ${showHistory ? 'md:p-4' : 'p-4'}`} ref={scrollAreaRef}>
-            <div className={`${showHistory ? 'max-w-4xl mx-auto' : 'max-w-4xl mx-auto md:max-w-4xl'} space-y-6`}>
+          {/* Daglimiet melding */}
+          {usageLimitReached && usageInfo && (
+            <Alert className="m-4 mb-0">
+              <AlertTitle>Daglimiet bereikt</AlertTitle>
+              <AlertDescription>
+                Je hebt {usageInfo.used}/{usageInfo.limit} berichten gebruikt. Beschikbaar over: {usageInfo.resetTimeHuman}.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Berichten */}
+          <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+            <div className="max-w-4xl mx-auto space-y-6">
               {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex items-start gap-4 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
+                <div key={index} className={`flex items-start gap-4 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {message.role === 'model' && (
                     <Avatar className="h-8 w-8 bg-primary flex-shrink-0 mt-1">
-                      <AvatarFallback>
-                        <Sparkles className="h-4 w-4" />
-                      </AvatarFallback>
+                      <AvatarFallback><Sparkles className="h-4 w-4" /></AvatarFallback>
                     </Avatar>
                   )}
 
@@ -524,9 +273,7 @@ export function ChatCoachTab() {
                               h3: ({ children }) => <h3 className="font-semibold mt-4 mb-2 text-base text-gray-900 md:text-foreground">{children}</h3>,
                               h4: ({ children }) => <h4 className="font-semibold mt-3 mb-1 text-sm text-gray-900 md:text-foreground">{children}</h4>,
                               blockquote: ({ children }) => (
-                                <blockquote className="border-l-4 border-primary pl-4 italic text-gray-700 md:text-muted-foreground my-2">
-                                  {children}
-                                </blockquote>
+                                <blockquote className="border-l-4 border-primary pl-4 italic text-gray-700 md:text-muted-foreground my-2">{children}</blockquote>
                               ),
                             }}
                           >
@@ -536,12 +283,10 @@ export function ChatCoachTab() {
                       )}
                     </div>
 
-                    {/* Message Actions for AI responses */}
-                    {message.role === 'model' && (
+                    {message.role === 'model' && message.content && (
                       <div className="flex items-center gap-2 mt-2 ml-12">
                         <Button
-                          variant="ghost"
-                          size="sm"
+                          variant="ghost" size="sm"
                           className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
                           onClick={() => navigator.clipboard.writeText(message.content)}
                         >
@@ -560,20 +305,17 @@ export function ChatCoachTab() {
                 </div>
               ))}
 
-              {/* Typing Indicator */}
               {isResponding && (
                 <div className="flex items-start gap-4 justify-start">
                   <Avatar className="h-8 w-8 bg-primary flex-shrink-0">
-                    <AvatarFallback>
-                      <Sparkles className="h-4 w-4" />
-                    </AvatarFallback>
+                    <AvatarFallback><Sparkles className="h-4 w-4" /></AvatarFallback>
                   </Avatar>
                   <div className="bg-muted border rounded-2xl px-4 py-3">
                     <div className="flex items-center gap-1">
                       <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                       </div>
                       <span className="text-sm text-muted-foreground ml-2">Coach Iris typt...</span>
                     </div>
@@ -585,169 +327,95 @@ export function ChatCoachTab() {
             </div>
           </ScrollArea>
 
-          {/* Input Area - Fixed at Bottom */}
+          {/* Input */}
           <div className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            {/* Mobile Layout - Full Width */}
+            {/* Mobile */}
             <div className="md:hidden">
-              {/* Quick Suggestions - Only show when no messages */}
               {messages.length <= 1 && (
                 <div className="px-4 pt-4">
-                  <div className="mb-3">
-                    <p className="text-sm font-medium text-muted-foreground mb-3">Voorbeelden om te beginnen:</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCurrentMessage("Hoe maak ik mijn dating profiel aantrekkelijker?")}
-                        className="text-xs h-auto py-2 px-3"
-                      >
-                        Profiel verbeteren
+                  <p className="text-sm font-medium text-muted-foreground mb-3">Voorbeelden om te beginnen:</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      ["Profiel verbeteren", "Hoe maak ik mijn dating profiel aantrekkelijker?"],
+                      ["Date gesprekken", "Wat zijn goede gespreksonderwerpen voor een eerste date?"],
+                      ["Afwijzing verwerken", "Hoe ga ik om met afwijzing?"],
+                      ["App advies", "Welke dating app past bij mij?"],
+                    ].map(([label, msg]) => (
+                      <Button key={label} variant="outline" size="sm" onClick={() => setCurrentMessage(msg)} className="text-xs h-auto py-2 px-3">
+                        {label}
                       </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCurrentMessage("Wat zijn goede gespreksonderwerpen voor een eerste date?")}
-                        className="text-xs h-auto py-2 px-3"
-                      >
-                        Date gesprekken
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCurrentMessage("Hoe ga ik om met afwijzing?")}
-                        className="text-xs h-auto py-2 px-3"
-                      >
-                        Afwijzing verwerken
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCurrentMessage("Welke dating app past bij mij?")}
-                        className="text-xs h-auto py-2 px-3"
-                      >
-                        App advies
-                      </Button>
-                    </div>
+                    ))}
                   </div>
                 </div>
               )}
-
-              {/* Input Field - Compact when messages exist */}
               <div className={`px-4 ${messages.length <= 1 ? 'pt-2 pb-4' : 'py-3'}`}>
                 <div className="flex items-end gap-2">
-                  <div className="flex-1">
-                    <Textarea
-                      value={currentMessage}
-                      onChange={(e) => setCurrentMessage(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && !isResponding && handleSendMessage()}
-                      placeholder="Stel je vraag aan de dating coach..."
-                      className={`w-full resize-none border-0 shadow-none focus:ring-0 bg-coral-50/50 border-coral-200/50 text-base leading-relaxed placeholder:text-muted-foreground/70 rounded-2xl px-4 ${
-                        messages.length <= 1 ? 'min-h-[80px] py-3' : 'min-h-[60px] py-2'
-                      }`}
-                      disabled={isResponding}
-                      rows={messages.length <= 1 ? 2 : 1}
-                    />
-                  </div>
-
-                  <Button
-                    onClick={handleSendMessage}
-                    disabled={isResponding || !currentMessage.trim()}
-                    size="lg"
-                    className="bg-primary hover:bg-primary/90 h-12 w-12 rounded-full p-0 flex-shrink-0"
-                  >
-                    {isResponding ? (
-                      <LoadingSpinner />
-                    ) : (
-                      <Send className="h-5 w-5" />
-                    )}
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-                  <span>Druk op Enter om te versturen</span>
-                  <span className="text-muted-foreground/70">
-                    Coach Iris • Altijd beschikbaar
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop Layout */}
-            <div className="hidden md:block max-w-4xl mx-auto">
-              {/* Quick Suggestions - Only show when no conversation or first message */}
-              {messages.length <= 1 && (
-                <div className="mb-4">
-                  <p className="text-sm font-medium text-muted-foreground mb-3">Voorbeelden om te beginnen:</p>
-                  <div className="flex flex-wrap gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentMessage("Hoe maak ik mijn dating profiel aantrekkelijker?")}
-                      className="text-xs"
-                    >
-                      Profiel verbeteren
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentMessage("Wat zijn goede gespreksonderwerpen voor een eerste date?")}
-                      className="text-xs"
-                    >
-                      Date gesprekken
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentMessage("Hoe ga ik om met afwijzing?")}
-                      className="text-xs"
-                    >
-                      Afwijzing verwerken
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentMessage("Welke dating app past bij mij?")}
-                      className="text-xs"
-                    >
-                      App advies
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {/* Input Field */}
-              <div className="flex items-end gap-3">
-                <div className="flex-1">
                   <Textarea
                     value={currentMessage}
                     onChange={(e) => setCurrentMessage(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && !isResponding && handleSendMessage()}
                     placeholder="Stel je vraag aan de dating coach..."
-                    className="min-h-[60px] max-h-[200px] resize-none border-0 shadow-none focus:ring-0 bg-coral-50/50 border-coral-200/50 text-base leading-relaxed placeholder:text-muted-foreground/70"
-                    disabled={isResponding}
-                    rows={1}
+                    className={`w-full resize-none border-0 shadow-none focus:ring-0 bg-coral-50/50 border-coral-200/50 text-base leading-relaxed placeholder:text-muted-foreground/70 rounded-2xl px-4 ${messages.length <= 1 ? 'min-h-[80px] py-3' : 'min-h-[60px] py-2'}`}
+                    disabled={isResponding || usageLimitReached}
+                    rows={messages.length <= 1 ? 2 : 1}
                   />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={isResponding || !currentMessage.trim() || usageLimitReached}
+                    size="lg"
+                    className="bg-primary hover:bg-primary/90 h-12 w-12 rounded-full p-0 flex-shrink-0"
+                  >
+                    {isResponding ? <LoadingSpinner /> : <Send className="h-5 w-5" />}
+                  </Button>
                 </div>
+                <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+                  <span>Druk op Enter om te versturen</span>
+                  <span className="text-muted-foreground/70">Coach Iris • Altijd beschikbaar</span>
+                </div>
+              </div>
+            </div>
 
+            {/* Desktop */}
+            <div className="hidden md:block max-w-4xl mx-auto p-4">
+              {messages.length <= 1 && (
+                <div className="mb-4">
+                  <p className="text-sm font-medium text-muted-foreground mb-3">Voorbeelden om te beginnen:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      ["Profiel verbeteren", "Hoe maak ik mijn dating profiel aantrekkelijker?"],
+                      ["Date gesprekken", "Wat zijn goede gespreksonderwerpen voor een eerste date?"],
+                      ["Afwijzing verwerken", "Hoe ga ik om met afwijzing?"],
+                      ["App advies", "Welke dating app past bij mij?"],
+                    ].map(([label, msg]) => (
+                      <Button key={label} variant="outline" size="sm" onClick={() => setCurrentMessage(msg)} className="text-xs">
+                        {label}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div className="flex items-end gap-3">
+                <Textarea
+                  value={currentMessage}
+                  onChange={(e) => setCurrentMessage(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && !isResponding && handleSendMessage()}
+                  placeholder="Stel je vraag aan de dating coach..."
+                  className="min-h-[60px] max-h-[200px] resize-none border-0 shadow-none focus:ring-0 bg-coral-50/50 border-coral-200/50 text-base leading-relaxed placeholder:text-muted-foreground/70"
+                  disabled={isResponding || usageLimitReached}
+                  rows={1}
+                />
                 <Button
                   onClick={handleSendMessage}
-                  disabled={isResponding || !currentMessage.trim()}
+                  disabled={isResponding || !currentMessage.trim() || usageLimitReached}
                   size="lg"
                   className="px-4 bg-primary hover:bg-primary/90 h-12 w-12 rounded-full p-0 flex-shrink-0"
                 >
-                  {isResponding ? (
-                    <LoadingSpinner />
-                  ) : (
-                    <Send className="h-5 w-5" />
-                  )}
+                  {isResponding ? <LoadingSpinner /> : <Send className="h-5 w-5" />}
                 </Button>
               </div>
-
               <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
                 <span>Druk op Enter om te versturen</span>
-                <span className="text-muted-foreground/70">
-                  Coach Iris • Altijd beschikbaar
-                </span>
+                <span className="text-muted-foreground/70">Coach Iris • Altijd beschikbaar</span>
               </div>
             </div>
           </div>

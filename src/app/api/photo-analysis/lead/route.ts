@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
 import { trackFeatureUsage } from '@/lib/usage-tracking';
 import { logger } from '@/lib/logger';
+import { OPENROUTER_MODELS } from '@/lib/openrouter';
 
 export const dynamic = 'force-dynamic';
 
@@ -170,7 +171,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
         'X-Title': 'DatingAssistent Lead Photo Analysis'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3-haiku:beta',
+        model: OPENROUTER_MODELS.CLAUDE_HAIKU,
         messages: [
           {
             role: 'user',

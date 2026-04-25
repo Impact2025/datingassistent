@@ -1,7 +1,8 @@
 import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { openRouter, OPENROUTER_MODELS } from '@/lib/openrouter';
+import { OPENROUTER_MODELS } from '@/lib/openrouter';
+import { cachedChatCompletion } from '@/lib/ai-service';
 
 // POST: Start new assessment or submit responses
 export async function POST(request: NextRequest) {
@@ -791,13 +792,9 @@ BELANGRIJK:
 - Focus op wat WEL kan, niet op beperkingen`;
 
   try {
-    const response = await openRouter.createChatCompletion(
-      OPENROUTER_MODELS.CLAUDE_35_HAIKU,
+    const response = await cachedChatCompletion(
       [{ role: 'user', content: prompt }],
-      {
-        temperature: 0.7,
-        max_tokens: 2000
-      }
+      { model: OPENROUTER_MODELS.CLAUDE_35_HAIKU, temperature: 0.7, maxTokens: 2000 }
     );
 
     // Try to parse the JSON response

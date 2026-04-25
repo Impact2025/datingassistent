@@ -129,7 +129,7 @@ Iris: "Weinig matches betekent bijna altijd: profielfoto's of bio. Welke foto st
           for await (const chunk of client.streamChatCompletion(
             OPENROUTER_MODELS.CLAUDE_35_SONNET,
             messages,
-            { temperature: 0.7, max_tokens: 600 }
+            { temperature: 0.7, max_tokens: 600, enableFallback: true }
           )) {
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`));
           }

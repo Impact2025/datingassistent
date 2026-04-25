@@ -5,6 +5,7 @@ import { hasActiveSubscription } from '@/lib/subscription';
 import { getClientIdentifier, rateLimitExpensiveAI, createRateLimitHeaders } from '@/lib/rate-limit';
 import { trackFeatureUsage } from '@/lib/usage-tracking';
 import { sql } from '@vercel/postgres';
+import { OPENROUTER_MODELS } from '@/lib/openrouter';
 
 export const dynamic = 'force-dynamic';
 
@@ -186,7 +187,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
         'X-Title': 'DatingAssistent Photo Analysis'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3-haiku:beta', // Better analysis quality than Gemini
+        model: OPENROUTER_MODELS.CLAUDE_HAIKU,
         messages: [
           {
             role: 'user',

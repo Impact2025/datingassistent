@@ -44,6 +44,14 @@ export class OpenRouterClient {
   private apiKey: string;
   private baseUrl = 'https://openrouter.ai/api/v1';
 
+  private readonly FALLBACK_CHAIN: Record<string, string[]> = {
+    'anthropic/claude-haiku-4-5': ['openai/gpt-3.5-turbo'],
+    'anthropic/claude-sonnet-4-5': ['anthropic/claude-haiku-4-5', 'openai/gpt-4-turbo'],
+    'anthropic/claude-opus-4-5': ['anthropic/claude-sonnet-4-5', 'openai/gpt-4-turbo'],
+  };
+
+  private readonly RETRYABLE_STATUS_CODES = [429, 500, 502, 503, 524];
+
   constructor(apiKey?: string) {
     this.apiKey = apiKey || process.env.OPENROUTER_API_KEY || '';
 
@@ -70,24 +78,50 @@ export class OpenRouterClient {
     options: {
       max_tokens?: number;
       temperature?: number;
+      enableFallback?: boolean;
     } = {}
   ): AsyncGenerator<string, void, unknown> {
-    const requestBody = { model, messages, ...options, stream: true };
+    const { enableFallback, ...streamOptions } = options;
+    const modelsToTry = enableFallback
+      ? [model, ...(this.FALLBACK_CHAIN[model] ?? [])]
+      : [model];
 
-    const response = await fetch(`${this.baseUrl}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://datingassistent.nl',
-        'X-Title': 'DatingAssistent',
-      },
-      body: JSON.stringify(requestBody),
-    });
+    let response: Response | null = null;
+    let lastError: Error | null = null;
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`OpenRouter streaming error: ${response.status} - ${errorText}`);
+    for (const currentModel of modelsToTry) {
+      if (lastError) {
+        console.warn(`⚠️ Streaming model ${modelsToTry[modelsToTry.indexOf(currentModel) - 1]} gefaald, schakel naar fallback: ${currentModel}`);
+      }
+
+      const requestBody = { model: currentModel, messages, ...streamOptions, stream: true };
+      const attempt = await fetch(`${this.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://datingassistent.nl',
+          'X-Title': 'DatingAssistent',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!attempt.ok) {
+        const errorText = await attempt.text();
+        const err = new Error(`OpenRouter streaming error: ${attempt.status} - ${errorText}`);
+        if (enableFallback && this.RETRYABLE_STATUS_CODES.includes(attempt.status)) {
+          lastError = err;
+          continue;
+        }
+        throw err;
+      }
+
+      response = attempt;
+      break;
+    }
+
+    if (!response) {
+      throw lastError ?? new Error('Alle streaming modellen in fallback-keten gefaald');
     }
 
     const reader = response.body?.getReader();
@@ -133,6 +167,7 @@ export class OpenRouterClient {
       top_p?: number;
       frequency_penalty?: number;
       presence_penalty?: number;
+      enableFallback?: boolean;
     } = {}
   ): Promise<string> {
     // For development with fallback key, return mock response
@@ -141,44 +176,73 @@ export class OpenRouterClient {
       return `Dit is een mock response voor development. Het echte AI model zou hier een nuttige dating tip geven gebaseerd op je input. In productie zou dit een echte AI response zijn van ${model}.`;
     }
 
-    const requestBody: OpenRouterRequest = {
-      model,
-      messages,
-      ...options,
-    };
+    const { enableFallback, ...apiOptions } = options;
+    const modelsToTry = enableFallback
+      ? [model, ...(this.FALLBACK_CHAIN[model] ?? [])]
+      : [model];
 
-    try {
-      const response = await fetch(`${this.baseUrl}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://datingassistent.nl',
-          'X-Title': 'DatingAssistent',
-        },
-        body: JSON.stringify(requestBody),
-      });
+    let lastError: Error | null = null;
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`OpenRouter API error: ${response.status} - ${errorText}`);
+    for (const currentModel of modelsToTry) {
+      if (lastError) {
+        console.warn(`⚠️ Model ${modelsToTry[modelsToTry.indexOf(currentModel) - 1]} gefaald, schakel naar fallback: ${currentModel}`);
       }
 
-      const data: OpenRouterResponse = await response.json();
+      const requestBody: OpenRouterRequest = {
+        model: currentModel,
+        messages,
+        ...apiOptions,
+      };
 
-      if (!data.choices || data.choices.length === 0) {
-        throw new Error('Geen response ontvangen van OpenRouter');
-      }
+      try {
+        const response = await fetch(`${this.baseUrl}/chat/completions`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${this.apiKey}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': 'https://datingassistent.nl',
+            'X-Title': 'DatingAssistent',
+          },
+          body: JSON.stringify(requestBody),
+        });
 
-      return data.choices[0].message.content;
-    } catch (error) {
-      // In development, provide a fallback response instead of failing
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('⚠️ OpenRouter API call failed in development, using fallback response:', error);
-        return `Dit is een fallback response voor development mode. Het AI model zou normaal gesproken een nuttige dating aanbeveling geven. Probeer het opnieuw in productie met een geldige API key.`;
+        if (!response.ok) {
+          const errorText = await response.text();
+          const err = new Error(`OpenRouter API error: ${response.status} - ${errorText}`);
+          if (enableFallback && this.RETRYABLE_STATUS_CODES.includes(response.status)) {
+            lastError = err;
+            continue;
+          }
+          throw err;
+        }
+
+        const data: OpenRouterResponse = await response.json();
+
+        if (!data.choices || data.choices.length === 0) {
+          throw new Error('Geen response ontvangen van OpenRouter');
+        }
+
+        return data.choices[0].message.content;
+      } catch (error) {
+        if (error instanceof Error && enableFallback && lastError !== error) {
+          lastError = error;
+          continue;
+        }
+        // In development, provide a fallback response instead of failing
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('⚠️ OpenRouter API call failed in development, using fallback response:', error);
+          return `Dit is een fallback response voor development mode. Het AI model zou normaal gesproken een nuttige dating aanbeveling geven. Probeer het opnieuw in productie met een geldige API key.`;
+        }
+        throw error;
       }
-      throw error;
     }
+
+    // All models in fallback chain exhausted
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('⚠️ Alle fallback modellen gefaald in development mode');
+      return `Dit is een fallback response voor development mode. Alle modellen gefaald.`;
+    }
+    throw lastError ?? new Error('Alle modellen in fallback-keten gefaald');
   }
 }
 
@@ -220,19 +284,24 @@ export const openRouter: OpenRouterClient = new Proxy({} as OpenRouterClient, {
  * Beschikbare modellen via OpenRouter
  */
 export const OPENROUTER_MODELS = {
-  // Claude modellen (Anthropic) — OpenRouter IDs
-  CLAUDE_35_HAIKU: 'anthropic/claude-sonnet-4.6',
-  CLAUDE_35_SONNET: 'anthropic/claude-sonnet-4.6',
-  CLAUDE_SONNET: 'anthropic/claude-sonnet-4.6',
-  CLAUDE_HAIKU: 'anthropic/claude-sonnet-4.6',
-  CLAUDE_3_HAIKU: 'anthropic/claude-sonnet-4.6',
+  // Claude Haiku — snel en goedkoop, voor analyse en enkelvoudige vragen
+  CLAUDE_HAIKU: 'anthropic/claude-haiku-4-5',
+  CLAUDE_3_HAIKU: 'anthropic/claude-haiku-4-5',
+  CLAUDE_35_HAIKU: 'anthropic/claude-haiku-4-5',
 
-  // GPT modellen (OpenAI)
+  // Claude Sonnet — balans kwaliteit/snelheid, voor coaching en profielgeneratie
+  CLAUDE_SONNET: 'anthropic/claude-sonnet-4-5',
+  CLAUDE_35_SONNET: 'anthropic/claude-sonnet-4-5',
+
+  // Claude Opus — hoogste kwaliteit, beschikbaar voor toekomstig gebruik
+  CLAUDE_OPUS: 'anthropic/claude-opus-4-5',
+
+  // GPT modellen (OpenAI) — fallback
   GPT_4_TURBO: 'openai/gpt-4-turbo',
   GPT_4: 'openai/gpt-4',
   GPT_35_TURBO: 'openai/gpt-3.5-turbo',
 
-  // Gemini modellen (Google)
+  // Gemini modellen (Google) — fallback
   GEMINI_PRO: 'google/gemini-pro',
   GEMINI_PRO_VISION: 'google/gemini-pro-vision',
 } as const;

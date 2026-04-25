@@ -318,7 +318,10 @@
       "Bash(sed -i 's/^date: \"2026-04-22\"/date: \"2026-02-27\"/' content/kennisbank/zelfvertrouwen/index.md)",
       "Bash(sort -t'\"' -k2)",
       "WebSearch",
-      "WebFetch(domain:openrouter.ai)"
+      "WebFetch(domain:openrouter.ai)",
+      "Bash(dotenv *)",
+      "Bash(npx dotenv-cli *)",
+      "Bash(POSTGRES_URL=\"postgresql://neondb_owner:npg_NEiT86cutdAL@ep-frosty-sea-ag5u6igd-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&pgbouncer=true&connect_timeout=15\" npx tsx *)"
     ],
     "deny": [],
     "ask": []

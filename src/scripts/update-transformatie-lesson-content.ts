@@ -2,6 +2,10 @@
  * Update Transformatie 3.0 - Lesson-specific reflectie & content
  * Run: npx tsx src/scripts/update-transformatie-lesson-content.ts
  */
+import { config } from 'dotenv';
+import { resolve } from 'path';
+config({ path: resolve(process.cwd(), '.env.local') });
+
 import { sql } from '@vercel/postgres';
 const log = (...args: any[]) => console.log(...args);
 
@@ -128,7 +132,7 @@ const lessons: LessonUpdate[] = [
     reflectie: {
       spiegel: "Wat verraste je in de resultaten van de Hechtingsstijl Scan? Wat klopte precies?",
       identiteit: "Hoe heeft jouw hechtingsstijl je geholpen én tegengehouden in de liefde?",
-      actie: "Schrijf één situatie op waarbij je hechtingsstijl een relatie saboteerde — wat had je anders kunnen doen?",
+      actie: "Vertel een vriend of vriendin welke hechtingsstijl jij herkende bij jezelf — vraag of zij dit patroon ook bij jou zien.",
     },
     content: {
       takeaways: [
@@ -144,7 +148,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 2, lessonOrder: 4,
     reflectie: {
       spiegel: "Welk specifiek hechtingsgedrag wil jij als eerste veranderen? Wat maakt precies dit het meest urgent?",
-      identiteit: "Hoe zou jij reageren op intieme situaties als je een veilige hechtingsstijl had?",
+      identiteit: "Welke concrete gewoonte wil jij opbouwen om bewuster en kalmer te reageren als intimiteit spanning oproept?",
       actie: "Kies één hechtings-trigger en schrijf je nieuwe, bewuste reactie erop.",
     },
     content: {
@@ -236,25 +240,25 @@ const lessons: LessonUpdate[] = [
   {
     moduleOrder: 4, lessonOrder: 1,
     reflectie: {
-      spiegel: "Op een schaal van 1-10: hoe uitgeput ben jij op dit moment van het daten? Wat zijn de symptomen bij jou?",
-      identiteit: "Wat probeert jouw vermoeidheid van het daten je te vertellen over wat jij écht nodig hebt?",
-      actie: "Neem de komende 48 uur bewust geen nieuwe matches aan — observeer wat je voelt.",
+      spiegel: "Beschrijf jouw datinggedrag van de afgelopen 6 maanden in drie woorden — wat zeggen die woorden over jou?",
+      identiteit: "Welke datinggewoonten heb jij aangenomen die eigenlijk meer bij anderen passen dan bij jou?",
+      actie: "Zet je drie meest gebruikte dating apps naast elkaar: welke geeft je energie en welke kost je energie? Verwijder er vandaag één die netto energie kost.",
     },
     content: {
       takeaways: [
-        "Dating burnout heeft drie fasen: enthousiasme → cynisme → uitputting",
-        "Het brein ervaart swipe-beslissingen als echte sociale afwijzingen — dat is vermoeiend",
-        "Recuperatie vereist actief stoppen, niet 'even rust nemen'",
+        "Er is geen universele datingstrategie — de enige strategie die werkt is de strategie die bij jou past",
+        "Bewust daten begint met kennis van jezelf als dater: je stijl, je ritme, je energie",
+        "Apps, coaches en vrienden geven tips vanuit hun perspectief — jij bent de enige die weet wat bij jou past",
       ],
-      objectives: ["Je herkent de symptomen van dating burnout", "Je weet hoe je de burnout-cyclus doorbreekt"],
-      quote: "Je hoeft niet elke dag te pushen om vooruit te komen. Soms is stilstaan de snelste weg.",
+      objectives: ["Je kent jouw unieke datingprofiel en -stijl", "Je hebt bewust gekozen welke datingtools en -gewoonten bij jou passen"],
+      quote: "De beste datingstrategie is de strategie die jij vol kunt houden omdat ze bij jou past.",
     },
   },
   {
     moduleOrder: 4, lessonOrder: 2,
     reflectie: {
       spiegel: "Hoe laad jij energie op — door mensen op te zoeken of door alleen te zijn? Hoe beïnvloedt dit jouw dategedrag?",
-      identiteit: "Als jij op jouw eigen ritme zou daten, zonder sociale druk — hoe zou dat er dan uitzien?",
+      identiteit: "Welke datinggewoonten heb jij aangenomen die eigenlijk meer voor anderen zijn dan voor jou?",
       actie: "Bepaal voor komende week: hoeveel datecontacten zijn voor jou 'genoeg' zonder uitgeput te raken?",
     },
     content: {
@@ -288,16 +292,16 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 4, lessonOrder: 4,
     reflectie: {
       spiegel: "Hoe heeft jouw swiping gedrag er tot nu toe uitgezien — welk patroon herken je erin?",
-      identiteit: "Als daten voor jou duurzaam en leuk moet blijven — welke spelregels stel je voor jezelf op?",
-      actie: "Stel vandaag een dagelijks maximum in: X minuten op apps en Y swipes per dag.",
+      identiteit: "Wat zegt jouw ideale datingtempo over het type relatie en partner dat écht bij jou past?",
+      actie: "Schrijf in drie zinnen op wie jij nu bent na 16 lessen DESIGN — en met welke intentie ga jij de ACTION fase in.",
     },
     content: {
       takeaways: [
         "Swipen zonder intentie is de snelste weg naar burnout — tijdslimiet = kwaliteitslimiet",
         "Eén goede conversatie per dag is meer waard dan tien oppervlakkige matches",
-        "Duurzaam daten is een marathon, niet een sprint — bouw bewust rust in",
+        "Jij sluit nu de DESIGN fase af — je weet wie je bent, wat je zoekt en hoe je duurzaam datet. De ACTION fase begint nu.",
       ],
-      objectives: ["Je hebt een duurzame datingstrategie voor jezelf bepaald", "Je weet hoe je structuur aanbrengt in je dating routine"],
+      objectives: ["Je hebt een duurzame datingstrategie voor jezelf bepaald", "Je sluit de DESIGN fase bewust af en bent klaar voor de ACTION fase"],
       quote: "Het geheim van consistentie is een tempo kiezen dat je vol kunt houden.",
     },
   },
@@ -309,8 +313,8 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 5, lessonOrder: 1,
     reflectie: {
       spiegel: "Wat zijn jouw 'go-to' openingszinnen? Wat zeggen die over hoe je verbinding zoekt?",
-      identiteit: "Hoe zou jij jezelf beschrijven als iemand die moeiteloos diepgang creëert in gesprekken?",
-      actie: "Schrijf drie persoonlijke, specifieke openingszinnen die passen bij jouw stijl.",
+      identiteit: "Welk gedrag laat jij zien als je écht geïnteresseerd bent in iemand — en wanneer doe je dat te weinig?",
+      actie: "Test vandaag drie openingszinnen: stuur ze naar drie matches en noteer welke de meeste reactie opleverde.",
     },
     content: {
       takeaways: [
@@ -326,7 +330,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 5, lessonOrder: 2,
     reflectie: {
       spiegel: "Welke openingszin heb jij ooit ontvangen die werkelijk indruk maakte? Wat maakte hem bijzonder?",
-      identiteit: "Als jij perfect zou zijn in openingszinnen — wat voor persoon zou dat over jou zeggen?",
+      identiteit: "Wat is het verschil tussen een openingszin die vanuit echte nieuwsgierigheid komt en een die vanuit indruk willen maken?",
       actie: "Stuur vandaag één match een openingszin die specifiek inspeelt op iets in hun profiel.",
     },
     content: {
@@ -343,7 +347,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 5, lessonOrder: 3,
     reflectie: {
       spiegel: "Op welk moment in een gesprek ga jij persoonlijk — en wat weerhoudt jou van eerder?",
-      identiteit: "Hoe zou jij je voelen als iemand volledig nieuwsgierig naar jou was, zonder te oordelen?",
+      identiteit: "Wanneer heb jij voor het laatst iemand het gevoel gegeven volledig gehoord te zijn — en hoe deed je dat?",
       actie: "Gebruik vandaag de 'vulnerability ladder' techniek in één gesprek.",
     },
     content: {
@@ -382,7 +386,7 @@ const lessons: LessonUpdate[] = [
     reflectie: {
       spiegel: "Denk aan een relatie die chemie had maar geen compatibiliteit — wat was de uitkomst?",
       identiteit: "Wat is voor jou de minimale compatibiliteitseis voor een langdurige relatie?",
-      actie: "Schrijf je top-5 compatibiliteitscriteria op naast je top-5 aantrekkingsfactoren.",
+      actie: "Bespreek met een vriend die jou goed kent welke partner-eigenschappen hij/zij voor jou het meest belangrijk vindt. Vergelijk zijn antwoord met je eigen lijst.",
     },
     content: {
       takeaways: [
@@ -398,7 +402,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 6, lessonOrder: 2,
     reflectie: {
       spiegel: "Welke rode vlaggen heb jij in het verleden genegeerd — en waarom?",
-      identiteit: "Hoe zou jij je voelen als je rode vlaggen actief zou benoemen in de eerste maand van daten?",
+      identiteit: "Welke overtuiging maakt het moeilijk voor jou om rode vlaggen te benoemen — en hoe realistisch is die overtuiging?",
       actie: "Maak een lijst van jouw persoonlijke top-5 rode vlaggen op basis van je ervaringen.",
     },
     content: {
@@ -415,7 +419,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 6, lessonOrder: 3,
     reflectie: {
       spiegel: "Welke groene vlaggen had jouw beste relatie of datingervaring? Wat maakte die speciaal?",
-      identiteit: "Als jij een groene vlag voor iemand anders zou zijn — waar zie je dat nu al in jezelf?",
+      identiteit: "Welke groene vlag laat jij als partner al zien — en op welk vlak wil je daarin sterker worden?",
       actie: "Schrijf je top-5 groene vlaggen op die je actief wilt signaleren bij een nieuwe match.",
     },
     content: {
@@ -453,7 +457,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 7, lessonOrder: 1,
     reflectie: {
       spiegel: "Hoe bepaal jij momenteel wanneer je om een date vraagt — en hoe voelt dat voor jou aan?",
-      identiteit: "Als je volledig zelfverzekerd was — wanneer zou je dan om een date vragen?",
+      identiteit: "Welke overtuiging over jezelf houdt jou tegen om eerder en directer om een date te vragen?",
       actie: "Vraag vandaag één match om een specifieke date op een specifiek moment.",
     },
     content: {
@@ -487,7 +491,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 7, lessonOrder: 3,
     reflectie: {
       spiegel: "Hoe makkelijk vind jij het om grenzen te stellen tijdens een date — en wat blokkeert dat soms?",
-      identiteit: "Hoe zou jij je voelen als veiligheid op dates volledig vanzelfsprekend voor je was?",
+      identiteit: "Welke concrete signalen vertellen jou tijdens een date dat je je wel of niet veilig voelt?",
       actie: "Maak een persoonlijke veiligheidschecklist voor je volgende eerste date.",
     },
     content: {
@@ -505,7 +509,7 @@ const lessons: LessonUpdate[] = [
     reflectie: {
       spiegel: "Na je laatste date: welk moment voelde het meest als 'jezelf zijn'? En welk moment het minst?",
       identiteit: "Wie ben jij op je allerbeste bij een eerste ontmoeting — wat maakt die versie van jou zichtbaar?",
-      actie: "Schrijf een 'pre-date ritual' van 5 minuten dat jou in de juiste mindset brengt.",
+      actie: "Voer je pre-date ritual vandaag uit — ook al is er geen date gepland. Stel je voor dat je straks op date gaat, doe het ritual volledig en noteer je energieniveau voor en erna.",
     },
     content: {
       takeaways: [
@@ -525,7 +529,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 8, lessonOrder: 1,
     reflectie: {
       spiegel: "Hoe communiceer jij momenteel als je een behoefte hebt in een relatie? Beschrijf dit concreet.",
-      identiteit: "Als je de meest heldere communiceerder zou zijn die je kent — hoe zou dat aanvoelen?",
+      identiteit: "Wat is de grootste belemmering in hoe jij momenteel communiceert — en wat kost je dat in relaties?",
       actie: "Gebruik het NVC model (O-G-B-V) in één gesprek vandaag en schrijf op wat er anders ging.",
     },
     content: {
@@ -542,8 +546,8 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 8, lessonOrder: 2,
     reflectie: {
       spiegel: "Wanneer gebruik jij 'jij'-statements in plaats van 'ik'-statements? Wat triggert dat bij jou?",
-      identiteit: "Hoe zou een relatie eruitzien als beide partners consistent ik-boodschappen gebruikten?",
-      actie: "Zet drie jij-boodschappen om naar ik-boodschappen en schrijf ze op.",
+      identiteit: "Op welke momenten valt jij automatisch terug op 'jij'-boodschappen — wat triggert dat patroon bij jou?",
+      actie: "Voer vandaag één gesprek en vervang elke 'jij'-zin live door een ik-boodschap. Geen voorbereiding — gewoon toepassen in het moment.",
     },
     content: {
       takeaways: [
@@ -559,7 +563,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 8, lessonOrder: 3,
     reflectie: {
       spiegel: "Hoe goed luister jij echt — of ben je al aan het nadenken over je antwoord terwijl de ander praat?",
-      identiteit: "Hoe zou jij je voelen als iemand je volledig hoorde, zonder te oordelen of te adviseren?",
+      identiteit: "Wat doet jouw brein terwijl de ander praat — ben je écht aanwezig of al aan het formuleren?",
       actie: "Oefen vandaag actief luisteren in één gesprek: geen advies, alleen spiegelen en doorvragen.",
     },
     content: {
@@ -576,7 +580,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 8, lessonOrder: 4,
     reflectie: {
       spiegel: "Welk moeilijk gesprek heb jij al te lang uitgesteld? Wat houdt je precies tegen?",
-      identiteit: "Als je conflicten als groeikansen zou zien — hoe zou je dan anders reageren?",
+      identiteit: "Welk conflictpatroon herhaal jij keer op keer — en wat heeft het je al gekost in relaties?",
       actie: "Bereid één moeilijk gesprek voor met het NVC format en plan wanneer je het gaat voeren.",
     },
     content: {
@@ -597,8 +601,8 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 9, lessonOrder: 1,
     reflectie: {
       spiegel: "Hoe reageer jij normaal als het gesprek over exclusiviteit nadert — ga je ervoor of vermijd je het?",
-      identiteit: "Hoe zou het voelen als het DTR-gesprek voor jou een heldere, liefdevolle uitwisseling was?",
-      actie: "Schrijf op: wat wil jij eigenlijk in dit stadium van daten? Wees eerlijk met jezelf.",
+      identiteit: "Wat zegt jouw neiging om het DTR-gesprek uit te stellen over je verhouding tot kwetsbaarheid en onzekerheid?",
+      actie: "Spreek jouw wens voor deze relatie hardop uit — één zin, voor de spiegel. Luister naar je eigen stem en naar hoe het voelt om het te zeggen.",
     },
     content: {
       takeaways: [
@@ -649,7 +653,7 @@ const lessons: LessonUpdate[] = [
     reflectie: {
       spiegel: "Wat is het slechtste dat kan gebeuren na het DTR-gesprek — en kun jij daarmee leven?",
       identiteit: "Hoe verandert jouw gevoel van eigenwaarde afhankelijk van de uitkomst? Wat zegt dat?",
-      actie: "Schrijf drie mogelijke uitkomsten van het gesprek en jouw reactieplan voor elk.",
+      actie: "App of bel een vertrouwde vriend en vertel hoe het DTR-gesprek is gegaan — of hoe je je voorbereidt als het nog moet komen.",
     },
     content: {
       takeaways: [
@@ -669,7 +673,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 10, lessonOrder: 1,
     reflectie: {
       spiegel: "In welke laag van het Sound Relationship House had jouw vorige relatie de meeste zwakheden?",
-      identiteit: "Als jij de partner zou zijn die je wilt hebben — op welke laag moet jij zelf nog groeien?",
+      identiteit: "Welke kwaliteit wil jij als partner laten zien die je nu nog niet consistent in jezelf herkent?",
       actie: "Beoordeel jezelf op de 7 lagen van het Sound Relationship House op een schaal van 1-10.",
     },
     content: {
@@ -703,12 +707,12 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 10, lessonOrder: 3,
     reflectie: {
       spiegel: "Welke liefdestaal herken jij bij jezelf als primair? En welke mis jij het meest als ze afwezig is?",
-      identiteit: "Hoe zou een relatie eruitzien als beide partners elkaars liefdestaal zouden spreken?",
+      identiteit: "Wanneer heb jij liefde gegeven op jouw manier terwijl de ander iets heel anders nodig had — wat was de uitkomst?",
       actie: "Doe de liefdestalen quiz en deel het resultaat met iemand die jou goed kent.",
     },
     content: {
       takeaways: [
-        "De Vijf Liefdestalen: kwaliteitstijd, woorden van bevestiging, cadeaus, daden van dienst, fysiek contact",
+        "De Vijf Liefdestalen (Chapman): kwaliteitstijd, woorden van bevestiging, cadeaus, daden van dienst, fysiek contact — gebruik dit als reflectie-instrument, niet als vaststaand model (wetenschappelijk bewijs is beperkt)",
         "Je geeft liefde zoals jij het wilt ontvangen — maar je partner wil het misschien anders",
         "Liefdestalen leren is het leren spreken van iemands emotionele taal",
       ],
@@ -720,8 +724,8 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 10, lessonOrder: 4,
     reflectie: {
       spiegel: "Hoe reageer jij in conflict — vlucht je, bevries je of ga jij in de aanval?",
-      identiteit: "Als conflict voor jou een kans voor groei zou zijn — hoe zou je dan anders ingaan?",
-      actie: "Identificeer één 'vier ruiters' patroon bij jezelf en schrijf de tegenovergestelde reactie.",
+      identiteit: "Welk van Gottman's vier ruiters herken jij het meest bij jezelf — en in welke situaties verschijnt het?",
+      actie: "Oefen hardop jouw nieuwe reactie op een typisch conflictmoment — spreek hem uit alsof de ander erbij is. Herhaal tot het natuurlijk aanvoelt.",
     },
     content: {
       takeaways: [
@@ -742,7 +746,7 @@ const lessons: LessonUpdate[] = [
     reflectie: {
       spiegel: "Hoe balanceer jij autonomie en verbondenheid in een relatie — wat gaat goed, wat niet?",
       identiteit: "Wat is jouw ideale balans tussen 'samen zijn' en 'jezelf blijven'?",
-      actie: "Schrijf voor jezelf op: hoeveel eigen tijd per week heb jij nodig om jezelf te blijven?",
+      actie: "Blokkeer aankomende week bewust één moment van solo-tijd in je agenda — iets dat jou oplaadt en dat je volledig alleen doet.",
     },
     content: {
       takeaways: [
@@ -758,8 +762,8 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 11, lessonOrder: 2,
     reflectie: {
       spiegel: "Welke grens heb jij het moeilijkst te stellen in een intieme relatie — en waarom?",
-      identiteit: "Als grenzen stellen voor jou zo vanzelfsprekend was als ademen — hoe zou dat aanvoelen?",
-      actie: "Schrijf drie grenzen op die jij in je volgende relatie bewust gaat communiceren.",
+      identiteit: "Wat heeft het je gekost toen jij een grens die je had moeten stellen, níet hebt gesteld?",
+      actie: "Oefen het uitspreken van één grens hardop — zeg hem drie keer alsof je hem aan je toekomstige partner vertelt. Voel hoe het klinkt en aanvoelt.",
     },
     content: {
       takeaways: [
@@ -775,7 +779,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 11, lessonOrder: 3,
     reflectie: {
       spiegel: "Wat is jouw standaard reactie op ghosting of afwijzing — en helpt die reactie jou vooruit?",
-      identiteit: "Hoe zou je reageren op afwijzing als jouw eigenwaarde er volledig los van stond?",
+      identiteit: "Wat is het verhaal dat jij jezelf vertelt direct nadat je wordt afgewezen — en klopt dat verhaal echt?",
       actie: "Schrijf een brief aan jouw toekomstige zelf voor het geval je wordt ghosted.",
     },
     content: {
@@ -793,7 +797,7 @@ const lessons: LessonUpdate[] = [
     reflectie: {
       spiegel: "Wat helpt jou het meest om terug te veren na een dating teleurstelling?",
       identiteit: "Hoe wil jij zijn na vijf dating teleurstellingen — sterker of gebroken?",
-      actie: "Maak een 'veerkracht toolkit': 5 concrete dingen die jou helpen na een terugslag.",
+      actie: "Vraag drie mensen die jou kennen: wat is jouw superkracht als het even tegenzit? Vergelijk hun antwoorden met hoe jij over jezelf denkt in moeilijke momenten.",
     },
     content: {
       takeaways: [
@@ -830,7 +834,7 @@ const lessons: LessonUpdate[] = [
     moduleOrder: 12, lessonOrder: 2,
     reflectie: {
       spiegel: "Welke gewoonten uit dit programma wil jij definitief inbouwen in je dagelijkse leven?",
-      identiteit: "Hoe ziet jouw dagelijkse routine eruit als iemand die doelbewust in liefde en leven groeit?",
+      identiteit: "Welk ritueel of inzicht uit dit programma wil jij nooit meer loslaten — en waarom?",
       actie: "Kies drie rituelen die je wilt vasthouden en plan ze als vaste gewoontes in je agenda.",
     },
     content: {
@@ -848,7 +852,7 @@ const lessons: LessonUpdate[] = [
     reflectie: {
       spiegel: "Waar ben jij over één jaar in je liefdesleven als je dit tempo doorzet?",
       identiteit: "Welke versie van jezelf in de liefde is al aanwezig en moet je meer ruimte geven?",
-      actie: "Schrijf een levendige, gedetailleerde beschrijving van jouw liefdesleven over één jaar.",
+      actie: "Vertel iemand die jou nauw staat over jouw toekomstvisie voor je liefdesleven — spreek hem hardop uit en maak hem real.",
     },
     content: {
       takeaways: [

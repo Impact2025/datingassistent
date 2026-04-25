@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
       ],
       {
         max_tokens: 300,
-        temperature: 0.8, // Higher temperature for more variation
+        temperature: 0.8,
+        enableFallback: true,
       }
     );
 

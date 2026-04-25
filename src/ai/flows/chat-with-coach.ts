@@ -10,7 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { chatCompletion } from '@/lib/ai-service'; // Import the chatCompletion function from our AI service
+import { cachedChatCompletion } from '@/lib/ai-service';
 
 // Define the schema for a single message
 const ChatMessageSchema = z.object({
@@ -84,7 +84,7 @@ const chatWithCoachFlow = ai.defineFlow(
       content: input.message
     });
     
-    const response = await chatCompletion(messages, {
+    const response = await cachedChatCompletion(messages, {
       provider: 'openrouter',
       maxTokens: 1000,
       temperature: 0.7

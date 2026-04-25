@@ -41,6 +41,9 @@ import { cn } from '@/lib/utils';
 import { ModuleSidebar } from './ModuleSidebar';
 import { QASessionsCalendar } from './QASessionsCalendar';
 import { ModuleToolCard } from '@/components/journey/module-tool-card';
+import { AssignmentChecklist } from './AssignmentChecklist';
+import { LessonQuiz } from './LessonQuiz';
+import { BadgeNotification } from './BadgeNotification';
 import type { TransformatieModule, TransformatieLesson, LessonProgress as LessonProgressType } from '@/app/api/transformatie/route';
 
 interface TransformatieDashboardViewProps {
@@ -113,6 +116,13 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
   const [isVideoComplete, setIsVideoComplete] = useState(false);
   const [reflectieAnswers, setReflectieAnswers] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [assignmentCompleted, setAssignmentCompleted] = useState(false);
+
+  // Interactive features state
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [pendingBadges, setPendingBadges] = useState<any[]>([]);
+  const [aiFeedback, setAiFeedback] = useState<Record<string, string>>({});
+  const [loadingFeedback, setLoadingFeedback] = useState<Record<string, boolean>>({});
 
   // Enhanced UX state
   const [showCelebration, setShowCelebration] = useState(false);
@@ -330,6 +340,9 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
     setCurrentLesson(lesson);
     setIsVideoComplete(lesson.progress?.video_completed || false);
     setReflectieAnswers(lesson.progress?.reflectie_answers || {});
+    setAssignmentCompleted((lesson.progress as any)?.assignment_completed || false);
+    setShowQuiz(false);
+    setAiFeedback({});
     setSidebarOpen(false);
   };
 
@@ -339,15 +352,15 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
 
     setSaving(true);
     try {
-      await fetch('/api/transformatie/progress', {
+      const res = await fetch('/api/transformatie/progress', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          lessonId: currentLesson.id,
-          ...data,
-        }),
+        body: JSON.stringify({ lessonId: currentLesson.id, ...data }),
       });
-
+      const json = await res.json();
+      if (json.newBadges?.length > 0) {
+        setPendingBadges(json.newBadges);
+      }
       // Refresh overview
       await fetchOverview();
     } catch (err) {
@@ -357,10 +370,41 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
     }
   };
 
-  // Video completion
+  // Video completion — show quiz if questions exist
   const handleVideoComplete = async () => {
     setIsVideoComplete(true);
+    setShowQuiz(true);
     await saveProgress({ videoCompleted: true, status: 'in_progress' });
+  };
+
+  // AI feedback per reflectie type
+  const handleAiFeedback = async (type: 'spiegel' | 'identiteit' | 'actie') => {
+    if (!currentLesson || !currentModule) return;
+    const answer = reflectieAnswers[type] || '';
+    if (answer.trim().length < 30) return;
+
+    setLoadingFeedback(prev => ({ ...prev, [type]: true }));
+    try {
+      const res = await fetch('/api/transformatie/reflectie-feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lessonId: currentLesson.id,
+          moduleTitle: currentModule.title,
+          lessonTitle: currentLesson.title,
+          phase: currentModule.phase,
+          reflectieType: type,
+          question: currentLesson.reflectie?.[type] || '',
+          answer,
+        }),
+      });
+      const data = await res.json();
+      if (data.feedback) {
+        setAiFeedback(prev => ({ ...prev, [type]: data.feedback }));
+      }
+    } finally {
+      setLoadingFeedback(prev => ({ ...prev, [type]: false }));
+    }
   };
 
   // Mark lesson complete with celebration
@@ -522,6 +566,11 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 relative" ref={contentRef}>
+      {/* Badge Notification */}
+      {pendingBadges.length > 0 && (
+        <BadgeNotification badges={pendingBadges} onDismiss={() => setPendingBadges([])} />
+      )}
+
       {/* Celebration Overlay */}
       <AnimatePresence>
         {showCelebration && (
@@ -956,6 +1005,15 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
               </CardContent>
             </Card>
 
+            {/* Kennisquiz — verschijnt na video completion */}
+            {isVideoComplete && showQuiz && (
+              <LessonQuiz
+                lessonId={currentLesson.id}
+                onComplete={(score) => setShowQuiz(false)}
+                onSkip={() => setShowQuiz(false)}
+              />
+            )}
+
             {/* Sleutelinzichten */}
             {currentLesson.content?.takeaways && currentLesson.content.takeaways.length > 0 && (
               <Card className="border-amber-200 bg-amber-50/50 shadow-sm">
@@ -1014,6 +1072,24 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                       </div>
                     )}
                   </div>
+                  {(reflectieAnswers.spiegel?.length || 0) >= 30 && (
+                    <div className="mt-2">
+                      {aiFeedback.spiegel ? (
+                        <div className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-lg p-3 leading-relaxed">
+                          <span className="font-semibold">Coach: </span>{aiFeedback.spiegel}
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleAiFeedback('spiegel')}
+                          disabled={loadingFeedback.spiegel}
+                          className="flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 font-medium transition-colors disabled:opacity-50"
+                        >
+                          <Sparkles className="w-3 h-3" />
+                          {loadingFeedback.spiegel ? 'Feedback laden...' : 'Vraag AI feedback'}
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Identiteit */}
@@ -1040,6 +1116,24 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                       </div>
                     )}
                   </div>
+                  {(reflectieAnswers.identiteit?.length || 0) >= 30 && (
+                    <div className="mt-2">
+                      {aiFeedback.identiteit ? (
+                        <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3 leading-relaxed">
+                          <span className="font-semibold">Coach: </span>{aiFeedback.identiteit}
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleAiFeedback('identiteit')}
+                          disabled={loadingFeedback.identiteit}
+                          className="flex items-center gap-1.5 text-xs text-amber-600 hover:text-amber-800 font-medium transition-colors disabled:opacity-50"
+                        >
+                          <Sparkles className="w-3 h-3" />
+                          {loadingFeedback.identiteit ? 'Feedback laden...' : 'Vraag AI feedback'}
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Actie */}
@@ -1066,6 +1160,33 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                       </div>
                     )}
                   </div>
+                  {(reflectieAnswers.actie?.length || 0) >= 30 && (
+                    <div className="mt-2">
+                      {aiFeedback.actie ? (
+                        <div className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg p-3 leading-relaxed">
+                          <span className="font-semibold">Coach: </span>{aiFeedback.actie}
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleAiFeedback('actie')}
+                          disabled={loadingFeedback.actie}
+                          className="flex items-center gap-1.5 text-xs text-rose-600 hover:text-rose-800 font-medium transition-colors disabled:opacity-50"
+                        >
+                          <Sparkles className="w-3 h-3" />
+                          {loadingFeedback.actie ? 'Feedback laden...' : 'Vraag AI feedback'}
+                        </button>
+                      )}
+                    </div>
+                  )}
+                  {/* Opdracht checklist */}
+                  {currentLesson.reflectie?.actie && (
+                    <AssignmentChecklist
+                      lessonId={currentLesson.id}
+                      assignmentText={currentLesson.reflectie.actie}
+                      isCompleted={assignmentCompleted}
+                      onComplete={(done) => setAssignmentCompleted(done)}
+                    />
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -170,21 +170,27 @@ async function getAssessmentResults(userId: number): Promise<AssessmentResults> 
 
 async function getJourneyProgress(userId: number): Promise<JourneyProgress> {
   try {
-    const result = await sql`
-      SELECT current_step, completed_steps, journey_started_at
-      FROM user_journey_progress
-      WHERE user_id = ${userId}
-    `;
+    const [journeyResult, onboardingResult] = await Promise.all([
+      sql`
+        SELECT current_step, completed_steps, journey_started_at
+        FROM user_journey_progress
+        WHERE user_id = ${userId}
+      `,
+      sql`
+        SELECT recommended_path FROM user_onboarding WHERE user_id = ${userId}
+      `
+    ]);
 
-    if (result.rows.length > 0) {
-      const jp = result.rows[0];
+    if (journeyResult.rows.length > 0) {
+      const jp = journeyResult.rows[0];
       const completedSteps = jp.completed_steps || [];
+      const programType = onboardingResult.rows[0]?.recommended_path?.toLowerCase();
 
       return {
         currentPhase: determinePhase(jp.current_step),
         currentStep: jp.current_step,
         completedSteps: completedSteps,
-        progressPercentage: calculateProgress(completedSteps),
+        progressPercentage: calculateProgress(completedSteps, programType),
         startedAt: jp.journey_started_at
       };
     }
@@ -285,8 +291,10 @@ function determinePhase(step: string): string {
   return 'welcome';
 }
 
-function calculateProgress(completedSteps: string[]): number {
-  const totalSteps = 50; // Estimated total journey steps
+function calculateProgress(completedSteps: string[], programType?: string): number {
+  const totalSteps = programType === 'kickstart' ? 21
+    : programType === 'transformatie' ? 12
+    : 50;
   return Math.round((completedSteps.length / totalSteps) * 100);
 }
 

@@ -10,7 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { chatCompletion } from '@/lib/ai-service'; // Import the chatCompletion function from our AI service
+import { cachedChatCompletion } from '@/lib/ai-service';
 
 const AnalyzeProfilePhotoInputSchema = z.object({
   photoDataUri: z
@@ -74,10 +74,10 @@ const analyzeProfilePhotoFlow = ai.defineFlow(
       }
     ];
     
-    const response = await chatCompletion(messages, {
+    const response = await cachedChatCompletion(messages, {
       provider: 'openrouter',
       maxTokens: 600,
-      temperature: 0.7
+      temperature: 0.4
     });
     
     return {

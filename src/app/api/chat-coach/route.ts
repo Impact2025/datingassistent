@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
+import { OPENROUTER_MODELS } from '@/lib/openrouter';
+import { cachedChatCompletion } from '@/lib/ai-service';
 
 // POST: Analyze a conversation
 export async function POST(request: NextRequest) {
@@ -193,8 +194,6 @@ async function generateConversationAnalysis(
   messages: any[],
   userContext: Awaited<ReturnType<typeof getUserContext>>
 ) {
-  const client = getOpenRouterClient();
-
   const kernwaardenSection = userContext.coreValues?.length
     ? `\nGEBRUIKER KERNWAARDEN (uit Waarden Kompas):
 ${userContext.coreValues.map((v: string) => `• ${v}`).join('\n')}
@@ -235,10 +234,9 @@ Geef een JSON object terug met deze exacte structuur:
 Wees eerlijk maar bemoedigend. Geef ALLEEN het JSON object terug.`;
 
   try {
-    const response = await client.createChatCompletion(
-      OPENROUTER_MODELS.CLAUDE_35_HAIKU,
+    const response = await cachedChatCompletion(
       [{ role: 'user', content: prompt }],
-      { temperature: 0.7, max_tokens: 2000 }
+      { model: OPENROUTER_MODELS.CLAUDE_35_HAIKU, temperature: 0.7, maxTokens: 2000 }
     );
 
     const jsonMatch = response.match(/\{[\s\S]*\}/);
