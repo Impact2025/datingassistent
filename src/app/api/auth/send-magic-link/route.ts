@@ -46,6 +46,31 @@ export async function POST(request: NextRequest) {
 
     const user = result.rows[0];
 
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+    const nextParam = next !== '/dashboard' ? `&next=${encodeURIComponent(next)}` : '';
+
+    // Deduplication: reuse an existing valid token if sent within the last 3 minutes.
+    // This prevents the mailserver from seeing multiple identical emails in quick
+    // succession (a common spam/rate-limit trigger).
+    const existingResult = await sql`
+      SELECT verification_token, verification_expires_at
+      FROM users
+      WHERE id = ${user.id}
+        AND verification_token IS NOT NULL
+        AND verification_expires_at > NOW()
+        AND verification_expires_at > NOW() + INTERVAL '57 minutes'
+    `;
+
+    if (existingResult.rows.length > 0) {
+      const existingToken = existingResult.rows[0].verification_token;
+      const magicUrl = `${baseUrl}/api/auth/magic-login?token=${existingToken}${nextParam}`;
+      logger.log(`Magic link reused for user ${user.id} (deduplication)`);
+      import('@/lib/email-service')
+        .then(({ sendMagicLinkEmail }) => sendMagicLinkEmail(user.email, user.name, magicUrl))
+        .catch(e => console.warn('Magic link email failed (non-critical):', e));
+      return NextResponse.json({ success: true });
+    }
+
     // Generate a secure token with 1-hour expiry
     const token = generateVerificationToken();
     const expiresAt = new Date();
@@ -53,13 +78,11 @@ export async function POST(request: NextRequest) {
 
     await sql`
       UPDATE users
-      SET verification_token     = ${token},
+      SET verification_token      = ${token},
           verification_expires_at = ${expiresAt.toISOString()}
       WHERE id = ${user.id}
     `;
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
-    const nextParam = next ? `&next=${encodeURIComponent(next)}` : '';
     const magicUrl = `${baseUrl}/api/auth/magic-login?token=${token}${nextParam}`;
 
     // Send email non-blocking

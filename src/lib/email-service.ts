@@ -382,6 +382,11 @@ export async function sendMagicLinkEmail(
   magicUrl: string
 ): Promise<boolean> {
   const firstName = userName.split(' ')[0] || userName;
+  const now = new Date().toLocaleString('nl-NL', {
+    timeZone: 'Europe/Amsterdam',
+    day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit',
+  });
 
   const html = `
 <!DOCTYPE html>
@@ -389,42 +394,76 @@ export async function sendMagicLinkEmail(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Je inloglink</title>
+  <title>Inloggen bij DatingAssistent</title>
 </head>
 <body style="background:#f5f5f5;margin:0;padding:40px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;" role="presentation">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;" role="presentation">
+
+          <!-- Header -->
           <tr>
-            <td style="background:#fff;border-radius:16px;padding:48px 40px;text-align:center;">
-              <p style="font-size:32px;margin:0 0 24px 0;">💌</p>
-              <h1 style="font-size:22px;font-weight:700;color:#111;margin:0 0 12px 0;line-height:1.3;">
-                Je inloglink staat klaar
-              </h1>
-              <p style="color:#555;font-size:15px;line-height:1.7;margin:0 0 36px 0;">
-                Hoi ${firstName}, klik op de knop hieronder om direct in te loggen.<br>Geen wachtwoord nodig.
+            <td style="padding:0 0 24px 0;text-align:center;">
+              <p style="margin:0;font-size:18px;font-weight:700;color:#E8637A;letter-spacing:-0.02em;">DatingAssistent</p>
+            </td>
+          </tr>
+
+          <!-- Card -->
+          <tr>
+            <td style="background:#fff;border-radius:12px;padding:40px 36px;border:1px solid #eee;">
+
+              <p style="font-size:15px;color:#333;margin:0 0 8px 0;font-weight:600;">Hoi ${firstName},</p>
+              <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 28px 0;">
+                Je hebt op <strong>${now}</strong> een inloglink aangevraagd voor je account
+                <span style="color:#888;">(${userEmail})</span>.
               </p>
-              <a href="${magicUrl}"
-                 style="background:#E8637A;color:#ffffff;text-decoration:none;padding:16px 36px;border-radius:999px;font-weight:700;font-size:16px;display:inline-block;letter-spacing:0.01em;">
-                Inloggen bij DatingAssistent &rarr;
-              </a>
-              <p style="color:#999;font-size:13px;margin:28px 0 0 0;line-height:1.6;">
-                Deze link is <strong>1 uur geldig</strong> en kan slechts één keer gebruikt worden.
+
+              <p style="font-size:15px;color:#555;line-height:1.7;margin:0 0 28px 0;">
+                Klik op de knop hieronder om in te loggen. Je hoeft geen wachtwoord in te voeren.
+              </p>
+
+              <!-- CTA button -->
+              <table cellpadding="0" cellspacing="0" role="presentation" style="margin:0 auto 28px auto;">
+                <tr>
+                  <td style="border-radius:999px;background:#E8637A;">
+                    <a href="${magicUrl}"
+                       style="display:inline-block;padding:15px 32px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:999px;letter-spacing:0.01em;">
+                      Inloggen bij DatingAssistent
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Fallback URL — important for deliverability -->
+              <p style="font-size:13px;color:#777;line-height:1.6;margin:0 0 6px 0;">
+                Werkt de knop niet? Kopieer en plak deze link in je browser:
+              </p>
+              <p style="font-size:12px;color:#999;word-break:break-all;margin:0 0 28px 0;line-height:1.5;">
+                <a href="${magicUrl}" style="color:#E8637A;text-decoration:none;">${magicUrl}</a>
+              </p>
+
+              <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 20px 0;">
+
+              <p style="font-size:12px;color:#aaa;line-height:1.6;margin:0;">
+                Deze link is <strong>1 uur geldig</strong> en kan slechts eenmalig worden gebruikt.<br>
+                Heb je dit niet aangevraagd? Je hoeft niets te doen — de link vervalt vanzelf.
               </p>
             </td>
           </tr>
+
+          <!-- Footer -->
           <tr>
             <td style="padding:20px 0;text-align:center;">
-              <p style="color:#bbb;font-size:12px;margin:0 0 4px 0;">
-                Heb je dit niet aangevraagd? Dan hoef je niets te doen.
-              </p>
-              <p style="color:#bbb;font-size:12px;margin:0;">
-                <a href="https://datingassistent.nl" style="color:#bbb;text-decoration:none;">DatingAssistent</a>
-                &middot; <a href="https://datingassistent.nl/privacy" style="color:#bbb;text-decoration:none;">Privacy</a>
+              <p style="color:#ccc;font-size:11px;margin:0;">
+                DatingAssistent &middot;
+                <a href="https://datingassistent.nl" style="color:#ccc;text-decoration:none;">datingassistent.nl</a>
+                &middot;
+                <a href="https://datingassistent.nl/privacy" style="color:#ccc;text-decoration:none;">Privacy</a>
               </p>
             </td>
           </tr>
+
         </table>
       </td>
     </tr>
@@ -436,21 +475,24 @@ export async function sendMagicLinkEmail(
   const text = `
 Hoi ${firstName},
 
-Klik op de link hieronder om in te loggen bij DatingAssistent:
+Je hebt op ${now} een inloglink aangevraagd voor je DatingAssistent account (${userEmail}).
+
+Gebruik de link hieronder om in te loggen. Geen wachtwoord nodig.
 
 ${magicUrl}
 
-Deze link is 1 uur geldig en kan slechts één keer gebruikt worden.
+De link is 1 uur geldig en kan slechts eenmalig worden gebruikt.
 
-Heb je dit niet aangevraagd? Dan is er niets aan de hand — negeer deze email.
+Heb je dit niet aangevraagd? Dan hoef je niets te doen — de link vervalt vanzelf.
 
+---
 DatingAssistent
 https://datingassistent.nl
   `.trim();
 
   return sendEmail({
     to: userEmail,
-    subject: `${firstName}, je inloglink staat klaar`,
+    subject: `Inloglink voor DatingAssistent (${firstName})`,
     html,
     text,
   });
