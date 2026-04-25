@@ -2,10 +2,7 @@ import { logger } from '@/lib/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { requireAdmin } from '@/lib/auth';
-import { SignJWT } from 'jose';
-import { getJWTSecret } from '@/lib/jwt-secret';
-
-const JWT_SECRET = getJWTSecret();
+import { generateVerificationToken } from '@/lib/email-verification';
 
 /**
  * POST /api/admin/user-actions - Perform quick actions on users
@@ -88,25 +85,25 @@ export async function POST(request: NextRequest) {
       }
 
       case 'generate_login_link': {
-        // Generate magic login link
-        const token = await new SignJWT({
-          userId: user.id,
-          email: user.email,
-          type: 'magic_link'
-        })
-          .setProtectedHeader({ alg: 'HS256' })
-          .setIssuedAt()
-          .setExpirationTime('24h')
-          .sign(JWT_SECRET);
+        const token = generateVerificationToken();
+        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h
 
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-        const loginLink = `${baseUrl}/auth/magic-login?token=${token}`;
+        await sql`
+          UPDATE users
+          SET verification_token      = ${token},
+              verification_expires_at = ${expiresAt.toISOString()},
+              email_verified          = true
+          WHERE id = ${userId}
+        `;
+
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+        const loginLink = `${baseUrl}/api/auth/magic-login?token=${token}`;
 
         return NextResponse.json({
           success: true,
           message: 'Login link generated',
           loginLink,
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+          expiresAt,
         });
       }
 
