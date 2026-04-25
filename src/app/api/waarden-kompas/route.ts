@@ -128,9 +128,12 @@ export async function POST(request: NextRequest) {
             intake_dating_style = ${datingStyle},
             current_phase = 'onderzoek',
             updated_at = NOW()
-        WHERE user_id = ${userId}
-        ORDER BY started_at DESC
-        LIMIT 1
+        WHERE id = (
+          SELECT id FROM waarden_kompas_sessions
+          WHERE user_id = ${userId}
+          ORDER BY started_at DESC
+          LIMIT 1
+        )
         RETURNING id, current_phase
       `;
       return NextResponse.json({
@@ -249,7 +252,12 @@ export async function POST(request: NextRequest) {
       const result = await sql`
         UPDATE waarden_kompas_sessions
         SET current_phase = 'completed', completed_at = NOW(), updated_at = NOW()
-        WHERE user_id = ${userId}
+        WHERE id = (
+          SELECT id FROM waarden_kompas_sessions
+          WHERE user_id = ${userId}
+          ORDER BY started_at DESC
+          LIMIT 1
+        )
         RETURNING id, completed_at
       `;
       return NextResponse.json({

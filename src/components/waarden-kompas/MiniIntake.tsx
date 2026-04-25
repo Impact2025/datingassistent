@@ -20,6 +20,7 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
     datingStyle: ''
   });
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const questions = [
     {
@@ -79,9 +80,13 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
 
   const submitIntake = async () => {
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const token = localStorage.getItem('datespark_auth_token');
-      if (!token) return;
+      if (!token) {
+        setSubmitError('Je bent niet ingelogd. Vernieuw de pagina en probeer opnieuw.');
+        return;
+      }
 
       const response = await fetch('/api/waarden-kompas', {
         method: 'POST',
@@ -102,10 +107,10 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
       if (response.ok) {
         onComplete();
       } else {
-        console.error('Failed to submit intake');
+        setSubmitError('Er ging iets mis. Probeer het opnieuw.');
       }
     } catch (error) {
-      console.error('Error submitting intake:', error);
+      setSubmitError('Geen verbinding. Controleer je internet en probeer opnieuw.');
     } finally {
       setSubmitting(false);
     }
@@ -169,6 +174,12 @@ export function MiniIntake({ sessionId, onComplete }: MiniIntakeProps) {
             </div>
           ))}
         </RadioGroup>
+
+        {submitError && (
+          <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+            {submitError}
+          </div>
+        )}
 
         <div className="space-y-4">
           <Button
