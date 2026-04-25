@@ -6,10 +6,10 @@ import { usePWAStore } from '@/stores/pwa-store';
 import { reportSWError } from '@/lib/client-error-reporter';
 
 // Current app version - must match public/sw.js
-const CURRENT_APP_VERSION = "2.7.1";
+const CURRENT_APP_VERSION = "2.7.2";
 
-// Enable/disable SW registration
-const ENABLE_SERVICE_WORKER = true;
+// Only register SW in production — dev SW intercepts cause auth/session bugs
+const ENABLE_SERVICE_WORKER = process.env.NODE_ENV === 'production';
 
 export function ServiceWorkerRegistration() {
   const {
@@ -127,10 +127,18 @@ export function ServiceWorkerRegistration() {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Clear old caches and register SW
-    clearCachesOnVersionMismatch().then(() => {
-      registerServiceWorker();
-    });
+    // Clear old caches and register SW (or unregister any lingering dev registrations)
+    if (!ENABLE_SERVICE_WORKER) {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then((regs) => {
+          regs.forEach((reg) => reg.unregister());
+        });
+      }
+    } else {
+      clearCachesOnVersionMismatch().then(() => {
+        registerServiceWorker();
+      });
+    }
 
     // Listen for SW messages
     if ('serviceWorker' in navigator) {

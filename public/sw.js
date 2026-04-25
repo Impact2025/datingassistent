@@ -4,7 +4,7 @@
  * Version: 2.7.1
  */
 
-const APP_VERSION = '2.7.1';
+const APP_VERSION = '2.7.2';
 const CACHE_NAME = `dating-app-v${APP_VERSION}`;
 
 // Assets to precache (only static images and fonts)
@@ -78,20 +78,10 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Network-first strategy for HTML (navigation)
+  // Don't intercept navigation requests — let the browser handle them directly.
+  // SW-caching HTML causes stale auth sessions and 503 errors when the fallback
+  // page doesn't exist. Next.js pages are server-rendered and must not be cached.
   if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .catch(() => {
-          // Return offline page if available
-          return caches.match('/offline.html').catch(() => {
-            return new Response('Offline - Geen internetverbinding', {
-              status: 503,
-              headers: { 'Content-Type': 'text/html; charset=utf-8' }
-            });
-          });
-        })
-    );
     return;
   }
 
