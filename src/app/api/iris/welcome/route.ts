@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/auth';
 import { sql } from '@vercel/postgres';
 import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
 
@@ -9,14 +9,10 @@ import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
  * Returned { welcome: string | null }.
  * null = geen welkomst nodig (eerste keer ooit, of actieve sessie < 4 uur).
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession();
-    if (!session?.user?.id) {
-      return NextResponse.json({ welcome: null }, { status: 401 });
-    }
-
-    const userId = parseInt(session.user.id);
+    const user = await requireAuth(request);
+    const userId = user.id;
 
     // Haal laatste 3 gesprekken op
     const memoryResult = await sql`

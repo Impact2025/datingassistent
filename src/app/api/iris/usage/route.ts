@@ -5,24 +5,17 @@
 // Returns tier info, current usage, limits, and reset time
 // ============================================================================
 
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/auth';
 import { checkIrisLimit } from '@/lib/neon-usage-tracking';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     // Check authentication
-    const session = await getServerSession();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Niet ingelogd' },
-        { status: 401 }
-      );
-    }
-
-    const userId = parseInt(session.user.id);
+    const user = await requireAuth(request);
+    const userId = user.id;
 
     // Get usage status
     const usageStatus = await checkIrisLimit(userId);
@@ -32,6 +25,9 @@ export async function GET() {
       ...usageStatus,
     });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Niet ingelogd' }, { status: 401 });
+    }
     console.error('Error getting Iris usage:', error);
     return NextResponse.json(
       { error: 'Kon usage niet ophalen' },

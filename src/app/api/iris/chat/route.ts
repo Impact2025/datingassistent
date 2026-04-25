@@ -6,7 +6,7 @@
 // ============================================================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { requireAuth } from '@/lib/auth';
 import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
 import {
   getEnrichedIrisContext,  // 🚀 WERELDKLASSE UPGRADE
@@ -23,15 +23,8 @@ import { checkIrisLimit, trackIrisUsage, type IrisUsageStatus } from '@/lib/neon
 export async function POST(request: NextRequest) {
   try {
     // 1. Check authenticatie
-    const session = await getServerSession();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Niet ingelogd' },
-        { status: 401 }
-      );
-    }
-
-    const userId = parseInt(session.user.id);
+    const user = await requireAuth(request);
+    const userId = user.id;
 
     // 2. 🔒 Check Iris usage limit (tier-aware)
     const usageStatus = await checkIrisLimit(userId);
@@ -182,6 +175,9 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json({ error: 'Niet ingelogd' }, { status: 401 });
+    }
     console.error('Error in Iris chat:', error);
     return NextResponse.json(
       { error: 'Er ging iets mis met Iris. Probeer het opnieuw.' },
