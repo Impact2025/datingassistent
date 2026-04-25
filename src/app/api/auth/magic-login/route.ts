@@ -85,7 +85,8 @@ export async function POST(request: NextRequest) {
       UPDATE users
       SET verification_token      = NULL,
           verification_expires_at = NULL,
-          email_verified          = true
+          email_verified          = true,
+          last_login              = CURRENT_TIMESTAMP
       WHERE id = ${user.id}
     `;
 
