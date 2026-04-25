@@ -529,13 +529,28 @@ export function IntegratieHub({ sessionId, onComplete }: IntegratieHubProps) {
                   {/* Action button */}
                   <div className="flex-shrink-0 flex flex-col items-end gap-2">
                     {isCompleted ? (
-                      <button
-                        onClick={() => setExpandedId(isExpanded ? null : integration.id)}
-                        className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
-                      >
-                        {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                        {isExpanded ? 'Inklappen' : 'Bekijken'}
-                      </button>
+                      isLoading ? (
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Laden...</span>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            if (isExpanded) {
+                              setExpandedId(null);
+                            } else if (hasContent) {
+                              setExpandedId(integration.id);
+                            } else {
+                              handleGenerate(integration.id);
+                            }
+                          }}
+                          className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
+                        >
+                          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                          {isExpanded ? 'Inklappen' : 'Bekijken'}
+                        </button>
+                      )
                     ) : isLoading ? (
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <Loader2 className="w-4 h-4 animate-spin" />
