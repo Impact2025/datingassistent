@@ -29,7 +29,14 @@ function MagicLoginContent() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          router.push(next);
+          // Save token to localStorage so UserProvider can pick it up.
+          // Then do a full page reload (not router.push) — UserProvider's
+          // verifyToken runs once on mount, so a client-side navigation
+          // would land on an unauthenticated state.
+          if (data.token) {
+            localStorage.setItem("datespark_auth_token", data.token);
+          }
+          window.location.href = next;
         } else {
           setError(data.error || "Deze inloglink is ongeldig of verlopen.");
         }

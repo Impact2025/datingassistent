@@ -97,7 +97,12 @@ export async function POST(request: NextRequest) {
 
     logger.log(`Magic-login POST: issued JWT for user ${user.id}`);
 
-    const response = NextResponse.json({ success: true });
+    // Return token in body so the client can sync it to localStorage.
+    // The UserProvider's verifyToken only runs once on mount (before the
+    // magic-link POST completes), so a client-side router.push() won't
+    // trigger re-auth. The client saves the token to localStorage and
+    // does a full page reload so UserProvider reinitialises cleanly.
+    const response = NextResponse.json({ success: true, token: jwtToken });
     response.cookies.set(cookieConfig.name, jwtToken, cookieConfig.options);
     return response;
 
