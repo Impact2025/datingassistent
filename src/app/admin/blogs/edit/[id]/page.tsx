@@ -291,7 +291,7 @@ export default function BlogEditorPage() {
   // AI ACTIONS
   // =========================================================================
 
-  const handleMetadataOnly = async () => {
+  const handleAIOptimize = async () => {
     if (!blogData.content || !blogData.title) {
       toast({
         title: 'Onvolledige data',
@@ -302,62 +302,117 @@ export default function BlogEditorPage() {
     }
 
     toast({
-      title: 'AI Metadata Only',
-      description: 'Bezig met genereren van metadata en interne links...',
+      title: 'AI Optimaliseren...',
+      description: 'Bezig met metadata en interne links invoegen...',
     });
 
     try {
-      const response = await fetch('/api/ai/enhance-metadata', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: blogData.title,
-          content: blogData.content,
-          excerpt: blogData.excerpt,
-          category: blogData.category,
+      // Run metadata fetch and article list fetch in parallel
+      const [metaResponse, kbResponse, blogsResponse] = await Promise.all([
+        fetch('/api/ai/enhance-metadata', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: blogData.title,
+            content: blogData.content,
+            excerpt: blogData.excerpt,
+            category: blogData.category,
+          }),
         }),
-      });
+        fetch('/api/knowledge-base/list'),
+        fetch('/api/blogs/list?published=true'),
+      ]);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Metadata generatie mislukt');
+      if (!metaResponse.ok) {
+        const err = await metaResponse.json();
+        throw new Error(err.error || 'Metadata generatie mislukt');
+      }
+      if (!kbResponse.ok || !blogsResponse.ok) {
+        throw new Error('Kon artikelen niet ophalen');
       }
 
-      logger.log('📥 Received metadata response:', {
-        hasInternalLinks: !!data.internalLinks,
-        internalLinks: data.internalLinks,
-        fullData: data
-      });
+      const [metaData, kbData, blogsData] = await Promise.all([
+        metaResponse.json(),
+        kbResponse.json(),
+        blogsResponse.json(),
+      ]);
 
-      // Update blog data with metadata
+      logger.log('📥 Metadata response:', metaData);
+
+      // --- Step 1: update metadata fields ---
       updateBlogData({
-        seo_title: data.seo.title,
-        seo_description: data.seo.description,
-        social_title: data.social.title,
-        social_description: data.social.description,
-        tags: [...(blogData.tags || []), ...data.seo.keywords.slice(0, 3)],
+        seo_title: metaData.seo.title,
+        seo_description: metaData.seo.description,
+        social_title: metaData.social.title,
+        social_description: metaData.social.description,
+        tags: [...(blogData.tags || []), ...metaData.seo.keywords.slice(0, 3)],
       });
 
-      // Store internal links suggestions if available
-      if (data.internalLinks) {
-        setInternalLinks(data.internalLinks);
-        const totalLinks = (data.internalLinks.knowledgeBase?.length || 0) + (data.internalLinks.relatedBlogs?.length || 0);
-        toast({
-          title: 'Succesvol!',
-          description: `SEO metadata + ${totalLinks} interne link suggesties gegenereerd`,
-        });
-      } else {
-        toast({
-          title: 'Succesvol!',
-          description: 'SEO en social media metadata gegenereerd',
-        });
+      if (metaData.internalLinks) {
+        setInternalLinks(metaData.internalLinks);
       }
+
+      // --- Step 2: auto-link content ---
+      const knowledgeBase = kbData.articles || [];
+      const blogs = blogsData.blogs || [];
+
+      let updatedContent = blogData.content;
+      let linksInserted = 0;
+
+      const extractKeywords = (text: string): string[] => {
+        const stopWords = ['de', 'het', 'een', 'en', 'van', 'voor', 'in', 'op', 'met', 'aan', 'je', 'jouw', 'is', 'zijn', 'naar', 'over', 'bij', 'als', 'dat', 'die', 'dit'];
+        return text
+          .toLowerCase()
+          .replace(/[?!:.,]/g, '')
+          .split(/\s+/)
+          .filter(word => word.length > 3 && !stopWords.includes(word));
+      };
+
+      const tryReplaceWithLink = (textToFind: string, url: string): boolean => {
+        if (updatedContent.includes(url)) return false;
+        const escapedText = textToFind.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(?<!<a[^>]*>)${escapedText}(?![^<]*<\/a>)`, 'gi');
+        if (regex.test(updatedContent)) {
+          updatedContent = updatedContent.replace(
+            regex,
+            `<a href="${url}" class="text-coral-600 hover:text-coral-700 underline">$&</a>`
+          );
+          return true;
+        }
+        return false;
+      };
+
+      // Strategy 1: exact title match
+      const kbItems = knowledgeBase.map((a: any) => ({ title: a.title, url: `/kennisbank/${a.slug}` }));
+      const blogItems = blogs.filter((b: any) => b.id !== parseInt(blogId)).map((b: any) => ({ title: b.title, url: `/blog/${b.slug}` }));
+      for (const item of [...kbItems, ...blogItems]) {
+        const variations = [item.title, item.title.replace(/\?/g, ''), item.title.replace(/:/g, '')];
+        for (const v of variations) {
+          if (tryReplaceWithLink(v, item.url)) { linksInserted++; break; }
+        }
+      }
+
+      // Strategy 2: keyword match from article title
+      for (const article of [...kbItems, ...blogItems]) {
+        if (updatedContent.includes(article.url)) continue;
+        const keywords = extractKeywords(article.title).filter(kw => kw.length >= 6).sort((a, b) => b.length - a.length);
+        for (const kw of keywords) {
+          if (tryReplaceWithLink(kw, article.url)) { linksInserted++; break; }
+        }
+      }
+
+      updateBlogData({ content: updatedContent });
+
+      const suggestCount = (metaData.internalLinks?.knowledgeBase?.length || 0) + (metaData.internalLinks?.relatedBlogs?.length || 0);
+      toast({
+        title: 'Klaar!',
+        description: `Metadata bijgewerkt · ${linksInserted} link${linksInserted === 1 ? '' : 's'} ingevoegd · ${suggestCount} suggesties beschikbaar`,
+      });
     } catch (error) {
-      console.error('Metadata enhancement error:', error);
+      console.error('AI optimize error:', error);
       toast({
         title: 'Fout',
-        description: error instanceof Error ? error.message : 'Metadata generatie mislukt',
+        description: error instanceof Error ? error.message : 'AI optimaliseren mislukt',
         variant: 'destructive',
       });
     }
@@ -435,216 +490,6 @@ export default function BlogEditorPage() {
     }
   };
 
-  // =========================================================================
-  // AUTO LINK ALL ARTICLES
-  // =========================================================================
-
-  const handleAutoLinkAll = async () => {
-    if (!blogData.content) {
-      toast({
-        title: 'Geen content',
-        description: 'Voeg eerst content toe aan je blog',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    toast({
-      title: 'Bezig met linken...',
-      description: 'AI-powered fuzzy matching actief...',
-    });
-
-    try {
-      // Fetch all knowledge base articles and blogs
-      const [kbResponse, blogsResponse] = await Promise.all([
-        fetch('/api/knowledge-base/list'),
-        fetch('/api/blogs/list?published=true')
-      ]);
-
-      if (!kbResponse.ok || !blogsResponse.ok) {
-        throw new Error('Kon artikelen niet ophalen');
-      }
-
-      const kbData = await kbResponse.json();
-      const blogsData = await blogsResponse.json();
-
-      const knowledgeBase = kbData.articles || [];
-      const blogs = blogsData.blogs || [];
-
-      logger.log('📊 Auto-linking data:', {
-        kbCount: knowledgeBase.length,
-        kbTitles: knowledgeBase.map((a: any) => a.title).slice(0, 5),
-        blogsCount: blogs.length,
-        blogTitles: blogs.map((b: any) => b.title).slice(0, 5),
-        currentBlogId: blogId,
-        contentLength: blogData.content.length,
-        contentPreview: blogData.content.replace(/<[^>]*>/g, ' ').substring(0, 200) + '...'
-      });
-
-      let updatedContent = blogData.content;
-      let linksInserted = 0;
-
-      // Helper: Extract significant keywords from text
-      const extractKeywords = (text: string): string[] => {
-        const stopWords = ['de', 'het', 'een', 'en', 'van', 'voor', 'in', 'op', 'met', 'aan', 'je', 'jouw', 'is', 'zijn', 'naar', 'over', 'bij', 'als', 'dat', 'die', 'dit'];
-        return text
-          .toLowerCase()
-          .replace(/[?!:.,]/g, '')
-          .split(/\s+/)
-          .filter(word => word.length > 3 && !stopWords.includes(word));
-      };
-
-      // Helper: Calculate match score between two texts
-      const calculateMatchScore = (text1: string, text2: string): number => {
-        const keywords1 = extractKeywords(text1);
-        const keywords2 = extractKeywords(text2);
-
-        let matches = 0;
-        keywords1.forEach(kw1 => {
-          keywords2.forEach(kw2 => {
-            // Exact match or partial match (contains)
-            if (kw1 === kw2 || kw1.includes(kw2) || kw2.includes(kw1)) {
-              matches++;
-            }
-          });
-        });
-
-        return matches;
-      };
-
-      // Helper: Try to find and replace text with link
-      const tryReplaceWithLink = (textToFind: string, url: string, linkTitle: string): boolean => {
-        // Skip if already linked
-        if (updatedContent.includes(url)) return false;
-
-        const escapedText = textToFind.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(
-          `(?<!<a[^>]*>)${escapedText}(?![^<]*<\/a>)`,
-          'gi'
-        );
-
-        if (regex.test(updatedContent)) {
-          updatedContent = updatedContent.replace(
-            regex,
-            `<a href="${url}" class="text-coral-600 hover:text-coral-700 underline">${linkTitle}</a>`
-          );
-          return true;
-        }
-        return false;
-      };
-
-      // Strategy 1: Exact matching (original behavior)
-      logger.log('🔍 Strategy 1: Exact matching...');
-
-      knowledgeBase.forEach((article: any) => {
-        const title = article.title;
-        const url = `/kennisbank/${article.slug}`;
-
-        const titleVariations = [
-          title,
-          title.replace(/\?/g, ''),
-          title.replace(/:/g, ''),
-        ];
-
-        for (const variation of titleVariations) {
-          if (tryReplaceWithLink(variation, url, title)) {
-            linksInserted++;
-            logger.log(`✅ Exact match: "${title}"`);
-            break;
-          }
-        }
-      });
-
-      blogs.forEach((blog: any) => {
-        if (blog.id === parseInt(blogId)) return;
-
-        const title = blog.title;
-        const url = `/blog/${blog.slug}`;
-
-        const titleVariations = [
-          title,
-          title.replace(/\?/g, ''),
-          title.replace(/:/g, ''),
-        ];
-
-        for (const variation of titleVariations) {
-          if (tryReplaceWithLink(variation, url, title)) {
-            linksInserted++;
-            logger.log(`✅ Exact match: "${title}"`);
-            break;
-          }
-        }
-      });
-
-      // Strategy 2: Fuzzy matching - Find sentences/phrases that match article topics
-      logger.log('🔍 Strategy 2: Fuzzy matching...');
-
-      // Extract all sentences/list items from content (potential link targets)
-      const contentPhrases = updatedContent
-        .replace(/<[^>]*>/g, ' ') // Strip HTML
-        .split(/[.\n]/) // Split by periods or newlines
-        .map(s => s.trim())
-        .filter(s => s.length > 20 && s.length < 200); // Reasonable length
-
-      logger.log(`📝 Found ${contentPhrases.length} phrases to analyze for fuzzy matching`);
-
-      // For each phrase, find best matching article
-      contentPhrases.forEach(phrase => {
-        let bestMatch: any = null;
-        let bestScore = 0;
-        let bestType: 'kb' | 'blog' = 'kb';
-
-        // Check knowledge base
-        knowledgeBase.forEach((article: any) => {
-          const score = calculateMatchScore(phrase, article.title);
-          if (score > bestScore && score >= 1) { // Lowered from 2 to 1 - need at least 1 keyword match
-            bestScore = score;
-            bestMatch = article;
-            bestType = 'kb';
-          }
-        });
-
-        // Check blogs
-        blogs.forEach((blog: any) => {
-          if (blog.id === parseInt(blogId)) return;
-          const score = calculateMatchScore(phrase, blog.title);
-          if (score > bestScore && score >= 1) { // Lowered from 2 to 1
-            bestScore = score;
-            bestMatch = blog;
-            bestType = 'blog';
-          }
-        });
-
-        // If we found a good match, try to link it
-        if (bestMatch && bestScore >= 2) { // Lowered from 3 to 2 for linking threshold
-          const url = bestType === 'kb' ? `/kennisbank/${bestMatch.slug}` : `/blog/${bestMatch.slug}`;
-
-          if (tryReplaceWithLink(phrase, url, bestMatch.title)) {
-            linksInserted++;
-            logger.log(`✨ Fuzzy match (score ${bestScore}): "${phrase.substring(0, 50)}..." → "${bestMatch.title}"`);
-          }
-        }
-      });
-
-      logger.log(`✅ Auto-linking complete: ${linksInserted} links inserted`);
-
-      updateBlogData({ content: updatedContent });
-
-      toast({
-        title: linksInserted > 0 ? 'Succesvol! 🎉' : 'Klaar',
-        description: linksInserted > 0
-          ? `${linksInserted} artikel${linksInserted === 1 ? '' : 'en'} automatisch gelinkt met AI`
-          : 'Geen matches gevonden. Probeer meer specifieke termen in je content te gebruiken die overeenkomen met artikel titels.',
-      });
-    } catch (error) {
-      console.error('Auto link error:', error);
-      toast({
-        title: 'Fout',
-        description: error instanceof Error ? error.message : 'Automatisch linken mislukt',
-        variant: 'destructive',
-      });
-    }
-  };
 
   // =========================================================================
   // AUTO INSERT INTERNAL LINKS
@@ -804,20 +649,11 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
               <Button
                 variant="outline"
                 size="sm"
-                onClick={handleMetadataOnly}
+                onClick={handleAIOptimize}
                 className="border-coral-200 text-coral-700 hover:bg-coral-50"
               >
                 <Wand2 className="w-4 h-4 mr-2" />
-                Metadata Only
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleAutoLinkAll}
-                className="border-purple-200 text-purple-700 hover:bg-purple-50"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                Link Alle Artikelen
+                AI Optimaliseren
               </Button>
               <Button
                 variant="outline"
