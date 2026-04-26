@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Upload, Camera, Loader2, CheckCircle2, AlertCircle, HelpCircle } from 'lucide-react';
 import { TutorialModal, useTutorial } from '@/components/shared/tutorial-modal';
+import { getValidToken } from '@/lib/client-auth';
 
 interface PhotoAnalysisResult {
   overall_score: number;
@@ -70,9 +71,11 @@ export function PhotoAnalysisTab() {
       formData.append('photo', selectedFile);
       formData.append('context', 'profile_photo');
 
+      const token = getValidToken();
       const response = await fetch('/api/photo-analysis', {
         method: 'POST',
         credentials: 'include',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: formData
       });
 

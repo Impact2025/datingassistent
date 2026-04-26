@@ -71,7 +71,7 @@ function InputQuality({ len }: { len: number }) {
 
 export function AiBioGenerator({ embedded = false }: AiBioGeneratorProps) {
   const router = useRouter();
-  const { user, userProfile } = useUser();
+  const { user, userProfile, refreshUser } = useUser();
   const { toast } = useToast();
 
   const [userInput, setUserInput]         = useState('');
@@ -165,6 +165,7 @@ export function AiBioGenerator({ embedded = false }: AiBioGeneratorProps) {
       if (!res.ok) throw new Error();
       setSavedId(id);
       toast({ title: 'Bio opgeslagen', description: 'Je profiel is bijgewerkt.' });
+      await refreshUser();
       setTimeout(() => router.push('/dashboard?tab=profiel'), 1500);
     } catch {
       toast({ title: 'Opslaan mislukt', variant: 'destructive' });

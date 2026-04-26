@@ -187,7 +187,7 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
         'X-Title': 'DatingAssistent Photo Analysis'
       },
       body: JSON.stringify({
-        model: OPENROUTER_MODELS.CLAUDE_HAIKU,
+        model: 'anthropic/claude-3.5-sonnet',
         messages: [
           {
             role: 'user',
@@ -213,8 +213,13 @@ Wees STRIKT - gemiddelde dating foto's krijgen 5-6/10. Alleen EXCEPTIONELE foto'
     if (!response.ok) {
       const errorData = await response.text();
       console.error('❌ OpenRouter API error:', response.status, errorData);
+      let userMessage = 'Foto analyse mislukt. Probeer het opnieuw.';
+      try {
+        const parsed = JSON.parse(errorData);
+        if (parsed?.error?.message) userMessage = parsed.error.message;
+      } catch { /* keep default */ }
       return NextResponse.json(
-        { error: 'Failed to analyze photo', details: errorData },
+        { error: userMessage, details: errorData },
         { status: 500 }
       );
     }
