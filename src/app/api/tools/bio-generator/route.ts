@@ -3,16 +3,16 @@ import { requireAuth } from '@/lib/auth';
 import { OpenRouterClient } from '@/lib/openrouter';
 
 const STYLE_PROMPTS: Record<string, string> = {
-  fun: 'energiek, humoristisch en speels van toon',
-  serious: 'betrouwbaar, ambitieus en serieus van toon',
-  flirty: 'charmant, speels en licht flirterig van toon',
-  mysterious: 'intrigerend, mysterieus en subtiel van toon',
+  fun: 'energiek, humoristisch en speels — toont levenslust zonder overdreven te zijn',
+  serious: 'betrouwbaar, ambitieus en oprecht — stabiel en zelfverzekerd',
+  flirty: 'charmant, licht flirterig en warm — nodigt uit tot contact',
+  mysterious: 'intrigerend en subtiel — laat ruimte voor nieuwsgierigheid',
 };
 
-const LENGTH_CHARS: Record<string, string> = {
-  short: '60-80 karakters',
-  medium: '80-120 karakters',
-  long: '120-150 karakters',
+const LENGTH_CHARS: Record<string, { range: string; min: number; max: number }> = {
+  short:  { range: '60-80 karakters',   min: 60,  max: 80  },
+  medium: { range: '80-120 karakters',  min: 80,  max: 120 },
+  long:   { range: '120-150 karakters', min: 120, max: 150 },
 };
 
 export async function POST(request: NextRequest) {
@@ -26,51 +26,66 @@ export async function POST(request: NextRequest) {
     }
 
     const styleDesc = STYLE_PROMPTS[style] || STYLE_PROMPTS.fun;
-    const lengthDesc = LENGTH_CHARS[length] || LENGTH_CHARS.medium;
+    const lengthConf = LENGTH_CHARS[length] || LENGTH_CHARS.medium;
 
-    const prompt = `Je bent een expert dating-coach die Nederlandse dating-profielbio's schrijft die echt matchen opleveren.
+    const prompt = `Je bent een expert Nederlandse dating-coach die bio's schrijft voor dating-apps. Je schrijft bio's die authentiek zijn, concrete details bevatten en interesse wekken.
 
-Schrijf 3 unieke dating-bio varianten voor iemand met de volgende info:
+GEBRUIKER INPUT:
 "${userInput.trim()}"
 
-Eisen per bio:
+Schrijf 3 unieke bio-varianten. Elke variant moet:
 - Stijl: ${styleDesc}
-- Lengte: precies ${lengthDesc}
-- Geschreven in de eerste persoon (ik)
-- Nederlands, authentiek en persoonlijk
-- Eindigt idealiter met een impliciete of expliciete gespreksopener (vraag of open einde)
-- Gebruik maximaal 1-2 emoji's per bio
-- Geen clichés zoals "ik hou van lachen" of "ik zoek iemand die van avontuur houdt"
-- Noem concrete details uit de input, geen vage algemeenheden
+- Lengte: precies ${lengthConf.range} (${lengthConf.min}-${lengthConf.max} karakters — tel exact)
+- Eerste persoon (ik), Nederlands, geen vertaling-taal
+- Concrete details uit de input gebruiken — geen vage algemeenheden
+- Eindigen met iets wat uitnodigt tot reactie (open vraag of prikkelende zin)
+- GEEN clichés: "ik hou van lachen", "spontaan", "gezelligheid", "avontuurlijk"
+- GEEN lijstjes, GEEN bullet points — vloeiende tekst
+- Maximaal 1 emoji per bio (alleen als het echt past, anders geen)
 
-Geef je antwoord UITSLUITEND als een JSON array in dit formaat (geen andere tekst, geen markdown):
+Geef UITSLUITEND dit JSON array terug (geen uitleg, geen markdown):
 [
-  {"id":"1","content":"[bio tekst]","score":90},
-  {"id":"2","content":"[bio tekst]","score":85},
-  {"id":"3","content":"[bio tekst]","score":80}
-]
-
-De score (0-100) reflecteert hoe aantrekkelijk en effectief de bio is voor matches.`;
+  {
+    "id": "1",
+    "content": "[bio tekst — precies ${lengthConf.min}-${lengthConf.max} karakters]",
+    "reason": "[1 zin: waarom dit werkt voor deze persoon — specifiek en eerlijk]"
+  },
+  {
+    "id": "2",
+    "content": "[andere bio tekst — zelfde lengte-eis]",
+    "reason": "[1 zin waarom]"
+  },
+  {
+    "id": "3",
+    "content": "[derde bio tekst — zelfde lengte-eis]",
+    "reason": "[1 zin waarom]"
+  }
+]`;
 
     const client = new OpenRouterClient();
     const raw = await client.createChatCompletion(
       'anthropic/claude-3.5-haiku',
       [{ role: 'user', content: prompt }],
-      { max_tokens: 800, temperature: 0.85 }
+      { max_tokens: 1000, temperature: 0.85 }
     );
 
-    // Strip markdown code blocks if present
     const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
-    let bios: Array<{ id: string; content: string; score: number }>;
+    let bios: Array<{ id: string; content: string; reason: string }>;
     try {
       bios = JSON.parse(cleaned);
     } catch {
-      // Fallback: extract JSON array from the response
       const match = cleaned.match(/\[[\s\S]*\]/);
       if (!match) throw new Error('Kon geen geldige bio array parsen uit AI response');
       bios = JSON.parse(match[0]);
     }
+
+    // Ensure reason field exists (backward compat if AI omits it)
+    bios = bios.map((b, i) => ({
+      id: b.id || String(i + 1),
+      content: b.content || '',
+      reason: b.reason || '',
+    }));
 
     return NextResponse.json({ bios, style, length });
   } catch (error) {
