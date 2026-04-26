@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Play,
   CheckCircle,
+  Circle,
   BookOpen,
   Menu,
   X,
@@ -913,6 +914,56 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                   </div>
                   <Progress value={completionPercent} className="h-1.5 bg-gray-100" />
                 </div>
+
+                {/* Stappen checklist */}
+                {(() => {
+                  const hasVideo = !!currentLesson.video_url;
+                  const hasSpiegel = !!currentLesson.reflectie?.spiegel;
+                  const hasIdentiteit = !!currentLesson.reflectie?.identiteit;
+                  const hasActie = !!currentLesson.reflectie?.actie;
+                  const spiegelOk = (reflectieAnswers.spiegel?.length || 0) > 10;
+                  const identiteitOk = (reflectieAnswers.identiteit?.length || 0) > 10;
+                  const actieOk = (reflectieAnswers.actie?.length || 0) > 10;
+
+                  const steps = [
+                    hasVideo && { label: 'Video bekeken', done: isVideoComplete },
+                    hasSpiegel && { label: 'Reflectie: Spiegel', done: spiegelOk },
+                    hasIdentiteit && { label: 'Reflectie: Identiteit', done: identiteitOk },
+                    hasActie && { label: 'Reflectie: Actie', done: actieOk },
+                  ].filter(Boolean) as { label: string; done: boolean }[];
+
+                  if (steps.length === 0) return null;
+
+                  const allDone = steps.every(s => s.done);
+
+                  return (
+                    <div className={cn(
+                      'mt-3 p-3 rounded-lg border text-sm',
+                      allDone
+                        ? 'bg-green-50 border-green-200'
+                        : 'bg-amber-50 border-amber-200'
+                    )}>
+                      <p className={cn(
+                        'text-xs font-semibold uppercase tracking-wide mb-2',
+                        allDone ? 'text-green-700' : 'text-amber-700'
+                      )}>
+                        {allDone ? 'Alles gedaan — klik op Les voltooien' : 'Nog te voltooien'}
+                      </p>
+                      <ul className="space-y-1.5">
+                        {steps.map(({ label, done }) => (
+                          <li key={label} className="flex items-center gap-2">
+                            {done
+                              ? <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
+                              : <Circle className="w-4 h-4 text-gray-300 shrink-0" />}
+                            <span className={done ? 'text-gray-400 line-through' : 'text-gray-700'}>
+                              {label}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })()}
 
                 {/* Mindset Hook */}
                 {currentModule?.mindset_hook && (
