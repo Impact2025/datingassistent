@@ -356,7 +356,7 @@ function DashboardPageContent() {
   // This effect runs whenever searchParams changes (Next.js App Router reactive hook)
   useEffect(() => {
     const tabParam = searchParams?.get('tab');
-    if (tabParam && ['subscription', 'settings', 'data-management', 'home', 'pad', 'coach', 'profiel', 'tools', 'waarden-kompas'].includes(tabParam)) {
+    if (tabParam && ['subscription', 'settings', 'data-management', 'home', 'pad', 'coach', 'profiel', 'tools', 'waarden-kompas', 'ai-bio-generator'].includes(tabParam)) {
       setActiveTab(tabParam);
     } else if (!tabParam && pathname === '/dashboard') {
       // If on /dashboard without tab param, default to 'home' for new nav
