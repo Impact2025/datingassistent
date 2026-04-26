@@ -45,9 +45,9 @@ export class OpenRouterClient {
   private baseUrl = 'https://openrouter.ai/api/v1';
 
   private readonly FALLBACK_CHAIN: Record<string, string[]> = {
-    'anthropic/claude-haiku-4-5': ['openai/gpt-3.5-turbo'],
-    'anthropic/claude-sonnet-4-5': ['anthropic/claude-haiku-4-5', 'openai/gpt-4-turbo'],
-    'anthropic/claude-opus-4-5': ['anthropic/claude-sonnet-4-5', 'openai/gpt-4-turbo'],
+    'anthropic/claude-haiku-4-5-20251001': ['openai/gpt-4o-mini'],
+    'anthropic/claude-sonnet-4-6': ['anthropic/claude-haiku-4-5-20251001', 'openai/gpt-4o'],
+    'anthropic/claude-opus-4-7': ['anthropic/claude-sonnet-4-6', 'openai/gpt-4o'],
   };
 
   private readonly RETRYABLE_STATUS_CODES = [429, 500, 502, 503, 524];
@@ -284,17 +284,17 @@ export const openRouter: OpenRouterClient = new Proxy({} as OpenRouterClient, {
  * Beschikbare modellen via OpenRouter
  */
 export const OPENROUTER_MODELS = {
-  // Claude Haiku — snel en goedkoop, voor analyse en enkelvoudige vragen
-  CLAUDE_HAIKU: 'anthropic/claude-haiku-4-5',
-  CLAUDE_3_HAIKU: 'anthropic/claude-haiku-4-5',
-  CLAUDE_35_HAIKU: 'anthropic/claude-haiku-4-5',
+  // Claude Haiku 4.5 — snel en goedkoop, voor analyse en enkelvoudige vragen
+  CLAUDE_HAIKU: 'anthropic/claude-haiku-4-5-20251001',
+  CLAUDE_3_HAIKU: 'anthropic/claude-haiku-4-5-20251001',
+  CLAUDE_35_HAIKU: 'anthropic/claude-haiku-4-5-20251001',
 
-  // Claude Sonnet — balans kwaliteit/snelheid, voor coaching en profielgeneratie
-  CLAUDE_SONNET: 'anthropic/claude-sonnet-4-5',
-  CLAUDE_35_SONNET: 'anthropic/claude-sonnet-4-5',
+  // Claude Sonnet 4.6 — balans kwaliteit/snelheid, voor coaching en profielgeneratie
+  CLAUDE_SONNET: 'anthropic/claude-sonnet-4-6',
+  CLAUDE_35_SONNET: 'anthropic/claude-sonnet-4-6',
 
-  // Claude Opus — hoogste kwaliteit, beschikbaar voor toekomstig gebruik
-  CLAUDE_OPUS: 'anthropic/claude-opus-4-5',
+  // Claude Opus 4.7 — hoogste kwaliteit, voor complexe taken
+  CLAUDE_OPUS: 'anthropic/claude-opus-4-7',
 
   // GPT modellen (OpenAI) — fallback
   GPT_4_TURBO: 'openai/gpt-4-turbo',
