@@ -34,6 +34,7 @@ export function RichTextEditor({ content, onChange, placeholder = 'Schrijf hier.
         heading: {
           levels: [1, 2, 3],
         },
+        link: false, // disable built-in link to avoid duplicate with explicit Link below
       }),
       Link.configure({
         openOnClick: false,

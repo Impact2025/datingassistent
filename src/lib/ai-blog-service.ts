@@ -180,6 +180,7 @@ async function callAIWithFallback(
       {
         max_tokens: options.max_tokens || 4000,
         temperature: options.temperature || 0.4,
+        enableFallback: true,
       }
     );
 

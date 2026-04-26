@@ -63,6 +63,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
         heading: {
           levels: [1, 2, 3, 4, 5, 6],
         },
+        link: false, // disable built-in link to avoid duplicate with explicit Link below
       }),
       Link.configure({
         openOnClick: false,

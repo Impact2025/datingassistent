@@ -115,13 +115,13 @@ export async function POST(request: NextRequest) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     const isApiKeyError = errorMessage.includes('OPENROUTER_API_KEY');
 
+    logger.log(`❌ enhance-metadata failed (${Date.now() - startTime}ms):`, errorMessage);
+
     return NextResponse.json(
       {
         success: false,
         error: isApiKeyError ? errorMessage : 'Metadata verbetering mislukt',
-        details: process.env.NODE_ENV === 'development' && !isApiKeyError
-          ? errorMessage
-          : undefined,
+        details: !isApiKeyError ? errorMessage : undefined,
       },
       {
         status: isApiKeyError ? 503 : 500,
