@@ -938,17 +938,18 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                   if (steps.length === 0) return null;
 
                   const allDone = steps.every(s => s.done);
+                  const alreadyCompleted = currentLesson.progress?.status === 'completed';
 
                   return (
                     <div className={cn(
                       'mt-3 p-3 rounded-lg border text-sm',
-                      allDone ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'
+                      alreadyCompleted ? 'bg-gray-50 border-gray-200' : allDone ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'
                     )}>
                       <p className={cn(
                         'text-xs font-semibold uppercase tracking-wide mb-2',
-                        allDone ? 'text-green-700' : 'text-amber-700'
+                        alreadyCompleted ? 'text-gray-500' : allDone ? 'text-green-700' : 'text-amber-700'
                       )}>
-                        {allDone ? 'Alles gedaan — klik op Les voltooien' : 'Nog te voltooien'}
+                        {alreadyCompleted ? 'Les voltooid' : allDone ? 'Alles gedaan!' : 'Nog te voltooien'}
                       </p>
                       <ul className="space-y-1.5">
                         {steps.map(({ label, done, anchor }) => (
@@ -971,6 +972,16 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                           </li>
                         ))}
                       </ul>
+                      {allDone && !alreadyCompleted && (
+                        <button
+                          onClick={handleLessonComplete}
+                          disabled={saving}
+                          className="mt-3 w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-2.5 rounded-lg transition-colors disabled:opacity-50"
+                        >
+                          <CheckCircle className="w-4 h-4" />
+                          Les voltooien
+                        </button>
+                      )}
                     </div>
                   );
                 })()}
