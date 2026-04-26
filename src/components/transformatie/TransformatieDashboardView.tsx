@@ -925,12 +925,15 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                   const identiteitOk = (reflectieAnswers.identiteit?.length || 0) > 10;
                   const actieOk = (reflectieAnswers.actie?.length || 0) > 10;
 
+                  const scrollTo = (id: string) =>
+                    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
                   const steps = [
-                    hasVideo && { label: 'Video bekeken', done: isVideoComplete },
-                    hasSpiegel && { label: 'Reflectie: Spiegel', done: spiegelOk },
-                    hasIdentiteit && { label: 'Reflectie: Identiteit', done: identiteitOk },
-                    hasActie && { label: 'Reflectie: Actie', done: actieOk },
-                  ].filter(Boolean) as { label: string; done: boolean }[];
+                    hasVideo && { label: 'Video bekeken', done: isVideoComplete, anchor: 'lesson-video' },
+                    hasSpiegel && { label: 'Reflectie: Spiegel', done: spiegelOk, anchor: 'lesson-reflectie' },
+                    hasIdentiteit && { label: 'Reflectie: Identiteit', done: identiteitOk, anchor: 'lesson-reflectie' },
+                    hasActie && { label: 'Reflectie: Actie', done: actieOk, anchor: 'lesson-reflectie' },
+                  ].filter(Boolean) as { label: string; done: boolean; anchor: string }[];
 
                   if (steps.length === 0) return null;
 
@@ -939,9 +942,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                   return (
                     <div className={cn(
                       'mt-3 p-3 rounded-lg border text-sm',
-                      allDone
-                        ? 'bg-green-50 border-green-200'
-                        : 'bg-amber-50 border-amber-200'
+                      allDone ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'
                     )}>
                       <p className={cn(
                         'text-xs font-semibold uppercase tracking-wide mb-2',
@@ -950,14 +951,23 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                         {allDone ? 'Alles gedaan — klik op Les voltooien' : 'Nog te voltooien'}
                       </p>
                       <ul className="space-y-1.5">
-                        {steps.map(({ label, done }) => (
-                          <li key={label} className="flex items-center gap-2">
-                            {done
-                              ? <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
-                              : <Circle className="w-4 h-4 text-gray-300 shrink-0" />}
-                            <span className={done ? 'text-gray-400 line-through' : 'text-gray-700'}>
-                              {label}
-                            </span>
+                        {steps.map(({ label, done, anchor }) => (
+                          <li key={label}>
+                            <button
+                              onClick={() => !done && scrollTo(anchor)}
+                              className={cn(
+                                'flex items-center gap-2 w-full text-left',
+                                !done && 'hover:text-coral-600 cursor-pointer',
+                                done && 'cursor-default'
+                              )}
+                            >
+                              {done
+                                ? <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
+                                : <Circle className="w-4 h-4 text-gray-300 shrink-0" />}
+                              <span className={done ? 'text-gray-400 line-through' : 'text-gray-700'}>
+                                {label}
+                              </span>
+                            </button>
                           </li>
                         ))}
                       </ul>
@@ -992,7 +1002,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
             </Card>
 
             {/* Video Section */}
-            <Card className="border-gray-200 shadow-sm overflow-hidden">
+            <Card id="lesson-video" className="border-gray-200 shadow-sm overflow-hidden">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Play className="w-5 h-5" />
@@ -1130,8 +1140,8 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
               </Card>
             )}
 
-            {/* Reflectie Section */}
-            <Card className="border-gray-200 shadow-sm">
+            {/* Reflectie Section — alleen tonen als les daadwerkelijk reflectievragen heeft */}
+            {(currentLesson.reflectie?.spiegel || currentLesson.reflectie?.identiteit || currentLesson.reflectie?.actie) && <Card id="lesson-reflectie" className="border-gray-200 shadow-sm">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <BookOpen className="w-5 h-5" />
@@ -1283,7 +1293,7 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                   )}
                 </div>
               </CardContent>
-            </Card>
+            </Card>}
 
             {/* Mark Complete Button */}
             {isLessonComplete && currentLesson.progress?.status !== 'completed' && (
