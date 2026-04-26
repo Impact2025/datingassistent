@@ -21,6 +21,9 @@ import {
   Zap,
   Save,
   AlertCircle,
+  Briefcase,
+  Eye,
+  MessageCircle,
 } from 'lucide-react';
 import { TutorialModal, TutorialStep, useTutorialCompletion } from '@/components/ui/tutorial-modal';
 import { BottomNavigation } from '@/components/layout/bottom-navigation';
@@ -138,7 +141,11 @@ const TUTORIAL_STEPS: TutorialStep[] = [
   }
 ];
 
-export function AiBioGenerator() {
+interface AiBioGeneratorProps {
+  embedded?: boolean;
+}
+
+export function AiBioGenerator({ embedded = false }: AiBioGeneratorProps) {
   const router = useRouter();
   const { user, userProfile } = useUser();
   const { toast } = useToast();
@@ -245,10 +252,14 @@ export function AiBioGenerator() {
     }
   };
 
-  const getStyleIcon = (style: string) => {
-    const icons: Record<string, string> = { fun: '🎉', serious: '💼', flirty: '😘', mysterious: '🔮' };
-    return icons[style] || '📝';
-  };
+  const STYLE_CONFIG = [
+    { value: 'fun',        label: 'Leuk & Energiek',         icon: <Zap className="w-4 h-4" /> },
+    { value: 'serious',    label: 'Serieus & Betrouwbaar',   icon: <Briefcase className="w-4 h-4" /> },
+    { value: 'flirty',     label: 'Speels & Flirterig',      icon: <Heart className="w-4 h-4" /> },
+    { value: 'mysterious', label: 'Mysterieus & Intrigerend', icon: <Eye className="w-4 h-4" /> },
+  ] as const;
+
+  const getStyleLabel = (style: string) => STYLE_CONFIG.find(s => s.value === style)?.label ?? style;
 
   const getLengthRange = (len: string) => {
     const ranges: Record<string, string> = { short: '60-80', medium: '80-120', long: '120-150' };
@@ -262,37 +273,39 @@ export function AiBioGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 px-6 py-6">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.back()}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">AI Bio Generator</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Genereer bio's die 3× meer matches opleveren</p>
+    <div className={embedded ? 'pb-6' : 'min-h-screen bg-gray-50 dark:bg-gray-900 pb-20'}>
+      {/* Header — only in standalone mode */}
+      {!embedded && (
+        <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 px-6 py-6">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.back()}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">AI Bio Generator</h1>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Genereer bio's die 3× meer matches opleveren</p>
+              </div>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowTutorial(true)}
+              className="border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+            >
+              <HelpCircle className="w-4 h-4 mr-2" />
+              Handleiding
+            </Button>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowTutorial(true)}
-            className="border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-          >
-            <HelpCircle className="w-4 h-4 mr-2" />
-            Handleiding
-          </Button>
         </div>
-      </div>
+      )}
 
-      <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <div className={`max-w-4xl mx-auto space-y-8 ${embedded ? 'p-0' : 'p-6'}`}>
         {/* Input Section */}
         <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm rounded-xl">
           <CardHeader className="pb-4">
@@ -323,12 +336,7 @@ export function AiBioGenerator() {
             <div className="space-y-3">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Bio Stijl</label>
               <div className="grid grid-cols-2 gap-3">
-                {[
-                  { value: 'fun', label: 'Leuk & Energiek', icon: '🎉' },
-                  { value: 'serious', label: 'Serieus & Betrouwbaar', icon: '💼' },
-                  { value: 'flirty', label: 'Speels & Flirterig', icon: '😘' },
-                  { value: 'mysterious', label: 'Mysterieus & Intrigerend', icon: '🔮' },
-                ].map((style) => (
+                {STYLE_CONFIG.map((style) => (
                   <button
                     key={style.value}
                     onClick={() => setSelectedStyle(style.value as typeof selectedStyle)}
@@ -339,7 +347,9 @@ export function AiBioGenerator() {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">{style.icon}</span>
+                      <span className={selectedStyle === style.value ? 'text-coral-600 dark:text-coral-400' : 'text-gray-500 dark:text-gray-400'}>
+                        {style.icon}
+                      </span>
                       <span className="text-sm font-medium">{style.label}</span>
                     </div>
                   </button>
@@ -413,7 +423,7 @@ export function AiBioGenerator() {
                     Jouw Bio Suggesties
                   </CardTitle>
                   <Badge className="bg-coral-100 text-coral-700 dark:bg-coral-900/50 dark:text-coral-300 border-coral-200 dark:border-coral-700">
-                    {getStyleIcon(selectedStyle)} {selectedStyle} · {getLengthRange(selectedLength)} tekens
+                    {getStyleLabel(selectedStyle)} · {getLengthRange(selectedLength)} tekens
                   </Badge>
                 </div>
               </CardHeader>
@@ -546,20 +556,22 @@ export function AiBioGenerator() {
         )}
       </div>
 
-      <TutorialModal
-        isOpen={showTutorial}
-        onClose={() => setShowTutorial(false)}
-        onComplete={markCompleted}
-        title="AI Bio Generator Handleiding"
-        description="Leer hoe je professionele dating bio's maakt in 5 eenvoudige stappen"
-        steps={TUTORIAL_STEPS}
-        toolId="ai-bio-generator"
-        estimatedTime={5}
-        difficulty="beginner"
-      />
+      {!embedded && (
+        <TutorialModal
+          isOpen={showTutorial}
+          onClose={() => setShowTutorial(false)}
+          onComplete={markCompleted}
+          title="AI Bio Generator Handleiding"
+          description="Leer hoe je professionele dating bio's maakt in 5 eenvoudige stappen"
+          steps={TUTORIAL_STEPS}
+          toolId="ai-bio-generator"
+          estimatedTime={5}
+          difficulty="beginner"
+        />
+      )}
 
       <Toaster />
-      <BottomNavigation />
+      {!embedded && <BottomNavigation />}
     </div>
   );
 }

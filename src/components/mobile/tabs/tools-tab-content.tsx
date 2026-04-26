@@ -180,7 +180,7 @@ export function ToolsTabContent({ user, userProfile }: ToolsTabContentProps) {
           icon: Sparkles,
           title: 'Bio Generator',
           subtitle: 'AI geschreven',
-          route: '/tools/ai-bio-generator',
+          route: '/dashboard?tab=ai-bio-generator',
           color: 'bg-coral-50 text-coral-600',
         },
       ],

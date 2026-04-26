@@ -13,8 +13,8 @@ interface ToolSectieProps {
 
 // Map tool IDs to their routes
 const TOOL_ROUTES: Record<string, string> = {
-  'bio-generator': '/tools/ai-bio-generator',
-  'ai-bio-generator': '/tools/ai-bio-generator',
+  'bio-generator': '/dashboard?tab=ai-bio-generator',
+  'ai-bio-generator': '/dashboard?tab=ai-bio-generator',
   'profile-analysis': '/profile-analysis',
   'foto-analyse': '/foto',
   'foto': '/foto',

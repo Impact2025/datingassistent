@@ -109,7 +109,7 @@ function ToolsTabContent() {
       icon: <Heart className="w-6 h-6" />,
       title: 'AI Bio Generator',
       description: 'Professionele bio varianten genereren',
-      route: '/tools/ai-bio-generator',
+      route: '/dashboard?tab=ai-bio-generator',
       category: 'profile',
       popular: true,
     },

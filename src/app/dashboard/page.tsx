@@ -175,6 +175,11 @@ const WaardenKompasTool = dynamicImport(() => import('@/components/waarden-kompa
   ssr: false
 });
 
+const AiBioGenerator = dynamicImport(() => import('@/components/tools/ai-bio-generator').then(mod => ({ default: mod.AiBioGenerator })), {
+  loading: () => <ToolsTabSkeleton />,
+  ssr: false
+});
+
 const ToolsTab = dynamicImport(() => import('@/components/dashboard/tools-tab').then(mod => ({ default: mod.ToolsTab })), {
   loading: () => <ToolsTabSkeleton />,
   ssr: false
@@ -750,6 +755,8 @@ function DashboardPageContent() {
         return <BadgesShowcase userId={user?.id || 0} />;
       case 'dating-activity':
         return <DatingActivityLogger userId={user?.id || 0} />;
+      case 'ai-bio-generator':
+        return <AiBioGenerator embedded={true} />;
       case 'waarden-kompas':
         return <WaardenKompasTool />;
       case 'datingstijl':

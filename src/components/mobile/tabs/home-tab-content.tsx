@@ -128,7 +128,7 @@ export function HomeTabContent({ user, userProfile }: HomeTabContentProps) {
                   Je profiel foto's zijn goed! Focus nu op je bio om meer matches te krijgen.
                 </p>
                 <Button
-                  onClick={() => router.push('/tools/ai-bio-generator')}
+                  onClick={() => router.push('/dashboard?tab=ai-bio-generator')}
                   className="bg-coral-500 hover:bg-coral-600 text-white h-9 text-sm"
                 >
                   Bio verbeteren
