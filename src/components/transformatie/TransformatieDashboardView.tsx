@@ -43,7 +43,6 @@ import { cn } from '@/lib/utils';
 import { ModuleSidebar } from './ModuleSidebar';
 import { QASessionsCalendar } from './QASessionsCalendar';
 import { ModuleToolCard } from '@/components/journey/module-tool-card';
-import { AssignmentChecklist } from './AssignmentChecklist';
 import { LessonQuiz } from './LessonQuiz';
 import { BadgeNotification } from './BadgeNotification';
 import { BadgeShowcase } from './BadgeShowcase';
@@ -120,7 +119,6 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
   const [isVideoComplete, setIsVideoComplete] = useState(false);
   const [reflectieAnswers, setReflectieAnswers] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
-  const [assignmentCompleted, setAssignmentCompleted] = useState(false);
 
   // Interactive features state
   const [showQuiz, setShowQuiz] = useState(false);
@@ -353,7 +351,6 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
     setCurrentLesson(lesson);
     setIsVideoComplete(lesson.progress?.video_completed || false);
     setReflectieAnswers(lesson.progress?.reflectie_answers || {});
-    setAssignmentCompleted((lesson.progress as any)?.assignment_completed || false);
     setShowQuiz(false);
     setAiFeedback({});
     setSidebarOpen(false);
@@ -1292,15 +1289,6 @@ export function TransformatieDashboardView({ userId, onBack }: TransformatieDash
                         </button>
                       )}
                     </div>
-                  )}
-                  {/* Opdracht checklist */}
-                  {currentLesson.reflectie?.actie && (
-                    <AssignmentChecklist
-                      lessonId={currentLesson.id}
-                      assignmentText={currentLesson.reflectie.actie}
-                      isCompleted={assignmentCompleted}
-                      onComplete={(done) => setAssignmentCompleted(done)}
-                    />
                   )}
                 </div>
               </CardContent>
