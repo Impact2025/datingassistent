@@ -18,7 +18,8 @@ import {
   Sparkles,
   Clock,
   X,
-  CheckCircle
+  CheckCircle,
+  PartyPopper
 } from 'lucide-react';
 import { DatingWeekLogger } from './dating-week-logger';
 
@@ -35,6 +36,8 @@ export function DatingWeekNotificationModal({
 }: DatingWeekNotificationModalProps) {
   const { user } = useUser();
   const [showLogger, setShowLogger] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [completedData, setCompletedData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastLogDate, setLastLogDate] = useState<string | null>(null);
 
@@ -69,8 +72,9 @@ export function DatingWeekNotificationModal({
 
   const handleLoggerComplete = (data: any) => {
     setShowLogger(false);
+    setCompletedData(data);
+    setShowSuccess(true);
     onComplete?.(data);
-    onClose();
   };
 
   const handleLoggerCancel = () => {
@@ -105,6 +109,35 @@ export function DatingWeekNotificationModal({
             onComplete={handleLoggerComplete}
             onCancel={handleLoggerCancel}
           />
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  if (showSuccess) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-md">
+          <div className="py-6 text-center space-y-4">
+            <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+              <CheckCircle className="w-7 h-7 text-green-600" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Week geregistreerd!</h3>
+              <p className="text-sm text-gray-500 mt-1">Iris heeft je inzicht opgeslagen.</p>
+            </div>
+            {completedData?.irisInsight && (
+              <div className="text-left bg-purple-50 border border-purple-200 rounded-lg p-4 text-sm text-gray-700 leading-relaxed max-h-48 overflow-y-auto">
+                <p className="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-2 flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" /> Iris Insight
+                </p>
+                {completedData.irisInsight}
+              </div>
+            )}
+            <Button onClick={onClose} className="w-full bg-coral-500 hover:bg-coral-600 text-white">
+              Sluiten
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     );

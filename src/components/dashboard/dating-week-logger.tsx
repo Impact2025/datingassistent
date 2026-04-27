@@ -172,7 +172,7 @@ export function DatingWeekLogger({ onComplete, onCancel }: DatingWeekLoggerProps
     setCurrentStep(prev => Math.max(prev - 1, 1));
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     const logData: WeeklyLogData = {
       activities: selectedActivities,
       activityDetails,
@@ -180,6 +180,20 @@ export function DatingWeekLogger({ onComplete, onCancel }: DatingWeekLoggerProps
       weekEnd: weekDates.end,
       irisInsight: irisInsight || undefined
     };
+
+    try {
+      await fetch('/api/dating-log/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('datespark_auth_token')}`
+        },
+        body: JSON.stringify(logData)
+      });
+    } catch (error) {
+      console.error('Error submitting dating log:', error);
+    }
+
     onComplete(logData);
   };
 
