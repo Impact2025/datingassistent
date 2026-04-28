@@ -204,12 +204,17 @@ export async function POST(
   { params }: { params: Promise<{ slug: string; lesSlug: string }> }
 ) {
   try {
-    const { slug: rawSlug, lesSlug } = await params;
+    const cookieStore = await cookies();
+    const token = cookieStore.get(cookieConfig.name)?.value;
+    if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authUser = await verifyToken(token);
+    if (!authUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const userId = authUser.id;
 
-    // Resolve slug to canonical version (supports aliases)
+    const { slug: rawSlug, lesSlug } = await params;
     const slug = resolveSlug(rawSlug);
     const body = await request.json();
-    const { userId, sectieId, lesId, cursusId, status, quizScore, quizAntwoorden, reflectieAntwoord, opdrachtVoltooide, actieplanVoltooide } = body;
+    const { sectieId, lesId, cursusId, status, quizScore, quizAntwoorden, reflectieAntwoord, opdrachtVoltooide, actieplanVoltooide } = body;
 
     logger.log(`💾 Updating progress for user ${userId}, section ${sectieId}`);
 

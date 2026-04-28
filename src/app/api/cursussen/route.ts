@@ -60,8 +60,47 @@ export async function GET(request: NextRequest) {
 
     logger.log(`✅ Found ${result.rows.length} cursussen`);
 
+    // Fetch real lesson-completion counts per cursus for this user
+    const progressByCursus: Record<number, number> = {};
+    if (userId) {
+      try {
+        const progressResult = await sql`
+          WITH lesson_totals AS (
+            SELECT les_id, COUNT(*) AS total_secties
+            FROM cursus_secties
+            GROUP BY les_id
+          ),
+          user_completed AS (
+            SELECT les_id, COUNT(*) AS completed_secties
+            FROM user_sectie_progress
+            WHERE user_id = ${userId} AND is_completed = true
+            GROUP BY les_id
+          )
+          SELECT
+            cl.cursus_id,
+            COUNT(DISTINCT CASE
+              WHEN COALESCE(uc.completed_secties, 0) = lt.total_secties AND lt.total_secties > 0
+              THEN cl.id
+            END)::int AS voltooide_lessen
+          FROM cursus_lessen cl
+          LEFT JOIN lesson_totals lt ON lt.les_id = cl.id
+          LEFT JOIN user_completed uc ON uc.les_id = cl.id
+          WHERE cl.status = 'published'
+          GROUP BY cl.cursus_id
+        `;
+        for (const row of progressResult.rows) {
+          progressByCursus[row.cursus_id] = parseInt(row.voltooide_lessen) || 0;
+        }
+      } catch {
+        logger.log('Could not fetch lesson progress for gallery');
+      }
+    }
+
     const cursussen = result.rows.map((cursus: any) => {
       const hasAccess = getCursusAccess(cursus.cursus_type, userSubscription, enrolledProgramSlugs);
+      const totaalLessen = parseInt(cursus.totaal_lessen) || 0;
+      const voltooieLessen = progressByCursus[cursus.id] ?? 0;
+      const percentage = totaalLessen > 0 ? Math.round((voltooieLessen / totaalLessen) * 100) : 0;
 
       return {
         ...cursus,
@@ -69,9 +108,9 @@ export async function GET(request: NextRequest) {
         gekoppelde_tools: cursus.gekoppelde_tools || [],
         hasAccess,
         user_progress: {
-          voltooide_lessen: 0,
-          totaal_lessen: parseInt(cursus.totaal_lessen) || 0,
-          percentage: 0
+          voltooide_lessen: voltooieLessen,
+          totaal_lessen: totaalLessen,
+          percentage
         }
       };
     });

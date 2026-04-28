@@ -41,6 +41,9 @@ export function CursussenTab() {
       cursusSlug={viewState.cursusSlug}
       lessonSlug={viewState.lessonSlug}
       onBack={() => setViewState({ type: 'cursus', slug: viewState.cursusSlug })}
+      onLessonSelect={(lessonSlug) =>
+        setViewState({ type: 'lesson', cursusSlug: viewState.cursusSlug, lessonSlug })
+      }
     />
   );
 }

@@ -3637,6 +3637,11 @@ export interface CourseGroup {
   moduleIds: number[];
 }
 
+/**
+ * @legacy minTier uses MembershipTier ('core'/'pro'/'premium') for UI display.
+ * Voor runtime toegangscontrole: gebruik getCursusAccess() uit cursus-access.ts,
+ * niet minTier direct. Mapping: core→transformatie, pro→transformatie, premium→vip.
+ */
 export const COURSE_GROUPS: CourseGroup[] = [
   {
     id: 'dating-fundament',

@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Play, CheckCircle, Lock, Clock, BookOpen, Award } from 'lucide-react';
+import { ArrowLeft, Play, CheckCircle, Clock, BookOpen, Award } from 'lucide-react';
 import type { CursusMetVoortgang } from '@/types/cursus.types';
 
 interface CursusViewerProps {
@@ -56,7 +56,7 @@ export function CursusViewer({ cursusSlug, onBack, onLessonSelect }: CursusViewe
       case 'bezig':
         return <Play className="w-5 h-5 text-coral-500" />;
       default:
-        return <Lock className="w-5 h-5 text-gray-400 dark:text-gray-500" />;
+        return <Play className="w-5 h-5 text-gray-400 dark:text-gray-500" />;
     }
   };
 

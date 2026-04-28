@@ -75,10 +75,15 @@ export function CursussenGallery({ onCursusSelect }: CursussenGalleryProps) {
   };
 
   const getCursusTypeBadge = (type: string) => {
-    if (type === 'gratis') {
-      return <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0">Gratis</Badge>;
-    }
-    return <Badge className="bg-coral-500 hover:bg-coral-600 text-white border-0">Premium</Badge>;
+    const config: Record<string, { label: string; className: string }> = {
+      gratis:  { label: 'Gratis',  className: 'bg-green-100 text-green-800 border border-green-200' },
+      starter: { label: 'Starter', className: 'bg-blue-100 text-blue-800 border border-blue-200' },
+      groeier: { label: 'Groeier', className: 'bg-orange-100 text-orange-800 border border-orange-200' },
+      expert:  { label: 'Expert',  className: 'bg-purple-100 text-purple-800 border border-purple-200' },
+      vip:     { label: 'VIP',     className: 'bg-amber-100 text-amber-800 border border-amber-200' },
+    };
+    const c = config[type] ?? { label: type, className: 'bg-gray-100 text-gray-800 border border-gray-200' };
+    return <Badge className={c.className}>{c.label}</Badge>;
   };
 
   if (loading) {

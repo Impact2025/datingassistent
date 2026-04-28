@@ -16,11 +16,29 @@
  *   premium  → all
  */
 
-const PROGRAM_ACCESS: Record<string, string[]> = {
-  kickstart:    ['gratis', 'starter'],
+export const PROGRAM_CURSUS_ACCESS: Record<string, string[]> = {
+  free:          ['gratis'],
+  kickstart:     ['gratis', 'starter'],
   transformatie: ['gratis', 'starter', 'groeier'],
-  vip:          ['gratis', 'starter', 'groeier', 'expert', 'vip'],
+  vip:           ['gratis', 'starter', 'groeier', 'expert', 'vip'],
 };
+
+/**
+ * Maps a legacy subscription_type or MembershipTier value to the equivalent
+ * programTier slug used in program_enrollments.
+ *   free / sociaal  → 'kickstart'
+ *   core / pro      → 'transformatie'
+ *   premium         → 'vip'
+ */
+export function subscriptionTypeToProgram(subscriptionType: string): string {
+  const map: Record<string, string> = {
+    sociaal:  'kickstart',
+    core:     'transformatie',
+    pro:      'transformatie',
+    premium:  'vip',
+  };
+  return map[subscriptionType] ?? 'free';
+}
 
 const SUBSCRIPTION_ACCESS: Record<string, string[]> = {
   kickstart:    ['gratis', 'starter'],
@@ -54,9 +72,8 @@ export function getCursusAccess(
 ): boolean {
   if (cursusType === 'gratis') return true;
 
-  // Check program enrollments (kickstart / transformatie / vip purchases)
   for (const slug of enrolledProgramSlugs) {
-    if (PROGRAM_ACCESS[slug]?.includes(cursusType)) return true;
+    if (PROGRAM_CURSUS_ACCESS[slug]?.includes(cursusType)) return true;
   }
 
   // Check legacy subscription_type field

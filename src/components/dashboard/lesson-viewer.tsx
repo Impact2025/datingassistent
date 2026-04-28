@@ -24,6 +24,7 @@ interface LessonViewerProps {
   cursusSlug: string;
   lessonSlug: string;
   onBack: () => void;
+  onLessonSelect?: (lessonSlug: string) => void;
 }
 
 interface LesData {
@@ -51,7 +52,7 @@ interface LesData {
   };
 }
 
-export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerProps) {
+export function LessonViewer({ cursusSlug, lessonSlug, onBack, onLessonSelect }: LessonViewerProps) {
   const { user } = useUser();
   const [les, setLes] = useState<LesData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -94,16 +95,17 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
   };
 
   const markeerSectieAlsVoltooid = async (sectieId: number) => {
-    if (!user?.id || !les) return;
+    if (!user || !les) return;
 
     try {
       await fetch(`/api/cursussen/${cursusSlug}/${lessonSlug}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          action: 'complete_sectie',
-          userId: user.id,
-          sectieId
+          sectieId,
+          lesId: les.id,
+          cursusId: les.cursus_id,
+          status: 'completed'
         })
       });
 
@@ -125,33 +127,11 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
     }
   };
 
-  const markeerLesAlsVoltooid = async () => {
-    if (!user?.id || !les) return;
-
-    try {
-      await fetch(`/api/cursussen/${cursusSlug}/${lessonSlug}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'complete_les',
-          userId: user.id
-        })
-      });
-
-      // Update local state
-      setLes(prev => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          user_progress: {
-            ...prev.user_progress,
-            status: 'afgerond'
-          }
-        };
-      });
-    } catch (error) {
-      console.error('Error marking lesson as complete:', error);
-    }
+  const markeerLesAlsVoltooid = () => {
+    setLes(prev => {
+      if (!prev) return prev;
+      return { ...prev, user_progress: { ...prev.user_progress, status: 'afgerond' } };
+    });
   };
 
   const isSectieVoltooid = (sectieId: number) => {
@@ -400,7 +380,13 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             {les.navigatie.vorige ? (
-              <Button variant="outline" onClick={onBack}>
+              <Button
+                variant="outline"
+                onClick={() => onLessonSelect
+                  ? onLessonSelect(les.navigatie.vorige!.slug)
+                  : onBack()
+                }
+              >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 {les.navigatie.vorige.titel}
               </Button>
@@ -409,7 +395,13 @@ export function LessonViewer({ cursusSlug, lessonSlug, onBack }: LessonViewerPro
             )}
 
             {les.navigatie.volgende ? (
-              <Button onClick={onBack} className="ml-auto">
+              <Button
+                className="ml-auto"
+                onClick={() => onLessonSelect
+                  ? onLessonSelect(les.navigatie.volgende!.slug)
+                  : onBack()
+                }
+              >
                 {les.navigatie.volgende.titel}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
