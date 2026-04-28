@@ -103,7 +103,7 @@ interface PatternQuizProps {
 
 export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
   const searchParams = useSearchParams();
-  const { user } = useUser();
+  const { user, loading: userLoading } = useUser();
 
   const [quizState, setQuizState] = useState<QuizState>(
     skipLanding ? 'question' : 'landing'
@@ -385,6 +385,17 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
     // else: stay on analyzing screen — API response will trigger the transition.
   }, []);
 
+  // True while we're waiting for user-auth to complete (or user is already
+  // authenticated) so the auto-advance effect can fire. During this window we
+  // show a spinner instead of the email-gate form — otherwise the user sees
+  // the form, thinks the magic link didn't work, re-submits, and gets stuck
+  // in a "always landing on the form" loop.
+  const autoAdvancePending =
+    quizState === 'email-gate' &&
+    Object.keys(answers).length >= TOTAL_QUESTIONS &&
+    (userLoading || user !== null) &&
+    !submitError;
+
   return (
     <AnimatePresence mode="wait">
       {quizState === 'landing' && (
@@ -414,14 +425,31 @@ export function PatternQuiz({ skipLanding = false }: PatternQuizProps) {
         />
       )}
 
-      {quizState === 'email-gate' && (
+      {autoAdvancePending && (
+        <motion.div
+          key="auto-advancing"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="min-h-screen bg-white flex items-center justify-center"
+        >
+          <div className="text-center">
+            <div className="w-8 h-8 border-2 border-coral-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-gray-600">Je analyse wordt geladen…</p>
+          </div>
+        </motion.div>
+      )}
+
+      {quizState === 'email-gate' && !autoAdvancePending && (
         <PatternAccountGate
           key="account-gate"
           onSubmit={handleAccountSubmit}
           onBack={handleBack}
           isSubmitting={false}
           submitError={submitError}
-          onClearError={() => setSubmitError(null)}
+          onClearError={() => {
+            setSubmitError(null);
+            autoSubmitAttemptedRef.current = false;
+          }}
           initialEmail={email}
           initialFirstName={firstName}
         />
