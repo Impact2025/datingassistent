@@ -50,7 +50,7 @@ export async function generateMetadata({
   const modifiedTime = blog.updated_at
     ? new Date(blog.updated_at).toISOString()
     : publishedTime;
-  const allTags = [...(blog.tags || []), ...(blog.keywords || [])];
+  const allTags = [...new Set([...(blog.tags || []), ...(blog.keywords || [])])];
 
   return {
     title,
@@ -145,7 +145,7 @@ export default async function BlogPostPage({
     ? new Date(blog.updated_at).toISOString()
     : publishedDate;
   const readingTime = blog.reading_time || calculateReadingTime(blog.content);
-  const allTags = [...(blog.tags || []), ...(blog.keywords || [])];
+  const allTags = [...new Set([...(blog.tags || []), ...(blog.keywords || [])])];
 
   const blogPostSchema = {
     '@context': 'https://schema.org',
