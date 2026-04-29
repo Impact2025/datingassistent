@@ -358,6 +358,7 @@ export default function BlogEditorPage() {
 
       let updatedContent = blogData.content;
       let linksInserted = 0;
+      const MAX_LINKS = 10;
 
       const extractKeywords = (text: string): string[] => {
         const stopWords = ['de', 'het', 'een', 'en', 'van', 'voor', 'in', 'op', 'met', 'aan', 'je', 'jouw', 'is', 'zijn', 'naar', 'over', 'bij', 'als', 'dat', 'die', 'dit'];
@@ -368,10 +369,12 @@ export default function BlogEditorPage() {
           .filter(word => word.length > 3 && !stopWords.includes(word));
       };
 
+      // Replaces only the FIRST occurrence — no global flag to avoid linking the
+      // same word 10+ times throughout the article.
       const tryReplaceWithLink = (textToFind: string, url: string): boolean => {
         if (updatedContent.includes(url)) return false;
         const escapedText = textToFind.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`(?<!<a[^>]*>)${escapedText}(?![^<]*<\/a>)`, 'gi');
+        const regex = new RegExp(`(?<!<a[^>]*>)${escapedText}(?![^<]*<\/a>)`, 'i');
         if (regex.test(updatedContent)) {
           updatedContent = updatedContent.replace(
             regex,
@@ -382,18 +385,20 @@ export default function BlogEditorPage() {
         return false;
       };
 
-      // Strategy 1: exact title match
+      // Strategy 1: exact title match — stop once cap is reached
       const kbItems = knowledgeBase.map((a: any) => ({ title: a.title, url: `/kennisbank/${a.slug}` }));
       const blogItems = blogs.filter((b: any) => b.id !== parseInt(blogId)).map((b: any) => ({ title: b.title, url: `/blog/${b.slug}` }));
       for (const item of [...kbItems, ...blogItems]) {
+        if (linksInserted >= MAX_LINKS) break;
         const variations = [item.title, item.title.replace(/\?/g, ''), item.title.replace(/:/g, '')];
         for (const v of variations) {
           if (tryReplaceWithLink(v, item.url)) { linksInserted++; break; }
         }
       }
 
-      // Strategy 2: keyword match from article title
+      // Strategy 2: keyword match from article title — only runs if cap not yet reached
       for (const article of [...kbItems, ...blogItems]) {
+        if (linksInserted >= MAX_LINKS) break;
         if (updatedContent.includes(article.url)) continue;
         const keywords = extractKeywords(article.title).filter(kw => kw.length >= 6).sort((a, b) => b.length - a.length);
         for (const kw of keywords) {
