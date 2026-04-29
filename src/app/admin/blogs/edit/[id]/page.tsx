@@ -35,7 +35,7 @@ import {
   ArrowLeft,
   Save,
   Eye,
-  LinkOff
+  Unlink
 } from 'lucide-react';
 import { logger } from '@/lib/logger';
 
@@ -675,7 +675,7 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
                 className="border-gray-300 text-gray-600 hover:bg-gray-50"
                 title="Verwijder alle interne links uit de content"
               >
-                <LinkOff className="w-4 h-4 mr-2" />
+                <Unlink className="w-4 h-4 mr-2" />
                 Verwijder links
               </Button>
               <Button
