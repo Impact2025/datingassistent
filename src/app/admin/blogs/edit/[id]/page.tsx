@@ -34,7 +34,8 @@ import {
   Brain,
   ArrowLeft,
   Save,
-  Eye
+  Eye,
+  LinkOff
 } from 'lucide-react';
 import { logger } from '@/lib/logger';
 
@@ -369,12 +370,12 @@ export default function BlogEditorPage() {
           .filter(word => word.length > 3 && !stopWords.includes(word));
       };
 
-      // Replaces only the FIRST occurrence — no global flag to avoid linking the
-      // same word 10+ times throughout the article.
+      // Replaces only the FIRST occurrence. Uses word boundaries (\b) so
+      // "dating" doesn't match inside "datinggedrag" or "herken" inside "herkennen".
       const tryReplaceWithLink = (textToFind: string, url: string): boolean => {
         if (updatedContent.includes(url)) return false;
         const escapedText = textToFind.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`(?<!<a[^>]*>)${escapedText}(?![^<]*<\/a>)`, 'i');
+        const regex = new RegExp(`(?<!<a[^>]*>)\\b${escapedText}\\b(?![^<]*<\/a>)`, 'i');
         if (regex.test(updatedContent)) {
           updatedContent = updatedContent.replace(
             regex,
@@ -595,6 +596,13 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
     setInternalLinks(null);
   };
 
+  const handleStripLinks = () => {
+    if (!blogData.content) return;
+    const stripped = blogData.content.replace(/<a\b[^>]*>(.*?)<\/a>/gi, '$1');
+    updateBlogData({ content: stripped });
+    toast({ title: 'Links verwijderd', description: 'Alle interne links zijn uit de content verwijderd.' });
+  };
+
   // =========================================================================
   // UPDATE FUNCTIONS
   // =========================================================================
@@ -659,6 +667,16 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
               >
                 <Wand2 className="w-4 h-4 mr-2" />
                 AI Optimaliseren
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleStripLinks}
+                className="border-gray-300 text-gray-600 hover:bg-gray-50"
+                title="Verwijder alle interne links uit de content"
+              >
+                <LinkOff className="w-4 h-4 mr-2" />
+                Verwijder links
               </Button>
               <Button
                 variant="outline"
