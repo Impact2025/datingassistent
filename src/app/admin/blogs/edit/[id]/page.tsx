@@ -598,9 +598,20 @@ ${unlinkedLinks.map(link => `  <li><a href="${link.url}" class="text-coral-600 h
 
   const handleStripLinks = () => {
     if (!blogData.content) return;
-    const stripped = blogData.content.replace(/<a\b[^>]*>(.*?)<\/a>/gi, '$1');
+    let stripped = blogData.content;
+
+    // Pass 1: remove properly-formed <a> tags, keep inner text
+    stripped = stripped.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
+
+    // Pass 2: remove orphaned anchor attribute fragments — these appear when the
+    // old optimizer (global regex) replaced a word like "opener" inside a
+    // rel="opener noreferrer nofollow" attribute, corrupting the <a> tag and
+    // leaving the raw attribute text as visible content, e.g.:
+    //   opener noreferrer nofollow" class="..." href="/foo">
+    stripped = stripped.replace(/\b(?:opener|noreferrer|noopener|nofollow)"?\s[^<>]*href="[^"]*"[^>]*>/gi, '');
+
     updateBlogData({ content: stripped });
-    toast({ title: 'Links verwijderd', description: 'Alle interne links zijn uit de content verwijderd.' });
+    toast({ title: 'Links verwijderd', description: 'Alle links en gefragmenteerde link-HTML zijn opgeruimd.' });
   };
 
   // =========================================================================
