@@ -305,7 +305,7 @@ Herschrijf dit artikel naar een SEO-geoptimaliseerde blog voor DatingAssistent.n
    - Meta title: MAX 60 karakters, bevat hoofdkeyword
    - Meta description: MAX 155 karakters, bevat call-to-action
    - Slug: korte-url-slug (lowercase, hyphens, gebaseerd op hoofdthema)
-   - Identificeer 5-7 long-tail keywords uit het artikel
+   - Identificeer 5-7 long-tail keywords uit het artikel — UITSLUITEND zoekzinnen van 3-5 woorden die mensen letterlijk in Google typen. NOOIT losse enkelvoudige woorden die gelijk zijn aan het onderwerp. Fout: ["Koningsdag", "dating"] — Goed: ["koningsdag dating tips", "flirten op koningsdag"]
    - Voeg ALLEEN interne links toe naar deze EXACTE paden (GEEN andere paden verzinnen):
      * / (homepage)
      * /features (diensten/features pagina)
@@ -329,7 +329,7 @@ Geef ALLEEN een geldig JSON object terug, zonder extra tekst, code blocks, of an
   "slug": "url-slug-hier",
   "content": "<h1>...</h1><p>...</p>...",
   "excerpt": "Korte samenvatting van 2-3 zinnen voor preview",
-  "keywords": ["keyword 1", "keyword 2", "keyword 3", "keyword 4", "keyword 5", "keyword 6", "keyword 7"]
+  "keywords": ["long-tail zoekzin 1 (3-5 woorden)", "long-tail zoekzin 2", "long-tail zoekzin 3", "long-tail zoekzin 4", "long-tail zoekzin 5", "long-tail zoekzin 6", "long-tail zoekzin 7"]
 }
 
 Genereer nu een complete, SEO-geoptimaliseerde blog gebaseerd op het bronartikel. Geef ALLEEN het JSON object terug, zonder code blocks of extra tekst.`;

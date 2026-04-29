@@ -124,6 +124,7 @@ ${input.extraKeywords ? `- Extra Keywords: ${input.extraKeywords}` : ''}
   3. AI dating coach
   4. eerste date tips
   5. dating app succes
+- BELANGRIJK voor het "keywords" veld in de JSON output: gebruik UITSLUITEND long-tail zoekzinnen van 3-5 woorden die mensen letterlijk in Google typen. NOOIT losse enkelvoudige woorden zoals het onderwerp zelf. Fout: ["Koningsdag", "dating"] — Goed: ["koningsdag dating tips", "flirten op koningsdag"]
 
 **MIDJOURNEY IMAGE PROMPT:**
 Genereer een professionele Midjourney prompt voor de featured image van deze blog:
@@ -165,7 +166,7 @@ Geef ALLEEN een geldig JSON object terug, zonder extra tekst, markdown code bloc
   "slug": "url-slug-hier",
   "content": "<h1>...</h1><p>...</p>...",
   "excerpt": "Korte samenvatting van 2-3 zinnen voor preview",
-  "keywords": ["keyword 1", "keyword 2", "keyword 3", "keyword 4", "keyword 5"],
+  "keywords": ["long-tail zoekzin 1 (3-5 woorden)", "long-tail zoekzin 2", "long-tail zoekzin 3", "long-tail zoekzin 4", "long-tail zoekzin 5"],
   "midjourneyPrompt": "Professional Midjourney prompt here with technical parameters",
   "socialMedia": {
     "instagram": {
