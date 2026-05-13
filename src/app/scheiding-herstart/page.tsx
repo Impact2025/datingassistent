@@ -19,6 +19,20 @@ export const metadata: Metadata = {
     description: 'Doe de gratis scan in 4 minuten. Persoonlijk profiel, rebound risico check en concreet actieplan — gratis en direct.',
     type: 'website',
     url: 'https://datingassistent.nl/scheiding-herstart',
+    images: [
+      {
+        url: 'https://datingassistent.nl/images/dating-assistent-header.png',
+        width: 1200,
+        height: 630,
+        alt: 'Opnieuw daten na een scheiding — DatingAssistent',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Opnieuw daten na een scheiding: wanneer ben je klaar?',
+    description: 'Doe de gratis scan in 4 minuten. Persoonlijk profiel, rebound risico check en concreet actieplan.',
+    images: ['https://datingassistent.nl/images/dating-assistent-header.png'],
   },
   alternates: {
     canonical: 'https://datingassistent.nl/scheiding-herstart',
