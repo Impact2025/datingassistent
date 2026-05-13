@@ -548,8 +548,7 @@ function FAQSection() {
 // ============================================================================
 
 function FinalCTASection() {
-  const scrollToScan = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const scrollToScan = () => {
     document.getElementById('scan')?.scrollIntoView({ behavior: 'smooth' });
   };
 
