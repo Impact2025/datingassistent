@@ -70,8 +70,10 @@ const DEFAULT_SECURITY_CONFIG: SecurityHeadersConfig = {
     frameSrc: [
       "'self'",
       "https://www.google.com",
-      "https://www.gstatic.com"
-    ], // Allow reCAPTCHA frames
+      "https://www.gstatic.com",
+      "https://www.youtube.com",
+      "https://www.youtube-nocookie.com"
+    ], // Allow reCAPTCHA frames + YouTube embeds
     frameAncestors: ["'none'"],
     reportUri: '/api/security/csp-report'
   },
