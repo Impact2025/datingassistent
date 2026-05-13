@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { PublicHeader } from '@/components/layout/public-header';
 import {
   Heart,
   Shield,
@@ -90,36 +91,6 @@ function HeroSection() {
                   {item.text}
                 </div>
               ))}
-            </motion.div>
-
-            {/* Social proof */}
-            <motion.div
-              className="flex items-center gap-3 justify-center lg:justify-start"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.45 }}
-            >
-              <div className="flex -space-x-2">
-                {(['S', 'M', 'L', 'R'] as const).map((letter, idx) => (
-                  <div
-                    key={idx}
-                    className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-xs font-bold text-white"
-                    style={{ backgroundColor: [c.rose, c.dustyRose, c.royalPurple, c.sageGreen][idx] }}
-                  >
-                    {letter}
-                  </div>
-                ))}
-              </div>
-              <div>
-                <div className="flex gap-0.5 mb-0.5">
-                  {[...Array(5)].map((_, j) => (
-                    <Star key={j} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-xs" style={{ color: c.mediumGray }}>
-                  Al <strong style={{ color: c.charcoal }}>1.200+</strong> gescheiden singles gingen je voor
-                </p>
-              </div>
             </motion.div>
 
             {/* Artikel link */}
@@ -367,6 +338,68 @@ function HowItWorksSection() {
             </motion.div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================================
+// VIDEO SECTION
+// ============================================================================
+
+function VideoSection() {
+  return (
+    <section className="py-20 px-4" style={{ backgroundColor: c.cream }}>
+      <div className="max-w-3xl mx-auto">
+        <motion.div
+          className="text-center mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: c.deepPurple }}>
+            Opnieuw daten na een scheiding
+          </h2>
+          <p style={{ color: c.mediumGray }}>
+            Bekijk de video en ontdek wat de wetenschap zegt over timing en hoe je gezond opnieuw begint.
+          </p>
+        </motion.div>
+
+        <motion.div
+          className="relative rounded-2xl overflow-hidden shadow-xl"
+          style={{ border: `2px solid ${c.softBlush}` }}
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+        >
+          <div className="aspect-video">
+            <iframe
+              src="https://www.youtube.com/embed/BJvoVKqbadc"
+              title="Opnieuw daten na een scheiding"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            />
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="mt-8 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+        >
+          <Button
+            onClick={() => document.getElementById('scan')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-white px-7 py-3 rounded-full font-semibold flex items-center gap-2 mx-auto"
+            style={{ backgroundColor: c.rose }}
+          >
+            <Sparkles className="w-4 h-4" />
+            Doe de scan nu gratis
+          </Button>
+        </motion.div>
       </div>
     </section>
   );
@@ -631,46 +664,14 @@ function SimpleFooter() {
 export function ScheidingHerstartLanding() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: c.cream }}>
-      {/* Minimal sticky header */}
-      <header
-        className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur-md"
-        style={{ borderColor: c.softBlush }}
-      >
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/images/LogoDA.png"
-              alt="DatingAssistent"
-              width={36}
-              height={36}
-              className="object-contain"
-              priority
-            />
-            <span className="font-bold text-lg" style={{ color: c.deepPurple }}>
-              DatingAssistent
-            </span>
-          </Link>
-
-          <div className="flex items-center gap-3">
-            <Link href="/login">
-              <Button
-                variant="outline"
-                size="sm"
-                className="rounded-full"
-                style={{ borderColor: c.deepPurple, color: c.deepPurple }}
-              >
-                Inloggen
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <PublicHeader />
 
       <main>
         <HeroSection />
         <PainSection />
         <ResultsSection />
         <HowItWorksSection />
+        <VideoSection />
         <TestimonialsSection />
         <FAQSection />
         <FinalCTASection />
