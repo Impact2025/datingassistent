@@ -3,7 +3,7 @@ import { ScheidingHerstartLanding } from './scheiding-herstart-landing';
 
 export const metadata: Metadata = {
   title: 'Opnieuw daten na een scheiding: wanneer ben je klaar (en hoe begin je)? | DatingAssistent',
-  description: 'Doe de gratis scheiding herstart scan in 4 minuten. Ontdek jouw persoonlijk profiel, rebound risico check en een concreet actieplan — afgestemd op jouw situatie. Al 1.200+ gescheiden singles gingen je voor.',
+  description: 'Doe de gratis scheiding herstart scan in 4 minuten. Ontdek jouw persoonlijk profiel, rebound risico check en een concreet actieplan — afgestemd op jouw situatie.',
   keywords: [
     'opnieuw daten na scheiding',
     'daten na scheiding',
