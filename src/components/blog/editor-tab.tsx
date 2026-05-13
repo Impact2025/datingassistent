@@ -39,7 +39,7 @@ import {
   ImageIcon,
   Code,
   Sparkles,
-  Youtube,
+  Youtube as YoutubeIcon,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { type CreateBlogPostData } from '@/types/blog';
@@ -456,7 +456,7 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               className="h-8 w-8 p-0 text-red-600 hover:bg-red-50 hover:text-red-700"
               title="YouTube video invoegen"
             >
-              <Youtube className="w-4 h-4" />
+              <YoutubeIcon className="w-4 h-4" />
             </Button>
 
             <div className="w-px h-8 bg-gray-300 mx-1" />
