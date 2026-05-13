@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import {
   ArrowLeft, Scan, Heart, Target, Brain,
   CheckCircle2, Clock, TrendingUp, Calendar,
-  BarChart3, Sparkles, RefreshCw, Compass, Repeat
+  BarChart3, Sparkles, RefreshCw, Compass, Repeat, RefreshCcw
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -85,6 +85,14 @@ const SCAN_METADATA: Record<string, ScanMetadata> = {
     color: 'purple',
     resultLabel: 'Patronen',
     href: '/relatiepatronen'
+  },
+  'scheiding-herstart': {
+    title: 'Herstart na Scheiding',
+    description: 'Ben jij klaar voor een nieuwe start na je scheiding?',
+    icon: <RefreshCcw className="w-6 h-6" />,
+    color: 'pink',
+    resultLabel: 'Profiel',
+    href: '/scheiding-herstart'
   }
 };
 

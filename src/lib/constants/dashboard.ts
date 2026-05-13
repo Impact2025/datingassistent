@@ -38,6 +38,7 @@ export const SCAN_TYPES = {
   LEVENSVISIE: 'levensvisie',
   RELATIEPATRONEN: 'relatiepatronen',
   BLIND_VLEKKEN: 'blind-vlekken',
+  SCHEIDING_HERSTART: 'scheiding-herstart',
 } as const;
 
 export type ScanType = typeof SCAN_TYPES[keyof typeof SCAN_TYPES];
@@ -51,6 +52,7 @@ export const SCAN_URLS: Record<string, string> = {
   [SCAN_TYPES.LEVENSVISIE]: '/levensvisie',
   [SCAN_TYPES.RELATIEPATRONEN]: '/relatiepatronen',
   [SCAN_TYPES.BLIND_VLEKKEN]: '/blind-vlekken',
+  [SCAN_TYPES.SCHEIDING_HERSTART]: '/scheiding-herstart',
 };
 
 // Check if a URL is a scan

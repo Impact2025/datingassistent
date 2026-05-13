@@ -11,6 +11,7 @@ import { EmotioneleReadinessFlow } from '@/components/emotional-readiness/emotio
 import { LevensvisieFlow } from '@/components/levensvisie/levensvisie-flow';
 import { RelatiepatronenFlow } from '@/components/relatiepatronen/relatiepatronen-flow';
 import { BlindVlekkenFlow } from '@/components/blind-vlekken/blind-vlekken-flow';
+import { ScheidingHerstartFlow } from '@/components/scheiding-herstart/scheiding-herstart-flow';
 
 export interface ScanStatus {
   scanType: string;
@@ -96,6 +97,15 @@ const SCAN_METADATA: Record<string, ScanMetadata> = {
     icon: 'Eye',
     href: SCAN_URLS[SCAN_TYPES.BLIND_VLEKKEN],
   },
+  [SCAN_TYPES.SCHEIDING_HERSTART]: {
+    title: 'Herstart na Scheiding',
+    description: 'Ben jij klaar voor een nieuwe start na je scheiding?',
+    quote: 'Ontdek wanneer en hoe jij klaar bent voor nieuwe ontmoetingen',
+    badgeText: 'Speciaal',
+    color: 'pink',
+    icon: 'Heart',
+    href: SCAN_URLS[SCAN_TYPES.SCHEIDING_HERSTART],
+  },
 };
 
 export function useScanManager(userId?: number) {
@@ -159,6 +169,9 @@ export function useScanManager(userId?: number) {
       case 'blindvlekken':
       case 'blind-vlekken':
         return <BlindVlekkenFlow onClose={onClose} />;
+      case SCAN_TYPES.SCHEIDING_HERSTART:
+      case 'scheidingherstart':
+        return <ScheidingHerstartFlow onClose={onClose} />;
       default:
         return null;
     }

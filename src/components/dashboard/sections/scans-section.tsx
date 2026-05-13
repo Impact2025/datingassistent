@@ -7,7 +7,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Scan, ArrowRight, Sparkles, Heart, Target, Brain, Compass, Repeat } from 'lucide-react';
+import { Scan, ArrowRight, Sparkles, Heart, Target, Brain, Compass, Repeat, RefreshCcw } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScanCard } from '../scan-card';
 import { useRouter } from 'next/navigation';
@@ -54,6 +54,13 @@ const SCAN_METADATA: Record<string, any> = {
     icon: Repeat,
     color: 'purple',
     href: '/relatiepatronen',
+  },
+  'scheiding-herstart': {
+    title: 'Herstart na Scheiding',
+    description: 'Ben jij klaar voor een nieuwe start na je scheiding?',
+    icon: RefreshCcw,
+    color: 'pink',
+    href: '/scheiding-herstart',
   },
 };
 
