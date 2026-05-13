@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { getOpenRouterClient, OPENROUTER_MODELS } from '@/lib/openrouter';
+import { sendEmail } from '@/lib/email-service';
 
 interface IntakeData {
   tijdSindsScheiding: string;
@@ -23,10 +24,13 @@ interface Scores {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { answers, intake, userId } = body as {
+    const { answers, intake, userId, email, firstName, acceptsMarketing } = body as {
       answers: Record<string, number>;
       intake: IntakeData;
       userId?: number;
+      email?: string;
+      firstName?: string;
+      acceptsMarketing?: boolean;
     };
 
     if (!answers || !intake) {
@@ -35,6 +39,15 @@ export async function POST(request: NextRequest) {
 
     const scores = calculateScores(answers, intake);
     const aiAnalysis = await generateAIAnalysis(scores, intake);
+
+    // Ensure lead storage table exists
+    await ensureLeadTable();
+
+    // Save lead + optionally persist scan history
+    if (email && firstName) {
+      await saveLead(email, firstName, scores, aiAnalysis, intake, acceptsMarketing ?? false);
+      await sendResultEmail(email, firstName, scores, aiAnalysis);
+    }
 
     if (userId) {
       await persistResults(userId, scores, aiAnalysis, answers, intake);
@@ -58,7 +71,7 @@ function calculateScores(answers: Record<string, number>, intake: IntakeData): S
 
   const q1 = answers.ex_gevoelens ?? 2;
   const q2raw = answers.dagelijkse_gedachten ?? 3;
-  const q2 = 6 - q2raw; // reversed: 5 (helemaal niet) = score 5
+  const q2 = 6 - q2raw;
   const q3 = answers.vrede_einde ?? 2;
   const q4 = answers.eigen_identiteit ?? 2;
   const q5 = answers.activiteiten_jezelf ?? 2;
@@ -103,24 +116,16 @@ function calculateScores(answers: Record<string, number>, intake: IntakeData): S
     reboundRisk < 30 ? 'laag' : reboundRisk < 60 ? 'gemiddeld' : 'hoog';
 
   return {
-    overallScore,
-    profiel,
-    emotioneleVerwerking,
-    identiteitskracht,
-    datingMindset,
-    praktischeStabiliteit,
-    externeBevestiging,
-    reboundRisk,
-    reboundNiveau,
+    overallScore, profiel,
+    emotioneleVerwerking, identiteitskracht, datingMindset,
+    praktischeStabiliteit, externeBevestiging,
+    reboundRisk, reboundNiveau,
   };
 }
 
 async function generateAIAnalysis(scores: Scores, intake: IntakeData) {
   const PROFILE_NAMES: Record<string, string> = {
-    heler: 'De Heler',
-    waker: 'De Waker',
-    starter: 'De Starter',
-    bloeier: 'De Bloeier',
+    heler: 'De Heler', waker: 'De Waker', starter: 'De Starter', bloeier: 'De Bloeier',
   };
 
   const TIJD_LABELS: Record<string, string> = {
@@ -177,12 +182,205 @@ Wees eerlijk maar bemoedigend. Gebruik 'je/jij'. Zorg dat de adviezen SPECIFIEK 
 
     const content = typeof response === 'string' ? response : JSON.stringify(response);
     const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
-    }
+    if (jsonMatch) return JSON.parse(jsonMatch[0]);
     return null;
   } catch {
     return null;
+  }
+}
+
+async function ensureLeadTable() {
+  try {
+    await sql`
+      CREATE TABLE IF NOT EXISTS scheiding_herstart_leads (
+        id SERIAL PRIMARY KEY,
+        email TEXT NOT NULL,
+        first_name TEXT NOT NULL,
+        profiel TEXT NOT NULL,
+        overall_score INTEGER NOT NULL,
+        rebound_niveau TEXT NOT NULL,
+        scores_json JSONB,
+        ai_analysis JSONB,
+        intake_json JSONB,
+        accepts_marketing BOOLEAN DEFAULT false,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `;
+  } catch (e) {
+    console.error('Failed to ensure lead table:', e);
+  }
+}
+
+async function saveLead(
+  email: string,
+  firstName: string,
+  scores: Scores,
+  aiAnalysis: any,
+  intake: IntakeData,
+  acceptsMarketing: boolean
+) {
+  try {
+    await sql`
+      INSERT INTO scheiding_herstart_leads
+        (email, first_name, profiel, overall_score, rebound_niveau,
+         scores_json, ai_analysis, intake_json, accepts_marketing)
+      VALUES (
+        ${email}, ${firstName}, ${scores.profiel}, ${scores.overallScore}, ${scores.reboundNiveau},
+        ${JSON.stringify(scores)}::jsonb,
+        ${aiAnalysis ? JSON.stringify(aiAnalysis) : null}::jsonb,
+        ${JSON.stringify(intake)}::jsonb,
+        ${acceptsMarketing}
+      )
+    `;
+  } catch (e) {
+    console.error('Failed to save scheiding herstart lead:', e);
+  }
+
+  if (acceptsMarketing) {
+    try {
+      await sql`
+        INSERT INTO newsletter_subscribers (email, first_name, source, created_at)
+        VALUES (${email}, ${firstName}, 'scheiding-herstart-scan', NOW())
+        ON CONFLICT (email) DO NOTHING
+      `;
+    } catch (e) {
+      console.error('Failed to subscribe lead to newsletter:', e);
+    }
+  }
+}
+
+async function sendResultEmail(
+  email: string,
+  firstName: string,
+  scores: Scores,
+  aiAnalysis: any
+) {
+  const PROFILE_NAMES: Record<string, string> = {
+    heler: 'De Heler', waker: 'De Waker', starter: 'De Starter', bloeier: 'De Bloeier',
+  };
+
+  const PROFILE_EMOJI: Record<string, string> = {
+    heler: '🌱', waker: '🌤️', starter: '🚀', bloeier: '🌸',
+  };
+
+  const profielNaam = PROFILE_NAMES[scores.profiel] ?? scores.profiel;
+  const emoji = PROFILE_EMOJI[scores.profiel] ?? '';
+  const PROD_URL = 'https://datingassistent.nl';
+
+  const analysis = aiAnalysis ?? {};
+  const week1 = (analysis.actieplan?.week1 ?? []).slice(0, 3);
+  const tip = analysis.datinTip ?? '';
+  const omschrijving = analysis.profielOmschrijving ?? '';
+
+  const html = `<!DOCTYPE html>
+<html lang="nl">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9fafb; margin: 0; padding: 0; color: #1f2937; }
+  .container { max-width: 560px; margin: 32px auto; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .header { background: linear-gradient(135deg, #fff1f2, #fdf2f8); padding: 40px 32px 32px; text-align: center; }
+  .emoji { font-size: 48px; margin-bottom: 12px; }
+  .score-badge { display: inline-block; background: #fff; border: 1px solid #fecdd3; color: #be185d; font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 999px; margin-top: 8px; }
+  .body { padding: 32px; }
+  .section { margin-bottom: 24px; }
+  .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af; margin-bottom: 12px; }
+  .card { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 16px 20px; }
+  .action-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; color: #374151; }
+  .bullet { color: #f43f5e; font-size: 18px; line-height: 1.2; flex-shrink: 0; }
+  .cta-btn { display: block; width: 100%; background: #f43f5e; color: #fff; text-align: center; padding: 16px; border-radius: 999px; font-weight: 700; font-size: 16px; text-decoration: none; margin-top: 8px; }
+  .footer { padding: 24px 32px; border-top: 1px solid #f3f4f6; text-align: center; font-size: 12px; color: #9ca3af; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="emoji">${emoji}</div>
+    <h1 style="margin:0 0 4px;font-size:28px;font-weight:800;color:#be185d;">${profielNaam}</h1>
+    <p style="margin:0;color:#6b7280;font-size:15px;">Jouw Herstart na Scheiding Analyse</p>
+    <div class="score-badge">Herstartscore: ${scores.overallScore}/100</div>
+  </div>
+  <div class="body">
+    <p style="font-size:16px;line-height:1.6;margin-top:0;">Hoi ${firstName},</p>
+    <p style="font-size:15px;line-height:1.6;color:#4b5563;">${omschrijving || `Je scan is klaar. Jouw profiel is <strong>${profielNaam}</strong> met een herstartscore van <strong>${scores.overallScore}/100</strong>.`}</p>
+
+    <div class="section">
+      <div class="section-title">Jouw scores</div>
+      <div class="card">
+        <table style="width:100%;font-size:14px;border-collapse:collapse;">
+          <tr><td style="padding:4px 0;color:#6b7280;">Emotionele verwerking</td><td style="text-align:right;font-weight:600;color:#be185d;">${scores.emotioneleVerwerking}%</td></tr>
+          <tr><td style="padding:4px 0;color:#6b7280;">Identiteitskracht</td><td style="text-align:right;font-weight:600;color:#be185d;">${scores.identiteitskracht}%</td></tr>
+          <tr><td style="padding:4px 0;color:#6b7280;">Dating mindset</td><td style="text-align:right;font-weight:600;color:#be185d;">${scores.datingMindset}%</td></tr>
+          <tr><td style="padding:4px 0;color:#6b7280;">Rebound risico</td><td style="text-align:right;font-weight:600;color:#be185d;">${scores.reboundNiveau}</td></tr>
+        </table>
+      </div>
+    </div>
+
+    ${week1.length > 0 ? `
+    <div class="section">
+      <div class="section-title">Jouw acties voor week 1</div>
+      ${week1.map((a: string) => `<div class="action-item"><span class="bullet">→</span><span>${a}</span></div>`).join('')}
+    </div>
+    ` : ''}
+
+    ${tip ? `
+    <div class="section">
+      <div class="section-title">Persoonlijke tip</div>
+      <div class="card" style="font-style:italic;color:#374151;font-size:15px;line-height:1.6;">"${tip}"</div>
+    </div>
+    ` : ''}
+
+    <div class="section">
+      <a href="${PROD_URL}/scheiding-herstart" class="cta-btn">Bekijk je volledige analyse →</a>
+    </div>
+
+    <p style="font-size:14px;color:#6b7280;line-height:1.6;margin-bottom:0;">
+      Vragen of feedback? Reply gewoon op deze mail.<br><br>
+      Groet,<br>
+      <strong>Vincent</strong><br>
+      DatingAssistent
+    </p>
+  </div>
+  <div class="footer">
+    <a href="${PROD_URL}/uitschrijven?email=${encodeURIComponent(email)}" style="color:#9ca3af;">Uitschrijven</a>
+    &nbsp;·&nbsp; DatingAssistent.nl
+  </div>
+</div>
+</body>
+</html>`;
+
+  const text = `
+Hoi ${firstName},
+
+Jouw Herstart na Scheiding analyse is klaar.
+
+PROFIEL: ${profielNaam} ${emoji}
+Herstartscore: ${scores.overallScore}/100
+
+Emotionele verwerking: ${scores.emotioneleVerwerking}%
+Identiteitskracht: ${scores.identiteitskracht}%
+Dating mindset: ${scores.datingMindset}%
+Rebound risico: ${scores.reboundNiveau}
+
+${week1.length > 0 ? `ACTIES VOOR WEEK 1:\n${week1.map((a: string) => `→ ${a}`).join('\n')}\n` : ''}
+${tip ? `\nPERSOONLIJKE TIP:\n"${tip}"` : ''}
+
+Bekijk je volledige analyse op: ${PROD_URL}/scheiding-herstart
+
+Groet,
+Vincent
+DatingAssistent
+  `.trim();
+
+  try {
+    await sendEmail({
+      to: email,
+      from: process.env.RESEND_FROM_EMAIL || 'noreply@datingassistent.nl',
+      subject: `${firstName}, jouw Herstart Analyse: ${profielNaam} (${scores.overallScore}/100)`,
+      html,
+      text,
+    });
+  } catch (e) {
+    console.error('Failed to send scheiding herstart result email:', e);
   }
 }
 
@@ -194,7 +392,6 @@ async function persistResults(
   intake: IntakeData
 ) {
   const fullResults = { scores, aiAnalysis, answers, intake };
-  // Generate a pseudo-unique assessment_id (no dedicated table for this scan)
   const assessmentId = Math.floor(Math.random() * 2_000_000_000) + 1;
 
   try {
