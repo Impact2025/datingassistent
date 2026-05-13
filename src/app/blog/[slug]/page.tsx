@@ -193,16 +193,20 @@ export default async function BlogPostPage({
       'img', 'figure', 'figcaption',
       'table', 'thead', 'tbody', 'tr', 'th', 'td',
       'div', 'span', 'section', 'article',
+      'iframe',
     ],
     allowedAttributes: {
       'a': ['href', 'target', 'rel', 'title', 'class'],
       'img': ['src', 'alt', 'title', 'width', 'height', 'class', 'style'],
+      'iframe': ['src', 'width', 'height', 'allowfullscreen', 'frameborder', 'allow', 'class', 'style'],
       '*': ['id', 'class', 'style'],
     },
     allowedSchemes: ['http', 'https', 'mailto'],
     allowedSchemesByTag: {
       img: ['http', 'https', 'data'],
+      iframe: ['https'],
     },
+    allowedIframeHostnames: ['www.youtube.com', 'youtube.com', 'www.youtube-nocookie.com'],
   });
 
   return (

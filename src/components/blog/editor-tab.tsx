@@ -17,6 +17,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
+import Youtube from '@tiptap/extension-youtube';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -38,6 +39,7 @@ import {
   ImageIcon,
   Code,
   Sparkles,
+  Youtube,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { type CreateBlogPostData } from '@/types/blog';
@@ -74,6 +76,13 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
       Image.configure({
         HTMLAttributes: {
           class: 'max-w-full h-auto rounded-lg',
+        },
+      }),
+      Youtube.configure({
+        width: 640,
+        height: 360,
+        HTMLAttributes: {
+          class: 'w-full rounded-lg aspect-video',
         },
       }),
       Placeholder.configure({
@@ -148,6 +157,15 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
     const url = window.prompt('Voer afbeelding URL in:');
     if (url) {
       editor.chain().focus().setImage({ src: url }).run();
+    }
+  };
+
+  const addYouTube = () => {
+    if (!editor) return;
+
+    const url = window.prompt('Voer YouTube URL in (bijv. https://www.youtube.com/watch?v=...):');
+    if (url) {
+      editor.chain().focus().setYoutubeVideo({ src: url }).run();
     }
   };
 
@@ -429,6 +447,16 @@ export function EditorTab({ blogData, updateBlogData }: EditorTabProps) {
               title="Add Image"
             >
               <ImageIcon className="w-4 h-4" />
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              onClick={addYouTube}
+              className="h-8 w-8 p-0 text-red-600 hover:bg-red-50 hover:text-red-700"
+              title="YouTube video invoegen"
+            >
+              <Youtube className="w-4 h-4" />
             </Button>
 
             <div className="w-px h-8 bg-gray-300 mx-1" />
