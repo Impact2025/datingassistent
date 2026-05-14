@@ -1,199 +1,208 @@
 /**
- * Pattern Quiz Result Email
+ * Pattern Quiz Result Email - Volledige persoonlijke analyse
  *
- * Follow-up email sent after completing the Dating Pattern Quiz.
- * Personalized content based on attachment pattern.
+ * Verstuurd direct na het afronden van de Dating Patroon Quiz.
+ * Bevat de complete analyse op basis van het hechtingspatroon,
+ * inclusief scores, inzichten, valkuil, tip en CTA naar lidmaatschap.
  */
 
 import * as React from 'react';
-import { Section, Text, Hr } from '@react-email/components';
+import { Section, Text, Hr, Row, Column } from '@react-email/components';
 import {
   BaseEmail,
-  PinkHeader,
+  HeroHeader,
   Greeting,
   CTAButton,
   InfoBox,
+  ProgressBar,
   EmailFooter,
   styles,
   colors,
 } from './components/email-base';
+import { getPatternResult } from '@/lib/quiz/pattern/pattern-results';
 import type { AttachmentPattern } from '@/lib/quiz/pattern/pattern-types';
 
 interface PatternQuizResultEmailProps {
   firstName: string;
   attachmentPattern: AttachmentPattern;
   resultUrl: string;
+  anxietyScore?: number;
+  avoidanceScore?: number;
 }
 
-// Pattern-specific content
-const patternContent: Record<
-  AttachmentPattern,
-  {
-    title: string;
-    subtitle: string;
-    color: string;
-    intro: string;
-    insight: string;
-    tip: string;
-    nextSteps: string[];
-  }
-> = {
-  secure: {
-    title: 'De Stabiele Basis',
-    subtitle: 'Veilig Gehecht',
-    color: '#10b981',
-    intro:
-      'Je hebt een gezonde basis voor relaties. Je voelt je comfortabel met intimiteit én met onafhankelijkheid. Dit is een sterke uitgangspositie.',
-    insight:
-      'Maar hier is wat ik vaak zie: juist omdat jij stabiel bent, kun je aantrekkelijk zijn voor mensen die dat niet zijn. Je wordt dan de "fixer" in de dynamiek.',
-    tip:
-      'Stel binnen de eerste 3 dates de vraag: "Wat zoek je?" — en geloof het antwoord. Als iemand zegt "ik weet het nog niet", is dat ook een antwoord. Handel ernaar.',
-    nextSteps: [
-      'Dagelijkse acties die je dating aanpak transformeren',
-      'De exacte vragen om intenties te checken',
-      'AI-coach voor wanneer je twijfelt',
-    ],
-  },
-  anxious: {
-    title: 'De Toegewijde Zoeker',
-    subtitle: 'Angstig Gehecht',
-    color: '#f59e0b',
-    intro:
-      'Je hebt een sterk verlangen naar verbinding. Je bent attent, betrokken, en je let op signalen. Dit zijn sterke eigenschappen.',
-    insight:
-      'Maar je brein is geprogrammeerd om afwijzing te zoeken — zelfs waar die niet is. Een laat bericht wordt bewijs dat ze je niet leuk vinden. Dit is uitputtend.',
-    tip:
-      'De volgende keer dat je onrustig wordt omdat iemand niet reageert: "Wat is het feitelijke bewijs dat ze NIET geïnteresseerd zijn?" In 90% van de gevallen is er geen bewijs — alleen een gevoel.',
-    nextSteps: [
-      'Hoe je het verschil herkent tussen intuïtie en angst',
-      'Waarom je aangetrokken bent tot mensen die je onzeker maken',
-      'Concrete tools om rust te vinden',
-    ],
-  },
-  avoidant: {
-    title: 'De Onafhankelijke',
-    subtitle: 'Vermijdend Gehecht',
-    color: '#6366f1',
-    intro:
-      'Je waardeert je vrijheid en hebt een rijk leven los van relaties. Dit is een kracht die veel mensen missen.',
-    insight:
-      'Maar ergens heb je geleerd dat kwetsbaarheid gevaarlijk is. Dus houd je afstand — niet omdat je mensen niet leuk vindt, maar omdat dichtbij komen oncomfortabel voelt.',
-    tip:
-      'De volgende keer dat je de neiging voelt om afstand te nemen, doe het omgekeerde: deel één ding dat je normaal voor jezelf houdt. Observeer wat er gebeurt.',
-    nextSteps: [
-      'Hoe je verbinding maakt zonder jezelf te verliezen',
-      'Kleine, concrete stappen richting kwetsbaarheid',
-      'Op jouw tempo, zonder druk',
-    ],
-  },
-  fearful_avoidant: {
-    title: 'De Paradox',
-    subtitle: 'Angstig-Vermijdend Gehecht',
-    color: '#ef4444',
-    intro:
-      'Je wilt verbinding. Echt. Je verlangt naar intimiteit. Maar zodra het dichtbij komt, schiet er iets aan dat zegt: gevaar.',
-    insight:
-      'Dit is het lastigste patroon om mee te leven, maar ook het meest veranderbare. Je hebt een externe spiegel nodig.',
-    tip:
-      'Let de komende week op het moment dat je wilt terugtrekken. Vraag jezelf: "Waar in mijn lichaam voel ik dit?" Het begint met opmerken, niet met veranderen.',
-    nextSteps: [
-      'Dagelijkse begeleiding die je helpt het patroon te herkennen',
-      'AI-coach voor de momenten dat het lastig wordt',
-      'Kleine stappen die grote verandering brengen',
-    ],
-  },
-};
+function BulletItem({ text }: { text: string }) {
+  return (
+    <Row style={{ marginBottom: '10px' }}>
+      <Column style={{ width: '18px', verticalAlign: 'top', paddingTop: '2px' }}>
+        <Text style={{ margin: '0', fontSize: '10px', color: colors.primary, fontWeight: '700', lineHeight: '1.8' }}>
+          &#x25B8;
+        </Text>
+      </Column>
+      <Column>
+        <Text style={{ ...styles.paragraph, fontSize: '14px', margin: '0', color: colors.gray, lineHeight: '1.65' }}>
+          {text}
+        </Text>
+      </Column>
+    </Row>
+  );
+}
 
 export default function PatternQuizResultEmail({
   firstName,
   attachmentPattern,
   resultUrl = 'https://datingassistent.nl/quiz/dating-patroon/resultaat',
+  anxietyScore,
+  avoidanceScore,
 }: PatternQuizResultEmailProps) {
-  const content = patternContent[attachmentPattern];
+  const result = getPatternResult(attachmentPattern);
   const kickstartUrl = 'https://datingassistent.nl/prijzen';
+  const transformatieUrl = 'https://datingassistent.nl/prijzen';
   const preferencesUrl = 'https://datingassistent.nl/settings/email-preferences';
 
   return (
     <BaseEmail
-      preview={`${firstName}, je Dating Patroon is: ${content.title}`}
+      preview={`${firstName}, je Dating Patroon: ${result.title} — je persoonlijke analyse staat klaar`}
     >
-      <PinkHeader
-        title={`Je Dating Patroon: ${content.title}`}
-        subtitle={content.subtitle}
+      <HeroHeader
+        title={result.title}
+        subtitle={result.subtitle}
       />
 
       <Section style={styles.content}>
         <Greeting name={firstName} />
 
         <Text style={styles.paragraph}>
-          Je hebt de quiz gedaan. Jouw patroon: <strong>{content.title}</strong>.
+          Je hebt de Dating Patroon Quiz afgerond. Op basis van je antwoorden is jouw hechtingspatroon: <strong>{result.title}</strong>.
         </Text>
 
-        <InfoBox type="info" title="Wat dit betekent">
-          {content.intro}
-        </InfoBox>
+        {/* Score visualisatie */}
+        {(anxietyScore !== undefined || avoidanceScore !== undefined) && (
+          <Section style={{
+            backgroundColor: colors.cream,
+            border: `1px solid ${colors.lightGray}`,
+            borderRadius: '4px',
+            padding: '20px 24px',
+            margin: '20px 0',
+          }}>
+            {anxietyScore !== undefined && (
+              <ProgressBar
+                progress={anxietyScore}
+                label={`Angst dimensie — ${anxietyScore}%`}
+              />
+            )}
+            {avoidanceScore !== undefined && (
+              <ProgressBar
+                progress={avoidanceScore}
+                label={`Vermijding dimensie — ${avoidanceScore}%`}
+              />
+            )}
+          </Section>
+        )}
 
+        {/* Opening */}
         <Text style={{ ...styles.heading2, marginTop: '32px' }}>
-          Maar hier is de andere kant:
+          {result.opening.headline}
+        </Text>
+        <Text style={styles.paragraph}>
+          {result.opening.paragraph}
         </Text>
 
-        <Text style={styles.paragraph}>{content.insight}</Text>
-
-        <InfoBox type="warning" title="Je grootste valkuil">
-          Dit patroon houdt zichzelf in stand als je het niet bewust doorbreekt.
+        {/* Nuance */}
+        <InfoBox type="info" title={result.nuance.headline}>
+          {result.nuance.paragraph}
         </InfoBox>
 
-        <InfoBox type="success" title="Wat je vandaag kunt doen">
-          {content.tip}
-        </InfoBox>
+        {/* Patroon uitgelegd */}
+        <Text style={{ ...styles.heading2, marginTop: '32px' }}>
+          {result.patternExplained.headline}
+        </Text>
+        <Text style={{ ...styles.paragraph, marginBottom: '16px' }}>
+          {result.patternExplained.paragraph}
+        </Text>
+        <Section style={{ margin: '0 0 8px 0' }}>
+          {result.patternExplained.bullets.map((bullet, index) => (
+            <BulletItem key={index} text={bullet} />
+          ))}
+        </Section>
 
         <Hr style={styles.divider} />
 
-        <Text style={{ ...styles.heading2, marginTop: '24px' }}>
-          Klaar om dit patroon te doorbreken?
+        {/* Grootste valkuil */}
+        <InfoBox type="warning" title={result.mainPitfall.headline}>
+          {result.mainPitfall.paragraph}
+        </InfoBox>
+
+        {/* Concrete tip */}
+        <InfoBox type="tip" title={result.concreteTip.headline}>
+          {result.concreteTip.tip}
+        </InfoBox>
+
+        <Hr style={{ ...styles.divider, margin: '32px 0' }} />
+
+        {/* CTA sectie */}
+        <Text style={{ ...styles.heading2, marginTop: '0' }}>
+          {result.ctaSection.headline}
         </Text>
 
         <Text style={styles.paragraph}>
-          In 21 dagen leer je:
+          {result.ctaSection.paragraph}
         </Text>
 
-        <ul style={{ paddingLeft: '20px', marginBottom: '24px' }}>
-          {content.nextSteps.map((step, index) => (
-            <li
-              key={index}
-              style={{
-                ...styles.paragraph,
-                marginBottom: '8px',
-                color: colors.gray,
-              }}
-            >
-              {step}
-            </li>
-          ))}
-        </ul>
+        {result.ctaSection.bullets && (
+          <Section style={{ margin: '0 0 24px 0' }}>
+            {result.ctaSection.bullets.map((bullet, index) => (
+              <BulletItem key={index} text={bullet} />
+            ))}
+          </Section>
+        )}
 
         <CTAButton href={kickstartUrl}>
-          Start de 21-Dagen Kickstart →
+          {result.ctaSection.buttonText}
         </CTAButton>
 
-        <Text style={{ textAlign: 'center' as const, color: colors.gray, fontSize: '14px', marginTop: '-16px' }}>
-          €47 • 21 dagen • Direct starten
+        <Text style={{ textAlign: 'center' as const, color: colors.grayLight, fontSize: '13px', marginTop: '-16px' }}>
+          47 euro &mdash; 21 dagen &mdash; Direct starten
         </Text>
+
+        {result.ctaSection.buttonTextSecondary && (
+          <Text style={{ textAlign: 'center' as const, color: colors.gray, fontSize: '13px', marginTop: '16px' }}>
+            Of kies voor de complete begeleiding:{' '}
+            <a href={transformatieUrl} style={{ color: colors.primary, textDecoration: 'none', fontWeight: '500' }}>
+              {result.ctaSection.buttonTextSecondary} Transformatie &mdash; 147 euro
+            </a>
+          </Text>
+        )}
+
+        {/* Testimonial */}
+        {result.ctaSection.testimonial && (
+          <Section style={{
+            backgroundColor: colors.cream,
+            border: `1px solid ${colors.lightGray}`,
+            borderRadius: '4px',
+            padding: '20px 24px',
+            margin: '24px 0',
+          }}>
+            <Text style={{ ...styles.paragraph, fontStyle: 'italic', color: colors.gray, margin: '0 0 10px 0' }}>
+              &ldquo;{result.ctaSection.testimonial.quote}&rdquo;
+            </Text>
+            <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark, margin: '0', fontSize: '13px' }}>
+              &mdash; {result.ctaSection.testimonial.name}, {result.ctaSection.testimonial.age} jaar
+            </Text>
+          </Section>
+        )}
 
         <Hr style={styles.divider} />
 
-        <Text style={styles.paragraph}>
-          De komende dagen stuur ik je specifieke inzichten voor jouw type. Geen
-          generieke tips — dingen die werken voor {content.title}.
-        </Text>
+        {/* Bekijk online */}
+        <CTAButton href={resultUrl} variant="secondary">
+          Bekijk je analyse online
+        </CTAButton>
 
         <Text style={{ ...styles.paragraph, marginTop: '32px' }}>
           Tot morgen,
         </Text>
 
-        <Text
-          style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark }}
-        >
+        <Text style={{ ...styles.paragraph, fontWeight: '600', color: colors.dark }}>
           Vincent
           <br />
           <span style={{ fontWeight: '400', color: colors.gray }}>
@@ -202,8 +211,7 @@ export default function PatternQuizResultEmail({
         </Text>
 
         <InfoBox type="tip" title="P.S.">
-          Reply op deze mail met je grootste dating frustratie. Ik lees alles
-          persoonlijk.
+          Reply op deze mail met je grootste dating frustratie. Ik lees alles persoonlijk.
         </InfoBox>
       </Section>
 

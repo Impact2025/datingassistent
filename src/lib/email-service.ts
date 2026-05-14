@@ -899,7 +899,9 @@ export async function sendPatternQuizResultEmail(
   userEmail: string,
   firstName: string,
   attachmentPattern: AttachmentPattern,
-  resultId: string
+  resultId: string,
+  anxietyScore?: number,
+  avoidanceScore?: number
 ): Promise<boolean> {
   try {
     // Always use production URL for email links (not localhost)
@@ -911,6 +913,8 @@ export async function sendPatternQuizResultEmail(
         firstName,
         attachmentPattern,
         resultUrl,
+        anxietyScore,
+        avoidanceScore,
       }),
       { pretty: true }
     );

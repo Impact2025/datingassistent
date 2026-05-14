@@ -121,7 +121,9 @@ export async function POST(request: Request) {
       email,
       firstName.trim(),
       scoringResult.attachmentPattern,
-      resultId.toString()
+      resultId.toString(),
+      scoringResult.anxietyScore,
+      scoringResult.avoidanceScore
     )
       .then((sent) => {
         if (sent) {
