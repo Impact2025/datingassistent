@@ -19,7 +19,7 @@ export function ScheidingHerstartLeadGate({
   const [firstName, setFirstName] = useState('');
   const [acceptsMarketing, setAcceptsMarketing] = useState(true);
 
-  const isValidEmail = email.includes('@') && email.includes('.');
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
   const isValidName = firstName.trim().length >= 2;
   const canSubmit = isValidEmail && isValidName && !isSubmitting;
 
@@ -56,6 +56,10 @@ export function ScheidingHerstartLeadGate({
                 </div>
               ))}
             </div>
+
+            <p className="text-xs text-gray-400 text-center pb-1">
+              Meer dan 2.800 mensen gingen je voor · Geen spam
+            </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

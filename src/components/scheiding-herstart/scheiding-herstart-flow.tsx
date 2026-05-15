@@ -191,6 +191,7 @@ export function ScheidingHerstartFlow({ onClose }: ScheidingHerstartFlowProps = 
       {step === 'analyzing' && (
         <ScheidingHerstartAnalyzing
           firstName={firstName}
+          profiel={previewScores?.profiel}
           onComplete={handleAnalyzingComplete}
         />
       )}

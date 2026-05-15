@@ -188,7 +188,18 @@ export function ScheidingHerstartQuestionnaire({ onComplete, onBack }: Props) {
   const answered = answers[q.id] !== undefined;
 
   const handleAnswer = (id: string, value: number) => {
-    setAnswers((prev) => ({ ...prev, [id]: value }));
+    const updated = { ...answers, [id]: value };
+    setAnswers(updated);
+    if ((q.type === 'radio' || q.type === 'scenario') && !isSubmitting) {
+      setTimeout(() => {
+        if (current < QUESTIONS.length - 1) {
+          setCurrent((c) => c + 1);
+        } else {
+          setIsSubmitting(true);
+          onComplete(updated);
+        }
+      }, 350);
+    }
   };
 
   const handleNext = async () => {

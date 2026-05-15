@@ -249,6 +249,16 @@ async function saveLead(
   }
 }
 
+function getCoachingPitch(profiel: string): string {
+  const pitches: Record<string, string> = {
+    heler: 'Je hebt eerlijk aangegeven dat je hart nog aan het helen is — en dat vraagt moed. Heling gaat sneller met de juiste begeleiding. Onze coaches helpen je dit proces bewust te doorlopen, zodat je vanuit kracht begint te daten — niet vanuit pijn of eenzaamheid.',
+    waker: 'Je staat op het kantelpunt. Met de juiste begeleiding zet je dit momentum om in echte stappen — zonder de valkuilen die de meeste mensen in jouw fase maken. Onze coaches weten precies wat je nu nodig hebt om van Waker naar Starter te gaan.',
+    starter: 'Je hebt de basis goed op orde. Nu gaat het erom hoe je dit omzet in echte, goede connecties — van profiel tot tweede date. Dat is precies waar onze coaches je bij helpen: van klaar-zijn naar daadwerkelijk de juiste match vinden.',
+    bloeier: 'Jouw positie is sterk — en dat is zeldzaam. Maar zelfs de meest zelfbewuste singles missen de juiste match als ze geen bewuste strategie hebben. Onze coaching helpt je jouw kracht om te zetten in echte, duurzame verbinding.',
+  };
+  return pitches[profiel] ?? pitches.starter;
+}
+
 async function sendResultEmail(
   email: string,
   firstName: string,
@@ -330,7 +340,10 @@ async function sendResultEmail(
     ` : ''}
 
     <div class="section">
-      <a href="${PROD_URL}/scheiding-herstart" class="cta-btn">Bekijk je volledige analyse →</a>
+      <div class="section-title">Jouw volgende stap</div>
+      <div class="card" style="font-size:14px;color:#374151;line-height:1.7;margin-bottom:16px;">${getCoachingPitch(scores.profiel)}</div>
+      <a href="${PROD_URL}/prijzen?utm_source=email&utm_medium=scan&utm_campaign=scheiding-herstart&profiel=${scores.profiel}" class="cta-btn">Bekijk coaching opties →</a>
+      <p style="font-size:12px;text-align:center;color:#9ca3af;margin-top:8px;">Vanaf €47 · 21 dagen · Geen langetermijn verplichtingen</p>
     </div>
 
     <p style="font-size:14px;color:#6b7280;line-height:1.6;margin-bottom:0;">
@@ -364,7 +377,11 @@ Rebound risico: ${scores.reboundNiveau}
 ${week1.length > 0 ? `ACTIES VOOR WEEK 1:\n${week1.map((a: string) => `→ ${a}`).join('\n')}\n` : ''}
 ${tip ? `\nPERSOONLIJKE TIP:\n"${tip}"` : ''}
 
-Bekijk je volledige analyse op: ${PROD_URL}/scheiding-herstart
+JOUW VOLGENDE STAP:
+${getCoachingPitch(scores.profiel)}
+
+Bekijk coaching opties: ${PROD_URL}/prijzen?utm_source=email&utm_medium=scan&utm_campaign=scheiding-herstart&profiel=${scores.profiel}
+(Vanaf €47 · 21 dagen · Geen langetermijn verplichtingen)
 
 Groet,
 Vincent

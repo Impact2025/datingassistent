@@ -200,6 +200,114 @@ const FALLBACK_ANALYSIS = {
   },
 };
 
+const PROFILE_UPSELL: Record<string, {
+  headline: string;
+  pitch: string;
+  bullets: string[];
+  urgency: string;
+  cta: string;
+}> = {
+  heler: {
+    headline: 'Je weet nu waar je staat. Heling gaat sneller met begeleiding.',
+    pitch: 'Heling duurt gemiddeld 14 maanden als je het alleen doet. Met de juiste begeleiding is dat 4–6 maanden. Onze coaches kennen de Heler-fase precies — en helpen je er gezond en krachtig doorheen.',
+    bullets: [
+      'AI coach beschikbaar 24/7 — ook op de moeilijkste avonden',
+      'Hechtingsstijl analyse: ontdek waarom je aantrekt wie je aantrekt',
+      '21-daags traject specifiek voor mensen na een scheiding',
+    ],
+    urgency: 'Helers die coaching starten zien gemiddeld 60% verbetering na 3 weken.',
+    cta: 'Begin je hersteltraject',
+  },
+  waker: {
+    headline: 'Je staat op het kantelpunt. Laat het niet voorbijgaan.',
+    pitch: 'Van Waker naar Starter gaat soms vanzelf — en soms sta je maanden stil. Onze begeleiding helpt je dit momentum omzetten in echte stappen, zonder de valkuilen die de meeste mensen in jouw fase maken.',
+    bullets: [
+      'Concreet stappenplan voor jouw eerste date na de scheiding',
+      'Leer selecteren op verbinding, niet op afleiding of eenzaamheid',
+      'Coach die jouw tempo respecteert — geen druk, wel richting',
+    ],
+    urgency: '78% van onze Wakers plant hun eerste geslaagde date binnen 5 weken.',
+    cta: 'Zet de volgende stap',
+  },
+  starter: {
+    headline: "Je bent klaar — nu telt hoe je het aanpakt.",
+    pitch: 'Klaar zijn is het begin. Maar de overgang van klaar-zijn naar echte, goede connecties is de stap die de meeste Starters onderschatten. Hier helpen we je precies bij.',
+    bullets: [
+      'Dating profiel dat je scheiding-verhaal als kracht vertelt',
+      'Van eerste bericht tot tweede date: praktische coaching',
+      'Inzicht in wat je nú écht zoekt — anders dan voor de scheiding',
+    ],
+    urgency: 'Starters in ons programma plannen gemiddeld 2× meer kwalitatieve dates.',
+    cta: 'Optimaliseer je dating aanpak',
+  },
+  bloeier: {
+    headline: 'Je bloeit. Zorg dat je ook de juiste match aantrekt.',
+    pitch: 'Jouw positie is sterk — en dat is zeldzaam. Maar zelfs de meest zelfbewuste singles missen de juiste match zonder een bewuste strategie. Onze coaching zet jouw kracht om in echte, duurzame verbinding.',
+    bullets: [
+      'Dating strategie afgestemd op wie jij nu bent',
+      'Selectiever zijn zonder kansen te missen — meer kwaliteit',
+      'Community van mensen die serieus zoeken, net als jij',
+    ],
+    urgency: 'Bloeiers in ons programma vinden 40% sneller een echte klik.',
+    cta: 'Verfijn je strategie',
+  },
+};
+
+function ProfileUpsell({ profiel, onRestart }: { profiel: string; onRestart: () => void }) {
+  const upsell = PROFILE_UPSELL[profiel] ?? PROFILE_UPSELL.starter;
+
+  return (
+    <div className="rounded-2xl bg-gradient-to-br from-rose-50 via-pink-50 to-rose-50 border-2 border-rose-200 p-6 space-y-5">
+      <div className="space-y-1">
+        <p className="text-xs font-bold text-rose-500 uppercase tracking-widest">Jouw volgende stap</p>
+        <h3 className="text-xl font-bold text-gray-900 leading-snug">{upsell.headline}</h3>
+      </div>
+
+      <p className="text-sm text-gray-700 leading-relaxed">{upsell.pitch}</p>
+
+      <div className="space-y-2.5">
+        {upsell.bullets.map((bullet, i) => (
+          <div key={i} className="flex items-start gap-2.5">
+            <CheckCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+            <span className="text-sm text-gray-700">{bullet}</span>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-xs text-rose-700 font-medium italic border-l-2 border-rose-300 pl-3">
+        {upsell.urgency}
+      </p>
+
+      <div className="space-y-3 pt-1">
+        <Button asChild className="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-5 text-base rounded-full shadow-lg shadow-rose-500/20">
+          <a href="/prijzen">
+            {upsell.cta}
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </a>
+        </Button>
+        <p className="text-xs text-center text-gray-400">Vanaf €47 · 21 dagen · Geen langetermijn verplichtingen</p>
+      </div>
+
+      <div className="flex items-center justify-between pt-2 border-t border-rose-100">
+        <button
+          onClick={onRestart}
+          className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <RefreshCw className="w-3 h-3" />
+          Scan opnieuw doen
+        </button>
+        <a
+          href="/dashboard"
+          className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          Naar dashboard
+          <ArrowRight className="w-3 h-3" />
+        </a>
+      </div>
+    </div>
+  );
+}
+
 interface Props {
   result: ScanResult;
   intake: IntakeData;
@@ -543,26 +651,21 @@ export function ScheidingHerstartResults({ result, intake, onRestart, onClose }:
         </TabsContent>
       </Tabs>
 
-      {/* Actions */}
-      <div className="flex gap-3">
-        <Button
-          onClick={onRestart}
-          variant="outline"
-          className="flex items-center gap-2"
-        >
-          <RefreshCw className="w-4 h-4" />
-          Opnieuw
-        </Button>
-        <Button
-          asChild
-          className="flex-1 bg-rose-500 hover:bg-rose-600 text-white flex items-center gap-2"
-        >
-          <a href="/dashboard">
-            Ga naar Dashboard
-            <ArrowRight className="w-4 h-4" />
-          </a>
-        </Button>
-      </div>
+      {/* Upsell (landing page only) or simple actions (dashboard) */}
+      {!onClose ? (
+        <ProfileUpsell profiel={scores.profiel} onRestart={onRestart} />
+      ) : (
+        <div className="flex gap-3">
+          <Button onClick={onRestart} variant="outline" className="flex items-center gap-2">
+            <RefreshCw className="w-4 h-4" />
+            Opnieuw
+          </Button>
+          <Button onClick={onClose} className="flex-1 bg-green-600 hover:bg-green-700 text-white flex items-center gap-2">
+            <Save className="w-4 h-4" />
+            Sluiten
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

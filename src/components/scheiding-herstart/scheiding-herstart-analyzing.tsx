@@ -6,15 +6,21 @@ import { motion } from 'framer-motion';
 interface ScheidingHerstartAnalyzingProps {
   onComplete: () => void;
   firstName: string;
+  profiel?: string;
 }
 
-const STEPS = [
-  'Antwoorden verwerken',
-  'Herstart profiel bepalen',
-  'Persoonlijk actieplan samenstellen',
-];
+const PROFIEL_NAMEN: Record<string, string> = {
+  heler: 'De Heler', waker: 'De Waker', starter: 'De Starter', bloeier: 'De Bloeier',
+};
 
-export function ScheidingHerstartAnalyzing({ onComplete, firstName }: ScheidingHerstartAnalyzingProps) {
+export function ScheidingHerstartAnalyzing({ onComplete, firstName, profiel }: ScheidingHerstartAnalyzingProps) {
+  const profielNaam = profiel ? (PROFIEL_NAMEN[profiel] ?? 'jouw profiel') : null;
+
+  const STEPS = [
+    'Antwoorden verwerken',
+    profielNaam ? `${profielNaam} analyse finetunen` : 'Herstart profiel bepalen',
+    'Persoonlijk actieplan samenstellen',
+  ];
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [showExtended, setShowExtended] = useState(false);
@@ -53,10 +59,10 @@ export function ScheidingHerstartAnalyzing({ onComplete, firstName }: ScheidingH
         </div>
 
         <h2 className="text-xl font-bold text-gray-900 mb-2">
-          Even geduld, {firstName}
+          {profielNaam ? `We maken jouw analyse klaar, ${firstName}` : `Even geduld, ${firstName}`}
         </h2>
         <p className="text-gray-500 mb-8">
-          We analyseren je antwoorden
+          {profielNaam ? `Op basis van jouw ${profielNaam} profiel` : 'We analyseren je antwoorden'}
         </p>
 
         <div className="mb-6">
