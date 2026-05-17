@@ -235,7 +235,7 @@ export function PatternAccountGate({
                   value={firstName}
                   onChange={e => setFirstName(e.target.value)}
                   placeholder="Je voornaam"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors bg-white text-gray-900 placeholder-gray-400"
                   autoComplete="given-name"
                   autoFocus
                 />
@@ -251,7 +251,7 @@ export function PatternAccountGate({
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="jouw@email.nl"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-coral-500 transition-colors bg-white text-gray-900 placeholder-gray-400"
                   autoComplete="email"
                 />
               </div>
