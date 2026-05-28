@@ -722,10 +722,9 @@ function Footer() {
       { label: 'Voorwaarden', href: '/algemene-voorwaarden' },
       { label: 'Cookies', href: '/cookies' },
     ],
-    support: [
-      { label: 'Help Center', href: '/help' },
-      { label: 'FAQ', href: '/faq' },
-      { label: 'Status', href: '/status' },
+    doelgroepen: [
+      { label: '40+ Singles', href: '/40-plus' },
+      { label: '50+ Singles', href: '/50-plus' },
     ],
   };
 
@@ -747,7 +746,7 @@ function Footer() {
               </span>
             </Link>
             <p className="text-sm leading-relaxed" style={{ color: colors.mediumGray }}>
-              Jouw persoonlijke datingcoach voor authentieke verbinding in je 30s
+              Jouw persoonlijke datingcoach voor authentieke verbinding
             </p>
           </div>
 
@@ -755,6 +754,19 @@ function Footer() {
             <h4 className="font-semibold mb-3" style={{ color: colors.charcoal }}>Product</h4>
             <ul className="space-y-2">
               {footerLinks.product.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm hover:underline" style={{ color: colors.mediumGray }}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-3" style={{ color: colors.charcoal }}>Doelgroepen</h4>
+            <ul className="space-y-2">
+              {footerLinks.doelgroepen.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm hover:underline" style={{ color: colors.mediumGray }}>
                     {link.label}
@@ -781,19 +793,6 @@ function Footer() {
             <h4 className="font-semibold mb-3" style={{ color: colors.charcoal }}>Legal</h4>
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm hover:underline" style={{ color: colors.mediumGray }}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-3" style={{ color: colors.charcoal }}>Support</h4>
-            <ul className="space-y-2">
-              {footerLinks.support.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm hover:underline" style={{ color: colors.mediumGray }}>
                     {link.label}

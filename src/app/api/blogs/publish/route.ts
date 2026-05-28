@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
+import { pingIndexNow, pingGoogleIndexingAPI } from '@/lib/indexing';
 
 /**
  * Publish or unpublish a blog post
@@ -34,6 +35,14 @@ export async function POST(request: NextRequest) {
     }
 
     const blog = result.rows[0];
+
+    if (blog.published) {
+      const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${blog.slug}`;
+      await Promise.allSettled([
+        pingIndexNow([fullUrl]),
+        pingGoogleIndexingAPI(fullUrl),
+      ]);
+    }
 
     return NextResponse.json({
       success: true,

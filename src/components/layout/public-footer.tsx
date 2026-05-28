@@ -40,9 +40,35 @@ export function PublicFooter() {
                       Blog
                     </Link>
                   </li>
+                  <li>
+                    <Link href="/kennisbank" className="text-sm text-foreground/80 hover:text-primary transition-colors">
+                      Kennisbank
+                    </Link>
+                  </li>
                 </ul>
               </div>
-              
+
+              <div>
+                <h3 className="font-semibold mb-4 text-foreground">Doelgroepen</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href="/30-plus" className="text-sm text-foreground/80 hover:text-primary transition-colors">
+                      30+ Singles
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/40-plus" className="text-sm text-foreground/80 hover:text-primary transition-colors">
+                      40+ Singles
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/50-plus" className="text-sm text-foreground/80 hover:text-primary transition-colors">
+                      50+ Singles
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
               <div>
                 <h3 className="font-semibold mb-4 text-foreground">Over ons</h3>
                 <ul className="space-y-2">
@@ -61,9 +87,19 @@ export function PublicFooter() {
                       Contact
                     </Link>
                   </li>
+                  <li>
+                    <Link href="/help" className="text-sm text-foreground/80 hover:text-primary transition-colors">
+                      Help Center
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/faq" className="text-sm text-foreground/80 hover:text-primary transition-colors">
+                      FAQ
+                    </Link>
+                  </li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
                 <ul className="space-y-2">
@@ -80,27 +116,6 @@ export function PublicFooter() {
                   <li>
                     <Link href="/cookies" className="text-sm text-foreground/80 hover:text-primary transition-colors">
                       Cookies
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="font-semibold mb-4 text-foreground">Support</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href="/help" className="text-sm text-foreground/80 hover:text-primary transition-colors">
-                      Help Center
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/faq" className="text-sm text-foreground/80 hover:text-primary transition-colors">
-                      FAQ
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/status" className="text-sm text-foreground/80 hover:text-primary transition-colors">
-                      Status
                     </Link>
                   </li>
                 </ul>

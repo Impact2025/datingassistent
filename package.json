@@ -91,6 +91,7 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.38.0",
     "genkit": "^1.31.0",
+    "googleapis": "^171.4.0",
     "gray-matter": "^4.0.3",
     "jose": "^6.2.2",
     "lucide-react": "^0.577.0",
