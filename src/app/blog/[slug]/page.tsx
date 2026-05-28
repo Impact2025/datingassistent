@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import sanitizeHtml from 'sanitize-html';
-import { getBlogPostBySlug, getLatestBlogPosts } from '@/lib/db-operations';
+import { getBlogPostBySlug, getRelatedBlogPosts } from '@/lib/db-operations';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Calendar, Clock, Eye, Tag, User } from 'lucide-react';
@@ -132,11 +132,6 @@ export default async function BlogPostPage({
   // Gooit automatisch de Next.js 404 pagina — correct HTTP 404 status voor Googlebot
   if (!blog) notFound();
 
-  const latestPosts = await getLatestBlogPosts(6);
-  const relatedPosts = latestPosts
-    .filter((p: any) => p.slug !== slug)
-    .slice(0, 3);
-
   const shareUrl = `https://datingassistent.nl/blog/${slug}`;
   const pageTitle = blog.seo_title || blog.title;
   const pageDescription = blog.seo_description || blog.excerpt;
@@ -146,6 +141,8 @@ export default async function BlogPostPage({
     : publishedDate;
   const readingTime = blog.reading_time || calculateReadingTime(blog.content);
   const allTags = [...new Set([...(blog.tags || []), ...(blog.keywords || [])])];
+
+  const relatedPosts = await getRelatedBlogPosts(slug, allTags, 3);
 
   const blogPostSchema = {
     '@context': 'https://schema.org',
@@ -301,14 +298,19 @@ export default async function BlogPostPage({
             {allTags.slice(0, 8).length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {allTags.slice(0, 8).map((tag: string, idx: number) => (
-                  <Badge
+                  <Link
                     key={idx}
-                    variant="outline"
-                    className="text-xs bg-coral-50 text-coral-700 border-coral-200"
+                    href={`/blog?tag=${encodeURIComponent(tag)}`}
+                    className="inline-flex"
                   >
-                    <Tag className="mr-1 h-3 w-3" />
-                    {tag}
-                  </Badge>
+                    <Badge
+                      variant="outline"
+                      className="text-xs bg-coral-50 text-coral-700 border-coral-200 hover:bg-coral-100 transition-colors cursor-pointer"
+                    >
+                      <Tag className="mr-1 h-3 w-3" />
+                      {tag}
+                    </Badge>
+                  </Link>
                 ))}
               </div>
             )}

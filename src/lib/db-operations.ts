@@ -243,6 +243,55 @@ export async function getLatestBlogPosts(limit = 5) {
   }
 }
 
+export async function getRelatedBlogPosts(currentSlug: string, keywords: string[], limit = 3) {
+  try {
+    if (keywords.length > 0) {
+      // Posts met meeste keyword-overlap bovenaan
+      const result = await sql`
+        SELECT
+          id, slug, title, excerpt,
+          image        AS featured_image,
+          cover_image_url,
+          category,    keywords,
+          COALESCE(published_at, publish_date, created_at) AS published_at,
+          cardinality(ARRAY(
+            SELECT unnest(keywords::text[])
+            INTERSECT
+            SELECT unnest(${keywords}::text[])
+          )) AS overlap
+        FROM blogs
+        WHERE published = true
+          AND slug != ${currentSlug}
+          AND keywords && ${keywords}::text[]
+        ORDER BY overlap DESC, published_at DESC
+        LIMIT ${limit}
+      `;
+      if (result.rows.length >= limit) {
+        return result.rows.map((row) => ({
+          ...row,
+          keywords: typeof row.keywords === 'string' ? JSON.parse(row.keywords) : (row.keywords ?? []),
+        }));
+      }
+    }
+    // Fallback: meest recente posts
+    const fallback = await sql`
+      SELECT id, slug, title, excerpt,
+             image AS featured_image, cover_image_url, category, keywords,
+             COALESCE(published_at, publish_date, created_at) AS published_at
+      FROM blogs
+      WHERE published = true AND slug != ${currentSlug}
+      ORDER BY published_at DESC
+      LIMIT ${limit}
+    `;
+    return fallback.rows.map((row) => ({
+      ...row,
+      keywords: typeof row.keywords === 'string' ? JSON.parse(row.keywords) : (row.keywords ?? []),
+    }));
+  } catch {
+    return [];
+  }
+}
+
 export async function getAllBlogTags() {
   try {
     const result = await sql`
