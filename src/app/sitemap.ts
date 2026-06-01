@@ -9,15 +9,15 @@ const baseUrl = 'https://datingassistent.nl';
 // Reflects when a page was last meaningfully updated.
 // Update this date whenever you make significant content changes to that page.
 const DATES = {
-  homepage:    new Date('2026-04-01'),
-  pricing:     new Date('2026-04-01'),
-  features:    new Date('2026-03-01'),
+  homepage:    new Date('2026-06-01'),
+  pricing:     new Date('2026-06-01'),
+  features:    new Date('2026-06-01'),
   blog:        new Date(),             // always fresh (new posts appear here)
-  kennisbank:  new Date('2026-04-01'),
+  kennisbank:  new Date('2026-06-01'),
   cursussen:   new Date('2026-04-01'),
-  landingpage: new Date('2026-03-01'),
-  static:      new Date('2025-12-01'),
-  legal:       new Date('2025-06-01'),
+  landingpage: new Date('2026-06-01'),
+  static:      new Date('2026-06-01'),
+  legal:       new Date('2026-06-01'),
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
