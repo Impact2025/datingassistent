@@ -24,7 +24,9 @@ import {
   RefreshCw,
   Tag,
   Settings,
-  Zap
+  Zap,
+  SearchCheck,
+  Loader2
 } from "lucide-react";
 
 // =============================================================================
@@ -138,11 +140,21 @@ function TrendIndicator({ growth, label }: { growth?: GrowthMetric; label?: stri
 // MAIN COMPONENT
 // =============================================================================
 
+interface ReindexResult {
+  submitted: number;
+  blog: number;
+  kennisbank: number;
+  errors?: string[];
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [reindexing, setReindexing] = useState(false);
+  const [reindexResult, setReindexResult] = useState<ReindexResult | null>(null);
+  const [reindexError, setReindexError] = useState<string | null>(null);
   const router = useRouter();
 
   const fetchDashboardStats = useCallback(async (isRefresh = false) => {
@@ -253,6 +265,22 @@ export default function AdminDashboard() {
       color: 'hover:bg-green-50 hover:border-green-200'
     }
   ];
+
+  const handleReindexAll = async () => {
+    setReindexing(true);
+    setReindexResult(null);
+    setReindexError(null);
+    try {
+      const res = await fetch('/api/admin/reindex-all', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Onbekende fout');
+      setReindexResult(data);
+    } catch (err) {
+      setReindexError(err instanceof Error ? err.message : 'Onbekende fout');
+    } finally {
+      setReindexing(false);
+    }
+  };
 
   // Loading state met skeleton
   if (loading) {
@@ -511,6 +539,70 @@ export default function AdminDashboard() {
               );
             })}
           </div>
+        </CardContent>
+      </Card>
+
+      {/* SEO Tools */}
+      <Card className="hover:shadow-lg transition-shadow border-l-4 border-l-emerald-500">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <SearchCheck className="h-5 w-5 text-emerald-500" />
+            SEO Tools
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="flex-1">
+              <p className="text-sm font-medium">Bulk reindex via IndexNow</p>
+              <p className="text-xs text-muted-foreground">
+                Pusht alle gepubliceerde blog posts en kennisbank artikelen naar zoekmachines.
+                Gebruik dit na grote SEO-wijzigingen zodat Google/Bing de updates snel oppikt.
+              </p>
+            </div>
+            <Button
+              onClick={handleReindexAll}
+              disabled={reindexing}
+              className="shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white"
+            >
+              {reindexing ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Bezig...
+                </>
+              ) : (
+                <>
+                  <SearchCheck className="h-4 w-4 mr-2" />
+                  Reindex alles
+                </>
+              )}
+            </Button>
+          </div>
+
+          {reindexResult && (
+            <div className="rounded-md bg-emerald-50 border border-emerald-200 p-3 text-sm">
+              <p className="font-medium text-emerald-800">
+                {reindexResult.submitted} URLs ingediend
+              </p>
+              <p className="text-emerald-700 text-xs mt-1">
+                {reindexResult.blog} blog posts · {reindexResult.kennisbank} kennisbank artikelen
+              </p>
+              {reindexResult.errors && reindexResult.errors.length > 0 && (
+                <p className="text-amber-700 text-xs mt-1">
+                  Waarschuwingen: {reindexResult.errors.join(', ')}
+                </p>
+              )}
+              <p className="text-emerald-600 text-xs mt-2">
+                Dien ook de sitemap opnieuw in via Search Console → Sitemaps →
+                datingassistent.nl/sitemap.xml → Verzenden
+              </p>
+            </div>
+          )}
+
+          {reindexError && (
+            <div className="rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+              Fout: {reindexError}
+            </div>
+          )}
         </CardContent>
       </Card>
 
