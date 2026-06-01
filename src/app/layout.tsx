@@ -142,7 +142,6 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#FF7B54" />
         <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
 
-        <link rel="canonical" href="https://datingassistent.nl" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />

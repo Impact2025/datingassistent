@@ -1,32 +1,32 @@
-'use client';
-
-import Head from 'next/head';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
 
-export default function TermsPage() {
-  const pageTitle = 'Algemene Voorwaarden – DatingAssistent (WeAreImpact)';
-  const pageDescription =
-    'Lees de algemene voorwaarden van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.';
+export const metadata: Metadata = {
+  title: 'Algemene Voorwaarden – DatingAssistent (WeAreImpact)',
+  description: 'Lees de algemene voorwaarden van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
+  alternates: { canonical: 'https://datingassistent.nl/algemene-voorwaarden' },
+  openGraph: {
+    title: 'Algemene Voorwaarden – DatingAssistent (WeAreImpact)',
+    description: 'Lees de algemene voorwaarden van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
+    type: 'website',
+    url: 'https://datingassistent.nl/algemene-voorwaarden',
+    images: [{ url: '/og-image-terms.png', width: 1200, height: 630 }],
+    siteName: 'DatingAssistent',
+    locale: 'nl_NL',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Algemene Voorwaarden – DatingAssistent (WeAreImpact)',
+    description: 'Lees de algemene voorwaarden van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
+    images: ['/og-image-terms.png'],
+  },
+};
 
+export default function TermsPage() {
   return (
     <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <link rel="canonical" href="https://datingassistent.nl/algemene-voorwaarden" />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://datingassistent.nl/algemene-voorwaarden" />
-        <meta property="og:image" content="https://datingassistent.nl/og-image-terms.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        <meta name="twitter:image" content="https://datingassistent.nl/og-image-terms.png" />
-      </Head>
-
       <div className="min-h-screen flex flex-col bg-background">
         <PublicHeader />
 
