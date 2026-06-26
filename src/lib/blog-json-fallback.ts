@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+// Statically imported blog data — no fs.readFileSync needed (works on Vercel serverless)
+import blogListData from '@/data/blog-list-data';
 
 interface BlogListItem {
   id: number;
@@ -23,30 +23,11 @@ interface BlogListItem {
 
 let cachedBlogs: BlogListItem[] | null = null;
 
-function parseBlogListJson(): BlogListItem[] {
-  try {
-    const filePath = path.join(process.cwd(), 'public', 'blog_list.json');
-    if (!fs.existsSync(filePath)) return [];
-    const rawBuffer = fs.readFileSync(filePath);
-    let rawText = rawBuffer.toString('utf16le');
-    if (rawText.charCodeAt(0) === 0xFEFF) {
-      rawText = rawText.slice(1);
-    }
-    const data = JSON.parse(rawText);
-    if (data.success && Array.isArray(data.blogs)) {
-      return data.blogs;
-    }
-    return [];
-  } catch {
-    return [];
-  }
-}
-
 export function getAllBlogsFromJson(): BlogListItem[] {
   if (!cachedBlogs) {
-    cachedBlogs = parseBlogListJson();
+    cachedBlogs = (blogListData as BlogListItem[]).filter((b: BlogListItem) => b.published !== false);
   }
-  return cachedBlogs!.filter((b) => b.published !== false);
+  return cachedBlogs;
 }
 
 export function getBlogBySlugFromJson(slug: string): BlogListItem | null {
