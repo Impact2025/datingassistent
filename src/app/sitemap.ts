@@ -9,19 +9,25 @@ const baseUrl = 'https://datingassistent.nl';
 // Reflects when a page was last meaningfully updated.
 // Update this date whenever you make significant content changes to that page.
 const DATES = {
-  homepage:    new Date('2026-06-01'),
-  pricing:     new Date('2026-06-01'),
-  features:    new Date('2026-06-01'),
+  homepage:    new Date('2026-06-26'),
+  pricing:     new Date('2026-06-26'),
+  features:    new Date('2026-06-26'),
   blog:        new Date(),             // always fresh (new posts appear here)
-  kennisbank:  new Date('2026-06-01'),
-  cursussen:   new Date('2026-04-01'),
-  landingpage: new Date('2026-06-01'),
-  static:      new Date('2026-06-01'),
-  legal:       new Date('2026-06-01'),
+  kennisbank:  new Date('2026-06-26'),
+  cursussen:   new Date('2026-06-26'),
+  tools:       new Date('2026-06-26'),
+  quizzes:     new Date('2026-06-26'),
+  courses:     new Date('2026-06-26'),
+  assessment:  new Date('2026-06-26'),
+  transform:   new Date('2026-06-26'),
+  landingpage: new Date('2026-06-26'),
+  static:      new Date('2026-06-26'),
+  legal:       new Date('2026-06-26'),
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
+    // === Hoofdpagina's ===
     {
       url: baseUrl,
       lastModified: DATES.homepage,
@@ -49,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}/cursussen`,
       lastModified: DATES.cursussen,
-      changeFrequency: 'monthly',
+      changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
@@ -58,7 +64,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
-    // Doelgroep landingspagina's
+
+    // === Doelgroep landingspagina's ===
     {
       url: `${baseUrl}/30-plus`,
       lastModified: DATES.landingpage,
@@ -77,6 +84,350 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+
+    // === Signatuur pagina's (AI-features) ===
+    {
+      url: `${baseUrl}/ai-relationship-coach`,
+      lastModified: DATES.landingpage,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/date-planner`,
+      lastModified: DATES.landingpage,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/scheiding-herstart`,
+      lastModified: DATES.landingpage,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/profile-analysis`,
+      lastModified: DATES.landingpage,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/kickstart`,
+      lastModified: DATES.landingpage,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/kickstart-toolkit`,
+      lastModified: DATES.landingpage,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/transformatie`,
+      lastModified: DATES.transform,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/transformatie/onboarding`,
+      lastModified: DATES.transform,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+
+    // === Cursus pagina's ===
+    {
+      url: `${baseUrl}/cursus`,
+      lastModified: DATES.courses,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/cursus/mindset-voorbereiding`,
+      lastModified: DATES.courses,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/cursus/profiel-optimalisatie`,
+      lastModified: DATES.courses,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+
+    // === Tools ===
+    {
+      url: `${baseUrl}/tools`,
+      lastModified: DATES.tools,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/tools/36-vragen`,
+      lastModified: DATES.tools,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/tools/ai-bio-generator`,
+      lastModified: DATES.tools,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/tools/vibe-check`,
+      lastModified: DATES.tools,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/tools/ghosting-reframer`,
+      lastModified: DATES.tools,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/tools/energie-batterij`,
+      lastModified: DATES.tools,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+
+    // === Quizzen ===
+    {
+      url: `${baseUrl}/quiz`,
+      lastModified: DATES.quizzes,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/quiz/resultaat`,
+      lastModified: DATES.quizzes,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/quiz/dating-patroon`,
+      lastModified: DATES.quizzes,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/quiz/dating-patroon/resultaat`,
+      lastModified: DATES.quizzes,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/quiz/emotionele-readiness-40plus`,
+      lastModified: DATES.quizzes,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/quiz/emotionele-readiness-50plus`,
+      lastModified: DATES.quizzes,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+
+    // === Assessments & Scans ===
+    {
+      url: `${baseUrl}/assessment/result`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/scans`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/reviews`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/essentials`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/pro`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/select-package`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/premium-coaching`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+
+    // === Content pagina's ===
+    {
+      url: `${baseUrl}/reviews`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/podcasts`,
+      lastModified: DATES.static,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/help`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+
+    // === Zelf-assessment onderdelen ===
+    {
+      url: `${baseUrl}/hechtingsstijl`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/relatiepatronen`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/datingstijl`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/dating-stijl-scan`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/dating-style`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/blind-vlekken`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/emotionele-readiness`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/foto`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/match`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/opener`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/veiligheid`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/waarden-kompas`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/levensvisie`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/voice`,
+      lastModified: DATES.assessment,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+
+    // === Groei & Leren ===
+    {
+      url: `${baseUrl}/groei`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/leren`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/meer`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/coach`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/leaderboard`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.4,
+    },
+    {
+      url: `${baseUrl}/progress`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.4,
+    },
+
+    // === Community ===
+    {
+      url: `${baseUrl}/community/guidelines`,
+      lastModified: DATES.static,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+
+    // === Overige ===
     {
       url: `${baseUrl}/over-ons`,
       lastModified: DATES.static,
@@ -95,6 +446,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+
+    // === Juridisch ===
     {
       url: `${baseUrl}/privacyverklaring`,
       lastModified: DATES.legal,
@@ -115,6 +468,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
+  // === Dynamische pagina's (DB) — errors worden silent afgevangen ===
   let blogPages: MetadataRoute.Sitemap = [];
   try {
     const blogResult = await sql`
@@ -123,15 +477,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       WHERE published = true
       ORDER BY publish_date DESC
     `;
-
-    blogPages = blogResult.rows.map((blog) => ({
+    blogPages = blogResult.rows.map((blog: { slug: string; updated_at?: string | Date; publish_date?: string | Date }) => ({
       url: `${baseUrl}/blog/${blog.slug}`,
-      lastModified: new Date(blog.updated_at || blog.publish_date),
+      lastModified: new Date(blog.updated_at || blog.publish_date || new Date()),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     }));
+    if (blogPages.length > 0) {
+      console.log(`[sitemap] ${blogPages.length} blog posts toegevoegd`);
+    }
   } catch (error) {
-    console.error('Error fetching blog posts for sitemap:', error);
+    console.error('[sitemap] Blog posts niet geladen:', error);
   }
 
   let coursePages: MetadataRoute.Sitemap = [];
@@ -142,29 +498,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       WHERE status = 'published'
       ORDER BY created_at ASC
     `;
-
-    coursePages = coursesResult.rows.map((cursus) => ({
+    coursePages = coursesResult.rows.map((cursus: { slug: string; updated_at?: string | Date }) => ({
       url: `${baseUrl}/cursussen/${cursus.slug}`,
-      lastModified: new Date(cursus.updated_at),
+      lastModified: new Date(cursus.updated_at || new Date()),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     }));
+    if (coursePages.length > 0) {
+      console.log(`[sitemap] ${coursePages.length} cursussen toegevoegd`);
+    }
   } catch (error) {
-    console.error('Error fetching courses for sitemap:', error);
+    console.error('[sitemap] Cursussen niet geladen:', error);
   }
 
   let kennisbankPages: MetadataRoute.Sitemap = [];
   try {
     const articles = getAllKennisbankArticles();
-    kennisbankPages = articles.map((article) => ({
+    kennisbankPages = articles.map((article: { slug: string; date?: string }) => ({
       url: `${baseUrl}/kennisbank/${article.slug}`,
-      lastModified: new Date(article.date),
+      lastModified: new Date(article.date || new Date()),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     }));
+    if (kennisbankPages.length > 0) {
+      console.log(`[sitemap] ${kennisbankPages.length} kennisbank artikelen toegevoegd`);
+    }
   } catch (error) {
-    console.error('Error fetching kennisbank articles for sitemap:', error);
+    console.error('[sitemap] Kennisbank niet geladen:', error);
   }
 
-  return [...staticPages, ...blogPages, ...coursePages, ...kennisbankPages];
+  const allPages = [...staticPages, ...blogPages, ...coursePages, ...kennisbankPages];
+  console.log(`[sitemap] Totaal: ${allPages.length} URLs gegenereerd`);
+  return allPages;
 }

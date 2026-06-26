@@ -1,6 +1,7 @@
 // Force dynamic rendering to avoid build-time database calls
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,17 @@ import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
 import { ensureReviewPublishedColumn } from '@/lib/reviews-db';
 import { sql } from '@vercel/postgres';
+
+export const metadata: Metadata = {
+  title: 'Klantbeoordelingen - Reviews & Ervaringen | DatingAssistent',
+  description: 'Lees echte reviews en ervaringen van mensen die hun dating leven hebben verbeterd met DatingAssistent. Ontdek waarom duizenden singles ons vertrouwen.',
+  alternates: { canonical: 'https://datingassistent.nl/reviews' },
+  openGraph: {
+    title: 'Klantbeoordelingen | DatingAssistent',
+    description: 'Lees echte reviews van mensen die succesvoller daten met DatingAssistent.',
+    url: 'https://datingassistent.nl/reviews',
+  },
+};
 
 type Review = {
   id: number;
@@ -21,15 +33,19 @@ type Review = {
 };
 
 async function getPublishedReviews(): Promise<Review[]> {
-  await ensureReviewPublishedColumn();
-
-  const result = await sql<Review>`
-    SELECT id, name, role, content, rating, avatar, created_at
-    FROM reviews
-    WHERE published = true
-    ORDER BY created_at DESC
-  `;
-  return result.rows;
+  try {
+    await ensureReviewPublishedColumn();
+    const result = await sql<Review>`
+      SELECT id, name, role, content, rating, avatar, created_at
+      FROM reviews
+      WHERE published = true
+      ORDER BY created_at DESC
+    `;
+    return result.rows;
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    return [];
+  }
 }
 
 export default async function ReviewsPage() {

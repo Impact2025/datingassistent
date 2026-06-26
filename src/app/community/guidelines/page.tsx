@@ -2,6 +2,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, XCircle, AlertTriangle, Heart, MessageSquare, Shield, Users, BookOpen } from 'lucide-react';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Community Richtlijnen | DatingAssistent',
+  description: 'De community richtlijnen van DatingAssistent. Samen zorgen we voor een veilige en respectvolle omgeving.',
+  alternates: { canonical: 'https://datingassistent.nl/community/guidelines' },
+  openGraph: {
+    title: 'Community Richtlijnen | DatingAssistent',
+    description: 'De community richtlijnen van DatingAssistent. Samen zorgen we voor een veilige en respectvolle omgeving.',
+    url: 'https://datingassistent.nl/community/guidelines',
+  },
+};
 
 export default function CommunityGuidelines() {
   return (

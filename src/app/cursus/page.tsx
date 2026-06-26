@@ -1,6 +1,18 @@
 import { CursusOverzicht } from '@/components/cursus/CursusOverzicht';
 import { IrisFloatingButton } from '@/components/iris/IrisFloatingButton';
 import { GrowingCounter } from '@/components/ui/growing-counter';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Online Dating Cursussen | DatingAssistent',
+  description: 'Leer de psychologie van aantrekkelijke profielen, effectieve gesprekken en succesvolle dates. Van beginner naar dating expert met onze gratis cursussen.',
+  alternates: { canonical: 'https://datingassistent.nl/cursus' },
+  openGraph: {
+    title: 'Online Dating Cursussen | DatingAssistent',
+    description: 'Leer de psychologie van aantrekkelijke profielen, effectieve gesprekken en succesvolle dates. Van beginner naar dating expert met onze gratis cursussen.',
+    url: 'https://datingassistent.nl/cursus',
+  },
+};
 
 export default function CursusPage() {
   return (
