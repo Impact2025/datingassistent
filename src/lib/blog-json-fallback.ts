@@ -25,7 +25,7 @@ let cachedBlogs: BlogListItem[] | null = null;
 
 export function getAllBlogsFromJson(): BlogListItem[] {
   if (!cachedBlogs) {
-    cachedBlogs = (blogListData as BlogListItem[]).filter((b: BlogListItem) => b.published !== false);
+    cachedBlogs = blogListData as BlogListItem[];
   }
   return cachedBlogs;
 }
