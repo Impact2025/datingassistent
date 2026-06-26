@@ -25,7 +25,7 @@ let cachedBlogs: BlogListItem[] | null = null;
 
 function parseBlogListJson(): BlogListItem[] {
   try {
-    const filePath = path.join(process.cwd(), 'blog_list.json');
+    const filePath = path.join(process.cwd(), 'public', 'blog_list.json');
     if (!fs.existsSync(filePath)) return [];
     const rawBuffer = fs.readFileSync(filePath);
     let rawText = rawBuffer.toString('utf16le');
