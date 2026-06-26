@@ -1,5 +1,12 @@
-# Allow root path for crawlers
-User-Agent: *
+import { NextResponse } from 'next/server';
+
+const INDEXNOW_KEY = process.env.INDEXNOW_KEY || '1b415c2508776bc036da5896cb5d0851';
+const HOST = 'https://datingassistent.nl';
+
+const robotsTxt = `# robots.txt — DatingAssistent.nl
+# Laatst bijgewerkt: 2026-06-26
+
+User-agent: *
 Allow: /
 Disallow: /login
 Disallow: /register
@@ -20,8 +27,17 @@ Disallow: /api/
 Disallow: /_next/
 
 # IndexNow — instant search indexing (Bing, Yandex, Seznam, Naver)
-# https://www.indexnow.org/documentation
-Sitemap: https://datingassistent.nl/sitemap.xml
-IndexNow: https://datingassistent.nl/1b415c2508776bc036da5896cb5d0851.txt
+Sitemap: ${HOST}/sitemap.xml
+IndexNow: ${HOST}/${INDEXNOW_KEY}.txt
 
-Host: https://datingassistent.nl
+Host: ${HOST.replace('https://', '')}
+`;
+
+export async function GET() {
+  return new NextResponse(robotsTxt, {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+    },
+  });
+}

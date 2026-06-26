@@ -42,6 +42,44 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+
+  // JSON eerst (maintenance source of truth) — DB fallback
+  const jsonBlog = getBlogBySlugFromJson(slug);
+  if (jsonBlog) {
+    const title = jsonBlog.seo_title || jsonBlog.title || '';
+    const description = jsonBlog.seo_description || jsonBlog.excerpt || '';
+    const shareUrl = `https://datingassistent.nl/blog/${slug}`;
+    const allTags = [...new Set([...(jsonBlog.keywords || []), ...(jsonBlog.tags || [])])];
+    return {
+      title,
+      description,
+      keywords: allTags.join(', '),
+      alternates: { canonical: shareUrl },
+      openGraph: {
+        title,
+        description,
+        type: 'article',
+        url: shareUrl,
+        tags: allTags,
+        authors: [jsonBlog.author || 'DatingAssistent'],
+        section: jsonBlog.category || 'Dating',
+        ...(jsonBlog.cover_image_url && {
+          images: [{ url: jsonBlog.cover_image_url, width: 1200, height: 630, alt: jsonBlog.cover_image_alt || title }],
+        }),
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        ...(jsonBlog.cover_image_url && { images: [jsonBlog.cover_image_url] }),
+      },
+      ...(jsonBlog.published === false && {
+        robots: { index: false, follow: false },
+      }),
+    };
+  }
+
+  // DB fallback
   let blog;
   try {
     blog = await getBlogPostBySlug(slug);
@@ -49,27 +87,7 @@ export async function generateMetadata({
     blog = null;
   }
 
-  // Fallback naar JSON als blog niet in DB staat (ook bij null resultaat)
-  if (!blog) {
-    const jsonBlog = getBlogBySlugFromJson(slug);
-    if (jsonBlog) {
-      const title = jsonBlog.seo_title || jsonBlog.title;
-      const description = jsonBlog.seo_description || jsonBlog.excerpt;
-      const shareUrl = `https://datingassistent.nl/blog/${slug}`;
-      return {
-        title,
-        description,
-        alternates: { canonical: shareUrl },
-        openGraph: {
-          title,
-          description,
-          type: 'article',
-          url: shareUrl,
-        },
-      };
-    }
-    return {};
-  }
+  if (!blog) return {};
 
   const title = blog.seo_title || blog.title || '';
   const description = blog.seo_description || blog.excerpt || '';
@@ -149,20 +167,10 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  let blog;
-  try {
-    blog = await getBlogPostBySlug(slug);
-  } catch (error) {
-    console.error(`[BlogPostPage] DB error for slug "${slug}":`, error);
-    blog = null;
-  }
 
-  // Fallback naar JSON als blog niet in DB staat (ook bij null resultaat, niet alleen bij errors)
-  if (!blog) {
-    const jsonBlog = getBlogBySlugFromJson(slug);
-    if (!jsonBlog) notFound();
-    // Bouw een compatibel blog object uit JSON data
-    blog = {
+  // Helper om blog post te normaliseren naar DB-compatibel formaat
+  function buildBlogFromJson(jsonBlog: any) {
+    return {
       id: jsonBlog.id,
       slug: jsonBlog.slug,
       title: jsonBlog.title,
@@ -190,6 +198,22 @@ export default async function BlogPostPage({
       header_title: jsonBlog.title,
     };
   }
+
+  // JSON eerst (source of truth) — DB fallback
+  const jsonBlog = getBlogBySlugFromJson(slug);
+  let blog = jsonBlog ? buildBlogFromJson(jsonBlog) : null;
+
+  // Alleen DB proberen als JSON geen resultaat had
+  if (!blog) {
+    try {
+      blog = await getBlogPostBySlug(slug);
+    } catch (error) {
+      console.error(`[BlogPostPage] DB error for slug "${slug}":`, error);
+      blog = null;
+    }
+  }
+
+  if (!blog) notFound();
 
   const shareUrl = `https://datingassistent.nl/blog/${slug}`;
   const pageTitle = blog.seo_title || blog.title;
