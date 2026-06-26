@@ -4,6 +4,7 @@
  * Logout Page - Leuke, positieve afscheid
  * Toont motiverende boodschap en opties om terug te keren
  */
+export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
