@@ -46,7 +46,11 @@ export async function generateMetadata({
   try {
     blog = await getBlogPostBySlug(slug);
   } catch {
-    // Fallback: lees uit blog_list.json
+    blog = null;
+  }
+
+  // Fallback naar JSON als blog niet in DB staat (ook bij null resultaat)
+  if (!blog) {
     const jsonBlog = getBlogBySlugFromJson(slug);
     if (jsonBlog) {
       const title = jsonBlog.seo_title || jsonBlog.title;
@@ -66,10 +70,9 @@ export async function generateMetadata({
     }
     return {};
   }
-  if (!blog) return {};
 
-  const title = blog.seo_title || blog.title;
-  const description = blog.seo_description || blog.excerpt;
+  const title = blog.seo_title || blog.title || '';
+  const description = blog.seo_description || blog.excerpt || '';
   const shareUrl = `https://datingassistent.nl/blog/${slug}`;
   const publishedTime = new Date(blog.published_at || blog.created_at).toISOString();
   const modifiedTime = blog.updated_at

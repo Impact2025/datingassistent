@@ -32,7 +32,9 @@
     "migrate:kickstart-21": "tsx src/scripts/migrate-kickstart-21-days.ts",
     "migrate:transformatie-3": "tsx src/scripts/migrate-transformatie-3.ts",
     "migrate:transformatie-content": "tsx src/scripts/update-transformatie-lesson-content.ts",
-    "migrate:payment-utm": "tsx src/scripts/migrate-payment-utm-columns.ts"
+    "migrate:payment-utm": "tsx src/scripts/migrate-payment-utm-columns.ts",
+    "indexnow:submit": "node scripts/indexnow-submit.cjs",
+    "postbuild": "node scripts/indexnow-submit.cjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.81.0",
