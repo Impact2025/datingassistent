@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { sql } from '@vercel/postgres';
 import { getAllKennisbankArticles } from '@/lib/kennisbank';
+import { getAllBlogsFromJson } from '@/lib/blog-json-fallback';
 
 export const dynamic = 'force-dynamic';
 
@@ -487,7 +488,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       console.log(`[sitemap] ${blogPages.length} blog posts toegevoegd`);
     }
   } catch (error) {
-    console.error('[sitemap] Blog posts niet geladen:', error);
+    console.error('[sitemap] Blog posts niet uit DB geladen, probeer JSON fallback:', error);
+    // Fallback: lees uit blog_list.json
+    try {
+      const jsonBlogs = getAllBlogsFromJson();
+      if (jsonBlogs.length > 0) {
+        blogPages = jsonBlogs.map((b) => ({
+          url: `${baseUrl}/blog/${b.slug}`,
+          lastModified: new Date(b.publish_date || b.created_at || new Date()),
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        }));
+        console.log(`[sitemap] ${blogPages.length} blog posts uit JSON fallback toegevoegd`);
+      }
+    } catch (jsonError) {
+      console.error('[sitemap] JSON fallback ook mislukt:', jsonError);
+    }
   }
 
   let coursePages: MetadataRoute.Sitemap = [];

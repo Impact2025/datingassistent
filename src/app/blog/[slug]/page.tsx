@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import sanitizeHtml from 'sanitize-html';
 import { getBlogPostBySlug, getRelatedBlogPosts } from '@/lib/db-operations';
+import { getBlogBySlugFromJson } from '@/lib/blog-json-fallback';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Calendar, Clock, Eye, Tag, User } from 'lucide-react';
@@ -45,6 +46,24 @@ export async function generateMetadata({
   try {
     blog = await getBlogPostBySlug(slug);
   } catch {
+    // Fallback: lees uit blog_list.json
+    const jsonBlog = getBlogBySlugFromJson(slug);
+    if (jsonBlog) {
+      const title = jsonBlog.seo_title || jsonBlog.title;
+      const description = jsonBlog.seo_description || jsonBlog.excerpt;
+      const shareUrl = `https://datingassistent.nl/blog/${slug}`;
+      return {
+        title,
+        description,
+        alternates: { canonical: shareUrl },
+        openGraph: {
+          title,
+          description,
+          type: 'article',
+          url: shareUrl,
+        },
+      };
+    }
     return {};
   }
   if (!blog) return {};
@@ -132,7 +151,37 @@ export default async function BlogPostPage({
     blog = await getBlogPostBySlug(slug);
   } catch (error) {
     console.error(`[BlogPostPage] DB error for slug "${slug}":`, error);
-    notFound();
+    // Fallback: probeer uit blog_list.json
+    const jsonBlog = getBlogBySlugFromJson(slug);
+    if (!jsonBlog) notFound();
+    // Bouw een compatibel blog object uit JSON data
+    blog = {
+      id: jsonBlog.id,
+      slug: jsonBlog.slug,
+      title: jsonBlog.title,
+      excerpt: jsonBlog.excerpt,
+      content: jsonBlog.content,
+      featured_image: jsonBlog.cover_image_url || jsonBlog.image,
+      cover_image_url: jsonBlog.cover_image_url || jsonBlog.image,
+      cover_image_alt: jsonBlog.cover_image_alt,
+      category: jsonBlog.category || 'Dating Tips',
+      tags: jsonBlog.tags || [],
+      keywords: jsonBlog.keywords || [],
+      seo_title: jsonBlog.seo_title,
+      seo_description: jsonBlog.seo_description,
+      author: jsonBlog.author || 'DatingAssistent',
+      author_bio: '',
+      author_avatar: '',
+      published: jsonBlog.published !== false,
+      read_count: 0,
+      created_at: jsonBlog.created_at || new Date().toISOString(),
+      published_at: jsonBlog.publish_date || jsonBlog.created_at || new Date().toISOString(),
+      reading_time: Math.max(1, Math.ceil(jsonBlog.content?.split(/\s+/).length / 200)),
+      placeholder_text: '',
+      header_type: '',
+      header_color: '',
+      header_title: jsonBlog.title,
+    };
   }
 
   // Gooit automatisch de Next.js 404 pagina — correct HTTP 404 status voor Googlebot

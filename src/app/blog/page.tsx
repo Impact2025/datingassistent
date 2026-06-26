@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tag } from 'lucide-react';
 import { sql } from '@/lib/db';
+import { getAllBlogsFromJson } from '@/lib/blog-json-fallback';
 import { BlogSearchBar } from './_components/blog-search-bar';
 import './blog.styles.css';
 
@@ -70,6 +71,24 @@ async function getPublishedBlogs(): Promise<BlogPost[]> {
         : (row.keywords ?? []),
     })) as BlogPost[];
   } catch {
+    // Fallback: lees uit blog_list.json (geen DB nodig)
+    const jsonBlogs = getAllBlogsFromJson();
+    if (jsonBlogs.length > 0) {
+      return jsonBlogs.map((b) => ({
+        id: String(b.id),
+        slug: b.slug,
+        title: b.title,
+        excerpt: b.excerpt,
+        featured_image: b.cover_image_url || b.image,
+        placeholder_text: '',
+        header_type: '',
+        header_color: '',
+        header_title: b.title,
+        category: b.category || 'Dating Tips',
+        keywords: b.keywords || [],
+        published_at: b.publish_date || b.created_at,
+      })) as BlogPost[];
+    }
     return [];
   }
 }
