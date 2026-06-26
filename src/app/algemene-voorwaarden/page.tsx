@@ -4,23 +4,23 @@ import { PublicHeader } from '@/components/layout/public-header';
 import { PublicFooter } from '@/components/layout/public-footer';
 
 export const metadata: Metadata = {
-  title: 'Algemene Voorwaarden – DatingAssistent (WeAreImpact)',
+  title: 'Algemene Voorwaarden',
   description: 'Lees de algemene voorwaarden van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
   alternates: { canonical: 'https://datingassistent.nl/algemene-voorwaarden' },
   openGraph: {
-    title: 'Algemene Voorwaarden – DatingAssistent (WeAreImpact)',
+    title: 'Algemene Voorwaarden',
     description: 'Lees de algemene voorwaarden van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
     type: 'website',
     url: 'https://datingassistent.nl/algemene-voorwaarden',
-    images: [{ url: '/og-image-terms.png', width: 1200, height: 630 }],
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     siteName: 'DatingAssistent',
     locale: 'nl_NL',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Algemene Voorwaarden – DatingAssistent (WeAreImpact)',
+    title: 'Algemene Voorwaarden',
     description: 'Lees de algemene voorwaarden van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
-    images: ['/og-image-terms.png'],
+    images: ['/og-image.png'],
   },
 };
 

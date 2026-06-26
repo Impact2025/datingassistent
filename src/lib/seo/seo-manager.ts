@@ -136,7 +136,7 @@ class SEOManager {
    */
   static readonly pageConfigs: Record<string, SEOMetadata> = {
     home: {
-      title: 'DatingAssistent - AI Dating Coach voor Moderne Singles | Professionele Relatiebegeleiding',
+      title: 'AI Dating Coach voor Moderne Singles | Professionele Relatiebegeleiding',
       description: 'Transformeer je dating leven met DatingAssistent. AI-gedreven coaching voor profiel optimalisatie, communicatie skills, en emotionele groei. Gratis tools voor betere dates.',
       keywords: ['dating coach', 'AI relatie advies', 'profiel optimalisatie', 'dating tips', 'relatie coaching'],
       ogType: 'website',
@@ -144,7 +144,7 @@ class SEOManager {
     },
 
     'emotionele-readiness': {
-      title: 'Emotionele Ready Scan - Ben je Klaar om te Daten? | DatingAssistent',
+      title: 'Emotionele Ready Scan - Ben je Klaar om te Daten?',
       description: 'Ontdek of je écht klaar bent om te daten met onze wetenschappelijke Emotionele Ready Scan. AI-gedreven analyse van je emotionele beschikbaarheid en dating readiness.',
       keywords: ['emotionele readiness', 'dating readiness', 'relatie readiness', 'emotionele beschikbaarheid', 'zelfreflectie'],
       ogType: 'website',
@@ -152,7 +152,7 @@ class SEOManager {
     },
 
     dashboard: {
-      title: 'Dashboard - Jouw Persoonlijke Dating Journey | DatingAssistent',
+      title: 'Dashboard - Jouw Persoonlijke Dating Journey',
       description: 'Jouw persoonlijke dashboard met AI coaching, voortgang tracking, en tools voor betere dates. Beheer je dating doelen en groei.',
       keywords: ['dashboard', 'dating voortgang', 'persoonlijke coaching', 'doelen', 'AI coach'],
       ogType: 'website',
@@ -160,7 +160,7 @@ class SEOManager {
     },
 
     'profile-suite': {
-      title: 'Profiel Optimalisatie - Creëer een Onweerstaanbaar Dating Profiel | DatingAssistent',
+      title: 'Profiel Optimalisatie - Creëer een Onweerstaanbaar Dating Profiel',
       description: 'Optimaliseer je dating profiel met AI-gedreven analyse. Foto tips, bio optimalisatie, en persoonlijkheid matching voor betere matches.',
       keywords: ['profiel optimalisatie', 'dating profiel', 'foto tips', 'bio schrijven', 'persoonlijkheid matching'],
       ogType: 'website',
@@ -168,7 +168,7 @@ class SEOManager {
     },
 
     'communication-hub': {
-      title: 'Communicatie Hub - Betere Conversaties & Connecties | DatingAssistent',
+      title: 'Communicatie Hub - Betere Conversaties & Connecties',
       description: 'Leer effectief communiceren in dating. Conversation starters, flirting tips, en conflict resolution voor gezonde relaties.',
       keywords: ['communicatie skills', 'conversation starters', 'flirting tips', 'relatie communicatie', 'conflicten oplossen'],
       ogType: 'website',
@@ -176,7 +176,7 @@ class SEOManager {
     },
 
     'relationship-coach': {
-      title: 'AI Relationship Coach - Persoonlijke Relatiebegeleiding | DatingAssistent',
+      title: 'AI Relationship Coach - Persoonlijke Relatiebegeleiding',
       description: '24/7 AI relatie coach voor advies, inzichten, en begeleiding. Persoonlijke coaching gebaseerd op je unieke situatie en behoeften.',
       keywords: ['AI coach', 'relatie advies', 'persoonlijke coaching', 'relatieproblemen', 'liefdesleven'],
       ogType: 'website',
@@ -190,7 +190,7 @@ class SEOManager {
     },
 
     register: {
-      title: 'Registreren - Start Jouw Dating Transformatie | DatingAssistent',
+      title: 'Registreren - Start Jouw Dating Transformatie',
       description: 'Maak een gratis account aan en begin je journey naar betere dates en relaties met DatingAssistent.',
       keywords: ['registreren', 'gratis account', 'dating transformatie', 'beginnen'],
     },
@@ -203,7 +203,7 @@ class SEOManager {
     },
 
     blog: {
-      title: 'Dating Blog - Tips, Advies & Inzichten | DatingAssistent',
+      title: 'Dating Blog - Tips, Advies & Inzichten',
       description: 'Gratis dating tips, relatie advies, en inzichten van experts. Leer meer over moderne liefde, communicatie, en persoonlijke groei.',
       keywords: ['dating blog', 'relatie tips', 'liefdesleven', 'persoonlijke ontwikkeling', 'relatie advies'],
       ogType: 'website',
@@ -211,19 +211,19 @@ class SEOManager {
     },
 
     contact: {
-      title: 'Contact - Neem Contact Op | DatingAssistent',
+      title: 'Contact - Neem Contact Op',
       description: 'Heb je vragen of feedback? Neem contact op met het DatingAssistent team. We helpen je graag verder met je dating journey.',
       keywords: ['contact', 'support', 'hulp', 'vragen', 'feedback'],
     },
 
     privacy: {
-      title: 'Privacy Policy - Hoe Wij Jouw Data Beschermen | DatingAssistent',
+      title: 'Privacy Policy - Hoe Wij Jouw Data Beschermen',
       description: 'Lees onze privacy policy om te begrijpen hoe we jouw persoonlijke gegevens beschermen en gebruiken voor de beste dating ervaring.',
       keywords: ['privacy policy', 'gegevensbescherming', 'AVG', 'privacy', 'veiligheid'],
     },
 
     terms: {
-      title: 'Algemene Voorwaarden - Gebruiksvoorwaarden | DatingAssistent',
+      title: 'Algemene Voorwaarden - Gebruiksvoorwaarden',
       description: 'Onze algemene voorwaarden en gebruiksvoorwaarden voor het gebruik van DatingAssistent diensten en platform.',
       keywords: ['voorwaarden', 'terms of service', 'gebruiksvoorwaarden', 'algemene voorwaarden'],
     },
@@ -441,7 +441,7 @@ Crawl-delay: 1`;
    */
   static createDynamicSEO(title: string, description: string, path: string, options: Partial<SEOMetadata> = {}): SEOMetadata {
     return {
-      title: `${title} | ${this.SITE_CONFIG.name}`,
+      title: title,
       description: description.slice(0, 160),
       canonical: path,
       keywords: this.DEFAULT_KEYWORDS,

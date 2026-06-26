@@ -67,18 +67,18 @@ const nextConfig: NextConfig = {
       {
         source: '/help/:path*',
         destination: '/kennisbank/:path*',
-        permanent: false,
+        permanent: true,
       },
       // Checkout slug corrections — old URLs with "-programma" suffix
       {
         source: '/checkout/transformatie-programma',
         destination: '/checkout/transformatie',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/checkout/kickstart-programma',
         destination: '/checkout/kickstart',
-        permanent: false,
+        permanent: true,
       },
     ];
   },
@@ -181,7 +181,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
     webpackMemoryOptimizations: true,
-    webpackBuildWorker: false,
+    webpackBuildWorker: true,   // worker thread isoleert geheugen van main process
     parallelServerCompiles: false,
     parallelServerBuildTraces: false,
   },
@@ -192,6 +192,10 @@ const nextConfig: NextConfig = {
     // Geen source maps in productie → ~30% minder geheugen
     if (!isServer && process.env.NODE_ENV === 'production') {
       config.devtool = false;
+    }
+    // Limit webpack's own memory cache
+    if (process.env.NODE_ENV === 'production') {
+      config.cache = false;
     }
     return config;
   },

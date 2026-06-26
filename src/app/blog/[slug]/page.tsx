@@ -16,11 +16,17 @@ export const revalidate = 3600;
 // Nieuwe slugs die niet bij build bestaan worden alsnog server-side gegenereerd
 export const dynamicParams = true;
 
-// Pre-genereer alle gepubliceerde blog slugs bij build voor maximale SEO-performance
+// Pre-genereer de 30 meest recente posts bij build — de rest volgt via ISR (dynamicParams = true).
+// Meer posts pre-genereren veroorzaakt OOM op Vercel door peak-geheugen per render.
 export async function generateStaticParams() {
   try {
     const { sql } = await import('@vercel/postgres');
-    const result = await sql`SELECT slug FROM blogs WHERE published = true`;
+    const result = await sql`
+      SELECT slug FROM blogs
+      WHERE published = true
+      ORDER BY publish_date DESC
+      LIMIT 30
+    `;
     return result.rows.map((row: { slug: string }) => ({ slug: row.slug }));
   } catch {
     return [];

@@ -46,10 +46,13 @@ interface PageProps {
   }>;
 }
 
-// Generate static params for all articles
+// Pre-genereer de 40 meest recente kennisbank artikelen bij build — de rest via ISR.
+// Alle artikelen zijn bereikbaar dankzij dynamicParams = true.
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const slugs = getAllKennisbankSlugs();
-  return slugs.map((slug) => ({
+  return slugs.slice(0, 40).map((slug) => ({
     slug,
   }));
 }
