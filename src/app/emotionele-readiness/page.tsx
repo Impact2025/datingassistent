@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: 'Emotionele Readiness Check | Ben Je Klaar om te Daten? | DatingAssistent',
   description: 'Check of je emotioneel klaar bent om te daten. Ontdek of je datingangsten of bagage uit eerdere relaties meedraagt.',
+  robots: { index: false, follow: false },
   alternates: { canonical: 'https://datingassistent.nl/emotionele-readiness' },
   openGraph: {
     title: 'Emotionele Readiness Check | Ben Je Klaar om te Daten? | DatingAssistent',

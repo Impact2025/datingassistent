@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: 'Hechtingsstijl QuickScan | DatingAssistent',
   description: 'Ontdek je hechtingsstijl in 3-5 minuten met onze wetenschappelijk onderbouwde QuickScan. Krijg praktische inzichten voor betere dating beslissingen.',
+  robots: { index: false, follow: false },
 };
 
 export default function HechtingsstijlPage() {

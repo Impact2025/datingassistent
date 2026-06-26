@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: 'Voice Dating | Spraakberichten & Bellen | DatingAssistent',
   description: 'Ontdek de kracht van voice dating. Leer hoe spraakberichten en bellen je dating leven kunnen verbeteren.',
+  robots: { index: false, follow: false },
   alternates: { canonical: 'https://datingassistent.nl/voice' },
   openGraph: {
     title: 'Voice Dating | Spraakberichten & Bellen | DatingAssistent',

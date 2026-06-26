@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: 'Dating Profielfoto Check | Gratis Feedback | DatingAssistent',
   description: 'Laat je dating profielfoto checken door AI. Ontvang gratis feedback en tips om je aantrekkelijkheid te vergroten.',
+  robots: { index: false, follow: false },
   alternates: { canonical: 'https://datingassistent.nl/foto' },
   openGraph: {
     title: 'Dating Profielfoto Check | Gratis Feedback | DatingAssistent',

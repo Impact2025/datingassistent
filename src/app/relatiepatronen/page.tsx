@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: 'Relatiepatronen Analyse | DatingAssistent',
   description: 'Ontdek je terugkerende relatiepatronen met onze uitgebreide analyse. Krijg praktische inzichten en downloadbare resultaten voor betere dating beslissingen.',
+  robots: { index: false, follow: false },
 };
 
 export default function RelatiepatronenPage() {

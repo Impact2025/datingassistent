@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: 'Veilig Online Daten | Tips & Advies | DatingAssistent',
   description: 'Alles over veilig online daten. Herken nepaccounts, bescherm je privacy en date met vertrouwen.',
+  robots: { index: false, follow: false },
   alternates: { canonical: 'https://datingassistent.nl/veiligheid' },
   openGraph: {
     title: 'Veilig Online Daten | Tips & Advies | DatingAssistent',

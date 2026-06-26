@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: 'Openingszinnen Dating | Stral je Beste Gesprek | DatingAssistent',
   description: 'De beste openingszinnen voor dating apps. Van nonchalant tot creatief - vind de perfecte eerste boodschap.',
+  robots: { index: false, follow: false },
   alternates: { canonical: 'https://datingassistent.nl/opener' },
   openGraph: {
     title: 'Openingszinnen Dating | Stral je Beste Gesprek | DatingAssistent',
