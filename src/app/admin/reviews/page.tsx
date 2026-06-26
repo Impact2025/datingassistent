@@ -1,5 +1,5 @@
 "use client";
-nexport const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { useUser } from '@/providers/user-provider';
 import { useRouter } from 'next/navigation';

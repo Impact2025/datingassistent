@@ -1,5 +1,5 @@
 "use client";
-nexport const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { logger } from '@/lib/logger';
 
 import { useEffect } from "react";

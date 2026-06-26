@@ -1,5 +1,5 @@
 "use client";
-nexport const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import { WifiOff, RefreshCw, Home, MessageCircle, Heart } from "lucide-react";

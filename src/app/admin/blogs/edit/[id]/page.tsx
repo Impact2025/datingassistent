@@ -1,5 +1,5 @@
 "use client";
-nexport const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 /**
  * WORLD-CLASS BLOG EDITOR
