@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-nexport const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: 'Relatiepatronen Analyse | DatingAssistent',
