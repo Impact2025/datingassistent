@@ -151,7 +151,11 @@ export default async function BlogPostPage({
     blog = await getBlogPostBySlug(slug);
   } catch (error) {
     console.error(`[BlogPostPage] DB error for slug "${slug}":`, error);
-    // Fallback: probeer uit blog_list.json
+    blog = null;
+  }
+
+  // Fallback naar JSON als blog niet in DB staat (ook bij null resultaat, niet alleen bij errors)
+  if (!blog) {
     const jsonBlog = getBlogBySlugFromJson(slug);
     if (!jsonBlog) notFound();
     // Bouw een compatibel blog object uit JSON data
@@ -183,9 +187,6 @@ export default async function BlogPostPage({
       header_title: jsonBlog.title,
     };
   }
-
-  // Gooit automatisch de Next.js 404 pagina — correct HTTP 404 status voor Googlebot
-  if (!blog) notFound();
 
   const shareUrl = `https://datingassistent.nl/blog/${slug}`;
   const pageTitle = blog.seo_title || blog.title;
