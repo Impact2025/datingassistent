@@ -1,25 +1,25 @@
 'use client';
 
-
-export const dynamic = 'force-dynamic';
+import { useState, useEffect } from 'react';
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { profielOptimalisatieSlides } from "@/data/profiel-optimalisatie-slides";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import dynamic from "next/dynamic";
+import type { SlideDeck } from "@/types/slides";
 
-const SlideViewer = dynamic(() => import("@/components/slides/slide-viewer"), {
-  ssr: false,
-  loading: () => (
-    <div className="rounded-lg border bg-muted p-6 min-h-[400px] flex items-center justify-center">
-      <p className="text-muted-foreground">Slides worden geladen...</p>
-    </div>
-  ),
-});
+export const dynamic = 'force-dynamic';
 
 export default function ProfielOptimalisatiePage() {
+  const [SlideViewer, setSlideViewer] = useState<React.ComponentType<{ deck: SlideDeck; onComplete?: () => void }> | null>(null);
+
+  useEffect(() => {
+    import("@/components/slides/slide-viewer").then(mod => {
+      setSlideViewer(() => mod.default);
+    }).catch(() => {});
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <Breadcrumbs
@@ -40,7 +40,13 @@ export default function ProfielOptimalisatiePage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="p-6 md:p-8 bg-white">
-          <SlideViewer deck={profielOptimalisatieSlides} />
+          {SlideViewer ? (
+            <SlideViewer deck={profielOptimalisatieSlides} />
+          ) : (
+            <div className="rounded-lg border bg-muted p-6 min-h-[400px] flex items-center justify-center">
+              <p className="text-muted-foreground">Slides worden geladen...</p>
+            </div>
+          )}
         </CardContent>
       </Card>
 
