@@ -1,5 +1,7 @@
 'use client';
 
+
+export const dynamic = 'force-dynamic';
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { profielOptimalisatieSlides } from "@/data/profiel-optimalisatie-slides";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";

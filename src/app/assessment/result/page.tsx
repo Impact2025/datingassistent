@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 import { logger } from '@/lib/logger';
 
 import { useEffect, useState } from 'react';

@@ -1,5 +1,7 @@
 'use client';
 
+
+export const dynamic = 'force-dynamic';
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { mindsetVoorbereidingSlides } from "@/data/mindset-voorbereiding-slides";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";

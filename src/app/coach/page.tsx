@@ -1,5 +1,7 @@
 'use client';
 
+
+export const dynamic = 'force-dynamic';
 import { useEffect, useState, Suspense } from 'react';
 import { Sparkles, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';

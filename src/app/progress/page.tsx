@@ -1,5 +1,7 @@
 'use client';
 
+
+export const dynamic = 'force-dynamic';
 /**
  * Progress Page - Detailed Gamification Stats & Challenges
  * Sprint 4: Gamification & Engagement

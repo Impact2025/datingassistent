@@ -1,5 +1,7 @@
 'use client';
 
+
+export const dynamic = 'force-dynamic';
 /**
  * Analytics Page
  * Sprint 5: Analytics & Personalization

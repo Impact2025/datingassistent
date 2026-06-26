@@ -1,5 +1,7 @@
 'use client';
 
+
+export const dynamic = 'force-dynamic';
 /**
  * Mijn Scans Overview Page
  * Shows all completed scans with results and retake options

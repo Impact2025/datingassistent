@@ -1,4 +1,5 @@
 "use client";
+nexport const dynamic = "force-dynamic";
 
 import { DatingStyleFlow } from '@/components/dating-style/dating-style-flow';
 

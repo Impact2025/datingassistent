@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import AuthLayout from "../auth-layout";
 
+export const dynamic = 'force-dynamic';
+
 function MagicLoginContent() {
   const searchParams = useSearchParams();
   const router = useRouter();

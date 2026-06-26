@@ -1,5 +1,7 @@
 'use client';
 
+
+export const dynamic = 'force-dynamic';
 /**
  * Leaderboard Page - Dating Masters Rankings
  * Sprint 4: Gamification & Engagement

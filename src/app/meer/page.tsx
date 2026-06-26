@@ -1,4 +1,5 @@
 "use client";
+nexport const dynamic = "force-dynamic";
 
 import { Suspense } from 'react';
 import { logger } from '@/lib/logger';

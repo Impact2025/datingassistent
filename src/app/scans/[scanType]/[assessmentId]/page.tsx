@@ -1,5 +1,7 @@
 'use client';
 
+
+export const dynamic = 'force-dynamic';
 /**
  * Individual Scan Result Detail Page
  * /scans/[scanType]/[assessmentId]
