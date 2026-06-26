@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     'serieuze relatie vinden',
   ],
   openGraph: {
-    title: 'Daten in je 30s? Stop met swipen, begin met verbinden',
+    title: 'Daten in je 30s? Stop met swipen, begin met verbinden | DatingAssistent',
     description:
       'Speciaal voor 30-plussers: date bewust en intentioneel. Privacy gegarandeerd, emotionele begeleiding, en tools die begrijpen wat jij écht zoekt. Gemiddelde leeftijd leden: 34 jaar.',
     publishedTime: '2026-03-20T00:00:00.000Z',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Daten in je 30s? Stop met swipen, begin met verbinden',
+    title: 'Daten in je 30s? Stop met swipen, begin met verbinden | DatingAssistent',
     description:
       'Speciaal voor 30-plussers: privacy-first coaching voor bewust daten. Gemiddelde leeftijd: 34 jaar.',
     images: ['/images/30plus-hero.jpg'],

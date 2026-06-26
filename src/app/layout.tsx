@@ -23,10 +23,7 @@ import { Toaster as SonnerToaster } from "sonner";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://datingassistent.nl'),
-  title: {
-    default: 'DatingAssistent – Jouw Virtuele DatingCoach',
-    template: '%s | DatingAssistent'
-  },
+  title: 'DatingAssistent – AI Dating Coach voor Moderne Singles',
   description: 'DatingAssistent is jouw persoonlijke datingcoach: altijd beschikbaar, veilig en eerlijk advies, zodat jij sneller een echte match vindt.',
   keywords: ['dating coach', 'AI dating', 'online daten', 'dating tips', 'dating profiel', 'dating app', 'relatiecoach', 'dating hulp'],
   authors: [{ name: 'DatingAssistent' }],
@@ -40,10 +37,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'nl_NL',
-    url: 'https://datingassistent.nl',
-    title: 'DatingAssistent – Jouw Virtuele DatingCoach',
-    description: 'DatingAssistent is jouw persoonlijke datingcoach: altijd beschikbaar, veilig en eerlijk advies, zodat jij sneller een echte match vindt.',
     siteName: 'DatingAssistent',
+    title: 'DatingAssistent – AI Dating Coach voor Moderne Singles',
+    description: 'DatingAssistent is jouw persoonlijke datingcoach: altijd beschikbaar, veilig en eerlijk advies, zodat jij sneller een echte match vindt.',
     images: [
       {
         url: '/og-image.png',
@@ -55,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DatingAssistent – Jouw Virtuele DatingCoach',
+    title: 'DatingAssistent – AI Dating Coach voor Moderne Singles',
     description: 'AI dating coaching met profiel analyse, chat coach en date planner. 89% meer matches gegarandeerd. Gratis proberen - professionele dating hulp voor singles.',
     images: ['/og-image.png'],
     creator: '@datingassistent',
@@ -72,10 +68,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code',
-  },
-  alternates: {
-    canonical: 'https://datingassistent.nl',
+    google: '',
   },
 };
 
@@ -105,7 +98,6 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* GA4 Consent Mode v2 - MUST be before gtag.js loads */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -121,77 +113,40 @@ export default function RootLayout({
             `,
           }}
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
-        <meta name="theme-color" content="#FF7B54" />
-        {/* CSS Loading Fallback - DISABLED to debug ERR_FAILED */}
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="DatingAssistent Pro" />
-        <meta name="description" content="Je persoonlijke AI dating coach voor betere matches en dates" />
-        <meta name="keywords" content="dating, AI coach, matches, dates, relaties, profiel" />
-        <meta name="author" content="DatingAssistent" />
-
-        {/* PWA Icons - World-Class */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-180x180.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-touch-icon-152x152.png" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-touch-icon-120x120.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="msapplication-TileColor" content="#FF7B54" />
-        <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
-
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
-
-        {/* DNS prefetch for performance */}
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-
-        {/* Preload LCP image - video poster for hero section */}
-        <link rel="preload" as="image" href="/images/iris-video-poster.jpg" />
       </head>
-      <body className="font-body bg-background text-foreground antialiased" suppressHydrationWarning>
+      <body className="font-body bg-background text-foreground antialiased">
         <StructuredData />
         <SkipLinks />
         <ScreenReaderAnnouncer />
-        <ErrorBoundary>
-          <ConsentProvider>
-            {/* Analytics scripts - loaded only with consent */}
-            <GoogleAnalytics />
-            <MicrosoftClarity />
-            <ThemeProvider>
+        <ServiceWorkerErrorBoundary>
+          <ServiceWorkerRegistration />
+          <OfflineIndicator />
+          <InstallPrompt />
+          <UpdatePrompt />
+        </ServiceWorkerErrorBoundary>
+        <UserProvider>
+          <ToastProvider>
+            <PWAProvider>
               <QueryProvider>
-                <PWAProvider>
-                <WebVitals />
-                {/* SW components wrapped in error boundary for graceful degradation */}
-                <ServiceWorkerErrorBoundary>
-                  <ServiceWorkerRegistration />
-                  <OfflineIndicator />
-                  <UpdatePrompt />
-                </ServiceWorkerErrorBoundary>
-                <UserProvider>
-                  <AchievementToastProvider>
-                    <TutorialEngine>
-                      <div id="main-content">
-                        {children}
-                      </div>
-                      <Toaster />
-                      <SonnerToaster position="bottom-right" richColors closeButton />
-                      <IrisFloatingButton />
-                      <InstallPrompt />
-                    </TutorialEngine>
-                  </AchievementToastProvider>
-                </UserProvider>
-              </PWAProvider>
-            </QueryProvider>
-            {/* Cookie Consent System - AVG Compliant */}
-            <CookieUI />
-          </ThemeProvider>
-        </ConsentProvider>
-      </ErrorBoundary>
+                <ThemeProvider>
+                  <ConsentProvider>
+                    <div id="main-content">
+                      {children}
+                    </div>
+                    <Toaster />
+                    <SonnerToaster position="bottom-right" richColors closeButton />
+                    <IrisFloatingButton />
+                    <TutorialEngine />
+                    <CookieUI />
+                  </ConsentProvider>
+                </ThemeProvider>
+              </QueryProvider>
+            </PWAProvider>
+          </ToastProvider>
+        </UserProvider>
+        <WebVitals />
+        <MicrosoftClarity />
+        <GoogleAnalytics />
       </body>
     </html>
   );

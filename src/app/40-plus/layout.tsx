@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     'privacy datingapps',
   ],
   openGraph: {
-    title: 'Daten na 40? Jouw wijsheid is je superkracht',
+    title: 'Daten na 40? Jouw wijsheid is je superkracht | DatingAssistent',
     description:
       'Speciaal voor 40-plussers: begin opnieuw met vertrouwen. Privacy gegarandeerd, emotionele begeleiding, en tools die jouw levensfase begrijpen. Gemiddelde leeftijd leden: 42 jaar.',
     publishedTime: '2026-02-15T00:00:00.000Z',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Daten na 40? Jouw wijsheid is je superkracht',
+    title: 'Daten na 40? Jouw wijsheid is je superkracht | DatingAssistent',
     description:
       'Speciaal voor 40-plussers: privacy-first coaching voor een nieuwe start. Gemiddelde leeftijd: 42 jaar.',
     images: ['/images/40plus-hero.jpg'],
