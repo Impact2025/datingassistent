@@ -9,6 +9,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Button } from "@/components/ui/button";
 import AuthLayout from "../auth-layout";
 
+export const dynamic = 'force-dynamic';
+
 function LoginContent() {
   // NO REDIRECT LOGIC HERE - LoginForm handles all redirects
   return <LoginForm />;
