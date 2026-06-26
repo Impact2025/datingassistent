@@ -1,37 +1,3 @@
 {
-  "buildCommand": "NODE_OPTIONS='--max-old-space-size=4096' next build",
-  "crons": [
-    {
-      "path": "/api/cron/daily-management-report",
-      "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/cron/kickstart-upsell",
-      "schedule": "0 10 * * *"
-    },
-    {
-      "path": "/api/cron/email-automation",
-      "schedule": "0 */4 * * *"
-    },
-    {
-      "path": "/api/cron/email-queue-processor",
-      "schedule": "*/15 * * * *"
-    },
-    {
-      "path": "/api/cron/weekly-emails",
-      "schedule": "0 9 * * 1"
-    },
-    {
-      "path": "/api/cron/monthly-emails",
-      "schedule": "0 9 1 * *"
-    },
-    {
-      "path": "/api/cron/weekly-campaigns",
-      "schedule": "0 10 * * 3"
-    },
-    {
-      "path": "/api/cron/gdpr-cleanup",
-      "schedule": "0 2 * * *"
-    }
-  ]
+  "buildCommand": "node scripts/vercel-build.js"
 }

@@ -5,6 +5,8 @@
  * Wordt automatisch getoond bij niet-bestaande routes
  */
 
+export const dynamic = 'force-dynamic';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
