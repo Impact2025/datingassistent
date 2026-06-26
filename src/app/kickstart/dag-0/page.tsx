@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+nexport const dynamic = "force-dynamic";
 
 export const metadata = {
   title: 'Dag 0: Welkom | Kickstart',
