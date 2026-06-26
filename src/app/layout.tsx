@@ -118,15 +118,15 @@ export default function RootLayout({
         <StructuredData />
         <SkipLinks />
         <ScreenReaderAnnouncer />
-        <ServiceWorkerErrorBoundary>
-          <ServiceWorkerRegistration />
-          <OfflineIndicator />
-          <InstallPrompt />
-          <UpdatePrompt />
-        </ServiceWorkerErrorBoundary>
         <UserProvider>
           <ToastProvider>
             <PWAProvider>
+              <ServiceWorkerErrorBoundary>
+                <ServiceWorkerRegistration />
+                <OfflineIndicator />
+                <InstallPrompt />
+                <UpdatePrompt />
+              </ServiceWorkerErrorBoundary>
               <QueryProvider>
                 <ThemeProvider>
                   <ConsentProvider>
