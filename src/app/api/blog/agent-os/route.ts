@@ -200,23 +200,25 @@ export async function POST(request: NextRequest) {
       row = res.rows[0];
     }
 
-    // ── Zoekmachine-indexering (best-effort) ──
+    // ── Zoekmachine-indexering (best-effort, NIET blokkerend) ──
+    // Fire-and-forget: de insert is al gelukt. Als we hier wachten op een
+    // trage IndexNow/Google-ping loopt de request weg en lijkt de publish
+    // mislukt (terwijl hij wel geland is).
     const base = (process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl').replace(/\/$/, '');
     const fullUrl = `${base}/blog/${row.slug}`;
-    const indexing: Record<string, string> = { indexnow: 'skipped', google: 'skipped' };
-    const results = await Promise.allSettled([
-      pingIndexNow([fullUrl]),
-      pingGoogleIndexingAPI(fullUrl),
-    ]);
-    indexing.indexnow = results[0].status === 'fulfilled' ? 'ok' : 'failed';
-    indexing.google = results[1].status === 'fulfilled' ? 'ok' : 'failed';
+    Promise.allSettled([pingIndexNow([fullUrl]), pingGoogleIndexingAPI(fullUrl)])
+      .then((results) => {
+        const ok = (r: PromiseSettledResult<unknown>) => (r.status === 'fulfilled' ? 'ok' : 'failed');
+        console.log(`[agent-os publish] indexing ${row.slug}: indexnow=${ok(results[0])}, google=${ok(results[1])}`);
+      })
+      .catch(() => {});
 
     return NextResponse.json(
       {
         success: true,
         post: { id: row.id, slug: row.slug, status: 'published' },
         url: fullUrl,
-        indexing,
+        indexing: { indexnow: 'pending', google: 'pending' },
       },
       { status: 201 }
     );
