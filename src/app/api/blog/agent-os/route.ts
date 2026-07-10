@@ -106,17 +106,6 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // Zorg dat de kolommen ruim genoeg zijn (oude installs hebben soms
-    // varchar(200) wat crasht op lange Agent OS-samenvattingen). Idempotent.
-    try {
-      await sql`ALTER TABLE blogs ALTER COLUMN excerpt TYPE TEXT`;
-      await sql`ALTER TABLE blogs ALTER COLUMN content TYPE TEXT`;
-      await sql`ALTER TABLE blogs ALTER COLUMN meta_description TYPE TEXT`;
-      await sql`ALTER TABLE blogs ALTER COLUMN seo_description TYPE TEXT`;
-    } catch {
-      /* reeds TEXT — negeren */
-    }
-
     const body = await request.json();
     const {
       title,
