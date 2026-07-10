@@ -19,6 +19,58 @@ import { pingIndexNow, pingGoogleIndexingAPI } from '@/lib/indexing';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+/**
+ * Verwijder het dubbele headerblok dat de content-generator soms bovenaan de
+ * body zet. De blogpagina rendert titel, datum en samenvatting ZELF (uit de
+ * DB-velden), dus als de body óók een <h1>, een "Door ... Gepubliceerd op ..."
+ * byline en een "<strong>Samenvatting:</strong>"-paragraaf bevat, verschijnt
+ * alles dubbel op de live pagina. Deze functie str(i)pt die elementen +
+ * eventuele meta-comment + losse <hr> aan het begin.
+ * Retourneert { html, summary } waarbij summary de tekst uit de
+ * Samenvatting-paragraaf is (voor gebruik als excerpt indien geen excerpt).
+ */
+function sanitizeBody(raw: string): { html: string; summary: string } {
+  let html = (raw || '').trim();
+  let summary = '';
+
+  // 1) HTML-comment meta-blok (<!-- Meta-titel: ... -->) bovenaan weg.
+  html = html.replace(/^\s*<!--[\s\S]*?-->\s*/i, '');
+
+  // 2) Eerste <h1>...</h1> weg (site toont titel zelf).
+  html = html.replace(/^\s*<h1\b[^>]*>[\s\S]*?<\/h1>\s*/i, '');
+
+  // 3) Byline-paragraaf "Door ... Gepubliceerd op ..." weg
+  //    (class="meta" of gewone <p> met die tekst).
+  html = html.replace(
+    /^\s*<p\b[^>]*>(?:(?!<\/p>)[\s\S])*?gepubliceerd op[\s\S]*?<\/p>\s*/i,
+    ''
+  );
+
+  // 4) Samenvatting-paragraaf: pak de tekst als excerpt, verwijder dan het blok.
+  const sumMatch =
+    /<p\b[^>]*>\s*(?:<strong>)?\s*samenvatting\s*:?\s*(?:<\/strong>)?\s*([\s\S]*?)<\/p>/i.exec(
+      html
+    );
+  if (sumMatch) {
+    summary = sumMatch[1].replace(/<[^>]+>/g, '').trim();
+    html = html.replace(sumMatch[0], '');
+  }
+
+  // 5) Losse <hr> aan het begin (scheidingslijn na de oude header) weg.
+  html = html.replace(/^\s*(?:<hr\s*\/?>\s*)+/i, '');
+
+  return { html: html.trim(), summary };
+}
+
+/** Kap tekst netjes af op een woordgrens (voorkomt "... toepassen. E"). */
+function smartTruncate(text: string, max: number): string {
+  const t = (text || '').trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).trim() + '…';
+}
+
 /** Bouw een veilige, route-bare slug: en-dash/diacritics/emoji eruit. */
 function buildSlug(input: string): string {
   return (input || '')
@@ -78,16 +130,18 @@ export async function POST(request: NextRequest) {
       buildSlug(title) ||
       `artikel-${Date.now()}`;
 
-    const metaTitleVal = (metaTitle || title).slice(0, 120);
-    const metaDescVal = (seoDescription || excerpt || '').slice(0, 300);
-    // Excerpt uit eerste <p> als niet meegegeven.
-    let excerptVal = (excerpt || '').trim();
-    if (!excerptVal) {
-      const firstP = /<p>([\s\S]*?)<\/p>/i.exec(content);
-      excerptVal = firstP
-        ? firstP[1].replace(/<[^>]+>/g, '').trim().slice(0, 200)
-        : '';
+    // Verwijder dubbel headerblok (h1/byline/samenvatting) uit de body.
+    const { html: cleanContent, summary: bodySummary } = sanitizeBody(content);
+
+    const metaTitleVal = smartTruncate(metaTitle || title, 120);
+    // Excerpt: expliciet meegegeven > samenvatting uit body > eerste <p>.
+    let excerptSource = (excerpt || '').trim() || bodySummary;
+    if (!excerptSource) {
+      const firstP = /<p>([\s\S]*?)<\/p>/i.exec(cleanContent);
+      excerptSource = firstP ? firstP[1].replace(/<[^>]+>/g, '').trim() : '';
     }
+    const excerptVal = smartTruncate(excerptSource, 200);
+    const metaDescVal = smartTruncate(seoDescription || excerptSource, 300);
     const tagsArr = Array.isArray(tags) ? tags.filter(Boolean) : [];
     const nowIso = new Date().toISOString();
 
@@ -101,7 +155,7 @@ export async function POST(request: NextRequest) {
         UPDATE blogs SET
           title = ${title},
           excerpt = ${excerptVal},
-          content = ${content},
+          content = ${cleanContent},
           meta_title = ${metaTitleVal},
           meta_description = ${metaDescVal},
           seo_title = ${metaTitleVal},
@@ -124,7 +178,7 @@ export async function POST(request: NextRequest) {
           seo_title, seo_description,
           author, published, published_at, views, created_at, updated_at
         ) VALUES (
-          ${title}, ${excerptVal}, ${content}, ${cleanSlug},
+          ${title}, ${excerptVal}, ${cleanContent}, ${cleanSlug},
           ${metaTitleVal}, ${metaDescVal}, ${JSON.stringify(tagsArr)},
           ${'Online Dating Tips'}, ${JSON.stringify(tagsArr)},
           ${metaTitleVal}, ${metaDescVal},
