@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { sql } from '@vercel/postgres';
 import { pingIndexNow, pingGoogleIndexingAPI } from '@/lib/indexing';
 
@@ -201,6 +202,15 @@ export async function POST(request: NextRequest) {
         console.log(`[agent-os publish] indexing ${row.slug}: indexnow=${ok(results[0])}, google=${ok(results[1])}`);
       })
       .catch(() => {});
+
+    // ISR-cache voor deze blogpagina direct wissen zodat de nieuwe content
+    // meteen zichtbaar is (de pagina heeft revalidate=3600).
+    try {
+      revalidatePath(fullUrl);
+      revalidatePath('/blog');
+    } catch (revalErr) {
+      console.warn('[agent-os publish] revalidate mislukt (niet fataal):', revalErr);
+    }
 
     return NextResponse.json(
       {
