@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
       const firstP = /<p>([\s\S]*?)<\/p>/i.exec(cleanContent);
       excerptSource = firstP ? firstP[1].replace(/<[^>]+>/g, '').trim() : '';
     }
-    const excerptVal = smartTruncate(excerptSource, 200);
+    const excerptVal = smartTruncate(excerptSource, 197); // 197 + '…' = 200 (kolom-limiet)
     const metaDescVal = smartTruncate(seoDescription || excerptSource, 300);
     const tagsArr = Array.isArray(tags) ? tags.filter(Boolean) : [];
     const nowIso = new Date().toISOString();
