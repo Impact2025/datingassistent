@@ -1126,6 +1126,21 @@ export async function initializeDatabase() {
       // Continue with other tables even if Waarden Kompas fails
     }
 
+    // ── Migraties: kolommen die in productie nog de oude (te korte) definitie
+    // hebben omdat de tabel al bestond vóór de schema-wijziging. Idempotent.
+    try {
+      // excerpt was ooit varchar(200); verleng naar TEXT zodat lange
+      // samenvattingen (Agent OS stuurt soms ~230 tekens) niet meer crashen.
+      await sql`ALTER TABLE blogs ALTER COLUMN excerpt TYPE TEXT`;
+      // content is in oude installs mogelijk varchar — zeker onbeperkt maken.
+      await sql`ALTER TABLE blogs ALTER COLUMN content TYPE TEXT`;
+      await sql`ALTER TABLE blogs ALTER COLUMN meta_description TYPE TEXT`;
+      await sql`ALTER TABLE blogs ALTER COLUMN seo_description TYPE TEXT`;
+    } catch (migrateError) {
+      // Negeer conflicten (type bestaat al) — niet fataal.
+      console.warn('blogs-migratie waarschuwing:', migrateError);
+    }
+
     logger.log('Database schema initialized successfully');
     return { success: true };
   } catch (error) {
