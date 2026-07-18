@@ -278,7 +278,7 @@ export class EmailCoachService {
             </div>
 
             <div style="text-align: center; margin: 30px 0;">
-              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/dashboard" class="button">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl'}/dashboard" class="button">
                 📱 Naar Mijn Dashboard
               </a>
             </div>
@@ -371,7 +371,7 @@ export class EmailCoachService {
             </div>
 
             <div style="text-align: center; margin: 30px 0;">
-              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/dashboard" class="button">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl'}/dashboard" class="button">
                 📱 Naar Mijn Dashboard
               </a>
             </div>
@@ -442,7 +442,7 @@ export class EmailCoachService {
             `).join('')}
 
             <div style="text-align: center; margin: 30px 0;">
-              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl'}/admin/coach" class="button">
+              <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl'}/admin/coach" class="button">
                 👁️ Naar Coach Dashboard
               </a>
             </div>

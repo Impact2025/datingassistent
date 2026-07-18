@@ -543,7 +543,7 @@ function getMilestoneBadgeUrl(milestoneType: string, value: number): string {
  * Get base URL
  */
 function getBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+  return process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 }
 
 // ============================================

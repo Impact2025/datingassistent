@@ -114,7 +114,7 @@ Het begint met het opmerken van het patroon, niet met het direct veranderen erva
 export const PatternQuizResultEmail = ({
   name = 'daar',
   resultType = 'anxious',
-  kickstartLink = 'https://datingassistent.nl/prijzen',
+  kickstartLink = 'https://www.datingassistent.nl/prijzen',
 }: PatternQuizResultEmailProps) => {
   const content = resultContent[resultType];
 

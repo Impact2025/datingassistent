@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   title: 'Dating Stijl Test | Ontdek Jouw Dating Stijl | DatingAssistent',
   description: 'Doe de dating stijl test en ontdek of je een romantische, avontuurlijke, analytische of sociale dater bent. Ontvang persoonlijk advies.',
   robots: { index: false, follow: false },
-  alternates: { canonical: 'https://datingassistent.nl/datingstijl' },
+  alternates: { canonical: 'https://www.datingassistent.nl/datingstijl' },
   openGraph: {
     title: 'Dating Stijl Test | Ontdek Jouw Dating Stijl | DatingAssistent',
     description: 'Doe de dating stijl test en ontdek of je een romantische, avontuurlijke, analytische of sociale dater bent. Ontvang persoonlijk advies.',
-    url: 'https://datingassistent.nl/datingstijl',
+    url: 'https://www.datingassistent.nl/datingstijl',
   },
 };
 

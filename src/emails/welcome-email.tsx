@@ -73,7 +73,7 @@ const isProgramSubscription = (type: string) =>
 export default function WelcomeEmail({
   firstName,
   subscriptionType = 'core',
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: WelcomeEmailProps) {
   const tier = tierFeatures[subscriptionType] || tierFeatures.free;
   const preferencesUrl = `${dashboardUrl}/settings/email-preferences`;

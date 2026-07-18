@@ -212,7 +212,7 @@ export function EmailLogo({ size = 'md' }: LogoProps) {
   const sizes = { sm: 40, md: 60, lg: 80 };
   return (
     <Img
-      src="https://datingassistent.nl/images/LogoDatingAssistent.png"
+      src="https://www.datingassistent.nl/images/LogoDatingAssistent.png"
       alt="DatingAssistent"
       width={sizes[size]}
       height={sizes[size]}
@@ -409,7 +409,7 @@ interface EmailFooterProps {
 }
 
 export function EmailFooter({ unsubscribeUrl, preferencesUrl }: EmailFooterProps) {
-  const baseUrl = 'https://datingassistent.nl';
+  const baseUrl = 'https://www.datingassistent.nl';
 
   return (
     <Section style={styles.footer}>
@@ -610,7 +610,7 @@ const tierFeatures = {
 export default function WelcomeEmail({
   firstName,
   subscriptionType = 'core',
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: WelcomeEmailProps) {
   const tier = tierFeatures[subscriptionType] || tierFeatures.core;
   const preferencesUrl = \`\${dashboardUrl}/settings/email-preferences\`;
@@ -882,7 +882,7 @@ export default function ProfileOptimizationEmail({
   firstName,
   completionPercentage = 30,
   missingFields = ['Profielfoto', 'Bio tekst', 'Dating voorkeuren'],
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: ProfileOptimizationEmailProps) {
   const profileUrl = \`\${dashboardUrl}?tab=profile\`;
   const preferencesUrl = \`\${dashboardUrl}/settings/email-preferences\`;
@@ -1041,7 +1041,7 @@ const featureInfo: Record<string, { title: string; nextFeature: string; nextDesc
 export default function FirstWinEmail({
   firstName,
   featureUsed = 'ai_chat',
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: FirstWinEmailProps) {
   const feature = featureInfo[featureUsed] || featureInfo.default;
   const preferencesUrl = \`\${dashboardUrl}/settings/email-preferences\`;
@@ -1156,7 +1156,7 @@ export default function CourseIntroductionEmail({
   featuredCourseTitle = 'De Perfecte Opening',
   featuredCourseDescription = 'Leer hoe je matches omzet in gesprekken',
   coursesAvailable = 8,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: CourseIntroductionEmailProps) {
   return (
     <BaseEmail preview="Ontdek onze dating cursussen - Start vandaag nog!">
@@ -1269,8 +1269,8 @@ export default function WeeklyCheckinEmail({
   toolsUsed = 3,
   coursesStarted = 1,
   aiMessagesUsed = 12,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
-  feedbackUrl = 'https://datingassistent.nl/feedback',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
+  feedbackUrl = 'https://www.datingassistent.nl/feedback',
 }: WeeklyCheckinEmailProps) {
   return (
     <BaseEmail preview="Je eerste week is voorbij - Hoe gaat het?">
@@ -1356,7 +1356,7 @@ export default function InactivityAlert3DaysEmail({
   firstName,
   lastActiveDate = 'een paar dagen geleden',
   lastToolUsed,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: Inactivity3DaysEmailProps) {
   return (
     <BaseEmail preview="We missen je! Kom je nog langs?">
@@ -1446,7 +1446,7 @@ export default function CourseCompletionEmail({
   completionDate = new Date().toLocaleDateString('nl-NL'),
   nextCourseTitle,
   totalCoursesCompleted = 1,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: CourseCompletionEmailProps) {
   return (
     <BaseEmail preview={\`Gefeliciteerd! Je hebt "\${courseTitle}" voltooid!\`}>
@@ -1564,7 +1564,7 @@ export default function WeeklyDigestEmail({
   weeklyTip,
   featuredContent,
   communityHighlight,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: WeeklyDigestEmailProps) {
   return (
     <BaseEmail preview={\`Je week \${weekNumber} samenvatting - DatingAssistent\`}>
@@ -1686,7 +1686,7 @@ export default function MilestoneAchievementEmail({
   achievementScore = 'Uitstekend',
   nextMilestone,
   nextGoalProgress = 0,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: MilestoneAchievementEmailProps) {
   return (
     <BaseEmail preview={\`\${milestoneName} - Gefeliciteerd!\`}>
@@ -1789,7 +1789,7 @@ export default function SubscriptionRenewalEmail({
   daysUntilRenewal = 7,
   monthlyPrice = 19.95,
   statsThisMonth,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: SubscriptionRenewalEmailProps) {
   return (
     <BaseEmail preview={\`Je abonnement verlengt over \${daysUntilRenewal} dagen\`}>
@@ -1897,7 +1897,7 @@ export default function PaymentFailedEmail({
   failureReason,
   retryDate,
   daysUntilSuspension = 3,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: PaymentFailedEmailProps) {
   return (
     <BaseEmail preview="Actie vereist: Probleem met je betaling">
@@ -2002,7 +2002,7 @@ export default function FeatureLimitReachedEmail({
   usageThisWeek = 25,
   subscriptionType = 'Sociaal',
   resetDate,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: FeatureLimitReachedEmailProps) {
   const featureName = featureNames[featureType] || featureType;
 
@@ -2133,7 +2133,7 @@ export default function MonthlyProgressReportEmail({
   achievements = [],
   topFeature,
   comparisonToLastMonth,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: MonthlyProgressReportEmailProps) {
   const activityPercentage = Math.round((stats.daysActive / stats.totalDaysInMonth) * 100);
 
@@ -2280,7 +2280,7 @@ export default function FeatureDeepDiveChatEmail({
   firstName,
   messagesUsed = 15,
   messagesRemaining = 35,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: FeatureDeepDiveChatEmailProps) {
   return (
     <BaseEmail preview="Chat Coach Deep Dive - Je 24/7 dating assistent">
@@ -2404,7 +2404,7 @@ export default function MidTrialCheckEmail({
   toolsUsed = 5,
   coursesCompleted = 2,
   subscriptionType = 'core',
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: MidTrialCheckEmailProps) {
   const engagementScore = Math.min(100, (toolsUsed * 10) + (coursesCompleted * 20) + (daysActive * 2));
 

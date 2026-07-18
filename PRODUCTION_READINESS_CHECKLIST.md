@@ -17,12 +17,12 @@ NEXT_PUBLIC_BASE_URL=http://localhost:9000
 **Wat moet gebeuren:**
 ```env
 # PRODUCTIE WAARDES:
-NEXT_PUBLIC_BASE_URL=https://datingassistent.nl
+NEXT_PUBLIC_BASE_URL=https://www.datingassistent.nl
 
 # BELANGRIJK: Vercel Environment Variables instellen:
 # 1. Ga naar Vercel Dashboard > datingassistent > Settings > Environment Variables
 # 2. Voeg toe voor PRODUCTION environment:
-#    - NEXT_PUBLIC_BASE_URL=https://datingassistent.nl
+#    - NEXT_PUBLIC_BASE_URL=https://www.datingassistent.nl
 #    - STRIPE_SECRET_KEY=sk_live_...
 #    - STRIPE_WEBHOOK_SECRET=whsec_...
 ```
@@ -153,7 +153,7 @@ SENDGRID_PAYMENT_CONFIRMATION_TEMPLATE_ID=d-payment-confirmation-template-id  ‚ù
 ### Stap 1: Environment Variables in Vercel
 ```bash
 # In Vercel Dashboard:
-NEXT_PUBLIC_BASE_URL=https://datingassistent.nl
+NEXT_PUBLIC_BASE_URL=https://www.datingassistent.nl
 DATABASE_URL=[from .env.local]
 JWT_SECRET=[generate new voor productie!]
 SENDGRID_API_KEY=[from .env.local]
@@ -166,7 +166,7 @@ STRIPE_WEBHOOK_SECRET=whsec_[jouw webhook secret]
 1. Vercel: Add domain "datingassistent.nl"
 2. DNS: Point A record naar Vercel
 3. Wait voor SSL provisioning (5-10 min)
-4. Test: https://datingassistent.nl
+4. Test: https://www.datingassistent.nl
 
 ### Stap 3: Database Check
 ```bash
@@ -231,7 +231,7 @@ git push origin master
 
 ## üö® FINAL CHECKLIST VOOR GO-LIVE
 
-- [ ] NEXT_PUBLIC_BASE_URL = https://datingassistent.nl
+- [ ] NEXT_PUBLIC_BASE_URL = https://www.datingassistent.nl
 - [ ] MultiSafePay PRODUCTIE mode
 - [ ] Nieuwe JWT_SECRET voor productie
 - [ ] DNS correct geconfigureerd

@@ -71,7 +71,7 @@ export default function AdminNewLeadEmail({
   otoShown,
   otoAccepted,
   registeredAt,
-  dashboardUrl = 'https://datingassistent.nl/admin/users',
+  dashboardUrl = 'https://www.datingassistent.nl/admin/users',
 }: AdminNewLeadEmailProps) {
   const sourceLabels: Record<string, string> = {
     lead_wizard: 'Lead Activation Wizard',

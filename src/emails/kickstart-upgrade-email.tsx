@@ -25,7 +25,7 @@ interface KickstartUpgradeEmailProps {
   variant: 'day7' | 'day14' | 'day21';
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 
 // Day 7 - Week 1 Complete - Soft upsell
 function Day7Email({ firstName, daysCompleted, upgradeUrl, currentScore }: Omit<KickstartUpgradeEmailProps, 'variant'>) {

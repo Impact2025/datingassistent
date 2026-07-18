@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: 'Veelgestelde Vragen (FAQ) | DatingAssistent',
     description: 'Alles over hoe DatingAssistent werkt, de prijzen, privacy en meer.',
     type: 'website',
-    url: 'https://datingassistent.nl/faq',
+    url: 'https://www.datingassistent.nl/faq',
     siteName: 'DatingAssistent',
     locale: 'nl_NL',
   },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: 'Veelgestelde Vragen (FAQ) | DatingAssistent',
     description: 'Antwoorden op de meestgestelde vragen over DatingAssistent.',
   },
-  alternates: { canonical: 'https://datingassistent.nl/faq' },
+  alternates: { canonical: 'https://www.datingassistent.nl/faq' },
 };
 
 export default function FAQLayout({ children }: { children: React.ReactNode }) {

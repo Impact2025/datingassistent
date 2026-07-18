@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     publishedTime: '2026-02-15T00:00:00.000Z',
     modifiedTime: '2026-02-15T00:00:00.000Z',
     type: 'website',
-    url: 'https://datingassistent.nl/40-plus',
+    url: 'https://www.datingassistent.nl/40-plus',
     images: [
       {
         url: '/images/40plus-hero.jpg',
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://datingassistent.nl/40-plus',
+    canonical: 'https://www.datingassistent.nl/40-plus',
   },
   other: {
     'age-range': '40-65',
@@ -80,8 +80,8 @@ const jsonLd = {
   provider: {
     '@type': 'Organization',
     name: 'DatingAssistent',
-    url: 'https://datingassistent.nl',
-    logo: 'https://datingassistent.nl/images/LogoDA.png',
+    url: 'https://www.datingassistent.nl',
+    logo: 'https://www.datingassistent.nl/images/LogoDA.png',
   },
   audience: {
     '@type': 'PeopleAudience',

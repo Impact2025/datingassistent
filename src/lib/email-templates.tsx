@@ -25,7 +25,7 @@ import { NotificationEmailTemplate } from '@/components/emails';
 import { AchievementEmailTemplate } from '@/components/emails/templates/achievement-template';
 import type { EmailType, EmailTemplateData } from './email-engagement';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 
 interface EmailContent {
   subject: string;

@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     if (needsPasswordSetup) {
       // Send magic link email (non-blocking) so the user can log in later
       // without needing a password. Token stored in verification_token column.
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
       const magicToken = generateVerificationToken();
       storeVerificationToken(user.id, magicToken).then(() => {
         const magicLoginUrl = `${baseUrl}/api/auth/magic-login?token=${magicToken}`;

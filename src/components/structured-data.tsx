@@ -7,7 +7,7 @@ interface StructuredDataProps {
 }
 
 export function StructuredData({ type = 'website', data, breadcrumbs }: StructuredDataProps) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 
   // Core organization data - always included
   const organizationData = {

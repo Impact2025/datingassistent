@@ -186,7 +186,7 @@ Bron: ${data.registrationSource === 'lead_wizard' ? 'Lead Activation Wizard' : d
   text += `
 
 ---
-Bekijk in admin: https://datingassistent.nl/admin/users?search=${encodeURIComponent(data.email)}
+Bekijk in admin: https://www.datingassistent.nl/admin/users?search=${encodeURIComponent(data.email)}
 
 Dit is een automatische notificatie van DatingAssistent.
 `;

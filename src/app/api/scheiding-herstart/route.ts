@@ -275,7 +275,7 @@ async function sendResultEmail(
 
   const profielNaam = PROFILE_NAMES[scores.profiel] ?? scores.profiel;
   const emoji = PROFILE_EMOJI[scores.profiel] ?? '';
-  const PROD_URL = 'https://datingassistent.nl';
+  const PROD_URL = 'https://www.datingassistent.nl';
 
   const analysis = aiAnalysis ?? {};
   const week1 = (analysis.actieplan?.week1 ?? []).slice(0, 3);

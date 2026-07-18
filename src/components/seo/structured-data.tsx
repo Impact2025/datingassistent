@@ -1,5 +1,5 @@
 export function StructuredData() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 
   const structuredData = {
     "@context": "https://schema.org",

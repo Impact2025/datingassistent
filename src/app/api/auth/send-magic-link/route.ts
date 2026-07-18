@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 
     const user = result.rows[0];
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
     const nextParam = next !== '/dashboard' ? `&next=${encodeURIComponent(next)}` : '';
 
     // Deduplication: if there's a valid token created within the last hour, reuse it.

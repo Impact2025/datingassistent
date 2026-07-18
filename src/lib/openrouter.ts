@@ -100,7 +100,7 @@ export class OpenRouterClient {
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://datingassistent.nl',
+          'HTTP-Referer': 'https://www.datingassistent.nl',
           'X-Title': 'DatingAssistent',
         },
         body: JSON.stringify(requestBody),
@@ -200,7 +200,7 @@ export class OpenRouterClient {
           headers: {
             'Authorization': `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://datingassistent.nl',
+            'HTTP-Referer': 'https://www.datingassistent.nl',
             'X-Title': 'DatingAssistent',
           },
           body: JSON.stringify(requestBody),

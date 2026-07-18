@@ -112,8 +112,8 @@ Het DatingAssistent Team
 
 ---
 Vragen? info@datingassistent.nl
-Privacy: https://datingassistent.nl/privacy
-Voorwaarden: https://datingassistent.nl/algemene-voorwaarden
+Privacy: https://www.datingassistent.nl/privacy
+Voorwaarden: https://www.datingassistent.nl/algemene-voorwaarden
     `.trim();
 
     logger.log(`📧 Sending verification link email to ${userEmail}`);

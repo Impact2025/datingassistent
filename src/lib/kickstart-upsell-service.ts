@@ -13,7 +13,7 @@
 import { sql } from '@vercel/postgres';
 import { logger } from '@/lib/logger';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 
 interface UpsellSequenceConfig {
   userId: number;

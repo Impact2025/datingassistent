@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   title: 'Dating Profielfoto Check | Gratis Feedback | DatingAssistent',
   description: 'Laat je dating profielfoto checken door AI. Ontvang gratis feedback en tips om je aantrekkelijkheid te vergroten.',
   robots: { index: false, follow: false },
-  alternates: { canonical: 'https://datingassistent.nl/foto' },
+  alternates: { canonical: 'https://www.datingassistent.nl/foto' },
   openGraph: {
     title: 'Dating Profielfoto Check | Gratis Feedback | DatingAssistent',
     description: 'Laat je dating profielfoto checken door AI. Ontvang gratis feedback en tips om je aantrekkelijkheid te vergroten.',
-    url: 'https://datingassistent.nl/foto',
+    url: 'https://www.datingassistent.nl/foto',
   },
 };
 

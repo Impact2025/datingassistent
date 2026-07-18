@@ -30,7 +30,7 @@ export function EmailLogo({
     }}>
       {/* New Logo Image */}
       <img
-        src="https://datingassistent.nl/images/LogoDA.png"
+        src="https://www.datingassistent.nl/images/LogoDA.png"
         alt="DatingAssistent"
         width={iconSize}
         height={iconSize}

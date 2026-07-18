@@ -48,7 +48,7 @@ export async function generateMetadata({
   if (jsonBlog) {
     const title = jsonBlog.seo_title || jsonBlog.title || '';
     const description = jsonBlog.seo_description || jsonBlog.excerpt || '';
-    const shareUrl = `https://datingassistent.nl/blog/${slug}`;
+    const shareUrl = `https://www.datingassistent.nl/blog/${slug}`;
     const allTags = [...new Set([...(jsonBlog.keywords || []), ...(jsonBlog.tags || [])])];
     return {
       title,
@@ -91,7 +91,7 @@ export async function generateMetadata({
 
   const title = blog.seo_title || blog.title || '';
   const description = blog.seo_description || blog.excerpt || '';
-  const shareUrl = `https://datingassistent.nl/blog/${slug}`;
+  const shareUrl = `https://www.datingassistent.nl/blog/${slug}`;
   const publishedTime = new Date(blog.published_at || blog.created_at).toISOString();
   const modifiedTime = blog.updated_at
     ? new Date(blog.updated_at).toISOString()
@@ -215,7 +215,7 @@ export default async function BlogPostPage({
 
   if (!blog) notFound();
 
-  const shareUrl = `https://datingassistent.nl/blog/${slug}`;
+  const shareUrl = `https://www.datingassistent.nl/blog/${slug}`;
   const pageTitle = blog.seo_title || blog.title;
   const pageDescription = blog.seo_description || blog.excerpt;
   const publishedDate = new Date(blog.published_at || blog.created_at).toISOString();
@@ -247,7 +247,7 @@ export default async function BlogPostPage({
     publisher: {
       '@type': 'Organization',
       name: 'DatingAssistent',
-      logo: { '@type': 'ImageObject', url: 'https://datingassistent.nl/logo.png' },
+      logo: { '@type': 'ImageObject', url: 'https://www.datingassistent.nl/logo.png' },
     },
     keywords: allTags.join(', '),
     articleSection: blog.category || 'Dating Advice',
@@ -259,8 +259,8 @@ export default async function BlogPostPage({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://datingassistent.nl' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://datingassistent.nl/blog' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.datingassistent.nl' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.datingassistent.nl/blog' },
       { '@type': 'ListItem', position: 3, name: blog.title, item: shareUrl },
     ],
   };

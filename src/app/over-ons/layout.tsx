@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: 'Over Ons | DatingAssistent',
     description: 'Het verhaal achter DatingAssistent — van datingcoach naar AI-architect.',
     type: 'website',
-    url: 'https://datingassistent.nl/over-ons',
+    url: 'https://www.datingassistent.nl/over-ons',
     siteName: 'DatingAssistent',
     locale: 'nl_NL',
   },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: 'Over Ons | DatingAssistent',
     description: 'Het verhaal achter DatingAssistent — van datingcoach naar AI-architect.',
   },
-  alternates: { canonical: 'https://datingassistent.nl/over-ons' },
+  alternates: { canonical: 'https://www.datingassistent.nl/over-ons' },
 };
 
 export default function OverOnsLayout({ children }: { children: React.ReactNode }) {

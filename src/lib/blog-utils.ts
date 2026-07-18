@@ -31,7 +31,7 @@ export function fixInternalLinks(content: string): string {
   
   // Replace absolute internal links with anchor links
   // For example: http://localhost:9002/features -> /#features
-  // And: https://datingassistent.nl/features -> /#features
+  // And: https://www.datingassistent.nl/features -> /#features
   
   return content
     // Replace localhost links

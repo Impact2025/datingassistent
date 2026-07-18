@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl',
+        'HTTP-Referer': process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl',
         'X-Title': 'DatingAssistent - Vibe Check',
       },
       body: JSON.stringify({

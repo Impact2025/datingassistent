@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
     // Fire-and-forget: de insert is al gelukt. Als we hier wachten op een
     // trage IndexNow/Google-ping loopt de request weg en lijkt de publish
     // mislukt (terwijl hij wel geland is).
-    const base = (process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl').replace(/\/$/, '');
+    const base = (process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl').replace(/\/$/, '');
     const fullUrl = `${base}/blog/${row.slug}`;
     Promise.allSettled([pingIndexNow([fullUrl]), pingGoogleIndexingAPI(fullUrl)])
       .then((results) => {

@@ -22,7 +22,12 @@ import { ConsentProvider, CookieUI } from "@/components/cookie-consent";
 import { Toaster as SonnerToaster } from "sonner";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://datingassistent.nl'),
+  metadataBase: new URL('https://www.datingassistent.nl'),
+  // Default canonical voor alle pagina's die geen eigen canonical zetten.
+  // Voorkomt GSC "Dubbele pagina zonder door de gebruiker geselecteerde canonieke versie".
+  alternates: {
+    canonical: 'https://www.datingassistent.nl',
+  },
   title: 'DatingAssistent – AI Dating Coach voor Moderne Singles',
   description: 'DatingAssistent is jouw persoonlijke datingcoach: altijd beschikbaar, veilig en eerlijk advies, zodat jij sneller een echte match vindt.',
   keywords: ['dating coach', 'AI dating', 'online daten', 'dating tips', 'dating profiel', 'dating app', 'relatiecoach', 'dating hulp'],

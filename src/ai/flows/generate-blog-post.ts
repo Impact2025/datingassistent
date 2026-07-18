@@ -108,7 +108,7 @@ ${input.extraKeywords ? `- Extra Keywords: ${input.extraKeywords}` : ''}
 <h2>Klaar om aan de Slag?</h2>
 <p><strong>Conclusie:</strong> Wil je meer zelfvertrouwen bij het daten en je kans op een echte match vergroten? Probeer DatingAssistent gratis en ontdek hoe onze AI-coach je persoonlijk helpt met je profiel, openers en gesprekken. Start vandaag nog en laat technologie jouw dating game naar een hoger niveau tillen.</p>
 
-<p><a href="https://datingassistent.nl/start">Start gratis met DatingAssistent</a> en vind de liefde die je verdient.</p>
+<p><a href="https://www.datingassistent.nl/start">Start gratis met DatingAssistent</a> en vind de liefde die je verdient.</p>
 
 **SEO VEREISTEN:**
 - Meta title: MAX 60 karakters, bevat primair keyword

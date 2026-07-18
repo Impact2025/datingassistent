@@ -55,7 +55,7 @@ If images are not ready, the page will currently show:
 ### Metadata
 - **Title:** Daten na 40 - Begin Opnieuw Met Wijsheid | DatingAssistent
 - **Description:** Speciaal voor 40-plussers: ontdek hoe je levenservaring je sterkste troef is
-- **Canonical:** https://datingassistent.nl/40-plus
+- **Canonical:** https://www.datingassistent.nl/40-plus
 
 ## Tracking & Analytics
 

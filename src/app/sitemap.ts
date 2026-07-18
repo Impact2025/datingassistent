@@ -5,7 +5,7 @@ import { getAllBlogsFromJson } from '@/lib/blog-json-fallback';
 
 export const dynamic = 'force-dynamic';
 
-const baseUrl = 'https://datingassistent.nl';
+const baseUrl = 'https://www.datingassistent.nl';
 
 // Reflects when a page was last meaningfully updated.
 // Update this date whenever you make significant content changes to that page.

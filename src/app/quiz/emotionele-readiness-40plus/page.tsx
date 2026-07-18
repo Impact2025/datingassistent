@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://datingassistent.nl/quiz/emotionele-readiness-40plus',
+    canonical: 'https://www.datingassistent.nl/quiz/emotionele-readiness-40plus',
   },
 };
 
@@ -74,7 +74,7 @@ const jsonLd = {
   provider: {
     '@type': 'Organization',
     name: 'DatingAssistent',
-    url: 'https://datingassistent.nl',
+    url: 'https://www.datingassistent.nl',
   },
 };
 

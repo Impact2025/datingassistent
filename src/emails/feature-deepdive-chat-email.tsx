@@ -26,7 +26,7 @@ export default function FeatureDeepDiveChatEmail({
   firstName,
   messagesUsed = 15,
   messagesRemaining = 35,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: FeatureDeepDiveChatEmailProps) {
   return (
     <BaseEmail preview="Chat Coach Deep Dive - Je 24/7 dating assistent">

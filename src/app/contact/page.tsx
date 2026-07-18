@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'Contact | Neem Contact Op | DatingAssistent',
     description: 'Neem contact op met DatingAssistent. Live chat en email support. We helpen je graag verder met je dating vragen.',
     type: 'website',
-    url: 'https://datingassistent.nl/contact',
+    url: 'https://www.datingassistent.nl/contact',
   },
   twitter: {
     card: 'summary_large_image',

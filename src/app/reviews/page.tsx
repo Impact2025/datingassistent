@@ -14,11 +14,11 @@ import { sql } from '@vercel/postgres';
 export const metadata: Metadata = {
   title: 'Klantbeoordelingen - Reviews & Ervaringen | DatingAssistent',
   description: 'Lees echte reviews en ervaringen van mensen die hun dating leven hebben verbeterd met DatingAssistent. Ontdek waarom duizenden singles ons vertrouwen.',
-  alternates: { canonical: 'https://datingassistent.nl/reviews' },
+  alternates: { canonical: 'https://www.datingassistent.nl/reviews' },
   openGraph: {
     title: 'Klantbeoordelingen | DatingAssistent',
     description: 'Lees echte reviews van mensen die succesvoller daten met DatingAssistent.',
-    url: 'https://datingassistent.nl/reviews',
+    url: 'https://www.datingassistent.nl/reviews',
   },
 };
 

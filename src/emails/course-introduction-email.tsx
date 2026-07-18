@@ -28,7 +28,7 @@ export default function CourseIntroductionEmail({
   featuredCourseTitle = 'De Perfecte Opening',
   featuredCourseDescription = 'Leer hoe je matches omzet in gesprekken',
   coursesAvailable = 8,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: CourseIntroductionEmailProps) {
   return (
     <BaseEmail preview="Ontdek onze dating cursussen - Start vandaag nog!">

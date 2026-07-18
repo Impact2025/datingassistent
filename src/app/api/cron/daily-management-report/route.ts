@@ -286,7 +286,7 @@ async function sendDailyReport(stats: DailyStats): Promise<boolean> {
       AdminDailyReportEmail({
         stats,
         reportDate,
-        dashboardUrl: 'https://datingassistent.nl/admin',
+        dashboardUrl: 'https://www.datingassistent.nl/admin',
       }),
       { pretty: true }
     );
@@ -343,7 +343,7 @@ Open rate: ${stats.emailOpenRate.toFixed(1)}%
 Click rate: ${stats.emailClickRate.toFixed(1)}%
 
 ---
-Admin Dashboard: https://datingassistent.nl/admin
+Admin Dashboard: https://www.datingassistent.nl/admin
     `.trim();
 
     if (!resend || !process.env.RESEND_API_KEY) {

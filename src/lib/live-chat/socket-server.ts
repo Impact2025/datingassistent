@@ -32,7 +32,7 @@ class LiveChatSocketServer {
     this.io = new SocketIOServer(server, {
       cors: {
         origin: process.env.NODE_ENV === 'production'
-          ? ['https://datingassistent.nl']
+          ? ['https://www.datingassistent.nl']
           : ['http://localhost:3000', 'http://localhost:3001'],
         methods: ['GET', 'POST'],
         credentials: true

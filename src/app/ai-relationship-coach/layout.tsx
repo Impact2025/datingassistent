@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: 'AI Relationship Coach | DatingAssistent',
     description: 'Krijg direct advies en inzichten van je persoonlijke AI relatie coach.',
     type: 'website',
-    url: 'https://datingassistent.nl/ai-relationship-coach',
+    url: 'https://www.datingassistent.nl/ai-relationship-coach',
     siteName: 'DatingAssistent',
     locale: 'nl_NL',
   },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: 'AI Relationship Coach | DatingAssistent',
     description: '24/7 persoonlijke AI coaching voor dating en relaties.',
   },
-  alternates: { canonical: 'https://datingassistent.nl/ai-relationship-coach' },
+  alternates: { canonical: 'https://www.datingassistent.nl/ai-relationship-coach' },
 };
 
 export default function AICoachLayout({ children }: { children: React.ReactNode }) {

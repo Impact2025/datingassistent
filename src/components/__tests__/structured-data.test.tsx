@@ -37,8 +37,8 @@ describe('StructuredData', () => {
 
   it('renders breadcrumb structured data when breadcrumbs are provided', () => {
     const breadcrumbs = [
-      { name: 'Home', url: 'https://datingassistent.nl' },
-      { name: 'Courses', url: 'https://datingassistent.nl/courses' }
+      { name: 'Home', url: 'https://www.datingassistent.nl' },
+      { name: 'Courses', url: 'https://www.datingassistent.nl/courses' }
     ]
 
     render(<StructuredData breadcrumbs={breadcrumbs} />)

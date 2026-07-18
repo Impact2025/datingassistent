@@ -221,7 +221,7 @@ export function EmailLogo({ size = 'md', showText = false }: LogoProps) {
       <tr>
         <td style={{ verticalAlign: 'middle' }}>
           <Img
-            src="https://datingassistent.nl/images/LogoDA.png"
+            src="https://www.datingassistent.nl/images/LogoDA.png"
             alt="DatingAssistent"
             width={logoSize}
             height={logoSize}
@@ -259,7 +259,7 @@ export function HeroHeader({ title, subtitle }: HeroHeaderProps) {
         <tr>
           <td style={{ verticalAlign: 'middle' }}>
             <Img
-              src="https://datingassistent.nl/images/LogoDA.png"
+              src="https://www.datingassistent.nl/images/LogoDA.png"
               alt="DatingAssistent"
               width={32}
               height={32}
@@ -309,7 +309,7 @@ export function PinkHeader({ title, subtitle }: PinkHeaderProps) {
         <tr>
           <td style={{ verticalAlign: 'middle' }}>
             <Img
-              src="https://datingassistent.nl/images/LogoDA.png"
+              src="https://www.datingassistent.nl/images/LogoDA.png"
               alt="DatingAssistent"
               width={32}
               height={32}
@@ -491,7 +491,7 @@ interface EmailFooterProps {
 }
 
 export function EmailFooter({ unsubscribeUrl, preferencesUrl }: EmailFooterProps) {
-  const baseUrl = 'https://datingassistent.nl';
+  const baseUrl = 'https://www.datingassistent.nl';
 
   return (
     <Section style={styles.footer}>

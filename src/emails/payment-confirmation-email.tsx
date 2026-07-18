@@ -28,7 +28,7 @@ export default function PaymentConfirmationEmail({
   currency = 'EUR',
   orderId,
   subscriptionType = 'Core',
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: PaymentConfirmationEmailProps) {
   const formattedAmount = (amount / 100).toFixed(2);
 

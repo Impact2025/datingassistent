@@ -6,12 +6,12 @@ import { PublicFooter } from '@/components/layout/public-footer';
 export const metadata: Metadata = {
   title: 'Privacyverklaring',
   description: 'Lees de privacyverklaring van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
-  alternates: { canonical: 'https://datingassistent.nl/privacyverklaring' },
+  alternates: { canonical: 'https://www.datingassistent.nl/privacyverklaring' },
   openGraph: {
     title: 'Privacyverklaring – DatingAssistent (WeAreImpact)',
     description: 'Lees de privacyverklaring van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
     type: 'website',
-    url: 'https://datingassistent.nl/privacyverklaring',
+    url: 'https://www.datingassistent.nl/privacyverklaring',
     images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     siteName: 'DatingAssistent',
     locale: 'nl_NL',

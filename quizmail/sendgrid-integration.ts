@@ -80,7 +80,7 @@ async function sendQuizResultEmail(
       PatternQuizResultEmail({
         name,
         resultType,
-        kickstartLink: 'https://datingassistent.nl/prijzen',
+        kickstartLink: 'https://www.datingassistent.nl/prijzen',
       })
     );
 
@@ -184,7 +184,7 @@ async function sendWithDynamicTemplate(
     dynamicTemplateData: {
       name,
       result_title: resultTitles[resultType],
-      kickstart_link: 'https://datingassistent.nl/kickstart',
+      kickstart_link: 'https://www.datingassistent.nl/kickstart',
     },
   };
 

@@ -7,11 +7,11 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Community Richtlijnen | DatingAssistent',
   description: 'De community richtlijnen van DatingAssistent. Samen zorgen we voor een veilige en respectvolle omgeving.',
-  alternates: { canonical: 'https://datingassistent.nl/community/guidelines' },
+  alternates: { canonical: 'https://www.datingassistent.nl/community/guidelines' },
   openGraph: {
     title: 'Community Richtlijnen | DatingAssistent',
     description: 'De community richtlijnen van DatingAssistent. Samen zorgen we voor een veilige en respectvolle omgeving.',
-    url: 'https://datingassistent.nl/community/guidelines',
+    url: 'https://www.datingassistent.nl/community/guidelines',
   },
 };
 

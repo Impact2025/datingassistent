@@ -21,6 +21,15 @@ const nextConfig: NextConfig = {
   // Redirects for URL corrections
   async redirects() {
     return [
+      // PREFERED DOMAIN: alle non-www verkeer permanent naar www.
+      // Voorkomt GSC "Pagina met omleiding" / "Alternatieve pagina met correcte canonieke tag"
+      // omdat canonicals+sitemap nu op www wijzen. 308 = permanent, preserve method+body.
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'datingassistent.nl' }],
+        destination: 'https://www.datingassistent.nl/:path*',
+        permanent: true,
+      },
       {
         source: '/emotionele-ready',
         destination: '/emotionele-readiness',
@@ -78,6 +87,12 @@ const nextConfig: NextConfig = {
       {
         source: '/checkout/kickstart-programma',
         destination: '/checkout/kickstart',
+        permanent: true,
+      },
+      // Typo-correctie: ghostin -> ghosting (voorkomt dode link / GSC 404)
+      {
+        source: '/tools/ghostin-reframer',
+        destination: '/tools/ghosting-reframer',
         permanent: true,
       },
     ];

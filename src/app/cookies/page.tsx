@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'Cookiebeleid | Cookies & Privacy',
     description: 'Transparante informatie over cookies op DatingAssistent. Leer hoe wij cookies gebruiken en hoe u uw voorkeuren kunt beheren.',
     type: 'website',
-    url: 'https://datingassistent.nl/cookies',
+    url: 'https://www.datingassistent.nl/cookies',
   },
   twitter: {
     card: 'summary_large_image',

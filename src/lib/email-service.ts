@@ -25,7 +25,7 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@datingassistent.nl';
 const SUPPORT_EMAIL = 'info@datingassistent.nl';
 const BILLING_EMAIL = 'billing@datingassistent.nl';
@@ -457,9 +457,9 @@ export async function sendMagicLinkEmail(
             <td style="padding:20px 0;text-align:center;">
               <p style="color:#ccc;font-size:11px;margin:0;">
                 DatingAssistent &middot;
-                <a href="https://datingassistent.nl" style="color:#ccc;text-decoration:none;">datingassistent.nl</a>
+                <a href="https://www.datingassistent.nl" style="color:#ccc;text-decoration:none;">datingassistent.nl</a>
                 &middot;
-                <a href="https://datingassistent.nl/privacy" style="color:#ccc;text-decoration:none;">Privacy</a>
+                <a href="https://www.datingassistent.nl/privacy" style="color:#ccc;text-decoration:none;">Privacy</a>
               </p>
             </td>
           </tr>
@@ -487,7 +487,7 @@ Heb je dit niet aangevraagd? Dan hoef je niets te doen — de link vervalt vanze
 
 ---
 DatingAssistent
-https://datingassistent.nl
+https://www.datingassistent.nl
   `.trim();
 
   return sendEmail({
@@ -548,8 +548,8 @@ export async function sendQuizMagicLinkEmail(
                 Heb je dit niet aangevraagd? Dan hoef je niets te doen.
               </p>
               <p style="color:#bbb;font-size:12px;margin:0;">
-                <a href="https://datingassistent.nl" style="color:#bbb;text-decoration:none;">DatingAssistent</a>
-                &middot; <a href="https://datingassistent.nl/privacy" style="color:#bbb;text-decoration:none;">Privacy</a>
+                <a href="https://www.datingassistent.nl" style="color:#bbb;text-decoration:none;">DatingAssistent</a>
+                &middot; <a href="https://www.datingassistent.nl/privacy" style="color:#bbb;text-decoration:none;">Privacy</a>
               </p>
             </td>
           </tr>
@@ -573,7 +573,7 @@ Deze link is 1 uur geldig en kan slechts één keer gebruikt worden.
 Heb je dit niet aangevraagd? Dan is er niets aan de hand — negeer deze email.
 
 DatingAssistent
-https://datingassistent.nl
+https://www.datingassistent.nl
   `.trim();
 
   return sendEmail({
@@ -905,7 +905,7 @@ export async function sendPatternQuizResultEmail(
 ): Promise<boolean> {
   try {
     // Always use production URL for email links (not localhost)
-    const PROD_URL = 'https://datingassistent.nl';
+    const PROD_URL = 'https://www.datingassistent.nl';
     const resultUrl = `${PROD_URL}/quiz/dating-patroon/resultaat?id=${resultId}`;
 
     const html = await render(

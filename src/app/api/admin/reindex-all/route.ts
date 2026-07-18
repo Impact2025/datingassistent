@@ -4,7 +4,7 @@ import { sql } from '@vercel/postgres';
 import { getAllKennisbankArticles } from '@/lib/kennisbank';
 import { pingIndexNow } from '@/lib/indexing';
 
-const BASE_URL = 'https://datingassistent.nl';
+const BASE_URL = 'https://www.datingassistent.nl';
 
 export async function POST(request: NextRequest) {
   try {

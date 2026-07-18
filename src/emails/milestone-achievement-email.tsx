@@ -42,7 +42,7 @@ export default function MilestoneAchievementEmail({
   achievementScore = 'Uitstekend',
   nextMilestone,
   nextGoalProgress = 0,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: MilestoneAchievementEmailProps) {
   return (
     <BaseEmail preview={`${milestoneName} - Gefeliciteerd!`}>

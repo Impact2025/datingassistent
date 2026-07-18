@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   title: 'Levensvisie Dating | Vind een Match met Dezelfde Waarden | DatingAssistent',
   description: 'Ontdek hoe jouw levensvisie invloed heeft op dating en relaties. Vind een partner die echt bij je past.',
   robots: { index: false, follow: false },
-  alternates: { canonical: 'https://datingassistent.nl/levensvisie' },
+  alternates: { canonical: 'https://www.datingassistent.nl/levensvisie' },
   openGraph: {
     title: 'Levensvisie Dating | Vind een Match met Dezelfde Waarden | DatingAssistent',
     description: 'Ontdek hoe jouw levensvisie invloed heeft op dating en relaties. Vind een partner die echt bij je past.',
-    url: 'https://datingassistent.nl/levensvisie',
+    url: 'https://www.datingassistent.nl/levensvisie',
   },
 };
 

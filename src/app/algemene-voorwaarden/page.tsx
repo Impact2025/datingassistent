@@ -6,12 +6,12 @@ import { PublicFooter } from '@/components/layout/public-footer';
 export const metadata: Metadata = {
   title: 'Algemene Voorwaarden',
   description: 'Lees de algemene voorwaarden van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
-  alternates: { canonical: 'https://datingassistent.nl/algemene-voorwaarden' },
+  alternates: { canonical: 'https://www.datingassistent.nl/algemene-voorwaarden' },
   openGraph: {
     title: 'Algemene Voorwaarden',
     description: 'Lees de algemene voorwaarden van DatingAssistent (WeAreImpact). Versie 1.1 – geldig vanaf 21 oktober 2025.',
     type: 'website',
-    url: 'https://datingassistent.nl/algemene-voorwaarden',
+    url: 'https://www.datingassistent.nl/algemene-voorwaarden',
     images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     siteName: 'DatingAssistent',
     locale: 'nl_NL',

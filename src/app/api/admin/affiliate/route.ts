@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     `;
 
     const partner = result.rows[0];
-    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 
     return NextResponse.json({
       success: true,

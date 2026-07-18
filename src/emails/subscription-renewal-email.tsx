@@ -36,7 +36,7 @@ export default function SubscriptionRenewalEmail({
   daysUntilRenewal = 7,
   monthlyPrice = 19.95,
   statsThisMonth,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: SubscriptionRenewalEmailProps) {
   return (
     <BaseEmail preview={`Je abonnement verlengt over ${daysUntilRenewal} dagen`}>

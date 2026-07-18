@@ -31,8 +31,8 @@ export default function WeeklyCheckinEmail({
   toolsUsed = 3,
   coursesStarted = 1,
   aiMessagesUsed = 12,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
-  feedbackUrl = 'https://datingassistent.nl/feedback',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
+  feedbackUrl = 'https://www.datingassistent.nl/feedback',
 }: WeeklyCheckinEmailProps) {
   return (
     <BaseEmail preview="Je eerste week is voorbij - Hoe gaat het?">

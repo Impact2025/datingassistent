@@ -47,7 +47,7 @@ export default function WeeklyDigestEmail({
   weeklyTip,
   featuredContent,
   communityHighlight,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: WeeklyDigestEmailProps) {
   return (
     <BaseEmail preview={`Je week ${weekNumber} samenvatting - DatingAssistent`}>

@@ -30,7 +30,7 @@ export default function CourseCompletionEmail({
   completionDate = new Date().toLocaleDateString('nl-NL'),
   nextCourseTitle,
   totalCoursesCompleted = 1,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: CourseCompletionEmailProps) {
   return (
     <BaseEmail preview={`Gefeliciteerd! Je hebt "${courseTitle}" voltooid!`}>

@@ -27,7 +27,7 @@ interface PartnerStats {
   conversion_rate_pct: number;
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 
 export default function AffiliatePage() {
   const [partners, setPartners] = useState<PartnerStats[]>([]);

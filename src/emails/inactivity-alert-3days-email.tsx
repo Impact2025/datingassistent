@@ -26,7 +26,7 @@ export default function InactivityAlert3DaysEmail({
   firstName,
   lastActiveDate = 'een paar dagen geleden',
   lastToolUsed,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: Inactivity3DaysEmailProps) {
   return (
     <BaseEmail preview="We missen je! Kom je nog langs?">

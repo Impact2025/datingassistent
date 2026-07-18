@@ -187,7 +187,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 export default function AdminDailyReportEmail({
   stats,
   reportDate,
-  dashboardUrl = 'https://datingassistent.nl/admin',
+  dashboardUrl = 'https://www.datingassistent.nl/admin',
 }: AdminDailyReportEmailProps) {
   const userTrend = getTrendIndicator(stats.newUsersToday, stats.newUsersYesterday);
   const revenueTrend = getTrendIndicator(stats.revenueToday, stats.revenueYesterday);

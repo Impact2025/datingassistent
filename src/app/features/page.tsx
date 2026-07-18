@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: '10 AI Tools voor Dating Succes | Profiel Coach & Chat Hulp | DatingAssistent',
     description: 'Ontdek onze 10 professionele AI tools voor 89% meer matches: Profiel Coach, Chat Coach, Date Planner, Opener Lab. Gratis proberen - professionele dating hulp voor singles.',
     type: 'website',
-    url: 'https://datingassistent.nl/features',
+    url: 'https://www.datingassistent.nl/features',
   },
   twitter: {
     card: 'summary_large_image',

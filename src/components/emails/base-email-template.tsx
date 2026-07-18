@@ -114,11 +114,11 @@ export function EmailFooter({ showLinks = true }: EmailFooterProps) {
       </Text>
       {showLinks && (
         <div style={footerLinks}>
-          <a href="https://datingassistent.nl/privacy" style={footerLink}>Privacy</a>
+          <a href="https://www.datingassistent.nl/privacy" style={footerLink}>Privacy</a>
           <span style={footerSeparator}>|</span>
-          <a href="https://datingassistent.nl/algemene-voorwaarden" style={footerLink}>Voorwaarden</a>
+          <a href="https://www.datingassistent.nl/algemene-voorwaarden" style={footerLink}>Voorwaarden</a>
           <span style={footerSeparator}>|</span>
-          <a href="https://datingassistent.nl/help" style={footerLink}>Help</a>
+          <a href="https://www.datingassistent.nl/help" style={footerLink}>Help</a>
         </div>
       )}
 

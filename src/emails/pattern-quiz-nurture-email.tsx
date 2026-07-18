@@ -97,8 +97,8 @@ export default function PatternQuizNurtureEmail({
   day,
 }: PatternQuizNurtureEmailProps) {
   const patternTitle = patternTitles[attachmentPattern];
-  const kickstartUrl = 'https://datingassistent.nl/prijzen';
-  const preferencesUrl = 'https://datingassistent.nl/settings/email-preferences';
+  const kickstartUrl = 'https://www.datingassistent.nl/prijzen';
+  const preferencesUrl = 'https://www.datingassistent.nl/settings/email-preferences';
 
   // Day 1: Founder Story
   if (day === 1) {

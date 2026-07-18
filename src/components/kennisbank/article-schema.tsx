@@ -14,19 +14,19 @@ export function ArticleSchema({ article, url }: ArticleSchemaProps) {
     author: {
       '@type': 'Organization',
       name: article.author || 'DatingAssistent',
-      url: 'https://datingassistent.nl',
+      url: 'https://www.datingassistent.nl',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://datingassistent.nl/logo.png',
+        url: 'https://www.datingassistent.nl/logo.png',
       },
     },
     publisher: {
       '@type': 'Organization',
       name: 'DatingAssistent',
-      url: 'https://datingassistent.nl',
+      url: 'https://www.datingassistent.nl',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://datingassistent.nl/logo.png',
+        url: 'https://www.datingassistent.nl/logo.png',
       },
     },
     datePublished: article.date,
@@ -123,7 +123,7 @@ export function KennisbankArticleSchema({
   article: KennisbankArticle;
   breadcrumbs: Array<{ name: string; url: string }>;
 }) {
-  const baseUrl = 'https://datingassistent.nl';
+  const baseUrl = 'https://www.datingassistent.nl';
   const articleUrl = `${baseUrl}/kennisbank/${article.slug}`;
 
   // Extract FAQ-style content from Iris-tips (blockquotes with tips)

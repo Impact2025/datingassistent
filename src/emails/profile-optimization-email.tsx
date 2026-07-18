@@ -28,7 +28,7 @@ export default function ProfileOptimizationEmail({
   firstName,
   completionPercentage = 30,
   missingFields = ['Profielfoto', 'Bio tekst', 'Dating voorkeuren'],
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: ProfileOptimizationEmailProps) {
   const profileUrl = `${dashboardUrl}?tab=profile`;
   const preferencesUrl = `${dashboardUrl}/settings/email-preferences`;

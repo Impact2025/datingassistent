@@ -51,7 +51,7 @@ export const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
     intent: 'privacy',
     question: 'Hoe gaat de app om met privacy?',
     answer:
-      'We verwerken alleen gegevens die nodig zijn voor je coaching. Alles is conform AVG en je kunt je data inzien, exporteren of verwijderen. Bekijk https://datingassistent.nl/privacyverklaring voor details.',
+      'We verwerken alleen gegevens die nodig zijn voor je coaching. Alles is conform AVG en je kunt je data inzien, exporteren of verwijderen. Bekijk https://www.datingassistent.nl/privacyverklaring voor details.',
     tags: ['privacy', 'avg'],
   },
   {
@@ -60,7 +60,7 @@ export const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
     intent: 'support',
     question: 'Ik kan niet inloggen',
     answer:
-      'Reset eerst je wachtwoord via https://datingassistent.nl/forgot-password. Blijft het probleem? Kies “Praat met medewerker” of mail info@datingassistent.nl.',
+      'Reset eerst je wachtwoord via https://www.datingassistent.nl/forgot-password. Blijft het probleem? Kies “Praat met medewerker” of mail info@datingassistent.nl.',
     quickReplies: [
       { label: 'Wachtwoord resetten', payload: 'support-reset-password' },
       { label: 'Contact support', payload: 'support-contact' },
@@ -73,7 +73,7 @@ export const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
     intent: 'support',
     question: 'Hoe reset ik mijn wachtwoord?',
     answer:
-      'Ga naar https://datingassistent.nl/reset-password, vul je e-mailadres in en volg de stappen. Lukt het niet, neem contact op met support.',
+      'Ga naar https://www.datingassistent.nl/reset-password, vul je e-mailadres in en volg de stappen. Lukt het niet, neem contact op met support.',
     tags: ['support', 'password'],
   },
   {
@@ -107,7 +107,7 @@ export const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
     intent: 'faq',
     question: 'Wat zijn veiligheidsregels voor dates?',
     answer:
-      'Plan je eerste date op een openbare plek, deel je locatie met een vertrouwde persoon en respecteer grenzen. Bekijk onze volledige gids op https://datingassistent.nl/faq.',
+      'Plan je eerste date op een openbare plek, deel je locatie met een vertrouwde persoon en respecteer grenzen. Bekijk onze volledige gids op https://www.datingassistent.nl/faq.',
     tags: ['veiligheid', 'date'],
   },
   {

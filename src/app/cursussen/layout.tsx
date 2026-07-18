@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     title: 'Online Dating Cursussen | DatingAssistent',
     description: 'Ontwikkel je dating vaardigheden met professionele cursussen en AI-begeleiding.',
     type: 'website',
-    url: 'https://datingassistent.nl/cursussen',
+    url: 'https://www.datingassistent.nl/cursussen',
     siteName: 'DatingAssistent',
     locale: 'nl_NL',
   },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: 'Online Dating Cursussen | DatingAssistent',
     description: 'Professionele cursussen voor betere dates en relaties.',
   },
-  alternates: { canonical: 'https://datingassistent.nl/cursussen' },
+  alternates: { canonical: 'https://www.datingassistent.nl/cursussen' },
 };
 
 export default function CursussenLayout({ children }: { children: React.ReactNode }) {

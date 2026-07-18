@@ -9,7 +9,7 @@
  * 4. Redirects to the destination page
  *
  * Usage in affiliate links:
- *   https://datingassistent.nl/api/affiliate/track?ref=MIRJAM30&to=/quiz/dating-patroon
+ *   https://www.datingassistent.nl/api/affiliate/track?ref=MIRJAM30&to=/quiz/dating-patroon
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -17,7 +17,7 @@ import { sql } from '@vercel/postgres';
 
 const COOKIE_NAME = 'da_ref';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;

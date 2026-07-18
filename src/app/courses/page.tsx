@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: 'Online Dating Cursussen | Leer de Kunst van het Daten | DatingAssistent',
     description: 'Professionele online dating cursussen om je dating skills te verbeteren. Van eerste berichten tot succesvolle relaties.',
     type: 'website',
-    url: 'https://datingassistent.nl/courses',
+    url: 'https://www.datingassistent.nl/courses',
   },
   twitter: {
     card: 'summary_large_image',

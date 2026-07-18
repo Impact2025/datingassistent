@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const canonicalUrl = `https://datingassistent.nl/kennisbank/${article.slug}`;
+  const canonicalUrl = `https://www.datingassistent.nl/kennisbank/${article.slug}`;
 
   return {
     title: `${article.title} | Kennisbank | DatingAssistent`,

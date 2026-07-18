@@ -47,7 +47,7 @@ SENDGRID_PASSWORD_RESET_TEMPLATE_ID="d-..."
 ### 5. Application (Required)
 ```bash
 # Base URL for the application
-NEXT_PUBLIC_BASE_URL="https://datingassistent.nl"
+NEXT_PUBLIC_BASE_URL="https://www.datingassistent.nl"
 
 # Environment
 NODE_ENV="production"

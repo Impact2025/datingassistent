@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   title: 'Dating Match Analyse | Begrijp Jouw Matches | DatingAssistent',
   description: 'Leer hoe je dating matches werkt. Ontdek algoritmes, compatibiliteit en hoe je betere matches krijgt.',
   robots: { index: false, follow: false },
-  alternates: { canonical: 'https://datingassistent.nl/match' },
+  alternates: { canonical: 'https://www.datingassistent.nl/match' },
   openGraph: {
     title: 'Dating Match Analyse | Begrijp Jouw Matches | DatingAssistent',
     description: 'Leer hoe je dating matches werkt. Ontdek algoritmes, compatibiliteit en hoe je betere matches krijgt.',
-    url: 'https://datingassistent.nl/match',
+    url: 'https://www.datingassistent.nl/match',
   },
 };
 

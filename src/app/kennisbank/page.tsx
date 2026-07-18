@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: 'Kennisbank | DatingAssistent',
     description: 'Evidence-based artikelen over dating, relaties en persoonlijke groei.',
     type: 'website',
-    url: 'https://datingassistent.nl/kennisbank',
+    url: 'https://www.datingassistent.nl/kennisbank',
     siteName: 'DatingAssistent',
     locale: 'nl_NL',
   },
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     description: 'Evidence-based artikelen over dating, relaties en persoonlijke groei.',
   },
   alternates: {
-    canonical: 'https://datingassistent.nl/kennisbank',
+    canonical: 'https://www.datingassistent.nl/kennisbank',
   },
 };
 

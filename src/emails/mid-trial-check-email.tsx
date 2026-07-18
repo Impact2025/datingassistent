@@ -31,7 +31,7 @@ export default function MidTrialCheckEmail({
   toolsUsed = 5,
   coursesCompleted = 2,
   subscriptionType = 'core',
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: MidTrialCheckEmailProps) {
   const engagementScore = Math.min(100, (toolsUsed * 10) + (coursesCompleted * 20) + (daysActive * 2));
 

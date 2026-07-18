@@ -49,7 +49,7 @@ export default function MonthlyProgressReportEmail({
   achievements = [],
   topFeature,
   comparisonToLastMonth,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: MonthlyProgressReportEmailProps) {
   const activityPercentage = Math.round((stats.daysActive / stats.totalDaysInMonth) * 100);
 

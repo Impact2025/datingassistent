@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const INDEXNOW_KEY = process.env.INDEXNOW_KEY || '1b415c2508776bc036da5896cb5d0851';
-const HOST = 'https://datingassistent.nl';
+const HOST = 'https://www.datingassistent.nl';
 
 const robotsTxt = `# robots.txt — DatingAssistent.nl
 # Laatst bijgewerkt: 2026-06-26

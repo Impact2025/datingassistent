@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       WHERE id = ${userId}
     `;
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://datingassistent.nl';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.datingassistent.nl';
     const magicUrl = `${baseUrl}/api/auth/magic-login?token=${token}&next=${encodeURIComponent('/quiz/dating-patroon')}`;
 
     // Send quiz-specific magic link email — awaited so Vercel doesn't kill the lambda early

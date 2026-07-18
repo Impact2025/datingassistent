@@ -16,21 +16,21 @@ export const metadata: Metadata = {
   title: 'Dating Blog - Tips voor Succesvol Online Daten | DatingAssistent',
   description: 'Ontdek de beste tips, tricks en verhalen voor succesvol online daten. Van profiel optimalisatie tot de eerste date: jouw dating kenniscentrum.',
   keywords: 'dating tips, online daten, datingprofiel, matchen, relatie, datingsite, dating app, datingsucces',
-  alternates: { canonical: 'https://datingassistent.nl/blog' },
+  alternates: { canonical: 'https://www.datingassistent.nl/blog' },
   openGraph: {
     title: 'Dating Blog - Tips voor Succesvol Online Daten | DatingAssistent',
     description: 'De beste dating tips en verhalen voor singles in Nederland.',
     type: 'website',
-    url: 'https://datingassistent.nl/blog',
+    url: 'https://www.datingassistent.nl/blog',
     siteName: 'DatingAssistent',
     locale: 'nl_NL',
-    images: [{ url: 'https://datingassistent.nl/og-image.png', width: 1200, height: 630, alt: 'DatingAssistent Blog' }],
+    images: [{ url: 'https://www.datingassistent.nl/og-image.png', width: 1200, height: 630, alt: 'DatingAssistent Blog' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Dating Blog | DatingAssistent',
     description: 'De beste dating tips voor singles in Nederland.',
-    images: ['https://datingassistent.nl/og-image.png'],
+    images: ['https://www.datingassistent.nl/og-image.png'],
   },
 };
 
@@ -124,16 +124,16 @@ export default async function BlogPage({ searchParams }: PageProps) {
     '@type': 'Blog',
     name: 'DatingAssistent Blog',
     description: 'Tips en advies voor succesvol online daten in Nederland',
-    url: 'https://datingassistent.nl/blog',
+    url: 'https://www.datingassistent.nl/blog',
     publisher: {
       '@type': 'Organization',
       name: 'DatingAssistent',
-      logo: { '@type': 'ImageObject', url: 'https://datingassistent.nl/logo.png' },
+      logo: { '@type': 'ImageObject', url: 'https://www.datingassistent.nl/logo.png' },
     },
     blogPost: blogs.slice(0, 20).map((blog) => ({
       '@type': 'BlogPosting',
       headline: blog.title,
-      url: `https://datingassistent.nl/blog/${blog.slug}`,
+      url: `https://www.datingassistent.nl/blog/${blog.slug}`,
       datePublished: blog.published_at,
       description: blog.excerpt,
       keywords: blog.keywords?.join(', '),
@@ -144,9 +144,9 @@ export default async function BlogPage({ searchParams }: PageProps) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://datingassistent.nl' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://datingassistent.nl/blog' },
-      ...(tag ? [{ '@type': 'ListItem', position: 3, name: tag, item: `https://datingassistent.nl/blog?tag=${encodeURIComponent(tag)}` }] : []),
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.datingassistent.nl' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.datingassistent.nl/blog' },
+      ...(tag ? [{ '@type': 'ListItem', position: 3, name: tag, item: `https://www.datingassistent.nl/blog?tag=${encodeURIComponent(tag)}` }] : []),
     ],
   };
 

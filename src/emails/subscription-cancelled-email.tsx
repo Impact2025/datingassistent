@@ -33,8 +33,8 @@ export default function SubscriptionCancelledEmail({
   totalSessions = 0,
   coursesCompleted = 0,
   daysActive = 0,
-  reactivateUrl = 'https://datingassistent.nl/prijzen',
-  feedbackUrl = 'https://datingassistent.nl/feedback',
+  reactivateUrl = 'https://www.datingassistent.nl/prijzen',
+  feedbackUrl = 'https://www.datingassistent.nl/feedback',
 }: SubscriptionCancelledEmailProps) {
   return (
     <BaseEmail preview="Je abonnement is opgezegd - Tot snel!">

@@ -30,7 +30,7 @@ class SEOManager {
   private static readonly SITE_CONFIG = {
     name: 'DatingAssistent',
     description: 'De ultieme AI-gedreven dating coach voor moderne singles. Verbeter je dating skills met persoonlijke coaching, profiel optimalisatie en relatie advies.',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://datingassistent.nl',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.datingassistent.nl',
     ogImage: '/og-image.jpg',
     twitterHandle: '@datingassistent',
     locale: 'nl_NL',

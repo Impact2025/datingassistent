@@ -50,14 +50,14 @@ function BulletItem({ text }: { text: string }) {
 export default function PatternQuizResultEmail({
   firstName,
   attachmentPattern,
-  resultUrl = 'https://datingassistent.nl/quiz/dating-patroon/resultaat',
+  resultUrl = 'https://www.datingassistent.nl/quiz/dating-patroon/resultaat',
   anxietyScore,
   avoidanceScore,
 }: PatternQuizResultEmailProps) {
   const result = getPatternResult(attachmentPattern);
-  const kickstartUrl = 'https://datingassistent.nl/prijzen';
-  const transformatieUrl = 'https://datingassistent.nl/prijzen';
-  const preferencesUrl = 'https://datingassistent.nl/settings/email-preferences';
+  const kickstartUrl = 'https://www.datingassistent.nl/prijzen';
+  const transformatieUrl = 'https://www.datingassistent.nl/prijzen';
+  const preferencesUrl = 'https://www.datingassistent.nl/settings/email-preferences';
 
   return (
     <BaseEmail

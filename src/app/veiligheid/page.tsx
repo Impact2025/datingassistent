@@ -6,11 +6,11 @@ export const metadata: Metadata = {
   title: 'Veilig Online Daten | Tips & Advies | DatingAssistent',
   description: 'Alles over veilig online daten. Herken nepaccounts, bescherm je privacy en date met vertrouwen.',
   robots: { index: false, follow: false },
-  alternates: { canonical: 'https://datingassistent.nl/veiligheid' },
+  alternates: { canonical: 'https://www.datingassistent.nl/veiligheid' },
   openGraph: {
     title: 'Veilig Online Daten | Tips & Advies | DatingAssistent',
     description: 'Alles over veilig online daten. Herken nepaccounts, bescherm je privacy en date met vertrouwen.',
-    url: 'https://datingassistent.nl/veiligheid',
+    url: 'https://www.datingassistent.nl/veiligheid',
   },
 };
 

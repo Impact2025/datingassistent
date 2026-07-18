@@ -38,7 +38,7 @@ export default function FeatureLimitReachedEmail({
   usageThisWeek = 25,
   subscriptionType = 'Sociaal',
   resetDate,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: FeatureLimitReachedEmailProps) {
   const featureName = featureNames[featureType] || featureType;
 

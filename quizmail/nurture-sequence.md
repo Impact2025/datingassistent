@@ -43,7 +43,7 @@ Je quiz resultaat ({{result_title}}) is stap 1.
 
 Maar echte verandering? Die komt van dagelijkse actie.
 
-→ Bekijk de 21-Dagen Kickstart: https://datingassistent.nl/prijzen
+→ Bekijk de 21-Dagen Kickstart: https://www.datingassistent.nl/prijzen
 
 €47 | Je eerste doorbraak in 21 dagen.
 
@@ -89,7 +89,7 @@ JIJ geeft mensen vaak te veel kansen, hopend dat ze veranderen.
 Met deze vraag filter je VOORDAT je emotioneel investeert.
 
 → Meer van dit soort strategieën? Start de 21-Dagen Kickstart:
-https://datingassistent.nl/prijzen
+https://www.datingassistent.nl/prijzen
 
 Vincent
 ```
@@ -124,7 +124,7 @@ In 90% van de gevallen is er na 24 uur geen reden meer tot paniek.
 En als je dit consequent doet? Je traint je brein om het verschil te herkennen tussen angst en intuïtie.
 
 → 21 dagen van dit soort tools: Start de Kickstart:
-https://datingassistent.nl/prijzen
+https://www.datingassistent.nl/prijzen
 
 Vincent
 ```
@@ -161,7 +161,7 @@ Eén klein ding delen voelt oncomfortabel — maar creëert verbinding.
 Observeer wat er gebeurt. Bij de ander, én bij jezelf.
 
 → Meer oefeningen op jouw tempo: Start de 21-Dagen Kickstart:
-https://datingassistent.nl/prijzen
+https://www.datingassistent.nl/prijzen
 
 Vincent
 ```
@@ -198,7 +198,7 @@ Dat is waar verandering begint.
 Je hoeft het patroon niet direct te veranderen. Alleen opmerken.
 
 → Dagelijkse begeleiding voor jouw patroon: Start de 21-Dagen Kickstart:
-https://datingassistent.nl/prijzen
+https://www.datingassistent.nl/prijzen
 
 Vincent
 ```
@@ -227,7 +227,7 @@ Het verschil? Ze stopte met hopen dat mensen zouden veranderen.
 Ze begon te filteren op wie mensen AL ZIJN.
 
 → Jouw transformatie begint hier:
-https://datingassistent.nl/prijzen
+https://www.datingassistent.nl/prijzen
 
 Vincent
 ```
@@ -252,7 +252,7 @@ Nu, 8 maanden later:
 "Ik zit in een relatie met iemand die consistent is. Geen drama. Geen onzekerheid. Gewoon... rust."
 
 → Jouw rust begint hier:
-https://datingassistent.nl/prijzen
+https://www.datingassistent.nl/prijzen
 
 Vincent
 ```
@@ -277,7 +277,7 @@ Het verschil nu:
 "Ik deel kleine dingen. Niet alles — dat hoeft niet. Maar genoeg om verbinding te voelen zonder mezelf te verliezen."
 
 → Verbinding op jouw tempo:
-https://datingassistent.nl/prijzen
+https://www.datingassistent.nl/prijzen
 
 Vincent
 ```
@@ -302,7 +302,7 @@ Nu:
 "Ik voel nog steeds soms de neiging om te vluchten. Maar nu kan ik het opmerken, benoemen, en een andere keuze maken."
 
 → Jouw patroon doorbreken:
-https://datingassistent.nl/prijzen
+https://www.datingassistent.nl/prijzen
 
 Vincent
 ```
@@ -337,7 +337,7 @@ Daarom bouwde ik de 21-Dagen Kickstart:
 
 €47. 21 dagen. De eerste stap naar doorbreken wat je al jaren herhaalt.
 
-→ Start vandaag nog: https://datingassistent.nl/prijzen
+→ Start vandaag nog: https://www.datingassistent.nl/prijzen
 
 Niet tevreden? Geld terug. Geen gedoe.
 

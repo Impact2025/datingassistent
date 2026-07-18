@@ -31,7 +31,7 @@ export default function PaymentFailedEmail({
   failureReason,
   retryDate,
   daysUntilSuspension = 3,
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: PaymentFailedEmailProps) {
   return (
     <BaseEmail preview="Actie vereist: Probleem met je betaling">

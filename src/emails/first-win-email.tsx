@@ -49,7 +49,7 @@ const featureInfo: Record<string, { title: string; nextFeature: string; nextDesc
 export default function FirstWinEmail({
   firstName,
   featureUsed = 'ai_chat',
-  dashboardUrl = 'https://datingassistent.nl/dashboard',
+  dashboardUrl = 'https://www.datingassistent.nl/dashboard',
 }: FirstWinEmailProps) {
   const feature = featureInfo[featureUsed] || featureInfo.default;
   const preferencesUrl = `${dashboardUrl}/settings/email-preferences`;
