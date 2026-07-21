@@ -26,8 +26,10 @@ interface BlogPost {
   seo_description?: string;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    await requireAdmin(request);
+
     const rawBuffer = fs.readFileSync(path.join(process.cwd(), 'blog_list.json'));
     let rawText = rawBuffer.toString('utf16le');
     if (rawText.charCodeAt(0) === 0xFEFF) {
